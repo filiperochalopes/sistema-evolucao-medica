@@ -1,0 +1,64 @@
+{% extends 'base.html' %} {% block title %}Sedação e Intubação GA - {% endblock
+%} {% block content %}
+<div class="container">
+  <section>
+    <h2>Doses pediátricas</h2>
+
+    <label for="weight">Peso (kg)</label>
+    <input id="weight" type="number" step="0.1" />
+    <label for="age">Idade</label>
+    <input id="age" type="number" step="1" /><br /><br />
+    <label for="height">Altura (cm)</label>
+    <input id="height" type="number" step="1" /><br /><br />
+    <input id="q" type="search" placeholder="Filtro de Busca" />
+    Área corporal:
+    https://arquivos.sbn.org.br/equacoes/eq6.htm
+    <section>
+      <h2>Para o hospital</h2>
+      <p><strong>Dipirona</strong> 500mg/ml DIVIDIR PESO POR 20 (20-25 mg/kg/dose) max 2,5ml/dose 6/6h</p>
+      <strong>Salbutamol 100mcg/jato
+        < 12a 4-8 puffs 20/20min 3 ciclos, depois 4 puffs 1/1h>= 12a 4-8 puffs 20/20min por até 4h, depois 4-8 puffs
+          1/1h ou 4/4h
+      </strong>
+      <p>
+        <strong>Hidrocortisona 1mg/ml</strong>
+        0,56mg-8ml/kg/dia max 240ml/dose A partir de 30kg pode usar dose máxima pediátrica
+      </p>
+      <p><strong>Escopolamina</strong> 20mg/mL (EV, IM ou SC)
+        < 12 anos: 0,015-0,03ml/kg/dose EV max 0,075ml/kg/dia> 12 anos: 1-2ml EV max 5ml/dia
+      </p>
+      <p><strong>Anestesia local</strong> Max 5mg/kg sem vasoconstrictor. Regra rápida aproximada divide o peso por 2
+        para saber quantos mililitros com 10mg/ml, se 20mg/ml divide por 4.
+      </p>
+      <p><strong>Adrenalina/Epinefrina</strong> 0,01mg/kg/dose na PCR, diluir 1mg/ml em 9ml de soro e realizar 0,1ml por
+        quilo</p>
+      <p><strong>Diazepam</strong> 5mg/kg/dose, por ser 5mg/ml a ampola só dividir o peso por 10 para saber a quantidade
+        de ml. </p>
+    </section>
+    <section>
+      <p><strong>Dipirona</strong>
+        Solução oral: 50mg/ml DIVIDE PESO POR 2 (20-25mg/kg/dose) max 25ml/dose 5g/dia
+        Solução oral gotas: 1gota/kg max 50 gotas
+      </p>
+      <p>
+        <strong>Paracetamol 200mg/ml gotas 1 gota/kg dose 4/4 ou 6/6h mac 5,6 gotas/kg/dia (75 mg/kg/dia) ou 300
+          gotas/dia 4g/dia. Não exceder 5 doses diárias</strong>
+      </p>
+      <p><strong>Ibuprofeno</strong> 1-2 gotas</p>
+      <p><strong>Prednisolona</strong> DIVIDE POR 3 (se quiser a dose maior divide por 1,5)ml 1-2mg/kg/dose 24/24h</p>
+      <strong>Azitromicina</strong>
+      <strong>Zinco</strong>
+      <strong>Enterogermina</strong>
+      <p><strong>Escopolamina</strong> 10mg/mL
+        < 3m 3 gotas/kg/dose 8/8h 3-11m 1,4 gotas/kg/dose 8/8h 1-6a 0,6-1 gota/kg/dose 8/8h> 6a 20-40 gotas 3-5
+          vezes/dia
+          (20 gotas ~ 1ml)
+      </p>
+    </section>
+  </section>
+  <section>
+
+</div>
+{% endblock %} {% block scripts %}
+<script src="/static/intubacao_sedacao_ga.js"></script>
+{% endblock %}

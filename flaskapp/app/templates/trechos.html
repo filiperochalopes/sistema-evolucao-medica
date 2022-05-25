@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block title %}Trechos de Exames - {% endblock
+%} {% block content %}
+<div class="three-cols">
+    <div>
+        <section>
+            <h2>Conduta Padrão</h2>
+            <textarea class="paragraph_to_copy" id="sintomaticos">Prescrevo sintomáticos. ALTA APÓS MEDICAÇÃO.
+        </textarea>
+            <button class="copy_to_clipboard" data-id="sintomaticos" onclick="copyToClipboard">Copiar</button>
+        </section>
+        <section>
+            <h2>Exame físico básico</h2>
+            <textarea class="paragraph_to_copy" id="exame_fisico">Paciente em bom estado geral, anictérico, acianótico, expansibilidade pulmonar preservada, sem sinais de esforço respiratório.
+        </textarea>
+            <button class="copy_to_clipboard" data-id="exame_fisico" onclick="copyToClipboard">Copiar</button>
+        </section>
+    </div>
+    <div>
+        <section>
+            <h2>HMA H3N2 (febre)</h2>
+            <textarea class="paragraph_to_copy" id="hma_h3n2">Paciente queixa-se de sintomas gripais (coriza, dor de garganta, mialgia, astenia, febre não aferida, tosse e cefaleia) há 1 dia. Nega sangramentos, dispneia e outras queixas. Nega comorbidades ou alergias medicamentosas. 
+        </textarea>
+            <button class="copy_to_clipboard" data-id="hma_h3n2" onclick="copyToClipboard">Copiar</button>
+        </section>
+        <section>
+            <h2>Exame físico sintomático respiratório</h2>
+            <textarea class="paragraph_to_copy" id="exame_fisico_emergencia">Bom estado geral, lúcido e orientado em tempo e em espaço, glasgow 15, anictério e acianótico. Aparelho respiratório: Expansibilidade preservada, sem sinais de esforço respiratório, murmúrios vesiculares bem distribuídos, sem ruídos adventícios. Extremidades bem perfundidas, sem petéquias em mucosa oral. SpO2 98% FC 74
+        </textarea>
+            <button class="copy_to_clipboard" data-id="exame_fisico_emergencia">Copiar</button>
+        </section>
+        <section>
+            <h2>Conduta H3N2</h2>
+            <textarea class="paragraph_to_copy" id="conduta_h3n2">Prescrevo:
+        - VITAMINA C 1g 2x/dia 7d;
+        - DIPIRONA 500mg 6/6h 5d;
+        - NEOLEFRIN&reg; 8/8h 5d;
+        - Prednisolona 20mg/dia 5d se irritação em garganta/ouvido/nariz;
+        - Nimesulida 200mg/dia 3 dias se dor intensa na garganta;
+        - Nafazolina 0,5mg/ml 2gts em cada narina 4x/dia até 10 dias se coriza intensa.
+Solicito RTPCR Oriento repouso com isolamento social durante o tempo de atestado (5 dias). Oriento sobre sinais de alarme. Paciente liberado para seguir tratamento domiciliar.
+        </textarea>
+            <button class="copy_to_clipboard" data-id="conduta_h3n2" onclick="copyToClipboard">Copiar</button>
+        </section>
+    </div>
+    <div>
+        <section>
+            <h2>História essencial</h2>
+            <textarea class="paragraph_to_copy" id="hma_essencial">Nega alergia, nega comorbidades.
+        </textarea>
+            <button class="copy_to_clipboard" data-id="hma_essencial" onclick="copyToClipboard">Copiar</button>
+        </section>
+        <section>
+            <h2>Cefaleia Red Flags</h2>
+            <textarea class="paragraph_to_copy" id="cefaleia_red_flags">Nega ser a pior cefaleia da vida, nega início subito, nega exercício físico extenuante, nega ter acordado por conta da dor.
+        </textarea>
+            <button class="copy_to_clipboard" data-id="cefaleia_red_flags" onclick="copyToClipboard">Copiar</button>
+        </section>
+    </div>
+
+</div>
+{% endblock %} {% block scripts %}
+<script src="/static/js/trechos.js"></script>
+{% endblock %}
