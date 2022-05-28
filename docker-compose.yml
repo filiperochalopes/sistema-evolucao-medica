@@ -1,7 +1,7 @@
 version: "3"
 services:
   flaskapp:
-    container_name: calc_filipelopesmedbr_flaskapp
+    container_name: mapa_ga_filipelopesmedbr_flaskapp
     restart: always
     build:
       context: ./flaskapp
@@ -11,7 +11,7 @@ services:
     ports:
       - "${FLASKAPP_PORT}:5000"
   nginx:
-    container_name: calc_filipelopesmedbr_nginx
+    container_name: mapa_ga_filipelopesmedbr_nginx
     restart: always
     build:
       context: .
