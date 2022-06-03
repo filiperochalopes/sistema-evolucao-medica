@@ -4,14 +4,14 @@ from app.routes.main import main as main_blueprint
 from flask import Flask
 from flask_migrate import Migrate
 from flask_scss import Scss
-from flask_bcrypt import Bcrypt
 from app.models import db
 from app.models import User
-
+import os
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sqlite3.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.secret_key = os.getenv('SECRET_KEY')
 
 db.init_app(app)
 

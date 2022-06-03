@@ -16,6 +16,22 @@ python -c 'import secrets; print(secrets.token_hex())'
 docker-compose up
 ```
 
+## Reset app
+
+```sh
+make run
+make migrate
+```
+
+## Comandos de migrations
+
+```sh
+make migrate
+make comment="update some table" makemigrations
+```
+
+## Utilizando o alembic no 
+
 ```sh
 flask db init
 flask db migrate -m "Initial migration"
