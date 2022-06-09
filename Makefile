@@ -7,7 +7,9 @@ seed:
 	flask seed"
 terminal:
 	docker exec -it mapa_ga_filipelopesmedbr_flaskapp bash
+shell:
+	docker exec -it mapa_ga_filipelopesmedbr_flaskapp bash -c "flask shell"
 migrate:
 	docker exec -it mapa_ga_filipelopesmedbr_flaskapp bash -c "flask db upgrade"
 makemigrations:
-	docker exec -it mapa_ga_filipelopesmedbr_flaskapp bash -c 'flask db migrate -m "$(comment)"'
+	docker exec -it mapa_ga_filipelopesmedbr_flaskapp bash -c 'flask db migrate -m "$(m)"'

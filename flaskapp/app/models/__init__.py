@@ -1,4 +1,5 @@
 
+from email.policy import default
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -21,6 +22,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    is_active = db.Column(db.Boolean, default=True)
 
     @property
     def password(self):
@@ -33,6 +35,14 @@ class User(db.Model):
     def verify_password(self, password):
         return bcrypt.checkpw(password, self.password_hash)
 
+    def get_id(self):
+        return self.id
+
+    def is_authenticated(self):
+        return not(self.is_annonymous())
+    
+    def is_annonymous(self):
+        return not(self.is_authenticated())
 
 class Patient(db.Model):
     __tablename__ = 'patients'

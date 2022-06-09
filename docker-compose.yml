@@ -6,6 +6,8 @@ services:
     build:
       context: ./flaskapp
       dockerfile: Dockerfile
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
     volumes:
       - ./flaskapp:/app
     ports:
