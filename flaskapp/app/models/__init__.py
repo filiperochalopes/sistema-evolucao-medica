@@ -1,7 +1,7 @@
 
 from email.policy import default
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, validates
 from sqlalchemy.sql import func
 from flask_sqlalchemy import SQLAlchemy
 import enum
@@ -11,6 +11,11 @@ import bcrypt
 class SexEnum(enum.Enum):
     male = 'Masculino'
     fema = 'Feminino'
+
+
+class DrugKindEnum(enum.Enum):
+    atb = 'Antibióticos'
+    oth = 'Outros'
 
 
 db = SQLAlchemy()
@@ -26,7 +31,7 @@ class User(db.Model):
 
     @property
     def password(self):
-        raise AttributeError('password not readable')
+        raise AttributeError('Senha não é um atributo capaz de ser lido')
 
     @password.setter
     def password(self, password):
@@ -40,9 +45,10 @@ class User(db.Model):
 
     def is_authenticated(self):
         return not(self.is_annonymous())
-    
+
     def is_annonymous(self):
         return not(self.is_authenticated())
+
 
 class Patient(db.Model):
     __tablename__ = 'patients'
@@ -51,17 +57,9 @@ class Patient(db.Model):
     name = db.Column(db.String, nullable=False)
     sex = db.Column(db.Enum(SexEnum), nullable=False)
     birth_date = db.Column(db.Date, nullable=False)
-    admission_date = db.Column(db.Date, nullable=False)
-    admission_hour = db.Column(db.Time)
-    hpi = db.Column(
-        db.Text, comment="History of the Present Illness / HMA", nullable=False)
-    waiting_vacancy = db.Column(
-        db.Boolean, default=False, comment="Aguardando vaga na Regulação")
-    regulation_code = db.Column(
-        db.String, comment="Número de registro da regulação")
-    pendings = db.Column(db.Text, nullable=False)
+    comorbidities = db.Column(db.Text)
+    allergies = db.Column(db.Text)
 
-    evolutions = relationship('Evolution')
     # timestamps
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
@@ -70,14 +68,126 @@ class Patient(db.Model):
     removed_at = db.Column(db.DateTime(timezone=True))
 
 
+class Drug(db.Model):
+    __tablename__ = 'drugs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    usual_dosage = db.Column(db.String)
+    comment = db.Column(
+        db.Text, comment="Aqui pode colocar alguma dica de uso em pediatria, ou melhor aplicação de antibioticoterapia, além de restrição de uso")
+    kind = db.Column(db.Enum(SexEnum), nullable=False)
+
+
+class DrugPrescription(db.Model):
+    __tablename__ = 'drug_prescriptions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    drug_id = db.Column(db.Integer, ForeignKey("patients.id"))
+    dosage = db.Column(db.String)
+    initial_date = db.Column(db.Date)
+    ending_date = db.Column(db.Date)
+
+
+class Diet(db.Model):
+    __tablename__ = 'diets'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+
+class RestingActivity(db.Model):
+    # Determinar qual o grau de atividade/repouso do paciente
+    __tablename__ = 'resting_activities'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+
+class NursingActivity(db.Model):
+    # Atividades de enfermagem como aferição de sinais vitais, checagem de FCF...
+    __tablename__ = 'nursing_activities'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+
+class Internment(db.Model):
+    __tablename__ = 'internments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, ForeignKey("patients.id"))
+    patient = relationship('Patient')
+    admission_date = db.Column(db.Date, nullable=False)
+    admission_hour = db.Column(db.Time)
+    hpi = db.Column(
+        db.Text, comment="History of the Present Illness / HMA", nullable=False)
+    waiting_vacancy = db.Column(
+        db.Boolean, default=False, comment="Aguardando vaga na Regulação")
+    regulation_code = db.Column(
+        db.String, comment="Número de registro da regulação")
+
+    vitals = relationship('Vital')
+    evolutions = relationship('Evolution')
+    pendings = relationship('Pending')
+
+
+class Prescription(db.Model):
+    __tablename__ = 'prescriptions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    diet_id = db.Column(db.Integer, ForeignKey("diets.id"))
+    diet = relationship('Diet')
+    resting_activities = relationship('RestingActivity')
+    nursing_activities = relationship('NursingActivity')
+    drug_prescriptions = relationship('DrugPrescription')
+
+
+class Vital(db.Model):
+    __tablename__ = 'vitals'
+
+    id = db.Column(db.Integer, primary_key=True)
+    spO2 = db.Column(db.Integer)
+    pain = db.Column(db.Integer)
+    sistolic_bp = db.Column(db.Integer)
+    diastolic_bp = db.Column(db.Integer)
+    cardiac_freq = db.Column(db.Integer)
+    respiratory_freq = db.Column(db.Integer)
+    celcius_axillary_temperature = db.Column(db.Integer)
+    glucose = db.Column(db.Integer)
+
+    @validates('spO2')
+    def validate_email(self, _, value):
+        assert value > 0
+        assert value <= 100
+        return value
+
+
 class Evolution(db.Model):
     __tablename__ = 'evolutions'
 
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(
         db.Text, comment="Evolução do paciente com exame físico e sinais vitais")
+    professional = db.Column(db.Integer, nullable=False)
 
-    patient_id = db.Column(db.Integer, ForeignKey('patients.id'))
+    internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
+    internment = relationship('Internment')
+
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now())
+
+
+class Pending(db.Model):
+    __tablename__ = 'pendings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(
+        db.Text, comment="Evolução do paciente com exame físico e sinais vitais")
+    professional = db.Column(db.Integer, nullable=False)
+
+    internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
+    internment = relationship('Internment')
 
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())

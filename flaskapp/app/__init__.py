@@ -1,5 +1,6 @@
 from app.routes.auth import auth as auth_blueprint
 from app.routes.main import main as main_blueprint
+from flask_autocrud import AutoCrud
 from flask_login import LoginManager
 from flask import Flask
 from flask_migrate import Migrate
@@ -9,12 +10,15 @@ from app.models import User
 import os
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///sqlite3.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite+pysqlite:///db.sqlite3'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['AUTOCRUD_METADATA_ENABLED'] = True
 app.secret_key = os.getenv('SECRET_KEY')
 
 db.init_app(app)
 
+
+# AutoCrud(app, db)
 migrate = Migrate(app, db)
 Scss(app, static_dir='app/static/css', asset_dir='app/assets/scss')
 
