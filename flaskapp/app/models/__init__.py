@@ -1,5 +1,6 @@
 
 from email.policy import default
+from unicodedata import category
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, validates
 from sqlalchemy.sql import func
@@ -16,6 +17,12 @@ class SexEnum(enum.Enum):
 class DrugKindEnum(enum.Enum):
     atb = 'Antibióticos'
     oth = 'Outros'
+
+
+class ProfessionalCategoryEnum(enum.Enum):
+    doc = 'Médico'
+    nur = 'Enfermeira'
+    tec = 'Técnica de Enfermagem'
 
 
 db = SQLAlchemy()
@@ -50,6 +57,29 @@ class User(db.Model):
         return not(self.is_authenticated())
 
 
+class Professional(db.Model):
+    __tablename__ = 'professionals'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    cpf = db.Column(db.String)
+    cns = db.Column(db.String)
+    category = db.Column(db.Enum(ProfessionalCategoryEnum), nullable=False)
+    number = db.Column(db.String)
+
+    # timestamps
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now())
+    updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+
+class Cid10(db.Model):
+    __tablename__ = 'cid10'
+
+    code = db.Column(db.String, primary_key=True)
+    description = db.Column(db.String)
+
+
 class Patient(db.Model):
     __tablename__ = 'patients'
 
@@ -64,8 +94,6 @@ class Patient(db.Model):
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
-    # Se removido deve ir para outra lista, lista das "Altas ou Transferências"
-    removed_at = db.Column(db.DateTime(timezone=True))
 
 
 class Drug(db.Model):
@@ -116,20 +144,35 @@ class Internment(db.Model):
     __tablename__ = 'internments'
 
     id = db.Column(db.Integer, primary_key=True)
-    patient_id = db.Column(db.Integer, ForeignKey("patients.id"))
-    patient = relationship('Patient')
     admission_date = db.Column(db.Date, nullable=False)
     admission_hour = db.Column(db.Time)
     hpi = db.Column(
         db.Text, comment="History of the Present Illness / HMA", nullable=False)
+    justification = db.Column(
+        db.Text, comment="Justificativa de internamento", nullable=False)
     waiting_vacancy = db.Column(
         db.Boolean, default=False, comment="Aguardando vaga na Regulação")
     regulation_code = db.Column(
         db.String, comment="Número de registro da regulação")
 
+    patient_id = db.Column(db.Integer, ForeignKey("patients.id"))
+    patient = relationship('Patient')
+
+    professional_id = db.Column(db.Integer, ForeignKey("professionals.id"))
+    professional = relationship('Professional')
+
+    cid10_code = db.Column(db.Integer, ForeignKey("cid10.code"))
+    cid10 = relationship('Cid10')
+
     vitals = relationship('Vital')
     evolutions = relationship('Evolution')
     pendings = relationship('Pending')
+
+    # timestamps
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now())
+    # Se removido deve ir para outra lista, lista das "Altas ou Transferências"
+    removed_at = db.Column(db.DateTime(timezone=True))
 
 
 class Prescription(db.Model):
@@ -173,6 +216,9 @@ class Evolution(db.Model):
 
     internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
     internment = relationship('Internment')
+
+    cid10_code = db.Column(db.Integer, ForeignKey("cid10.code"))
+    cid10 = relationship('Cid10')
 
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
