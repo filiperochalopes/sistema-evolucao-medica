@@ -1,5 +1,5 @@
-from app.routes.auth import auth as auth_blueprint
-from app.routes.main import main as main_blueprint
+from app.views.auth import auth as auth_blueprint
+from app.views.main import main as main_blueprint
 from flask_autocrud import AutoCrud
 from flask_login import LoginManager
 from flask import Flask
