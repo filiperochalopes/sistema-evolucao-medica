@@ -116,6 +116,8 @@ class DrugPrescription(db.Model):
     initial_date = db.Column(db.Date)
     ending_date = db.Column(db.Date)
 
+    prescription_id = db.Column(db.Integer, ForeignKey("prescriptions.id"))
+
 
 class Diet(db.Model):
     __tablename__ = 'diets'
@@ -131,6 +133,8 @@ class RestingActivity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
+    prescription_id = db.Column(db.Integer, ForeignKey("prescriptions.id"))
+
 
 class NursingActivity(db.Model):
     # Atividades de enfermagem como aferição de sinais vitais, checagem de FCF...
@@ -139,6 +143,7 @@ class NursingActivity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
+    prescription_id = db.Column(db.Integer, ForeignKey("prescriptions.id"))
 
 class Internment(db.Model):
     __tablename__ = 'internments'
@@ -198,12 +203,30 @@ class Vital(db.Model):
     respiratory_freq = db.Column(db.Integer)
     celcius_axillary_temperature = db.Column(db.Integer)
     glucose = db.Column(db.Integer)
+    
+    internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
+    internment = relationship('Internment')
 
     @validates('spO2')
     def validate_email(self, _, value):
         assert value > 0
         assert value <= 100
         return value
+
+class FluidBalanceDescription(db.Model):
+    __tablename__ = 'fluid_balance_description'
+
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String)
+
+
+class FluidBalance(db.Model):
+    __tablename__ = 'fluid_balance'
+
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.Integer)
+    description_id = db.Column(db.Integer, ForeignKey('fluid_balance_description.id'))
+    description = relationship('FluidBalanceDescription')
 
 
 class Evolution(db.Model):
