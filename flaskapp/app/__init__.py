@@ -1,12 +1,12 @@
-from app.views.auth import auth as auth_blueprint
+from app.views.api import auth as api_blueprint
 from app.views.main import main as main_blueprint
-from flask_autocrud import AutoCrud
-from flask_login import LoginManager
 from flask import Flask
 from flask_migrate import Migrate
 from flask_scss import Scss
 from app.models import db
 from app.models import User
+from flask import Blueprint, render_template
+
 import os
 
 app = Flask(__name__)
@@ -22,16 +22,16 @@ db.init_app(app)
 migrate = Migrate(app, db)
 Scss(app, static_dir='app/static/css', asset_dir='app/assets/scss')
 
-login_manager = LoginManager()
-login_manager.init_app(app)
 
+main = Blueprint('main', __name__)
 
-@login_manager.user_loader
-def load_user(user_id):
-    return db.session.query(User).get(user_id)
+@main.route('/', defaults={'path': ''})
+@main.route('/<path:path>')
+def index(path):
+    return render_template('index.html')
 
+app.register_blueprint(api_blueprint)
 app.register_blueprint(main_blueprint)
-app.register_blueprint(auth_blueprint)
 
 @app.cli.command("seed")
 def seed():
