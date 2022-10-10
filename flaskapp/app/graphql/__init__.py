@@ -4,14 +4,14 @@ from ariadne import gql, QueryType
 type_defs = gql("""
     type Query {
        users: [User]
+       cid10: [Cid10!]
     }
 
     type Mutation {
-        signin(email:String!, password:String!)
+        signin(email:String!, password:String!): User
     }
 
-
-   type User {
+    type User {
        username: String
        email: String
        password: String
@@ -20,6 +20,11 @@ type_defs = gql("""
     type Patient {
         name: String
         cns: Int
+    }
+
+    type Cid10 {
+        code: String!
+        description: String!
     }
 """)
 

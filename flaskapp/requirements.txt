@@ -12,6 +12,6 @@ Flask-Migrate==3.1.0
 Flask-Scss
 gunicorn==20.1.0
 WTForms
-bcrypt==3.2.2
 pysqlite3==0.4.7
-Flask-AutoCRUD==2.2.1
+pyjwt==2.5.0
+bcrypt==4.0.1
