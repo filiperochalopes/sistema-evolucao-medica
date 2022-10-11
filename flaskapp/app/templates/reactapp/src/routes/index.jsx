@@ -4,6 +4,7 @@ import Login from "../views/Login";
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import List from "views/Pacient/List";
 
 const routers = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const routers = createBrowserRouter([
       {
         path: "/",
         element: <Login />,
+      },
+      {
+        path: "/pacients",
+        element: <List />,
       },
     ],
   },
