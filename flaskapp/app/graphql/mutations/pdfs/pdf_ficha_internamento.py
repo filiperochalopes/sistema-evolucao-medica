@@ -10,7 +10,7 @@ import global_functions
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
 
 
-def fill_pdf_ficha_internamento(datetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str):
 
     try:
 
@@ -26,9 +26,10 @@ def fill_pdf_ficha_internamento(datetime:datetime.datetime, patient_name:str, pa
             c = add_patientCNS(canvas=c, cns=patient_cns)
             #change font size to datetime
             c.setFont('Helvetica', 14)
-            c = add_documentDatetime(canvas=c, datetime=datetime)
+            c = add_documentDatetime(canvas=c, datetime=documentDatetime)
             c.setFont('Helvetica', 9)
             c = add_patientBirthday(canvas=c, birthday=patient_birthday)
+            c = add_patientMotherName(canvas=c, motherName=patient_motherName)
 
             #verify if c is a error at some point
             if type(c) == type(Response()):
@@ -138,6 +139,27 @@ def add_patientBirthday(canvas:canvas.Canvas, birthday:datetime.datetime):
         return Response('Unkown error while adding patient birthday', status=500)
 
 
+def add_patientMotherName(canvas:canvas.Canvas, motherName:str):
+    """Add patient mother name to document
+
+    Args:
+        canvas (canvas.Canvas): canvas ro use
+        motherName (str): patient mother name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        #verify if patient motherName is smaller than 60 characters
+        if len(motherName.strip()) <= 60:
+            canvas = add_data(canvas=canvas, data=motherName, pos=(194, 643))
+            return canvas
+        else:
+            return Response("Unable to add patient motherName because is longer than 60 characters", status=400)
+    except:
+        return Response('Unknow error while adding patient motherName', status=500)
+
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -179,10 +201,11 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str):
 
 if __name__ == "__main__":
     output = fill_pdf_ficha_internamento(
-        datetime=datetime.datetime.now(), 
+        documentDatetime=datetime.datetime.now(), 
         patient_name="Patient Name",
         patient_cns=928976954930007,
-        patient_birthday=datetime.datetime.now()
+        patient_birthday=datetime.datetime.now(),
+        patient_motherName="Patient Mother Name"
         )
     if type(output) == type(Response()): 
         print(output.response)
