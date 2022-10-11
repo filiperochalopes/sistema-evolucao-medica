@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
-
-prettier --write \"src/**/*.+(js|jsx)\" && eslint \"src/**/*.+(js|jsx)\" --fix
+cd ./flaskapp/app/templates/reactapp 
+npx prettier --write src/**/*.{js,jsx} && npx eslint src/**/*.{js,jsx} --fix
