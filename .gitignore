@@ -2,3 +2,4 @@ __pycache__
 .env
 sqlite3.db
 db.sqlite3
+flaskapp/app/graphql/mutations/pdfs/pythrun.py
