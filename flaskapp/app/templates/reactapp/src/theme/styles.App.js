@@ -11,6 +11,7 @@ export const GlobalStyles = createGlobalStyle`
     font-family: 'Raleway', sans-serif;
     border: none;
     outline: none;
+    text-decoration: none;
   }
   html, body, #root{
     height: 100%;
