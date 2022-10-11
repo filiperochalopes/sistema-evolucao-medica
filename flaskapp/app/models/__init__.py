@@ -169,9 +169,9 @@ class Internment(db.Model):
     cid10_code = db.Column(db.Integer, ForeignKey("cid10.code"))
     cid10 = relationship('Cid10')
 
-    vitals = relationship('Vital')
-    evolutions = relationship('Evolution')
-    pendings = relationship('Pending')
+    vitals = relationship('Vital', back_populates='internment')
+    evolutions = relationship('Evolution', back_populates='internment')
+    pendings = relationship('Pending', back_populates='internment')
 
     # timestamps
     created_at = db.Column(db.DateTime(timezone=True),
@@ -205,7 +205,7 @@ class Vital(db.Model):
     glucose = db.Column(db.Integer)
     
     internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
-    internment = relationship('Internment')
+    internment = relationship('Internment', back_populates='vitals')
 
     @validates('spO2')
     def validate_email(self, _, value):
@@ -238,7 +238,7 @@ class Evolution(db.Model):
     professional = db.Column(db.Integer, nullable=False)
 
     internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
-    internment = relationship('Internment')
+    internment = relationship('Internment', back_populates='evolutions')
 
     cid10_code = db.Column(db.Integer, ForeignKey("cid10.code"))
     cid10 = relationship('Cid10')
@@ -256,7 +256,7 @@ class Pending(db.Model):
     professional = db.Column(db.Integer, nullable=False)
 
     internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
-    internment = relationship('Internment')
+    internment = relationship('Internment', back_populates='pendings')
 
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
