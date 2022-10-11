@@ -4,6 +4,7 @@ import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from flask import Response
+import global_functions
 
 
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
@@ -21,8 +22,8 @@ def fill_pdf_ficha_internamento(datetime:datetime, patient_name:str, patient_cns
         #Writing all data in respective fields
         try:
             c = add_patientName(canvas=c, name=patient_name)
-            #c = add_patientCNS(canvas=c, cns=patient_cns)
-
+            c = add_patientCNS(canvas=c, cns=patient_cns)
+            #verify if c is a error at some point
             if type(c) == type(Response()):
                 return c
         except:
@@ -48,7 +49,15 @@ def fill_pdf_ficha_internamento(datetime:datetime, patient_name:str, patient_cns
         return Response("Error while filling ficha de internamento", status=500)
 
 def add_patientName(canvas:canvas.Canvas, name:str):
+    """Add patient name to pdf
 
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        name (str): patient name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
     try:
         #verify if patient name is smaller than 60 characters
         if len(name.strip()) <= 60:
@@ -60,7 +69,19 @@ def add_patientName(canvas:canvas.Canvas, name:str):
         return Response('Unknow error while adding patient name', status=500)
 
 def add_patientCNS(canvas:canvas.Canvas, cns:int):
-    pass
+    try:
+        #Verify id the cns is valid
+        if global_functions.isCNSvalid(cns):
+            #format cns to add in document
+            cns = str(cns)
+            cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
+            canvas = add_data(canvas=canvas, data=cns, pos=(434, 674))
+            return canvas
+        else:
+            return Response("Unable to add patient cns because is a invalid CNS", status=400)
+    except:
+        return Response('Unknow error while adding patient cns', status=500)
+
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
@@ -108,6 +129,7 @@ if __name__ == "__main__":
         patient_cns=928976954930007,
         patient_birthday=datetime.datetime.now()
         )
-    print(output.response)
+    if type(output) == type(Response()): 
+        print(output.response)
     write_newpdf(output, "./graphql/mutations/pdfs/ficha_teste.pdf")
     
