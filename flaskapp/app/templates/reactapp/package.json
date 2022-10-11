@@ -20,7 +20,8 @@
     "lint": "eslint \"src/**/*.+(js|jsx)\" --fix",
     "prettier": "prettier --write \"src/**/*.+(js|jsx)\"",
     "prepare": "cd ../../../.. && husky install",
-    "newHusk": "cd ../../../.. && npx husky add "
+    "newHusk": "cd ../../../.. && npx husky add ",
+    "commit": "cz"
   },
   "eslintConfig": {
     "extends": "react-app"

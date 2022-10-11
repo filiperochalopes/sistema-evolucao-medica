@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+cd ./flaskapp/app/templates/reactapp 
+
+exec < /dev/tty && yarn commit --hook || true
