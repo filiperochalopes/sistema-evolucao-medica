@@ -28,6 +28,7 @@ def fill_pdf_ficha_internamento(datetime:datetime.datetime, patient_name:str, pa
             c.setFont('Helvetica', 14)
             c = add_documentDatetime(canvas=c, datetime=datetime)
             c.setFont('Helvetica', 9)
+            c = add_patientBirthday(canvas=c, birthday=patient_birthday)
 
             #verify if c is a error at some point
             if type(c) == type(Response()):
@@ -101,10 +102,10 @@ def add_patientCNS(canvas:canvas.Canvas, cns:int):
 
 
 def add_documentDatetime(canvas:canvas.Canvas, datetime:datetime.datetime):
-    """Add document datetime to pdf
+    """Add document datetime to docuemnt
 
     Args:
-        canvas (canvas.Canvas): canvas 
+        canvas (canvas.Canvas): canvas to use
         datetime (datetime.datetime): datetime to add
     Returns:
         canvas or Response:canvas if everthing is allright or Response if hapens some error 
@@ -115,7 +116,26 @@ def add_documentDatetime(canvas:canvas.Canvas, datetime:datetime.datetime):
         canvas = add_data(canvas=canvas, data=datetime, pos=(415, 741))
         return canvas
     except:
-        return Response('Unkown error while adding document datetime')
+        return Response('Unkown error while adding document datetime', status=500)
+
+
+def add_patientBirthday(canvas:canvas.Canvas, birthday:datetime.datetime):
+    """Add patient birthday to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        birthday (datetime.datetime): birthday to add
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        #Format birthday to format DD/MM/YYYY
+        birthday = birthday.strftime("%m/%d/%Y")
+        canvas = add_data(canvas=canvas, data=birthday, pos=(43, 643))
+        return canvas
+    except:
+        return Response('Unkown error while adding patient birthday', status=500)
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
