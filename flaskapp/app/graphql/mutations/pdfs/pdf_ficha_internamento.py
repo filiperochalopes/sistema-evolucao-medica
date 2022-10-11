@@ -38,9 +38,9 @@ def fill_pdf_ficha_internamento(datetime:datetime, patient_name:str, patient_cns
         template_pdf = PdfReader(open(template_directory, "rb"))
         output = PdfWriter()
         # add the "watermark" (which is the new pdf) on the existing page
-        page = template_pdf.getPage(0)
-        page.mergePage(new_pdf.getPage(0))
-        output.addPage(page)
+        page = template_pdf.pages[0]
+        page.merge_page(new_pdf.pages[0])
+        output.add_page(page)
 
         return output
 
