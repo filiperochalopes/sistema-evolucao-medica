@@ -1,11 +1,26 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export default styled.button`
-  background-color: ${({ theme }) => theme.colors.blue};
   height: 2.5rem;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.colors.white};
+  text-decoration: none;
+  padding: 0 0.5rem;
+
+  ${({ customType }) => {
+    switch (customType) {
+      case "gray":
+        return css`
+          background-color: ${({ theme }) => theme.colors.grayMedium};
+          color: ${({ theme }) => theme.colors.black};
+        `;
+      default:
+        return css`
+          background-color: ${({ theme }) => theme.colors.blue};
+          color: ${({ theme }) => theme.colors.white};
+        `;
+    }
+  }}
 `;
