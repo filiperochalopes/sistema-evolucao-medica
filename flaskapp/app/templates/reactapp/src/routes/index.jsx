@@ -3,11 +3,16 @@ import Login from "../views/Login";
 
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 const routers = createBrowserRouter([
   {
     path: "/",
-    element: <PageTemplate />,
+    element: (
+      <PageTemplate>
+        <Outlet />
+      </PageTemplate>
+    ),
     children: [
       {
         path: "/",
