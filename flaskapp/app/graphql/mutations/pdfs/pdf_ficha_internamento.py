@@ -1,5 +1,5 @@
 import datetime
-from PyPDF2  import PdfFileWriter, PdfFileReader
+from PyPDF2  import PdfWriter, PdfReader
 import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
@@ -12,6 +12,7 @@ template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_intername
 def fill_pdf_ficha_internamento(datetime:datetime, patient_name:str, patient_cns:int, patient_birthday:datetime):
 
     try:
+
         packet = io.BytesIO()
         #Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -20,7 +21,10 @@ def fill_pdf_ficha_internamento(datetime:datetime, patient_name:str, patient_cns
         #Writing all data in respective fields
         try:
             c = add_patientName(canvas=c, name=patient_name)
-            c = add_patientCNS(canvas=c, cns=patient_cns)
+            #c = add_patientCNS(canvas=c, cns=patient_cns)
+
+            if type(c) == type(Response()):
+                return c
         except:
             if type(c) == type(Response()):
                 return c
@@ -29,10 +33,10 @@ def fill_pdf_ficha_internamento(datetime:datetime, patient_name:str, patient_cns
         # create a new PDF with Reportlab
         c.save()
         packet.seek(0)
-        new_pdf = PdfFileReader(packet)
+        new_pdf = PdfReader(packet)
         # read the template pdf 
-        template_pdf = PdfFileReader(open(template_directory, "rb"))
-        output = PdfFileWriter()
+        template_pdf = PdfReader(open(template_directory, "rb"))
+        output = PdfWriter()
         # add the "watermark" (which is the new pdf) on the existing page
         page = template_pdf.getPage(0)
         page.mergePage(new_pdf.getPage(0))
@@ -46,6 +50,7 @@ def fill_pdf_ficha_internamento(datetime:datetime, patient_name:str, patient_cns
 def add_patientName(canvas:canvas.Canvas, name:str):
 
     try:
+        #verify if patient name is smaller than 60 characters
         if len(name.strip()) <= 60:
             canvas = add_data(canvas=canvas, data=name, pos=(27, 673))
             return canvas
@@ -55,7 +60,7 @@ def add_patientName(canvas:canvas.Canvas, name:str):
         return Response('Unknow error while adding patient name', status=500)
 
 def add_patientCNS(canvas:canvas.Canvas, cns:int):
-    canvas = add_data(canvas=canvas, data=name, pos=(27, 673))
+    pass
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
@@ -77,7 +82,7 @@ def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
         return Response("Error when adding data to document with canvas", status=500)
 
 
-def write_newpdf(newpdf:PdfFileWriter, new_directory:str):
+def write_newpdf(newpdf:PdfWriter, new_directory:str):
     """Write new pdf in a file
 
     Args:
@@ -99,7 +104,7 @@ def write_newpdf(newpdf:PdfFileWriter, new_directory:str):
 if __name__ == "__main__":
     output = fill_pdf_ficha_internamento(
         datetime=datetime.datetime.now(), 
-        patient_name="patient name",
+        patient_name="Patient Name",
         patient_cns=928976954930007,
         patient_birthday=datetime.datetime.now()
         )
