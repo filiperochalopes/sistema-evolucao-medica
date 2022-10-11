@@ -3,32 +3,59 @@ from PyPDF2  import PdfFileWriter, PdfFileReader
 import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
+from flask import Response
+
 
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
 
 
 def fill_pdf_ficha_internamento(datetime:datetime, patient_name:str, patient_cns:int, patient_birthday:datetime):
 
-    packet = io.BytesIO()
-    #Create canvas and add data
-    c = canvas.Canvas(packet, pagesize=letter)
-    #Writing all data in respective fields
-    c = add_data(canvas=c, data=patient_name, pos=(27, 673))
+    try:
+        packet = io.BytesIO()
+        #Create canvas and add data
+        c = canvas.Canvas(packet, pagesize=letter)
+        #Change canvas font to mach with the document
+        c.setFont('Helvetica', 9)
+        #Writing all data in respective fields
+        try:
+            c = add_patientName(canvas=c, name=patient_name)
+            c = add_patientCNS(canvas=c, cns=patient_cns)
+        except:
+            if type(c) == type(Response()):
+                return c
+            else:
+                return Response('Some error happen when adding data to fields', status=500)
+        # create a new PDF with Reportlab
+        c.save()
+        packet.seek(0)
+        new_pdf = PdfFileReader(packet)
+        # read the template pdf 
+        template_pdf = PdfFileReader(open(template_directory, "rb"))
+        output = PdfFileWriter()
+        # add the "watermark" (which is the new pdf) on the existing page
+        page = template_pdf.getPage(0)
+        page.mergePage(new_pdf.getPage(0))
+        output.addPage(page)
 
-    # create a new PDF with Reportlab
-    c.save()
-    packet.seek(0)
-    new_pdf = PdfFileReader(packet)
-    # read the template pdf 
-    template_pdf = PdfFileReader(open(template_directory, "rb"))
-    output = PdfFileWriter()
-    # add the "watermark" (which is the new pdf) on the existing page
-    page = template_pdf.getPage(0)
-    page.mergePage(new_pdf.getPage(0))
-    output.addPage(page)
+        return output
 
-    return output
-    
+    except:
+        return Response("Error while filling ficha de internamento", status=500)
+
+def add_patientName(canvas:canvas.Canvas, name:str):
+
+    try:
+        if len(name.strip()) <= 60:
+            canvas = add_data(canvas=canvas, data=name, pos=(27, 673))
+            return canvas
+        else:
+            return Response("Unable to add patient name because is longer than 60 characters", status=400)
+    except:
+        return Response('Unknow error while adding patient name', status=500)
+
+def add_patientCNS(canvas:canvas.Canvas, cns:int):
+    canvas = add_data(canvas=canvas, data=name, pos=(27, 673))
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
@@ -40,9 +67,14 @@ def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-    """    
-    canvas.drawString(pos[0], pos[1], data)
-    return canvas
+        or
+        Reponse(flask.Response: with the error)
+    """
+    try:
+        canvas.drawString(pos[0], pos[1], data)
+        return canvas
+    except:
+        return Response("Error when adding data to document with canvas", status=500)
 
 
 def write_newpdf(newpdf:PdfFileWriter, new_directory:str):
@@ -51,20 +83,26 @@ def write_newpdf(newpdf:PdfFileWriter, new_directory:str):
     Args:
         newpdf (PdfFileWriter): new pdf with all the changes made by canvas
         new_directory (str): directory to save the new pdf
-    """    
-    outputFile = open(new_directory, 'wb')
-    newpdf.write(outputFile)
-    outputFile.close()
+    Returns:
+        None
+        or
+        Reponse(flask.Response: with the error)
+    """ 
+    try:
+        outputFile = open(new_directory, 'wb')
+        newpdf.write(outputFile)
+        outputFile.close()
+    except:
+        return Response("Error when writing new pdf", status=500)
 
 
 if __name__ == "__main__":
     output = fill_pdf_ficha_internamento(
         datetime=datetime.datetime.now(), 
-        patient_name="Patient Name",
+        patient_name="patient name",
         patient_cns=928976954930007,
         patient_birthday=datetime.datetime.now()
         )
-    
-    
+    print(output.response)
     write_newpdf(output, "./graphql/mutations/pdfs/ficha_teste.pdf")
     
