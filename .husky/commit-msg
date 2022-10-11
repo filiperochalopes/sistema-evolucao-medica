@@ -2,4 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 cd ./flaskapp/app/templates/reactapp 
-yarn commitlint --edit $1
+
