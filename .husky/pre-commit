@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cd ./flaskapp/app/templates/reactapp && cz
-pretty-quick --staged
+cd ./flaskapp/app/templates/reactapp &&npx pretty-quick --staged && npx cz 

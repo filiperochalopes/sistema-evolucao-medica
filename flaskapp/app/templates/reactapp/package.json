@@ -19,7 +19,6 @@
     "eject": "react-scripts eject",
     "lint": "eslint \"src/**/*.+(js|jsx)\" --fix",
     "prettier": "prettier --write \"src/**/*.+(js|jsx)\"",
-    "commit": "cd ../../../.. && cz",
     "prepare": "cd ../../../.. && husky install",
     "newHusk": "cd ../../../.. && npx husky add "
   },
