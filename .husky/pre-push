@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+prettier --write \"src/**/*.+(js|jsx)\" && eslint \"src/**/*.+(js|jsx)\" --fix
