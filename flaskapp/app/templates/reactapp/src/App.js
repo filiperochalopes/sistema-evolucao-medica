@@ -1,26 +1,7 @@
-import AppContext from "services/context";
-
-import { GlobalStyles } from "theme/styles.App";
-import { theme } from "theme/theme";
-
-import React, { useState } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import Routes from "services/Routes";
-import { ThemeProvider } from "styled-components";
+import React from "react";
 
 function App() {
-  const [signed, setSigned] = useState(false); // true or false
-
-  return (
-    <AppContext.Provider value={{ signed, setSigned }}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <Router>
-          <Routes />
-        </Router>
-      </ThemeProvider>
-    </AppContext.Provider>
-  );
+  return <div>Hello World</div>;
 }
 
 export default App;

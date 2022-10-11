@@ -6,10 +6,8 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
     "react-app",
-    "prettier/react",
     "prettier"
   ],
   "globals": {
@@ -24,7 +22,6 @@
     "ecmaVersion": 6,
     "sourceType": "module"
   },
-  "parser": "babel-eslint",
   "plugins": ["react-hooks", "react", "prettier", "jsx-a11y"],
   "rules": {
     "semi": "off",
