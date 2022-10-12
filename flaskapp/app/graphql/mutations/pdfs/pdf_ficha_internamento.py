@@ -13,7 +13,7 @@ if __name__ != "__main__":
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
 
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None):
 
     try:
 
@@ -52,6 +52,15 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
                 return c
             else:
                 return Response('Some error happen when adding not null data to fields', status=500)
+
+        #Adding data that can be null
+        try:
+            if patient_adressNumber is not None:
+                c = add_patient_adressNumber(canvas=c,adressNumber=patient_adressNumber)
+            if type(c) == type(Response()): return c
+        except:
+            return Response('Critical error happen when adding data that can be null to fields', status=500)
+
         # create a new PDF with Reportlab
         c.save()
         packet.seek(0)
@@ -250,6 +259,29 @@ def add_patientPhoneNumber(canvas:canvas.Canvas, phonenumber:int):
         Response('Unknow error while adding patient Phone Number', status=500)
 
 
+def add_patient_adressNumber(canvas:canvas.Canvas, adressNumber:int):
+    """Add patient adress number to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        adressNumber (int): patient adres number
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        adressNumber = str(adressNumber)
+        if len(adressNumber) > 6:
+            return Response('Adress Number is too long, theres be until 6 digits', status=400)
+        else:
+            canvas = add_data(canvas=canvas, data=adressNumber, pos=(24, 580))
+            return canvas
+    except:
+        Response('Unknow error while adding patient Adress Number', status=500)
+
+
+
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -299,7 +331,8 @@ if __name__ == "__main__":
         patient_motherName="Patient Mother Name",
         patient_document={'CPF':28445400070},
         patient_adress='pacient street, 43, paciten, USA',
-        patient_phonenumber=44387694628
+        patient_phonenumber=44387694628,
+        patient_adressNumber=123456
         )
     if type(output) == type(Response()): 
         print(output.response)
