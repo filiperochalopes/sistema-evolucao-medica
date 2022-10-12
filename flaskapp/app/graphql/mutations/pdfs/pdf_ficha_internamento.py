@@ -126,7 +126,7 @@ def add_patientName(canvas:canvas.Canvas, name:str):
 
     Returns:
         canvas or Response:canvas if everthing is allright or Response if hapens some error 
-    """    
+    """  
     try:
         if type(name) != type(str()):
             return Response('Patient name has to be string', status=400)

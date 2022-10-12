@@ -26,7 +26,7 @@ for x in range(0, 400):
 # CID10 Causas Associadas. 
 # Seção de Acidentes ou Violências e Autorização.
 
-def fill_pdf_aih_sus():
+def fill_pdf_aih_sus(establishment_solitc_name:str):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -37,7 +37,7 @@ def fill_pdf_aih_sus():
         # Writing all data in respective fields
         # not null data
         try:
-            
+            c = add_establishment_solitc_name(canvas=c, name=establishment_solitc_name)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -59,6 +59,31 @@ def fill_pdf_aih_sus():
         return output
     except:
         return Response("Error while filling ficha de internamento", status=500)
+
+
+def add_establishment_solitc_name(canvas:canvas.Canvas, name:str):
+    """add establishment solict name
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        name (str): establishment solict name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(name) != type(str()):
+            return Response('Solicitate Establishment name has to be string', status=400)
+        # verify if Solicitate Establishment name is smaller than 60 characters
+        name = str(name)
+        if 7 < len(name.strip()) <= 78:
+            canvas = add_data(canvas=canvas, data=name, pos=(43, 750))
+            return canvas
+        else:
+            return Response("Unable to add Solicitate Establishment name because is longer than 60 characters or Smaller than 7", status=400)
+    except:
+        return Response('Unknow error while adding patient name', status=500)
+
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
@@ -120,7 +145,9 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str):
 
 if __name__ == "__main__":
     import global_functions
-    output = fill_pdf_aih_sus()
+    output = fill_pdf_aih_sus(
+        establishment_solitc_name='Establishment Solicit Name'
+    )
     if type(output) == type(Response()): 
         print(output.response)
     write_newpdf(output, "./graphql/mutations/pdfs/aih_sus_teste.pdf")
