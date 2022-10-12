@@ -62,6 +62,8 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             if type(c) == type(Response()): return c
             c = add_doctorName(canvas=c, name=doctor_name)
             if type(c) == type(Response()): return c
+            c = add_doctorCNS(canvas=c, cns=doctor_cns)
+            if type(c) == type(Response()): return c
             
         except:
             if type(c) == type(Response()):
@@ -184,6 +186,30 @@ def add_patientCNS(canvas:canvas.Canvas, cns:int):
             return Response("Unable to add patient cns because is a invalid CNS", status=400)
     except:
         return Response('Unknow error while adding patient cns', status=500)
+
+
+def add_doctorCNS(canvas:canvas.Canvas, cns:int):
+    """Add doctor cns to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        cns (int): doctor cns
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        # Verify if the cns is valid
+        if global_functions.isCNSvalid(cns):
+            # format cns to add in document
+            cns = str(cns)
+            cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
+            canvas = add_data(canvas=canvas, data=cns, pos=(304, 163))
+            return canvas
+        else:
+            return Response("Unable to add doctor cns because is a invalid CNS", status=400)
+    except:
+        return Response('Unknow error while adding doctor cns', status=500)
 
 
 def add_documentDatetime(canvas:canvas.Canvas, docDatetime:datetime.datetime):
