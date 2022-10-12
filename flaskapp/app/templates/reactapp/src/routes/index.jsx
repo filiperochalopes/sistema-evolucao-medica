@@ -4,6 +4,7 @@ import Login from "../views/Login";
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import Admit from "views/Pacient/Admit";
 import List from "views/Pacient/List";
 
 const routers = createBrowserRouter([
@@ -20,8 +21,12 @@ const routers = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "/pacients",
+        path: "/pacientes",
         element: <List />,
+      },
+      {
+        path: "/adimitir-paciente",
+        element: <Admit />,
       },
     ],
   },
