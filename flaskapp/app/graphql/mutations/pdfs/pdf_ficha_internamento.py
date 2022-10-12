@@ -64,6 +64,8 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             if type(c) == type(Response()): return c
             c = add_doctorCNS(canvas=c, cns=doctor_cns)
             if type(c) == type(Response()): return c
+            c = add_doctorCRM(canvas=c, crm=doctor_crm)
+            if type(c) == type(Response()): return c
             
         except:
             if type(c) == type(Response()):
@@ -210,6 +212,26 @@ def add_doctorCNS(canvas:canvas.Canvas, cns:int):
             return Response("Unable to add doctor cns because is a invalid CNS", status=400)
     except:
         return Response('Unknow error while adding doctor cns', status=500)
+
+
+def add_doctorCRM(canvas:canvas.Canvas, crm:str):
+    """add doctor crm to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        crm (str): doctor crm
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        crm = crm.strip()
+        if 11 > len(crm) > 13:
+            return Response('CRM is not valid, use the format "CRM/UF 123456"', status=400)
+        canvas = add_data(canvas=canvas, data=crm, pos=(304, 131))
+        return canvas
+    except:
+        return Response('Unknow error while adding doctor crm', status=500)
 
 
 def add_documentDatetime(canvas:canvas.Canvas, docDatetime:datetime.datetime):
@@ -743,7 +765,7 @@ if __name__ == "__main__":
         initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral contraceptive use.',
         doctor_name='Doctor Name',
         doctor_cns=928976954930007,
-        doctor_crm='1123312-CRMSP',
+        doctor_crm='CRM/UF 123456',
         patient_adressNumber=123456,
         patient_adressNeigh='Patient Neighborhood',
         patient_adressCity='Patient city',
