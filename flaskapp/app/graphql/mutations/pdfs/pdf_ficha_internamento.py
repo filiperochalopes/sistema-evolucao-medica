@@ -17,7 +17,7 @@ testLenght = ''
 for x in range(0, 100):
     testLenght += str(x)
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None):
 
     try:
         packet = io.BytesIO()
@@ -72,6 +72,9 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             if type(c) == type(Response()): return c
             if patient_adressCEP is not None:
                 c = add_patientAdressCEP(canvas=c, adressCEP=patient_adressCEP)
+            if type(c) == type(Response()): return c
+            if patient_nationality is not None and patient_nationality.strip() != '':
+                c = add_patientNationality(canvas=c, nationality=patient_nationality)
             if type(c) == type(Response()): return c
 
 
@@ -351,7 +354,7 @@ def add_patientAdressUF(canvas:canvas.Canvas, adressUF:str):
         ufs = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MS','MT','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
         adressUF = adressUF.upper()
         if adressUF not in ufs:
-            return Response('Patient Adress UF not exists in Brazil') 
+            return Response('Patient Adress UF not exists in Brazil', status=400) 
         else:
             canvas = add_data(canvas=canvas, data=adressUF, pos=(443, 580))
             return canvas
@@ -372,7 +375,7 @@ def add_patientAdressCEP(canvas:canvas.Canvas, adressCEP:int):
     try:
         adressCEP = str(adressCEP)
         if len(adressCEP) != 8:
-            return Response('Patient Adress CEP do not have 8 digits') 
+            return Response('Patient Adress CEP do not have 8 digits', status=400) 
         else:
             #format CEP
             adressCEP = adressCEP[:5] + '-' + adressCEP[5:]
@@ -381,6 +384,25 @@ def add_patientAdressCEP(canvas:canvas.Canvas, adressCEP:int):
     except:
         return Response('Unknow error while adding patient Adress CEP', status=500)
 
+
+def add_patientNationality(canvas:canvas.Canvas, nationality:str):
+    """Add patient Nationality
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        nationality (str): patient antionality
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if len(nationality) > 22:
+            return Response('patient nationality is to long, more than 22 characters', status=400)
+        else:
+            canvas = add_data(canvas=canvas, data=nationality, pos=(27, 547))
+            return canvas
+    except:
+        return Response('Unknow error while adding patient nationality', status=500)
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
@@ -436,7 +458,8 @@ if __name__ == "__main__":
         patient_adressNeigh='Patient Neighborhood',
         patient_adressCity='Patient city',
         patient_adressUF='sp',
-        patient_adressCEP=12345678
+        patient_adressCEP=12345678,
+        patient_nationality='Brasileira'
         )
     if type(output) == type(Response()): 
         print(output.response)
