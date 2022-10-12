@@ -13,7 +13,7 @@ if __name__ != "__main__":
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
 
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int):
 
     try:
 
@@ -43,6 +43,8 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             c = add_patientDocument(canvas=c, document=patient_document)
             if type(c) == type(Response()): return c
             c = add_patientAdress(canvas=c, adress=patient_adress)
+            if type(c) == type(Response()): return c
+            c = add_patientPhoneNumber(canvas=c, phonenumber=patient_phonenumber)
             if type(c) == type(Response()): return c
             
         except:
@@ -80,11 +82,11 @@ def add_patientName(canvas:canvas.Canvas, name:str):
     """    
     try:
         # verify if patient name is smaller than 60 characters
-        if len(name.strip()) <= 60:
-            canvas = add_data(canvas=canvas, data=name, pos=(27, 673))
+        if 7 < len(name.strip()) <= 60:
+            canvas = add_data(canvas=canvas, data=name, pos=(27, 674))
             return canvas
         else:
-            return Response("Unable to add patient name because is longer than 60 characters", status=400)
+            return Response("Unable to add patient name because is longer than 60 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding patient name', status=500)
 
@@ -162,11 +164,11 @@ def add_patientMotherName(canvas:canvas.Canvas, motherName:str):
     """    
     try:
         # verify if patient motherName is smaller than 60 characters
-        if len(motherName.strip()) <= 60:
+        if 7 < len(motherName.strip()) <= 60:
             canvas = add_data(canvas=canvas, data=motherName, pos=(194, 643))
             return canvas
         else:
-            return Response("Unable to add patient motherName because is longer than 60 characters", status=400)
+            return Response("Unable to add patient motherName because is longer than 60 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding patient motherName', status=500)
 
@@ -224,6 +226,30 @@ def add_patientAdress(canvas:canvas.Canvas, adress:str):
         Response('Unknow error while adding patient Adress', status=500)
 
 
+def add_patientPhoneNumber(canvas:canvas.Canvas, phonenumber:int):
+    """Add patient phone number to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        phonenumber (int): patient phone number
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        phonenumber = str(phonenumber)
+        #See if phone number has 11 digits
+        if len(phonenumber) != 11:
+            return Response('Patient phone number doesnt have 11 digits requiered, remeber to add DDD', status=400)
+        else:
+            #Format phone number
+            phonenumber = '(' + phonenumber[:2] + ') ' + phonenumber[2:7] + '-' + phonenumber[7:]
+            canvas = add_data(canvas=canvas, data=phonenumber, pos=(173, 547))
+            return canvas
+    except:
+        Response('Unknow error while adding patient Phone Number', status=500)
+
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -272,7 +298,8 @@ if __name__ == "__main__":
         patient_birthday=datetime.datetime.now(),
         patient_motherName="Patient Mother Name",
         patient_document={'CPF':28445400070},
-        patient_adress='pacient street, 43, paciten, USA'
+        patient_adress='pacient street, 43, paciten, USA',
+        patient_phonenumber=44387694628
         )
     if type(output) == type(Response()): 
         print(output.response)

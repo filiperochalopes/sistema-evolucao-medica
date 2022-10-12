@@ -17,13 +17,13 @@ def isCNSvalid(cns:int) -> bool:
     ) % 11 == 0
 
 
-
 def isRGvalid(rg:int) -> bool:
     # Notice that RG changes a lot in every brazillian state
     # so theres a chance that a invalid RG has pass as Valid
     # just because RG is matematician valid dont mean that exists in government database
     #the only verification that can do is the maximum value
     return len(str(rg)) <= 16
+
 
 def isCPFvalid(cpf: str) -> bool:
     """Verify if the CPF is valid
@@ -59,6 +59,7 @@ def isCPFvalid(cpf: str) -> bool:
     if numbers[10] != expected_digit:
         return False
     return True
+
 
 if __name__ == "__main__":
     cpf = '131.324.345.11'
