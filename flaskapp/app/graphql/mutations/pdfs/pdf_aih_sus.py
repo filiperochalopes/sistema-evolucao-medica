@@ -58,6 +58,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_patient_adress(canvas=c, adress=patient_adress)
             if type(c) == type(Response()): return c
+            c = add_patient_adressCity(canvas=c, city=patient_adressCity)
+            if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
                 return c
@@ -338,6 +340,28 @@ def add_patient_adress(canvas:canvas.Canvas, adress:str):
             return Response("Unable to add patient adress because is longer than 100 characters or smaller than 7", status=400)
     except:
         Response('Unknow error while adding patient Adress', status=500)
+
+
+def add_patient_adressCity(canvas:canvas.Canvas, city:str):
+    """add pacient adress City
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        city (str): pactient city
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+    """    
+    try:
+        if type(city) != type(str()):
+            return Response('Patient adress city has to be a str', status=400)
+        if 7 < len(city) > 59:
+            return Response('Unable to add patient city is longer than 59 characters or smaller than 7', status=400)
+        else:
+            canvas = add_data(canvas=canvas, data=city, pos=(43, 566))
+            return canvas
+    except:
+        return Response('Unknow error while adding patient Adress City', status=500)
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
