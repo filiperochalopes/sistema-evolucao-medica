@@ -392,6 +392,15 @@ def add_patient_adressCity_ibgeCode(canvas:canvas.Canvas, ibgeCode:int):
 
 
 def add_patient_adressUF(canvas:canvas.Canvas, uf:str):
+    """add patient adres Uf to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        uf (str): uf to add
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+    """    
     try:
         if type(uf) != type(str()):
             return Response('Adress UF has to be a string', status=400)
