@@ -68,6 +68,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_main_clinical_signs_symptoms(canvas=c, symptoms=main_clinical_signs_symptoms)
             if type(c) == type(Response()): return c
+            c = add_conditions_justify_hospitalization(canvas=c, conditions=conditions_justify_hospitalization)
+            if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
                 return c
@@ -484,6 +486,45 @@ def add_main_clinical_signs_symptoms(canvas:canvas.Canvas, symptoms:str):
         return canvas
     except:
         return Response('Unknow error while adding patient Clinical Signs Symptoms', status=500)
+
+
+def add_conditions_justify_hospitalization(canvas:canvas.Canvas, conditions:str):
+    """Add contitionis to justify hospitalizaion in documents
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        conditions (str): conditions to justify
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+    """    
+    try:
+        if type(conditions) != type(str()):
+            return Response('Conditions to Justify Hospitalization has to be a string', status=400)
+        if len(conditions) > 425:
+            return Response('Conditions to Justify Hospitalization is too big, has to been in 425 characters', status=400)
+        str_conditions = ''
+        brokeLinexTimes = int(len(conditions)/107)
+        currentLine = 107
+        lastline = 0
+        yposition = 422
+        # Making the line break whem has 107 charater in a line
+        while brokeLinexTimes >= 0:
+            str_conditions = conditions[lastline:currentLine]
+            canvas = add_data(canvas=canvas, data=str_conditions, pos=(25, yposition))
+            lastline = currentLine
+            currentLine += 107
+            brokeLinexTimes -= 1
+            yposition -= 10
+
+        del(str_conditions)
+        del(brokeLinexTimes)
+        del(currentLine)
+        del(lastline)
+        del(yposition)
+        return canvas
+    except:
+        return Response('Unknow error while adding patient Conditions to Justify Hospitalization', status=500)
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
