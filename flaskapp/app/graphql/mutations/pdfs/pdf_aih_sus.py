@@ -74,6 +74,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_principalCid10(canvas=c, cid10=principalCid10)
             if type(c) == type(Response()): return c
+            c = add_procedure_solicited(canvas=c, procedure=procedure_solicited)
+            if type(c) == type(Response()): return c
             
         except:
             if type(c) == type(Response()):
@@ -593,8 +595,8 @@ def add_initial_diagnostic(canvas:canvas.Canvas, diagnostic:str):
         if type(diagnostic) != type(str()):
             return Response('Patient initial diagnostic has to be string', status=400)
         # verify if patient diagnostic is smaller than 60 characters
-        diagnostic = str(diagnostic)
-        if 4 < len(diagnostic.strip()) <= 60:
+        diagnostic = str(diagnostic).strip()
+        if 4 < len(diagnostic) <= 60:
             canvas = add_data(canvas=canvas, data=diagnostic, pos=(25, 314))
             return canvas
         else:
@@ -617,14 +619,39 @@ def add_principalCid10(canvas:canvas.Canvas, cid10:str):
         if type(cid10) != type(str()):
             return Response('Patient principal cid10 has to be string', status=400)
         # verify if patient cid10 is smaller than 5 characters
-        cid10 = str(cid10)
-        if 2 < len(cid10.strip()) <= 4:
+        cid10 = str(cid10).strip()
+        if 2 < len(cid10) <= 4:
             canvas = add_data(canvas=canvas, data=cid10, pos=(306, 314))
             return canvas
         else:
             return Response("Unable to add patient principal cid10 because is longer than 4 characters or Smaller than 3", status=400)
     except:
         return Response('Unknow error while adding patient principal cid10', status=500)
+
+
+def add_procedure_solicited(canvas:canvas.Canvas, procedure:str):
+    """add procedure solicited to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        procedure (str): procudere solicited
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+    """    
+    try:
+        if type(procedure) != type(str()):
+            return Response('Patient procedure solicited has to be string', status=400)
+        # verify if patient procedure is smaller than 5 characters
+        procedure = str(procedure).strip()
+        if 5 < len(procedure) <= 65:
+            canvas = add_data(canvas=canvas, data=procedure, pos=(25, 271))
+            return canvas
+        else:
+            return Response("Unable to add patient procedure solicited because is longer than 65 characters or Smaller than 5", status=400)
+    except:
+        return Response('Unknow error while adding patient procedure solicited', status=500)
+
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
