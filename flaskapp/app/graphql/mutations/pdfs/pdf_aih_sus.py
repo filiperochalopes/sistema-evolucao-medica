@@ -78,6 +78,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_procedure_code(canvas=c, code=procedure_code)
             if type(c) == type(Response()): return c
+            c = add_clinic(canvas=c, name=clinic)
+            if type(c) == type(Response()): return c
             
         except:
             if type(c) == type(Response()):
@@ -685,6 +687,31 @@ def add_procedure_code(canvas:canvas.Canvas, code:str):
             return Response("Procedure code solicited dont have 10 characters", status=400)
     except:
         return Response('Unknow error while adding procedure code solicited', status=500)
+
+
+def add_clinic(canvas:canvas.Canvas, name:str):
+    """add clinic name to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        name (str): clinic name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+
+    """    
+    try:
+        if type(name) != type(str()):
+            return Response('Clinic has to be string', status=400)
+        # verify if patient name is smaller than 5 characters
+        name = str(name).strip()
+        if 5 < len(name) <= 17:
+            canvas = add_data(canvas=canvas, data=name, pos=(25, 246))
+            return canvas
+        else:
+            return Response("Unable to add Clinic because is longer than 65 characters or Smaller than 5", status=400)
+    except:
+        return Response('Unknow error while adding Clinic', status=500)
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
