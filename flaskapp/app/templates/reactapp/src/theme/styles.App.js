@@ -26,7 +26,6 @@ export const GlobalStyles = createGlobalStyle`
   input {
     outline: none;
     border: none;
-    border-radius: 10px;
     background: #f0f0f0;
     padding: 4px 8px;
 
