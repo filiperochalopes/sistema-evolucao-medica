@@ -12,11 +12,14 @@ if __name__ != "__main__":
 
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
 
+#REMOVE THIS AFTER TESTS
+testLenght = ''
+for x in range(0, 100):
+    testLenght += str(x)
 
 def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None):
 
     try:
-
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -57,6 +60,9 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
         try:
             if patient_adressNumber is not None:
                 c = add_patient_adressNumber(canvas=c,adressNumber=patient_adressNumber)
+            if type(c) == type(Response()): return c
+            if patient_adressNeigh is not None and patient_adressNeigh.strip() != "":
+                c = add_patient_adressNeigh(canvas=c, adressNeigh=patient_adressNeigh)
             if type(c) == type(Response()): return c
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
@@ -280,7 +286,24 @@ def add_patient_adressNumber(canvas:canvas.Canvas, adressNumber:int):
         Response('Unknow error while adding patient Adress Number', status=500)
 
 
+def add_patient_adressNeigh(canvas:canvas.Canvas, adressNeigh:str):
+    """add patient adress neighborhood to document
 
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        adressNeigh (str): patient neighborhood
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if len(adressNeigh) > 28:
+            return Response('patient neighborhood is to long, more than 28 characters', status=400)
+        else:
+            canvas = add_data(canvas=canvas, data=adressNeigh, pos=(66, 580))
+            return canvas
+    except:
+        Response('Unknow error while adding patient Adress neighborhood', status=500)
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
@@ -332,7 +355,8 @@ if __name__ == "__main__":
         patient_document={'CPF':28445400070},
         patient_adress='pacient street, 43, paciten, USA',
         patient_phonenumber=44387694628,
-        patient_adressNumber=123456
+        patient_adressNumber=123456,
+        patient_adressNeigh='Patient Neighborhood',
         )
     if type(output) == type(Response()): 
         print(output.response)
