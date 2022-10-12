@@ -27,7 +27,7 @@ for x in range(0, 400):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -53,6 +53,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             c = add_patient_birthday(canvas=c, birthday=patient_birthday)
             if type(c) == type(Response()): return c
             c = add_patient_sex(canvas=c, sex=patient_sex)
+            if type(c) == type(Response()): return c
+            c = add_patient_mother_name(canvas=c, motherName=patient_mother_name)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -291,6 +293,30 @@ def add_patient_sex(canvas:canvas.Canvas, sex:str):
         return Response('Unkown error while adding patient sex', status=500)
     
 
+def add_patient_mother_name(canvas:canvas.Canvas, motherName:str):
+    """add patient mother name
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        motherName (str): patient mother name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+    """    
+    try:
+        if type(motherName) != type(str()):
+            return Response('Mother name has to be str', status=400)
+        # verify if patient motherName is smaller than 60 characters
+        if 7 < len(motherName.strip()) <= 68:
+            canvas = add_data(canvas=canvas, data=motherName, pos=(43, 636))
+            return canvas
+        else:
+            return Response("Unable to add patient motherName because is longer than 68 characters or Smaller than 7", status=400)
+    except:
+        return Response('Unknow error while adding patient motherName', status=500)
+
+
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -359,7 +385,10 @@ if __name__ == "__main__":
         patient_name='Patient Name',
         patient_cns=928976954930007,
         patient_birthday=datetime.datetime.now(),
-        patient_sex='F'
+        patient_sex='F',
+        patient_mother_name='Patient Mother Name',
+        patient_adress='Patient Adress street neighobourd',
+        patient_adressCity='Patient City'
     )
     if type(output) == type(Response()): 
         print(output.response)
