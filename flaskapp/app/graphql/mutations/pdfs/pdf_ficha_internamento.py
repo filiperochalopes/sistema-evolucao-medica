@@ -14,10 +14,11 @@ template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_intername
 
 #REMOVE THIS AFTER TESTS
 testLenght = ''
-for x in range(0, 100):
+for x in range(0, 400):
     testLenght += str(x)
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:list, patient_comorbidities:list ,patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
+
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:list, patient_comorbidities:list, current_illness_history:str,patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
 
     try:
         packet = io.BytesIO()
@@ -54,6 +55,8 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             c = add_patient_drug_allergies(canvas=c, drug_allergies=patient_drug_allergies)
             if type(c) == type(Response()): return c
             c = add_patient_comorbidities(canvas=c, comorbidities=patient_comorbidities)
+            if type(c) == type(Response()): return c
+            c = add_current_illness_history(canvas=c, current_illness_history=current_illness_history)
             if type(c) == type(Response()): return c
             
         except:
@@ -322,6 +325,7 @@ def add_patientPhoneNumber(canvas:canvas.Canvas, phonenumber:int):
     except:
         Response('Unknow error while adding patient Phone Number', status=500)
 
+
 def add_patient_drug_allergies(canvas:canvas.Canvas, drug_allergies:list):
     """add patient drug allergis to document
 
@@ -386,6 +390,43 @@ def add_patient_comorbidities(canvas:canvas.Canvas, comorbidities:list):
             return Response('So much comorbidities, the limit is 100 characters', status=400)
     except:
         return Response('Unknow error while adding patient comorbidities', status=500)
+
+
+def add_current_illness_history(canvas:canvas.Canvas, current_illness_history:str):
+    """add current illness hsitory
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        current_illness_history (str): current illness history
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        # Making the line break whem has 105 charater in a line
+        if len(current_illness_history) > 1680:
+            return Response('Current illiness history is too big, has to been in 1680 characters', status=400)
+        str_current_illness_history = ''
+        brokeLinexTimes = int(len(current_illness_history)/105)
+        currentLine = 105
+        lastline = 0
+        yposition = 417
+        while brokeLinexTimes > 0:
+            str_current_illness_history = current_illness_history[lastline:currentLine]
+            canvas = add_data(canvas=canvas, data=str_current_illness_history, pos=(26, yposition))
+            lastline = currentLine
+            currentLine += 105
+            brokeLinexTimes -= 1
+            yposition -= 10
+
+        del(str_current_illness_history)
+        del(brokeLinexTimes)
+        del(currentLine)
+        del(lastline)
+        del(yposition)
+        return canvas
+    except:
+        return Response('Unknow error while adding patient current_illness_history', status=500)
 
 
 def add_patient_adressNumber(canvas:canvas.Canvas, adressNumber:int):
@@ -627,6 +668,7 @@ if __name__ == "__main__":
         patient_phonenumber=44387694628,
         patient_drug_allergies=['Penicillin', 'Aspirin', 'Ibuprofen', 'Anticonvulsants'],
         patient_comorbidities=['Heart disease', 'High blood pressure', 'Diabetes', 'Cerebrovascular disease'],
+        current_illness_history=str(testLenght),
         patient_adressNumber=123456,
         patient_adressNeigh='Patient Neighborhood',
         patient_adressCity='Patient city',
