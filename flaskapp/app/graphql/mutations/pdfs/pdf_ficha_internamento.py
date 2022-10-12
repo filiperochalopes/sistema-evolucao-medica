@@ -17,7 +17,7 @@ testLenght = ''
 for x in range(0, 100):
     testLenght += str(x)
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None):
 
     try:
         packet = io.BytesIO()
@@ -75,6 +75,9 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             if type(c) == type(Response()): return c
             if patient_nationality is not None and patient_nationality.strip() != '':
                 c = add_patientNationality(canvas=c, nationality=patient_nationality)
+            if type(c) == type(Response()): return c
+            if patient_estimateWeight is not None:
+                c = add_patient_estimateWeight(canvas=c, estimateWeight=patient_estimateWeight)
             if type(c) == type(Response()): return c
 
 
@@ -404,6 +407,28 @@ def add_patientNationality(canvas:canvas.Canvas, nationality:str):
     except:
         return Response('Unknow error while adding patient nationality', status=500)
 
+
+def add_patient_estimateWeight(canvas:canvas.Canvas, estimateWeight:float):
+    """Add patient estimate weight
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        estimateWeight (float): Patient estimate weight
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        estimateWeight = str(round(estimateWeight, 2))
+        if len(estimateWeight) > 6:
+            return Response('Invalid estimate weight, is too high', status=400)
+        else:
+            canvas = add_data(canvas=canvas, data=estimateWeight, pos=(507, 547))
+            return canvas
+    except:
+        return Response('Unknow error while adding patient estimate weight', status=500)
+
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -459,7 +484,8 @@ if __name__ == "__main__":
         patient_adressCity='Patient city',
         patient_adressUF='sp',
         patient_adressCEP=12345678,
-        patient_nationality='Brasileira'
+        patient_nationality='Brasileira',
+        patient_estimateWeight=123.32
         )
     if type(output) == type(Response()): 
         print(output.response)
