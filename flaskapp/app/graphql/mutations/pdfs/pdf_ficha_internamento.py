@@ -632,13 +632,15 @@ def add_patientAdressUF(canvas:canvas.Canvas, adressUF:str):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
-        ufs = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MS','MT','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
+        if type(adressUF) != type(str()):
+            return Response('Adress UF has to be a string', status=400)
+        
         adressUF = adressUF.upper()
-        if adressUF not in ufs:
-            return Response('Patient Adress UF not exists in Brazil', status=400) 
-        else:
+        if global_functions.ufExists(uf=adressUF):
             canvas = add_data(canvas=canvas, data=adressUF, pos=(443, 580))
             return canvas
+        else:      
+            return Response('Patient Adress UF not exists in Brazil', status=400) 
     except:
         return Response('Unknow error while adding patient Adress UF', status=500)
 

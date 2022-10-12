@@ -1,6 +1,9 @@
 import re
 from flask import Response
 
+
+ufs = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MS','MT','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
+
 def isCNSvalid(cns:int) -> bool:
     """verify if the CNS is valid
     code by: philippeoz
@@ -68,8 +71,21 @@ def isCPFvalid(cpf: str) -> bool:
     return True
 
 
+def ufExists(uf:str):
+    """Verify if a uf exists in Brazil
+
+    Args:
+        uf (str): uf to berify
+
+    Returns:
+        Bollean true or false
+        Reponse if the receive worng type
+    """    
+    if type(uf) != type(str()):
+        return Response('The api has to use UF as string to validate, please check te function', status=500)
+    
+    return True if uf.upper() in ufs else False
+
 if __name__ == "__main__":
     cpf = 142342343234
     print(isCPFvalid(cpf))
-
-    
