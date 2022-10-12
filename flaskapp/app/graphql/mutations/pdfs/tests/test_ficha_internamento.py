@@ -1,17 +1,7 @@
 #from ..pdf_ficha_internamento import fill_pdf_ficha_internamento
 from .. import pdf_ficha_internamento
-from .. import global_functions
 import datetime
 from flask import Response
-
-
-#Testing globals functions
-def test_notvalidateCPF():
-    assert global_functions.isCPFvalid('434.123.123-99') == False
-
-def test_truevalidateCPF():
-    assert global_functions.isCPFvalid('434.234.123-99') == True
-
 
 
 #Testing Ficha Internamento
