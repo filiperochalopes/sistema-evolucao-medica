@@ -17,7 +17,7 @@ testLenght = ''
 for x in range(0, 100):
     testLenght += str(x)
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None):
 
     try:
         packet = io.BytesIO()
@@ -40,6 +40,8 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             if type(c) == type(Response()): return c            
             c.setFont('Helvetica', 9)            
             c = add_patientBirthday(canvas=c, birthday=patient_birthday)
+            if type(c) == type(Response()): return c
+            c = add_patient_sex(canvas=c, sex=patient_sex)
             if type(c) == type(Response()): return c
             c = add_patientMotherName(canvas=c, motherName=patient_motherName)
             if type(c) == type(Response()): return c
@@ -182,6 +184,31 @@ def add_patientBirthday(canvas:canvas.Canvas, birthday:datetime.datetime):
         return canvas
     except:
         return Response('Unkown error while adding patient birthday', status=500)
+
+
+def add_patient_sex(canvas:canvas.Canvas, sex:str):
+    """Add patient sex to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        sex (str): patient sex
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        sex = sex.upper()
+        if sex not in ['M', 'F']:
+            return Response('Pacient sex is not valid, use F or M', status=400)
+        else:
+            if sex == 'M':
+                canvas = add_square(canvas=canvas, pos=(117, 640))
+                return canvas
+            else:
+                canvas = add_square(canvas=canvas, pos=(147, 640))
+                return canvas
+    except:
+        return Response('Unkown error while adding patient sex', status=500)
 
 
 def add_patientMotherName(canvas:canvas.Canvas, motherName:str):
@@ -497,6 +524,7 @@ if __name__ == "__main__":
         patient_name="Patient Name",
         patient_cns=928976954930007,
         patient_birthday=datetime.datetime.now(),
+        patient_sex='F',
         patient_motherName="Patient Mother Name",
         patient_document={'CPF':28445400070},
         patient_adress='pacient street, 43, paciten, USA',
