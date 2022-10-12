@@ -743,6 +743,15 @@ def add_internation_carater(canvas:canvas.Canvas, carater:str):
 
 
 def add_prof_solicitant_document(canvas:canvas.Canvas, document:dict):
+    """add profissional solicitant document to document 
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        document (dict): dict with the document and values
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
     try:
         if type(document) != type(dict()):
             return Response('Profissional solicitate document has to be a dict {"document":"number"}', status=400)
@@ -751,8 +760,18 @@ def add_prof_solicitant_document(canvas:canvas.Canvas, document:dict):
             if type(document['CNS']) != type(int()):
                 return Response('Profissional solicitate value CNS has to be int', status=400)
             if global_functions.isCNSvalid(document['CNS']):
-                canvas = add_data(canvas=canvas, data=str(document['CNS']), pos=(92, 610))
-                canvas = add_square(canvas=canvas, pos=(58, 608))
+                canvas = add_square(canvas=canvas, pos=(247, 244))
+                cont = 0
+                xpos = 339
+                cns = str(document['CNS'])
+                while cont < 15:
+                    canvas = add_data(canvas=canvas, data=cns[cont], pos=(xpos, 246))
+                    cont += 1
+                    xpos += 15
+                    if cont > 5 and cont < 7:
+                        xpos += 6
+                    elif cont > 12:
+                        xpos += 6
                 return canvas
             else:
                 return Response('Profissional solicitate CNS is not valid', status=400)
@@ -780,6 +799,7 @@ def add_prof_solicitant_document(canvas:canvas.Canvas, document:dict):
             return Response('The document was not CPF or CNS', status=400)
     except:
         return Response('Unknow error while adding Profissional solicitate Document', status=500)
+
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
@@ -864,7 +884,7 @@ if __name__ == "__main__":
         procedure_code='1234567890', 
         clinic='Clinic Name', 
         internation_carater='Internation Carater', 
-        prof_solicitant_document={'CPF':28445400070},
+        prof_solicitant_document={'CNS':928976954930007},
         exam_results='Xray tibia broken'
     )
     if type(output) == type(Response()): 
