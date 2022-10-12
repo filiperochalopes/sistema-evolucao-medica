@@ -1,4 +1,5 @@
 import re
+from flask import Response
 
 def isCNSvalid(cns:int) -> bool:
     """verify if the CNS is valid
@@ -7,8 +8,9 @@ def isCNSvalid(cns:int) -> bool:
     Args:
         cns (int): cns number that will be validated
     """
+    if type(cns) != type(int()):
+        return Response('The api has to use CNS as intenger to validate, please check te function', status=500)
     cns = ''.join(filter(str.isdigit, str(cns)))
-    
     if len(cns) != 15:
         return False
     
@@ -22,7 +24,11 @@ def isRGvalid(rg:int) -> bool:
     # so theres a chance that a invalid RG has pass as Valid
     # just because RG is matematician valid dont mean that exists in government database
     #the only verification that can do is the maximum value
-    return len(str(rg)) <= 16
+    if type(rg) != type(int()):
+        return Response('The api has to use RG as intenger to validate, please check te function', status=500)
+    if 6 <= len(str(rg)) and len(str(rg)) <= 16:
+        return True
+    return False
 
 
 def isCPFvalid(cpf: str) -> bool:
@@ -34,7 +40,8 @@ def isCPFvalid(cpf: str) -> bool:
     Returns:
         bool: true or false
     """    
-
+    if type(cpf) != type(str()):
+        return Response('The api has to use CPF as string to validate, please check te function', status=500)
     # Verify format
     if not re.match(r'\d{3}\.\d{3}\.\d{3}-\d{2}', cpf):
         return False
@@ -62,7 +69,7 @@ def isCPFvalid(cpf: str) -> bool:
 
 
 if __name__ == "__main__":
-    cpf = '131.324.345.11'
+    cpf = 142342343234
     print(isCPFvalid(cpf))
 
     
