@@ -78,19 +78,19 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             if patient_adressNumber is not None:
                 c = add_patient_adressNumber(canvas=c,adressNumber=patient_adressNumber)
             if type(c) == type(Response()): return c
-            if patient_adressNeigh is not None and patient_adressNeigh.strip() != "":
+            if patient_adressNeigh is not None and str(patient_adressNeigh).strip() != "":
                 c = add_patient_adressNeigh(canvas=c, adressNeigh=patient_adressNeigh)
             if type(c) == type(Response()): return c
-            if patient_adressCity is not None and patient_adressCity.strip() != "":
+            if patient_adressCity is not None and str(patient_adressCity).strip() != "":
                 c = add_patientAdressCity(canvas=c, adressCity=patient_adressCity)
             if type(c) == type(Response()): return c
-            if patient_adressUF is not None and patient_adressUF.strip() != '':
+            if patient_adressUF is not None and str(patient_adressUF).strip() != '':
                 c = add_patientAdressUF(canvas=c, adressUF=patient_adressUF)
             if type(c) == type(Response()): return c
             if patient_adressCEP is not None:
                 c = add_patientAdressCEP(canvas=c, adressCEP=patient_adressCEP)
             if type(c) == type(Response()): return c
-            if patient_nationality is not None and patient_nationality.strip() != '':
+            if patient_nationality is not None and str(patient_nationality).strip() != '':
                 c = add_patientNationality(canvas=c, nationality=patient_nationality)
             if type(c) == type(Response()): return c
             if patient_estimateWeight is not None:
@@ -133,6 +133,8 @@ def add_patientName(canvas:canvas.Canvas, name:str):
         canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
+        if type(name) != type(str()):
+            return Response('Patient name has to be string', status=400)
         # verify if patient name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 60:
@@ -155,6 +157,8 @@ def add_doctorName(canvas:canvas.Canvas, name:str):
         canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """
     try:
+        if type(name) != type(str()):
+            return Response('Doctor name has to be string', status=400)
         # verify if doctor name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 60:
@@ -177,6 +181,8 @@ def add_patientCNS(canvas:canvas.Canvas, cns:int):
         canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
+        if type(cns) != type(int()):
+            return Response('Patient CNS has to be int', status=400)
         # Verify if the cns is valid
         if global_functions.isCNSvalid(cns):
             # format cns to add in document
@@ -201,6 +207,8 @@ def add_doctorCNS(canvas:canvas.Canvas, cns:int):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
+        if type(cns) != type(int()):
+            return Response('Doctor CNS has to be int', status=400)
         # Verify if the cns is valid
         if global_functions.isCNSvalid(cns):
             # format cns to add in document
@@ -225,8 +233,9 @@ def add_doctorCRM(canvas:canvas.Canvas, crm:str):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
-        crm = crm.strip()
-        if 11 > len(crm) > 13:
+        if type(crm) != type(str()):
+            return Response('Doctor CRM has to be str', status=400)
+        if 11 > len(crm) or len(crm) > 13:
             return Response('CRM is not valid, use the format "CRM/UF 123456"', status=400)
         canvas = add_data(canvas=canvas, data=crm, pos=(304, 131))
         return canvas
@@ -286,7 +295,9 @@ def add_patient_sex(canvas:canvas.Canvas, sex:str):
         canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
-        sex = sex.upper()
+        sex = str(sex).upper()
+        if len(sex) != 1:
+            return Response('Pacient sex has to be only one character F or M', status=400)
         if sex not in ['M', 'F']:
             return Response('Pacient sex is not valid, use F or M', status=400)
         else:
@@ -311,6 +322,8 @@ def add_patientMotherName(canvas:canvas.Canvas, motherName:str):
         canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
+        if type(motherName) != type(str()):
+            return Response('Mother name has to be str', status=400)
         # verify if patient motherName is smaller than 60 characters
         if 7 < len(motherName.strip()) <= 60:
             canvas = add_data(canvas=canvas, data=motherName, pos=(194, 643))
@@ -331,6 +344,8 @@ def add_patientDocument(canvas:canvas.Canvas, document:dict):
         canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
+        if type(document) != type(dict()):
+            return Response('Patient document has to be a dict {"document":"number"}', status=400)
         # See id document is CPF or RG
         if 'RG' in document.keys():
             #The only verificatinon is that rg is not greater than 16 characteres
@@ -351,9 +366,9 @@ def add_patientDocument(canvas:canvas.Canvas, document:dict):
             else:
                 return Response('Patient CPF is not valid', status=400)
         else:
-            Response('The document was not CPF or RG', status=400)
+            return Response('The document was not CPF or RG', status=400)
     except:
-        Response('Unknow error while adding patient Document', status=500)
+        return Response('Unknow error while adding patient Document', status=500)
 
 
 def add_patientAdress(canvas:canvas.Canvas, adress:str):
@@ -367,6 +382,8 @@ def add_patientAdress(canvas:canvas.Canvas, adress:str):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
+        if type(adress)!= type(str()):
+            return Response('Adress has to be str', status=400)
         if len(adress) <= 60:
             canvas = add_data(canvas=canvas, data=adress, pos=(230, 610))
             return canvas
@@ -387,6 +404,8 @@ def add_patientPhoneNumber(canvas:canvas.Canvas, phonenumber:int):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
+        if type(phonenumber) != type(int()):
+            return Response('Phone number has to be int', status=400)
         phonenumber = str(phonenumber)
         #See if phone number has 11 digits
         if len(phonenumber) != 11:
@@ -411,6 +430,13 @@ def add_patient_drug_allergies(canvas:canvas.Canvas, drug_allergies:list):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """
     try:
+        #veirfy if is a list
+        if type(drug_allergies)!= type(list()):
+            return Response('Drug allergies has to be a list', status=400)
+        #Verifiy if all data is string
+        typesNotStr = [True if type(x) != type(str()) else False for x in drug_allergies]
+        if any(typesNotStr):
+            return Response('Drug allergies has to be a list of strings', status=400)
         #catching all drug allergies
         str_drugsallergies = ''
         #Cont to know when use .
@@ -444,6 +470,13 @@ def add_patient_comorbidities(canvas:canvas.Canvas, comorbidities:list):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """
     try:
+        #veirfy if is a list
+        if type(comorbidities)!= type(list()):
+            return Response('Comorbidities has to be a list', status=400)
+        #Verifiy if all data is string
+        typesNotStr = [True if type(x) != type(str()) else False for x in comorbidities]
+        if any(typesNotStr):
+            return Response('Comorbidities has to be a list of strings', status=400)
         #catching all comorbidities
         str_comorbidities = ''
         #Cont to know when use .
@@ -477,6 +510,8 @@ def add_current_illness_history(canvas:canvas.Canvas, current_illness_history:st
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
+        if type(current_illness_history) != type(str()):
+            return Response('Current Illness History has to be a string', status=400)
         # Making the line break whem has 105 charater in a line
         if len(current_illness_history) > 1680:
             return Response('Current illiness history is too big, has to been in 1680 characters', status=400)
@@ -514,6 +549,8 @@ def add_initial_diagnostic_suspicion(canvas:canvas.Canvas, ids:str):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """
     try:
+        if type(ids) != type(str()):
+            return Response('Initial Diagnostic Suspicion has do be string', status=400)
         if len(ids) < 105:
             canvas = add_data(canvas=canvas, data=ids, pos=(26, 244))
             return canvas
@@ -533,6 +570,8 @@ def add_patient_adressNumber(canvas:canvas.Canvas, adressNumber:int):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
+        if type(adressNumber) != type(int()):
+            return Response('Patient adress Number has to be a int', status=400)
         adressNumber = str(adressNumber)
         if len(adressNumber) > 6:
             return Response('Adress Number is too long, theres be until 6 digits', status=400)
@@ -554,6 +593,8 @@ def add_patient_adressNeigh(canvas:canvas.Canvas, adressNeigh:str):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
+        if type(adressNeigh) != type(str()):
+            return Response('Patient adress neighborhood has to be a str', status=400)
         if len(adressNeigh) > 28:
             return Response('patient neighborhood is to long, more than 28 characters', status=400)
         else:
@@ -574,6 +615,8 @@ def add_patientAdressCity(canvas:canvas.Canvas, adressCity:str):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
+        if type(adressCity) != type(str()):
+            return Response('Patient adress city has to be a str', status=400)
         if len(adressCity) > 32:
             return Response('patient city is to long, more than 32 characters', status=400)
         else:
@@ -616,6 +659,8 @@ def add_patientAdressCEP(canvas:canvas.Canvas, adressCEP:int):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
+        if type(adressCEP) != type(int()):
+            return Response('Patient adress CEP has to be a int', status=400)
         adressCEP = str(adressCEP)
         if len(adressCEP) != 8:
             return Response('Patient Adress CEP do not have 8 digits', status=400) 
@@ -659,6 +704,8 @@ def add_patient_estimateWeight(canvas:canvas.Canvas, estimateWeight:float):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
+        if type(estimateWeight) != type(float()):
+            return Response('Patient estimate Weight has to be float', status=400)
         estimateWeight = str(round(estimateWeight, 2))
         if len(estimateWeight) > 6:
             return Response('Invalid estimate weight, is too high', status=400)
@@ -680,6 +727,8 @@ def add_has_additional_healthInsurance(canvas:canvas.Canvas, has_additional_heal
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
+        if type(has_additional_healthInsurance) != type(bool()):
+            return Response('Patient has additional healthInsurance has to be bool', status=400)
         if has_additional_healthInsurance:
             canvas = add_square(canvas=canvas, pos=(419, 544))
         else:
@@ -699,7 +748,7 @@ def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     Returns:
         canvas(canvas.Canvas): canvas with all changes
         or
-        Reponse(flask.Response: with the error)
+        Response(flask.Response: with the error)
     """
     try:
         canvas.drawString(pos[0], pos[1], data)
@@ -719,7 +768,7 @@ def add_square(canvas:canvas.Canvas, pos:tuple, size:int=9):
     Returns:
         canvas(canvas.Canvas): canvas with all changes
         or
-        Reponse(flask.Response: with the error)
+        Response(flask.Response: with the error)
     """    
     try:
         canvas.rect(x=pos[0], y=pos[1], width=size, height=size, fill=1)
@@ -737,7 +786,7 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str):
     Returns:
         None
         or
-        Reponse(flask.Response: with the error)
+        Response(flask.Response: with the error)
     """ 
     try:
         outputFile = open(new_directory, 'wb')
