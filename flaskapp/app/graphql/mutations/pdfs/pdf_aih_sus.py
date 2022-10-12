@@ -72,6 +72,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_initial_diagnostic(canvas=c, diagnostic=initial_diagnostic)
             if type(c) == type(Response()): return c
+            c = add_principalCid10(canvas=c, cid10=principalCid10)
+            if type(c) == type(Response()): return c
             
         except:
             if type(c) == type(Response()):
@@ -600,7 +602,30 @@ def add_initial_diagnostic(canvas:canvas.Canvas, diagnostic:str):
     except:
         return Response('Unknow error while adding patient initial diagnostic', status=500)
 
-    
+
+def add_principalCid10(canvas:canvas.Canvas, cid10:str):
+    """Add principal Cid10 in the document
+
+    Args:
+        canvas (canvas.Canvas): canvas to add
+        cid10 (str): principal cid10
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error
+    """    
+    try:
+        if type(cid10) != type(str()):
+            return Response('Patient principal cid10 has to be string', status=400)
+        # verify if patient cid10 is smaller than 5 characters
+        cid10 = str(cid10)
+        if 2 < len(cid10.strip()) <= 4:
+            canvas = add_data(canvas=canvas, data=cid10, pos=(306, 314))
+            return canvas
+        else:
+            return Response("Unable to add patient principal cid10 because is longer than 4 characters or Smaller than 3", status=400)
+    except:
+        return Response('Unknow error while adding patient principal cid10', status=500)
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -679,7 +704,7 @@ if __name__ == "__main__":
         main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",
         conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',
         initial_diagnostic='Patient Initial Diagnostic',
-        principalCid10="PrincipalCId10",
+        principalCid10="A00",
         procedure_solicited='Procedure Solicited',
         exam_results='Xray tibia broken'
     )
