@@ -27,7 +27,7 @@ for x in range(0, 400):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -59,6 +59,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             c = add_patient_adress(canvas=c, adress=patient_adress)
             if type(c) == type(Response()): return c
             c = add_patient_adressCity(canvas=c, city=patient_adressCity)
+            if type(c) == type(Response()): return c
+            c = add_patient_adressCity_ibgeCode(canvas=c, ibgeCode=patient_adressCity_ibgeCode)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -364,6 +366,29 @@ def add_patient_adressCity(canvas:canvas.Canvas, city:str):
         return Response('Unknow error while adding patient Adress City', status=500)
 
 
+def add_patient_adressCity_ibgeCode(canvas:canvas.Canvas, ibgeCode:int):
+    """aadd patient adress city ibge code
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        ibgeCode (int): ibge cpde
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+    """    
+    try:
+        if type(ibgeCode) != type(int()):
+            return Response('Patient adress city Igbe code has to be a int', status=400)
+        ibgeCode = str(ibgeCode)
+        if len(ibgeCode) != 7:
+            return Response('Patient adress city Igbe code do not have 7 digits', status=400) 
+        else:
+            canvas = add_data(canvas=canvas, data=ibgeCode, pos=(388, 566))
+            return canvas
+    except:
+        return Response('Unknow error while adding Patient adress city Igbe code', status=500)
+
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -435,7 +460,8 @@ if __name__ == "__main__":
         patient_sex='F',
         patient_mother_name='Patient Mother Name',
         patient_adress='Patient Adress street neighobourd',
-        patient_adressCity='Patient City'
+        patient_adressCity='Patient City',
+        patient_adressCity_ibgeCode=1234567
     )
     if type(output) == type(Response()): 
         print(output.response)
