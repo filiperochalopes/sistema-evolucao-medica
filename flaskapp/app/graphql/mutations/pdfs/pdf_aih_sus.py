@@ -26,7 +26,8 @@ for x in range(0, 400):
 # CID10 Causas Associadas. 
 # Seção de Acidentes ou Violências e Autorização.
 
-def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int):
+def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
+establishment_exec_name:str, establishment_exec_cnes:int):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -40,6 +41,10 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             c = add_establishment_solitc_name(canvas=c, name=establishment_solitc_name)
             if type(c) == type(Response()): return c
             c = add_establishment_solitc_cnes(canvas=c, cnes=establishment_solitc_cnes)
+            if type(c) == type(Response()): return c
+            c = add_establishment_exec_name(canvas=c, name=establishment_exec_name)
+            if type(c) == type(Response()): return c
+            c = add_establishment_exec_cnes(canvas=c, cnes=establishment_exec_cnes)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -84,7 +89,7 @@ def add_establishment_solitc_name(canvas:canvas.Canvas, name:str):
         else:
             return Response("Unable to add Solicitate Establishment name because is longer than 60 characters or Smaller than 7", status=400)
     except:
-        return Response('Unknow error while adding patient name', status=500)
+        return Response('Unknow error while adding Solicitate Establishment  name', status=500)
 
 
 def add_establishment_solitc_cnes(canvas:canvas.Canvas, cnes:int):
@@ -116,6 +121,57 @@ def add_establishment_solitc_cnes(canvas:canvas.Canvas, cnes:int):
         return Response('Unknow error while adding establishment solict cnes', status=500)
 
 
+def add_establishment_exec_name(canvas:canvas.Canvas, name:str):
+    """add establishment exec name 
+
+    Args:
+        canvas (canvas.Canvas): canavs to user
+        name (str): establishment name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(name) != type(str()):
+            return Response('Exec Establishment name has to be string', status=400)
+        # verify if Exec Establishment name is smaller than 60 characters
+        name = str(name)
+        if 7 < len(name.strip()) <= 78:
+            canvas = add_data(canvas=canvas, data=name, pos=(43, 726))
+            return canvas
+        else:
+            return Response("Unable to add Exec Establishment name because is longer than 60 characters or Smaller than 7", status=400)
+    except:
+        return Response('Unknow error while adding Exec Establishment name', status=500)
+
+
+def add_establishment_exec_cnes(canvas:canvas.Canvas, cnes:int):
+    """add establishment exec cnes
+
+    Args:
+        canvas (canvas.Canvas): canvas to user
+        cnes (int): cns to add
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(cnes) != type(int()):
+            return Response('Establishment Exec Cnes has to be int', status=400)
+        # Verify if the cnes is valid
+        cnes = str(cnes)
+        if len(cnes) == 7:
+            #Add one number at every field
+            cont = 0
+            xpos = 471
+            while cont < 7:
+                canvas = add_data(canvas=canvas, data=cnes[cont], pos=(xpos, 726))
+                cont += 1
+                xpos += 15
+            return canvas
+        return Response('unable to add Establishment Exec Cnes because is a invalid CNES', status=400)
+    except:
+        return Response('Unknow error while adding Establishment Exec Cnes', status=500)
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
@@ -180,7 +236,9 @@ if __name__ == "__main__":
     import global_functions
     output = fill_pdf_aih_sus(
         establishment_solitc_name='Establishment Solicit Name',
-        establishment_solitc_cnes=1234567
+        establishment_solitc_cnes=1234567,
+        establishment_exec_name='Establshment Exec Name',
+        establishment_exec_cnes=7654321
     )
     if type(output) == type(Response()): 
         print(output.response)
