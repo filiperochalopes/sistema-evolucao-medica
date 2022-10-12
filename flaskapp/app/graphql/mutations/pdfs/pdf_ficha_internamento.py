@@ -5,10 +5,9 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from flask import Response
 
-# Doing this import only when is called by pytest
+# Doing the import this way only when is called by antoher file (like pytest)
 if __name__ != "__main__":
     from . import global_functions
-
 
 
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
@@ -28,21 +27,25 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
         # not null data
         try:
             c = add_patientName(canvas=c, name=patient_name)
-            c = add_patientCNS(canvas=c, cns=patient_cns)
-            # change font size to datetime
-            c.setFont('Helvetica', 14)
-            c = add_documentDatetime(canvas=c, datetime=documentDatetime)
-            c.setFont('Helvetica', 9)
-            c = add_patientBirthday(canvas=c, birthday=patient_birthday)
-            c = add_patientMotherName(canvas=c, motherName=patient_motherName)
-            c = add_patientDocument(canvas=c, document=patient_document)
-            c = add_patientAdress(canvas=c, adress=patient_adress)
-
             # verify if c is a error at some point
-            if type(c) == type(Response()):
-                return c
+            if type(c) == type(Response()): return c
+            c = add_patientCNS(canvas=c, cns=patient_cns)
+            if type(c) == type(Response()): return c
+            # change font size to datetime            
+            c.setFont('Helvetica', 14)            
+            c = add_documentDatetime(canvas=c, datetime=documentDatetime)
+            if type(c) == type(Response()): return c            
+            c.setFont('Helvetica', 9)            
+            c = add_patientBirthday(canvas=c, birthday=patient_birthday)
+            if type(c) == type(Response()): return c
+            c = add_patientMotherName(canvas=c, motherName=patient_motherName)
+            if type(c) == type(Response()): return c
+            c = add_patientDocument(canvas=c, document=patient_document)
+            if type(c) == type(Response()): return c
+            c = add_patientAdress(canvas=c, adress=patient_adress)
+            if type(c) == type(Response()): return c
+            
         except:
-            print('chegou aqui') 
             if type(c) == type(Response()):
                 return c
             else:
