@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export default styled.div`
-  width: 100vw;
+  max-width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -10,10 +10,14 @@ export default styled.div`
 export const Header = styled.header`
   background-color: ${({ theme }) => theme.colors.green};
   width: 100%;
-  height: 5rem;
+  min-height: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  img {
+    height: 2.75rem;
+  }
 `;
 
 export const Main = styled.main`
