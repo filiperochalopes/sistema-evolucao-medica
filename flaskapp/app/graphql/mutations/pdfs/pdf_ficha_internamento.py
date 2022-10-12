@@ -17,7 +17,7 @@ testLenght = ''
 for x in range(0, 100):
     testLenght += str(x)
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None):
 
     try:
         packet = io.BytesIO()
@@ -67,7 +67,9 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             if patient_adressCity is not None and patient_adressCity.strip() != "":
                 c = add_patientAdressCity(canvas=c, adressCity=patient_adressCity)
             if type(c) == type(Response()): return c
-
+            if patient_adressUF is not None and patient_adressUF.strip() != '':
+                c = add_patient_adressUF(canvas=c, adressUF=patient_adressUF)
+            if type(c) == type(Response()): return c
 
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
@@ -288,7 +290,7 @@ def add_patient_adressNumber(canvas:canvas.Canvas, adressNumber:int):
             canvas = add_data(canvas=canvas, data=adressNumber, pos=(24, 580))
             return canvas
     except:
-        Response('Unknow error while adding patient Adress Number', status=500)
+        return Response('Unknow error while adding patient Adress Number', status=500)
 
 
 def add_patient_adressNeigh(canvas:canvas.Canvas, adressNeigh:str):
@@ -308,7 +310,7 @@ def add_patient_adressNeigh(canvas:canvas.Canvas, adressNeigh:str):
             canvas = add_data(canvas=canvas, data=adressNeigh, pos=(66, 580))
             return canvas
     except:
-        Response('Unknow error while adding patient Adress neighborhood', status=500)
+        return Response('Unknow error while adding patient Adress neighborhood', status=500)
 
 
 def add_patientAdressCity(canvas:canvas.Canvas, adressCity:str):
@@ -328,7 +330,31 @@ def add_patientAdressCity(canvas:canvas.Canvas, adressCity:str):
             canvas = add_data(canvas=canvas, data=adressCity, pos=(243, 580))
             return canvas
     except:
-        Response('Unknow error while adding patient Adress City', status=500)
+        return Response('Unknow error while adding patient Adress City', status=500)
+
+
+def add_patient_adressUF(canvas:canvas.Canvas, adressUF:str):
+    """Verify if the uf exists in brasil and add uf in document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        adressUF (str): patient uf
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        ufs = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MS','MT','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
+        adressUF = adressUF.upper()
+        if adressUF not in ufs:
+            return Response('Patient Adress UF not exists in Brazil') 
+        else:
+            canvas = add_data(canvas=canvas, data=adressUF, pos=(443, 580))
+            return canvas
+    except:
+        return Response('Unknow error while adding patient Adress UF', status=500)
+
+
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
@@ -383,7 +409,8 @@ if __name__ == "__main__":
         patient_phonenumber=44387694628,
         patient_adressNumber=123456,
         patient_adressNeigh='Patient Neighborhood',
-        patient_adressCity='Patient city'
+        patient_adressCity='Patient city',
+        patient_adressUF='sp'
         )
     if type(output) == type(Response()): 
         print(output.response)
