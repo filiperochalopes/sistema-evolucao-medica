@@ -1,7 +1,7 @@
 import Container, { PacientContent } from "./styles";
 
 import Button from "components/Button";
-import Pacient from "components/Pacient";
+import Pacient from "components/ListOption";
 import React from "react";
 import { Link } from "react-router-dom";
 
