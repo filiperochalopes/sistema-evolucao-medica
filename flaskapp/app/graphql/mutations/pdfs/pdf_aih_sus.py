@@ -27,7 +27,7 @@ for x in range(0, 500):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, exam_results:str):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, exam_results:str=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -70,13 +70,20 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_conditions_justify_hospitalization(canvas=c, conditions=conditions_justify_hospitalization)
             if type(c) == type(Response()): return c
-            c = add_exam_results(canvas=c, results=exam_results)
-            if type(c) == type(Response()): return c
+            
         except:
             if type(c) == type(Response()):
                 return c
             else:
                 return Response('Some error happen when adding not null data to fields', status=500)
+        #Adding data that can be null
+        try:
+            if exam_results is not None and str(exam_results).strip() != "":
+                c = add_exam_results(canvas=c, results=exam_results)
+            if type(c) == type(Response()): return c
+        except:
+            return Response('Critical error happen when adding data that can be null to fields', status=500)
+
         # create a new PDF with Reportlab
         c.save()
         packet.seek(0)
@@ -530,6 +537,15 @@ def add_conditions_justify_hospitalization(canvas:canvas.Canvas, conditions:str)
 
 
 def add_exam_results(canvas:canvas.Canvas, results:str):
+    """add patient exam results to database
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        results (str): results to add
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+    """    
     try:
         if type(results) != type(str()):
             return Response('Patient exame results has to be a string', status=400)
