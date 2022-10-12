@@ -27,7 +27,7 @@ for x in range(0, 500):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, exam_results:str=None):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, prof_solicitant_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, exam_results:str=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -83,6 +83,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             c = add_internation_carater(canvas=c, carater=internation_carater)
             if type(c) == type(Response()): return c
             c = add_prof_solicitant_document(canvas=c, document=prof_solicitant_document)
+            if type(c) == type(Response()): return c
+            c = add_prof_solicitant_name(canvas=c, name=prof_solicitant_name)
             if type(c) == type(Response()): return c
             
         except:
@@ -242,6 +244,29 @@ def add_patient_name(canvas:canvas.Canvas, name:str):
             return Response("Unable to add patient name because is longer than 70 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding patient name', status=500)
+
+def add_prof_solicitant_name(canvas:canvas.Canvas, name:str):
+    """add professional solicitant name
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        name (str): professional solicitant name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(name) != type(str()):
+            return Response('Professional solitic name has to be string', status=400)
+        # verify if Professional solitic name is smaller than 60 characters
+        name = str(name)
+        if 7 < len(name.strip()) <= 49:
+            canvas = add_data(canvas=canvas, data=name, pos=(25, 224))
+            return canvas
+        else:
+            return Response("Unable to add Professional solitic name because is longer than 49 characters or Smaller than 7", status=400)
+    except:
+        return Response('Unknow error while adding Professional solitic name', status=500)
 
 
 def add_patient_cns(canvas:canvas.Canvas, cns:int):
@@ -743,7 +768,15 @@ def add_internation_carater(canvas:canvas.Canvas, carater:str):
 
 
 def add_prof_solicitant_document(canvas:canvas.Canvas, document:dict):
-    """add profissional solicitant document to document 
+    """_summary_
+
+    Args:
+        canvas (canvas.Canvas): _description_
+        document (dict): _description_
+
+    Returns:
+        _type_: _description_
+    """    """add profissional solicitant document to document 
 
     Args:
         canvas (canvas.Canvas): canvas to use
@@ -885,6 +918,12 @@ if __name__ == "__main__":
         clinic='Clinic Name', 
         internation_carater='Internation Carater', 
         prof_solicitant_document={'CNS':928976954930007},
+        prof_solicitant_name='Profissional Solicit Name', 
+        solicitation_datetime=datetime.datetime.now(), 
+        autorization_prof_name='Autorization professional name', 
+        emission_org_code='OrgCode2022', 
+        autorizaton_prof_document={'CNS':928976954930007}, 
+        autorizaton_datetime=datetime.datetime.now(),
         exam_results='Xray tibia broken'
     )
     if type(output) == type(Response()): 
