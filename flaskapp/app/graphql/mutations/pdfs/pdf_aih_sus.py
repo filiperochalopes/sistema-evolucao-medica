@@ -88,6 +88,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_solicitation_datetime(canvas=c, solitDate=solicitation_datetime)
             if type(c) == type(Response()): return c
+            c = add_autorization_prof_name(canvas=c, name=autorization_prof_name)
+            if type(c) == type(Response()): return c
             
         except:
             if type(c) == type(Response()):
@@ -261,7 +263,7 @@ def add_prof_solicitant_name(canvas:canvas.Canvas, name:str):
     try:
         if type(name) != type(str()):
             return Response('Professional solitic name has to be string', status=400)
-        # verify if Professional solitic name is smaller than 60 characters
+        # verify if Professional solitic name is smaller than 49 characters
         name = str(name)
         if 7 < len(name.strip()) <= 49:
             canvas = add_data(canvas=canvas, data=name, pos=(25, 222))
@@ -271,6 +273,29 @@ def add_prof_solicitant_name(canvas:canvas.Canvas, name:str):
     except:
         return Response('Unknow error while adding Professional solitic name', status=500)
 
+
+def add_autorization_prof_name(canvas:canvas.Canvas, name:str):
+    """add autorizaton professional name
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        name (str): professional autorization name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(name) != type(str()):
+            return Response('Professional autorizator name has to be string', status=400)
+        # verify if Professional autorizator name is smaller than 49 characters
+        name = str(name)
+        if 7 < len(name.strip()) <= 49:
+            canvas = add_data(canvas=canvas, data=name, pos=(25, 93))
+            return canvas
+        else:
+            return Response("Unable to add Professional autorizator name because is longer than 49 characters or Smaller than 7", status=400)
+    except:
+        return Response('Unknow error while adding Professional autorizator name', status=500)
 
 def add_patient_cns(canvas:canvas.Canvas, cns:int):
     """add patient cns to every block
@@ -357,6 +382,7 @@ def add_solicitation_datetime(canvas:canvas.Canvas, solitDate:datetime.datetime)
         return canvas
     except:
         return Response('Unkown error while adding solitication date', status=500)
+
 
 def add_patient_sex(canvas:canvas.Canvas, sex:str):
     """add patient sex to document 
