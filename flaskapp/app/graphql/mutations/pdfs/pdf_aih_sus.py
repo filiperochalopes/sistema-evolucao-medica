@@ -13,7 +13,7 @@ template_directory = "./graphql/mutations/pdfs/pdfs_templates/aih_sus.pdf"
 
 #REMOVE THIS AFTER TESTS
 testLenght = ''
-for x in range(0, 400):
+for x in range(0, 500):
     testLenght += str(x)
 
 #CAMPOS NÃO OBRIGATÓRIOS: 
@@ -448,25 +448,33 @@ def add_patient_adressCEP(canvas:canvas.Canvas, cep:int):
 
 
 def add_main_clinical_signs_symptoms(canvas:canvas.Canvas, symptoms:str):
+    """Add Main clinical signs symptoms to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        symptoms (str): all symphtoms
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+    """    
     try:
         if type(symptoms) != type(str()):
             return Response('Clinical Signs Symptoms has to be a string', status=400)
-        # Making the line break whem has 105 charater in a line
-        if len(symptoms) > 1680:
-            return Response('Clinical Signs Symptoms is too big, has to been in 1680 characters', status=400)
-        str_symptoms = str(testLenght)
-        brokeLinexTimes = int(len(symptoms)/105)
-        currentLine = 105
+        if len(symptoms) > 1060:
+            return Response('Clinical Signs Symptoms is too big, has to been in 1060 characters', status=400)
+        str_symptoms = ''
+        brokeLinexTimes = int(len(symptoms)/107)
+        currentLine = 107
         lastline = 0
-        yposition = 534
-        #while brokeLinexTimes >= 0:
-        #    str_symptoms = symptoms[lastline:currentLine]
-        #    canvas = add_data(canvas=canvas, data=str_symptoms, pos=(26, yposition))
-        canvas = add_data(canvas=canvas, data=str_symptoms, pos=(25, yposition))
-        #    lastline = currentLine
-        #    currentLine += 105
-        #    brokeLinexTimes -= 1
-        #    yposition -= 10
+        yposition = 530
+        # Making the line break whem has 107 charater in a line
+        while brokeLinexTimes >= 0:
+            str_symptoms = symptoms[lastline:currentLine]
+            canvas = add_data(canvas=canvas, data=str_symptoms, pos=(25, yposition))
+            lastline = currentLine
+            currentLine += 107
+            brokeLinexTimes -= 1
+            yposition -= 10
 
         del(str_symptoms)
         del(brokeLinexTimes)
@@ -476,7 +484,6 @@ def add_main_clinical_signs_symptoms(canvas:canvas.Canvas, symptoms:str):
         return canvas
     except:
         return Response('Unknow error while adding patient Clinical Signs Symptoms', status=500)
-
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
