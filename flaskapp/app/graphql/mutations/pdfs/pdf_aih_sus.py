@@ -66,6 +66,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_patient_adressCEP(canvas=c, cep=patient_adressCEP)
             if type(c) == type(Response()): return c
+            c = add_main_clinical_signs_symptoms(canvas=c, symptoms=main_clinical_signs_symptoms)
+            if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
                 return c
@@ -104,7 +106,7 @@ def add_establishment_solitc_name(canvas:canvas.Canvas, name:str):
         # verify if Solicitate Establishment name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 78:
-            canvas = add_data(canvas=canvas, data=name, pos=(43, 750))
+            canvas = add_data(canvas=canvas, data=name, pos=(25, 750))
             return canvas
         else:
             return Response("Unable to add Solicitate Establishment name because is longer than 78 characters or Smaller than 7", status=400)
@@ -157,7 +159,7 @@ def add_establishment_exec_name(canvas:canvas.Canvas, name:str):
         # verify if Exec Establishment name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 78:
-            canvas = add_data(canvas=canvas, data=name, pos=(43, 726))
+            canvas = add_data(canvas=canvas, data=name, pos=(25, 726))
             return canvas
         else:
             return Response("Unable to add Exec Establishment name because is longer than 78 characters or Smaller than 7", status=400)
@@ -209,7 +211,7 @@ def add_patient_name(canvas:canvas.Canvas, name:str):
         # verify if patient name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 70:
-            canvas = add_data(canvas=canvas, data=name, pos=(43, 683))
+            canvas = add_data(canvas=canvas, data=name, pos=(25, 683))
             return canvas
         else:
             return Response("Unable to add patient name because is longer than 70 characters or Smaller than 7", status=400)
@@ -318,7 +320,7 @@ def add_patient_mother_name(canvas:canvas.Canvas, motherName:str):
             return Response('Mother name has to be str', status=400)
         # verify if patient motherName is smaller than 60 characters
         if 7 < len(motherName.strip()) <= 68:
-            canvas = add_data(canvas=canvas, data=motherName, pos=(43, 636))
+            canvas = add_data(canvas=canvas, data=motherName, pos=(25, 636))
             return canvas
         else:
             return Response("Unable to add patient motherName because is longer than 68 characters or Smaller than 7", status=400)
@@ -340,7 +342,7 @@ def add_patient_adress(canvas:canvas.Canvas, adress:str):
         if type(adress)!= type(str()):
             return Response('Adress has to be str', status=400)
         if 7 < len(adress) <= 100:
-            canvas = add_data(canvas=canvas, data=adress, pos=(43, 593))
+            canvas = add_data(canvas=canvas, data=adress, pos=(25, 593))
             return canvas
         else:
             return Response("Unable to add patient adress because is longer than 100 characters or smaller than 7", status=400)
@@ -364,7 +366,7 @@ def add_patient_adressCity(canvas:canvas.Canvas, city:str):
         if 7 < len(city) > 59:
             return Response('Unable to add patient city is longer than 59 characters or smaller than 7', status=400)
         else:
-            canvas = add_data(canvas=canvas, data=city, pos=(43, 566))
+            canvas = add_data(canvas=canvas, data=city, pos=(25, 566))
             return canvas
     except:
         return Response('Unknow error while adding patient Adress City', status=500)
@@ -443,6 +445,38 @@ def add_patient_adressCEP(canvas:canvas.Canvas, cep:int):
             return canvas
     except:
         return Response('Unknow error while adding patient Adress CEP', status=500)
+
+
+def add_main_clinical_signs_symptoms(canvas:canvas.Canvas, symptoms:str):
+    try:
+        if type(symptoms) != type(str()):
+            return Response('Clinical Signs Symptoms has to be a string', status=400)
+        # Making the line break whem has 105 charater in a line
+        if len(symptoms) > 1680:
+            return Response('Clinical Signs Symptoms is too big, has to been in 1680 characters', status=400)
+        str_symptoms = str(testLenght)
+        brokeLinexTimes = int(len(symptoms)/105)
+        currentLine = 105
+        lastline = 0
+        yposition = 534
+        #while brokeLinexTimes >= 0:
+        #    str_symptoms = symptoms[lastline:currentLine]
+        #    canvas = add_data(canvas=canvas, data=str_symptoms, pos=(26, yposition))
+        canvas = add_data(canvas=canvas, data=str_symptoms, pos=(25, yposition))
+        #    lastline = currentLine
+        #    currentLine += 105
+        #    brokeLinexTimes -= 1
+        #    yposition -= 10
+
+        del(str_symptoms)
+        del(brokeLinexTimes)
+        del(currentLine)
+        del(lastline)
+        del(yposition)
+        return canvas
+    except:
+        return Response('Unknow error while adding patient Clinical Signs Symptoms', status=500)
+
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
