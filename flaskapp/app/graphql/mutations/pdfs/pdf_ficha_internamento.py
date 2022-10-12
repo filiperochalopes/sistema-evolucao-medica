@@ -17,7 +17,7 @@ testLenght = ''
 for x in range(0, 100):
     testLenght += str(x)
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None):
 
     try:
         packet = io.BytesIO()
@@ -68,8 +68,12 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
                 c = add_patientAdressCity(canvas=c, adressCity=patient_adressCity)
             if type(c) == type(Response()): return c
             if patient_adressUF is not None and patient_adressUF.strip() != '':
-                c = add_patient_adressUF(canvas=c, adressUF=patient_adressUF)
+                c = add_patientAdressUF(canvas=c, adressUF=patient_adressUF)
             if type(c) == type(Response()): return c
+            if patient_adressCEP is not None:
+                c = add_patientAdressCEP(canvas=c, adressCEP=patient_adressCEP)
+            if type(c) == type(Response()): return c
+
 
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
@@ -333,7 +337,7 @@ def add_patientAdressCity(canvas:canvas.Canvas, adressCity:str):
         return Response('Unknow error while adding patient Adress City', status=500)
 
 
-def add_patient_adressUF(canvas:canvas.Canvas, adressUF:str):
+def add_patientAdressUF(canvas:canvas.Canvas, adressUF:str):
     """Verify if the uf exists in brasil and add uf in document
 
     Args:
@@ -355,6 +359,27 @@ def add_patient_adressUF(canvas:canvas.Canvas, adressUF:str):
         return Response('Unknow error while adding patient Adress UF', status=500)
 
 
+def add_patientAdressCEP(canvas:canvas.Canvas, adressCEP:int):
+    """add patient CEP
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        adressCEP (int): patietn adress CEP
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        adressCEP = str(adressCEP)
+        if len(adressCEP) != 8:
+            return Response('Patient Adress CEP do not have 8 digits') 
+        else:
+            #format CEP
+            adressCEP = adressCEP[:5] + '-' + adressCEP[5:]
+            canvas = add_data(canvas=canvas, data=adressCEP, pos=(483, 580))
+            return canvas
+    except:
+        return Response('Unknow error while adding patient Adress CEP', status=500)
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
@@ -410,7 +435,8 @@ if __name__ == "__main__":
         patient_adressNumber=123456,
         patient_adressNeigh='Patient Neighborhood',
         patient_adressCity='Patient city',
-        patient_adressUF='sp'
+        patient_adressUF='sp',
+        patient_adressCEP=12345678
         )
     if type(output) == type(Response()): 
         print(output.response)
