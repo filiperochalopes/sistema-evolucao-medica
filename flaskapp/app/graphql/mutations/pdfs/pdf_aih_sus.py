@@ -26,7 +26,7 @@ for x in range(0, 400):
 # CID10 Causas Associadas. 
 # Seção de Acidentes ou Violências e Autorização.
 
-def fill_pdf_aih_sus(establishment_solitc_name:str):
+def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -38,6 +38,8 @@ def fill_pdf_aih_sus(establishment_solitc_name:str):
         # not null data
         try:
             c = add_establishment_solitc_name(canvas=c, name=establishment_solitc_name)
+            if type(c) == type(Response()): return c
+            c = add_establishment_solitc_cnes(canvas=c, cnes=establishment_solitc_cnes)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -83,6 +85,37 @@ def add_establishment_solitc_name(canvas:canvas.Canvas, name:str):
             return Response("Unable to add Solicitate Establishment name because is longer than 60 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding patient name', status=500)
+
+
+def add_establishment_solitc_cnes(canvas:canvas.Canvas, cnes:int):
+    """add establshment solitc cnes in document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        cnes (int): cnes to insert
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(cnes) != type(int()):
+            return Response('Establishment Solitc Cnes has to be int', status=400)
+        # Verify if the cnes is valid
+        cnes = str(cnes)
+        if len(cnes) == 7:
+            #Add one number at every field
+            cont = 0
+            xpos = 471
+            while cont < 7:
+                canvas = add_data(canvas=canvas, data=cnes[cont], pos=(xpos, 750))
+                cont += 1
+                xpos += 15
+            return canvas
+        return Response('unable to add establshment CNES because is a invalid CNES', status=400)
+    except:
+        return Response('Unknow error while adding establishment solict cnes', status=500)
+
+
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
@@ -146,7 +179,8 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str):
 if __name__ == "__main__":
     import global_functions
     output = fill_pdf_aih_sus(
-        establishment_solitc_name='Establishment Solicit Name'
+        establishment_solitc_name='Establishment Solicit Name',
+        establishment_solitc_cnes=1234567
     )
     if type(output) == type(Response()): 
         print(output.response)
