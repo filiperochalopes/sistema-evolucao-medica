@@ -27,7 +27,7 @@ for x in range(0, 400):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -49,6 +49,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             c = add_patient_name(canvas=c, name=patient_name)
             if type(c) == type(Response()): return c
             c = add_patient_cns(canvas=c, cns=patient_cns)
+            if type(c) == type(Response()): return c
+            c = add_patient_birthday(canvas=c, birthday=patient_birthday)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -232,6 +234,33 @@ def add_patient_cns(canvas:canvas.Canvas, cns:int):
         return Response('Unknow error while adding patient cns', status=500)
 
 
+def add_patient_birthday(canvas:canvas.Canvas, birthday:datetime.datetime):
+    """add patient birthday to respective fields
+
+    Args:
+        canvas (canvas.Canvas): canvas to add
+        birthday (datetime.datetime): patient birthday
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+    """    
+    try:
+        if type(birthday) != type(datetime.datetime.now()):
+            return Response('Pacient birthday isnt a datetime.datetime object', status=400)
+        #Add to respective fields
+        day = str(birthday.day)
+        month = str(birthday.month)
+        year = str(birthday.year)
+        canvas = add_data(canvas=canvas, data=day, pos=(312, 658))
+        canvas = add_data(canvas=canvas, data=month, pos=(335, 658))
+        canvas = add_data(canvas=canvas, data=year, pos=(360, 658))
+        del(day)
+        del(month)
+        del(year)
+        return canvas
+    except:
+        return Response('Unkown error while adding patient birthday', status=500)
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -298,7 +327,8 @@ if __name__ == "__main__":
         establishment_exec_name='Establshment Exec Name',
         establishment_exec_cnes=7654321,
         patient_name='Patient Name',
-        patient_cns=928976954930007
+        patient_cns=928976954930007,
+        patient_birthday=datetime.datetime.now()
     )
     if type(output) == type(Response()): 
         print(output.response)
