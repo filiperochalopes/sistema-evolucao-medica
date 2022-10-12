@@ -5,6 +5,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import Admit from "views/Pacient/Admit";
+import Evolution from "views/Pacient/Evolution";
 import List from "views/Pacient/List";
 
 const routers = createBrowserRouter([
@@ -27,6 +28,10 @@ const routers = createBrowserRouter([
       {
         path: "/adimitir-paciente",
         element: <Admit />,
+      },
+      {
+        path: "/evoluir-paciente",
+        element: <Evolution />,
       },
     ],
   },
