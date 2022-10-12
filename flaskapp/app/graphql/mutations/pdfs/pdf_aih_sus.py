@@ -27,7 +27,7 @@ for x in range(0, 500):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, exam_results:str=None):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str ,exam_results:str=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -69,6 +69,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             c = add_main_clinical_signs_symptoms(canvas=c, symptoms=main_clinical_signs_symptoms)
             if type(c) == type(Response()): return c
             c = add_conditions_justify_hospitalization(canvas=c, conditions=conditions_justify_hospitalization)
+            if type(c) == type(Response()): return c
+            c = add_initial_diagnostic(canvas=c, diagnostic=initial_diagnostic)
             if type(c) == type(Response()): return c
             
         except:
@@ -574,6 +576,31 @@ def add_exam_results(canvas:canvas.Canvas, results:str):
     except:
         return Response('Unknow error while adding Patient exame results', status=500)
 
+
+def add_initial_diagnostic(canvas:canvas.Canvas, diagnostic:str):
+    """add initial diagnostic in doc
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        diagnostic (str): initial diagnostic
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+    """    
+    try:
+        if type(diagnostic) != type(str()):
+            return Response('Patient initial diagnostic has to be string', status=400)
+        # verify if patient diagnostic is smaller than 60 characters
+        diagnostic = str(diagnostic)
+        if 4 < len(diagnostic.strip()) <= 60:
+            canvas = add_data(canvas=canvas, data=diagnostic, pos=(25, 314))
+            return canvas
+        else:
+            return Response("Unable to add patient initial diagnostic because is longer than 60 characters or Smaller than 4", status=400)
+    except:
+        return Response('Unknow error while adding patient initial diagnostic', status=500)
+
+    
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -651,6 +678,9 @@ if __name__ == "__main__":
         patient_adressCEP=12345678,
         main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",
         conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',
+        initial_diagnostic='Patient Initial Diagnostic',
+        principalCid10="PrincipalCId10",
+        procedure_solicited='Procedure Solicited',
         exam_results='Xray tibia broken'
     )
     if type(output) == type(Response()): 
