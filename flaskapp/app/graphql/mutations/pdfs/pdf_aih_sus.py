@@ -27,7 +27,7 @@ for x in range(0, 400):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, exam_results:dict):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -63,6 +63,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             c = add_patient_adressCity_ibgeCode(canvas=c, ibgeCode=patient_adressCity_ibgeCode)
             if type(c) == type(Response()): return c
             c = add_patient_adressUF(canvas=c, uf=patient_adressUF)
+            if type(c) == type(Response()): return c
+            c = add_patient_adressCEP(canvas=c, cep=patient_adressCEP)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -406,13 +408,41 @@ def add_patient_adressUF(canvas:canvas.Canvas, uf:str):
             return Response('Adress UF has to be a string', status=400)
         uf = uf.upper()
         if global_functions.ufExists(uf=uf):
-            canvas = add_data(canvas=canvas, data=uf[0], pos=(448, 566))
-            canvas = add_data(canvas=canvas, data=uf[1], pos=(466, 566))
+            canvas = add_data(canvas=canvas, data=uf[0], pos=(450, 566))
+            canvas = add_data(canvas=canvas, data=uf[1], pos=(464, 566))
             return canvas
         else:
             return Response('Patient Adress UF not exists in Brazil', status=400) 
     except:
         return Response('Unknow error while adding patient Adress UF', status=500)
+
+
+def add_patient_adressCEP(canvas:canvas.Canvas, cep:int):
+    """add patient cep to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        cep (int): cep to add
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+    """    
+    try:
+        if type(cep) != type(int()):
+            return Response('Patient adress CEP has to be a int', status=400)
+        cep = str(cep)
+        if len(cep) != 8:
+            return Response('Patient Adress CEP do not have 8 digits', status=400) 
+        else:
+            cont = 0
+            xpos = 481
+            while cont <= 7:
+                canvas = add_data(canvas=canvas, data=cep[cont], pos=(xpos, 566))
+                cont += 1
+                xpos += 12
+            return canvas
+    except:
+        return Response('Unknow error while adding patient Adress CEP', status=500)
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
@@ -488,7 +518,11 @@ if __name__ == "__main__":
         patient_adress='Patient Adress street neighobourd',
         patient_adressCity='Patient City',
         patient_adressCity_ibgeCode=1234567,
-        patient_adressUF='SP'
+        patient_adressUF='SP',
+        patient_adressCEP=12345678,
+        main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",
+        conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',
+        exam_results={'Xray':'Tibia Broken'}
     )
     if type(output) == type(Response()): 
         print(output.response)
