@@ -12,6 +12,7 @@ export const GlobalStyles = createGlobalStyle`
     border: none;
     outline: none;
     text-decoration: none;
+    box-sizing:border-box;
   }
   html, body, #root{
     height: 100%;
