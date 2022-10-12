@@ -48,7 +48,7 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_patient_name(canvas=c, name=patient_name)
             if type(c) == type(Response()): return c
-            
+            c = add_patient_cns(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -177,7 +177,7 @@ def add_establishment_exec_cnes(canvas:canvas.Canvas, cnes:int):
     except:
         return Response('Unknow error while adding Establishment Exec Cnes', status=500)
 
-def add_patient_name(canvas:canvas.Canvas, name:str()):
+def add_patient_name(canvas:canvas.Canvas, name:str):
     """Add patient name to document
 
     Args:
@@ -199,6 +199,37 @@ def add_patient_name(canvas:canvas.Canvas, name:str()):
             return Response("Unable to add patient name because is longer than 70 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding patient name', status=500)
+
+
+def add_patient_cns(canvas:canvas.Canvas, cns:int):
+    """add patient cns to every block
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        cns (int): cns to add
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+
+    """    
+    try:
+        if type(cns) != type(int()):
+            return Response('patient CNS has to be int', status=400)
+        # Verify if the cns is valid
+        if global_functions.isCNSvalid(cns):
+            #Add one number at every field
+            cns = str(cns)
+            cont = 0
+            xpos = 28
+            while cont < 15:
+                canvas = add_data(canvas=canvas, data=cns[cont], pos=(xpos, 658))
+                cont += 1
+                xpos += 18
+            return canvas
+        else:
+            return Response("Unable to add patient cns because is a invalid CNS", status=400)
+    except:
+        return Response('Unknow error while adding patient cns', status=500)
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
