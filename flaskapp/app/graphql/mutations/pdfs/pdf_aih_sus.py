@@ -90,6 +90,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_autorization_prof_name(canvas=c, name=autorization_prof_name)
             if type(c) == type(Response()): return c
+            c = add_emission_org_code(canvas=c, code=emission_org_code)
+            if type(c) == type(Response()): return c
             
         except:
             if type(c) == type(Response()):
@@ -425,13 +427,38 @@ def add_patient_mother_name(canvas:canvas.Canvas, motherName:str):
         if type(motherName) != type(str()):
             return Response('Mother name has to be str', status=400)
         # verify if patient motherName is smaller than 60 characters
-        if 7 < len(motherName.strip()) <= 68:
+        motherName = motherName.strip()
+        if 7 < len(motherName) <= 68:
             canvas = add_data(canvas=canvas, data=motherName, pos=(25, 636))
             return canvas
         else:
             return Response("Unable to add patient motherName because is longer than 68 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding patient motherName', status=500)
+
+
+def add_emission_org_code(canvas:canvas.Canvas, code:str):
+    """add emission organization code to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        code (str): emission organizaton code
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(code) != type(str()):
+            return Response('Emission org code has to be str', status=400)
+        # verify if emission_org_code is smaller than 60 characters
+        code = code.strip()
+        if 2 < len(code) <= 18:
+            canvas = add_data(canvas=canvas, data=code, pos=(292, 93))
+            return canvas
+        else:
+            return Response("Unable to add emission org code( because is longer than 18 characters or Smaller than 2", status=400)
+    except:
+        return Response('Unknow error while adding emission org code', status=500)
 
 
 def add_patient_adress(canvas:canvas.Canvas, adress:str):
