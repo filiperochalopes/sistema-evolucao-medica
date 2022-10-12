@@ -7,7 +7,8 @@ from flask import Response
 #Testing Ficha Internamento
 def test_answer_with_all_fields():
     """Test fill ficha internamento with all data correct"""
-    assert type(pdf_ficha_internamento.fill_pdf_ficha_internamento(documentDatetime=datetime.datetime.now(), 
+    assert type(pdf_ficha_internamento.fill_pdf_ficha_internamento(
+        documentDatetime=datetime.datetime.now(), 
         patient_name="Patient Name",
         patient_cns=928976954930007,
         patient_birthday=datetime.datetime.now(),
@@ -16,6 +17,13 @@ def test_answer_with_all_fields():
         patient_document={'CPF':28445400070},
         patient_adress='pacient street, 43, paciten, USA',
         patient_phonenumber=44387694628,
+        patient_drug_allergies=['Penicillin', 'Aspirin', 'Ibuprofen', 'Anticonvulsants'],
+        patient_comorbidities=['Heart disease', 'High blood pressure', 'Diabetes', 'Cerebrovascular disease'],
+        current_illness_history='Current illnes hsitoryaaaaaaaaaaa',
+        initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral contraceptive use.',
+        doctor_name='Doctor Name',
+        doctor_cns=928976954930007,
+        doctor_crm='CRM/UF 123456',
         patient_adressNumber=123456,
         patient_adressNeigh='Patient Neighborhood',
         patient_adressCity='Patient city',
@@ -29,6 +37,7 @@ def test_answer_with_all_fields():
 
 def test_awnser_with_only_required_data():
     assert type(pdf_ficha_internamento.fill_pdf_ficha_internamento(documentDatetime=datetime.datetime.now(), 
+        documentDatetime=datetime.datetime.now(), 
         patient_name="Patient Name",
         patient_cns=928976954930007,
         patient_birthday=datetime.datetime.now(),
@@ -36,8 +45,22 @@ def test_awnser_with_only_required_data():
         patient_motherName="Patient Mother Name",
         patient_document={'CPF':28445400070},
         patient_adress='pacient street, 43, paciten, USA',
-        patient_phonenumber=44387694628
-        )) != type(Response())
+        patient_phonenumber=44387694628,
+        patient_drug_allergies=['Penicillin', 'Aspirin', 'Ibuprofen', 'Anticonvulsants'],
+        patient_comorbidities=['Heart disease', 'High blood pressure', 'Diabetes', 'Cerebrovascular disease'],
+        current_illness_history='Current illnes hsitoryaaaaaaaaaaa',
+        initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral contraceptive use.',
+        doctor_name='Doctor Name',
+        doctor_cns=928976954930007,
+        doctor_crm='CRM/UF 123456',
+        patient_adressNumber=123456,
+        patient_adressNeigh='Patient Neighborhood',
+        patient_adressCity='Patient city',
+        patient_adressUF='sp',
+        patient_adressCEP=12345678,
+        patient_nationality='Brasileira',
+        patient_estimateWeight=123.32,
+        has_additional_healthInsurance=False)) != type(Response())
 
 def test_answer_without_patient_adressNumber():
     assert type(pdf_ficha_internamento.fill_pdf_ficha_internamento(documentDatetime=datetime.datetime.now(), 

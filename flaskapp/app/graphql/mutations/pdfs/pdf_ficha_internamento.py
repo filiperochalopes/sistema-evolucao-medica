@@ -485,7 +485,7 @@ def add_current_illness_history(canvas:canvas.Canvas, current_illness_history:st
         currentLine = 105
         lastline = 0
         yposition = 417
-        while brokeLinexTimes > 0:
+        while brokeLinexTimes >= 0:
             str_current_illness_history = current_illness_history[lastline:currentLine]
             canvas = add_data(canvas=canvas, data=str_current_illness_history, pos=(26, yposition))
             lastline = currentLine
@@ -761,7 +761,7 @@ if __name__ == "__main__":
         patient_phonenumber=44387694628,
         patient_drug_allergies=['Penicillin', 'Aspirin', 'Ibuprofen', 'Anticonvulsants'],
         patient_comorbidities=['Heart disease', 'High blood pressure', 'Diabetes', 'Cerebrovascular disease'],
-        current_illness_history=str(testLenght),
+        current_illness_history='Current illnes hsitoryaaaaaaaaaaaedqeqa',
         initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral contraceptive use.',
         doctor_name='Doctor Name',
         doctor_cns=928976954930007,
