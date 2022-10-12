@@ -27,7 +27,7 @@ for x in range(0, 500):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, exam_results:dict):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, exam_results:str):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -69,6 +69,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             c = add_main_clinical_signs_symptoms(canvas=c, symptoms=main_clinical_signs_symptoms)
             if type(c) == type(Response()): return c
             c = add_conditions_justify_hospitalization(canvas=c, conditions=conditions_justify_hospitalization)
+            if type(c) == type(Response()): return c
+            c = add_exam_results(canvas=c, results=exam_results)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -527,6 +529,35 @@ def add_conditions_justify_hospitalization(canvas:canvas.Canvas, conditions:str)
         return Response('Unknow error while adding patient Conditions to Justify Hospitalization', status=500)
 
 
+def add_exam_results(canvas:canvas.Canvas, results:str):
+    try:
+        if type(results) != type(str()):
+            return Response('Patient exame results has to be a string', status=400)
+        if len(results) > 425:
+            return Response('Patient exame results  is too big, has to been in 425 characters', status=400)
+        str_results = ''
+        brokeLinexTimes = int(len(results)/107)
+        currentLine = 107
+        lastline = 0
+        yposition = 362
+        # Making the line break whem has 107 charater in a line
+        while brokeLinexTimes >= 0:
+            str_results = results[lastline:currentLine]
+            canvas = add_data(canvas=canvas, data=str_results, pos=(25, yposition))
+            lastline = currentLine
+            currentLine += 107
+            brokeLinexTimes -= 1
+            yposition -= 10
+
+        del(str_results)
+        del(brokeLinexTimes)
+        del(currentLine)
+        del(lastline)
+        del(yposition)
+        return canvas
+    except:
+        return Response('Unknow error while adding Patient exame results', status=500)
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -604,7 +635,7 @@ if __name__ == "__main__":
         patient_adressCEP=12345678,
         main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",
         conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',
-        exam_results={'Xray':'Tibia Broken'}
+        exam_results='Xray tibia broken'
     )
     if type(output) == type(Response()): 
         print(output.response)
