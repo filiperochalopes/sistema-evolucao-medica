@@ -80,6 +80,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_clinic(canvas=c, name=clinic)
             if type(c) == type(Response()): return c
+            c = add_internation_carater(canvas=c, carater=internation_carater)
+            if type(c) == type(Response()): return c
             
         except:
             if type(c) == type(Response()):
@@ -248,7 +250,7 @@ def add_patient_cns(canvas:canvas.Canvas, cns:int):
         cns (int): cns to add
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
 
     """    
     try:
@@ -279,7 +281,7 @@ def add_patient_birthday(canvas:canvas.Canvas, birthday:datetime.datetime):
         birthday (datetime.datetime): patient birthday
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         if type(birthday) != type(datetime.datetime.now()):
@@ -307,7 +309,7 @@ def add_patient_sex(canvas:canvas.Canvas, sex:str):
         sex (str): patient sex
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         sex = str(sex).upper()
@@ -334,7 +336,7 @@ def add_patient_mother_name(canvas:canvas.Canvas, motherName:str):
         motherName (str): patient mother name
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         if type(motherName) != type(str()):
@@ -357,7 +359,7 @@ def add_patient_adress(canvas:canvas.Canvas, adress:str):
         adress (str): patient adress
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         if type(adress)!= type(str()):
@@ -379,7 +381,7 @@ def add_patient_adressCity(canvas:canvas.Canvas, city:str):
         city (str): pactient city
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         if type(city) != type(str()):
@@ -401,7 +403,7 @@ def add_patient_adressCity_ibgeCode(canvas:canvas.Canvas, ibgeCode:int):
         ibgeCode (int): ibge cpde
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         if type(ibgeCode) != type(int()):
@@ -424,7 +426,7 @@ def add_patient_adressUF(canvas:canvas.Canvas, uf:str):
         uf (str): uf to add
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         if type(uf) != type(str()):
@@ -448,7 +450,7 @@ def add_patient_adressCEP(canvas:canvas.Canvas, cep:int):
         cep (int): cep to add
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         if type(cep) != type(int()):
@@ -476,7 +478,7 @@ def add_main_clinical_signs_symptoms(canvas:canvas.Canvas, symptoms:str):
         symptoms (str): all symphtoms
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         if type(symptoms) != type(str()):
@@ -515,7 +517,7 @@ def add_conditions_justify_hospitalization(canvas:canvas.Canvas, conditions:str)
         conditions (str): conditions to justify
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         if type(conditions) != type(str()):
@@ -554,7 +556,7 @@ def add_exam_results(canvas:canvas.Canvas, results:str):
         results (str): results to add
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         if type(results) != type(str()):
@@ -593,7 +595,7 @@ def add_initial_diagnostic(canvas:canvas.Canvas, diagnostic:str):
         diagnostic (str): initial diagnostic
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         if type(diagnostic) != type(str()):
@@ -617,7 +619,7 @@ def add_principalCid10(canvas:canvas.Canvas, cid10:str):
         cid10 (str): principal cid10
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
         if type(cid10) != type(str()):
@@ -641,7 +643,7 @@ def add_procedure_solicited(canvas:canvas.Canvas, procedure:str):
         procedure (str): procudere solicited
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
         if type(procedure) != type(str()):
@@ -665,7 +667,7 @@ def add_procedure_code(canvas:canvas.Canvas, code:str):
         code (str): procedure code
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
 
     """    
     try:
@@ -697,19 +699,43 @@ def add_clinic(canvas:canvas.Canvas, name:str):
         name (str): clinic name
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
 
     """    
     try:
         if type(name) != type(str()):
             return Response('Clinic has to be string', status=400)
-        # verify if patient name is smaller than 5 characters
+        # verify if clinic name is smaller than 5 characters
         name = str(name).strip()
-        if 5 < len(name) <= 17:
+        if 5 < len(name) <= 20:
             canvas = add_data(canvas=canvas, data=name, pos=(25, 246))
             return canvas
         else:
-            return Response("Unable to add Clinic because is longer than 65 characters or Smaller than 5", status=400)
+            return Response("Unable to add Clinic because is longer than 20 characters or Smaller than 5", status=400)
+    except:
+        return Response('Unknow error while adding Clinic', status=500)
+
+
+def add_internation_carater(canvas:canvas.Canvas, carater:str):
+    """add internation carater to documetn
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        carater (str): internation carater
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(carater) != type(str()):
+            return Response('internation carater has to be string', status=400)
+        # verify if internation carater is smaller than 5 characters
+        carater = str(carater).strip()
+        if 5 < len(carater) <= 20:
+            canvas = add_data(canvas=canvas, data=carater, pos=(128, 246))
+            return canvas
+        else:
+            return Response("Unable to add internation carater because is longer than 20 characters or Smaller than 5", status=400)
     except:
         return Response('Unknow error while adding Clinic', status=500)
 
