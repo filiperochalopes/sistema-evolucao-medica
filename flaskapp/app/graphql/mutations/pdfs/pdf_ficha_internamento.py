@@ -17,7 +17,7 @@ testLenght = ''
 for x in range(0, 100):
     testLenght += str(x)
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
 
     try:
         packet = io.BytesIO()
@@ -80,6 +80,9 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             if type(c) == type(Response()): return c
             if patient_estimateWeight is not None:
                 c = add_patient_estimateWeight(canvas=c, estimateWeight=patient_estimateWeight)
+            if type(c) == type(Response()): return c
+            if has_additional_healthInsurance is not None:
+                c = add_has_additional_healthInsurance(canvas=c, has_additional_healthInsurance=has_additional_healthInsurance)
             if type(c) == type(Response()): return c
 
 
@@ -458,6 +461,25 @@ def add_patient_estimateWeight(canvas:canvas.Canvas, estimateWeight:float):
         return Response('Unknow error while adding patient estimate weight', status=500)
 
 
+def add_has_additional_healthInsurance(canvas:canvas.Canvas, has_additional_healthInsurance:bool):
+    """add has additional health insurance
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        has_additional_healthInsurance (bool): status
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if has_additional_healthInsurance:
+            canvas = add_square(canvas=canvas, pos=(419, 544))
+        else:
+            canvas = add_square(canvas=canvas, pos=(380, 544))
+        return canvas
+    except:
+        return Response('Unknow error while adding has additional health insurance', status=500)
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -535,7 +557,8 @@ if __name__ == "__main__":
         patient_adressUF='sp',
         patient_adressCEP=12345678,
         patient_nationality='Brasileira',
-        patient_estimateWeight=123.32
+        patient_estimateWeight=123.32,
+        has_additional_healthInsurance=False
         )
     if type(output) == type(Response()): 
         print(output.response)
