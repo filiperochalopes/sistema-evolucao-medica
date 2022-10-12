@@ -220,6 +220,7 @@ def add_patientDocument(canvas:canvas.Canvas, document:dict):
             #The only verificatinon is that rg is not greater than 16 characteres
             if global_functions.isRGvalid(document['RG']):
                 canvas = add_data(canvas=canvas, data=str(document['RG']), pos=(92, 610))
+                canvas = add_square(canvas=canvas, pos=(58, 608))
                 return canvas
             else:
                 return Response('Patient RG is not valid', status=400)
