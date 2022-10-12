@@ -18,7 +18,7 @@ for x in range(0, 400):
     testLenght += str(x)
 
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:list, patient_comorbidities:list, current_illness_history:str, initial_diagnostic_suspicion:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:list, patient_comorbidities:list, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:int, doctor_crm:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
 
     try:
         packet = io.BytesIO()
@@ -59,6 +59,8 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             c = add_current_illness_history(canvas=c, current_illness_history=current_illness_history)
             if type(c) == type(Response()): return c
             c = add_initial_diagnostic_suspicion(canvas=c, ids=initial_diagnostic_suspicion)
+            if type(c) == type(Response()): return c
+            c = add_doctorName(canvas=c, name=doctor_name)
             if type(c) == type(Response()): return c
             
         except:
@@ -136,6 +138,28 @@ def add_patientName(canvas:canvas.Canvas, name:str):
             return Response("Unable to add patient name because is longer than 60 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding patient name', status=500)
+
+
+def add_doctorName(canvas:canvas.Canvas, name:str):
+    """add doctor name
+
+    Args:
+        canvas (canvas.Canvas): canvas to user
+        name (str): doctor name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """
+    try:
+        # verify if doctor name is smaller than 60 characters
+        name = str(name)
+        if 7 < len(name.strip()) <= 60:
+            canvas = add_data(canvas=canvas, data=name, pos=(304, 195))
+            return canvas
+        else:
+            return Response("Unable to add doctor name because is longer than 60 characters or Smaller than 7", status=400)
+    except:
+        return Response('Unknow error while adding doctor name', status=500)
 
 
 def add_patientCNS(canvas:canvas.Canvas, cns:int):
@@ -440,7 +464,7 @@ def add_initial_diagnostic_suspicion(canvas:canvas.Canvas, ids:str):
 
     Returns:
         canvas or Response:canvas if everthing is allright or Response if hapens some error
-    """    
+    """
     try:
         if len(ids) < 105:
             canvas = add_data(canvas=canvas, data=ids, pos=(26, 244))
@@ -691,6 +715,9 @@ if __name__ == "__main__":
         patient_comorbidities=['Heart disease', 'High blood pressure', 'Diabetes', 'Cerebrovascular disease'],
         current_illness_history=str(testLenght),
         initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral contraceptive use.',
+        doctor_name='Doctor Name',
+        doctor_cns=928976954930007,
+        doctor_crm='1123312-CRMSP',
         patient_adressNumber=123456,
         patient_adressNeigh='Patient Neighborhood',
         patient_adressCity='Patient city',
