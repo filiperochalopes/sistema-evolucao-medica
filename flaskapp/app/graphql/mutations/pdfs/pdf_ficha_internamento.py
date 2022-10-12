@@ -17,7 +17,7 @@ testLenght = ''
 for x in range(0, 100):
     testLenght += str(x)
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:list,patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:list, patient_comorbidities:list ,patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
 
     try:
         packet = io.BytesIO()
@@ -52,6 +52,8 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             c = add_patientPhoneNumber(canvas=c, phonenumber=patient_phonenumber)
             if type(c) == type(Response()): return c
             c = add_patient_drug_allergies(canvas=c, drug_allergies=patient_drug_allergies)
+            if type(c) == type(Response()): return c
+            c = add_patient_comorbidities(canvas=c, comorbidities=patient_comorbidities)
             if type(c) == type(Response()): return c
             
         except:
@@ -353,6 +355,39 @@ def add_patient_drug_allergies(canvas:canvas.Canvas, drug_allergies:list):
         return Response('Unknow error while adding patient drug alleries', status=500)
 
 
+def add_patient_comorbidities(canvas:canvas.Canvas, comorbidities:list):
+    """add patient comorbidities to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        comorbidities (list): comorbidities list
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """
+    try:
+        #catching all comorbidities
+        str_comorbidities = ''
+        #Cont to know when use .
+        cont = 0
+        len_comorbidities = len(comorbidities)
+        for commorb in comorbidities:
+            str_comorbidities += commorb
+            cont += 1
+            if cont == len_comorbidities:
+                str_comorbidities += '.'
+            else:
+                str_comorbidities += ', '
+        del(len_comorbidities)
+        if len(str_comorbidities) <= 100:
+            canvas = add_data(canvas=canvas, data=str_comorbidities, pos=(26, 449))
+            return canvas
+        else:
+            return Response('So much comorbidities, the limit is 100 characters', status=400)
+    except:
+        return Response('Unknow error while adding patient comorbidities', status=500)
+
+
 def add_patient_adressNumber(canvas:canvas.Canvas, adressNumber:int):
     """Add patient adress number to document
 
@@ -591,6 +626,7 @@ if __name__ == "__main__":
         patient_adress='pacient street, 43, paciten, USA',
         patient_phonenumber=44387694628,
         patient_drug_allergies=['Penicillin', 'Aspirin', 'Ibuprofen', 'Anticonvulsants'],
+        patient_comorbidities=['Heart disease', 'High blood pressure', 'Diabetes', 'Cerebrovascular disease'],
         patient_adressNumber=123456,
         patient_adressNeigh='Patient Neighborhood',
         patient_adressCity='Patient city',
