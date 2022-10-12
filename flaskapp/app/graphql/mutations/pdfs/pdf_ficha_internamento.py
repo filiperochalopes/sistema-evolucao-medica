@@ -18,7 +18,7 @@ for x in range(0, 400):
     testLenght += str(x)
 
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:list, patient_comorbidities:list, current_illness_history:str,patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:list, patient_comorbidities:list, current_illness_history:str, initial_diagnostic_suspicion:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
 
     try:
         packet = io.BytesIO()
@@ -57,6 +57,8 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             c = add_patient_comorbidities(canvas=c, comorbidities=patient_comorbidities)
             if type(c) == type(Response()): return c
             c = add_current_illness_history(canvas=c, current_illness_history=current_illness_history)
+            if type(c) == type(Response()): return c
+            c = add_initial_diagnostic_suspicion(canvas=c, ids=initial_diagnostic_suspicion)
             if type(c) == type(Response()): return c
             
         except:
@@ -350,11 +352,11 @@ def add_patient_drug_allergies(canvas:canvas.Canvas, drug_allergies:list):
             else:
                 str_drugsallergies += ', '
         del(len_drugsAllergies)
-        if len(str_drugsallergies) <= 100:
+        if len(str_drugsallergies) <= 105:
             canvas = add_data(canvas=canvas, data=str_drugsallergies, pos=(26, 481))
             return canvas
         else:
-            return Response('So much drug allergies, the limit is 100 characters', status=400)
+            return Response('So much drug allergies, the limit is 105 characters', status=400)
     except:
         return Response('Unknow error while adding patient drug alleries', status=500)
 
@@ -383,11 +385,11 @@ def add_patient_comorbidities(canvas:canvas.Canvas, comorbidities:list):
             else:
                 str_comorbidities += ', '
         del(len_comorbidities)
-        if len(str_comorbidities) <= 100:
+        if len(str_comorbidities) <= 105:
             canvas = add_data(canvas=canvas, data=str_comorbidities, pos=(26, 449))
             return canvas
         else:
-            return Response('So much comorbidities, the limit is 100 characters', status=400)
+            return Response('So much comorbidities, the limit is 105 characters', status=400)
     except:
         return Response('Unknow error while adding patient comorbidities', status=500)
 
@@ -426,7 +428,26 @@ def add_current_illness_history(canvas:canvas.Canvas, current_illness_history:st
         del(yposition)
         return canvas
     except:
-        return Response('Unknow error while adding patient current_illness_history', status=500)
+        return Response('Unknow error while adding patient current illness history', status=500)
+
+
+def add_initial_diagnostic_suspicion(canvas:canvas.Canvas, ids:str):
+    """add initial diagnostic suspicion
+
+    Args:
+        canvas (canvas.Canvas): canvas to add
+        ids (str): ids text
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if len(ids) < 105:
+            canvas = add_data(canvas=canvas, data=ids, pos=(26, 244))
+            return canvas
+        return Response('inital diagnostic supicion has to be less than 105 characters', status=400)
+    except:
+        return Response('Unknow error while adding initial diagnostic suspicion', status=500)
 
 
 def add_patient_adressNumber(canvas:canvas.Canvas, adressNumber:int):
@@ -669,6 +690,7 @@ if __name__ == "__main__":
         patient_drug_allergies=['Penicillin', 'Aspirin', 'Ibuprofen', 'Anticonvulsants'],
         patient_comorbidities=['Heart disease', 'High blood pressure', 'Diabetes', 'Cerebrovascular disease'],
         current_illness_history=str(testLenght),
+        initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral contraceptive use.',
         patient_adressNumber=123456,
         patient_adressNeigh='Patient Neighborhood',
         patient_adressCity='Patient city',
