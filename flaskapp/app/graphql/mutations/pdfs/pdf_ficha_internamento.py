@@ -321,6 +321,15 @@ def add_patientPhoneNumber(canvas:canvas.Canvas, phonenumber:int):
         Response('Unknow error while adding patient Phone Number', status=500)
 
 def add_patient_drug_allergies(canvas:canvas.Canvas, drug_allergies:list):
+    """add patient drug allergis to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        drug_allergies (list): drugs allergies
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """
     try:
         #catching all drug allergies
         str_drugsallergies = ''
@@ -334,11 +343,14 @@ def add_patient_drug_allergies(canvas:canvas.Canvas, drug_allergies:list):
                 str_drugsallergies += '.'
             else:
                 str_drugsallergies += ', '
-
-        canvas = add_data(canvas=canvas, data= str_drugsallergies, pos())
-        return canvas
+        del(len_drugsAllergies)
+        if len(str_drugsallergies) <= 100:
+            canvas = add_data(canvas=canvas, data=str_drugsallergies, pos=(26, 481))
+            return canvas
+        else:
+            return Response('So much drug allergies, the limit is 100 characters', status=400)
     except:
-        Response('Unknow error while adding patient drug alleries', status=500)
+        return Response('Unknow error while adding patient drug alleries', status=500)
 
 
 def add_patient_adressNumber(canvas:canvas.Canvas, adressNumber:int):
@@ -578,6 +590,7 @@ if __name__ == "__main__":
         patient_document={'CPF':28445400070},
         patient_adress='pacient street, 43, paciten, USA',
         patient_phonenumber=44387694628,
+        patient_drug_allergies=['Penicillin', 'Aspirin', 'Ibuprofen', 'Anticonvulsants'],
         patient_adressNumber=123456,
         patient_adressNeigh='Patient Neighborhood',
         patient_adressCity='Patient city',
