@@ -229,6 +229,7 @@ def add_patientDocument(canvas:canvas.Canvas, document:dict):
             cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
             if global_functions.isCPFvalid(cpf):
                 canvas = add_data(canvas=canvas, data=cpf, pos=(92, 610))
+                canvas = add_square(canvas=canvas, pos=(24, 608))
                 return canvas
             else:
                 return Response('Patient CPF is not valid', status=400)
@@ -447,6 +448,26 @@ def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
         return canvas
     except:
         return Response("Error when adding data to document with canvas", status=500)
+
+
+def add_square(canvas:canvas.Canvas, pos:tuple, size:int=9):
+    """Add square in document using canvas object
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        pos (tuple): position to add the square
+        size (int, optional): square size default is the size of the option quare. Defaults to 9.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Reponse(flask.Response: with the error)
+    """    
+    try:
+        canvas.rect(x=pos[0], y=pos[1], width=size, height=size, fill=1)
+        return canvas
+    except:
+        return Response("Error when adding square to document with canvas", status=500)
 
 
 def write_newpdf(newpdf:PdfWriter, new_directory:str):
