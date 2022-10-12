@@ -4,13 +4,17 @@ import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from flask import Response
-import global_functions
+
+# Doing this import only when is called by pytest
+if __name__ != "__main__":
+    from . import global_functions
+
 
 
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
 
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_motherName:str, patient_document:dict, patient_adress:str):
 
     try:
 
@@ -32,19 +36,18 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             c = add_patientBirthday(canvas=c, birthday=patient_birthday)
             c = add_patientMotherName(canvas=c, motherName=patient_motherName)
             c = add_patientDocument(canvas=c, document=patient_document)
+            c = add_patientAdress(canvas=c, adress=patient_adress)
 
             # verify if c is a error at some point
             if type(c) == type(Response()):
                 return c
-            elif type(c) == type(None):
-                return Response('Some error happen when adding not null data do fields', status=500)
         except:
+            print('chegou aqui') 
             if type(c) == type(Response()):
                 return c
             else:
                 return Response('Some error happen when adding not null data to fields', status=500)
         # create a new PDF with Reportlab
-        print('chegou aqui')
         c.save()
         packet.seek(0)
         new_pdf = PdfReader(packet)
@@ -198,6 +201,26 @@ def add_patientDocument(canvas:canvas.Canvas, document:dict):
         Response('Unknow error while adding patient Document', status=500)
 
 
+def add_patientAdress(canvas:canvas.Canvas, adress:str):
+    """Add patient Adress to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        adress (str): adress to add
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if len(adress) <= 60:
+            canvas = add_data(canvas=canvas, data=adress, pos=(230, 610))
+            return canvas
+        else:
+            return Response("Unable to add patient adress because is longer than 60 characters", status=400)
+    except:
+        Response('Unknow error while adding patient Adress', status=500)
+
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -238,13 +261,15 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str):
 
 
 if __name__ == "__main__":
+    import global_functions
     output = fill_pdf_ficha_internamento(
         documentDatetime=datetime.datetime.now(), 
         patient_name="Patient Name",
         patient_cns=928976954930007,
         patient_birthday=datetime.datetime.now(),
         patient_motherName="Patient Mother Name",
-        patient_document={'CPF':28445400070}
+        patient_document={'CPF':28445400070},
+        patient_adress='pacient street, 43, paciten, USA'
         )
     if type(output) == type(Response()): 
         print(output.response)
