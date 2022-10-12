@@ -27,7 +27,7 @@ for x in range(0, 400):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -45,6 +45,10 @@ establishment_exec_name:str, establishment_exec_cnes:int):
             c = add_establishment_exec_name(canvas=c, name=establishment_exec_name)
             if type(c) == type(Response()): return c
             c = add_establishment_exec_cnes(canvas=c, cnes=establishment_exec_cnes)
+            if type(c) == type(Response()): return c
+            c = add_patient_name(canvas=c, name=patient_name)
+            if type(c) == type(Response()): return c
+            
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -87,7 +91,7 @@ def add_establishment_solitc_name(canvas:canvas.Canvas, name:str):
             canvas = add_data(canvas=canvas, data=name, pos=(43, 750))
             return canvas
         else:
-            return Response("Unable to add Solicitate Establishment name because is longer than 60 characters or Smaller than 7", status=400)
+            return Response("Unable to add Solicitate Establishment name because is longer than 78 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding Solicitate Establishment  name', status=500)
 
@@ -140,7 +144,7 @@ def add_establishment_exec_name(canvas:canvas.Canvas, name:str):
             canvas = add_data(canvas=canvas, data=name, pos=(43, 726))
             return canvas
         else:
-            return Response("Unable to add Exec Establishment name because is longer than 60 characters or Smaller than 7", status=400)
+            return Response("Unable to add Exec Establishment name because is longer than 78 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding Exec Establishment name', status=500)
 
@@ -172,6 +176,29 @@ def add_establishment_exec_cnes(canvas:canvas.Canvas, cnes:int):
         return Response('unable to add Establishment Exec Cnes because is a invalid CNES', status=400)
     except:
         return Response('Unknow error while adding Establishment Exec Cnes', status=500)
+
+def add_patient_name(canvas:canvas.Canvas, name:str()):
+    """Add patient name to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to add
+        name (str): name to add
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(name) != type(str()):
+            return Response('patient name has to be string', status=400)
+        # verify if patient name is smaller than 60 characters
+        name = str(name)
+        if 7 < len(name.strip()) <= 70:
+            canvas = add_data(canvas=canvas, data=name, pos=(43, 683))
+            return canvas
+        else:
+            return Response("Unable to add patient name because is longer than 70 characters or Smaller than 7", status=400)
+    except:
+        return Response('Unknow error while adding patient name', status=500)
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
@@ -238,7 +265,9 @@ if __name__ == "__main__":
         establishment_solitc_name='Establishment Solicit Name',
         establishment_solitc_cnes=1234567,
         establishment_exec_name='Establshment Exec Name',
-        establishment_exec_cnes=7654321
+        establishment_exec_cnes=7654321,
+        patient_name='Patient Name',
+        patient_cns=928976954930007
     )
     if type(output) == type(Response()): 
         print(output.response)
