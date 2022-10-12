@@ -27,7 +27,7 @@ for x in range(0, 500):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str ,exam_results:str=None):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, exam_results:str=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -75,6 +75,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             c = add_principalCid10(canvas=c, cid10=principalCid10)
             if type(c) == type(Response()): return c
             c = add_procedure_solicited(canvas=c, procedure=procedure_solicited)
+            if type(c) == type(Response()): return c
+            c = add_procedure_code(canvas=c, code=procedure_code)
             if type(c) == type(Response()): return c
             
         except:
@@ -653,6 +655,38 @@ def add_procedure_solicited(canvas:canvas.Canvas, procedure:str):
         return Response('Unknow error while adding patient procedure solicited', status=500)
 
 
+def add_procedure_code(canvas:canvas.Canvas, code:str):
+    """add procedure code in document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        code (str): procedure code
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+
+    """    
+    try:
+        if type(code) != type(str()):
+            return Response('procedure code has to be string', status=400)
+        # verify if procedure code is smaller than 5 characters
+        code = str(code).strip()
+        if len(code) == 10:
+            cont = 0
+            xpos = 406
+            while cont < 10:
+                canvas = add_data(canvas=canvas, data=code[cont], pos=(xpos, 271))
+                cont += 1
+                xpos += 17 
+                if cont > 7:
+                    xpos += 4
+            return canvas
+        else:
+            return Response("Procedure code solicited dont have 10 characters", status=400)
+    except:
+        return Response('Unknow error while adding procedure code solicited', status=500)
+
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -733,6 +767,10 @@ if __name__ == "__main__":
         initial_diagnostic='Patient Initial Diagnostic',
         principalCid10="A00",
         procedure_solicited='Procedure Solicited',
+        procedure_code='1234567890', 
+        clinic='Clinic Name', 
+        internation_carater='Internation Carater', 
+        prof_solicitant_document={'CPF':28445400070},
         exam_results='Xray tibia broken'
     )
     if type(output) == type(Response()): 
