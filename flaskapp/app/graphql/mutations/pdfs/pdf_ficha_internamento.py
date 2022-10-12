@@ -17,7 +17,7 @@ testLenght = ''
 for x in range(0, 100):
     testLenght += str(x)
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:list,patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
 
     try:
         packet = io.BytesIO()
@@ -36,7 +36,7 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             if type(c) == type(Response()): return c
             # change font size to datetime            
             c.setFont('Helvetica', 14)            
-            c = add_documentDatetime(canvas=c, datetime=documentDatetime)
+            c = add_documentDatetime(canvas=c, docDatetime=documentDatetime)
             if type(c) == type(Response()): return c            
             c.setFont('Helvetica', 9)            
             c = add_patientBirthday(canvas=c, birthday=patient_birthday)
@@ -50,6 +50,8 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             c = add_patientAdress(canvas=c, adress=patient_adress)
             if type(c) == type(Response()): return c
             c = add_patientPhoneNumber(canvas=c, phonenumber=patient_phonenumber)
+            if type(c) == type(Response()): return c
+            c = add_patient_drug_allergies(canvas=c, drug_allergies=patient_drug_allergies)
             if type(c) == type(Response()): return c
             
         except:
@@ -119,6 +121,7 @@ def add_patientName(canvas:canvas.Canvas, name:str):
     """    
     try:
         # verify if patient name is smaller than 60 characters
+        name = str(name)
         if 7 < len(name.strip()) <= 60:
             canvas = add_data(canvas=canvas, data=name, pos=(27, 674))
             return canvas
@@ -152,19 +155,21 @@ def add_patientCNS(canvas:canvas.Canvas, cns:int):
         return Response('Unknow error while adding patient cns', status=500)
 
 
-def add_documentDatetime(canvas:canvas.Canvas, datetime:datetime.datetime):
+def add_documentDatetime(canvas:canvas.Canvas, docDatetime:datetime.datetime):
     """Add document datetime to docuemnt
 
     Args:
         canvas (canvas.Canvas): canvas to use
-        datetime (datetime.datetime): datetime to add
+        docDatetime (datetime.datetime): datetime to add
     Returns:
         canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
-        # Format datetime to format DD/MM/YYYY H:M:S
-        datetime = datetime.strftime("%m/%d/%Y %H:%M:%S")
-        canvas = add_data(canvas=canvas, data=datetime, pos=(415, 741))
+        if type(docDatetime) != type(datetime.datetime.now()):
+            return Response('Document Datetime isnt a datetime.datetime object', status=400)
+        # Format docDatetime to format DD/MM/YYYY H:M:S
+        docDatetime = docDatetime.strftime("%m/%d/%Y %H:%M:%S")
+        canvas = add_data(canvas=canvas, data=docDatetime, pos=(415, 741))
         return canvas
     except:
         return Response('Unkown error while adding document datetime', status=500)
@@ -181,6 +186,8 @@ def add_patientBirthday(canvas:canvas.Canvas, birthday:datetime.datetime):
         canvas or Response:canvas if everthing is allright or Response if hapens some error 
     """    
     try:
+        if type(birthday) != type(datetime.datetime.now()):
+            return Response('Pacient birthday isnt a datetime.datetime object', status=400)
         # Format birthday to format DD/MM/YYYY
         birthday = birthday.strftime("%m/%d/%Y")
         canvas = add_data(canvas=canvas, data=birthday, pos=(43, 643))
@@ -312,6 +319,26 @@ def add_patientPhoneNumber(canvas:canvas.Canvas, phonenumber:int):
             return canvas
     except:
         Response('Unknow error while adding patient Phone Number', status=500)
+
+def add_patient_drug_allergies(canvas:canvas.Canvas, drug_allergies:list):
+    try:
+        #catching all drug allergies
+        str_drugsallergies = ''
+        #Cont to know when use .
+        cont = 0
+        len_drugsAllergies = len(drug_allergies)
+        for allergie in drug_allergies:
+            str_drugsallergies += allergie
+            cont += 1
+            if cont == len_drugsAllergies:
+                str_drugsallergies += '.'
+            else:
+                str_drugsallergies += ', '
+
+        canvas = add_data(canvas=canvas, data= str_drugsallergies, pos())
+        return canvas
+    except:
+        Response('Unknow error while adding patient drug alleries', status=500)
 
 
 def add_patient_adressNumber(canvas:canvas.Canvas, adressNumber:int):
