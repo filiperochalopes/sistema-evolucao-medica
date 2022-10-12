@@ -86,6 +86,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_prof_solicitant_name(canvas=c, name=prof_solicitant_name)
             if type(c) == type(Response()): return c
+            c = add_solicitation_datetime(canvas=c, solitDate=solicitation_datetime)
+            if type(c) == type(Response()): return c
             
         except:
             if type(c) == type(Response()):
@@ -245,6 +247,7 @@ def add_patient_name(canvas:canvas.Canvas, name:str):
     except:
         return Response('Unknow error while adding patient name', status=500)
 
+
 def add_prof_solicitant_name(canvas:canvas.Canvas, name:str):
     """add professional solicitant name
 
@@ -261,7 +264,7 @@ def add_prof_solicitant_name(canvas:canvas.Canvas, name:str):
         # verify if Professional solitic name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 49:
-            canvas = add_data(canvas=canvas, data=name, pos=(25, 224))
+            canvas = add_data(canvas=canvas, data=name, pos=(25, 222))
             return canvas
         else:
             return Response("Unable to add Professional solitic name because is longer than 49 characters or Smaller than 7", status=400)
@@ -327,6 +330,33 @@ def add_patient_birthday(canvas:canvas.Canvas, birthday:datetime.datetime):
     except:
         return Response('Unkown error while adding patient birthday', status=500)
 
+
+def add_solicitation_datetime(canvas:canvas.Canvas, solitDate:datetime.datetime):
+    """Add solititation date to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        solitDate (datetime.datetime): solicitation datetime
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if type(solitDate) != type(datetime.datetime.now()):
+            return Response('solitication date isnt a datetime.datetime object', status=400)
+        #Add to respective fields
+        day = str(solitDate.day)
+        month = str(solitDate.month)
+        year = str(solitDate.year)
+        canvas = add_data(canvas=canvas, data=day, pos=(298, 222))
+        canvas = add_data(canvas=canvas, data=month, pos=(322, 222))
+        canvas = add_data(canvas=canvas, data=year, pos=(349, 222))
+        del(day)
+        del(month)
+        del(year)
+        return canvas
+    except:
+        return Response('Unkown error while adding solitication date', status=500)
 
 def add_patient_sex(canvas:canvas.Canvas, sex:str):
     """add patient sex to document 
