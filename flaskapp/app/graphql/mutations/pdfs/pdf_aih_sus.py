@@ -27,7 +27,7 @@ for x in range(0, 400):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -51,6 +51,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             c = add_patient_cns(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
             c = add_patient_birthday(canvas=c, birthday=patient_birthday)
+            if type(c) == type(Response()): return c
+            c = add_patient_sex(canvas=c, sex=patient_sex)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -261,6 +263,34 @@ def add_patient_birthday(canvas:canvas.Canvas, birthday:datetime.datetime):
     except:
         return Response('Unkown error while adding patient birthday', status=500)
 
+
+def add_patient_sex(canvas:canvas.Canvas, sex:str):
+    """add patient sex to document 
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        sex (str): patient sex
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response ifhapens some error 
+    """    
+    try:
+        sex = str(sex).upper()
+        if len(sex) != 1:
+            return Response('Pacient sex has to be only one character F or M', status=400)
+        if sex not in ['M', 'F']:
+            return Response('Pacient sex is not valid, use F or M', status=400)
+        else:
+            if sex == 'M':
+                canvas = add_square(canvas=canvas, pos=(415, 657), size=(8, 9))
+                return canvas
+            else:
+                canvas = add_square(canvas=canvas, pos=(468, 657), size=(8, 9))
+                return canvas
+    except:
+        return Response('Unkown error while adding patient sex', status=500)
+    
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -281,13 +311,13 @@ def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
         return Response("Error when adding data to document with canvas", status=500)
 
 
-def add_square(canvas:canvas.Canvas, pos:tuple, size:int=9):
+def add_square(canvas:canvas.Canvas, pos:tuple, size:tuple=(9, 9)):
     """Add square in document using canvas object
 
     Args:
         canvas (canvas.Canvas): canvas to use
         pos (tuple): position to add the square
-        size (int, optional): square size default is the size of the option quare. Defaults to 9.
+        size (tuple, optional): square size default is the size of the option quare. Defaults to 9.
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
@@ -295,7 +325,7 @@ def add_square(canvas:canvas.Canvas, pos:tuple, size:int=9):
         Response(flask.Response: with the error)
     """    
     try:
-        canvas.rect(x=pos[0], y=pos[1], width=size, height=size, fill=1)
+        canvas.rect(x=pos[0], y=pos[1], width=size[0], height=size[1], fill=1)
         return canvas
     except:
         return Response("Error when adding square to document with canvas", status=500)
@@ -328,7 +358,8 @@ if __name__ == "__main__":
         establishment_exec_cnes=7654321,
         patient_name='Patient Name',
         patient_cns=928976954930007,
-        patient_birthday=datetime.datetime.now()
+        patient_birthday=datetime.datetime.now(),
+        patient_sex='F'
     )
     if type(output) == type(Response()): 
         print(output.response)
