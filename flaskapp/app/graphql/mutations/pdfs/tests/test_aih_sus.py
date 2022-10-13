@@ -49,18 +49,527 @@ def test_awnser_with_only_required_data():
         )) != type(Response())
 
 
-def test_name_longer():
-    """Test if can put a name with more than 60 character"""
-    assert data_to_use(patient_name="iashubfiuyasgfuygasfgasygifuygsayfiasuygfyagsfiuygsydgfaiuyfyausfgiuasgfyagsfiuasgyfiuasygfvisuyagfiuyasfguyagfiuysagfiuyagfiuyg").status == Response(status=400).status
+##############################################################
+# ERRORS IN NAMES CAMPS
+# establishment_exec_name
+# establishment_solitc_name
+# patient_name
+# patient_mother_name
+# prof_solicitant_name
+# autorization_prof_name
+# patient_responsible_name
+# !!!!!!! TESTING !!!!!!!
+# Name empty
+# Name with space
+# long name
+# short name
+# wrong name type
 
-def test_empty_name():    
+def test_empty_establishment_solitcname():    
+    assert data_to_use(establishment_solitc_name='').status == Response(status=400).status
+
+def test_with_space_establishment_solitcname():    
+    assert data_to_use(establishment_solitc_name='  ').status == Response(status=400).status
+
+def test_long_establishment_solitcname():    
+    assert data_to_use(establishment_solitc_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+
+def test_short_establishment_solitcname():    
+    assert data_to_use(establishment_solitc_name='bro').status == Response(status=400).status
+
+def test_wrongtype_establishment_solitcname():    
+    assert data_to_use(establishment_solitc_name=123124).status == Response(status=400).status
+
+def test_empty_establishment_exec_name():    
+    assert data_to_use(establishment_exec_name='').status == Response(status=400).status
+
+def test_with_space_establishment_exec_name():    
+    assert data_to_use(establishment_exec_name='  ').status == Response(status=400).status
+
+def test_long_establishment_exec_name():    
+    assert data_to_use(establishment_exec_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+
+def test_short_establishment_exec_name():    
+    assert data_to_use(establishment_exec_name='bro').status == Response(status=400).status
+
+def test_wrongtype_establishment_exec_name():    
+    assert data_to_use(establishment_exec_name=123124).status == Response(status=400).status
+
+def test_empty_patient_name():    
     assert data_to_use(patient_name='').status == Response(status=400).status
 
-def test_with_space_name():    
+def test_with_space_patient_name():    
     assert data_to_use(patient_name='  ').status == Response(status=400).status
 
-def test_wrong_solicitationdatetimeType():    
-    assert data_to_use(solicitation_datetime="aaaaa").status == Response(status=400).status
+def test_long_patient_name():    
+    assert data_to_use(patient_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+
+def test_short_patient_name():    
+    assert data_to_use(patient_name='bro').status == Response(status=400).status
+
+def test_wrongtype_patient_name():    
+    assert data_to_use(patient_name=123124).status == Response(status=400).status
+
+def test_empty_patient_mother_name():    
+    assert data_to_use(patient_mother_name='').status == Response(status=400).status
+
+def test_with_space_patient_mother_name():    
+    assert data_to_use(patient_mother_name='  ').status == Response(status=400).status
+
+def test_long_patient_mother_name():    
+    assert data_to_use(patient_mother_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+
+def test_short_patient_mother_name():    
+    assert data_to_use(patient_mother_name='bro').status == Response(status=400).status
+
+def test_wrongtype_patient_mother_name():    
+    assert data_to_use(patient_mother_name=123124).status == Response(status=400).status
+    
+def test_empty_prof_solicitant_name():    
+    assert data_to_use(prof_solicitant_name='').status == Response(status=400).status
+
+def test_with_space_prof_solicitant_name():    
+    assert data_to_use(prof_solicitant_name='  ').status == Response(status=400).status
+
+def test_long_prof_solicitant_name():    
+    assert data_to_use(prof_solicitant_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+
+def test_short_prof_solicitant_name():    
+    assert data_to_use(prof_solicitant_name='bro').status == Response(status=400).status
+
+def test_wrongtype_prof_solicitant_name():    
+    assert data_to_use(prof_solicitant_name=123124).status == Response(status=400).status
+
+def test_empty_autorization_prof_name():    
+    assert data_to_use(autorization_prof_name='').status == Response(status=400).status
+
+def test_with_space_autorization_prof_name():    
+    assert data_to_use(autorization_prof_name='  ').status == Response(status=400).status
+
+def test_long_autorization_prof_name():    
+    assert data_to_use(autorization_prof_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+
+def test_short_autorization_prof_name():    
+    assert data_to_use(autorization_prof_name='bro').status == Response(status=400).status
+
+def test_wrongtype_autorization_prof_name():    
+    assert data_to_use(autorization_prof_name=123124).status == Response(status=400).status
+
+def test_empty_patient_responsible_name():    
+    assert type(data_to_use(patient_responsible_name='')) != Response(status=400).status
+
+def test_with_space_patient_responsible_name():    
+    assert type(data_to_use(patient_responsible_name='  ')) != Response(status=400).status
+
+def test_long_patient_responsible_name():    
+    assert data_to_use(patient_responsible_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+
+def test_short_patient_responsible_name():    
+    assert data_to_use(patient_responsible_name='bro').status == Response(status=400).status
+
+def test_wrongtype_patient_responsible_name():    
+    assert data_to_use(patient_responsible_name=123124).status == Response(status=400).status
+
+
+####################################################################
+# TEST CNES 
+# establishment_solitc_cnes
+# establishment_exec_cnes
+# empty
+# wrong type
+# invalid cnes
+
+def test_empty_establishment_solitc_cnes():
+    assert data_to_use(establishment_solitc_cnes='').status == Response(status=400).status
+
+def test_wrongtype_establishment_solitc_cnes():
+    assert data_to_use(establishment_solitc_cnes='adsadad').status == Response(status=400).status
+
+def test_invalidcnes_establishment_solitc_cnes():
+    assert data_to_use(establishment_solitc_cnes=451236548).status == Response(status=400).status
+
+def test_empty_establishment_exec_cnes():
+    assert data_to_use(establishment_exec_cnes='').status == Response(status=400).status
+
+def test_wrongtype_establishment_exec_cnes():
+    assert data_to_use(establishment_exec_cnes='adsadad').status == Response(status=400).status
+
+def test_invalidcnes_establishment_exec_cnes():
+    assert data_to_use(establishment_exec_cnes=451236548).status == Response(status=400).status
+
+#################################################################
+#TEST DOCUMENTS CNS AND CPF
+#patient_cns
+#prof_solicitant_document
+#autorizaton_prof_document
+# wrong type
+# invalid cns
+# invalid cpf
+# wrong option
+
+def test_wrongtype_patient_cns():
+    assert data_to_use(patient_cns='451236548').status == Response(status=400).status
+
+def test_invalid_patient_cns():
+    assert data_to_use(patient_cns=451236548554).status == Response(status=400).status
+
+def test_wrongtype_prof_solicitant_document():
+    assert data_to_use(prof_solicitant_document='451236548554').status == Response(status=400).status
+
+def test_invalidcns_prof_solicitant_document():
+    assert data_to_use(prof_solicitant_document={'CNS':284123312123}).status == Response(status=400).status
+
+def test_invalidccpf_prof_solicitant_document():
+    assert data_to_use(prof_solicitant_document={'CPF':284123312123}).status == Response(status=400).status
+
+def test_wrongoption_prof_solicitant_document():
+    assert data_to_use(prof_solicitant_document={'BBB':284123312123}).status == Response(status=400).status
+
+def test_wrongtype_autorizaton_prof_document():
+    assert data_to_use(autorizaton_prof_document='451236548554').status == Response(status=400).status
+
+def test_invalidcns_autorizaton_prof_document():
+    assert data_to_use(autorizaton_prof_document={'CNS':284123312123}).status == Response(status=400).status
+
+def test_invalidccpf_autorizaton_prof_document():
+    assert data_to_use(autorizaton_prof_document={'CPF':284123312123}).status == Response(status=400).status
+
+def test_wrongoption_autorizaton_prof_document():
+    assert data_to_use(autorizaton_prof_document={'BBB':284123312123}).status == Response(status=400).status
+
+
+
+#################################################################
+# TEST DATETIMES VARIABLES
+# patient_birthday
+# solicitation_datetime
+# autorizaton_datetime
+# test wrong type
+
+def test_wrongtype_patient_birthday():
+    assert data_to_use(patient_birthday='bahabah').status == Response(status=400).status
+
+def test_wrongtype_solicitation_datetime():
+    assert data_to_use(solicitation_datetime='bahabah').status == Response(status=400).status
+
+def test_wrongtype_autorizaton_datetime():
+    assert data_to_use(autorizaton_datetime='bahabah').status == Response(status=400).status
+
+
+##################################################################
+# TEST MARKABLE OPTIONS
+# patient_sex
+# acident_type
+# pension_status
+# patient_adressUF
+# test wrong type
+# test not exist option
+# test all options in Upper Case
+# test all options in lower Case
+
+def test_wrongtype_patient_sex():
+    assert data_to_use(patient_sex=1231).status == Response(status=400).status
+
+def test_notexistopiton_patient_sex():
+    assert data_to_use(patient_sex='G').status == Response(status=400).status
+
+def test_M_option_patient_sex():
+    assert type(data_to_use(patient_sex='M')) != type(Response())
+
+def test_M_optionUpper_patient_sex():
+    assert type(data_to_use(patient_sex='M')) != type(Response())
+
+def test_M_optionLower_patient_sex():
+    assert type(data_to_use(patient_sex='m')) != type(Response())
+
+def test_F_option_patient_sex():
+    assert type(data_to_use(patient_sex='M')) != type(Response())
+
+def test_F_optionUpper_patient_sex():
+    assert type(data_to_use(patient_sex='F')) != type(Response())
+
+def test_F_optionLower_patient_sex():
+    assert type(data_to_use(patient_sex='f')) != type(Response())
+
+def test_wrongtype_acident_type():
+    assert data_to_use(acident_type=1231).status == Response(status=400).status
+
+def test_notexistopiton_acident_type():
+    assert data_to_use(acident_type='adadsda').status == Response(status=400).status
+
+def test_work_option_acident_type():
+    assert type(data_to_use(acident_type='work')) != type(Response())
+
+def test_work_optionUpper_acident_type():
+    assert type(data_to_use(acident_type='WORK')) != type(Response())
+
+def test_work_optionLower_acident_type():
+    assert type(data_to_use(acident_type='work')) != type(Response())
+
+def test_traffic_option_acident_type():
+    assert type(data_to_use(acident_type='traffic')) != type(Response())
+
+def test_traffic_optionUpper_acident_type():
+    assert type(data_to_use(acident_type='TRAFFIC')) != type(Response())
+
+def test_traffic_optionLower_acident_type():
+    assert type(data_to_use(acident_type='traffic')) != type(Response())
+
+def test_work_path_option_acident_type():
+    assert type(data_to_use(acident_type='work_path')) != type(Response())
+
+def test_work_path_optionUpper_acident_type():
+    assert type(data_to_use(acident_type='WORK_PATH')) != type(Response())
+
+def test_work_path_optionLower_acident_type():
+    assert type(data_to_use(acident_type='work_path')) != type(Response())
+
+def test_wrongtype_pension_status():
+    assert data_to_use(pension_status=1231).status == Response(status=400).status
+
+def test_notexistopiton_pension_status():
+    assert data_to_use(pension_status='adadasd').status == Response(status=400).status
+
+def test_worker_option_pension_status():
+    assert type(data_to_use(pension_status='worker')) != type(Response())
+
+def test_worker_optionUpper_pension_status():
+    assert type(data_to_use(pension_status='WORKER')) != type(Response())
+
+def test_worker_optionLower_pension_status():
+    assert type(data_to_use(pension_status='worker')) != type(Response())
+
+def test_employer_option_pension_status():
+    assert type(data_to_use(pension_status='employer')) != type(Response())
+
+def test_employer_optionUpper_pension_status():
+    assert type(data_to_use(pension_status='EMPLOYER')) != type(Response())
+
+def test_employer_optionLower_pension_status():
+    assert type(data_to_use(pension_status='employer')) != type(Response())
+
+def test_autonomous_option_pension_status():
+    assert type(data_to_use(pension_status='autonomous')) != type(Response())
+
+def test_autonomous_optionUpper_pension_status():
+    assert type(data_to_use(pension_status='AUTONOMOUS')) != type(Response())
+
+def test_autonomous_optionLower_pension_status():
+    assert type(data_to_use(pension_status='autonomous')) != type(Response())
+
+def test_unemployed_option_pension_status():
+    assert type(data_to_use(pension_status='unemployed')) != type(Response())
+
+def test_unemployed_optionUpper_pension_status():
+    assert type(data_to_use(pension_status='UNEMPLOYED')) != type(Response())
+
+def test_unemployed_optionLower_pension_status():
+    assert type(data_to_use(pension_status='unemployed')) != type(Response())
+
+def test_retired_option_pension_status():
+    assert type(data_to_use(pension_status='retired')) != type(Response())
+
+def test_retired_optionUpper_pension_status():
+    assert type(data_to_use(pension_status='RETIRED')) != type(Response())
+
+def test_retired_optionLower_pension_status():
+    assert type(data_to_use(pension_status='retired')) != type(Response())
+
+def test_not_insured_option_pension_status():
+    assert type(data_to_use(pension_status='not_insured')) != type(Response())
+
+def test_not_insured_optionUpper_pension_status():
+    assert type(data_to_use(pension_status='NOT_INSURED')) != type(Response())
+
+def test_not_insured_optionLower_pension_status():
+    assert type(data_to_use(pension_status='not_insured')) != type(Response())
+
+def test_wrongtype_patient_adressUF():
+    assert data_to_use(patient_adressUF=1231).status == Response(status=400).status
+
+def test_notexistopiton_patient_adressUF():
+    assert data_to_use(patient_adressUF='AUYD').status == Response(status=400).status
+
+def test_AC_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='AC')) != type(Response())
+
+def test_AC_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='ac')) != type(Response())
+
+def test_AL_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='AL')) != type(Response())
+
+def test_AL_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='al')) != type(Response())
+
+def test_AP_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='AP')) != type(Response())
+
+def test_AP_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='ap')) != type(Response())
+
+def test_AM_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='AM')) != type(Response())
+
+def test_AM_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='am')) != type(Response())
+
+def test_BA_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='BA')) != type(Response())
+
+def test_BA_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='ba')) != type(Response())
+
+def test_CE_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='CE')) != type(Response())
+
+def test_CE_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='ce')) != type(Response())
+
+def test_DF_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='DF')) != type(Response())
+
+def test_DF_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='df')) != type(Response())
+
+def test_ES_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='ES')) != type(Response())
+
+def test_ES_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='es')) != type(Response())
+
+def test_GO_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='GO')) != type(Response())
+
+def test_GO_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='go')) != type(Response())
+
+def test_MA_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='MA')) != type(Response())
+
+def test_MA_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='ma')) != type(Response())
+
+def test_MS_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='MS')) != type(Response())
+
+def test_MS_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='ms')) != type(Response())
+
+def test_MT_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='MT')) != type(Response())
+
+def test_MT_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='mt')) != type(Response())
+
+def test_MG_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='MG')) != type(Response())
+
+def test_MG_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='mg')) != type(Response())
+
+def test_PA_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='PA')) != type(Response())
+
+def test_PA_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='pa')) != type(Response())
+
+def test_PB_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='PB')) != type(Response())
+
+def test_PB_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='pb')) != type(Response())
+
+def test_PR_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='PR')) != type(Response())
+
+def test_PR_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='pr')) != type(Response())
+
+def test_PE_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='PE')) != type(Response())
+
+def test_PE_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='pe')) != type(Response())
+
+def test_PI_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='PI')) != type(Response())
+
+def test_PI_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='pi')) != type(Response())
+
+def test_RJ_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='RJ')) != type(Response())
+
+def test_RJ_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='rj')) != type(Response())
+
+def test_RN_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='RN')) != type(Response())
+
+def test_RN_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='rn')) != type(Response())
+
+def test_RS_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='RS')) != type(Response())
+
+def test_RS_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='rs')) != type(Response())
+
+def test_RO_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='RO')) != type(Response())
+
+def test_RO_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='ro')) != type(Response())
+
+def test_RR_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='RR')) != type(Response())
+
+def test_RR_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='rr')) != type(Response())
+
+def test_SC_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='SC')) != type(Response())
+
+def test_SC_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='sc')) != type(Response())
+
+def test_SP_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='SP')) != type(Response())
+
+def test_SP_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='sp')) != type(Response())
+
+def test_SE_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='SE')) != type(Response())
+
+def test_SE_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='se')) != type(Response())
+
+def test_TO_optionUpper_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='TO')) != type(Response())
+
+def test_TO_optionLower_patient_adressUF():
+    assert type(data_to_use(patient_adressUF='to')) != type(Response())
+
+
+
+####################################################################
+# TEST ADRESS VARIABLES
+# patient_adress
+# patient_adressCity
+# patient_adressCity_ibgeCode
+# patient_adressUF (already tested in option tests)
+# patient_adressCEP
+# test wrong type
+# test empty value
+# invalid value
+# Long value
+
+def test_wrongtype_patient_adress():
+    assert data_to_use(patient_adress=1212312).status == Response(status=400).status
+
+
 
 def test_wrong_birthdaydatetimeType():    
     assert data_to_use(patient_birthday='aygduiaydg').status == Response(status=400).status
