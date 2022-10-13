@@ -155,6 +155,9 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if company_cbor is not None :
                 c = add_company_cbor(canvas=c, cbo=company_cbor)
             if type(c) == type(Response()): return c
+            if pension_status is not None and str(pension_status).strip() != "":
+                c = add_pension_status(canvas=c, status=pension_status)
+            if type(c) == type(Response()): return c
 
 
         except:
@@ -1445,6 +1448,50 @@ def add_acident_type(canvas:canvas.Canvas, acident:str):
         return Response('Unknow error while adding Acident type', status=500)
 
 
+def add_pension_status(canvas:canvas.Canvas, status:str):
+    """add pension status to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        status (str): pension status
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if type(status) != type(str()):
+            return Response('pension status type has to be a str', status=400)
+        # See if pension status type is valid
+        statusTypes = ['worker', 'employer', 'autonomous', 'unemployed', 'retired', 'not_insured']
+        status = status.lower()
+        ypos = 131
+        if status in statusTypes:
+            if status == 'worker':
+                canvas = add_square(canvas=canvas, pos=(33, ypos))
+                return canvas
+            elif status == 'employer':
+                canvas = add_square(canvas=canvas, pos=(124, ypos))
+                return canvas
+            elif status == 'autonomous':
+                canvas = add_square(canvas=canvas, pos=(219, ypos))
+                return canvas
+            elif status == 'unemployed':
+                canvas = add_square(canvas=canvas, pos=(305, ypos))
+                return canvas
+            elif status == 'retired':
+                canvas = add_square(canvas=canvas, pos=(408, ypos))
+                return canvas
+            elif status == 'not_insured':
+                canvas = add_square(canvas=canvas, pos=(500, ypos))
+                return canvas
+            else:
+                return Response('Unknow error while searching pension status type', status=500)
+        else:
+            return Response('The pension status type has to be "worker", "employer","autonomous","unemployed","retired","not_insured"', status=400)
+    except:
+        return Response('Unknow error while adding pension status type', status=500)
+
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -1570,7 +1617,7 @@ if __name__ == "__main__":
         company_cnpj=37549670000171, 
         company_cnae=5310501, 
         company_cbor=123456, 
-        pension_status='employer'
+        pension_status='not_insured'
     )
     if type(output) == type(Response()): 
         print(output.response)
