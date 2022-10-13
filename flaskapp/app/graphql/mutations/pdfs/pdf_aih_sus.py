@@ -94,6 +94,9 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_autorizaton_prof_document(canvas=c, document=autorizaton_prof_document)
             if type(c) == type(Response()): return c
+            c = add_autorizaton_datetime(canvas=c, authDate=autorizaton_datetime)
+            if type(c) == type(Response()): return c
+
             
         except:
             if type(c) == type(Response()):
@@ -386,6 +389,34 @@ def add_solicitation_datetime(canvas:canvas.Canvas, solitDate:datetime.datetime)
         return canvas
     except:
         return Response('Unkown error while adding solitication date', status=500)
+
+
+def add_autorizaton_datetime(canvas:canvas.Canvas, authDate:datetime.datetime):
+    """add atuorizaton date to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        authDate (datetime.datetime): datetime object
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if type(authDate) != type(datetime.datetime.now()):
+            return Response('autorization date isnt a datetime.datetime object', status=400)
+        #Add to respective fields
+        day = str(authDate.day)
+        month = str(authDate.month)
+        year = str(authDate.year)
+        canvas = add_data(canvas=canvas, data=day, pos=(28, 31))
+        canvas = add_data(canvas=canvas, data=month, pos=(52, 31))
+        canvas = add_data(canvas=canvas, data=year, pos=(79, 31))
+        del(day)
+        del(month)
+        del(year)
+        return canvas
+    except:
+        return Response('Unkown error while adding autorization date', status=500)
 
 
 def add_patient_sex(canvas:canvas.Canvas, sex:str):
