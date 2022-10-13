@@ -27,7 +27,7 @@ for x in range(0, 500):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, prof_solicitant_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, exam_results:str=None):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, prof_solicitant_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -96,6 +96,10 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_autorizaton_datetime(canvas=c, authDate=autorizaton_datetime)
             if type(c) == type(Response()): return c
+            c.setFont('Helvetica', 16)       
+            c = add_hospitalization_autorization_number(canvas=c, number=hospitalization_autorization_number)
+            if type(c) == type(Response()): return c
+            c.setFont('Helvetica', 9)       
 
             
         except:
@@ -613,6 +617,30 @@ def add_patient_adressCEP(canvas:canvas.Canvas, cep:int):
         return Response('Unknow error while adding patient Adress CEP', status=500)
 
 
+def add_hospitalization_autorization_number(canvas:canvas.Canvas, number:int):
+    """add hospitalization autorizatoin number
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        number (int): hospitalization autorization number
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(number) != type(int()):
+            return Response('Hospitalization autorizaton number has to be a int', status=400)
+        number = str(number)
+        if len(number) > 18:
+            return Response('Hospitalization autorizaton number cannot has more than 17 digits', status=400) 
+        else:
+            #Add the string centetred only this time
+            canvas.drawCentredString(x=480, y=66, text=number)
+            return canvas
+    except:
+        return Response('Unknow error while adding Hospitalization autorizaton number', status=500)
+
+
 def add_main_clinical_signs_symptoms(canvas:canvas.Canvas, symptoms:str):
     """Add Main clinical signs symptoms to document
 
@@ -1101,6 +1129,7 @@ if __name__ == "__main__":
         emission_org_code='OrgCode2022', 
         autorizaton_prof_document={'CPF':28445400070}, 
         autorizaton_datetime=datetime.datetime.now(),
+        hospitalization_autorization_number=1234567890,
         exam_results='Xray tibia broken'
     )
     if type(output) == type(Response()): 
