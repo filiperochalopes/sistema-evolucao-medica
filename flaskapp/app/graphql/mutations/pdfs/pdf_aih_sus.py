@@ -143,6 +143,9 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if insurance_company_ticket_number is not None:
                 c = add_insurance_company_ticket_number(canvas=c, ticket=insurance_company_ticket_number)
             if type(c) == type(Response()): return c
+            if insurance_company_series is not None and str(insurance_company_series).strip() != "":
+                c = add_insurance_company_series(canvas=c, series=insurance_company_series)
+            if type(c) == type(Response()): return c
 
 
         except:
@@ -985,6 +988,30 @@ def add_cid10_associated_causes(canvas:canvas.Canvas, cid10:str):
             return Response("Unable to add Cid10 associated causes because is longer than 4 characters or Smaller than 3", status=400)
     except:
         return Response('Unknow error while adding Cid10 associated causes', status=500)
+
+
+def add_insurance_company_series(canvas:canvas.Canvas, series:str):
+    """add insurance company series
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        series (str): insurance company series
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if type(series) != type(str()):
+            return Response('Insurance company series has to be string', status=400)
+        # verify if Insurance company series is smaller than 5 characters
+        series = str(series).strip()
+        if len(series) <= 13:
+            canvas = add_centralized_data(canvas=canvas, data=series, pos=(543, 183))
+            return canvas
+        else:
+            return Response("Unable to add Insurance company series because is longer than 13 characters", status=400)
+    except:
+        return Response('Unknow error while adding Insurance company series', status=500)
 
 
 def add_procedure_solicited(canvas:canvas.Canvas, procedure:str):
