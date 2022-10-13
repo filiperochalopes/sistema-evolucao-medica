@@ -149,6 +149,9 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if company_cnpj is not None:
                 c = add_company_cnpj(canvas=c, cnpj=company_cnpj)
             if type(c) == type(Response()): return c
+            if company_cnae is not None :
+                c = add_company_cnae(canvas=c, cnae=company_cnae)
+            if type(c) == type(Response()): return c
 
 
         except:
@@ -758,6 +761,31 @@ def add_company_cnpj(canvas:canvas.Canvas, cnpj:int):
             return Response('Company cnpj is not valid', status=400) 
     except:
         return Response('Unknow error while adding Company cnpj', status=500)
+
+
+def add_company_cnae(canvas:canvas.Canvas, cnae:int):
+    """add company cnae
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        cnae (int): company cnae
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if type(cnae) != type(int()):
+            return Response('Company cnae has to be a int', status=400)
+        cnae = str(cnae)
+        if len(cnae) == 7:
+            #Format cnae to add in doc
+            cnae = cnae[:2] + '.' + cnae[2:4] + '-' + cnae[4] + '-' + cnae[5:]
+            canvas = add_data(canvas=canvas, data=cnae, pos=(448, 156))
+            return canvas
+        else:
+            return Response('Company cnae is longer than 7 digits', status=400) 
+    except:
+        return Response('Unknow error while adding Company cnae', status=500)
 
 
 def add_chart_number(canvas:canvas.Canvas, number:int):
@@ -1512,7 +1540,7 @@ if __name__ == "__main__":
         insurance_company_ticket_number=123450123456, 
         insurance_company_series='Insurn Series',
         company_cnpj=37549670000171, 
-        company_cnae=1234567, 
+        company_cnae=5310501, 
         company_cbor=123456, 
         pension_status='employer'
     )
