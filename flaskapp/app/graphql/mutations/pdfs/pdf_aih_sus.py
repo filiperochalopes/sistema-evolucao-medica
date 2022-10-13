@@ -27,7 +27,7 @@ for x in range(0, 500):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, prof_solicitant_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, prof_solicitant_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None ,patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cd10:str=None, cid10_associated_causes:str=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -107,11 +107,14 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
                 return c
             else:
                 return Response('Some error happen when adding not null data to fields', status=500)
+
         #Adding data that can be null
         try:
             if exam_results is not None and str(exam_results).strip() != "":
                 c = add_exam_results(canvas=c, results=exam_results)
             if type(c) == type(Response()): return c
+            if chart_number is not None:
+                c = add_chart_number(canvas=c, number=chart_number)
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
 
@@ -616,6 +619,29 @@ def add_patient_adressCEP(canvas:canvas.Canvas, cep:int):
     except:
         return Response('Unknow error while adding patient Adress CEP', status=500)
 
+
+def add_chart_number(canvas:canvas, number:int):
+    """add chart number to document
+
+    Args:
+        canvas (canvas): canvas to use
+        number (int): chart number
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(number) != type(int()):
+            return Response('Chart number has to be a int', status=400)
+        number = str(number)
+        if len(number) > 18:
+            return Response('Chart number cannot has more than 17 digits', status=400) 
+        else:
+            #Add the string centetred only this time
+            canvas.drawCentredString(x=520, y=683, text=number)
+            return canvas
+    except:
+        return Response('Unknow error while adding Chart number', status=500)
 
 def add_hospitalization_autorization_number(canvas:canvas.Canvas, number:int):
     """add hospitalization autorizatoin number
@@ -1130,7 +1156,8 @@ if __name__ == "__main__":
         autorizaton_prof_document={'CPF':28445400070}, 
         autorizaton_datetime=datetime.datetime.now(),
         hospitalization_autorization_number=1234567890,
-        exam_results='Xray tibia broken'
+        exam_results='Xray tibia broken',
+        chart_number=1234
     )
     if type(output) == type(Response()): 
         print(output.response)
