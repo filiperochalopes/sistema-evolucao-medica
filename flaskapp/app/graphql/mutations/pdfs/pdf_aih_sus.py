@@ -152,6 +152,9 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if company_cnae is not None :
                 c = add_company_cnae(canvas=c, cnae=company_cnae)
             if type(c) == type(Response()): return c
+            if company_cbor is not None :
+                c = add_company_cbor(canvas=c, cbo=company_cbor)
+            if type(c) == type(Response()): return c
 
 
         except:
@@ -786,6 +789,31 @@ def add_company_cnae(canvas:canvas.Canvas, cnae:int):
             return Response('Company cnae is longer than 7 digits', status=400) 
     except:
         return Response('Unknow error while adding Company cnae', status=500)
+
+
+def add_company_cbor(canvas:canvas.Canvas, cbo:int):
+    """add company cbor to canvas
+
+    Args:
+        canvas (canvas.Canvas): canvas to add
+        cbo (int): company cbo
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if type(cbo) != type(int()):
+            return Response('Company cbo has to be a int', status=400)
+        cbo = str(cbo)
+        if len(cbo) == 6:
+            #Format cbo to add in doc
+            cbo = cbo[:5] + '-' + cbo[5:]
+            canvas = add_data(canvas=canvas, data=cbo, pos=(529, 156))
+            return canvas
+        else:
+            return Response('Company cbo is longer than 6 digits, remeber to use CBO 2002 format', status=400) 
+    except:
+        return Response('Unknow error while adding Company cbo', status=500)
 
 
 def add_chart_number(canvas:canvas.Canvas, number:int):
