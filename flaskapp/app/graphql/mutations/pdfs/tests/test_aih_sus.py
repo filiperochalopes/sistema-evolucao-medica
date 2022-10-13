@@ -121,24 +121,3 @@ def test_wrong_adressCEPtype():
 
 def test_invalid_patient_adressCEP():
     assert data_to_use(patient_adressCEP=12345671238).status == Response(status=400).status
-
-if __name__ == "__main__":
-    pdf_aih_sus.fill_pdf_aih_sus(
-        documentDatetime=datetime.datetime.now(), 
-        patient_name="iashubfiuyasgfuygasfgasygifuygsayfiasuygfyagsfiuygsydgfaiuyfyausfgiuasgfyagsfiuasgyfiuasygfvisuyagfiuyasfguyagfiuysagfiuyagfiuyg",
-        patient_cns=928976954930007,
-        patient_birthday=datetime.datetime.now(),
-        patient_sex='F',
-        patient_motherName="Patient Mother Name",
-        patient_document={'CPF':28445400070},
-        patient_adress='pacient street, 43, paciten, USA',
-        patient_phonenumber=44387694628,
-        patient_adressNumber=123456,
-        patient_adressNeigh='Patient Neighborhood',
-        patient_adressCity='Patient city',
-        patient_adressUF='sp',
-        patient_adressCEP=12345678,
-        patient_nationality='Brasileira',
-        patient_estimateWeight=123.32,
-        has_additional_healthInsurance=False
-        )
