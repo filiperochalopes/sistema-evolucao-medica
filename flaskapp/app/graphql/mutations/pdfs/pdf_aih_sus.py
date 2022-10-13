@@ -119,6 +119,10 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if patient_ethnicity is not None:
                 c = add_patient_ethnicity(canvas=c, ethnicity=patient_ethnicity)
             if type(c) == type(Response()): return c
+            if patient_responsible_name is not None and str(patient_responsible_name).strip() != "":
+                c = add_patient_responsible_name(canvas=c, name=patient_responsible_name)
+            if type(c) == type(Response()): return c
+
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
 
@@ -504,6 +508,29 @@ def add_patient_mother_name(canvas:canvas.Canvas, motherName:str):
     except:
         return Response('Unknow error while adding patient motherName', status=500)
 
+
+def add_patient_responsible_name(canvas:canvas.Canvas, name:str):
+    """add patient responsible name
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        name (str): patient responsible name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(name) != type(str()):
+            return Response('Responsible name has to be str', status=400)
+        # verify if patient responsible name is smaller than 60 characters
+        name = name.strip()
+        if 7 < len(name) <= 68:
+            canvas = add_data(canvas=canvas, data=name, pos=(25, 612))
+            return canvas
+        else:
+            return Response("Unable to add responsible name because is longer than 68 characters or Smaller than 7", status=400)
+    except:
+        return Response('Unknow error while adding responsible name', status=500)
 
 def add_emission_org_code(canvas:canvas.Canvas, code:str):
     """add emission organization code to document
