@@ -690,7 +690,7 @@ def test_more_than_limit_exam_results():
 
 
 #############################################################################
-# NORMAL TEXT VARIABLES
+# NORMAL TEXT VARIABLES THAT CANNOT BE NULL
 # initial_diagnostic
 # principalCid10
 # procedure_solicited
@@ -812,10 +812,136 @@ def test_more_than_limit_emission_org_code():
 
 
 
+##################################################################################
+# TEST INT VARIABLES CAN/CANNOT BE NULL
+# hospitalization_autorization_number
+# chart_number
+# patient_mother_phonenumber
+# patient_responsible_phonenumber
+# insurance_company_ticket_number
+# company_cnae
+# company_cbor
+# !!!!! TESTING
+# wrong type
+# test empty value
+# test empty space
+# short value
+# long value  
+
+def test_wrong_type_hospitalization_autorization_number():
+    assert data_to_use(hospitalization_autorization_number='131').status == Response(status=400).status
+
+def test_empty_value_hospitalization_autorization_number():
+    assert data_to_use(hospitalization_autorization_number='').status == Response(status=400).status
+
+def test_empty_spaces_hospitalization_autorization_number():
+    assert data_to_use(hospitalization_autorization_number='    ').status == Response(status=400).status
+
+def test_longValue_hospitalization_autorization_number():
+    assert data_to_use(emission_org_code=int(lenghtTest[:20])).status == Response(status=400).status
+
+def test_wrong_type_chart_number():
+    assert data_to_use(chart_number='131').status == Response(status=400).status
+
+def test_empty_value_chart_number():
+    assert type(data_to_use(chart_number=None)) != type(Response())
+
+def test_empty_spaces_chart_number():
+    assert data_to_use(chart_number='    ').status == Response(status=400).status
+
+def test_longValue_chart_number():
+    assert data_to_use(chart_number=int(lenghtTest[:20])).status == Response(status=400).status
+
+def test_shortValue_chart_number():
+    assert data_to_use(chart_number='a').status == Response(status=400).status
+
+def test_wrong_type_patient_mother_phonenumber():
+    assert data_to_use(patient_mother_phonenumber='131').status == Response(status=400).status
+
+def test_empty_value_patient_mother_phonenumber():
+    assert type(data_to_use(patient_mother_phonenumber=None)) != type(Response())
+
+def test_empty_spaces_patient_mother_phonenumber():
+    assert data_to_use(patient_mother_phonenumber='    ').status == Response(status=400).status
+
+def test_longValue_patient_mother_phonenumber():
+    assert data_to_use(patient_mother_phonenumber=int(lenghtTest[:14])).status == Response(status=400).status
+
+def test_shortValue_patient_mother_phonenumber():
+    assert data_to_use(patient_mother_phonenumber=1234567).status == Response(status=400).status
+
+def test_wrong_type_patient_responsible_phonenumber():
+    assert data_to_use(patient_responsible_phonenumber='131').status == Response(status=400).status
+
+def test_empty_value_patient_responsible_phonenumber():
+    assert type(data_to_use(patient_responsible_phonenumber=None)) != type(Response())
+
+def test_empty_spaces_patient_responsible_phonenumber():
+    assert data_to_use(patient_responsible_phonenumber='    ').status == Response(status=400).status
+
+def test_longValue_patient_responsible_phonenumber():
+    assert data_to_use(patient_responsible_phonenumber=int(lenghtTest[:14])).status == Response(status=400).status
+
+def test_shortValue_patient_responsible_phonenumber():
+    assert data_to_use(patient_responsible_phonenumber=1234567).status == Response(status=400).status
+
+def test_wrong_type_insurance_company_ticket_number():
+    assert data_to_use(insurance_company_ticket_number='131').status == Response(status=400).status
+
+def test_empty_value_insurance_company_ticket_number():
+    assert type(data_to_use(insurance_company_ticket_number=None)) != type(Response())
+
+def test_empty_spaces_insurance_company_ticket_number():
+    assert data_to_use(insurance_company_ticket_number='    ').status == Response(status=400).status
+
+def test_longValue_insurance_company_ticket_number():
+    assert data_to_use(insurance_company_ticket_number=int(lenghtTest[:18])).status == Response(status=400).status
+
+def test_shortValue_insurance_company_ticket_number():
+    assert type(data_to_use(insurance_company_ticket_number=12)) != type(Response(status=400))
+
+def test_wrong_type_company_cnae():
+    assert data_to_use(company_cnae='131').status == Response(status=400).status
+
+def test_empty_value_company_cnae():
+    assert type(data_to_use(company_cnae=None)) != type(Response())
+
+def test_empty_spaces_company_cnae():
+    assert data_to_use(company_cnae='    ').status == Response(status=400).status
+
+def test_longValue_company_cnae():
+    assert data_to_use(company_cnae=int(lenghtTest[:9])).status == Response(status=400).status
+
+def test_shortValue_company_cnae():
+    assert data_to_use(company_cnae=12312).status == Response(status=400).status
+
+def test_wrong_type_company_cbor():
+    assert data_to_use(company_cbor='131').status == Response(status=400).status
+
+def test_empty_value_company_cbor():
+    assert type(data_to_use(company_cbor=None)) != type(Response())
+
+def test_empty_spaces_company_cbor():
+    assert data_to_use(company_cbor='    ').status == Response(status=400).status
+
+def test_longValue_company_cbor():
+    assert data_to_use(company_cbor=int(lenghtTest[:9])).status == Response(status=400).status
+
+def test_shortValue_company_cbor():
+    assert data_to_use(company_cbor=12542).status == Response(status=400).status
 
 
-###################################################################################
+##############################################################################
+# TEST CNPJ VARIABLES
+# insurance_company_cnpj
+# company_cnpj
 
+##############################################################################
+# patient_ethnicity
+# patient_responsible_name
+# secondary_cid10
+# cid10_associated_causes
+# insurance_company_series
 
 def test_wrong_birthdaydatetimeType():    
     assert data_to_use(patient_birthday='aygduiaydg').status == Response(status=400).status
