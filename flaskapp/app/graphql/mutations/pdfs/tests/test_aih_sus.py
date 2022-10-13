@@ -12,7 +12,6 @@ def test_with_data_in_function():
     assert type(data_to_use()) != type(Response())
 
 def test_answer_with_all_fields():
-    
     assert type(data_to_use()) != type(Response())
 
 def test_awnser_with_only_required_data():
@@ -57,13 +56,12 @@ def test_name_longer():
 def test_empty_name():    
     assert data_to_use(patient_name='').status == Response(status=400).status
 
-
 def test_with_space_name():    
     assert data_to_use(patient_name='  ').status == Response(status=400).status
 
 def test_wrong_solicitationdatetimeType():    
     assert data_to_use(solicitation_datetime="aaaaa").status == Response(status=400).status
-    
+
 def test_wrong_birthdaydatetimeType():    
     assert data_to_use(patient_birthday='aygduiaydg').status == Response(status=400).status
 
@@ -75,7 +73,7 @@ def test_wrong_sexType():
 
 def test_wrong_sexOption():
     assert data_to_use(patient_sex='G').status == Response(status=400).status
-    
+
 def test_wrong_sexOptionExtend():    
     assert data_to_use(patient_sex='Female').status == Response(status=400).status
 
