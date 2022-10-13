@@ -563,11 +563,71 @@ def test_TO_optionLower_patient_adressUF():
 # patient_adressCEP
 # test wrong type
 # test empty value
+# test empty space value
 # invalid value
 # Long value
 
 def test_wrongtype_patient_adress():
     assert data_to_use(patient_adress=1212312).status == Response(status=400).status
+
+def test_empty_value_patient_adress():
+    assert data_to_use(patient_adress='').status == Response(status=400).status
+
+def test_empty_space_patient_adress():
+    assert data_to_use(patient_adress='  ').status == Response(status=400).status
+
+def test_invalid_value_patient_adress():
+    assert data_to_use(patient_adress='111').status == Response(status=400).status
+
+def test_long_value_patient_adress():
+    assert data_to_use(patient_adress='98714t926t\ouifhdoaiuhfouiahsdfouhadsufihaosfuhouihisuhfouhasofuhasoiufhaoisufhoaiushfiouahsfpiuhjsapfiadadasdasdadadadadadadqwe4jasfpaosijmfiosanfpioansfiujnsaiofjunaisfnsahjfnu8yaewnofipnkmxpkovjnoiushbfo8auyshfyaufbuasbfuwybeusosadfjh').status == Response(status=400).status
+
+def test_wrongtype_patient_adressCity():
+    assert data_to_use(patient_adressCity=1212312).status == Response(status=400).status
+
+def test_empty_value_patient_adressCity():
+    assert data_to_use(patient_adressCity='').status == Response(status=400).status
+
+def test_empty_space_patient_adressCity():
+    assert data_to_use(patient_adressCity='  ').status == Response(status=400).status
+
+def test_invalid_value_patient_adressCity():
+    assert data_to_use(patient_adressCity='111').status == Response(status=400).status
+
+def test_long_value_patient_adressCity():
+    assert data_to_use(patient_adressCity='98714t926t\ouifhdoaiuhfouiahsdfouhadsufihaosfuhouihisuhfouhasofuhasoiufhaoisufhoaiushfiouahsfpiuhjsapfiadadasdasdadadadadadadqwe4jasfpaosijmfiosanfpioansfiujnsaiofjunaisfnsahjfnu8yaewnofipnkmxpkovjnoiushbfo8auyshfyaufbuasbfuwybeusosadfjh').status == Response(status=400).status
+
+def test_wrongtype_patient_adressCity_ibgeCode():
+    assert data_to_use(patient_adressCity_ibgeCode='1212312').status == Response(status=400).status
+
+def test_empty_value_patient_adressCity_ibgeCode():
+    assert data_to_use(patient_adressCity_ibgeCode='').status == Response(status=400).status
+
+def test_empty_space_patient_adressCity_ibgeCode():
+    assert data_to_use(patient_adressCity_ibgeCode='  ').status == Response(status=400).status
+
+def test_invalid_value_patient_adressCity_ibgeCode():
+    assert data_to_use(patient_adressCity_ibgeCode=2411).status == Response(status=400).status
+
+def test_long_value_patient_adressCity_ibgeCode():
+    assert data_to_use(patient_adressCity_ibgeCode=52352352352352352352352352352).status == Response(status=400).status
+
+def test_wrongtype_patient_adressCEP():
+    assert data_to_use(patient_adressCEP='1212312').status == Response(status=400).status
+
+def test_empty_value_patient_adressCEP():
+    assert data_to_use(patient_adressCEP='').status == Response(status=400).status
+
+def test_empty_space_patient_adressCEP():
+    assert data_to_use(patient_adressCEP='  ').status == Response(status=400).status
+
+def test_invalid_value_patient_adressCEP():
+    assert data_to_use(patient_adressCEP=2411).status == Response(status=400).status
+
+def test_long_value_patient_adressCEP():
+    assert data_to_use(patient_adressCEP=52352352352352352352352352352).status == Response(status=400).status
+
+#############################################################################
 
 
 
