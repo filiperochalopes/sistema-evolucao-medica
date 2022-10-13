@@ -122,6 +122,9 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if patient_responsible_name is not None and str(patient_responsible_name).strip() != "":
                 c = add_patient_responsible_name(canvas=c, name=patient_responsible_name)
             if type(c) == type(Response()): return c
+            if patient_mother_phonenumber is not None:
+                c = add_patient_mother_phonenumber(canvas=c, number=patient_mother_phonenumber)
+            if type(c) == type(Response()): return c
 
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
@@ -532,6 +535,7 @@ def add_patient_responsible_name(canvas:canvas.Canvas, name:str):
     except:
         return Response('Unknow error while adding responsible name', status=500)
 
+
 def add_emission_org_code(canvas:canvas.Canvas, code:str):
     """add emission organization code to document
 
@@ -697,6 +701,7 @@ def add_chart_number(canvas:canvas, number:int):
             return canvas
     except:
         return Response('Unknow error while adding Chart number', status=500)
+
 
 def add_hospitalization_autorization_number(canvas:canvas.Canvas, number:int):
     """add hospitalization autorizatoin number
@@ -920,7 +925,6 @@ def add_procedure_code(canvas:canvas.Canvas, code:str):
 
     Returns:
         canvas or Response:canvas if everthing is allright or Response if hapens some error 
-
     """    
     try:
         if type(code) != type(str()):
@@ -941,6 +945,34 @@ def add_procedure_code(canvas:canvas.Canvas, code:str):
             return Response("Procedure code solicited dont have 10 characters", status=400)
     except:
         return Response('Unknow error while adding procedure code solicited', status=500)
+
+
+def add_patient_mother_phonenumber(canvas:canvas.Canvas, number:int):
+    """add patien mother phonenumber
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        number (int): patien mother number
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(number) != type(int()):
+            return Response('mother phone number has to be int', status=400)
+        number = str(number)
+        if len(number) == 10:
+            cont = 0
+            xpos = 415
+            while cont < 10:
+                canvas = add_data(canvas=canvas, data=number[cont], pos=(xpos, 631))
+                cont += 1
+                xpos += 17
+            return canvas
+        else:
+            return Response("mother phone number solicited has to be 10 digits, do not add the 9 after DDD", status=400)
+    except:
+        return Response('Unknow error while adding mother phone number solicited', status=500)
 
 
 def add_clinic(canvas:canvas.Canvas, name:str):
