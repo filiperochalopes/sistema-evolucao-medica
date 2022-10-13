@@ -125,6 +125,9 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if patient_mother_phonenumber is not None:
                 c = add_patient_mother_phonenumber(canvas=c, number=patient_mother_phonenumber)
             if type(c) == type(Response()): return c
+            if patient_responsible_phonenumber is not None:
+                c = add_patient_responsible_phonenumber(canvas=c, number=patient_responsible_phonenumber)
+            if type(c) == type(Response()): return c
 
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
@@ -975,6 +978,34 @@ def add_patient_mother_phonenumber(canvas:canvas.Canvas, number:int):
         return Response('Unknow error while adding mother phone number solicited', status=500)
 
 
+def add_patient_responsible_phonenumber(canvas:canvas.Canvas, number:int):
+    """add patietn respnosible phone number
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        number (int): responsible phone number
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(number) != type(int()):
+            return Response('responsible phone number has to be int', status=400)
+        number = str(number)
+        if len(number) == 10:
+            cont = 0
+            xpos = 415
+            while cont < 10:
+                canvas = add_data(canvas=canvas, data=number[cont], pos=(xpos, 608))
+                cont += 1
+                xpos += 17
+            return canvas
+        else:
+            return Response("responsible phone number solicited has to be 10 digits, do not add the 9 after DDD", status=400)
+    except:
+        return Response('Unknow error while adding responsible phone number solicited', status=500)
+
+
 def add_clinic(canvas:canvas.Canvas, name:str):
     """add clinic name to document
 
@@ -1248,7 +1279,7 @@ if __name__ == "__main__":
         patient_ethnicity='Preta', 
         patient_responsible_name='Patient Responsible Name', 
         patient_mother_phonenumber=5613248546, 
-        patient_responsible_phonenumber=5613248546, 
+        patient_responsible_phonenumber=8564721598, 
         secondary_cd10='A01'
     )
     if type(output) == type(Response()): 
