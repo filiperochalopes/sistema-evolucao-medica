@@ -27,7 +27,7 @@ for x in range(0, 500):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, prof_solicitant_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None ,patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cd10:str=None, cid10_associated_causes:str=None):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, prof_solicitant_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cd10:str=None, cid10_associated_causes:str=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -115,6 +115,10 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             if chart_number is not None:
                 c = add_chart_number(canvas=c, number=chart_number)
+            if type(c) == type(Response()): return c
+            if patient_ethnicity is not None:
+                c = add_patient_ethnicity(canvas=c, ethnicity=patient_ethnicity)
+            if type(c) == type(Response()): return c
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
 
@@ -157,6 +161,30 @@ def add_establishment_solitc_name(canvas:canvas.Canvas, name:str):
             return Response("Unable to add Solicitate Establishment name because is longer than 78 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding Solicitate Establishment  name', status=500)
+
+
+def add_patient_ethnicity(canvas:canvas.Canvas, ethnicity:str):
+    """add patient ethnicity
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        ethnicity (str): paien ethnicity
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(ethnicity) != type(str()):
+            return Response('Patient ethnicity has to be string', status=400)
+        # verify if Patient ethnicity is smaller than 60 characters
+        ethnicity = str(ethnicity)
+        if 4 < len(ethnicity.strip()) <= 10:
+            canvas = add_data(canvas=canvas, data=ethnicity, pos=(516, 658))
+            return canvas
+        else:
+            return Response("Unable to add Patient ethnicity because is longer than 10 characters or Smaller than 5", status=400)
+    except:
+        return Response('Unknow error while adding Patient ethnicity', status=500)
 
 
 def add_establishment_solitc_cnes(canvas:canvas.Canvas, cnes:int):
@@ -1157,7 +1185,12 @@ if __name__ == "__main__":
         autorizaton_datetime=datetime.datetime.now(),
         hospitalization_autorization_number=1234567890,
         exam_results='Xray tibia broken',
-        chart_number=1234
+        chart_number=1234,
+        patient_ethnicity='Preta', 
+        patient_responsible_name='Patient Responsible Name', 
+        patient_mother_phonenumber=5613248546, 
+        patient_responsible_phonenumber=5613248546, 
+        secondary_cd10='A01'
     )
     if type(output) == type(Response()): 
         print(output.response)
