@@ -140,6 +140,9 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if insurance_company_cnpj is not None:
                 c = add_insurance_company_cnpj(canvas=c, cnpj=insurance_company_cnpj)
             if type(c) == type(Response()): return c
+            if insurance_company_ticket_number is not None:
+                c = add_insurance_company_ticket_number(canvas=c, ticket=insurance_company_ticket_number)
+            if type(c) == type(Response()): return c
 
 
         except:
@@ -1094,6 +1097,28 @@ def add_patient_responsible_phonenumber(canvas:canvas.Canvas, number:int):
     except:
         return Response('Unknow error while adding responsible phone number solicited', status=500)
 
+def add_insurance_company_ticket_number(canvas:canvas.Canvas, ticket:int):
+    """add insurance company ticket number
+
+    Args:
+        canvas (canvas.Canvas): canvas to add
+        ticket (int): company insurance ticket
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(ticket) != type(int()):
+            return Response('Insurance Company ticket number has to be int', status=400)
+        ticket = str(ticket)
+        if len(ticket) <= 16:
+            canvas = add_centralized_data(canvas=canvas, data=ticket, pos=(465, 183))
+            return canvas
+        else:
+            return Response("Insurance company ticket has to be smaller than 16 digits", status=400)
+    except:
+        return Response('Unknow error while adding responsible phone ticket solicited', status=500)
+
 
 def add_clinic(canvas:canvas.Canvas, name:str):
     """add clinic name to document
@@ -1326,6 +1351,25 @@ def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
         return Response("Error when adding data to document with canvas", status=500)
 
 
+def add_centralized_data(canvas:canvas.Canvas, data:str, pos:tuple):
+    """Add centralized_data in pdf using canvas object
+
+    Args:
+        canvas (canvas.Canvas): canvas that will be used to add centralized_data
+        data (str): centralized_data to be added
+        pos (tuple): centralized_data insert position in points
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response: with the error)
+    """
+    try:
+        canvas.drawCentredString(pos[0], pos[1], data)
+        return canvas
+    except:
+        return Response("Error when adding centralized data to document with canvas", status=500)
+
 def add_square(canvas:canvas.Canvas, pos:tuple, size:tuple=(9, 9)):
     """Add square in document using canvas object
 
@@ -1407,7 +1451,7 @@ if __name__ == "__main__":
         cid10_associated_causes='A02',
         acident_type='work_path', 
         insurance_company_cnpj=37549670000171, 
-        insurance_company_ticket_number=12345, 
+        insurance_company_ticket_number=123450123456, 
         insurance_company_series='Insurn Series',
         company_cnpj=37549670000171, 
         company_cnae=1234567, 
