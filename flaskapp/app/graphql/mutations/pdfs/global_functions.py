@@ -117,3 +117,4 @@ def isCNPJvalid(cnpj:str):
 if __name__ == "__main__":
     cpf = 142342343234
     print(isCPFvalid(cpf))
+    

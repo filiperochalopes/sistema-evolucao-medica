@@ -146,6 +146,9 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if insurance_company_series is not None and str(insurance_company_series).strip() != "":
                 c = add_insurance_company_series(canvas=c, series=insurance_company_series)
             if type(c) == type(Response()): return c
+            if company_cnpj is not None:
+                c = add_company_cnpj(canvas=c, cnpj=company_cnpj)
+            if type(c) == type(Response()): return c
 
 
         except:
@@ -726,7 +729,35 @@ def add_insurance_company_cnpj(canvas:canvas.Canvas, cnpj:int):
         else:
             return Response('Insurance company cnpj is not valid', status=400) 
     except:
-        return Response('Unknow error while adding patient Adress CEP', status=500)
+        return Response('Unknow error while adding Insurance company cnpj', status=500)
+
+
+def add_company_cnpj(canvas:canvas.Canvas, cnpj:int):
+    """add company cnpj to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to add
+        cnpj (int): company cnpj
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if type(cnpj) != type(int()):
+            return Response('Company cnpj has to be a int', status=400)
+        cnpj = str(cnpj)
+        if global_functions.isCNPJvalid(cnpj):
+            cont = 0
+            xpos = 169
+            while cont < 14:
+                canvas = add_data(canvas=canvas, data=cnpj[cont], pos=(xpos, 156))
+                cont += 1
+                xpos += 18
+            return canvas
+        else:
+            return Response('Company cnpj is not valid', status=400) 
+    except:
+        return Response('Unknow error while adding Company cnpj', status=500)
 
 
 def add_chart_number(canvas:canvas.Canvas, number:int):
@@ -1003,7 +1034,7 @@ def add_insurance_company_series(canvas:canvas.Canvas, series:str):
     try:
         if type(series) != type(str()):
             return Response('Insurance company series has to be string', status=400)
-        # verify if Insurance company series is smaller than 5 characters
+        # verify if Insurance company series is longer than 13 characters
         series = str(series).strip()
         if len(series) <= 13:
             canvas = add_centralized_data(canvas=canvas, data=series, pos=(543, 183))
