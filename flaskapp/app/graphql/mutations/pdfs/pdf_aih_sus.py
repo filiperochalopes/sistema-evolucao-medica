@@ -137,6 +137,9 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if acident_type is not None and str(acident_type).strip() != "":
                 c = add_acident_type(canvas=c, acident=acident_type)
             if type(c) == type(Response()): return c
+            if insurance_company_cnpj is not None:
+                c = add_insurance_company_cnpj(canvas=c, cnpj=insurance_company_cnpj)
+            if type(c) == type(Response()): return c
 
 
         except:
@@ -692,7 +695,35 @@ def add_patient_adressCEP(canvas:canvas.Canvas, cep:int):
         return Response('Unknow error while adding patient Adress CEP', status=500)
 
 
-def add_chart_number(canvas:canvas, number:int):
+def add_insurance_company_cnpj(canvas:canvas.Canvas, cnpj:int):
+    """Add insurance company cpnj to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        cnpj (int): cnpj to add
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(cnpj) != type(int()):
+            return Response('Insurance company cnpj has to be a int', status=400)
+        cnpj = str(cnpj)
+        if global_functions.isCNPJvalid(cnpj):
+            cont = 0
+            xpos = 169
+            while cont < 14:
+                canvas = add_data(canvas=canvas, data=cnpj[cont], pos=(xpos, 183))
+                cont += 1
+                xpos += 18
+            return canvas
+        else:
+            return Response('Insurance company cnpj is not valid', status=400) 
+    except:
+        return Response('Unknow error while adding patient Adress CEP', status=500)
+
+
+def add_chart_number(canvas:canvas.Canvas, number:int):
     """add chart number to document
 
     Args:
