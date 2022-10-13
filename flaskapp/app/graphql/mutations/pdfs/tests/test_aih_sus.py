@@ -690,6 +690,132 @@ def test_more_than_limit_exam_results():
 
 
 #############################################################################
+# NORMAL TEXT VARIABLES
+# initial_diagnostic
+# principalCid10
+# procedure_solicited
+# procedure_code
+# clinic
+# internation_carater
+# emission_org_code
+# test wrong type
+# test empty value
+# test empty spaces 
+# test short text
+# test more than limit
+
+def test_wrong_type_initial_diagnostic():
+    assert data_to_use(initial_diagnostic=131).status == Response(status=400).status
+
+def test_empty_value_initial_diagnostic():
+    assert data_to_use(initial_diagnostic='').status == Response(status=400).status
+
+def test_empty_spaces_initial_diagnostic():
+    assert data_to_use(initial_diagnostic='    ').status == Response(status=400).status
+
+def test_shortText_initial_diagnostic():
+    assert data_to_use(initial_diagnostic='abla').status == Response(status=400).status
+
+def test_more_than_limit_initial_diagnostic():
+    assert data_to_use(initial_diagnostic=lenghtTest[:65]).status == Response(status=400).status
+
+def test_wrong_type_principalCid10():
+    assert data_to_use(principalCid10=131).status == Response(status=400).status
+
+def test_empty_value_principalCid10():
+    assert data_to_use(principalCid10='').status == Response(status=400).status
+
+def test_empty_spaces_principalCid10():
+    assert data_to_use(principalCid10='    ').status == Response(status=400).status
+
+def test_shortText_principalCid10():
+    assert data_to_use(principalCid10='ab').status == Response(status=400).status
+
+def test_more_than_limit_principalCid10():
+    assert data_to_use(principalCid10=lenghtTest[:6]).status == Response(status=400).status
+
+def test_wrong_type_procedure_solicited():
+    assert data_to_use(procedure_solicited=131).status == Response(status=400).status
+
+def test_empty_value_procedure_solicited():
+    assert data_to_use(procedure_solicited='').status == Response(status=400).status
+
+def test_empty_spaces_procedure_solicited():
+    assert data_to_use(procedure_solicited='    ').status == Response(status=400).status
+
+def test_shortText_procedure_solicited():
+    assert data_to_use(procedure_solicited='ab11').status == Response(status=400).status
+
+def test_more_than_limit_procedure_solicited():
+    assert data_to_use(procedure_solicited=lenghtTest[:70]).status == Response(status=400).status
+
+def test_wrong_type_procedure_code():
+    assert data_to_use(procedure_code=131).status == Response(status=400).status
+
+def test_empty_value_procedure_code():
+    assert data_to_use(procedure_code='').status == Response(status=400).status
+
+def test_empty_spaces_procedure_code():
+    assert data_to_use(procedure_code='    ').status == Response(status=400).status
+
+def test_shortText_procedure_code():
+    assert data_to_use(procedure_code='ab11').status == Response(status=400).status
+
+def test_more_than_limit_procedure_code():
+    assert data_to_use(procedure_code=lenghtTest[:12]).status == Response(status=400).status
+
+def test_wrong_type_clinic():
+    assert data_to_use(clinic=131).status == Response(status=400).status
+
+def test_empty_value_clinic():
+    assert data_to_use(clinic='').status == Response(status=400).status
+
+def test_empty_spaces_clinic():
+    assert data_to_use(clinic='    ').status == Response(status=400).status
+
+def test_shortText_clinic():
+    assert data_to_use(clinic='ab11').status == Response(status=400).status
+
+def test_more_than_limit_clinic():
+    assert data_to_use(clinic=lenghtTest[:25]).status == Response(status=400).status
+
+def test_wrong_type_internation_carater():
+    assert data_to_use(internation_carater=131).status == Response(status=400).status
+
+def test_empty_value_internation_carater():
+    assert data_to_use(internation_carater='').status == Response(status=400).status
+
+def test_empty_spaces_internation_carater():
+    assert data_to_use(internation_carater='    ').status == Response(status=400).status
+
+def test_shortText_internation_carater():
+    assert data_to_use(internation_carater='ab11').status == Response(status=400).status
+
+def test_more_than_limit_internation_carater():
+    assert data_to_use(internation_carater=lenghtTest[:25]).status == Response(status=400).status
+
+def test_wrong_type_emission_org_code():
+    assert data_to_use(emission_org_code=131).status == Response(status=400).status
+
+def test_empty_value_emission_org_code():
+    assert data_to_use(emission_org_code='').status == Response(status=400).status
+
+def test_empty_spaces_emission_org_code():
+    assert data_to_use(emission_org_code='    ').status == Response(status=400).status
+
+def test_shortText_emission_org_code():
+    assert data_to_use(emission_org_code='a').status == Response(status=400).status
+
+def test_more_than_limit_emission_org_code():
+    assert data_to_use(emission_org_code=lenghtTest[:25]).status == Response(status=400).status
+
+
+
+
+
+
+###################################################################################
+
 
 def test_wrong_birthdaydatetimeType():    
     assert data_to_use(patient_birthday='aygduiaydg').status == Response(status=400).status
