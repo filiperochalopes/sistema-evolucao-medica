@@ -92,6 +92,8 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             c = add_emission_org_code(canvas=c, code=emission_org_code)
             if type(c) == type(Response()): return c
+            c = add_autorizaton_prof_document(canvas=c, document=autorizaton_prof_document)
+            if type(c) == type(Response()): return c
             
         except:
             if type(c) == type(Response()):
@@ -915,6 +917,58 @@ def add_prof_solicitant_document(canvas:canvas.Canvas, document:dict):
             return Response('The document was not CPF or CNS', status=400)
     except:
         return Response('Unknow error while adding Profissional solicitate Document', status=500)
+
+
+def add_autorizaton_prof_document(canvas:canvas.Canvas, document:dict):
+    try:
+        if type(document) != type(dict()):
+            return Response('Profissional autorizate document has to be a dict {"document":"number"}', status=400)
+        # See id document is CPF or CNS
+        if 'CNS' in document.keys():
+            if type(document['CNS']) != type(int()):
+                return Response('Profissional autorizate value CNS has to be int', status=400)
+            if global_functions.isCNSvalid(document['CNS']):
+                canvas = add_square(canvas=canvas, pos=(41, 66))
+                cont = 0
+                xpos = 147
+                cns = str(document['CNS'])
+                while cont < 15:
+                    canvas = add_data(canvas=canvas, data=cns[cont], pos=(xpos, 66))
+                    cont += 1
+                    xpos += 15
+                    if cont > 5 and cont < 8:
+                        xpos += 3
+                    elif cont == 5:
+                        xpos += 6
+                    elif cont > 12:
+                        xpos += 4
+                return canvas
+            else:
+                return Response('Profissional autorizate CNS is not valid', status=400)
+        elif 'CPF' in document.keys():
+            if type(document['CPF']) != type(int()):
+                return Response('Profissional autorizate value CPF has to be int', status=400)
+            #Format cpf to validate
+            cpf = str(document['CPF'])
+            numbersCpf = str(cpf)
+            cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
+            if global_functions.isCPFvalid(cpf):
+                canvas = add_square(canvas=canvas, pos=(290, 244))
+                cont = 0
+                xpos = 339
+                while cont < 11:
+                    canvas = add_data(canvas=canvas, data=numbersCpf[cont], pos=(xpos, 246))
+                    cont += 1
+                    xpos += 15
+                    if cont > 5 and cont < 7:
+                        xpos += 6
+                return canvas
+            else:
+                return Response('Profissional autorizate CPF is not valid', status=400)
+        else:
+            return Response('The document was not CPF or CNS', status=400)
+    except:
+        return Response('Unknow error while adding Profissional autorizate Document', status=500)
 
 
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
