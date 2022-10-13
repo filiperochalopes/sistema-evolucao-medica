@@ -935,6 +935,28 @@ def test_shortValue_company_cbor():
 # TEST CNPJ VARIABLES
 # insurance_company_cnpj
 # company_cnpj
+# test wrong type
+# test invalid cnpj
+# test valid cpnj
+
+def test_wrong_type_insurance_company_cnpj():
+    assert data_to_use(insurance_company_cnpj='131').status == Response(status=400).status
+
+def test_invalidCNPJ_insurance_company_cnpj():
+    assert data_to_use(insurance_company_cnpj=527415297419524).status == Response(status=400).status
+
+def test_validCNPJ_insurance_company_cnpj():
+    assert type(data_to_use(insurance_company_cnpj=37549670000171)) != type(Response())
+
+def test_wrong_type_company_cnpj():
+    assert data_to_use(company_cnpj='131').status == Response(status=400).status
+
+def test_invalidCNPJ_company_cnpj():
+    assert data_to_use(company_cnpj=527415297419524).status == Response(status=400).status
+
+def test_validCNPJ_company_cnpj():
+    assert type(data_to_use(company_cnpj=37549670000171)) != type(Response())
+
 
 ##############################################################################
 # patient_ethnicity
