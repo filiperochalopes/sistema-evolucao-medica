@@ -618,7 +618,8 @@ def add_patient_adressCity(canvas:canvas.Canvas, city:str):
     try:
         if type(city) != type(str()):
             return Response('Patient adress city has to be a str', status=400)
-        if 7 < len(city) > 59:
+        city = city.strip()
+        if 7 > len(city) or len(city) > 59:
             return Response('Unable to add patient city is longer than 59 characters or smaller than 7', status=400)
         else:
             canvas = add_data(canvas=canvas, data=city, pos=(25, 566))
@@ -869,8 +870,9 @@ def add_main_clinical_signs_symptoms(canvas:canvas.Canvas, symptoms:str):
     try:
         if type(symptoms) != type(str()):
             return Response('Clinical Signs Symptoms has to be a string', status=400)
-        if len(symptoms) > 1060:
-            return Response('Clinical Signs Symptoms is too big, has to been in 1060 characters', status=400)
+        symptoms = symptoms.strip()
+        if 5 > len(symptoms) or len(symptoms) > 1060:
+            return Response('Clinical Signs Symptoms has to be at least 5 characters and not bigger than 1060 characters', status=400)
         str_symptoms = ''
         brokeLinexTimes = int(len(symptoms)/107)
         currentLine = 107
@@ -908,8 +910,8 @@ def add_conditions_justify_hospitalization(canvas:canvas.Canvas, conditions:str)
     try:
         if type(conditions) != type(str()):
             return Response('Conditions to Justify Hospitalization has to be a string', status=400)
-        if len(conditions) > 425:
-            return Response('Conditions to Justify Hospitalization is too big, has to been in 425 characters', status=400)
+        if 5 > len(conditions) or len(conditions) > 425:
+            return Response('Conditions to Justify Hospitalization has to be at least 5 characters and not bigger than 425 characters', status=400)
         str_conditions = ''
         brokeLinexTimes = int(len(conditions)/107)
         currentLine = 107
@@ -947,8 +949,8 @@ def add_exam_results(canvas:canvas.Canvas, results:str):
     try:
         if type(results) != type(str()):
             return Response('Patient exame results has to be a string', status=400)
-        if len(results) > 425:
-            return Response('Patient exame results  is too big, has to been in 425 characters', status=400)
+        if 5 > len(results) or len(results) > 425:
+            return Response('Patient exame results has to be at least 5 characters and not bigger than 425 characters', status=400)
         str_results = ''
         brokeLinexTimes = int(len(results)/107)
         currentLine = 107
