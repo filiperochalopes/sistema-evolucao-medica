@@ -27,7 +27,7 @@ for x in range(0, 500):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, prof_solicitant_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cd10:str=None, cid10_associated_causes:str=None):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, prof_solicitant_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cid10:str=None, cid10_associated_causes:str=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -127,6 +127,12 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if type(c) == type(Response()): return c
             if patient_responsible_phonenumber is not None:
                 c = add_patient_responsible_phonenumber(canvas=c, number=patient_responsible_phonenumber)
+            if type(c) == type(Response()): return c
+            if secondary_cid10 is not None and str(secondary_cid10).strip() != "":
+                c = add_secondary_cid10(canvas=c, cid10=secondary_cid10)
+            if type(c) == type(Response()): return c
+            if cid10_associated_causes is not None and str(cid10_associated_causes).strip() != "":
+                c = add_cid10_associated_causes(canvas=c, cid10=cid10_associated_causes)
             if type(c) == type(Response()): return c
 
         except:
@@ -895,6 +901,54 @@ def add_principalCid10(canvas:canvas.Canvas, cid10:str):
         return Response('Unknow error while adding patient principal cid10', status=500)
 
 
+def add_secondary_cid10(canvas:canvas.Canvas, cid10:str):
+    """add secondary cid10 to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        cid10 (str): cid10
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if type(cid10) != type(str()):
+            return Response('Patient secondary cid10 has to be string', status=400)
+        # verify if patient secondary cid10 is smaller than 5 characters
+        cid10 = str(cid10).strip()
+        if 2 < len(cid10) <= 4:
+            canvas = add_data(canvas=canvas, data=cid10, pos=(406, 314))
+            return canvas
+        else:
+            return Response("Unable to add patient secondary cid10 because is longer than 4 characters or Smaller than 3", status=400)
+    except:
+        return Response('Unknow error while adding patient secondary cid10', status=500)
+
+
+def add_cid10_associated_causes(canvas:canvas.Canvas, cid10:str):
+    """add cid10 associated causes
+
+    Args:
+        canvas (canvas.Canvas): canvas to add
+        cid10 (str): cid10 associated causes
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if type(cid10) != type(str()):
+            return Response('Cid10 associated causes has to be string', status=400)
+        # verify if Cid10 associated causes is smaller than 5 characters
+        cid10 = str(cid10).strip()
+        if 2 < len(cid10) <= 4:
+            canvas = add_data(canvas=canvas, data=cid10, pos=(512, 314))
+            return canvas
+        else:
+            return Response("Unable to add Cid10 associated causes because is longer than 4 characters or Smaller than 3", status=400)
+    except:
+        return Response('Unknow error while adding Cid10 associated causes', status=500)
+
+
 def add_procedure_solicited(canvas:canvas.Canvas, procedure:str):
     """add procedure solicited to document
 
@@ -1280,7 +1334,8 @@ if __name__ == "__main__":
         patient_responsible_name='Patient Responsible Name', 
         patient_mother_phonenumber=5613248546, 
         patient_responsible_phonenumber=8564721598, 
-        secondary_cd10='A01'
+        secondary_cid10='A01',
+        cid10_associated_causes='A02'
     )
     if type(output) == type(Response()): 
         print(output.response)
