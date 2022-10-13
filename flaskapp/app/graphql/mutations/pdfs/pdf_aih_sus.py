@@ -27,7 +27,7 @@ for x in range(0, 500):
 # Seção de Acidentes ou Violências e Autorização.
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int,
-establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, prof_solicitant_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cid10:str=None, cid10_associated_causes:str=None):
+establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, prof_solicitant_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cid10:str=None, cid10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:int=None, insurance_company_ticket_number:int=None, insurance_company_series:str=None,company_cnpj:int=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -134,6 +134,10 @@ establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, pati
             if cid10_associated_causes is not None and str(cid10_associated_causes).strip() != "":
                 c = add_cid10_associated_causes(canvas=c, cid10=cid10_associated_causes)
             if type(c) == type(Response()): return c
+            if acident_type is not None and str(acident_type).strip() != "":
+                c = add_acident_type(canvas=c, acident=acident_type)
+            if type(c) == type(Response()): return c
+
 
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
@@ -1237,6 +1241,40 @@ def add_autorizaton_prof_document(canvas:canvas.Canvas, document:dict):
         return Response('Unknow error while adding Profissional autorizate Document', status=500)
 
 
+def add_acident_type(canvas:canvas.Canvas, acident:str):
+    """add acident type to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        acident (str): acident type
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if type(acident) != type(str()):
+            return Response('Acident type has to be a str', status=400)
+        # See if acident type is valid
+        acidentTypes = ['traffic', 'work', 'work_path']
+        acident = acident.lower()
+        if acident in acidentTypes:
+            if acident == 'traffic':
+                canvas = add_square(canvas=canvas, pos=(38, 184))
+                return canvas
+            elif acident == 'work':
+                canvas = add_square(canvas=canvas, pos=(38, 170))
+                return canvas
+            elif acident == 'work_path':
+                canvas = add_square(canvas=canvas, pos=(38, 156))
+                return canvas
+            else:
+                return Response('Unknow error while searching Acident type', status=500)
+        else:
+            return Response('The acident type has to be "traffic", "work" or "work_path"', status=400)
+    except:
+        return Response('Unknow error while adding Acident type', status=500)
+
+
 def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
@@ -1335,7 +1373,15 @@ if __name__ == "__main__":
         patient_mother_phonenumber=5613248546, 
         patient_responsible_phonenumber=8564721598, 
         secondary_cid10='A01',
-        cid10_associated_causes='A02'
+        cid10_associated_causes='A02',
+        acident_type='work_path', 
+        insurance_company_cnpj=37549670000171, 
+        insurance_company_ticket_number=12345, 
+        insurance_company_series='Insurn Series',
+        company_cnpj=37549670000171, 
+        company_cnae=1234567, 
+        company_cbor=123456, 
+        pension_status='employer'
     )
     if type(output) == type(Response()): 
         print(output.response)
