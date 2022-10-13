@@ -920,6 +920,15 @@ def add_prof_solicitant_document(canvas:canvas.Canvas, document:dict):
 
 
 def add_autorizaton_prof_document(canvas:canvas.Canvas, document:dict):
+    """add document type and number in pdf
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        document (dict): dict with doc name and numbers
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
     try:
         if type(document) != type(dict()):
             return Response('Profissional autorizate document has to be a dict {"document":"number"}', status=400)
@@ -953,11 +962,11 @@ def add_autorizaton_prof_document(canvas:canvas.Canvas, document:dict):
             numbersCpf = str(cpf)
             cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
             if global_functions.isCPFvalid(cpf):
-                canvas = add_square(canvas=canvas, pos=(290, 244))
+                canvas = add_square(canvas=canvas, pos=(95, 66))
                 cont = 0
-                xpos = 339
+                xpos = 149
                 while cont < 11:
-                    canvas = add_data(canvas=canvas, data=numbersCpf[cont], pos=(xpos, 246))
+                    canvas = add_data(canvas=canvas, data=numbersCpf[cont], pos=(xpos, 66))
                     cont += 1
                     xpos += 15
                     if cont > 5 and cont < 7:
@@ -1059,7 +1068,7 @@ if __name__ == "__main__":
         solicitation_datetime=datetime.datetime.now(), 
         autorization_prof_name='Autorization professional name', 
         emission_org_code='OrgCode2022', 
-        autorizaton_prof_document={'CNS':928976954930007}, 
+        autorizaton_prof_document={'CPF':28445400070}, 
         autorizaton_datetime=datetime.datetime.now(),
         exam_results='Xray tibia broken'
     )
