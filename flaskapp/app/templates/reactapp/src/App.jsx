@@ -8,12 +8,12 @@ import { ThemeProvider } from "styled-components";
 
 function App() {
   return (
-    <ModalContextProvider>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <ModalContextProvider>
         <GlobalStyles />
         <Router />
-      </ThemeProvider>
-    </ModalContextProvider>
+      </ModalContextProvider>
+    </ThemeProvider>
   );
 }
 export default App;

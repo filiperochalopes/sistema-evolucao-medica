@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export default styled.div`
   max-width: 100vw;
-  height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
 `;
@@ -10,14 +10,19 @@ export default styled.div`
 export const Header = styled.header`
   background-color: ${({ theme }) => theme.colors.green};
   width: 100%;
-  min-height: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  img {
-    height: 2.75rem;
-  }
+  ${({ defaultHeight }) =>
+    defaultHeight &&
+    css`
+      min-height: 5rem;
+
+      img {
+        height: 2.75rem;
+      }
+    `}
 `;
 
 export const Main = styled.main`
@@ -25,6 +30,7 @@ export const Main = styled.main`
   display: flex;
   flex: 1;
   justify-content: center;
+  padding: 0 2rem;
 
   > div {
     width: 100%;

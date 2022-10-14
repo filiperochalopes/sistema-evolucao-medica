@@ -60,6 +60,10 @@ const ModalContextProvider = ({ children }) => {
     ]);
   }
 
+  useEffect(() => {
+    addModal({ content: <></>, title: "title" });
+  }, []);
+
   return (
     <Context.Provider value={{ addModal }}>
       {ReactDOM.createPortal(

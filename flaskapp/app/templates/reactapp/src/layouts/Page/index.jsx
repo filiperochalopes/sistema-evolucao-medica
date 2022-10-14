@@ -7,7 +7,7 @@ import React from "react";
 function PageTemplate({ children, headerComponent }) {
   return (
     <Container>
-      <Header>
+      <Header defaultHeight={!headerComponent}>
         {headerComponent ? headerComponent : <img src={logo} alt="logo" />}
       </Header>
       <Main>

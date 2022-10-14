@@ -1,9 +1,13 @@
-import Container, { ContainerContentModal } from "./styles";
+import Container, { ContainerContentModal, Header } from "./styles";
 
 import PageTemplate from "layouts/Page";
 import React from "react";
+import { IoMdClose } from "react-icons/io";
+import { useTheme } from "styled-components";
 
 const Modal = ({ children, confirmButton, goBack, headerTitle }) => {
+  const theme = useTheme();
+
   return (
     <Container>
       <button
@@ -16,7 +20,18 @@ const Modal = ({ children, confirmButton, goBack, headerTitle }) => {
       ></button>
       <div>
         <ContainerContentModal>
-          <PageTemplate headerComponent={<></>}>{children}</PageTemplate>
+          <PageTemplate
+            headerComponent={
+              <Header>
+                <p>Impressão de Documentos</p>
+                <button>
+                  <IoMdClose size={36} color={theme.colors.white} />
+                </button>
+              </Header>
+            }
+          >
+            {children}
+          </PageTemplate>
         </ContainerContentModal>
       </div>
     </Container>
