@@ -105,7 +105,7 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if chart_number is not None:
                 c = add_chart_number(canvas=c, number=chart_number)
             if type(c) == type(Response()): return c
-            if patient_ethnicity is not None:
+            if patient_ethnicity is not None and str(patient_ethnicity).strip() != "":
                 c = add_patient_ethnicity(canvas=c, ethnicity=patient_ethnicity)
             if type(c) == type(Response()): return c
             if patient_responsible_name is not None and str(patient_responsible_name).strip() != "":

@@ -959,70 +959,104 @@ def test_validCNPJ_company_cnpj():
 
 
 ##############################################################################
+# TEST STRING THAT CAN BE NULL
 # patient_ethnicity
 # patient_responsible_name
 # secondary_cid10
 # cid10_associated_causes
 # insurance_company_series
+# test wront type
+# test empty value
+# test empty spaces
+# test long values
+# test short values
 
-def test_wrong_birthdaydatetimeType():    
-    assert data_to_use(patient_birthday='aygduiaydg').status == Response(status=400).status
+def test_wrong_type_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=123).status == Response(status=400).status
 
-def test_wrong_patientnametype():    
-    assert data_to_use(patient_name=123124124124).status == Response(status=400).status
+def test_empty_value_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=None)) != type(Response())
 
-def test_wrong_sexType():
-    assert data_to_use(patient_sex=12347).status == Response(status=400).status
+def test_empty_spaces_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity='    ')) != type(Response())
 
-def test_wrong_sexOption():
-    assert data_to_use(patient_sex='G').status == Response(status=400).status
+def test_longValue_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=lenghtTest[:20]).status == Response(status=400).status
 
-def test_wrong_sexOptionExtend():    
-    assert data_to_use(patient_sex='Female').status == Response(status=400).status
+def test_shortValue_patient_ethnicity():
+    assert data_to_use(patient_ethnicity='aaa').status == Response(status=400).status
 
-def test_wrong_pateintmothernameType():    
-    assert data_to_use(patient_mother_name=12313).status == Response(status=400).status
+def test_wrong_type_patient_responsible_name():
+    assert data_to_use(patient_responsible_name=123).status == Response(status=400).status
 
-def test_wrong_solicitantdocument_type():
-    assert data_to_use(prof_solicitant_document=654658).status == Response(status=400).status
+def test_empty_value_patient_responsible_name():
+    assert type(data_to_use(patient_responsible_name=None)) != type(Response())
 
-def test_invalid_document_option():
-    assert data_to_use(prof_solicitant_document={'AAAA':928976954930007}).status == Response(status=400).status
+def test_empty_spaces_patient_responsible_name():
+    assert type(data_to_use(patient_responsible_name='    ')) != type(Response())
 
-def test_solicitdoc_invalid_CPF():
-    assert data_to_use(prof_solicitant_document={'CPF':12345678955}).status == Response(status=400).status
+def test_longValue_patient_responsible_name():
+    assert data_to_use(patient_responsible_name=lenghtTest[:70]).status == Response(status=400).status
 
-def test_atiorizationdoc_invalid_CPF():
+def test_shortValue_patient_responsible_name():
+    assert data_to_use(patient_responsible_name='aaa').status == Response(status=400).status
 
-    assert data_to_use(autorizaton_prof_document={'CPF':55568421956}).status == Response(status=400).status
+def test_wrong_type_secondary_cid10():
+    assert data_to_use(secondary_cid10=123).status == Response(status=400).status
 
-def test_patientinvalidCNS():
-    assert data_to_use(patient_cns=2222213565489689).status == Response(status=400).status
+def test_empty_value_secondary_cid10():
+    assert type(data_to_use(secondary_cid10=None)) != type(Response())
 
-def test_solicitDoc_invalidCNS():
-    assert data_to_use(prof_solicitant_document={'CNS':5641654864983}).status == Response(status=400).status
+def test_empty_spaces_secondary_cid10():
+    assert type(data_to_use(secondary_cid10='    ')) != type(Response())
 
-def test_autorization_invalidCNS():
-    assert data_to_use(prof_solicitant_document={'CNS':5641654864983}).status == Response(status=400).status
+def test_longValue_secondary_cid10():
+    assert data_to_use(secondary_cid10=lenghtTest[:6]).status == Response(status=400).status
 
-def test_wrong_patientadressType():
-    assert data_to_use(patient_adress=13123124124).status == Response(status=400).status
+def test_shortValue_secondary_cid10():
+    assert data_to_use(secondary_cid10='aa').status == Response(status=400).status
 
-def test_wrong_patientResponsiblePhonenumberType():
-    assert data_to_use(patient_responsible_phonenumber='8564721598').status == Response(status=400).status
+def test_wrong_type_secondary_cid10():
+    assert data_to_use(secondary_cid10=123).status == Response(status=400).status
 
-def test_wrong_patientMotherPhonenumberType():
-    assert data_to_use(patient_mother_phonenumber='5613248546').status == Response(status=400).status 
+def test_empty_value_cid10_associated_causes():
+    assert type(data_to_use(cid10_associated_causes=None)) != type(Response())
 
-def test_wrong_patientadresscityType():
-    assert data_to_use(patient_adressCity=1231241241).status == Response(status=400).status
+def test_empty_spaces_cid10_associated_causes():
+    assert type(data_to_use(cid10_associated_causes='    ')) != type(Response())
 
-def test_wrong_adressCEPtype():
-    assert data_to_use(patient_adressCEP='12345678').status == Response(status=400).status
+def test_longValue_cid10_associated_causes():
+    assert data_to_use(cid10_associated_causes=lenghtTest[:6]).status == Response(status=400).status
 
-def test_invalid_patient_adressCEP():
-    assert data_to_use(patient_adressCEP=12345671238).status == Response(status=400).status
+def test_shortValue_cid10_associated_causes():
+    assert data_to_use(cid10_associated_causes='aa').status == Response(status=400).status
+
+def test_wrong_type_insurance_company_series():
+    assert data_to_use(insurance_company_series=123).status == Response(status=400).status
+
+def test_empty_value_insurance_company_series():
+    assert type(data_to_use(insurance_company_series=None)) != type(Response())
+
+def test_empty_spaces_insurance_company_series():
+    assert type(data_to_use(insurance_company_series='    ')) != type(Response())
+
+def test_longValue_insurance_company_series():
+    assert data_to_use(insurance_company_series=lenghtTest[:15]).status == Response(status=400).status
+
+def test_shortValue_insurance_company_series():
+    assert type(data_to_use(insurance_company_series='123')) != type(Response())
 
 
 
-    
+
+
+
+
+
+
+
+
+
+
+
+
