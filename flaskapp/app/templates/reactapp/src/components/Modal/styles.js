@@ -17,7 +17,8 @@ export default styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(77, 76, 72, 0.8);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
   }
 
   > div {
