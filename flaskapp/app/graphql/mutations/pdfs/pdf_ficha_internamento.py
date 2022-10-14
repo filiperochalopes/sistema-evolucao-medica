@@ -478,8 +478,8 @@ def add_current_illness_history(canvas:canvas.Canvas, current_illness_history:st
             return Response('Current Illness History has to be a string', status=400)
         # Making the line break whem has 105 charater in a line
         current_illness_history = current_illness_history.strip()
-        if len(current_illness_history) > 1680:
-            return Response('Current illiness history is too big, has to been in 1680 characters', status=400)
+        if len(current_illness_history) > 1680 or len(current_illness_history) < 10:
+            return Response('Current illiness history has to be at least 10 characters and no more than 1680 characters', status=400)
         str_current_illness_history = ''
         brokeLinexTimes = int(len(current_illness_history)/105)
         currentLine = 105
@@ -651,6 +651,8 @@ def add_patientNationality(canvas:canvas.Canvas, nationality:str):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
+        if type(nationality) != type(str()):
+            return Response('Patient Nationality has to be a str', status=400)
         nationality = nationality.strip()
         if len(nationality) > 22:
             return Response('patient nationality is to long, more than 22 characters', status=400)
@@ -672,9 +674,9 @@ def add_patient_estimateWeight(canvas:canvas.Canvas, estimateWeight:float):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
-        if type(estimateWeight) != type(float()):
-            return Response('Patient estimate Weight has to be float', status=400)
-        estimateWeight = str(round(estimateWeight, 2))
+        if type(estimateWeight) != type(float()) and type(estimateWeight) != type(int()):
+            return Response('Patient estimate Weight has to be float or int', status=400)
+        estimateWeight = str(round(float(estimateWeight), 2))
         if len(estimateWeight) > 6:
             return Response('Invalid estimate weight, is too high', status=400)
         else:
