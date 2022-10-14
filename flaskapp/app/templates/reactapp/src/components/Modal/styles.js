@@ -25,6 +25,8 @@ export default styled.div`
     z-index: 2;
     width: 100%;
     max-width: 37.5rem;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0px 4px 35px 10px rgba(0, 0, 0, 0.1);
   }
 
   .content,
