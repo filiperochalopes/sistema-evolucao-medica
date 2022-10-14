@@ -1,6 +1,7 @@
 import Modal from "components/Modal";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import { useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 const Context = createContext(null);
@@ -9,6 +10,7 @@ const modalRoot = document.getElementById("modals");
 const ModalContextProvider = ({ children }) => {
   const [modais, setModais] = useState([]);
   const rootElemRef = React.useRef(document.createElement("div"));
+  const navigate = useLocation();
 
   useEffect(() => {
     if (modalRoot) {
@@ -18,6 +20,10 @@ const ModalContextProvider = ({ children }) => {
       rootElemRef.current.remove();
     };
   }, []);
+
+  useEffect(() => {
+    setModais([]);
+  }, [navigate]);
 
   function templateRemoveModal({ hook, id }) {
     const newModais = modais.filter((modal) => modal.id !== id);
@@ -59,10 +65,6 @@ const ModalContextProvider = ({ children }) => {
       },
     ]);
   }
-
-  useEffect(() => {
-    addModal({ content: <></>, title: "title" });
-  }, []);
 
   return (
     <Context.Provider value={{ addModal }}>
