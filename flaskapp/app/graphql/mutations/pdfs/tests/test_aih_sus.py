@@ -244,16 +244,25 @@ def test_wrongoption_autorizaton_prof_document():
 # solicitation_datetime
 # autorizaton_datetime
 # test wrong type
+# test valid datetime
 
 def test_wrongtype_patient_birthday():
     assert data_to_use(patient_birthday='bahabah').status == Response(status=400).status
 
+def test_valid_patient_birthday():
+    assert type(data_to_use(patient_birthday=datetime.datetime.now())) != type(Response())
+
 def test_wrongtype_solicitation_datetime():
     assert data_to_use(solicitation_datetime='bahabah').status == Response(status=400).status
+
+def test_valid_solicitation_datetime():
+    assert type(data_to_use(solicitation_datetime=datetime.datetime.now())) != type(Response())
 
 def test_wrongtype_autorizaton_datetime():
     assert data_to_use(autorizaton_datetime='bahabah').status == Response(status=400).status
 
+def test_valid_autorizaton_datetime():
+    assert type(data_to_use(autorizaton_datetime=datetime.datetime.now())) != type(Response())
 
 ##################################################################
 # TEST MARKABLE OPTIONS
@@ -272,17 +281,11 @@ def test_wrongtype_patient_sex():
 def test_notexistopiton_patient_sex():
     assert data_to_use(patient_sex='G').status == Response(status=400).status
 
-def test_M_option_patient_sex():
-    assert type(data_to_use(patient_sex='M')) != type(Response())
-
 def test_M_optionUpper_patient_sex():
     assert type(data_to_use(patient_sex='M')) != type(Response())
 
 def test_M_optionLower_patient_sex():
     assert type(data_to_use(patient_sex='m')) != type(Response())
-
-def test_F_option_patient_sex():
-    assert type(data_to_use(patient_sex='M')) != type(Response())
 
 def test_F_optionUpper_patient_sex():
     assert type(data_to_use(patient_sex='F')) != type(Response())

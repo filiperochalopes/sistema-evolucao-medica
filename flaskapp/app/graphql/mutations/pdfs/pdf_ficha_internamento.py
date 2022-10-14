@@ -13,7 +13,7 @@ if __name__ != "__main__":
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
 
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:list, patient_comorbidities:list, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:int, doctor_crm:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
+def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:int, doctor_crm:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
 
     try:
         packet = io.BytesIO()
@@ -379,6 +379,7 @@ def add_patientAdress(canvas:canvas.Canvas, adress:str):
     try:
         if type(adress)!= type(str()):
             return Response('Adress has to be str', status=400)
+        adress = adress.strip()
         if 7 < len(adress) <= 60:
             canvas = add_data(canvas=canvas, data=adress, pos=(230, 610))
             return canvas
@@ -414,39 +415,23 @@ def add_patientPhoneNumber(canvas:canvas.Canvas, phonenumber:int):
         Response('Unknow error while adding patient Phone Number', status=500)
 
 
-def add_patient_drug_allergies(canvas:canvas.Canvas, drug_allergies:list):
+def add_patient_drug_allergies(canvas:canvas.Canvas, drug_allergies:str):
     """add patient drug allergis to document
 
     Args:
         canvas (canvas.Canvas): canvas to use
-        drug_allergies (list): drugs allergies
+        drug_allergies (str): drugs allergies
 
     Returns:
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """
     try:
-        #veirfy if is a list
-        if type(drug_allergies)!= type(list()):
-            return Response('Drug allergies has to be a list', status=400)
-        #Verifiy if all data is string
-        typesNotStr = [True if type(x) != type(str()) else False for x in drug_allergies]
-        if any(typesNotStr):
-            return Response('Drug allergies has to be a list of strings', status=400)
+        #veirfy if is a str
+        if type(drug_allergies)!= type(str()):
+            return Response('Drug allergies has to be a str', status=400)
         #catching all drug allergies
-        str_drugsallergies = ''
-        #Cont to know when use .
-        cont = 0
-        len_drugsAllergies = len(drug_allergies)
-        for allergie in drug_allergies:
-            str_drugsallergies += allergie
-            cont += 1
-            if cont == len_drugsAllergies:
-                str_drugsallergies += '.'
-            else:
-                str_drugsallergies += ', '
-        del(len_drugsAllergies)
-        if len(str_drugsallergies) <= 105:
-            canvas = add_data(canvas=canvas, data=str_drugsallergies, pos=(26, 481))
+        if len(drug_allergies) <= 105:
+            canvas = add_data(canvas=canvas, data=drug_allergies, pos=(26, 481))
             return canvas
         else:
             return Response('So much drug allergies, the limit is 105 characters', status=400)
@@ -454,39 +439,22 @@ def add_patient_drug_allergies(canvas:canvas.Canvas, drug_allergies:list):
         return Response('Unknow error while adding patient drug alleries', status=500)
 
 
-def add_patient_comorbidities(canvas:canvas.Canvas, comorbidities:list):
+def add_patient_comorbidities(canvas:canvas.Canvas, comorbidities:str):
     """add patient comorbidities to document
 
     Args:
         canvas (canvas.Canvas): canvas to use
-        comorbidities (list): comorbidities list
+        comorbidities (str): comorbidities str
 
     Returns:
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """
     try:
-        #veirfy if is a list
-        if type(comorbidities)!= type(list()):
-            return Response('Comorbidities has to be a list', status=400)
-        #Verifiy if all data is string
-        typesNotStr = [True if type(x) != type(str()) else False for x in comorbidities]
-        if any(typesNotStr):
-            return Response('Comorbidities has to be a list of strings', status=400)
-        #catching all comorbidities
-        str_comorbidities = ''
-        #Cont to know when use .
-        cont = 0
-        len_comorbidities = len(comorbidities)
-        for commorb in comorbidities:
-            str_comorbidities += commorb
-            cont += 1
-            if cont == len_comorbidities:
-                str_comorbidities += '.'
-            else:
-                str_comorbidities += ', '
-        del(len_comorbidities)
-        if len(str_comorbidities) <= 105:
-            canvas = add_data(canvas=canvas, data=str_comorbidities, pos=(26, 449))
+        #veirfy if is a str
+        if type(comorbidities)!= type(str()):
+            return Response('Comorbidities has to be a str', status=400)
+        if len(comorbidities) <= 105:
+            canvas = add_data(canvas=canvas, data=comorbidities, pos=(26, 449))
             return canvas
         else:
             return Response('So much comorbidities, the limit is 105 characters', status=400)
@@ -590,8 +558,8 @@ def add_patient_adressNeigh(canvas:canvas.Canvas, adressNeigh:str):
     try:
         if type(adressNeigh) != type(str()):
             return Response('Patient adress neighborhood has to be a str', status=400)
-        if len(adressNeigh) > 28:
-            return Response('patient neighborhood is to long, more than 28 characters', status=400)
+        if len(adressNeigh) > 28 or len(adressNeigh) < 4:
+            return Response('patient neighborhood has to be at least 4 character and no more than 28 character long', status=400)
         else:
             canvas = add_data(canvas=canvas, data=adressNeigh, pos=(66, 580))
             return canvas
@@ -805,8 +773,8 @@ if __name__ == "__main__":
         patient_document={'CPF':28445400070},
         patient_adress='pacient street, 43, paciten, USA',
         patient_phonenumber=44387694628,
-        patient_drug_allergies=['Penicillin', 'Aspirin', 'Ibuprofen', 'Anticonvulsants'],
-        patient_comorbidities=['Heart disease', 'High blood pressure', 'Diabetes', 'Cerebrovascular disease'],
+        patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.',
+        patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',
         current_illness_history='Current illnes hsitoryaaaaaaaaaaaedqeqa',
         initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral contraceptive use.',
         doctor_name='Doctor Name',
