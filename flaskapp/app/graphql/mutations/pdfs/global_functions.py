@@ -29,7 +29,7 @@ def isRGvalid(rg:int) -> bool:
     #the only verification that can do is the maximum value
     if type(rg) != type(int()):
         return Response('The api has to use RG as intenger to validate, please check te function', status=500)
-    if 6 <= len(str(rg)) and len(str(rg)) <= 16:
+    if 5 < len(str(rg)) and len(str(rg)) < 17:
         return True
     return False
 

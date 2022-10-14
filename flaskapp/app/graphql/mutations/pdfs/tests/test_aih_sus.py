@@ -1047,16 +1047,3 @@ def test_shortValue_insurance_company_series():
     assert type(data_to_use(insurance_company_series='123')) != type(Response())
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
