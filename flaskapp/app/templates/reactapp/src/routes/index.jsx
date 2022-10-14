@@ -4,6 +4,7 @@ import Login from "../views/Login";
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import ModalContextProvider from "services/ModalContext";
 import Admit from "views/Pacient/Admit";
 import Chart from "views/Pacient/Chart";
 import Evolution from "views/Pacient/Evolution";
@@ -14,9 +15,11 @@ const routers = createBrowserRouter([
   {
     path: "/",
     element: (
-      <PageTemplate>
-        <Outlet />
-      </PageTemplate>
+      <ModalContextProvider>
+        <PageTemplate>
+          <Outlet />
+        </PageTemplate>
+      </ModalContextProvider>
     ),
     children: [
       {
