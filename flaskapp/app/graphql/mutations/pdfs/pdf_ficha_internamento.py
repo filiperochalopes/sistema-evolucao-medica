@@ -430,11 +430,12 @@ def add_patient_drug_allergies(canvas:canvas.Canvas, drug_allergies:str):
         if type(drug_allergies)!= type(str()):
             return Response('Drug allergies has to be a str', status=400)
         #catching all drug allergies
-        if len(drug_allergies) <= 105:
+        drug_allergies = drug_allergies.strip()
+        if 5 < len(drug_allergies) <= 105:
             canvas = add_data(canvas=canvas, data=drug_allergies, pos=(26, 481))
             return canvas
         else:
-            return Response('So much drug allergies, the limit is 105 characters', status=400)
+            return Response('Drug allergies has to be more than 5 characters and less than 105', status=400)
     except:
         return Response('Unknow error while adding patient drug alleries', status=500)
 
@@ -453,11 +454,11 @@ def add_patient_comorbidities(canvas:canvas.Canvas, comorbidities:str):
         #veirfy if is a str
         if type(comorbidities)!= type(str()):
             return Response('Comorbidities has to be a str', status=400)
-        if len(comorbidities) <= 105:
+        if 5 < len(comorbidities) <= 105:
             canvas = add_data(canvas=canvas, data=comorbidities, pos=(26, 449))
             return canvas
         else:
-            return Response('So much comorbidities, the limit is 105 characters', status=400)
+            return Response('patient commorbidities has to be more than 5 characters and less than 105', status=400)
     except:
         return Response('Unknow error while adding patient comorbidities', status=500)
 
@@ -476,6 +477,7 @@ def add_current_illness_history(canvas:canvas.Canvas, current_illness_history:st
         if type(current_illness_history) != type(str()):
             return Response('Current Illness History has to be a string', status=400)
         # Making the line break whem has 105 charater in a line
+        current_illness_history = current_illness_history.strip()
         if len(current_illness_history) > 1680:
             return Response('Current illiness history is too big, has to been in 1680 characters', status=400)
         str_current_illness_history = ''
@@ -514,10 +516,10 @@ def add_initial_diagnostic_suspicion(canvas:canvas.Canvas, ids:str):
     try:
         if type(ids) != type(str()):
             return Response('Initial Diagnostic Suspicion has do be string', status=400)
-        if len(ids) < 105:
+        if 5 < len(ids) < 105:
             canvas = add_data(canvas=canvas, data=ids, pos=(26, 244))
             return canvas
-        return Response('inital diagnostic supicion has to be less than 105 characters', status=400)
+        return Response('inital diagnostic supicion has to be more than 5 characters and less than 105', status=400)
     except:
         return Response('Unknow error while adding initial diagnostic suspicion', status=500)
 
@@ -580,8 +582,8 @@ def add_patientAdressCity(canvas:canvas.Canvas, adressCity:str):
     try:
         if type(adressCity) != type(str()):
             return Response('Patient adress city has to be a str', status=400)
-        if len(adressCity) > 32:
-            return Response('patient city is to long, more than 32 characters', status=400)
+        if len(adressCity) > 32 or len(adressCity) < 4:
+            return Response('patient city has to be more than 4 characters and less than 32', status=400)
         else:
             canvas = add_data(canvas=canvas, data=adressCity, pos=(243, 580))
             return canvas
@@ -649,6 +651,7 @@ def add_patientNationality(canvas:canvas.Canvas, nationality:str):
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
     try:
+        nationality = nationality.strip()
         if len(nationality) > 22:
             return Response('patient nationality is to long, more than 22 characters', status=400)
         else:

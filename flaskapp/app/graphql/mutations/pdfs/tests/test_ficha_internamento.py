@@ -4,7 +4,7 @@ import datetime
 from flask import Response
 
 
-def data_to_use(documentDatetime=datetime.datetime.now(), patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime.datetime.now(),patient_sex='F',patient_motherName="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',patient_phonenumber=44387694628, patient_drug_allergies=['Penicillin', 'Aspirin', 'Ibuprofen', 'Anticonvulsants'], patient_comorbidities=['Heart disease', 'High blood pressure', 'Diabetes', 'Cerebrovascular disease'],current_illness_history='Current illnes hsitoryaaaaaaaaaaa',initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral contraceptive use.',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456',patient_adressNumber=123456,patient_adressNeigh='Patient Neighborhood',patient_adressCity='Patient city',patient_adressUF='sp',patient_adressCEP=12345678,patient_nationality='Brasileira',patient_estimateWeight=123.32,has_additional_healthInsurance=False):
+def data_to_use(documentDatetime=datetime.datetime.now(), patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime.datetime.now(),patient_sex='F',patient_motherName="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',patient_phonenumber=44387694628, patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.', patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',current_illness_history='Current illnes hsitoryaaaaaaaaaaa',initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral contraceptive use.',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456',patient_adressNumber=123456,patient_adressNeigh='Patient Neighborhood',patient_adressCity='Patient city',patient_adressUF='sp',patient_adressCEP=12345678,patient_nationality='Brasileira',patient_estimateWeight=123.32,has_additional_healthInsurance=False):
     return pdf_ficha_internamento.fill_pdf_ficha_internamento(documentDatetime,patient_name, patient_cns, patient_birthday, patient_sex,  patient_motherName, patient_document, patient_adress, patient_phonenumber, patient_drug_allergies, patient_comorbidities, current_illness_history,initial_diagnostic_suspicion, doctor_name, doctor_cns, doctor_crm,patient_adressNumber, patient_adressNeigh, patient_adressCity, patient_adressUF, patient_adressCEP, patient_nationality, patient_estimateWeight, has_additional_healthInsurance)
 
 
@@ -25,8 +25,8 @@ def test_awnser_with_only_required_data():
         patient_document={'CPF':28445400070},
         patient_adress='pacient street, 43, paciten, USA',
         patient_phonenumber=44387694628,
-        patient_drug_allergies=['Penicillin', 'Aspirin', 'Ibuprofen', 'Anticonvulsants'],
-        patient_comorbidities=['Heart disease', 'High blood pressure', 'Diabetes', 'Cerebrovascular disease'],
+        patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.',
+        patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',
         current_illness_history='Current illnes hsitoryaaaaaaaaaaa',
         initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral contraceptive use.',
         doctor_name='Doctor Name',
@@ -48,7 +48,7 @@ def test_awnser_with_only_required_data():
 
 global lenghtTest
 lenghtTest = ''
-for x in range(0, 1100):
+for x in range(0, 2000):
     lenghtTest += str(x)
 
 def test_wrongtype_patient_name():    
@@ -229,28 +229,49 @@ def test_long_value_patient_adressNumber():
     assert data_to_use(patient_adressNumber=1234567).status == Response(status=400).status
 
 def test_wrongtype_patient_adressNeigh():
-    assert data_to_use(patient_adressNeigh='1212312').status == Response(status=400).status
+    assert data_to_use(patient_adressNeigh=1212).status == Response(status=400).status
 
 def test_empty_value_patient_adressNeigh():
     assert type(data_to_use(patient_adressNeigh=None)) != type(Response())
 
 def test_empty_space_patient_adressNeigh():
-    assert data_to_use(patient_adressNeigh='   ').status == Response(status=400).status
+    assert type(data_to_use(patient_adressNeigh='   ')) != type(Response())
 
 def test_invalid_value_patient_adressNeigh():
     assert data_to_use(patient_adressNeigh='123').status == Response(status=400).status
 
 def test_long_value_patient_adressNeigh():
-    assert data_to_use(patient_adressNeigh=1234567).status == Response(status=400).status
+    assert data_to_use(patient_adressNeigh=str(lenghtTest[:30])).status == Response(status=400).status
 
+def test_wrongtype_patient_adressCity():
+    assert data_to_use(patient_adressCity=1212).status == Response(status=400).status
 
+def test_empty_value_patient_adressCity():
+    assert type(data_to_use(patient_adressCity=None)) != type(Response())
 
+def test_empty_space_patient_adressCity():
+    assert type(data_to_use(patient_adressCity='   ')) != type(Response())
 
+def test_invalid_value_patient_adressCity():
+    assert data_to_use(patient_adressCity='123').status == Response(status=400).status
 
+def test_long_value_patient_adressCity():
+    assert data_to_use(patient_adressCity=str(lenghtTest[:34])).status == Response(status=400).status
 
+def test_wrongtype_patient_adressCEP():
+    assert data_to_use(patient_adressCEP='1212').status == Response(status=400).status
 
+def test_empty_value_patient_adressCEP():
+    assert type(data_to_use(patient_adressCEP=None)) != type(Response())
 
+def test_empty_space_patient_adressCEP():
+    assert data_to_use(patient_adressCEP='   ').status == Response(status=400).status
 
+def test_invalid_value_patient_adressCEP():
+    assert data_to_use(patient_adressCEP=1231).status == Response(status=400).status
+
+def test_long_value_patient_adressCEP():
+    assert data_to_use(patient_adressCEP=lenghtTest[:10]).status == Response(status=400).status
 
 def test_wrongtype_patient_adressUF():
     assert data_to_use(patient_adressUF=1231).status == Response(status=400).status
@@ -419,3 +440,225 @@ def test_TO_optionUpper_patient_adressUF():
 
 def test_TO_optionLower_patient_adressUF():
     assert type(data_to_use(patient_adressUF='to')) != type(Response())
+
+
+#############################################################################
+# TEST BIG TEXT WITH LINE BRAKES
+# current_illness_history
+# test wrong type
+# test empty value
+# test empty spaces 
+# test short text
+# test more than limit
+
+def test_wrong_type_current_illness_history():
+    assert data_to_use(current_illness_history=131).status == Response(status=400).status
+
+def test_empty_value_current_illness_history():
+    assert data_to_use(current_illness_history='').status == Response(status=400).status
+
+def test_empty_spaces_current_illness_history():
+    assert data_to_use(current_illness_history='    ').status == Response(status=400).status
+
+def test_shortText_current_illness_history():
+    assert data_to_use(current_illness_history='abla').status == Response(status=400).status
+
+def test_more_than_limit_current_illness_history():
+    assert data_to_use(current_illness_history=lenghtTest[:1690]).status == Response(status=400).status
+
+#############################################################################
+# NORMAL TEXT VARIABLES THAT CANNOT/can BE NULL
+# patient_drug_allergies
+# patient_comorbidities
+# initial_diagnostic_suspicion
+# doctor_crm 
+# patient_nationality (can be null)
+# test wrong type
+# test empty value
+# test empty spaces 
+# test short text
+# test more than limit
+
+def test_wrong_type_patient_drug_allergies():
+    assert data_to_use(patient_drug_allergies=131).status == Response(status=400).status
+
+def test_empty_value_patient_drug_allergies():
+    assert data_to_use(patient_drug_allergies='').status == Response(status=400).status
+
+def test_empty_spaces_patient_drug_allergies():
+    assert data_to_use(patient_drug_allergies='    ').status == Response(status=400).status
+
+def test_shortText_patient_drug_allergies():
+    assert data_to_use(patient_drug_allergies='abla').status == Response(status=400).status
+
+def test_more_than_limit_patient_drug_allergies():
+    assert data_to_use(patient_drug_allergies=lenghtTest[:110]).status == Response(status=400).status
+
+def test_wrong_type_patient_comorbidities():
+    assert data_to_use(patient_comorbidities=131).status == Response(status=400).status
+
+def test_empty_value_patient_comorbidities():
+    assert data_to_use(patient_comorbidities='').status == Response(status=400).status
+
+def test_empty_spaces_patient_comorbidities():
+    assert data_to_use(patient_comorbidities='    ').status == Response(status=400).status
+
+def test_shortText_patient_comorbidities():
+    assert data_to_use(patient_comorbidities='abla').status == Response(status=400).status
+
+def test_more_than_limit_patient_comorbidities():
+    assert data_to_use(patient_comorbidities=lenghtTest[:110]).status == Response(status=400).status
+
+def test_wrong_type_initial_diagnostic_suspicion():
+    assert data_to_use(initial_diagnostic_suspicion=131).status == Response(status=400).status
+
+def test_empty_value_initial_diagnostic_suspicion():
+    assert data_to_use(initial_diagnostic_suspicion='').status == Response(status=400).status
+
+def test_empty_spaces_initial_diagnostic_suspicion():
+    assert data_to_use(initial_diagnostic_suspicion='    ').status == Response(status=400).status
+
+def test_shortText_initial_diagnostic_suspicion():
+    assert data_to_use(initial_diagnostic_suspicion='abla').status == Response(status=400).status
+
+def test_more_than_limit_initial_diagnostic_suspicion():
+    assert data_to_use(initial_diagnostic_suspicion=lenghtTest[:110]).status == Response(status=400).status
+
+def test_wrong_type_doctor_crm():
+    assert data_to_use(doctor_crm=131).status == Response(status=400).status
+
+def test_empty_value_doctor_crm():
+    assert data_to_use(doctor_crm='').status == Response(status=400).status
+
+def test_empty_spaces_doctor_crm():
+    assert data_to_use(doctor_crm='    ').status == Response(status=400).status
+
+def test_shortText_doctor_crm():
+    assert data_to_use(doctor_crm='abla').status == Response(status=400).status
+
+def test_more_than_limit_doctor_crm():
+    assert data_to_use(doctor_crm=lenghtTest[:14]).status == Response(status=400).status
+
+def test_wrong_type_patient_nationality():
+    assert data_to_use(patient_nationality=131).status == Response(status=400).status
+
+def test_empty_value_patient_nationality():
+    assert type(data_to_use(patient_nationality='')) != type(Response())
+
+def test_empty_spaces_patient_nationality():
+    assert type(data_to_use(patient_nationality='    ')) != type(Response())
+
+def test_shortText_patient_nationality():
+    assert type(data_to_use(patient_nationality='abla123')) != type(Response())
+
+def test_more_than_limit_patient_nationality():
+    assert data_to_use(patient_nationality=lenghtTest[:25]).status == Response(status=400).status
+
+#################################################################################
+# TEST CNS
+# patient_cns
+# doctor_cns
+# wrong type
+# valid
+# invalid
+# empty send
+
+def test_wrongtype_patient_cns():
+    assert data_to_use(patient_cns='13123').status == Response(status=400).status
+
+def test_valid_patient_cns():
+    assert type(data_to_use(patient_cns=928976954930007)) != type(Response())
+
+def test_invalid_patient_cns():
+    assert data_to_use(patient_cns=928976546250007).status == Response(status=400).status
+
+def test_empty_patient_cns():
+    assert data_to_use(patient_cns=None).status == Response(status=400).status
+
+def test_wrongtype_doctor_cns():
+    assert data_to_use(doctor_cns='13123').status == Response(status=400).status
+
+def test_valid_doctor_cns():
+    assert type(data_to_use(doctor_cns=928976954930007)) != type(Response())
+
+def test_invalid_doctor_cns():
+    assert data_to_use(doctor_cns=928976546250007).status == Response(status=400).status
+
+def test_empty_doctor_cns():
+    assert data_to_use(doctor_cns=None).status == Response(status=400).status
+
+
+#################################################################################
+# TEST NUMBER VARIABLES CAN/CANNOT BE NULL
+# patient_phonenumber
+# patient_estimateWeight
+# !!!!! TESTING
+# wrong type
+# test empty value
+# test empty space
+# short value
+# long value  
+
+def test_wrong_type_patient_phonenumber():
+    assert data_to_use(patient_phonenumber='131').status == Response(status=400).status
+
+def test_empty_value_patient_phonenumber():
+    assert data_to_use(patient_phonenumber=None).status == Response(status=400).status
+
+def test_empty_spaces_patient_phonenumber():
+    assert data_to_use(patient_phonenumber='    ').status == Response(status=400).status
+
+def test_longValue_patient_phonenumber():
+    assert data_to_use(patient_phonenumber=int(lenghtTest[:14])).status == Response(status=400).status
+
+def test_shortValue_patient_phonenumber():
+    assert data_to_use(patient_phonenumber=1234567).status == Response(status=400).status
+
+def test_wrong_type_patient_estimateWeight():
+    assert data_to_use(patient_estimateWeight='131').status == Response(status=400).status
+
+def test_empty_value_patient_estimateWeight():
+    assert type(data_to_use(patient_estimateWeight=None)) != type(Response())
+
+def test_empty_spaces_patient_estimateWeight():
+    assert data_to_use(patient_estimateWeight='    ').status == Response(status=400).status
+
+def test_longValue_patient_estimateWeight():
+    assert data_to_use(patient_estimateWeight=float(lenghtTest[:8])).status == Response(status=400).status
+
+def test_shortValue_patient_estimateWeight():
+    assert type(data_to_use(patient_estimateWeight=123)) != type(Response())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
