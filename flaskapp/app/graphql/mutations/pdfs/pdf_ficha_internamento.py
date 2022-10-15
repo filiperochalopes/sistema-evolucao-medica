@@ -3,6 +3,8 @@ from PyPDF2  import PdfWriter, PdfReader
 import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 
 # Doing the import this way only when is called by antoher file (like pytest)
@@ -11,7 +13,7 @@ if __name__ != "__main__":
 
 
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
-
+font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
 def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:int, doctor_crm:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:float=None, has_additional_healthInsurance:bool=None):
 
@@ -21,8 +23,9 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
         c = canvas.Canvas(packet, pagesize=letter)
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
-        c.setFont('Helvetica', 9)
-        #print(c.getAvailableFonts())
+        pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
+        c.setFont('Roboto-Mono', 9)
+
         # Writing all data in respective fields
         # not null data
         try:
@@ -32,10 +35,10 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             c = add_patientCNS(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
             # change font size to datetime            
-            c.setFont('Helvetica', 14)            
+            c.setFont('Roboto-Mono', 14)            
             c = add_documentDatetime(canvas=c, docDatetime=documentDatetime)
             if type(c) == type(Response()): return c            
-            c.setFont('Helvetica', 9)            
+            c.setFont('Roboto-Mono', 9)            
             c = add_patientBirthday(canvas=c, birthday=patient_birthday)
             if type(c) == type(Response()): return c
             c = add_patient_sex(canvas=c, sex=patient_sex)
@@ -113,7 +116,6 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
         output.add_page(page)
 
         return output
-
     except:
         return Response("Error while filling ficha de internamento", status=500)
 
