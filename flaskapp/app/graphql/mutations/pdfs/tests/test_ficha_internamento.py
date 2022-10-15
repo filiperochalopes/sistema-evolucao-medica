@@ -242,7 +242,7 @@ def test_invalid_value_patient_adressNeigh():
     assert data_to_use(patient_adressNeigh='123').status == Response(status=400).status
 
 def test_long_value_patient_adressNeigh():
-    assert data_to_use(patient_adressNeigh=str(lenghtTest[:30])).status == Response(status=400).status
+    assert data_to_use(patient_adressNeigh=str(lenghtTest[:33])).status == Response(status=400).status
 
 def test_wrongtype_patient_adressCity():
     assert data_to_use(patient_adressCity=1212).status == Response(status=400).status

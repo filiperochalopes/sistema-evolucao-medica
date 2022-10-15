@@ -461,7 +461,6 @@ def add_patient_comorbidities(canvas:canvas.Canvas, comorbidities:str):
         if type(comorbidities)!= type(str()):
             return Response('Comorbidities has to be a str', status=400)
         if 5 < len(comorbidities) <= 100:
-            comorbidities = lenghtTest
             canvas = add_data(canvas=canvas, data=comorbidities, pos=(26, 449))
             return canvas
         else:
@@ -567,8 +566,8 @@ def add_patient_adressNeigh(canvas:canvas.Canvas, adressNeigh:str):
     try:
         if type(adressNeigh) != type(str()):
             return Response('Patient adress neighborhood has to be a str', status=400)
-        if len(adressNeigh) > 28 or len(adressNeigh) < 4:
-            return Response('patient neighborhood has to be at least 4 character and no more than 28 character long', status=400)
+        if len(adressNeigh) > 31 or len(adressNeigh) < 4:
+            return Response('patient neighborhood has to be at least 4 character and no more than 31 character long', status=400)
         else:
             canvas = add_data(canvas=canvas, data=adressNeigh, pos=(66, 580))
             return canvas
@@ -788,7 +787,7 @@ if __name__ == "__main__":
         patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.',
         patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',
         current_illness_history='Current illnes hsitoryaaaaaaaaaaaedqeqa',
-        initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral contraceptive use.',
+        initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral.',
         doctor_name='Doctor Name',
         doctor_cns=928976954930007,
         doctor_crm='CRM/UF 123456',
