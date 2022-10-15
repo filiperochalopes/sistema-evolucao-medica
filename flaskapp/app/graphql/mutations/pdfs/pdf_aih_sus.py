@@ -1288,17 +1288,11 @@ def add_prof_solicitant_document(canvas:canvas.Canvas, document:dict):
                 return Response('Profissional solicitate value CNS has to be int', status=400)
             if global_functions.isCNSvalid(document['CNS']):
                 canvas = add_square(canvas=canvas, pos=(247, 244))
-                cont = 0
-                xpos = 339
+                # Add empty spaces interval between averu character
+                interval = ' ' * 2
                 cns = str(document['CNS'])
-                while cont < 15:
-                    canvas = add_data(canvas=canvas, data=cns[cont], pos=(xpos, 246))
-                    cont += 1
-                    xpos += 15
-                    if cont > 5 and cont < 7:
-                        xpos += 6
-                    elif cont > 12:
-                        xpos += 6
+                cns = interval.join(cns)
+                canvas = add_data(canvas=canvas, data=cns, pos=(337, 246))
                 return canvas
             else:
                 return Response('Profissional solicitate CNS is not valid', status=400)
