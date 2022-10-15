@@ -984,7 +984,7 @@ def test_empty_spaces_patient_ethnicity():
     assert type(data_to_use(patient_ethnicity='    ')) != type(Response())
 
 def test_longValue_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=lenghtTest[:20]).status == Response(status=400).status
+    assert data_to_use(patient_ethnicity=lenghtTest[:15]).status == Response(status=400).status
 
 def test_shortValue_patient_ethnicity():
     assert data_to_use(patient_ethnicity='aaa').status == Response(status=400).status

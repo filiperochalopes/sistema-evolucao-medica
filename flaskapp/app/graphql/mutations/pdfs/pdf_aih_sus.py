@@ -211,11 +211,12 @@ def add_patient_ethnicity(canvas:canvas.Canvas, ethnicity:str):
             return Response('Patient ethnicity has to be string', status=400)
         # verify if Patient ethnicity is smaller than 60 characters
         ethnicity = str(ethnicity)
-        if 4 < len(ethnicity.strip()) <= 10:
-            canvas = add_data(canvas=canvas, data=ethnicity, pos=(516, 658))
+        if 4 < len(ethnicity.strip()) <= 11:
+            ethnicity = lenghtTest
+            canvas = add_data(canvas=canvas, data=ethnicity, pos=(510, 658))
             return canvas
         else:
-            return Response("Unable to add Patient ethnicity because is longer than 10 characters or Smaller than 5", status=400)
+            return Response("Unable to add Patient ethnicity because is longer than 11 characters or Smaller than 5", status=400)
     except:
         return Response('Unknow error while adding Patient ethnicity', status=500)
 
