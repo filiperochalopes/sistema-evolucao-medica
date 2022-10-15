@@ -20,45 +20,47 @@ pagesizePoints = (841.92, 595.2)
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
 def fill_pdf_precricao_medica(document_datetime:datetime.datetime, pacient_name:str, prescrition:list):
-    
-    packet = io.BytesIO()
-    # Create canvas and add data
-    c = canvas.Canvas(packet, pagesize=pagesizePoints)
-    # Change canvas font to mach with the document
-    # this is also changed in the document to some especific fields
-    pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
-    c.setFont('Roboto-Mono', 12)
-    # Writing all data in respective fields
-    # not null data
 
-    c = add_document_datetime(canvas=c, date=document_datetime)
-    if type(c) == type(Response()): return c
-    c = add_patient_name(canvas=c, name=pacient_name)
-    if type(c) == type(Response()): return c
-    c.setFont('Roboto-Mono', 10)
-    c = add_prescription(canvas=c, prescription=prescrition)
-    if type(c) == type(Response()): return c
+    try:
+        try:
+            packet = io.BytesIO()
+            # Create canvas and add data
+            c = canvas.Canvas(packet, pagesize=pagesizePoints)
+            # Change canvas font to mach with the document
+            # this is also changed in the document to some especific fields
+            pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
+            c.setFont('Roboto-Mono', 12)
+            # Writing all data in respective fields
+            # not null data
 
+            c = add_document_datetime(canvas=c, date=document_datetime)
+            if type(c) == type(Response()): return c
+            c = add_patient_name(canvas=c, name=pacient_name)
+            if type(c) == type(Response()): return c
+            c.setFont('Roboto-Mono', 10)
+            c = add_prescription(canvas=c, prescription=prescrition)
+            if type(c) == type(Response()): return c
 
-#    except:
-#            if type(c) == type(Response()):
-#                return c
-#            else:
-#                return Response('Some error happen when adding not null data to fields', status=500)
+        except:
+                if type(c) == type(Response()):
+                    return c
+                else:
+                    return Response('Some error happen when adding not null data to fields', status=500)
     
-    
-    # create a new PDF with Reportlab
-    c.save()
-    packet.seek(0)
-    new_pdf = PdfReader(packet)
-    # read the template pdf 
-    template_pdf = PdfReader(open(template_directory, "rb"))
-    output = PdfWriter()
-    # add the "watermark" (which is the new pdf) on the existing page
-    page = template_pdf.pages[0]
-    page.merge_page(new_pdf.pages[0])
-    output.add_page(page)
-    return output
+        # create a new PDF with Reportlab
+        c.save()
+        packet.seek(0)
+        new_pdf = PdfReader(packet)
+        # read the template pdf 
+        template_pdf = PdfReader(open(template_directory, "rb"))
+        output = PdfWriter()
+        # add the "watermark" (which is the new pdf) on the existing page
+        page = template_pdf.pages[0]
+        page.merge_page(new_pdf.pages[0])
+        output.add_page(page)
+        return output
+    except:
+        return Response('Unknow error while adding medical prescription', status=500)
 
 
 def add_patient_name(canvas:canvas.Canvas, name:str):
@@ -182,10 +184,6 @@ def add_prescription(canvas:canvas.Canvas, prescription:list):
     del(yposition)
     return canvas
 
-
-    
-
-    return canvas
 
 if __name__ == "__main__":
     import global_functions
