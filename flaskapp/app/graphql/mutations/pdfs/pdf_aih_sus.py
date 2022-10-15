@@ -447,7 +447,7 @@ def add_solicitation_datetime(canvas:canvas.Canvas, solitDate:datetime.datetime)
         date = str(solitDate.day) + '.' + str(solitDate.month) + '.' + str(solitDate.year)
         interval = ' ' * 2
         date = date.replace('.', interval)
-        canvas = add_data(canvas=canvas, data=date, pos=(298, 222))
+        canvas = add_data(canvas=canvas, data=date, pos=(300, 222))
         return canvas
     except:
         return Response('Unkown error while adding solitication date', status=500)
