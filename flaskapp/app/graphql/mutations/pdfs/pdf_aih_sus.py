@@ -236,7 +236,9 @@ def add_establishment_solitc_cnes(canvas:canvas.Canvas, cnes:int):
         # Verify if the cnes is valid
         cnes = str(cnes)
         if len(cnes) == 7:
-            cnes = '  '.join(cnes)
+            # Add empty spaces interval between averu character
+            interval = ' ' * 2
+            cnes = interval.join(cnes)
             canvas = add_data(canvas=canvas, data=cnes, pos=(470, 750))
             return canvas
         return Response('unable to add establshment CNES because is a invalid CNES', status=400)
