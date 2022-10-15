@@ -458,15 +458,10 @@ def add_autorizaton_datetime(canvas:canvas.Canvas, authDate:datetime.datetime):
         if type(authDate) != type(datetime.datetime.now()):
             return Response('autorization date isnt a datetime.datetime object', status=400)
         #Add to respective fields
-        day = str(authDate.day)
-        month = str(authDate.month)
-        year = str(authDate.year)
-        canvas = add_data(canvas=canvas, data=day, pos=(28, 31))
-        canvas = add_data(canvas=canvas, data=month, pos=(52, 31))
-        canvas = add_data(canvas=canvas, data=year, pos=(79, 31))
-        del(day)
-        del(month)
-        del(year)
+        date = str(authDate.day) + '.' + str(authDate.month) + '.' + str(authDate.year)
+        interval = ' ' * 2
+        date = date.replace('.', interval)
+        canvas = add_data(canvas=canvas, data=date, pos=(30, 30))
         return canvas
     except:
         return Response('Unkown error while adding autorization date', status=500)
