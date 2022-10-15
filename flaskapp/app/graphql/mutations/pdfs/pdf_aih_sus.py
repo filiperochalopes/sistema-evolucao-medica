@@ -820,11 +820,10 @@ def add_chart_number(canvas:canvas.Canvas, number:int):
         if type(number) != type(int()):
             return Response('Chart number has to be a int', status=400)
         number = str(number)
-        if len(number) > 18:
-            return Response('Chart number cannot has more than 17 digits', status=400) 
+        if len(number) > 20:
+            return Response('Chart number cannot has more than 20 digits', status=400) 
         else:
-            #Add the string centetred only this time
-            canvas.drawCentredString(x=520, y=683, text=number)
+            canvas = add_data(canvas=canvas, data=number, pos=(466,683))
             return canvas
     except:
         return Response('Unknow error while adding Chart number', status=500)

@@ -853,7 +853,7 @@ def test_empty_spaces_chart_number():
     assert data_to_use(chart_number='    ').status == Response(status=400).status
 
 def test_longValue_chart_number():
-    assert data_to_use(chart_number=int(lenghtTest[:20])).status == Response(status=400).status
+    assert data_to_use(chart_number=int(lenghtTest[:23])).status == Response(status=400).status
 
 def test_shortValue_chart_number():
     assert data_to_use(chart_number='a').status == Response(status=400).status
