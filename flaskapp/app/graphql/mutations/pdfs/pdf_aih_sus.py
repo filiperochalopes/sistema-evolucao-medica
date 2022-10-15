@@ -1102,7 +1102,7 @@ def add_procedure_solicited(canvas:canvas.Canvas, procedure:str):
         # verify if patient procedure is smaller than 5 characters
         procedure = str(procedure).strip()
         if 5 < len(procedure) <= 65:
-            canvas = add_data(canvas=canvas, data=procedure, pos=(25, 271))
+            canvas = add_data(canvas=canvas, data=procedure, pos=(25, 269))
             return canvas
         else:
             return Response("Unable to add patient procedure solicited because is longer than 65 characters or Smaller than 5", status=400)
@@ -1129,7 +1129,7 @@ def add_procedure_code(canvas:canvas.Canvas, code:str):
             # Add empty spaces interval between averu character
             interval = ' ' * 2
             code = interval.join(code)
-            canvas = add_data(canvas=canvas, data=code, pos=(404, 271))
+            canvas = add_data(canvas=canvas, data=code, pos=(404, 269))
             return canvas
         else:
             return Response("Procedure code solicited dont have 10 characters", status=400)
@@ -1262,15 +1262,7 @@ def add_internation_carater(canvas:canvas.Canvas, carater:str):
 
 
 def add_prof_solicitant_document(canvas:canvas.Canvas, document:dict):
-    """_summary_
-
-    Args:
-        canvas (canvas.Canvas): _description_
-        document (dict): _description_
-
-    Returns:
-        _type_: _description_
-    """    """add profissional solicitant document to document 
+    """add prof solicitanto document
 
     Args:
         canvas (canvas.Canvas): canvas to use
