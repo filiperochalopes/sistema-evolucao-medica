@@ -616,8 +616,8 @@ def add_patient_adressCity(canvas:canvas.Canvas, city:str):
         if type(city) != type(str()):
             return Response('Patient adress city has to be a str', status=400)
         city = city.strip()
-        if 7 > len(city) or len(city) > 59:
-            return Response('Unable to add patient city is longer than 59 characters or smaller than 7', status=400)
+        if 7 > len(city) or len(city) > 61:
+            return Response('Unable to add patient city is longer than 61 characters or smaller than 7', status=400)
         else:
             canvas = add_data(canvas=canvas, data=city, pos=(25, 566))
             return canvas

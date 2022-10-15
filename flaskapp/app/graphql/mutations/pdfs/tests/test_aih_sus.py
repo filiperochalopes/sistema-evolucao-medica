@@ -602,7 +602,7 @@ def test_invalid_value_patient_adressCity():
     assert data_to_use(patient_adressCity='111').status == Response(status=400).status
 
 def test_long_value_patient_adressCity():
-    assert data_to_use(patient_adressCity='98714t926touifhdoaiuhfouiahsdfouhadsufihaosfuhouihisuhfouhasofuhasoiufhaoisufhoaiushfiouahsfpiuhjsapfiadadasdasdadadadadadadqwe4jasfpaosijmfiosanfpioansfiujnsaiofjunaisfnsahjfnu8yaewnofipnkmxpkovjnoiushbfo8auyshfyaufbuasbfuwybeusosadfjh').status == Response(status=400).status
+    assert data_to_use(patient_adressCity=lenghtTest[:73]).status == Response(status=400).status
 
 def test_wrongtype_patient_adressCity_ibgeCode():
     assert data_to_use(patient_adressCity_ibgeCode='1212312').status == Response(status=400).status
