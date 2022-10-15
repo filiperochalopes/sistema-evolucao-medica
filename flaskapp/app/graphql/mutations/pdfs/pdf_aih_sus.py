@@ -187,11 +187,11 @@ def add_establishment_solitc_name(canvas:canvas.Canvas, name:str):
             return Response('Solicitate Establishment name has to be string', status=400)
         # verify if Solicitate Establishment name is smaller than 60 characters
         name = str(name)
-        if 7 < len(name.strip()) <= 78:
+        if 7 < len(name.strip()) <= 82:
             canvas = add_data(canvas=canvas, data=name, pos=(25, 750))
             return canvas
         else:
-            return Response("Unable to add Solicitate Establishment name because is longer than 78 characters or Smaller than 7", status=400)
+            return Response("Unable to add Solicitate Establishment name because is longer than 82 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding Solicitate Establishment  name', status=500)
 
@@ -264,11 +264,11 @@ def add_establishment_exec_name(canvas:canvas.Canvas, name:str):
             return Response('Exec Establishment name has to be string', status=400)
         # verify if Exec Establishment name is smaller than 60 characters
         name = str(name)
-        if 7 < len(name.strip()) <= 78:
+        if 7 < len(name.strip()) <= 82:
             canvas = add_data(canvas=canvas, data=name, pos=(25, 726))
             return canvas
         else:
-            return Response("Unable to add Exec Establishment name because is longer than 78 characters or Smaller than 7", status=400)
+            return Response("Unable to add Exec Establishment name because is longer than 82 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding Exec Establishment name', status=500)
 

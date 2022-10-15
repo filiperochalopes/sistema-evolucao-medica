@@ -3,6 +3,11 @@ from .. import pdf_aih_sus
 import datetime
 from flask import Response
 
+global lenghtTest
+lenghtTest = ''
+for x in range(0, 1100):
+    lenghtTest += str(x)
+
 def data_to_use(establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,establishment_exec_name='Establshment Exec Name',establishment_exec_cnes=7654321,patient_name='Patient Name',patient_cns=928976954930007,patient_birthday=datetime.datetime.now(),patient_sex='F',patient_mother_name='Patient Mother Name',patient_adress='Patient Adress street neighobourd',patient_adressCity='Patient City',patient_adressCity_ibgeCode=1234567,patient_adressUF='SP',patient_adressCEP=12345678,main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnostic='Patient Initial Diagnostic',principalCid10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', prof_solicitant_document={'CNS':928976954930007},prof_solicitant_name='Profissional Solicit Name', solicitation_datetime=datetime.datetime.now(), autorization_prof_name='Autorization professional name', emission_org_code='OrgCode2022', autorizaton_prof_document={'CPF':28445400070}, autorizaton_datetime=datetime.datetime.now(),hospitalization_autorization_number=1234567890,exam_results='Xray tibia broken',chart_number=1234,patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber=5613248546, patient_responsible_phonenumber=8564721598, secondary_cid10='A01',cid10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj=37549670000171, insurance_company_ticket_number=123450123456, insurance_company_series='Insurn Series',company_cnpj=37549670000171, company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
     return pdf_aih_sus.fill_pdf_aih_sus(establishment_solitc_name,establishment_solitc_cnes,establishment_exec_name,establishment_exec_cnes,patient_name,patient_cns,patient_birthday,patient_sex,patient_mother_name,patient_adress,patient_adressCity,patient_adressCity_ibgeCode,patient_adressUF,patient_adressCEP,main_clinical_signs_symptoms,conditions_justify_hospitalization,initial_diagnostic,principalCid10,procedure_solicited,procedure_code, clinic, internation_carater, prof_solicitant_document,prof_solicitant_name, solicitation_datetime, autorization_prof_name, emission_org_code, autorizaton_prof_document, autorizaton_datetime,hospitalization_autorization_number, exam_results,chart_number,patient_ethnicity, patient_responsible_name, patient_mother_phonenumber, patient_responsible_phonenumber,secondary_cid10,cid10_associated_causes,acident_type, insurance_company_cnpj, insurance_company_ticket_number, insurance_company_series,company_cnpj, company_cnae, company_cbor,pension_status)
 
@@ -71,7 +76,7 @@ def test_with_space_establishment_solitcname():
     assert data_to_use(establishment_solitc_name='  ').status == Response(status=400).status
 
 def test_long_establishment_solitcname():    
-    assert data_to_use(establishment_solitc_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+    assert data_to_use(establishment_solitc_name=lenghtTest[:82]).status == Response(status=400).status
 
 def test_short_establishment_solitcname():    
     assert data_to_use(establishment_solitc_name='bro').status == Response(status=400).status
@@ -86,7 +91,7 @@ def test_with_space_establishment_exec_name():
     assert data_to_use(establishment_exec_name='  ').status == Response(status=400).status
 
 def test_long_establishment_exec_name():    
-    assert data_to_use(establishment_exec_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+    assert data_to_use(establishment_exec_name=lenghtTest[:82]).status == Response(status=400).status
 
 def test_short_establishment_exec_name():    
     assert data_to_use(establishment_exec_name='bro').status == Response(status=400).status
@@ -640,10 +645,6 @@ def test_long_value_patient_adressCEP():
 # test short text
 # test more than limit
 
-global lenghtTest
-lenghtTest = ''
-for x in range(0, 1100):
-    lenghtTest += str(x)
 
 def test_wrong_type_main_clinical_signs_symptoms():
     assert data_to_use(main_clinical_signs_symptoms=131).status == Response(status=400).status
