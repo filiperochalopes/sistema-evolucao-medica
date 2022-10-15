@@ -31,6 +31,8 @@ def fill_pdf_precricao_medica(document_datetime:datetime.datetime, pacient_name:
     # Writing all data in respective fields
     # not null data
     try:
+        c = add_document_datetime(canvas=c, date=document_datetime)
+        if type(c) == type(Response()): return c
         c = add_patient_name(canvas=c, name=pacient_name)
         if type(c) == type(Response()): return c
 
@@ -78,6 +80,30 @@ def add_patient_name(canvas:canvas.Canvas, name:str):
             return Response("Unable to add patient name because is longer than 34 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding patient name', status=500)
+
+
+def add_document_datetime(canvas:canvas.Canvas, date:datetime.datetime):
+    """add document datetime to respective fields
+
+    Args:
+        canvas (canvas.Canvas): canvas to add
+        date (datetime.datetime): document datetime
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(date) != type(datetime.datetime.now()):
+            return Response('Document datetime isnt a datetime.datetime object', status=400)
+        #Add to respective fields
+        date = str(date.day) + '.' + str(date.month) + '.' + str(date.year)
+        interval = ' ' * 2
+        date = date.replace('.', interval)
+        canvas = global_functions.add_data(canvas=canvas, data=date, pos=(294, 38))
+        canvas = global_functions.add_data(canvas=canvas, data=date, pos=(744, 38))
+        return canvas
+    except:
+        return Response('Unkown error while adding document datetime', status=500)
 
 
 if __name__ == "__main__":
