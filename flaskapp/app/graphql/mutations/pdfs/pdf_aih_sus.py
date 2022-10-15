@@ -1267,11 +1267,11 @@ def add_internation_carater(canvas:canvas.Canvas, carater:str):
             return Response('internation carater has to be string', status=400)
         # verify if internation carater is smaller than 5 characters
         carater = str(carater).strip()
-        if 5 < len(carater) <= 20:
+        if 5 < len(carater) <= 19:
             canvas = add_data(canvas=canvas, data=carater, pos=(128, 246))
             return canvas
         else:
-            return Response("Unable to add internation carater because is longer than 20 characters or Smaller than 5", status=400)
+            return Response("Unable to add internation carater because is longer than 19 characters or Smaller than 5", status=400)
     except:
         return Response('Unknow error while adding Clinic', status=500)
 

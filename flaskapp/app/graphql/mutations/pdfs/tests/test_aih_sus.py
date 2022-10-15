@@ -795,7 +795,7 @@ def test_shortText_internation_carater():
     assert data_to_use(internation_carater='ab11').status == Response(status=400).status
 
 def test_more_than_limit_internation_carater():
-    assert data_to_use(internation_carater=lenghtTest[:25]).status == Response(status=400).status
+    assert data_to_use(internation_carater=lenghtTest[:20]).status == Response(status=400).status
 
 def test_wrong_type_emission_org_code():
     assert data_to_use(emission_org_code=131).status == Response(status=400).status
