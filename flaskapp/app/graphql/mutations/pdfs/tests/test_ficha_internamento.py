@@ -257,7 +257,7 @@ def test_invalid_value_patient_adressCity():
     assert data_to_use(patient_adressCity='123').status == Response(status=400).status
 
 def test_long_value_patient_adressCity():
-    assert data_to_use(patient_adressCity=str(lenghtTest[:34])).status == Response(status=400).status
+    assert data_to_use(patient_adressCity=str(lenghtTest[:36])).status == Response(status=400).status
 
 def test_wrongtype_patient_adressCEP():
     assert data_to_use(patient_adressCEP='1212').status == Response(status=400).status

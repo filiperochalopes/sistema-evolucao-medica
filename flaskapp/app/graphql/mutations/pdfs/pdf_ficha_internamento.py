@@ -588,8 +588,8 @@ def add_patientAdressCity(canvas:canvas.Canvas, adressCity:str):
     try:
         if type(adressCity) != type(str()):
             return Response('Patient adress city has to be a str', status=400)
-        if len(adressCity) > 32 or len(adressCity) < 4:
-            return Response('patient city has to be more than 4 characters and less than 32', status=400)
+        if len(adressCity) > 34 or len(adressCity) < 4:
+            return Response('patient city has to be more than 4 characters and less than 34', status=400)
         else:
             canvas = add_data(canvas=canvas, data=adressCity, pos=(243, 580))
             return canvas
