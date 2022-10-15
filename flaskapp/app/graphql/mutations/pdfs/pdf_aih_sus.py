@@ -42,8 +42,8 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             c.setFont('Roboto-Mono', 10)
             c = add_patient_cns(canvas=c, cns=patient_cns)
-            c.setFont('Roboto-Mono', 9)
             if type(c) == type(Response()): return c
+            c.setFont('Roboto-Mono', 9)
             c = add_patient_birthday(canvas=c, birthday=patient_birthday)
             if type(c) == type(Response()): return c
             c = add_patient_sex(canvas=c, sex=patient_sex)
@@ -58,8 +58,10 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             c = add_patient_adressUF(canvas=c, uf=patient_adressUF)
             if type(c) == type(Response()): return c
+            c.setFont('Roboto-Mono', 10)
             c = add_patient_adressCEP(canvas=c, cep=patient_adressCEP)
             if type(c) == type(Response()): return c
+            c.setFont('Roboto-Mono', 9)
             c = add_main_clinical_signs_symptoms(canvas=c, symptoms=main_clinical_signs_symptoms)
             if type(c) == type(Response()): return c
             c = add_conditions_justify_hospitalization(canvas=c, conditions=conditions_justify_hospitalization)
@@ -677,12 +679,11 @@ def add_patient_adressCEP(canvas:canvas.Canvas, cep:int):
         if len(cep) != 8:
             return Response('Patient Adress CEP do not have 8 digits', status=400) 
         else:
-            cont = 0
-            xpos = 481
-            while cont <= 7:
-                canvas = add_data(canvas=canvas, data=cep[cont], pos=(xpos, 566))
-                cont += 1
-                xpos += 12
+            # Add empty spaces interval between averu character
+            interval = ' ' * 1
+            cep = interval.join(cep)
+            canvas = add_data(canvas=canvas, data=cep, pos=(482, 566))
+
             return canvas
     except:
         return Response('Unknow error while adding patient Adress CEP', status=500)
