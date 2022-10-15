@@ -140,6 +140,9 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if insurance_company_cnpj is not None:
                 c = add_insurance_company_cnpj(canvas=c, cnpj=insurance_company_cnpj)
             if type(c) == type(Response()): return c
+            if company_cnpj is not None:
+                c = add_company_cnpj(canvas=c, cnpj=company_cnpj)
+            if type(c) == type(Response()): return c
             
             
             c.setFont('Roboto-Mono', 9)
@@ -148,9 +151,6 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             if insurance_company_series is not None and str(insurance_company_series).strip() != "":
                 c = add_insurance_company_series(canvas=c, series=insurance_company_series)
-            if type(c) == type(Response()): return c
-            if company_cnpj is not None:
-                c = add_company_cnpj(canvas=c, cnpj=company_cnpj)
             if type(c) == type(Response()): return c
             if company_cnae is not None :
                 c = add_company_cnae(canvas=c, cnae=company_cnae)
@@ -737,12 +737,10 @@ def add_company_cnpj(canvas:canvas.Canvas, cnpj:int):
             return Response('Company cnpj has to be a int', status=400)
         cnpj = str(cnpj)
         if global_functions.isCNPJvalid(cnpj):
-            cont = 0
-            xpos = 169
-            while cont < 14:
-                canvas = add_data(canvas=canvas, data=cnpj[cont], pos=(xpos, 156))
-                cont += 1
-                xpos += 18
+            # Add empty spaces interval between averu character
+            interval = ' ' * 2
+            cnpj = interval.join(cnpj)
+            canvas = add_data(canvas=canvas, data=cnpj, pos=(168, 156))
             return canvas
         else:
             return Response('Company cnpj is not valid', status=400) 
