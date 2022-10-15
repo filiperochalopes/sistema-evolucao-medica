@@ -76,7 +76,7 @@ def test_with_space_establishment_solitcname():
     assert data_to_use(establishment_solitc_name='  ').status == Response(status=400).status
 
 def test_long_establishment_solitcname():    
-    assert data_to_use(establishment_solitc_name=lenghtTest[:82]).status == Response(status=400).status
+    assert data_to_use(establishment_solitc_name=lenghtTest[:84]).status == Response(status=400).status
 
 def test_short_establishment_solitcname():    
     assert data_to_use(establishment_solitc_name='bro').status == Response(status=400).status
@@ -91,7 +91,7 @@ def test_with_space_establishment_exec_name():
     assert data_to_use(establishment_exec_name='  ').status == Response(status=400).status
 
 def test_long_establishment_exec_name():    
-    assert data_to_use(establishment_exec_name=lenghtTest[:82]).status == Response(status=400).status
+    assert data_to_use(establishment_exec_name=lenghtTest[:84]).status == Response(status=400).status
 
 def test_short_establishment_exec_name():    
     assert data_to_use(establishment_exec_name='bro').status == Response(status=400).status
@@ -121,7 +121,7 @@ def test_with_space_patient_mother_name():
     assert data_to_use(patient_mother_name='  ').status == Response(status=400).status
 
 def test_long_patient_mother_name():    
-    assert data_to_use(patient_mother_name=lenghtTest[:52]).status == Response(status=400).status
+    assert data_to_use(patient_mother_name=lenghtTest[:75]).status == Response(status=400).status
 
 def test_short_patient_mother_name():    
     assert data_to_use(patient_mother_name='bro').status == Response(status=400).status
@@ -999,7 +999,7 @@ def test_empty_spaces_patient_responsible_name():
     assert type(data_to_use(patient_responsible_name='    ')) != type(Response())
 
 def test_longValue_patient_responsible_name():
-    assert data_to_use(patient_responsible_name=lenghtTest[:70]).status == Response(status=400).status
+    assert data_to_use(patient_responsible_name=lenghtTest[:72]).status == Response(status=400).status
 
 def test_shortValue_patient_responsible_name():
     assert data_to_use(patient_responsible_name='aaa').status == Response(status=400).status
