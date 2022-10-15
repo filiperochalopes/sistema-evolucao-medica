@@ -844,10 +844,10 @@ def add_hospitalization_autorization_number(canvas:canvas.Canvas, number:int):
             return Response('Hospitalization autorizaton number has to be a int', status=400)
         number = str(number)
         if len(number) > 18:
-            return Response('Hospitalization autorizaton number cannot has more than 17 digits', status=400) 
+            return Response('Hospitalization autorizaton number cannot has more than 18 digits', status=400) 
         else:
             #Add the string centetred only this time
-            canvas.drawCentredString(x=480, y=66, text=number)
+            canvas = add_centralized_data(canvas=canvas, data=number, pos=(480,66))
             return canvas
     except:
         return Response('Unknow error while adding Hospitalization autorizaton number', status=500)

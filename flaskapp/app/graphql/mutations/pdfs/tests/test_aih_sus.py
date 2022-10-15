@@ -841,7 +841,7 @@ def test_empty_spaces_hospitalization_autorization_number():
     assert data_to_use(hospitalization_autorization_number='    ').status == Response(status=400).status
 
 def test_longValue_hospitalization_autorization_number():
-    assert data_to_use(emission_org_code=int(lenghtTest[:20])).status == Response(status=400).status
+    assert data_to_use(hospitalization_autorization_number=int(lenghtTest[:20])).status == Response(status=400).status
 
 def test_wrong_type_chart_number():
     assert data_to_use(chart_number='131').status == Response(status=400).status
