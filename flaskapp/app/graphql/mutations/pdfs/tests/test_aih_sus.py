@@ -106,7 +106,7 @@ def test_with_space_patient_name():
     assert data_to_use(patient_name='  ').status == Response(status=400).status
 
 def test_long_patient_name():    
-    assert data_to_use(patient_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+    assert data_to_use(patient_name=lenghtTest[:81]).status == Response(status=400).status
 
 def test_short_patient_name():    
     assert data_to_use(patient_name='bro').status == Response(status=400).status
