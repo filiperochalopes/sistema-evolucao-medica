@@ -867,19 +867,20 @@ def add_main_clinical_signs_symptoms(canvas:canvas.Canvas, symptoms:str):
         if type(symptoms) != type(str()):
             return Response('Clinical Signs Symptoms has to be a string', status=400)
         symptoms = symptoms.strip()
-        if 5 > len(symptoms) or len(symptoms) > 1060:
-            return Response('Clinical Signs Symptoms has to be at least 5 characters and not bigger than 1060 characters', status=400)
+        if 5 > len(symptoms) or len(symptoms) > 1010:
+            return Response('Clinical Signs Symptoms has to be at least 5 characters and not bigger than 1010 characters', status=400)
         str_symptoms = ''
-        brokeLinexTimes = int(len(symptoms)/107)
-        currentLine = 107
+        charByLine = 101
+        brokeLinexTimes = int(len(symptoms)/charByLine)
+        currentLine = charByLine
         lastline = 0
         yposition = 530
-        # Making the line break whem has 107 charater in a line
+        # Making the line break whem has 101 charater in a line
         while brokeLinexTimes >= 0:
             str_symptoms = symptoms[lastline:currentLine]
             canvas = add_data(canvas=canvas, data=str_symptoms, pos=(25, yposition))
             lastline = currentLine
-            currentLine += 107
+            currentLine += charByLine
             brokeLinexTimes -= 1
             yposition -= 10
 

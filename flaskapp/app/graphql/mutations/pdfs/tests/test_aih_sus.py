@@ -659,7 +659,7 @@ def test_shortText_main_clinical_signs_symptoms():
     assert data_to_use(main_clinical_signs_symptoms='abla').status == Response(status=400).status
 
 def test_more_than_limit_main_clinical_signs_symptoms():
-    assert data_to_use(main_clinical_signs_symptoms=lenghtTest[:1070]).status == Response(status=400).status
+    assert data_to_use(main_clinical_signs_symptoms=lenghtTest[:1030]).status == Response(status=400).status
 
 def test_wrong_type_conditions_justify_hospitalization():
     assert data_to_use(conditions_justify_hospitalization=131).status == Response(status=400).status
