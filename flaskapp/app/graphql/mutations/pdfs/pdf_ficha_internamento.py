@@ -330,7 +330,7 @@ def add_patientMotherName(canvas:canvas.Canvas, motherName:str):
             canvas = add_data(canvas=canvas, data=motherName, pos=(194, 642))
             return canvas
         else:
-            return Response("Unable to add patient motherName because is longer than 60 characters or Smaller than 7", status=400)
+            return Response("Unable to add patient motherName because is longer than 69 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding patient motherName', status=500)
 
@@ -390,7 +390,7 @@ def add_patientAdress(canvas:canvas.Canvas, adress:str):
             canvas = add_data(canvas=canvas, data=adress, pos=(230, 610))
             return canvas
         else:
-            return Response("Unable to add patient adress because is longer than 60 characters or smaller than 7", status=400)
+            return Response("Unable to add patient adress because is longer than 63 characters or smaller than 7", status=400)
     except:
         Response('Unknow error while adding patient Adress', status=500)
 
@@ -485,18 +485,18 @@ def add_current_illness_history(canvas:canvas.Canvas, current_illness_history:st
             return Response('Current Illness History has to be a string', status=400)
         # Making the line break whem has 105 charater in a line
         current_illness_history = current_illness_history.strip()
-        if len(current_illness_history) > 1680 or len(current_illness_history) < 10:
-            return Response('Current illiness history has to be at least 10 characters and no more than 1680 characters', status=400)
+        if len(current_illness_history) > 1600 or len(current_illness_history) < 10:
+            return Response('Current illiness history has to be at least 10 characters and no more than 1600 characters', status=400)
         str_current_illness_history = ''
-        brokeLinexTimes = int(len(current_illness_history)/105)
-        currentLine = 105
+        brokeLinexTimes = int(len(current_illness_history)/100)
+        currentLine = 100
         lastline = 0
-        yposition = 417
+        yposition = 418
         while brokeLinexTimes >= 0:
             str_current_illness_history = current_illness_history[lastline:currentLine]
             canvas = add_data(canvas=canvas, data=str_current_illness_history, pos=(26, yposition))
             lastline = currentLine
-            currentLine += 105
+            currentLine += 100
             brokeLinexTimes -= 1
             yposition -= 10
 
@@ -523,10 +523,10 @@ def add_initial_diagnostic_suspicion(canvas:canvas.Canvas, ids:str):
     try:
         if type(ids) != type(str()):
             return Response('Initial Diagnostic Suspicion has do be string', status=400)
-        if 5 < len(ids) < 105:
+        if 5 < len(ids) < 100:
             canvas = add_data(canvas=canvas, data=ids, pos=(26, 244))
             return canvas
-        return Response('inital diagnostic supicion has to be more than 5 characters and less than 105', status=400)
+        return Response('inital diagnostic supicion has to be more than 5 characters and less than 100', status=400)
     except:
         return Response('Unknow error while adding initial diagnostic suspicion', status=500)
 

@@ -465,7 +465,7 @@ def test_shortText_current_illness_history():
     assert data_to_use(current_illness_history='ablas').status == Response(status=400).status
 
 def test_more_than_limit_current_illness_history():
-    assert data_to_use(current_illness_history=lenghtTest[:1690]).status == Response(status=400).status
+    assert data_to_use(current_illness_history=lenghtTest[:1610]).status == Response(status=400).status
 
 #############################################################################
 # NORMAL TEXT VARIABLES THAT CANNOT/can BE NULL
