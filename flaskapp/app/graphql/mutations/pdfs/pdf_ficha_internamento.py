@@ -142,7 +142,7 @@ def add_patientName(canvas:canvas.Canvas, name:str):
             canvas = add_data(canvas=canvas, data=name, pos=(27, 674))
             return canvas
         else:
-            return Response("Unable to add patient name because is longer than 60 characters or Smaller than 7", status=400)
+            return Response("Unable to add patient name because is longer than 64 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding patient name', status=500)
 
@@ -162,11 +162,11 @@ def add_doctorName(canvas:canvas.Canvas, name:str):
             return Response('Doctor name has to be string', status=400)
         # verify if doctor name is smaller than 60 characters
         name = str(name)
-        if 7 < len(name.strip()) <= 60:
+        if 7 < len(name.strip()) <= 49:
             canvas = add_data(canvas=canvas, data=name, pos=(304, 195))
             return canvas
         else:
-            return Response("Unable to add doctor name because is longer than 60 characters or Smaller than 7", status=400)
+            return Response("Unable to add doctor name because is longer than 49 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding doctor name', status=500)
 
