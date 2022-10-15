@@ -1337,19 +1337,11 @@ def add_autorizaton_prof_document(canvas:canvas.Canvas, document:dict):
                 return Response('Profissional autorizate value CNS has to be int', status=400)
             if global_functions.isCNSvalid(document['CNS']):
                 canvas = add_square(canvas=canvas, pos=(41, 66))
-                cont = 0
-                xpos = 147
+                # Add empty spaces interval between averu character
+                interval = ' ' * 2
                 cns = str(document['CNS'])
-                while cont < 15:
-                    canvas = add_data(canvas=canvas, data=cns[cont], pos=(xpos, 66))
-                    cont += 1
-                    xpos += 15
-                    if cont > 5 and cont < 8:
-                        xpos += 3
-                    elif cont == 5:
-                        xpos += 6
-                    elif cont > 12:
-                        xpos += 4
+                cns = interval.join(cns)
+                canvas = add_data(canvas=canvas, data=cns, pos=(146, 66))
                 return canvas
             else:
                 return Response('Profissional autorizate CNS is not valid', status=400)
@@ -1555,12 +1547,12 @@ if __name__ == "__main__":
         procedure_code='1234567890', 
         clinic='Clinic Name', 
         internation_carater='Internation Carater', 
-        prof_solicitant_document={'CNS':928976954930007},
+        prof_solicitant_document={'CPF':28445400070},
         prof_solicitant_name='Profissional Solicit Name', 
         solicitation_datetime=datetime.datetime.now(), 
         autorization_prof_name='Autorization professional name', 
         emission_org_code='OrgCode2022', 
-        autorizaton_prof_document={'CPF':28445400070}, 
+        autorizaton_prof_document={'CNS':928976954930007}, 
         autorizaton_datetime=datetime.datetime.now(),
         hospitalization_autorization_number=1234567890,
         exam_results='Xray tibia broken',
