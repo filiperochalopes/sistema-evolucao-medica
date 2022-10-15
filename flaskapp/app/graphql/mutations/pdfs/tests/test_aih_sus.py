@@ -780,7 +780,7 @@ def test_shortText_clinic():
     assert data_to_use(clinic='ab11').status == Response(status=400).status
 
 def test_more_than_limit_clinic():
-    assert data_to_use(clinic=lenghtTest[:25]).status == Response(status=400).status
+    assert data_to_use(clinic=lenghtTest[:20]).status == Response(status=400).status
 
 def test_wrong_type_internation_carater():
     assert data_to_use(internation_carater=131).status == Response(status=400).status

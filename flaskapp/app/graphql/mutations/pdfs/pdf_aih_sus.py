@@ -1243,11 +1243,11 @@ def add_clinic(canvas:canvas.Canvas, name:str):
             return Response('Clinic has to be string', status=400)
         # verify if clinic name is smaller than 5 characters
         name = str(name).strip()
-        if 5 < len(name) <= 20:
+        if 5 < len(name) <= 18:
             canvas = add_data(canvas=canvas, data=name, pos=(25, 246))
             return canvas
         else:
-            return Response("Unable to add Clinic because is longer than 20 characters or Smaller than 5", status=400)
+            return Response("Unable to add Clinic because is longer than 18 characters or Smaller than 5", status=400)
     except:
         return Response('Unknow error while adding Clinic', status=500)
 
