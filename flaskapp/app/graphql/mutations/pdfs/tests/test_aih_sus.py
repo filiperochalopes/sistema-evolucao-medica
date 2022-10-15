@@ -720,7 +720,7 @@ def test_shortText_initial_diagnostic():
     assert data_to_use(initial_diagnostic='abla').status == Response(status=400).status
 
 def test_more_than_limit_initial_diagnostic():
-    assert data_to_use(initial_diagnostic=lenghtTest[:65]).status == Response(status=400).status
+    assert data_to_use(initial_diagnostic=lenghtTest[:46]).status == Response(status=400).status
 
 def test_wrong_type_principalCid10():
     assert data_to_use(principalCid10=131).status == Response(status=400).status

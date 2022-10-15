@@ -989,11 +989,11 @@ def add_initial_diagnostic(canvas:canvas.Canvas, diagnostic:str):
             return Response('Patient initial diagnostic has to be string', status=400)
         # verify if patient diagnostic is smaller than 60 characters
         diagnostic = str(diagnostic).strip()
-        if 4 < len(diagnostic) <= 60:
+        if 4 < len(diagnostic) <= 44:
             canvas = add_data(canvas=canvas, data=diagnostic, pos=(25, 314))
             return canvas
         else:
-            return Response("Unable to add patient initial diagnostic because is longer than 60 characters or Smaller than 4", status=400)
+            return Response("Unable to add patient initial diagnostic because is longer than 44 characters or Smaller than 4", status=400)
     except:
         return Response('Unknow error while adding patient initial diagnostic', status=500)
 
