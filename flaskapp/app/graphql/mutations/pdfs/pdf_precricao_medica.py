@@ -27,11 +27,20 @@ def fill_pdf_precricao_medica(document_datetime:datetime.datetime, pacient_name:
     # Change canvas font to mach with the document
     # this is also changed in the document to some especific fields
     pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
-    c.setFont('Roboto-Mono', 9)
+    c.setFont('Roboto-Mono', 12)
     # Writing all data in respective fields
     # not null data
+    try:
+        c = add_patient_name(canvas=c, name=pacient_name)
+        if type(c) == type(Response()): return c
 
-    c = global_functions.add_data(canvas=c, data='aisdyh', pos=(641, 306))
+    except:
+            if type(c) == type(Response()):
+                return c
+            else:
+                return Response('Some error happen when adding not null data to fields', status=500)
+    
+    
     # create a new PDF with Reportlab
     c.save()
     packet.seek(0)
@@ -44,6 +53,30 @@ def fill_pdf_precricao_medica(document_datetime:datetime.datetime, pacient_name:
     page.merge_page(new_pdf.pages[0])
     output.add_page(page)
     return output
+
+
+def add_patient_name(canvas:canvas.Canvas, name:str):
+    """Add patient name to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to add
+        name (str): name to add
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(name) != type(str()):
+            return Response('patient name has to be string', status=400)
+        # verify if patient name is smaller than 60 characters
+        name = str(name)
+        if 7 < len(name.strip()) <= 34:
+            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(120, 505))
+            return canvas
+        else:
+            return Response("Unable to add patient name because is longer than 34 characters or Smaller than 7", status=400)
+    except:
+        return Response('Unknow error while adding patient name', status=500)
 
 
 if __name__ == "__main__":
