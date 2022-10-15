@@ -40,7 +40,9 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             c = add_patient_name(canvas=c, name=patient_name)
             if type(c) == type(Response()): return c
+            c.setFont('Roboto-Mono', 10)
             c = add_patient_cns(canvas=c, cns=patient_cns)
+            c.setFont('Roboto-Mono', 9)
             if type(c) == type(Response()): return c
             c = add_patient_birthday(canvas=c, birthday=patient_birthday)
             if type(c) == type(Response()): return c
@@ -384,12 +386,11 @@ def add_patient_cns(canvas:canvas.Canvas, cns:int):
         if global_functions.isCNSvalid(cns):
             #Add one number at every field
             cns = str(cns)
-            cont = 0
-            xpos = 28
-            while cont < 15:
-                canvas = add_data(canvas=canvas, data=cns[cont], pos=(xpos, 658))
-                cont += 1
-                xpos += 18
+            # Add empty spaces interval between averu character
+            interval = ' '  * 2
+            cns = interval.join(cns)
+            canvas = add_data(canvas=canvas, data=cns, pos=(28, 658))
+
             return canvas
         else:
             return Response("Unable to add patient cns because is a invalid CNS", status=400)
