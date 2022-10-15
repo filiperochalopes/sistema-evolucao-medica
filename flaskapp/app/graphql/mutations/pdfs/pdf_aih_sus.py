@@ -523,11 +523,11 @@ def add_patient_mother_name(canvas:canvas.Canvas, motherName:str):
             return Response('Mother name has to be str', status=400)
         # verify if patient motherName is smaller than 60 characters
         motherName = motherName.strip()
-        if 7 < len(motherName) <= 68:
+        if 7 < len(motherName) <= 70:
             canvas = add_data(canvas=canvas, data=motherName, pos=(25, 636))
             return canvas
         else:
-            return Response("Unable to add patient motherName because is longer than 68 characters or Smaller than 7", status=400)
+            return Response("Unable to add patient motherName because is longer than 70 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding patient motherName', status=500)
 
@@ -547,11 +547,11 @@ def add_patient_responsible_name(canvas:canvas.Canvas, name:str):
             return Response('Responsible name has to be str', status=400)
         # verify if patient responsible name is smaller than 60 characters
         name = name.strip()
-        if 7 < len(name) <= 68:
+        if 7 < len(name) <= 70:
             canvas = add_data(canvas=canvas, data=name, pos=(25, 612))
             return canvas
         else:
-            return Response("Unable to add responsible name because is longer than 68 characters or Smaller than 7", status=400)
+            return Response("Unable to add responsible name because is longer than 70 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding responsible name', status=500)
 

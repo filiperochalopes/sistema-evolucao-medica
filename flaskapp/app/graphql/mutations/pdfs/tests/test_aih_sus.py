@@ -121,7 +121,7 @@ def test_with_space_patient_mother_name():
     assert data_to_use(patient_mother_name='  ').status == Response(status=400).status
 
 def test_long_patient_mother_name():    
-    assert data_to_use(patient_mother_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+    assert data_to_use(patient_mother_name=lenghtTest[:52]).status == Response(status=400).status
 
 def test_short_patient_mother_name():    
     assert data_to_use(patient_mother_name='bro').status == Response(status=400).status
@@ -166,7 +166,7 @@ def test_with_space_patient_responsible_name():
     assert type(data_to_use(patient_responsible_name='  ')) != Response(status=400).status
 
 def test_long_patient_responsible_name():    
-    assert data_to_use(patient_responsible_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+    assert data_to_use(patient_responsible_name=lenghtTest[:72]).status == Response(status=400).status
 
 def test_short_patient_responsible_name():    
     assert data_to_use(patient_responsible_name='bro').status == Response(status=400).status
