@@ -649,8 +649,10 @@ def add_patient_adressUF(canvas:canvas.Canvas, uf:str):
             return Response('Adress UF has to be a string', status=400)
         uf = uf.upper()
         if global_functions.ufExists(uf=uf):
-            canvas = add_data(canvas=canvas, data=uf[0], pos=(450, 566))
-            canvas = add_data(canvas=canvas, data=uf[1], pos=(464, 566))
+            # Add empty spaces interval between averu character
+            interval = ' ' * 2
+            uf = interval.join(uf)
+            canvas = add_data(canvas=canvas, data=uf, pos=(450, 566))
             return canvas
         else:
             return Response('Patient Adress UF not exists in Brazil', status=400) 
