@@ -40,9 +40,14 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             c = add_patient_name(canvas=c, name=patient_name)
             if type(c) == type(Response()): return c
+            #Data that change Font Size
+
             c.setFont('Roboto-Mono', 10)
             c = add_patient_cns(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
+            c = add_patient_adressCEP(canvas=c, cep=patient_adressCEP)
+            if type(c) == type(Response()): return c
+            
             c.setFont('Roboto-Mono', 9)
             c = add_patient_birthday(canvas=c, birthday=patient_birthday)
             if type(c) == type(Response()): return c
@@ -58,10 +63,6 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             c = add_patient_adressUF(canvas=c, uf=patient_adressUF)
             if type(c) == type(Response()): return c
-            c.setFont('Roboto-Mono', 10)
-            c = add_patient_adressCEP(canvas=c, cep=patient_adressCEP)
-            if type(c) == type(Response()): return c
-            c.setFont('Roboto-Mono', 9)
             c = add_main_clinical_signs_symptoms(canvas=c, symptoms=main_clinical_signs_symptoms)
             if type(c) == type(Response()): return c
             c = add_conditions_justify_hospitalization(canvas=c, conditions=conditions_justify_hospitalization)
@@ -133,9 +134,15 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if acident_type is not None and str(acident_type).strip() != "":
                 c = add_acident_type(canvas=c, acident=acident_type)
             if type(c) == type(Response()): return c
+            #Data that change Font Size
+
+            c.setFont('Roboto-Mono', 10)
             if insurance_company_cnpj is not None:
                 c = add_insurance_company_cnpj(canvas=c, cnpj=insurance_company_cnpj)
             if type(c) == type(Response()): return c
+            
+            
+            c.setFont('Roboto-Mono', 9)
             if insurance_company_ticket_number is not None:
                 c = add_insurance_company_ticket_number(canvas=c, ticket=insurance_company_ticket_number)
             if type(c) == type(Response()): return c
@@ -704,12 +711,10 @@ def add_insurance_company_cnpj(canvas:canvas.Canvas, cnpj:int):
             return Response('Insurance company cnpj has to be a int', status=400)
         cnpj = str(cnpj)
         if global_functions.isCNPJvalid(cnpj):
-            cont = 0
-            xpos = 169
-            while cont < 14:
-                canvas = add_data(canvas=canvas, data=cnpj[cont], pos=(xpos, 183))
-                cont += 1
-                xpos += 18
+            # Add empty spaces interval between averu character
+            interval = ' ' * 2
+            cnpj = interval.join(cnpj)
+            canvas = add_data(canvas=canvas, data=cnpj, pos=(168, 183))
             return canvas
         else:
             return Response('Insurance company cnpj is not valid', status=400) 
