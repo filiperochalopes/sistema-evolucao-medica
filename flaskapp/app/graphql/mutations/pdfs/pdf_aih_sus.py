@@ -286,13 +286,10 @@ def add_establishment_exec_cnes(canvas:canvas.Canvas, cnes:int):
         # Verify if the cnes is valid
         cnes = str(cnes)
         if len(cnes) == 7:
-            #Add one number at every field
-            cont = 0
-            xpos = 471
-            while cont < 7:
-                canvas = add_data(canvas=canvas, data=cnes[cont], pos=(xpos, 726))
-                cont += 1
-                xpos += 15
+            # Add empty spaces interval between averu character
+            interval = ' ' * 2
+            cnes = interval.join(cnes)
+            canvas = add_data(canvas=canvas, data=cnes, pos=(470, 726))
             return canvas
         return Response('unable to add Establishment Exec Cnes because is a invalid CNES', status=400)
     except:
