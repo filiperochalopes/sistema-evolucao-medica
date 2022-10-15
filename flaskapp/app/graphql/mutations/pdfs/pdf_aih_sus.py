@@ -1152,12 +1152,11 @@ def add_patient_mother_phonenumber(canvas:canvas.Canvas, number:int):
             return Response('mother phone number has to be int', status=400)
         number = str(number)
         if len(number) == 10:
-            cont = 0
-            xpos = 415
-            while cont < 10:
-                canvas = add_data(canvas=canvas, data=number[cont], pos=(xpos, 631))
-                cont += 1
-                xpos += 17
+            # Add empty spaces interval between averu character
+            interval = ' ' * 2
+            number = interval.join(number)
+            canvas = add_data(canvas=canvas, data=number, pos=(415, 631))
+
             return canvas
         else:
             return Response("mother phone number solicited has to be 10 digits, do not add the 9 after DDD", status=400)
@@ -1180,12 +1179,10 @@ def add_patient_responsible_phonenumber(canvas:canvas.Canvas, number:int):
             return Response('responsible phone number has to be int', status=400)
         number = str(number)
         if len(number) == 10:
-            cont = 0
-            xpos = 415
-            while cont < 10:
-                canvas = add_data(canvas=canvas, data=number[cont], pos=(xpos, 608))
-                cont += 1
-                xpos += 17
+            # Add empty spaces interval between averu character
+            interval = ' ' * 2
+            number = interval.join(number)
+            canvas = add_data(canvas=canvas, data=number, pos=(415, 608))
             return canvas
         else:
             return Response("responsible phone number solicited has to be 10 digits, do not add the 9 after DDD", status=400)
