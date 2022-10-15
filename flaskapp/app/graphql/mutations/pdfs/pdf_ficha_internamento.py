@@ -11,9 +11,6 @@ from flask import Response
 if __name__ != "__main__":
     from . import global_functions
 
-lenghtTest = ''
-for x in range(0, 2000):
-    lenghtTest += str(x)
 
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
