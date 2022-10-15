@@ -1292,7 +1292,7 @@ def add_prof_solicitant_document(canvas:canvas.Canvas, document:dict):
                 interval = ' ' * 2
                 cns = str(document['CNS'])
                 cns = interval.join(cns)
-                canvas = add_data(canvas=canvas, data=cns, pos=(337, 246))
+                canvas = add_data(canvas=canvas, data=cns, pos=(335, 246))
                 return canvas
             else:
                 return Response('Profissional solicitate CNS is not valid', status=400)
