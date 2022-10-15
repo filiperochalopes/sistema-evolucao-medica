@@ -30,17 +30,21 @@ def fill_pdf_precricao_medica(document_datetime:datetime.datetime, pacient_name:
     c.setFont('Roboto-Mono', 12)
     # Writing all data in respective fields
     # not null data
-    try:
-        c = add_document_datetime(canvas=c, date=document_datetime)
-        if type(c) == type(Response()): return c
-        c = add_patient_name(canvas=c, name=pacient_name)
-        if type(c) == type(Response()): return c
 
-    except:
-            if type(c) == type(Response()):
-                return c
-            else:
-                return Response('Some error happen when adding not null data to fields', status=500)
+    c = add_document_datetime(canvas=c, date=document_datetime)
+    if type(c) == type(Response()): return c
+    c = add_patient_name(canvas=c, name=pacient_name)
+    if type(c) == type(Response()): return c
+    c.setFont('Roboto-Mono', 10)
+    c = add_prescription(canvas=c, prescription=prescrition)
+    if type(c) == type(Response()): return c
+
+
+#    except:
+#            if type(c) == type(Response()):
+#                return c
+#            else:
+#                return Response('Some error happen when adding not null data to fields', status=500)
     
     
     # create a new PDF with Reportlab
@@ -106,12 +110,89 @@ def add_document_datetime(canvas:canvas.Canvas, date:datetime.datetime):
         return Response('Unkown error while adding document datetime', status=500)
 
 
+def add_prescription(canvas:canvas.Canvas, prescription:list):
+    """add prescription to database
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        precription (list): list of dicts
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    #verify if the type is list
+    if type(prescription) != type(list()):
+        return Response('Prescription has to be a list of dicts, like: [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]', status=400)
+    necessaryKeys = ["medicine_name", "amount", "use_mode"]
+    totalChar = 0
+    for presc in prescription:
+        #Verify if the necessary keys are in the dict
+        if 'medicine_name' not in presc.keys() or 'amount' not in presc.keys() or "use_mode" not in presc.keys():
+            return Response('Some keys in dict is missing, dict has to have "medicine_name", "amount", "use_mode"', status=400)
+        #Verify if the value in the dics is str
+        elif type(presc['medicine_name']) != type(str()) or type(presc['amount']) != type(str()) or type(presc["use_mode"]) != type(str()):
+            return Response('The values in the keys "medicine_name", "amount", "use_mode" has to be string', status=400)
+        #verify if medicine_name and amount together isnt bigger than 1 line (61 characters)
+        elif len(presc['medicine_name'].strip() + presc['amount'].strip()) > 61:
+            return Response('"medicine_name" and "amount" cannot be longer than 61 characters', status=400)
+        #Verify id use_mode isnt bigger than 3 lines (244 characters)
+        elif len(presc['use_mode'].strip()) > 244:
+            return Response('"use_mode"cannot be longer than 244 characters', status=400)
+        #Verify if the dict has more keys than the needed
+        for key in presc.keys():
+            if key not in necessaryKeys:
+                return Response('The dict can only have 3 keys "medicine_name", "amount", "use_mode"', status=400)
+        #calculate the total lenght of use_mode
+        totalChar += len(presc['use_mode'].strip())
+    # Verify if user_mode total lenght and the 2 line that every medicine and amount need isnt bigger than the total of de document
+    if totalChar + (61 * len(prescription)) == 2623:
+        return Response('The total document cannot has more than 2623 characters.Remember than 1 line (61 character) is just to medidine and amount', status=400)
+
+    yposition = 475
+    for presc in prescription:
+        medicine_name = presc['medicine_name'].strip()
+        amount = presc['amount'].strip()
+        use_mode = presc['use_mode'].strip()
+        str_use_mode = ''
+        charByLine = 61
+        brokeLinexTimes = int(len(use_mode)/charByLine)
+        currentLine = charByLine
+        lastline = 0
+        #Discover how many . dots hhas to be between medicinename and amount
+        dotQuant = 61 - len(medicine_name + amount)
+        str_title = medicine_name + '.' * dotQuant + amount
+        #Add medicinename and amount
+        canvas = global_functions.add_data(canvas=canvas, data=str_title, pos=(22, yposition))
+        canvas = global_functions.add_data(canvas=canvas, data=str_title, pos=(472, yposition))
+        yposition -= 10
+        # Making the line break whem has 61 charater in a line
+        while brokeLinexTimes >= 0:
+            str_use_mode = use_mode[lastline:currentLine]
+            canvas = global_functions.add_data(canvas=canvas, data=str_use_mode, pos=(22, yposition))
+            canvas = global_functions.add_data(canvas=canvas, data=str_use_mode, pos=(472, yposition))
+            lastline = currentLine
+            currentLine += charByLine
+            brokeLinexTimes -= 1
+            yposition -= 10
+        yposition -= 10
+
+    del(str_use_mode)
+    del(brokeLinexTimes)
+    del(currentLine)
+    del(lastline)
+    del(yposition)
+    return canvas
+
+
+    
+
+    return canvas
+
 if __name__ == "__main__":
     import global_functions
     output = fill_pdf_precricao_medica(
         document_datetime=datetime.datetime.now(),
         pacient_name='Pacient Name',
-        prescrition=['aaa']
+        prescrition=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]
     )
 
     if type(output) == type(Response()): 
