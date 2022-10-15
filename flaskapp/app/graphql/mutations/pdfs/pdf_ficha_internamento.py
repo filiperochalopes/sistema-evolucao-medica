@@ -660,8 +660,8 @@ def add_patientNationality(canvas:canvas.Canvas, nationality:str):
         if type(nationality) != type(str()):
             return Response('Patient Nationality has to be a str', status=400)
         nationality = nationality.strip()
-        if len(nationality) > 22:
-            return Response('patient nationality is to long, more than 22 characters', status=400)
+        if len(nationality) > 25 or len(nationality) < 3:
+            return Response('patient nationality has to be more than 2 characters and less than 26 characters', status=400)
         else:
             canvas = add_data(canvas=canvas, data=nationality, pos=(27, 547))
             return canvas

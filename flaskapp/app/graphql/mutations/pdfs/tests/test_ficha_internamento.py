@@ -550,10 +550,10 @@ def test_empty_spaces_patient_nationality():
     assert type(data_to_use(patient_nationality='    ')) != type(Response())
 
 def test_shortText_patient_nationality():
-    assert type(data_to_use(patient_nationality='abla123')) != type(Response())
+    assert data_to_use(patient_nationality='ab').status == Response(status=400).status
 
 def test_more_than_limit_patient_nationality():
-    assert data_to_use(patient_nationality=lenghtTest[:25]).status == Response(status=400).status
+    assert data_to_use(patient_nationality=lenghtTest[:27]).status == Response(status=400).status
 
 #################################################################################
 # TEST CNS
