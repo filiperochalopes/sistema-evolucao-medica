@@ -412,15 +412,10 @@ def add_patient_birthday(canvas:canvas.Canvas, birthday:datetime.datetime):
         if type(birthday) != type(datetime.datetime.now()):
             return Response('Pacient birthday isnt a datetime.datetime object', status=400)
         #Add to respective fields
-        day = str(birthday.day)
-        month = str(birthday.month)
-        year = str(birthday.year)
-        canvas = add_data(canvas=canvas, data=day, pos=(312, 658))
-        canvas = add_data(canvas=canvas, data=month, pos=(335, 658))
-        canvas = add_data(canvas=canvas, data=year, pos=(360, 658))
-        del(day)
-        del(month)
-        del(year)
+        date = str(birthday.day) + '.' + str(birthday.month) + '.' + str(birthday.year)
+        interval = ' ' * 2
+        date = date.replace('.', interval)
+        canvas = add_data(canvas=canvas, data=date, pos=(312, 658))
         return canvas
     except:
         return Response('Unkown error while adding patient birthday', status=500)
