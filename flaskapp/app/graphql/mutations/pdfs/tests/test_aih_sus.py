@@ -674,7 +674,7 @@ def test_shortText_conditions_justify_hospitalization():
     assert data_to_use(conditions_justify_hospitalization='abla').status == Response(status=400).status
 
 def test_more_than_limit_conditions_justify_hospitalization():
-    assert data_to_use(conditions_justify_hospitalization=lenghtTest[:430]).status == Response(status=400).status
+    assert data_to_use(conditions_justify_hospitalization=lenghtTest[:410]).status == Response(status=400).status
 
 def test_wrong_type_exam_results():
     assert data_to_use(exam_results=131).status == Response(status=400).status
@@ -689,7 +689,7 @@ def test_shortText_exam_results():
     assert data_to_use(exam_results='abla').status == Response(status=400).status
 
 def test_more_than_limit_exam_results():
-    assert data_to_use(exam_results=lenghtTest[:430]).status == Response(status=400).status
+    assert data_to_use(exam_results=lenghtTest[:410]).status == Response(status=400).status
 
 
 #############################################################################

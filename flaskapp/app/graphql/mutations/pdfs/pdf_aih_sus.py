@@ -907,19 +907,20 @@ def add_conditions_justify_hospitalization(canvas:canvas.Canvas, conditions:str)
     try:
         if type(conditions) != type(str()):
             return Response('Conditions to Justify Hospitalization has to be a string', status=400)
-        if 5 > len(conditions) or len(conditions) > 425:
-            return Response('Conditions to Justify Hospitalization has to be at least 5 characters and not bigger than 425 characters', status=400)
+        if 5 > len(conditions) or len(conditions) > 404:
+            return Response('Conditions to Justify Hospitalization has to be at least 5 characters and not bigger than 404 characters', status=400)
         str_conditions = ''
-        brokeLinexTimes = int(len(conditions)/107)
-        currentLine = 107
+        charByLine = 101
+        brokeLinexTimes = int(len(conditions)/charByLine)
+        currentLine = charByLine
         lastline = 0
         yposition = 422
-        # Making the line break whem has 107 charater in a line
+        # Making the line break whem has 101 charater in a line
         while brokeLinexTimes >= 0:
             str_conditions = conditions[lastline:currentLine]
             canvas = add_data(canvas=canvas, data=str_conditions, pos=(25, yposition))
             lastline = currentLine
-            currentLine += 107
+            currentLine += charByLine
             brokeLinexTimes -= 1
             yposition -= 10
 
@@ -946,19 +947,20 @@ def add_exam_results(canvas:canvas.Canvas, results:str):
     try:
         if type(results) != type(str()):
             return Response('Patient exame results has to be a string', status=400)
-        if 5 > len(results) or len(results) > 425:
-            return Response('Patient exame results has to be at least 5 characters and not bigger than 425 characters', status=400)
+        if 5 > len(results) or len(results) > 404:
+            return Response('Patient exame results has to be at least 5 characters and not bigger than 404 characters', status=400)
         str_results = ''
-        brokeLinexTimes = int(len(results)/107)
-        currentLine = 107
+        charByLine = 101
+        brokeLinexTimes = int(len(results)/charByLine)
+        currentLine = charByLine
         lastline = 0
         yposition = 362
-        # Making the line break whem has 107 charater in a line
+        # Making the line break whem has 101 charater in a line
         while brokeLinexTimes >= 0:
             str_results = results[lastline:currentLine]
             canvas = add_data(canvas=canvas, data=str_results, pos=(25, yposition))
             lastline = currentLine
-            currentLine += 107
+            currentLine += charByLine
             brokeLinexTimes -= 1
             yposition -= 10
 
