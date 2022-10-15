@@ -435,15 +435,10 @@ def add_solicitation_datetime(canvas:canvas.Canvas, solitDate:datetime.datetime)
         if type(solitDate) != type(datetime.datetime.now()):
             return Response('solitication date isnt a datetime.datetime object', status=400)
         #Add to respective fields
-        day = str(solitDate.day)
-        month = str(solitDate.month)
-        year = str(solitDate.year)
-        canvas = add_data(canvas=canvas, data=day, pos=(298, 222))
-        canvas = add_data(canvas=canvas, data=month, pos=(322, 222))
-        canvas = add_data(canvas=canvas, data=year, pos=(349, 222))
-        del(day)
-        del(month)
-        del(year)
+        date = str(solitDate.day) + '.' + str(solitDate.month) + '.' + str(solitDate.year)
+        interval = ' ' * 2
+        date = date.replace('.', interval)
+        canvas = add_data(canvas=canvas, data=date, pos=(298, 222))
         return canvas
     except:
         return Response('Unkown error while adding solitication date', status=500)
