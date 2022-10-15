@@ -1362,14 +1362,10 @@ def add_autorizaton_prof_document(canvas:canvas.Canvas, document:dict):
             cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
             if global_functions.isCPFvalid(cpf):
                 canvas = add_square(canvas=canvas, pos=(95, 66))
-                cont = 0
-                xpos = 149
-                while cont < 11:
-                    canvas = add_data(canvas=canvas, data=numbersCpf[cont], pos=(xpos, 66))
-                    cont += 1
-                    xpos += 15
-                    if cont > 5 and cont < 7:
-                        xpos += 6
+                # Add empty spaces interval between averu character
+                interval = ' ' * 2
+                numbersCpf = interval.join(numbersCpf)
+                canvas = add_data(canvas=canvas, data=numbersCpf, pos=(146, 66))
                 return canvas
             else:
                 return Response('Profissional autorizate CPF is not valid', status=400)
