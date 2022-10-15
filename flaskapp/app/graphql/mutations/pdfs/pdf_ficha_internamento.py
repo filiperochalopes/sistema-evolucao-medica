@@ -11,6 +11,9 @@ from flask import Response
 if __name__ != "__main__":
     from . import global_functions
 
+lenghtTest = ''
+for x in range(0, 2000):
+    lenghtTest += str(x)
 
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
@@ -135,7 +138,7 @@ def add_patientName(canvas:canvas.Canvas, name:str):
             return Response('Patient name has to be string', status=400)
         # verify if patient name is smaller than 60 characters
         name = str(name)
-        if 7 < len(name.strip()) <= 60:
+        if 7 < len(name.strip()) <= 64:
             canvas = add_data(canvas=canvas, data=name, pos=(27, 674))
             return canvas
         else:
