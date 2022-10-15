@@ -19,7 +19,7 @@ template_directory = "./graphql/mutations/pdfs/pdfs_templates/two_pages_precrica
 pagesizePoints = (841.92, 595.2)
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
-def fill_pdf_precricao_medica(document_datetime:datetime.datetime, pacient_name:str, prescrition:list):
+def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name:str, prescription:list):
 
     try:
         try:
@@ -35,10 +35,10 @@ def fill_pdf_precricao_medica(document_datetime:datetime.datetime, pacient_name:
 
             c = add_document_datetime(canvas=c, date=document_datetime)
             if type(c) == type(Response()): return c
-            c = add_patient_name(canvas=c, name=pacient_name)
+            c = add_patient_name(canvas=c, name=patient_name)
             if type(c) == type(Response()): return c
             c.setFont('Roboto-Mono', 10)
-            c = add_prescription(canvas=c, prescription=prescrition)
+            c = add_prescription(canvas=c, prescription=prescription)
             if type(c) == type(Response()): return c
 
         except:
@@ -187,10 +187,10 @@ def add_prescription(canvas:canvas.Canvas, prescription:list):
 
 if __name__ == "__main__":
     import global_functions
-    output = fill_pdf_precricao_medica(
+    output = fill_pdf_prescricao_medica(
         document_datetime=datetime.datetime.now(),
-        pacient_name='Pacient Name',
-        prescrition=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]
+        patient_name='Pacient Name',
+        prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]
     )
 
     if type(output) == type(Response()): 

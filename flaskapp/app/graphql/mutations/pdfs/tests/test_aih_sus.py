@@ -1,4 +1,3 @@
-#from ..pdf_ficha_internamento import fill_pdf_ficha_internamento
 from .. import pdf_aih_sus
 import datetime
 from flask import Response

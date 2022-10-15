@@ -1,4 +1,3 @@
-#from ..pdf_ficha_internamento import fill_pdf_ficha_internamento
 from .. import pdf_ficha_internamento
 import datetime
 from flask import Response
@@ -52,20 +51,6 @@ def test_awnser_with_only_required_data():
 # wrong name type
 
 
-def test_wrongtype_patient_name():    
-    assert data_to_use(patient_name=123124).status == Response(status=400).status
-
-def test_empty_patient_name():    
-    assert data_to_use(patient_name='').status == Response(status=400).status
-
-def test_with_space_patient_name():    
-    assert data_to_use(patient_name='  ').status == Response(status=400).status
-
-def test_long_patient_name():    
-    assert data_to_use(patient_name=str(lenghtTest[:70])).status == Response(status=400).status
-
-def test_short_patient_name():    
-    assert data_to_use(patient_name='11113').status == Response(status=400).status
 
 def test_wrongtype_patient_motherName():    
     assert data_to_use(patient_motherName=123124).status == Response(status=400).status
