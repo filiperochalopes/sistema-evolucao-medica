@@ -72,6 +72,7 @@ def add_patient_name(canvas:canvas.Canvas, name:str):
         name = str(name)
         if 7 < len(name.strip()) <= 34:
             canvas = global_functions.add_data(canvas=canvas, data=name, pos=(120, 505))
+            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(571, 505))
             return canvas
         else:
             return Response("Unable to add patient name because is longer than 34 characters or Smaller than 7", status=400)
