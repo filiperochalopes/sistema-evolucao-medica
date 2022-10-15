@@ -1606,6 +1606,7 @@ if __name__ == "__main__":
         company_cbor=123456, 
         pension_status='not_insured'
     )
+
     if type(output) == type(Response()): 
         print(output.response)
     write_newpdf(output, "./graphql/mutations/pdfs/aih_sus_teste.pdf")

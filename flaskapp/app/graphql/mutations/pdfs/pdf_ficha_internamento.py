@@ -22,6 +22,7 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
         c.setFont('Helvetica', 9)
+        #print(c.getAvailableFonts())
         # Writing all data in respective fields
         # not null data
         try:
@@ -183,7 +184,7 @@ def add_patientCNS(canvas:canvas.Canvas, cns:int):
             # format cns to add in document
             cns = str(cns)
             cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
-            canvas = add_data(canvas=canvas, data=cns, pos=(434, 674))
+            canvas = add_data(canvas=canvas, data=cns, pos=(393, 674))
             return canvas
         else:
             return Response("Unable to add patient cns because is a invalid CNS", status=400)
@@ -273,7 +274,7 @@ def add_patientBirthday(canvas:canvas.Canvas, birthday:datetime.datetime):
             return Response('Pacient birthday isnt a datetime.datetime object', status=400)
         # Format birthday to format DD/MM/YYYY
         birthday = birthday.strftime("%m/%d/%Y")
-        canvas = add_data(canvas=canvas, data=birthday, pos=(43, 643))
+        canvas = add_data(canvas=canvas, data=birthday, pos=(27, 643))
         return canvas
     except:
         return Response('Unkown error while adding patient birthday', status=500)
