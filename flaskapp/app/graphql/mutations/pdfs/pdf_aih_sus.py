@@ -593,11 +593,11 @@ def add_patient_adress(canvas:canvas.Canvas, adress:str):
     try:
         if type(adress)!= type(str()):
             return Response('Adress has to be str', status=400)
-        if 7 < len(adress) <= 100:
+        if 7 < len(adress) <= 101:
             canvas = add_data(canvas=canvas, data=adress, pos=(25, 593))
             return canvas
         else:
-            return Response("Unable to add patient adress because is longer than 100 characters or smaller than 7", status=400)
+            return Response("Unable to add patient adress because is longer than 101 characters or smaller than 7", status=400)
     except:
         Response('Unknow error while adding patient Adress', status=500)
 

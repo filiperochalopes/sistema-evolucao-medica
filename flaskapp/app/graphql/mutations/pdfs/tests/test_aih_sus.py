@@ -587,7 +587,7 @@ def test_invalid_value_patient_adress():
     assert data_to_use(patient_adress='111').status == Response(status=400).status
 
 def test_long_value_patient_adress():
-    assert data_to_use(patient_adress='98714t926touifhdoaiuhfouiahsdfouhadsufihaosfuhouihisuhfouhasofuhasoiufhaoisufhoaiushfiouahsfpiuhjsapfiadadasdasdadadadadadadqwe4jasfpaosijmfiosanfpioansfiujnsaiofjunaisfnsahjfnu8yaewnofipnkmxpkovjnoiushbfo8auyshfyaufbuasbfuwybeusosadfjh').status == Response(status=400).status
+    assert data_to_use(patient_adress=lenghtTest[:103]).status == Response(status=400).status
 
 def test_wrongtype_patient_adressCity():
     assert data_to_use(patient_adressCity=1212312).status == Response(status=400).status
