@@ -1085,11 +1085,11 @@ def add_insurance_company_series(canvas:canvas.Canvas, series:str):
             return Response('Insurance company series has to be string', status=400)
         # verify if Insurance company series is longer than 13 characters
         series = str(series).strip()
-        if len(series) <= 13:
+        if len(series) <= 10:
             canvas = add_centralized_data(canvas=canvas, data=series, pos=(543, 183))
             return canvas
         else:
-            return Response("Unable to add Insurance company series because is longer than 13 characters", status=400)
+            return Response("Unable to add Insurance company series because is longer than 10 characters", status=400)
     except:
         return Response('Unknow error while adding Insurance company series', status=500)
 
@@ -1603,7 +1603,7 @@ if __name__ == "__main__":
         acident_type='work_path', 
         insurance_company_cnpj=37549670000171, 
         insurance_company_ticket_number=123450123456, 
-        insurance_company_series='Insurn Series',
+        insurance_company_series='Insurn',
         company_cnpj=37549670000171, 
         company_cnae=5310501, 
         company_cbor=123456, 
