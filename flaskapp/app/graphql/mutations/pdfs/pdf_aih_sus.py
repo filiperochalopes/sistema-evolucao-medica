@@ -571,11 +571,11 @@ def add_emission_org_code(canvas:canvas.Canvas, code:str):
             return Response('Emission org code has to be str', status=400)
         # verify if emission_org_code is smaller than 60 characters
         code = code.strip()
-        if 2 < len(code) <= 18:
+        if 2 < len(code) <= 17:
             canvas = add_data(canvas=canvas, data=code, pos=(292, 93))
             return canvas
         else:
-            return Response("Unable to add emission org code( because is longer than 18 characters or Smaller than 2", status=400)
+            return Response("Unable to add emission org code( because is longer than 17 characters or Smaller than 2", status=400)
     except:
         return Response('Unknow error while adding emission org code', status=500)
 

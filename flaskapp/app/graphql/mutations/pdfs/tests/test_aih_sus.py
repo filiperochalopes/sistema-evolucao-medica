@@ -810,7 +810,7 @@ def test_shortText_emission_org_code():
     assert data_to_use(emission_org_code='a').status == Response(status=400).status
 
 def test_more_than_limit_emission_org_code():
-    assert data_to_use(emission_org_code=lenghtTest[:25]).status == Response(status=400).status
+    assert data_to_use(emission_org_code=lenghtTest[:20]).status == Response(status=400).status
 
 
 
