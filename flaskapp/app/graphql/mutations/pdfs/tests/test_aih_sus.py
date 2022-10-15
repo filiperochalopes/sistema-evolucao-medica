@@ -136,7 +136,7 @@ def test_with_space_prof_solicitant_name():
     assert data_to_use(prof_solicitant_name='  ').status == Response(status=400).status
 
 def test_long_prof_solicitant_name():    
-    assert data_to_use(prof_solicitant_name='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa').status == Response(status=400).status
+    assert data_to_use(prof_solicitant_name=lenghtTest[:51]).status == Response(status=400).status
 
 def test_short_prof_solicitant_name():    
     assert data_to_use(prof_solicitant_name='bro').status == Response(status=400).status

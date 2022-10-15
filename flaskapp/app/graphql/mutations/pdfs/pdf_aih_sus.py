@@ -334,11 +334,12 @@ def add_prof_solicitant_name(canvas:canvas.Canvas, name:str):
             return Response('Professional solitic name has to be string', status=400)
         # verify if Professional solitic name is smaller than 49 characters
         name = str(name)
-        if 7 < len(name.strip()) <= 49:
+        if 7 < len(name.strip()) <= 48:
+            name = lenghtTest
             canvas = add_data(canvas=canvas, data=name, pos=(25, 222))
             return canvas
         else:
-            return Response("Unable to add Professional solitic name because is longer than 49 characters or Smaller than 7", status=400)
+            return Response("Unable to add Professional solitic name because is longer than 48 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding Professional solitic name', status=500)
 
