@@ -77,7 +77,7 @@ def test_with_space_patient_motherName():
     assert data_to_use(patient_motherName='  ').status == Response(status=400).status
 
 def test_long_patient_motherName():    
-    assert data_to_use(patient_motherName=str(lenghtTest[:70])).status == Response(status=400).status
+    assert data_to_use(patient_motherName=str(lenghtTest[:71])).status == Response(status=400).status
 
 def test_short_patient_motherName():    
     assert data_to_use(patient_motherName='11113').status == Response(status=400).status

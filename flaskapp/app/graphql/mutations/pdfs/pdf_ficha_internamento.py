@@ -258,7 +258,7 @@ def add_documentDatetime(canvas:canvas.Canvas, docDatetime:datetime.datetime):
             return Response('Document Datetime isnt a datetime.datetime object', status=400)
         # Format docDatetime to format DD/MM/YYYY H:M:S
         docDatetime = docDatetime.strftime("%m/%d/%Y %H:%M:%S")
-        canvas = add_data(canvas=canvas, data=docDatetime, pos=(415, 741))
+        canvas = add_data(canvas=canvas, data=docDatetime, pos=(400, 740))
         return canvas
     except:
         return Response('Unkown error while adding document datetime', status=500)
@@ -279,7 +279,7 @@ def add_patientBirthday(canvas:canvas.Canvas, birthday:datetime.datetime):
             return Response('Pacient birthday isnt a datetime.datetime object', status=400)
         # Format birthday to format DD/MM/YYYY
         birthday = birthday.strftime("%m/%d/%Y")
-        canvas = add_data(canvas=canvas, data=birthday, pos=(27, 643))
+        canvas = add_data(canvas=canvas, data=birthday, pos=(27, 642))
         return canvas
     except:
         return Response('Unkown error while adding patient birthday', status=500)
@@ -326,8 +326,8 @@ def add_patientMotherName(canvas:canvas.Canvas, motherName:str):
         if type(motherName) != type(str()):
             return Response('Mother name has to be str', status=400)
         # verify if patient motherName is smaller than 60 characters
-        if 7 < len(motherName.strip()) <= 60:
-            canvas = add_data(canvas=canvas, data=motherName, pos=(194, 643))
+        if 7 < len(motherName.strip()) <= 69:
+            canvas = add_data(canvas=canvas, data=motherName, pos=(194, 642))
             return canvas
         else:
             return Response("Unable to add patient motherName because is longer than 60 characters or Smaller than 7", status=400)
