@@ -765,7 +765,7 @@ def add_company_cnae(canvas:canvas.Canvas, cnae:int):
         if len(cnae) == 7:
             #Format cnae to add in doc
             cnae = cnae[:2] + '.' + cnae[2:4] + '-' + cnae[4] + '-' + cnae[5:]
-            canvas = add_data(canvas=canvas, data=cnae, pos=(448, 156))
+            canvas = add_data(canvas=canvas, data=cnae, pos=(434, 156))
             return canvas
         else:
             return Response('Company cnae is longer than 7 digits', status=400) 
