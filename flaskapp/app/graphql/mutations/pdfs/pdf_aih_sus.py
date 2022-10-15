@@ -47,6 +47,8 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             c = add_patient_adressCEP(canvas=c, cep=patient_adressCEP)
             if type(c) == type(Response()): return c
+            c = add_procedure_code(canvas=c, code=procedure_code)
+            if type(c) == type(Response()): return c
             
             c.setFont('Roboto-Mono', 9)
             c = add_patient_birthday(canvas=c, birthday=patient_birthday)
@@ -72,8 +74,6 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             c = add_principalCid10(canvas=c, cid10=principalCid10)
             if type(c) == type(Response()): return c
             c = add_procedure_solicited(canvas=c, procedure=procedure_solicited)
-            if type(c) == type(Response()): return c
-            c = add_procedure_code(canvas=c, code=procedure_code)
             if type(c) == type(Response()): return c
             c = add_clinic(canvas=c, name=clinic)
             if type(c) == type(Response()): return c
@@ -1126,14 +1126,10 @@ def add_procedure_code(canvas:canvas.Canvas, code:str):
         # verify if procedure code is smaller than 5 characters
         code = str(code).strip()
         if len(code) == 10:
-            cont = 0
-            xpos = 406
-            while cont < 10:
-                canvas = add_data(canvas=canvas, data=code[cont], pos=(xpos, 271))
-                cont += 1
-                xpos += 17 
-                if cont > 7:
-                    xpos += 4
+            # Add empty spaces interval between averu character
+            interval = ' ' * 2
+            code = interval.join(code)
+            canvas = add_data(canvas=canvas, data=code, pos=(404, 271))
             return canvas
         else:
             return Response("Procedure code solicited dont have 10 characters", status=400)
