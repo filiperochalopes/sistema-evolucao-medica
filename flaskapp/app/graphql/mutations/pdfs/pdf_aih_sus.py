@@ -212,7 +212,6 @@ def add_patient_ethnicity(canvas:canvas.Canvas, ethnicity:str):
         # verify if Patient ethnicity is smaller than 60 characters
         ethnicity = str(ethnicity)
         if 4 < len(ethnicity.strip()) <= 11:
-            ethnicity = lenghtTest
             canvas = add_data(canvas=canvas, data=ethnicity, pos=(510, 658))
             return canvas
         else:
@@ -237,13 +236,8 @@ def add_establishment_solitc_cnes(canvas:canvas.Canvas, cnes:int):
         # Verify if the cnes is valid
         cnes = str(cnes)
         if len(cnes) == 7:
-            #Add one number at every field
-            cont = 0
-            xpos = 471
-            while cont < 7:
-                canvas = add_data(canvas=canvas, data=cnes[cont], pos=(xpos, 750))
-                cont += 1
-                xpos += 15
+            cnes = '  '.join(cnes)
+            canvas = add_data(canvas=canvas, data=cnes, pos=(470, 750))
             return canvas
         return Response('unable to add establshment CNES because is a invalid CNES', status=400)
     except:
