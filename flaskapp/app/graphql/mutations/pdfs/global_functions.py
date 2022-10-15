@@ -1,6 +1,8 @@
 import re
 from flask import Response
 from itertools import cycle
+from reportlab.pdfgen import canvas
+from PyPDF2  import PdfWriter
 
 ufs = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MS','MT','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
 
@@ -113,6 +115,85 @@ def isCNPJvalid(cnpj:str):
             return False
 
     return True
+
+
+def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
+    """Add data in pdf using canvas object
+
+    Args:
+        canvas (canvas.Canvas): canvas that will be used to add data
+        data (str): data to be added
+        pos (tuple): data insert position in points
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response: with the error)
+    """
+    try:
+        canvas.drawString(pos[0], pos[1], data)
+        return canvas
+    except:
+        return Response("Error when adding data to document with canvas", status=500)
+
+
+def add_square(canvas:canvas.Canvas, pos:tuple, size:tuple=(9, 9)):
+    """Add square in document using canvas object
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        pos (tuple): position to add the square
+        size (tuple, optional): square size default is the size of the option quare. Defaults to 9.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response: with the error)
+    """    
+    try:
+        canvas.rect(x=pos[0], y=pos[1], width=size[0], height=size[1], fill=1)
+        return canvas
+    except:
+        return Response("Error when adding square to document with canvas", status=500)
+
+
+def add_centralized_data(canvas:canvas.Canvas, data:str, pos:tuple):
+    """Add centralized_data in pdf using canvas object
+
+    Args:
+        canvas (canvas.Canvas): canvas that will be used to add centralized_data
+        data (str): centralized_data to be added
+        pos (tuple): centralized_data insert position in points
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response: with the error)
+    """
+    try:
+        canvas.drawCentredString(pos[0], pos[1], data)
+        return canvas
+    except:
+        return Response("Error when adding centralized data to document with canvas", status=500)
+
+        
+def write_newpdf(newpdf:PdfWriter, new_directory:str):
+    """Write new pdf in a file
+
+    Args:
+        newpdf (PdfFileWriter): new pdf with all the changes made by canvas
+        new_directory (str): directory to save the new pdf
+    Returns:
+        None
+        or
+        Response(flask.Response: with the error)
+    """ 
+    try:
+        outputFile = open(new_directory, 'wb')
+        newpdf.write(outputFile)
+        outputFile.close()
+    except:
+        return Response("Error when writing new pdf", status=500)
 
 if __name__ == "__main__":
     cpf = 142342343234
