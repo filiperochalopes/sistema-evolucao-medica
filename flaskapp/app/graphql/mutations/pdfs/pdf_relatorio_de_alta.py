@@ -37,7 +37,7 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
             c = add_patientCNS(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
             # change font size to datetime            
-            c.setFont('Roboto-Mono', 14)            
+            c.setFont('Roboto-Mono', 15)            
             c = add_documentDatetime(canvas=c, docDatetime=documentDatetime)
             if type(c) == type(Response()): return c            
             c.setFont('Roboto-Mono', 9)            
@@ -65,6 +65,14 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
                 return c
             else:
                 return Response('Some error happen when adding not null data to fields', status=500)
+            
+        #Adding data that can be null
+        try:
+            if orientations is not None and str(orientations).strip() != "":
+                c = add_orientations(canvas=c, orientations=orientations)
+            if type(c) == type(Response()): return c
+        except:
+            return Response('Critical error happen when adding data that can be null to fields', status=500)
         
         # create a new PDF with Reportlab
         c.save()
@@ -395,6 +403,44 @@ def add_evolution(canvas:canvas.Canvas, evol:str):
         return Response('Unknow error while adding patient Evolution', status=500)
 
 
+def add_orientations(canvas:canvas.Canvas, orientations:str):
+    """add orientations to documento
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        orientations (str): orientations
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error
+    """    
+    try:
+        if type(orientations) != type(str()):
+            return Response('Orientations has to be a string', status=400)
+        orientations = orientations.strip()
+        if len(orientations) > 800 or len(orientations) < 10:
+            return Response('Orientations has to be at least 10 characters and no more than 800 characters', status=400)
+        # Making the line break whem has 105 charater in a line
+        str_orientations = ''
+        brokeLinexTimes = int(len(orientations)/100)
+        currentLine = 100
+        lastline = 0
+        yposition = 312
+        while brokeLinexTimes >= 0:
+            str_orientations = orientations[lastline:currentLine]
+            canvas = global_functions.add_data(canvas=canvas, data=str_orientations, pos=(26, yposition))
+            lastline = currentLine
+            currentLine += 100
+            brokeLinexTimes -= 1
+            yposition -= 10
+
+        del(str_orientations)
+        del(brokeLinexTimes)
+        del(currentLine)
+        del(lastline)
+        del(yposition)
+        return canvas
+    except:
+        return Response('Unknow error while adding patient Orientations', status=500)
 
 if __name__ == "__main__":
     import global_functions
