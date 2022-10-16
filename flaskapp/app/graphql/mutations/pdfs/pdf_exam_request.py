@@ -74,6 +74,9 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
             if autorization_datetime is not None:
                 c = add_autorization_datetime(canvas=c, autori=autorization_datetime)
             if type(c) == type(Response()): return c
+            if document_pacient_date is not None:
+                c = add_document_pacient_date(canvas=c, date=document_pacient_date)
+            if type(c) == type(Response()): return c
 
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
@@ -328,6 +331,7 @@ def add_solicitation_datetime(canvas:canvas.Canvas, solicit:datetime.datetime):
     except:
         return Response('Unkown error while adding Solicitation datetime', status=500)
 
+
 def add_autorization_datetime(canvas:canvas.Canvas, autori:datetime.datetime):
     """Add autorization_datetime to document
 
@@ -350,6 +354,31 @@ def add_autorization_datetime(canvas:canvas.Canvas, autori:datetime.datetime):
         return canvas
     except:
         return Response('Unkown error while adding Autorization datetime', status=500)
+
+
+def add_document_pacient_date(canvas:canvas.Canvas, date:datetime.datetime):
+    """add document pacient date
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        date (datetime.datetime): document pacient date
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(date) != type(datetime.datetime.now()):
+            return Response('Document pacient datetime isnt a datetime.datetime object', status=400)
+        # Format date to format DD/MM/YYYY
+        date = str(date.day) + '/' + str(date.month) + '/' + str(date.year)
+        ypos = 572
+        for x in range(pags_quant):
+            canvas = global_functions.add_data(canvas=canvas, data=date, pos=(362, ypos))
+            ypos -= 280
+        return canvas
+    except:
+        return Response('Unkown error while adding Document pacient datetime', status=500)
+
 
 def add_patient_adress(canvas:canvas.Canvas, adress:str):
     """add patient adress
@@ -424,6 +453,7 @@ def add_solicitation_reason(canvas:canvas.Canvas, reason:str):
                 if pags_quant == 2:
                     canvas = global_functions.add_data(canvas=canvas, data=str_reason, pos=(7, yposition - 280))
                 if pags_quant == 3:
+                    canvas = global_functions.add_data(canvas=canvas, data=str_reason, pos=(7, yposition - 280))
                     canvas = global_functions.add_data(canvas=canvas, data=str_reason, pos=(7, yposition - 560))
                 lastline = currentLine
                 currentLine += charByLine
