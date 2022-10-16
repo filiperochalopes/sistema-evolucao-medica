@@ -17,8 +17,6 @@ for x in range(0, 2000):
     lenghtTest += str(x)
 
 #The templat will change depending on exems lenght
-global pags_quant
-pags_quant = 0
 template_directory = ["./graphql/mutations/pdfs/pdfs_templates/one_exam_request.pdf", "./graphql/mutations/pdfs/pdfs_templates/two_exam_request.pdf", "./graphql/mutations/pdfs/pdfs_templates/three_exam_request.pdf"]
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
@@ -38,7 +36,7 @@ exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:dateti
         # Writing all data in respective fields
         # not null data
         try:
-            c = add_exams(canvas=c, exams=exams)
+            c, pags_quant = add_exams(canvas=c, exams=exams)
             # verify if c is a error at some point
             if type(c) == type(Response()): return c
             c = add_patientName(canvas=c, name=patient_name)
@@ -56,6 +54,7 @@ exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:dateti
         packet.seek(0)
         new_pdf = PdfReader(packet)
         # read the template pdf 
+        print(pags_quant)
         template_pdf = PdfReader(open(template_directory[pags_quant-1], "rb"))
         output = PdfWriter()
         # add the "watermark" (which is the new pdf) on the existing page
@@ -110,9 +109,10 @@ def add_exams(canvas:canvas.Canvas, exams:str):
             return Response('Exams has to be at least 5 characters and no more than 972 characters', status=400)
         # Making the line break whem has 105 charater in a line
         str_exams = ''
-        exams = lenghtTest.strip()
+        exams = lenghtTest[:400].strip()
         #Calculate how many pags will have, ceil function round to upper int
         pags_quant = ceil(len(exams)/324)
+        print(pags_quant)
         charByLine = 108
         brokeLinexTimes = int(len(exams)/charByLine)
         currentLine = charByLine
@@ -137,7 +137,7 @@ def add_exams(canvas:canvas.Canvas, exams:str):
         del(currentLine)
         del(lastline)
         del(yposition)
-        return canvas
+        return canvas, pags_quant
     except:
         return Response('Unknow error while adding Solicited Exams', status=500)
 
