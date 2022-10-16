@@ -36,11 +36,13 @@ exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:dateti
         # Writing all data in respective fields
         # not null data
         try:
+            global pags_quant
             c, pags_quant = add_exams(canvas=c, exams=exams)
             # verify if c is a error at some point
             if type(c) == type(Response()): return c
-            c = add_patientName(canvas=c, name=patient_name, pags_quant=pags_quant)
-            # verify if c is a error at some point
+            c = add_patientName(canvas=c, name=patient_name)
+            if type(c) == type(Response()): return c
+            c = add_patient_cns(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
 
         except:
@@ -66,7 +68,7 @@ exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:dateti
         return Response("Error while filling exam request", status=500)
 
 
-def add_patientName(canvas:canvas.Canvas, name:str, pags_quant:int):
+def add_patientName(canvas:canvas.Canvas, name:str):
     """Add patient name to pdf
 
     Args:
@@ -144,7 +146,33 @@ def add_exams(canvas:canvas.Canvas, exams:str):
         return Response('Unknow error while adding Solicited Exams', status=500)
 
 
+def add_patient_cns(canvas:canvas.Canvas, cns:int):
+    """Add patient cns to document
 
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        cns (int): patient cns
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(cns) != type(int()):
+            return Response('Patient CNS has to be int', status=400)
+        # Verify if the cns is valid
+        if global_functions.isCNSvalid(cns):
+            # format cns to add in document
+            cns = str(cns)
+            cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
+            ypos = 765
+            for x in range(pags_quant):
+                canvas = global_functions.add_data(canvas=canvas, data=cns, pos=(450, ypos))
+                ypos -= 280
+            return canvas
+        else:
+            return Response("Unable to add patient cns because is a invalid CNS", status=400)
+    except:
+        return Response('Unknow error while adding patient cns', status=500)
 
 
 if __name__ == "__main__":
