@@ -37,7 +37,7 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
             c = add_patientCNS(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
             # change font size to datetime            
-            c.setFont('Roboto-Mono', 15)            
+            c.setFont('Roboto-Mono', 13)            
             c = add_documentDatetime(canvas=c, docDatetime=documentDatetime)
             if type(c) == type(Response()): return c            
             c.setFont('Roboto-Mono', 9)            
