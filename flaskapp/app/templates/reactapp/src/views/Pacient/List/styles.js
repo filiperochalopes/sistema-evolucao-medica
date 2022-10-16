@@ -42,6 +42,10 @@ export const PacientContent = styled.div`
   justify-content: space-between;
   align-items: center;
 
+  button {
+    height: 1.875rem;
+  }
+
   .container_buttons {
     display: flex;
     column-gap: 0.625rem;

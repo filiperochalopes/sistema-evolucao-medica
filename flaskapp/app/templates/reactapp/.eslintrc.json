@@ -75,6 +75,11 @@
             "pattern": "**/services/**",
             "group": "sibling",
             "position": "before"
+          },
+          {
+            "pattern": "**/helpers/**",
+            "group": "sibling",
+            "position": "after"
           }
         ],
         "alphabetize": {

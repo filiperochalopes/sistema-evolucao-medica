@@ -8,6 +8,7 @@ export default styled.button`
   justify-content: center;
   text-decoration: none;
   padding: 0 0.5rem;
+  cursor: pointer;
 
   ${({ customType }) => {
     switch (customType) {

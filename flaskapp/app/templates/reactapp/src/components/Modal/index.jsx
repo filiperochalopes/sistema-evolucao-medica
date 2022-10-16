@@ -38,7 +38,7 @@ const Modal = ({ children, confirmButton, goBack, headerTitle }) => {
               </Header>
             }
           >
-            {cloneElement(children, { confirmButton }, null)}
+            {cloneElement(<></>, { confirmButton }, children)}
           </PageTemplate>
         </ContainerContentModal>
       </div>
