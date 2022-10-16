@@ -88,7 +88,7 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
 
         return output
     except:
-        return Response("Error while filling ficha de internamento", status=500)
+        return Response("Error while filling relatorio de alta", status=500)
 
 
 def add_patientName(canvas:canvas.Canvas, name:str):
