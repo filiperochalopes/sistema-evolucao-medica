@@ -39,7 +39,7 @@ exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:dateti
             c, pags_quant = add_exams(canvas=c, exams=exams)
             # verify if c is a error at some point
             if type(c) == type(Response()): return c
-            c = add_patientName(canvas=c, name=patient_name)
+            c = add_patientName(canvas=c, name=patient_name, pags_quant=pags_quant)
             # verify if c is a error at some point
             if type(c) == type(Response()): return c
 
@@ -54,7 +54,6 @@ exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:dateti
         packet.seek(0)
         new_pdf = PdfReader(packet)
         # read the template pdf 
-        print(pags_quant)
         template_pdf = PdfReader(open(template_directory[pags_quant-1], "rb"))
         output = PdfWriter()
         # add the "watermark" (which is the new pdf) on the existing page
@@ -67,7 +66,7 @@ exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:dateti
         return Response("Error while filling exam request", status=500)
 
 
-def add_patientName(canvas:canvas.Canvas, name:str):
+def add_patientName(canvas:canvas.Canvas, name:str, pags_quant:int):
     """Add patient name to pdf
 
     Args:
@@ -83,7 +82,11 @@ def add_patientName(canvas:canvas.Canvas, name:str):
         # verify if patient name is smaller than 70 characters
         name = str(name)
         if 7 < len(name.strip()) <= 70:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(7, 775))
+            ypos = 775
+            for x in range(pags_quant):
+                canvas = global_functions.add_data(canvas=canvas, data=name, pos=(7, ypos))
+                ypos -= 280
+
             return canvas
         else:
             return Response("Unable to add patient name because is longer than 70 characters or Smaller than 7", status=400)
@@ -109,10 +112,9 @@ def add_exams(canvas:canvas.Canvas, exams:str):
             return Response('Exams has to be at least 5 characters and no more than 972 characters', status=400)
         # Making the line break whem has 105 charater in a line
         str_exams = ''
-        exams = lenghtTest[:400].strip()
+        exams = lenghtTest[:850].strip()
         #Calculate how many pags will have, ceil function round to upper int
         pags_quant = ceil(len(exams)/324)
-        print(pags_quant)
         charByLine = 108
         brokeLinexTimes = int(len(exams)/charByLine)
         currentLine = charByLine
