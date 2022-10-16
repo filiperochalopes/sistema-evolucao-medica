@@ -254,7 +254,7 @@ def add_documentDatetime(canvas:canvas.Canvas, docDatetime:datetime.datetime):
         if type(docDatetime) != type(datetime.datetime.now()):
             return Response('Document Datetime isnt a datetime.datetime object', status=400)
         # Format docDatetime to format DD/MM/YYYY H:M:S
-        docDatetime = docDatetime.strftime("%m/%d/%Y %H:%M:%S")
+        docDatetime = docDatetime.strftime("%d/%m/%Y %H:%M:%S")
         canvas = global_functions.add_data(canvas=canvas, data=docDatetime, pos=(400, 740))
         return canvas
     except:
@@ -275,7 +275,7 @@ def add_patientBirthday(canvas:canvas.Canvas, birthday:datetime.datetime):
         if type(birthday) != type(datetime.datetime.now()):
             return Response('Pacient birthday isnt a datetime.datetime object', status=400)
         # Format birthday to format DD/MM/YYYY
-        birthday = birthday.strftime("%m/%d/%Y")
+        birthday = birthday.strftime("%d/%m/%Y")
         canvas = global_functions.add_data(canvas=canvas, data=birthday, pos=(27, 642))
         return canvas
     except:
