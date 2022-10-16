@@ -48,6 +48,8 @@ exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:dateti
             if type(c) == type(Response()): return c
             c = add_patient_adress(canvas=c, adress=patient_adress)
             if type(c) == type(Response()): return c
+            c = add_solicitation_reason(canvas=c, reason=solicitation_reason)
+            if type(c) == type(Response()): return c
 
         except:
             if type(c) == type(Response()):
@@ -86,13 +88,12 @@ def add_patientName(canvas:canvas.Canvas, name:str):
         if type(name) != type(str()):
             return Response('Patient name has to be string', status=400)
         # verify if patient name is smaller than 70 characters
-        name = str(name)
-        if 7 < len(name.strip()) <= 70:
+        name = str(name).strip()
+        if 7 < len(name) <= 70:
             ypos = 775
             for x in range(pags_quant):
                 canvas = global_functions.add_data(canvas=canvas, data=name, pos=(7, ypos))
                 ypos -= 280
-
             return canvas
         else:
             return Response("Unable to add patient name because is longer than 70 characters or Smaller than 7", status=400)
@@ -114,11 +115,10 @@ def add_exams(canvas:canvas.Canvas, exams:str):
         if type(exams) != type(str()):
             return Response('Exams has to be a string', status=400)
         exams = exams.strip()
-        if len(exams) > 972 or len(exams) < 5:
+        if len(exams.strip()) > 972 or len(exams.strip()) < 5:
             return Response('Exams has to be at least 5 characters and no more than 972 characters', status=400)
         # Making the line break whem has 105 charater in a line
         str_exams = ''
-        exams = lenghtTest[:850].strip()
         #Calculate how many pags will have, ceil function round to upper int
         pags_quant = ceil(len(exams)/324)
         charByLine = 108
@@ -217,19 +217,21 @@ def add_patient_adress(canvas:canvas.Canvas, adress:str):
         if type(adress)!= type(str()):
             return Response('Adress has to be str', status=400)
         if 7 < len(adress) <= 216:
-            # Making the line break whem has 105 charater in a line
+            # Making the line break whem has 108 charater in a line
             str_adress = ''
-            adress = lenghtTest[:216].strip()
             charByLine = 108
             brokeLinexTimes = int(len(adress)/charByLine)
             currentLine = charByLine
             lastline = 0
             yposition = 734
-            while brokeLinexTimes > 0:
+            while brokeLinexTimes >= 0:
                 str_adress = adress[lastline:currentLine]
-                canvas = global_functions.add_data(canvas=canvas, data=adress, pos=(7, yposition))
-                canvas = global_functions.add_data(canvas=canvas, data=adress, pos=(7, yposition - 280))
-                canvas = global_functions.add_data(canvas=canvas, data=adress, pos=(7, yposition - 560))
+                canvas = global_functions.add_data(canvas=canvas, data=str_adress, pos=(7, yposition))
+                if pags_quant == 2:
+                    canvas = global_functions.add_data(canvas=canvas, data=str_adress, pos=(7, yposition - 280))
+                elif pags_quant == 3:
+                    canvas = global_functions.add_data(canvas=canvas, data=str_adress, pos=(7, yposition - 280))
+                    canvas = global_functions.add_data(canvas=canvas, data=str_adress, pos=(7, yposition - 560))
                 lastline = currentLine
                 currentLine += charByLine
                 brokeLinexTimes -= 1
@@ -246,6 +248,53 @@ def add_patient_adress(canvas:canvas.Canvas, adress:str):
     except:
         Response('Unknow error while adding patient Adress', status=500)
 
+
+def add_solicitation_reason(canvas:canvas.Canvas, reason:str):
+    """add solicitation reason
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        reason (str): reason
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(reason)!= type(str()):
+            return Response('Solicitation reason has to be str', status=400)
+        if 7 < len(reason) <= 216:
+            # Making the line break whem has 108 charater in a line
+            str_reason = ''
+            charByLine = 108
+            brokeLinexTimes = int(len(reason)/charByLine)
+            currentLine = charByLine
+            lastline = 0
+            yposition = 690
+            while brokeLinexTimes >= 0:
+                str_reason = reason[lastline:currentLine]
+                canvas = global_functions.add_data(canvas=canvas, data=str_reason, pos=(7, yposition))
+                if pags_quant == 2:
+                    canvas = global_functions.add_data(canvas=canvas, data=str_reason, pos=(7, yposition - 280))
+                if pags_quant == 3:
+                    canvas = global_functions.add_data(canvas=canvas, data=str_reason, pos=(7, yposition - 560))
+                lastline = currentLine
+                currentLine += charByLine
+                brokeLinexTimes -= 1
+                yposition -= 10
+
+            del(str_reason)
+            del(brokeLinexTimes)
+            del(currentLine)
+            del(lastline)
+            del(yposition)
+            return canvas
+        else:
+            return Response("Unable to add Solicitation reason because is longer than 216 characters or smaller than 7", status=400)
+    except:
+        Response('Unknow error while adding Solicitation reason', status=500)
+
+
+
 if __name__ == "__main__":
     import global_functions
     output = fill_pdf_exam_request(
@@ -253,7 +302,7 @@ if __name__ == "__main__":
         patient_cns=928976954930007, 
         patient_birthday=datetime.datetime.now(), 
         patient_adress="Patient Adress", 
-        exams='amniocentesis, blood analysis, gastric fluid analysis, kidney function test, liver function test, lumbar puncture, malabsorption test,Pap smear.',
+        exams=lenghtTest[:800],
         solicitation_reason="Solicitation Reason", 
         prof_solicitor="Professional Solicitor", 
         prof_authorized="Professional Authorized", 
