@@ -50,6 +50,8 @@ exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:dateti
             if type(c) == type(Response()): return c
             c = add_solicitation_reason(canvas=c, reason=solicitation_reason)
             if type(c) == type(Response()): return c
+            c = add_prof_solicitor(canvas=c, prof=prof_solicitor)
+            if type(c) == type(Response()): return c
 
         except:
             if type(c) == type(Response()):
@@ -99,6 +101,33 @@ def add_patientName(canvas:canvas.Canvas, name:str):
             return Response("Unable to add patient name because is longer than 70 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding patient name', status=500)
+
+
+def add_prof_solicitor(canvas:canvas.Canvas, prof:str):
+    """Add professional solicitator
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        prof (str): professional name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """  
+    try:
+        if type(prof) != type(str()):
+            return Response('Professional Solicitor has to be string', status=400)
+        # verify if Professional Solicitor is smaller than 29 characters
+        prof = str(prof).strip()
+        if 7 < len(prof) <= 29:
+            ypos = 595
+            for x in range(pags_quant):
+                canvas = global_functions.add_data(canvas=canvas, data=prof, pos=(7, ypos))
+                ypos -= 280
+            return canvas
+        else:
+            return Response("Unable to add Professional Solicitor because is longer than 29 characters or Smaller than 7", status=400)
+    except:
+        return Response('Unknow error while adding Professional Solicitor', status=500)
 
 
 def add_exams(canvas:canvas.Canvas, exams:str):
