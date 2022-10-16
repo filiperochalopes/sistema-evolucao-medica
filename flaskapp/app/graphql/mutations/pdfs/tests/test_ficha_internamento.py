@@ -615,36 +615,3 @@ def test_longValue_patient_estimateWeight():
 def test_shortValue_patient_estimateWeight():
     assert type(data_to_use(patient_estimateWeight=123)) != type(Response())
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
