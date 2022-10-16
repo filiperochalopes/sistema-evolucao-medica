@@ -44,6 +44,8 @@ exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:dateti
             if type(c) == type(Response()): return c
             c = add_patient_cns(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
+            c = add_patient_birthday(canvas=c, birthday=patient_birthday)
+            if type(c) == type(Response()): return c
 
         except:
             if type(c) == type(Response()):
@@ -174,6 +176,29 @@ def add_patient_cns(canvas:canvas.Canvas, cns:int):
     except:
         return Response('Unknow error while adding patient cns', status=500)
 
+
+def add_patient_birthday(canvas:canvas.Canvas, birthday:datetime.datetime):
+    """Add patient birthday to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        birthday (datetime.datetime): birthday to add
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(birthday) != type(datetime.datetime.now()):
+            return Response('Pacient birthday isnt a datetime.datetime object', status=400)
+        # Format birthday to format DD/MM/YYYY
+        birthday = str(birthday.day) + '/' + str(birthday.month) + '/' + str(birthday.year)
+        ypos = 784
+        for x in range(pags_quant):
+            canvas = global_functions.add_data(canvas=canvas, data=birthday, pos=(441, ypos))
+            ypos -= 280
+        return canvas
+    except:
+        return Response('Unkown error while adding patient birthday', status=500)
 
 if __name__ == "__main__":
     import global_functions
