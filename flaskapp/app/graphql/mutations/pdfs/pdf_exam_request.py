@@ -68,6 +68,9 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
                 c = add_document_pacient_name(canvas=c, name=document_pacient_name)
             if type(c) == type(Response()): return c
             
+            if solicitation_datetime is not None:
+                c = add_solicitation_datetime(canvas=c, solicit=solicitation_datetime)
+            if type(c) == type(Response()): return c
 
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
@@ -299,6 +302,30 @@ def add_patient_birthday(canvas:canvas.Canvas, birthday:datetime.datetime):
         return Response('Unkown error while adding patient birthday', status=500)
 
 
+def add_solicitation_datetime(canvas:canvas.Canvas, solicit:datetime.datetime):
+    """Add solicitation datetime to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        solicit (datetime.datetime): solicitation_datetime
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(solicit) != type(datetime.datetime.now()):
+            return Response('Solicitation datetime isnt a datetime.datetime object', status=400)
+        # Format solicit to format DD/MM/YYYY
+        solicit = str(solicit.day) + '/' + str(solicit.month) + '/' + str(solicit.year)
+        ypos = 572
+        for x in range(pags_quant):
+            canvas = global_functions.add_data(canvas=canvas, data=solicit, pos=(30, ypos))
+            ypos -= 280
+        return canvas
+    except:
+        return Response('Unkown error while adding Solicitation datetime', status=500)
+
+
 def add_patient_adress(canvas:canvas.Canvas, adress:str):
     """add patient adress
 
@@ -402,7 +429,7 @@ if __name__ == "__main__":
         solicitation_reason="Solicitation Reason", 
         prof_solicitor="Professional Solicitor", 
         prof_authorized="Professional Authorized", 
-        solicitation_datetime=datetime.datetime, 
+        solicitation_datetime=datetime.datetime.now(), 
         autorization_datetime=datetime.datetime.now(), document_pacient_date=datetime.datetime.now(), 
         document_pacient_name='Document pacient name'
     )
