@@ -21,7 +21,7 @@ endobj
 /Font <<
 /F2 112 0 R
 /F1 16 0 R
-/F1c97747e2-9d02-46bd-ab09-24998701cc73 <<
+/F11335bc11-7b1a-468b-a24e-137fbfe89711 <<
 /BaseFont /Helvetica
 /Encoding /WinAnsiEncoding
 /Name /F1
@@ -35,7 +35,7 @@ endobj
 /X3 8 0 R
 /X1 6 0 R
 >>
-/ProcSet [ /ImageC /ImageI /ImageB /Text /PDF ]
+/ProcSet [ /ImageB /Text /ImageI /ImageC /PDF ]
 >>
 /Contents 5 0 R
 /Parent 1 0 R
@@ -21285,11 +21285,11 @@ W
 n
 1 0 0 1 0 0 cm
 BT
-/F1c97747e2-9d02-46bd-ab09-24998701cc73 12 Tf
+/F11335bc11-7b1a-468b-a24e-137fbfe89711 12 Tf
 14.4 TL
 ET
 BT
-1 0 0 1 27 674 Tm
+1 0 0 1 28 674 Tm
 /F2+0 9 Tf
 10.8 TL
 (Patient\040Name) Tj
@@ -21306,14 +21306,14 @@ BT
 1 0 0 1 400 740 Tm
 /F2+0 14 Tf
 16.8 TL
-(10\05715\0572022\04020\07223\07246) Tj
+(10\05716\0572022\04000\07249\07209) Tj
 T*
 ET
 BT
-1 0 0 1 27 642 Tm
+1 0 0 1 28 642 Tm
 /F2+0 9 Tf
 10.8 TL
-(10\05715\0572022) Tj
+(10\05716\0572022) Tj
 T*
 ET
 n
@@ -21435,7 +21435,7 @@ BT
 T*
 ET
 BT
-1 0 0 1 27 547 Tm
+1 0 0 1 28 547 Tm
 /F2+0 9 Tf
 10.8 TL
 (Brasileira) Tj

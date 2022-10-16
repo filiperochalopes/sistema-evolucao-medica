@@ -226,6 +226,7 @@ def add_documentDatetime(canvas:canvas.Canvas, docDatetime:datetime.datetime):
             return Response('Document Datetime isnt a datetime.datetime object', status=400)
         # Format docDatetime to format DD/MM/YYYY H:M:S
         docDatetime = docDatetime.strftime("%m/%d/%Y %H:%M:%S")
+
         canvas = global_functions.add_data(canvas=canvas, data=docDatetime, pos=(410, 740))
         return canvas
     except:
