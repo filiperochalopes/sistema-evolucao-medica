@@ -71,6 +71,9 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
             if solicitation_datetime is not None:
                 c = add_solicitation_datetime(canvas=c, solicit=solicitation_datetime)
             if type(c) == type(Response()): return c
+            if autorization_datetime is not None:
+                c = add_autorization_datetime(canvas=c, autori=autorization_datetime)
+            if type(c) == type(Response()): return c
 
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
@@ -325,6 +328,28 @@ def add_solicitation_datetime(canvas:canvas.Canvas, solicit:datetime.datetime):
     except:
         return Response('Unkown error while adding Solicitation datetime', status=500)
 
+def add_autorization_datetime(canvas:canvas.Canvas, autori:datetime.datetime):
+    """Add autorization_datetime to document
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        autori (datetime.datetime): autorization_datetime
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(autori) != type(datetime.datetime.now()):
+            return Response('Autorization datetime isnt a datetime.datetime object', status=400)
+        # Format autori to format DD/MM/YYYY
+        autori = str(autori.day) + '/' + str(autori.month) + '/' + str(autori.year)
+        ypos = 572
+        for x in range(pags_quant):
+            canvas = global_functions.add_data(canvas=canvas, data=autori, pos=(195, ypos))
+            ypos -= 280
+        return canvas
+    except:
+        return Response('Unkown error while adding Autorization datetime', status=500)
 
 def add_patient_adress(canvas:canvas.Canvas, adress:str):
     """add patient adress
