@@ -46,6 +46,8 @@ exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:dateti
             if type(c) == type(Response()): return c
             c = add_patient_birthday(canvas=c, birthday=patient_birthday)
             if type(c) == type(Response()): return c
+            c = add_patient_adress(canvas=c, adress=patient_adress)
+            if type(c) == type(Response()): return c
 
         except:
             if type(c) == type(Response()):
@@ -199,6 +201,50 @@ def add_patient_birthday(canvas:canvas.Canvas, birthday:datetime.datetime):
         return canvas
     except:
         return Response('Unkown error while adding patient birthday', status=500)
+
+
+def add_patient_adress(canvas:canvas.Canvas, adress:str):
+    """add patient adress
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        adress (str): patient adress
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """    
+    try:
+        if type(adress)!= type(str()):
+            return Response('Adress has to be str', status=400)
+        if 7 < len(adress) <= 216:
+            # Making the line break whem has 105 charater in a line
+            str_adress = ''
+            adress = lenghtTest[:216].strip()
+            charByLine = 108
+            brokeLinexTimes = int(len(adress)/charByLine)
+            currentLine = charByLine
+            lastline = 0
+            yposition = 734
+            while brokeLinexTimes > 0:
+                str_adress = adress[lastline:currentLine]
+                canvas = global_functions.add_data(canvas=canvas, data=adress, pos=(7, yposition))
+                canvas = global_functions.add_data(canvas=canvas, data=adress, pos=(7, yposition - 280))
+                canvas = global_functions.add_data(canvas=canvas, data=adress, pos=(7, yposition - 560))
+                lastline = currentLine
+                currentLine += charByLine
+                brokeLinexTimes -= 1
+                yposition -= 10
+
+            del(str_adress)
+            del(brokeLinexTimes)
+            del(currentLine)
+            del(lastline)
+            del(yposition)
+            return canvas
+        else:
+            return Response("Unable to add patient adress because is longer than 216 characters or smaller than 7", status=400)
+    except:
+        Response('Unknow error while adding patient Adress', status=500)
 
 if __name__ == "__main__":
     import global_functions
