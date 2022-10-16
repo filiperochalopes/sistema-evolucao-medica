@@ -22,7 +22,7 @@ font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
 
 def fill_pdf_exam_request(patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_adress:str, solicitation_reason:str,
-exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:datetime.datetime, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None):
+exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_authorized:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None):
 
     try:
         packet = io.BytesIO()
@@ -58,6 +58,19 @@ exams:str, prof_solicitor:str, prof_authorized:str, solicitation_datetime:dateti
                 return c
             else:
                 return Response('Some error happen when adding not null data to fields', status=500)
+
+        #Adding data that can be null
+        try:
+            if prof_authorized is not None and str(prof_authorized).strip() != "":
+                c = add_prof_authorized(canvas=c, prof=prof_authorized)
+            if type(c) == type(Response()): return c
+            if document_pacient_name is not None and str(document_pacient_name).strip() != "":
+                c = add_document_pacient_name(canvas=c, name=document_pacient_name)
+            if type(c) == type(Response()): return c
+            
+
+        except:
+            return Response('Critical error happen when adding data that can be null to fields', status=500)
 
         # create a new PDF with Reportlab
         c.save()
@@ -128,6 +141,60 @@ def add_prof_solicitor(canvas:canvas.Canvas, prof:str):
             return Response("Unable to add Professional Solicitor because is longer than 29 characters or Smaller than 7", status=400)
     except:
         return Response('Unknow error while adding Professional Solicitor', status=500)
+
+
+def add_prof_authorized(canvas:canvas.Canvas, prof:str):
+    """Add professional authorized
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        prof (str): professional name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """  
+    try:
+        if type(prof) != type(str()):
+            return Response('Professional Authorized has to be string', status=400)
+        # verify if Professional Authorized is smaller than 29 characters
+        prof = str(prof).strip()
+        if 7 < len(prof) <= 29:
+            ypos = 595
+            for x in range(pags_quant):
+                canvas = global_functions.add_data(canvas=canvas, data=prof, pos=(174, ypos))
+                ypos -= 280
+            return canvas
+        else:
+            return Response("Unable to add Professional Authorized because is longer than 29 characters or Smaller than 7", status=400)
+    except:
+        return Response('Unknow error while adding Professional Authorized', status=500)
+
+
+def add_document_pacient_name(canvas:canvas.Canvas, name:str):
+    """Add document pacient name
+
+    Args:
+        canvas (canvas.Canvas): canvas to use
+        name (str): document pacient name
+
+    Returns:
+        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+    """  
+    try:
+        if type(name) != type(str()):
+            return Response('Document pacient name has to be string', status=400)
+        # verify if Document pacient name is smaller than 29 characters
+        name = str(name).strip()
+        if 7 < len(name) <= 46:
+            ypos = 605
+            for x in range(pags_quant):
+                canvas = global_functions.add_data(canvas=canvas, data=name, pos=(340, ypos))
+                ypos -= 280
+            return canvas
+        else:
+            return Response("Unable to add Document pacient name because is longer than 46 characters or Smaller than 7", status=400)
+    except:
+        return Response('Unknow error while adding Document pacient name', status=500)
 
 
 def add_exams(canvas:canvas.Canvas, exams:str):
