@@ -9,8 +9,8 @@ for x in range(0, 2000):
 
 def data_to_use(document_datetime=datetime.datetime.now(),
         patient_name='Pacient Name',
-        prescrition=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]):
-        return pdf_prescricao_medica.fill_pdf_prescricao_medica(document_datetime, patient_name, prescrition)
+        prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]):
+        return pdf_prescricao_medica.fill_pdf_prescricao_medica(document_datetime, patient_name, prescription)
 
 #Testing Ficha Internamento
 def test_answer_with_all_fields():
@@ -69,8 +69,29 @@ def test_list_with_other_types():
 def test_list_with_other_types():
     assert data_to_use(prescription=['bahabah', 12313]).status == Response(status=400).status
 
+def test_dicts_without_necessary_keys():
+    assert data_to_use(prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos"}]).status == Response(status=400).status
 
+def test_dicts_with_more_than_necessary_keys():
+    assert data_to_use(prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias", "dontExiste":"aidsuad"}]).status == Response(status=400).status
 
+def test_message_name_with_wrongtype():
+    assert data_to_use(prescription=[{"medicine_name":123123123, "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]).status == Response(status=400).status
+
+def test_message_name_longer():
+    assert data_to_use(prescription=[{"medicine_name":lenghtTest[:70], "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]).status == Response(status=400).status
+
+def test_amount_with_wrongtype():
+    assert data_to_use(prescription=[{"medicine_name":'123123123', "amount":1213, "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]).status == Response(status=400).status
+
+def test_amount_longer():
+    assert data_to_use(prescription=[{"medicine_name":"sadfasdf", "amount":lenghtTest[:70], "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]).status == Response(status=400).status
+
+def test_use_mode_with_wrongtype():
+    assert data_to_use(prescription=[{"medicine_name":'123123123', "amount":"4 comprimidos", "use_mode":12312313}]).status == Response(status=400).status
+
+def test_use_mode_longer():
+    assert data_to_use(prescription=[{"medicine_name":lenghtTest[:70], "amount":"4 comprimidos", "use_mode":lenghtTest[:250]}]).status == Response(status=400).status
 
 
 

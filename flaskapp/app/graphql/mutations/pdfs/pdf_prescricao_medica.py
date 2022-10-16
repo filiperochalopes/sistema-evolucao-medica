@@ -123,10 +123,13 @@ def add_prescription(canvas:canvas.Canvas, prescription:list):
     """    
     #verify if the type is list
     if type(prescription) != type(list()):
-        return Response('Prescription has to be a list of dicts, like: [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]', status=400)
+        return Response('prescription has to be a list of dicts, like: [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]', status=400)
     necessaryKeys = ["medicine_name", "amount", "use_mode"]
     totalChar = 0
     for presc in prescription:
+        #verify if the item in list is a dict
+        if type(presc) != type(dict()):
+            return Response('All itens in list has to be a dict', status=400)
         #Verify if the necessary keys are in the dict
         if 'medicine_name' not in presc.keys() or 'amount' not in presc.keys() or "use_mode" not in presc.keys():
             return Response('Some keys in dict is missing, dict has to have "medicine_name", "amount", "use_mode"', status=400)
