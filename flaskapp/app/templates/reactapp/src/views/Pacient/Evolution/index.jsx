@@ -4,6 +4,7 @@ import Button from "components/Button";
 import Input from "components/Input";
 import ListOption from "components/ListOption";
 import TextArea from "components/TextArea";
+import Select from "components/Select";
 
 const Evolution = () => (
   <Container>
@@ -18,7 +19,8 @@ const Evolution = () => (
           placeholder="RESPONSÁVEL PELA EVOLUÇÃO (NOME COMPLETO)"
           className="larger"
         />
-        <Input placeholder="FUNÇÃO" className="normal" />
+        {/* <Input placeholder="FUNÇÃO" className="normal" /> */}
+        <Select className="normal" placeholder="FUNÇÃO" />
         <Input placeholder="N° CONSELHO" className="small" />
       </div>
       <div>
