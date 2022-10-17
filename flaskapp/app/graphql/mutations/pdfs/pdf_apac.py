@@ -18,7 +18,7 @@ for x in range(0, 2000):
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/apac.pdf"
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
-def fill_pdf_apac(establishment_solitc_name:str):
+def fill_pdf_apac(establishment_solitc_name:str, patient_name:str):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -31,6 +31,8 @@ def fill_pdf_apac(establishment_solitc_name:str):
         # not null data
         try:
             c = global_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(36, 742), campName='Establishment Solict Name', lenMax=77, lenMin=7)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(36, 702), campName='Patient Name', lenMax=67, lenMin=7)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -60,7 +62,8 @@ def fill_pdf_apac(establishment_solitc_name:str):
 if __name__ == "__main__":
     import global_functions
     output = fill_pdf_apac(
-        establishment_solitc_name='Establishment Solicit Name'
+        establishment_solitc_name='Establishment Solicit Name',
+        patient_name='Patient Name'
     )
 
     if type(output) == type(Response()): 

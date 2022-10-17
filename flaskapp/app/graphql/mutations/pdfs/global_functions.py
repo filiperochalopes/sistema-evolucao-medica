@@ -196,7 +196,7 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str):
         return Response("Error when writing new pdf", status=500)
 
 
-def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMax:int, lenMin:int=0):
+def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMax:int, nullable:bool=False, lenMin:int=0):
     """Add text that is fill in one line
 
     Args:
@@ -209,7 +209,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
     """    
     try:
         if type(text) != type(str()):
-            return Response(f'text has to be string', status=400)
+            return Response(f'{campName} has to be string', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
@@ -220,7 +220,13 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
             return Response(f'lenMax has to be int', status=500)
         elif type(lenMin) != type(int()):
             return Response(f'lenMin has to be int', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
 
+        if not nullable:
+            text = text.strip()
+            if len(text) == 0:
+                return Response(f'{campName} cannot be empty', status=400)
         # verify if text is in the need lenght
         text = text.strip()
         if lenMin < len(text) <= lenMax:
@@ -230,7 +236,6 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
             return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)
     except:
         return Response(f'Unknow error while adding {campName}', status=500)
-
 
 
 
