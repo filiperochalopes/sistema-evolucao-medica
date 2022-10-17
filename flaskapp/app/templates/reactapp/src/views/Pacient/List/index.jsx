@@ -7,12 +7,13 @@ import Pacient from "components/ListOption";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useModalContext } from "services/ModalContext";
+import EvolutionButton from "./components/EvolutionButton";
 
 const List = () => {
   const { addModal } = useModalContext();
   return (
     <Container>
-      <Link to="/">
+      <Link to="/adimitir-paciente">
         <Button className="add_new_pacient">+ Admitir paciente</Button>
       </Link>
 
@@ -32,13 +33,7 @@ const List = () => {
                     Visualizar
                   </Button>
                 </Link>
-                <div className="container_button_relative">
-                  <Link to="/evoluir-paciente">
-                    <Button className="add_new_pacient" customType="gray">
-                      Evoluir
-                    </Button>
-                  </Link>
-                </div>
+                <EvolutionButton />
                 <Button
                   onClick={() => {
                     addModal(printScreen);

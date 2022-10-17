@@ -49,9 +49,5 @@ export const PacientContent = styled.div`
   .container_buttons {
     display: flex;
     column-gap: 0.625rem;
-
-    .container_button_relative {
-      position: relative;
-    }
   }
 `;

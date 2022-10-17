@@ -4,6 +4,7 @@ export default styled.div`
   max-width: 100vw;
   max-height: 100vh;
   display: flex;
+  height: 100%;
   flex-direction: column;
 `;
 
