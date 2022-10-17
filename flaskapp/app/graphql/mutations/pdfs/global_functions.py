@@ -117,22 +117,22 @@ def isCNPJvalid(cnpj:str):
     return True
 
 
-def add_data(canvas:canvas.Canvas, data:str, pos:tuple):
+def add_data(can:canvas.Canvas, data:str, pos:tuple):
     """Add data in pdf using canvas object
 
     Args:
-        canvas (canvas.Canvas): canvas that will be used to add data
+        can (canvas.Canvas): canvas that will be used to add data
         data (str): data to be added
         pos (tuple): data insert position in points
 
     Returns:
-        canvas(canvas.Canvas): canvas with all changes
+        can(canvas.Canvas): canvas with all changes
         or
         Response(flask.Response: with the error)
     """
     try:
-        canvas.drawString(pos[0], pos[1], data)
-        return canvas
+        can.drawString(pos[0], pos[1], data)
+        return can
     except:
         return Response("Error when adding data to document with canvas", status=500)
 
@@ -194,6 +194,45 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str):
         outputFile.close()
     except:
         return Response("Error when writing new pdf", status=500)
+
+
+def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMax:int, lenMin:int=0):
+    """Add text that is fill in one line
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        text (str): text value
+        pos (tuple): position in canvas
+        campName (str): Camp name, this is used when return Responses
+        lenMax (int): maximum text lenght
+        lenMin (int, optional): Minimum text lenght. Defaults to 0.
+    """    
+    try:
+        if type(text) != type(str()):
+            return Response(f'text has to be string', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos) != type(tuple()):
+            return Response(f'pos has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(lenMax) != type(int()):
+            return Response(f'lenMax has to be int', status=500)
+        elif type(lenMin) != type(int()):
+            return Response(f'lenMin has to be int', status=500)
+
+        # verify if text is in the need lenght
+        text = text.strip()
+        if lenMin < len(text) <= lenMax:
+            can = add_data(can=can, data=text, pos=pos)
+            return can
+        else:
+            return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)
+    except:
+        return Response(f'Unknow error while adding {campName}', status=500)
+
+
+
 
 if __name__ == "__main__":
     cpf = 142342343234
