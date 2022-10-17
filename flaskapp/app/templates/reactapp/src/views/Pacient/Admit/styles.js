@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default styled.div`
+export default styled.form`
   margin: 2.625rem 0;
   width: 100%;
   display: flex;
@@ -41,7 +41,7 @@ export const ContainerSearchInput = styled.div`
   }
 `;
 
-export const ContainerInputs = styled.div`
+const ContainerInputs = styled.div`
   padding: 1rem 0;
   display: flex;
   flex-direction: column;
