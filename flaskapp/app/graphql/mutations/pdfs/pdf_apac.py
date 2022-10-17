@@ -30,7 +30,7 @@ def fill_pdf_apac(establishment_solitc_name:str):
         # Writing all data in respective fields
         # not null data
         try:
-            c = global_functions.add_oneline_text(can=c, text=str(lenghtTest[:500]), pos=(36, 744), campName='Establishment Solict Name', lenMax=600, lenMin=7)
+            c = global_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(36, 742), campName='Establishment Solict Name', lenMax=77, lenMin=7)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
