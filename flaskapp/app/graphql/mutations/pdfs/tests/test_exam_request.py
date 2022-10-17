@@ -230,16 +230,16 @@ def test_shortText_exams():
     assert data_to_use(exams='abla').status == Response(status=400).status
 
 def test_more_than_limit_exams():
-    assert data_to_use(exams=lenghtTest[:220]).status == Response(status=400).status
+    assert data_to_use(exams=lenghtTest[:980]).status == Response(status=400).status
 
 def test_1_pages_long_exams():
-    assert data_to_use(exams=lenghtTest[:200]).status == Response(status=400).status
+    assert type(data_to_use(exams=lenghtTest[:200])) != type(Response())
 
 def test_2_pages_long_exams():
-    assert data_to_use(exams=lenghtTest[:400]).status == Response(status=400).status
+    assert type(data_to_use(exams=lenghtTest[:400])) != type(Response())
 
 def test_3_pages_long_exams():
-    assert data_to_use(exams=lenghtTest[:750]).status == Response(status=400).status
+    assert type(data_to_use(exams=lenghtTest[:750])) != type(Response())
 
 
 

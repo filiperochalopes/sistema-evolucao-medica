@@ -37,6 +37,7 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
         # not null data
         try:
             global pags_quant
+            pags_quant = 0
             c, pags_quant = add_exams(canvas=c, exams=exams)
             # verify if c is a error at some point
             if type(c) == type(Response()): return c
@@ -218,10 +219,10 @@ def add_exams(canvas:canvas.Canvas, exams:str):
     """    
     try:
         if type(exams) != type(str()):
-            return Response('Exams has to be a string', status=400)
+            return Response('Exams has to be a string', status=400), 0
         exams = exams.strip()
         if len(exams.strip()) > 972 or len(exams.strip()) < 5:
-            return Response('Exams has to be at least 5 characters and no more than 972 characters', status=400)
+            return Response('Exams has to be at least 5 characters and no more than 972 characters', status=400), 0
         # Making the line break whem has 105 charater in a line
         str_exams = ''
         #Calculate how many pags will have, ceil function round to upper int
@@ -252,7 +253,7 @@ def add_exams(canvas:canvas.Canvas, exams:str):
         del(yposition)
         return canvas, pags_quant
     except:
-        return Response('Unknow error while adding Solicited Exams', status=500)
+        return Response('Unknow error while adding Solicited Exams', status=500), 0
 
 
 def add_patient_cns(canvas:canvas.Canvas, cns:int):
