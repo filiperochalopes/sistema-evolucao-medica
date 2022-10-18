@@ -597,6 +597,91 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, campName:str, nullable:bool=Fal
         return Response(f'Unknow error while adding {campName}', status=500)
 
 
+def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False):
+    try:
+        if nullable:
+            if document == None:
+                return can
+        if type(document) != type(dict()):
+            return Response(f'{campName} document has to be a dict {"document":"number"}', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(square_size) != type(tuple()):
+            return Response(f'square_size has to be tuple', status=500)
+        elif type(pos_cpf) != type(tuple()) and pos_cpf != None:
+            return Response(f'pos_cpf has to be tuple', status=500)
+        elif type(pos_cns) != type(tuple()) and pos_cns != None:
+            return Response(f'pos_cns has to be tuple', status=500)
+        elif type(pos_rg) != type(tuple()) and pos_rg != None:
+            return Response(f'pos_rg has to be tuple', status=500)
+        elif type(pos_square_cpf) != type(tuple()) and pos_square_cpf != None:
+            return Response(f'pos_square_cpf has to be tuple', status=500)
+        elif type(pos_square_cns) != type(tuple()) and pos_square_cns != None:
+            return Response(f'pos_square_cns has to be tuple', status=500)
+        elif type(pos_square_rg) != type(tuple()) and pos_square_rg != None:
+            return Response(f'pos_square_rg has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
+        elif type(formated) != type(bool()):
+            return Response(f'formated has to be bool', status=500)
+        
+        # See id document is CPF, CNS or RG
+        if 'CNS' in document.keys():
+            if type(document['CNS']) != type(int()):
+                return Response(f'{campName} value CNS has to be int', status=400)
+            if isCNSvalid(document['CNS']):
+                if pos_square_cns != None:
+                    can = add_square(can=can, pos=pos_square_cns, size=square_size)
+                # Add empty spaces interval between every character
+
+                cns = str(document['CNS'])
+                cns = add_interval_to_data(data=cns, interval=interval)
+                if formated:
+                    cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
+                can = add_data(can=can, data=cns, pos=pos_cns)
+                return can
+            else:
+                return Response(f'{campName} CNS is not valid', status=400)
+        elif 'CPF' in document.keys():
+            if type(document['CPF']) != type(int()):
+                return Response(f'{campName} value CPF has to be int', status=400)
+            #Format cpf to validate
+            cpf = str(document['CPF'])
+            numbersCpf = str(cpf)
+            formated_cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
+            if isCPFvalid(formated_cpf):
+                if pos_square_cpf != None:
+                    can = add_square(can=can, pos=pos_square_cpf, size=square_size)
+                # Add empty spaces interval between averu character
+                if formated:
+                    cpf = add_interval_to_data(data=formated_cpf, interval=interval)
+                else:
+                    cpf = add_interval_to_data(data=numbersCpf, interval=interval)
+
+                can = add_data(can=can, data=cpf, pos=pos_cpf)
+                return can
+            else:
+                return Response(f'{campName} CPF is not valid', status=400)
+        elif 'RG' in document.keys():
+            if type(document['RG']) != type(int()):
+                return Response(f'{campName} value RG has to be int', status=400)
+            #The only verificatinon is that rg is not greater than 16 characteres
+            if isRGvalid(document['RG']):
+                if pos_square_rg != None:
+                    can = add_square(can=can, pos=pos_square_rg, size=square_size)
+                can = add_data(can=can, data=str(document['RG']), pos=pos_rg)
+                return can
+            else:
+                return Response(f'{campName} RG is not valid', status=400)
+        else:
+            return Response('The document was not CPF, CNS or RG', status=400)
+    except:
+        return Response(f'Unknow error while adding {campName} Document', status=500)
+
 
 if __name__ == "__main__":
     cpf = 142342343234
