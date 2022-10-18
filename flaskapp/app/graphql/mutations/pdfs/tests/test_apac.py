@@ -589,11 +589,66 @@ def test_more_than_limit_main_procedure_code():
 
 
 
+#################################################################################
+# TEST INT VARIABLES CAN/CANNOT BE NULL
+# main_procedure_quant
+# patient_mother_phonenumber
+# patient_responsible_phonenumber
+# document_chart_number
+# !!!!! TESTING
+# wrong type
+# test empty value
+# test empty space
+# short value
+# long value  
 
+def test_wrong_type_main_procedure_quant():
+    assert data_to_use(main_procedure_quant='131').status == Response(status=400).status
 
+def test_empty_value_main_procedure_quant():
+    assert data_to_use(main_procedure_quant='').status == Response(status=400).status
 
+def test_empty_spaces_main_procedure_quant():
+    assert data_to_use(main_procedure_quant='    ').status == Response(status=400).status
 
+def test_longValue_main_procedure_quant():
+    assert data_to_use(main_procedure_quant=int(lenghtTest[:10])).status == Response(status=400).status
 
+def test_wrong_type_patient_mother_phonenumber():
+    assert data_to_use(patient_mother_phonenumber='131').status == Response(status=400).status
+
+def test_empty_value_patient_mother_phonenumber():
+    assert data_to_use(patient_mother_phonenumber='').status == Response(status=400).status
+
+def test_empty_spaces_patient_mother_phonenumber():
+    assert data_to_use(patient_mother_phonenumber='    ').status == Response(status=400).status
+
+def test_longValue_patient_mother_phonenumber():
+    assert data_to_use(patient_mother_phonenumber=int(lenghtTest[:12])).status == Response(status=400).status
+
+def test_wrong_type_patient_responsible_phonenumber():
+    assert data_to_use(patient_responsible_phonenumber='131').status == Response(status=400).status
+
+def test_empty_value_patient_responsible_phonenumber():
+    assert data_to_use(patient_responsible_phonenumber='').status == Response(status=400).status
+
+def test_empty_spaces_patient_responsible_phonenumber():
+    assert data_to_use(patient_responsible_phonenumber='    ').status == Response(status=400).status
+
+def test_longValue_patient_responsible_phonenumber():
+    assert data_to_use(patient_responsible_phonenumber=int(lenghtTest[:12])).status == Response(status=400).status
+
+def test_wrong_type_document_chart_number():
+    assert data_to_use(document_chart_number='131').status == Response(status=400).status
+
+def test_empty_value_document_chart_number():
+    assert data_to_use(document_chart_number='').status == Response(status=400).status
+
+def test_empty_spaces_document_chart_number():
+    assert data_to_use(document_chart_number='    ').status == Response(status=400).status
+
+def test_longValue_document_chart_number():
+    assert data_to_use(document_chart_number=int(lenghtTest[:16])).status == Response(status=400).status
 
 
 
