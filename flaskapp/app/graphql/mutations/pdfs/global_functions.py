@@ -251,6 +251,88 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
         return Response(f'Unknow error while adding {campName}', status=500)
 
 
+def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_ypos:int, campName:str, lenMax:int, charPerLines:int, maxLinesAmount:int=None, nullable:bool=False, lenMin:int=0, interval:str=''):
+    """Add text that is fill in one line
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        text (str): text value
+        initial_pos (tuple): initial position in canvas
+        decrease_ypos (int): decrease y value to break lines
+        campName (str): Camp name, this is used when return Responses
+        lenMax (int): maximum text lenght
+        charPerLines (int): char amount for every lines
+        maxLinesAmount (int, optional): maximum lines amount . Defaults to None.
+        nullable (bool, optional): Data can me None. Defaults to False.
+        lenMin (int, optional): Minimum text lenght. Defaults to 0.
+        interval (str): interval to add between every char
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error_summary_
+    """    
+    try:
+        if nullable:
+            if text == None:
+                return can
+        if type(text) != type(str()):
+            return Response(f'{campName} has to be string, if can be null, please add nullable option', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(initial_pos) != type(tuple()):
+            return Response(f'initial_pos has to be tuple', status=500)
+        elif type(decrease_ypos) != type(int()):
+            return Response(f'decrease_ypos has to be int', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(lenMax) != type(int()):
+            return Response(f'lenMax has to be int', status=500)
+        elif type(charPerLines) != type(int()):
+            return Response(f'charPerLines has to be int', status=500)
+        elif type(maxLinesAmount) != type(int()) and maxLinesAmount != None:
+            return Response(f'maxLinesAmount has to be int', status=500)
+        elif type(lenMin) != type(int()):
+            return Response(f'lenMin has to be int', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
+
+        if not nullable:
+            text = text.strip()
+            if len(text) == 0:
+                return Response(f'{campName} cannot be empty', status=400)
+        # verify if text is in the need lenght
+        text = text.strip()
+        if lenMin <= len(text) <= lenMax:
+            str_to_line = ''
+            brokeLinexTimes = int(len(text)/charPerLines)
+            if maxLinesAmount != None and brokeLinexTimes + 1 > maxLinesAmount:
+                return Response(f'Unable to add {campName} because lines amount needed is more than {maxLinesAmount}', status=500)
+            currentLine = charPerLines
+            lastline = 0
+            xpos = initial_pos[0]
+            ypos = initial_pos[1]
+            # Making the line break whem has max charater limiti reached in a line
+            while brokeLinexTimes >= 0:
+                str_to_line = text[lastline:currentLine]
+                can = add_data(can=can, data=str_to_line, pos=(xpos, ypos))
+                lastline = currentLine
+                currentLine += charPerLines
+                brokeLinexTimes -= 1
+                ypos -= decrease_ypos
+
+            return can
+        else:
+            return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)
+    except:
+        return Response(f'Unknow error while adding {campName}', status=500)
+
+
+
+
+
+
 def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, lenMax:int, valueMin:int, valueMax:int, nullable:bool=False, lenMin:int=0, interval:str=''):
     """Add one line number to canvas
 

@@ -119,6 +119,8 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = add_secondary_procedures(can=c, procedures=secondaries_procedures)
             if type(c) == type(Response()): return c
+            c = global_functions.add_morelines_text(can=c, text=prodedure_justification_comments, initial_pos=(36, 318), decrease_ypos= 10, campName='Procedura justification Comments', lenMax=776, charPerLines=97, lenMin=5, nullable=True)
+            if type(c) == type(Response()): return c
         
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
