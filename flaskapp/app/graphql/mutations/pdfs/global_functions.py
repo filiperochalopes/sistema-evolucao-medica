@@ -208,8 +208,11 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
         lenMin (int, optional): Minimum text lenght. Defaults to 0.
     """    
     try:
+        if nullable:
+            if text == None:
+                return can
         if type(text) != type(str()):
-            return Response(f'{campName} has to be string', status=400)
+            return Response(f'{campName} has to be string, if can be null, please add nullable option', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
@@ -229,7 +232,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
                 return Response(f'{campName} cannot be empty', status=400)
         # verify if text is in the need lenght
         text = text.strip()
-        if lenMin < len(text) <= lenMax:
+        if lenMin <= len(text) <= lenMax:
             can = add_data(can=can, data=text, pos=pos)
             return can
         else:
@@ -238,6 +241,35 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
         return Response(f'Unknow error while adding {campName}', status=500)
 
 
+def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, lenMax:int, nullable:bool=False, lenMin:int=0):
+    try:
+        if nullable:
+            if number == None:
+                return can
+        if type(number) != type(int()):
+            return Response(f'{campName} has to be int, if can be null, please add nullable option', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos) != type(tuple()):
+            return Response(f'pos has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(lenMax) != type(int()):
+            return Response(f'lenMax has to be int', status=500)
+        elif type(lenMin) != type(int()):
+            return Response(f'lenMin has to be int', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+
+        # verify if number is in the need lenght
+        number = str(number)
+        if lenMin <= len(number) <= lenMax:
+            can = add_data(can=can, data=number, pos=pos)
+            return can
+        else:
+            return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)
+    except:
+        return Response(f'Unknow error while adding {campName}', status=500)
 
 if __name__ == "__main__":
     cpf = 142342343234
