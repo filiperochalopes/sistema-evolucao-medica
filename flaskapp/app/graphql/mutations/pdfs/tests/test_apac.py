@@ -220,5 +220,68 @@ def test_wrongoption_autorizaton_prof_document():
     assert data_to_use(autorizaton_prof_document={'BBB':284123312123}).status == Response(status=400).status
 
 
+#################################################################
+# TEST DATETIMES VARIABLES
+# patient_birthday
+# solicitation_datetime
+# autorizaton_datetime
+# signature_datetime,
+# test wrong type
+# test valid datetime
+
+def test_wrongtype_patient_birthday():
+    assert data_to_use(patient_birthday='bahabah').status == Response(status=400).status
+
+def test_valid_patient_birthday():
+    assert type(data_to_use(patient_birthday=datetime.datetime.now())) != type(Response())
+
+def test_wrongtype_solicitation_datetime():
+    assert data_to_use(solicitation_datetime='bahabah').status == Response(status=400).status
+
+def test_valid_solicitation_datetime():
+    assert type(data_to_use(solicitation_datetime=datetime.datetime.now())) != type(Response())
+
+def test_wrongtype_autorizaton_datetime():
+    assert data_to_use(autorizaton_datetime='bahabah').status == Response(status=400).status
+
+def test_valid_autorizaton_datetime():
+    assert type(data_to_use(autorizaton_datetime=datetime.datetime.now())) != type(Response())
+
+def test_wrongtype_signature_datetime():
+    assert data_to_use(signature_datetime='bahabah').status == Response(status=400).status
+
+def test_valid_signature_datetime():
+    assert type(data_to_use(signature_datetime=datetime.datetime.now())) != type(Response())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
