@@ -19,7 +19,7 @@ template_directory = "./graphql/mutations/pdfs/pdfs_templates/apac.pdf"
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
 
-def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, document_chart_number:int=None, patient_adress_city_IBGEcode:int=None, procedure_justification_description:str=None, prodedure_justification_main_cid10:str=None, prodedure_justification_sec_cid10:str=None, prodedure_justification_associated_cause_cid10:str=None, prodedure_justification_comments:str=None):
+def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, document_chart_number:int=None, patient_adress_city_IBGEcode:int=None, procedure_justification_description:str=None, prodedure_justification_main_cid10:str=None, prodedure_justification_sec_cid10:str=None, prodedure_justification_associated_cause_cid10:str=None, prodedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitant_document:dict=None, prof_solicitant_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -27,10 +27,16 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
         pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
-        c.setFont('Roboto-Mono', 9)
+        c.setFont('Roboto-Mono', 10)
         # Writing all data in respective fields
         # not null data
         try:
+            c = global_functions.add_cns(can=c, cns=patient_cns, pos=(36, 678), campName='Patient CNS', interval='  ')
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=main_procedure_code, pos=(36, 542), campName='Main Procedure Code', lenMax=10, lenMin=10, interval='  ')
+            if type(c) == type(Response()): return c
+
+            c.setFont('Roboto-Mono', 9)
             c = global_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(36, 742), campName='Establishment Solict Name', lenMax=77, lenMin=7)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(36, 702), campName='Patient Name', lenMax=67, lenMin=7)
@@ -38,13 +44,7 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             c = global_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(423, 699), pos_fem=(456, 699), campName='Patient Sex', square_size=(9,9))
             if type(c) == type(Response()): return c
 
-            c.setFont('Roboto-Mono', 10)
-            c = global_functions.add_cns(can=c, cns=patient_cns, pos=(36, 678), campName='Patient CNS', interval='  ')
-            if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=main_procedure_code, pos=(36, 542), campName='Main Procedure Code', lenMax=10, lenMin=10, interval='  ')
-            if type(c) == type(Response()): return c
-
-            c.setFont('Roboto-Mono', 9)
+            
             c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(315, 678), campName='Patient Birthday', hours=False, interval='  ', formated=False)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(36, 584), campName='Patient Adress City', lenMax=58, lenMin=7)
@@ -62,7 +62,13 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
                 return Response('Some error happen when adding not null data to fields', status=500)
 
         #Adding data that can be null
-        try:   
+        try:
+            c.setFont('Roboto-Mono', 11)
+            c = global_functions.add_oneline_intnumber(can=c, number=establishment_exec_cnes, pos=(450, 28), campName='Establishment Exec CNES', lenMax=7, lenMin=7,valueMin=0, valueMax=99999999, interval=' ')
+            if type(c) == type(Response()): return c
+
+
+            c.setFont('Roboto-Mono', 9)
             c = global_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 654), campName='Patient Mother Name', lenMax=67, lenMin=7, nullable=True)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_intnumber(can=c, number=patient_mother_phonenumber, pos=(409, 650), campName='Patient Mother Phone Number', lenMax=10, lenMin=10, valueMin=0, valueMax=9999999999, nullable=True, interval='  ')
@@ -92,6 +98,8 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             c = global_functions.add_oneline_text(can=c, text=prodedure_justification_sec_cid10, pos=(420, 344), campName='Procedure Justification secondary CID10', lenMax=4, lenMin=3, nullable=True)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=prodedure_justification_associated_cause_cid10, pos=(505, 344), campName='Procedure Justification Associated Causes CID10', lenMax=4, lenMin=3, nullable=True)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=establishment_exec_name, pos=(36, 30), campName='Establishment Exec Name', lenMax=71, lenMin=5, nullable=True)
             if type(c) == type(Response()): return c
         
         except:
@@ -140,7 +148,15 @@ if __name__ == "__main__":
         procedure_justification_description='Procedure Justification Description', 
         prodedure_justification_main_cid10='A98', 
         prodedure_justification_sec_cid10='A01', prodedure_justification_associated_cause_cid10='A45',
-        prodedure_justification_comments='Procedure Justification Comments'
+        prodedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', 
+        establishment_exec_cnes=7654321,
+        prof_solicitant_document={'CPF':28445400070}, 
+        prof_solicitant_name='Profissional Solicit Name', 
+        solicitation_datetime=datetime.datetime.now(),
+        autorization_prof_name='Autorization Professional Name', 
+        emission_org_code='Cod121234', 
+        autorizaton_prof_document={'CNS':928976954930007}, 
+        autorizaton_datetime=datetime.datetime.now()
     )
 
     if type(output) == type(Response()): 
