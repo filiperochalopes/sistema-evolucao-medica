@@ -89,6 +89,10 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=prodedure_justification_main_cid10, pos=(352, 344), campName='Procedure Justification main CID10', lenMax=4, lenMin=3, nullable=True)
             if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=prodedure_justification_sec_cid10, pos=(420, 344), campName='Procedure Justification secondary CID10', lenMax=4, lenMin=3, nullable=True)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=prodedure_justification_associated_cause_cid10, pos=(505, 344), campName='Procedure Justification Associated Causes CID10', lenMax=4, lenMin=3, nullable=True)
+            if type(c) == type(Response()): return c
         
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
