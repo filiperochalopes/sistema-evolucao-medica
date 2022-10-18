@@ -62,6 +62,7 @@ export const Header = styled.div`
     background-color: ${({ theme }) => theme.colors.red700};
     display: flex;
     align-items: center;
+    cursor: pointer;
     justify-content: center;
   }
 `;
