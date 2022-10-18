@@ -6,18 +6,30 @@ import { useModalContext } from "services/ModalContext";
 import React from "styled-components";
 import additionalDataScreen from "helpers/additionalDataScreen";
 
-const ModalPrintData = ({ confirmButtonAction }) => {
+const ModalPrintData = ({ confirmButton }) => {
   const { addModal } = useModalContext();
 
   return (
     <Container>
-      <Button customType="gray" type="button">
+      <Button
+        onClick={() =>
+          addModal(additionalDataScreen({ type: "hospitalAdmissionForm" }))
+        }
+        customType="gray"
+        type="button"
+      >
         Ficha de Internamento Hospitalar
       </Button>
       <Button customType="gray" type="button">
         Folha de Admissão do Hospital
       </Button>
-      <Button customType="gray" type="button">
+      <Button
+        customType="gray"
+        type="button"
+        onClick={() =>
+          addModal(additionalDataScreen({ type: "evolutionForm" }))
+        }
+      >
         Folha de Evolução
       </Button>
       <Button customType="gray" type="button">
@@ -30,9 +42,9 @@ const ModalPrintData = ({ confirmButtonAction }) => {
         Balanço hídrico
       </Button>
       <Button
-        onClick={() => addModal(additionalDataScreen)}
         customType="gray"
         type="button"
+        onClick={() => addModal(additionalDataScreen({ type: "APAC" }))}
       >
         APAC
       </Button>

@@ -7,6 +7,7 @@ import { useTheme } from "styled-components";
 
 const Modal = ({ children, confirmButton, goBack, headerTitle }) => {
   const theme = useTheme();
+  console.log(confirmButton);
 
   return (
     <Container>
@@ -38,7 +39,7 @@ const Modal = ({ children, confirmButton, goBack, headerTitle }) => {
               </Header>
             }
           >
-            {cloneElement(<></>, { confirmButton }, children)}
+            {cloneElement(children, { confirmButton })}
           </PageTemplate>
         </ContainerContentModal>
       </div>

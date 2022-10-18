@@ -1,8 +1,10 @@
-const additionalDataScreen = {
+import ModalAdditionalData from "components/Modals/components/ModalAdditionalData";
+
+const additionalDataScreen = ({ type = "hospitalAdmissionForm" }) => ({
   confirmButtonAction: () => {},
-  content: <></>,
+  content: <ModalAdditionalData type={type} />,
   returnButtonAction: () => {},
   title: "Preencha os campos adicionais",
-};
+});
 
 export default additionalDataScreen;
