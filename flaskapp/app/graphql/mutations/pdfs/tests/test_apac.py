@@ -773,7 +773,23 @@ def test_longValue_emission_org_code():
 def test_shortValue_emission_org_code():
     assert data_to_use(emission_org_code ='a').status == Response(status=400).status
 
-
+# TEST secondaries_procedures
+# test wront type
+# test empty value in keys
+# test empty spaces in keys
+# test empty value in procedure_code
+# test empty value in procedure_name
+# test empty value in quant
+# test empty spaces in procedure_code
+# test empty spaces in procedure_name
+# test empty spaces in quant
+# test more than limit dicts
+# test long values in procedure_code
+# test long values in procedure_name
+# test long values in quant
+# test short values in procedure_code
+# test short values in procedure_name
+# test short values in quant
 
 
 
