@@ -28,7 +28,7 @@ font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 # municipio de residência,  -
 # código do procedimento principal 
 # nome do procedimento -
-# quantidade proced princiapl. 
+# quantidade proced princiapl. -
 # A seção procedimento secundário é opcional. Descrição do diagnóstico, CID10 principal e observações são obrigattórios. Todo campo de seção "Solicitação" são obrigatórios
 def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int):
     try:
@@ -51,6 +51,8 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
 
             c.setFont('Roboto-Mono', 10)
             c = global_functions.add_cns(can=c, cns=patient_cns, pos=(36, 678), campName='Patient CNS', interval='  ')
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=main_procedure_code, pos=(36, 542), campName='Main Procedure Code', lenMax=10, lenMin=10, interval='  ')
             if type(c) == type(Response()): return c
 
             c.setFont('Roboto-Mono', 9)
@@ -97,7 +99,7 @@ if __name__ == "__main__":
         patient_sex='M',
         patient_adress_city='Patient Adress City',
         main_procedure_name='Main procedure Name',
-        main_procedure_code='123456',
+        main_procedure_code='1234567890',
         main_procedure_quant=4
     )
 

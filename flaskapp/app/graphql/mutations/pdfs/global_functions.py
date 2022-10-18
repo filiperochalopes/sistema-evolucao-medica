@@ -196,7 +196,7 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str):
         return Response("Error when writing new pdf", status=500)
 
 
-def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMax:int, nullable:bool=False, lenMin:int=0):
+def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMax:int, nullable:bool=False, lenMin:int=0, interval:str=''):
     """Add text that is fill in one line
 
     Args:
@@ -238,6 +238,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
         # verify if text is in the need lenght
         text = text.strip()
         if lenMin <= len(text) <= lenMax:
+            text = add_interval_to_data(data=text, interval=interval)
             can = add_data(can=can, data=text, pos=pos)
             return can
         else:
