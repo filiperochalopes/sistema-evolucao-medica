@@ -547,6 +547,45 @@ def test_shortText_procedure_justification_comments():
 def test_more_than_limit_procedure_justification_comments():
     assert data_to_use(procedure_justification_comments=lenghtTest[:800]).status == Response(status=400).status
 
+#############################################################################
+# NORMAL TEXT VARIABLES THAT CANNOT BE NULL
+# main_procedure_name
+# main_procedure_code
+# test wrong type
+# test empty value
+# test empty spaces 
+# test short text
+# test more than limit
+
+def test_wrong_type_main_procedure_name():
+    assert data_to_use(main_procedure_name=131).status == Response(status=400).status
+
+def test_empty_value_main_procedure_name():
+    assert data_to_use(main_procedure_name='').status == Response(status=400).status
+
+def test_empty_spaces_main_procedure_name():
+    assert data_to_use(main_procedure_name='    ').status == Response(status=400).status
+
+def test_shortText_main_procedure_name():
+    assert data_to_use(main_procedure_name='abla').status == Response(status=400).status
+
+def test_more_than_limit_main_procedure_name():
+    assert data_to_use(main_procedure_name=lenghtTest[:55]).status == Response(status=400).status
+
+def test_wrong_type_main_procedure_code():
+    assert data_to_use(main_procedure_code=131).status == Response(status=400).status
+
+def test_empty_value_main_procedure_code():
+    assert data_to_use(main_procedure_code='').status == Response(status=400).status
+
+def test_empty_spaces_main_procedure_code():
+    assert data_to_use(main_procedure_code='    ').status == Response(status=400).status
+
+def test_shortText_main_procedure_code():
+    assert data_to_use(main_procedure_code='abla').status == Response(status=400).status
+
+def test_more_than_limit_main_procedure_code():
+    assert data_to_use(main_procedure_code=lenghtTest[:11]).status == Response(status=400).status
 
 
 
