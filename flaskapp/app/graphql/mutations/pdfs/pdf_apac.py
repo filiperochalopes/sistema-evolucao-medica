@@ -83,6 +83,8 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_intnumber(can=c, number=patient_adress_city_IBGEcode, pos=(370, 582), campName='Patient Adress City IBGE code', lenMax=7, lenMin=7, valueMin=0, valueMax=9999999, nullable=True)
             if type(c) == type(Response()): return c
+            c = global_functions.add_UF(can=c, uf=patient_adressUF, pos=(443, 582), campName='Patient Adress UF', nullable=True, interval='  ')
+            if type(c) == type(Response()): return c
         
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)

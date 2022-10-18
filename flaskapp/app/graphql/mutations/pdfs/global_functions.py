@@ -485,7 +485,34 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, campName:
         return Response(f'Unkown error while adding {campName}', status=500)
 
 
-
+def add_UF(can:canvas.Canvas, uf:str, pos:tuple, campName:str, nullable:bool=False, interval:str=''):
+    try:
+        if nullable:
+            if uf == None:
+                return can
+        if type(uf) != type(str()):
+            return Response(f'{campName} has to be string, if can be null, please add nullable option', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos) != type(tuple()):
+            return Response(f'pos has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
+        
+        uf = uf.upper().strip()
+        if ufExists(uf=uf):
+            # Add empty spaces interval between averu character
+            uf = add_interval_to_data(data=uf, interval=interval)
+            can = add_data(can=can, data=uf, pos=pos)
+            return can
+        else:
+            return Response(f'{campName} not exists in Brazil', status=400) 
+    except:
+        return Response(f'Unknow error while adding {campName}', status=500)
 
 
 
