@@ -208,7 +208,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
         lenMax (int): maximum text lenght
         nullable (bool, optional): Data can me None. Defaults to False.
         lenMin (int, optional): Minimum text lenght. Defaults to 0.
-        interval (str): interval to add betwaeen every char
+        interval (str): interval to add between every char
     Returns:
         canvas(canvas.Canvas): canvas with all changes
         or
@@ -232,6 +232,8 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
             return Response(f'lenMin has to be int', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
 
         if not nullable:
             text = text.strip()
@@ -249,7 +251,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
         return Response(f'Unknow error while adding {campName}', status=500)
 
 
-def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, lenMax:int, valueMin:int, valueMax:int, nullable:bool=False, lenMin:int=0):
+def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, lenMax:int, valueMin:int, valueMax:int, nullable:bool=False, lenMin:int=0, interval:str=''):
     """Add one line number to canvas
 
     Args:
@@ -262,6 +264,7 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str
         valueMin (int): Minimun Value
         nullable (bool, optional): Data can me None. Defaults to False.
         lenMin (int, optional): Minimun Lenght. Defaults to 0.
+        interval (str): interval to add between every char
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
@@ -290,12 +293,15 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str
             return Response(f'valueMin has to be int', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
 
         # verify if number is in the need lenght
         if valueMin > number or valueMax < number:
             return Response(f"Unable to add {campName} because is bigger than {valueMax} and smaller than {valueMin}", status=400)
         number = str(number)
         if lenMin <= len(number) <= lenMax:
+            number = add_interval_to_data(data=number, interval=interval)
             can = add_data(can=can, data=number, pos=pos)
             return can
         else:
@@ -460,7 +466,7 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, campName:
         elif type(interval) != type(str()):
             return Response(f'interval has to be str', status=500)
 
-        #Add to respective fields
+        #Add to respective fields+
         if hours:  
             if formated:
                 date = date.strftime(f"%d/%m/%Y %H:%M:%S")

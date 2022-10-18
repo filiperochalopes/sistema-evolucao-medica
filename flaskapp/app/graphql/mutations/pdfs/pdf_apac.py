@@ -18,19 +18,8 @@ for x in range(0, 2000):
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/apac.pdf"
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
-#Aqui tem muito campo NÃO obrigatório. Só o que precisa de fato ser preenchido são: 
-# Nome do estabelecimento, -
-# CNES, -
-# Nome do paciente,  -
-# CNS, -
-# data de nascimento 
-# sexo, -
-# municipio de residência,  -
-# código do procedimento principal -
-# nome do procedimento -
-# quantidade proced princiapl. -
-# A seção procedimento secundário é opcional. Descrição do diagnóstico, CID10 principal e observações são obrigattórios. Todo campo de seção "Solicitação" são obrigatórios
-def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int):
+
+def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -72,7 +61,19 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             else:
                 return Response('Some error happen when adding not null data to fields', status=500)
 
-
+        #Adding data that can be null
+        try:   
+            c = global_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 654), campName='Patient Mother Name', lenMax=67, lenMin=7)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_mother_phonenumber, pos=(409, 650), campName='Patient Mother Phone Number', lenMax=10, lenMin=10, valueMin=0, valueMax=9999999999, nullable=True, interval='  ')
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=patient_responsible_name, pos=(36, 630), campName='Patient Responsible Name', lenMax=67, lenMin=7)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_responsible_phonenumber, pos=(409, 626), campName='Patient Responsible Phone Number', lenMax=10, lenMin=10, valueMin=0, valueMax=9999999999, nullable=True, interval='  ')
+            if type(c) == type(Response()): return c
+        
+        except:
+            return Response('Critical error happen when adding data that can be null to fields', status=500)
         # create a new PDF with Reportlab
         c.save()
         packet.seek(0)
@@ -103,7 +104,11 @@ if __name__ == "__main__":
         patient_adress_city='Patient Adress City',
         main_procedure_name='Main procedure Name',
         main_procedure_code='1234567890',
-        main_procedure_quant=4
+        main_procedure_quant=4,
+        patient_mother_name='Patient Mother Name',
+        patient_mother_phonenumber=5286758957, 
+        patient_responsible_name='Patient Responsible Name', patient_responsible_phonenumber=5465981345, 
+        patient_adress='Patient Adress'
     )
 
     if type(output) == type(Response()): 
