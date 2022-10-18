@@ -137,11 +137,11 @@ def add_data(can:canvas.Canvas, data:str, pos:tuple):
         return Response("Error when adding data to document with canvas", status=500)
 
 
-def add_square(canvas:canvas.Canvas, pos:tuple, size:tuple=(9, 9)):
+def add_square(can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)):
     """Add square in document using canvas object
 
     Args:
-        canvas (canvas.Canvas): canvas to use
+        can (canvas.Canvas): canvas to use
         pos (tuple): position to add the square
         size (tuple, optional): square size default is the size of the option quare. Defaults to 9.
 
@@ -151,17 +151,17 @@ def add_square(canvas:canvas.Canvas, pos:tuple, size:tuple=(9, 9)):
         Response(flask.Response): with the error
     """    
     try:
-        canvas.rect(x=pos[0], y=pos[1], width=size[0], height=size[1], fill=1)
-        return canvas
+        can.rect(x=pos[0], y=pos[1], width=size[0], height=size[1], fill=1)
+        return can
     except:
         return Response("Error when adding square to document with canvas", status=500)
 
 
-def add_centralized_data(canvas:canvas.Canvas, data:str, pos:tuple):
+def add_centralized_data(can:canvas.Canvas, data:str, pos:tuple):
     """Add centralized_data in pdf using canvas object
 
     Args:
-        canvas (canvas.Canvas): canvas that will be used to add centralized_data
+        can (canvas.Canvas): canvas that will be used to add centralized_data
         data (str): centralized_data to be added
         pos (tuple): centralized_data insert position in points
 
@@ -171,8 +171,8 @@ def add_centralized_data(canvas:canvas.Canvas, data:str, pos:tuple):
         Response(flask.Response): with the error
     """
     try:
-        canvas.drawCentredString(pos[0], pos[1], data)
-        return canvas
+        can.drawCentredString(pos[0], pos[1], data)
+        return can
     except:
         return Response("Error when adding centralized data to document with canvas", status=500)
 
@@ -335,7 +335,7 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=Fa
             if cns == None:
                 return can
         if type(cns) != type(int()):
-            return Response(f'{campName} has to be str', status=400)
+            return Response(f'{campName} has to be int', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
@@ -357,14 +357,50 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=Fa
             if type(cns) == type(Response()): return cns
             if formatCns: 
                 cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
-            print('chegouaqui')
-            print(cns)
             can = add_data(can=can, data=cns, pos=pos)
             return can
         else:
             return Response(f"Unable to add {campName} because is a invalid CNS", status=400)
     except:
         return Response(f'Unknow error while adding {campName}', status=500)
+
+
+def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, square_size:tuple, campName:str, nullable:bool=False):
+    try:
+        if nullable:
+            if sex == None:
+                return can
+        if type(sex) != type(str()):
+            return Response(f'{campName} has to be str', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos_male) != type(tuple()):
+            return Response(f'pos_male has to be tuple', status=500)
+        elif type(pos_fem) != type(tuple()):
+            return Response(f'pos_fem has to be tuple', status=500)
+        elif type(square_size) != type(tuple()):
+            return Response(f'square_size has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+
+        sex = sex.upper()
+        if len(sex) != 1:
+            return Response(f'{campName} has to be only one character F or M', status=400)
+        if sex not in ['M', 'F']:
+            return Response(f'{campName} is not valid, use F or M', status=400)
+        else:
+            if sex == 'M':
+                can = add_square(can=can, pos=pos_male, size=square_size)
+                return can
+            else:
+                can = add_square(can=can, pos=pos_fem, size=square_size)
+                return can
+    except:
+        return Response(f'Unkown error while adding {campName}', status=500)
+
+
 
 if __name__ == "__main__":
     cpf = 142342343234

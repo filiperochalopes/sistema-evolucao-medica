@@ -22,7 +22,7 @@ font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 # Nome do estabelecimento, -
 # CNES, -
 # Nome do paciente,  -
-# CNS, 
+# CNS, -
 # data de nascimento, 
 # sexo, 
 # municipio de residência,  -
@@ -30,7 +30,7 @@ font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 # nome do procedimento -
 # quantidade proced princiapl. 
 # A seção procedimento secundário é opcional. Descrição do diagnóstico, CID10 principal e observações são obrigattórios. Todo campo de seção "Solicitação" são obrigatórios
-def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int,patient_adress_city:str, main_procedure_name:str):
+def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_adress_city:str, main_procedure_name:str):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -45,6 +45,8 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             c = global_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(36, 742), campName='Establishment Solict Name', lenMax=77, lenMin=7)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(36, 702), campName='Patient Name', lenMax=67, lenMin=7)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(423, 699), pos_fem=(456, 699), campName='Patient Sex', square_size=(9,9))
             if type(c) == type(Response()): return c
 
             c.setFont('Roboto-Mono', 10)
@@ -90,6 +92,7 @@ if __name__ == "__main__":
         establishment_solitc_cnes=1234567,
         patient_name='Patient Name',
         patient_cns=928976954930007,
+        patient_sex='M',
         patient_adress_city='Patient Adress City',
         main_procedure_name='Main procedure Name'
     )
