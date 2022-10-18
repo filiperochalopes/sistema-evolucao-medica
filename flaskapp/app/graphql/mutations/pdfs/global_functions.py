@@ -246,7 +246,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
         return Response(f'Unknow error while adding {campName}', status=500)
 
 
-def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, lenMax:int, nullable:bool=False, lenMin:int=0):
+def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, lenMax:int, valueMin:int, valueMax:int, nullable:bool=False, lenMin:int=0):
     """Add one line number to canvas
 
     Args:
@@ -279,10 +279,16 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str
             return Response(f'lenMax has to be int', status=500)
         elif type(lenMin) != type(int()):
             return Response(f'lenMin has to be int', status=500)
+        elif type(valueMax) != type(int()):
+            return Response(f'valueMax has to be int', status=500)
+        elif type(valueMin) != type(int()):
+            return Response(f'valueMin has to be int', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
 
         # verify if number is in the need lenght
+        if valueMin > number or valueMax < number:
+            return Response(f"Unable to add {campName} because is bigger than {valueMax} and smaller than {valueMin}", status=400)
         number = str(number)
         if lenMin <= len(number) <= lenMax:
             can = add_data(can=can, data=number, pos=pos)

@@ -24,13 +24,13 @@ font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 # Nome do paciente,  -
 # CNS, -
 # data de nascimento, 
-# sexo, 
+# sexo, -
 # municipio de residência,  -
-# código do procedimento principal, 
+# código do procedimento principal 
 # nome do procedimento -
 # quantidade proced princiapl. 
 # A seção procedimento secundário é opcional. Descrição do diagnóstico, CID10 principal e observações são obrigattórios. Todo campo de seção "Solicitação" são obrigatórios
-def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_adress_city:str, main_procedure_name:str):
+def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -58,7 +58,9 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=main_procedure_name, pos=(220, 542), campName='Main Procedure Name', lenMax=50, lenMin=7)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(468, 742), campName='Establishment Solict CNES', lenMax=7, lenMin=7)
+            c = global_functions.add_oneline_intnumber(can=c, number=main_procedure_quant, pos=(508, 542), campName='Main Procedure Quantity', lenMax=8, lenMin=1, valueMin=1, valueMax=99999999)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(468, 742), campName='Establishment Solict CNES', lenMax=7, lenMin=7,valueMin=0, valueMax=99999999)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -94,7 +96,9 @@ if __name__ == "__main__":
         patient_cns=928976954930007,
         patient_sex='M',
         patient_adress_city='Patient Adress City',
-        main_procedure_name='Main procedure Name'
+        main_procedure_name='Main procedure Name',
+        main_procedure_code='123456',
+        main_procedure_quant=4
     )
 
     if type(output) == type(Response()): 
