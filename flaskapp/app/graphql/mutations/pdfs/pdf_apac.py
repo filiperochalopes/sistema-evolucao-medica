@@ -64,7 +64,7 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
         #Adding data that can be null
         try:
             c.setFont('Roboto-Mono', 11)
-            c = global_functions.add_oneline_intnumber(can=c, number=establishment_exec_cnes, pos=(450, 28), campName='Establishment Exec CNES', lenMax=7, lenMin=7,valueMin=0, valueMax=99999999, interval=' ')
+            c = global_functions.add_oneline_intnumber(can=c, number=establishment_exec_cnes, pos=(450, 28), campName='Establishment Exec CNES', lenMax=7, lenMin=7,valueMin=0, valueMax=99999999, interval=' ', nullable=True)
             if type(c) == type(Response()): return c
             c.setFont('Roboto-Mono', 9)
             c = global_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 654), campName='Patient Mother Name', lenMax=67, lenMin=7, nullable=True)
@@ -177,16 +177,16 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list):
         #Add code fist with upper font
         can.setFont('Roboto-Mono', 10)
         for proc in procedures:
-            can = global_functions.add_oneline_text(can=can, text=proc['procedure_code'], pos=(codexpos, ypos), campName=f'{cont} Secondary Procedure Code', lenMax=10, lenMin=10, interval='  ')
+            can = global_functions.add_oneline_text(can=can, text=proc['procedure_code'], pos=(codexpos, ypos), campName=f'{cont} Secondary Procedure Code', lenMax=10, lenMin=10, interval='  ', nullable=True)
             if type(can) == type(Response()): return can
             ypos -= reduceY
 
         can.setFont('Roboto-Mono', 9)
         ypos = 495
         for proc in procedures:
-            can = global_functions.add_oneline_text(can=can, text=proc['procedure_name'], pos=(namexpos, ypos), campName=f'{cont} Secondary procedure name', lenMax=54, lenMin=7)
+            can = global_functions.add_oneline_text(can=can, text=proc['procedure_name'], pos=(namexpos, ypos), campName=f'{cont} Secondary procedure name', lenMax=54, lenMin=7, nullable=True)
             if type(can) == type(Response()): return can
-            can = global_functions.add_oneline_intnumber(can=can, number=proc['quant'], pos=(quantxpos, ypos), campName=f'{cont} Secondary Procedure Quantity', lenMax=8, lenMin=1, valueMin=1, valueMax=99999999)
+            can = global_functions.add_oneline_intnumber(can=can, number=proc['quant'], pos=(quantxpos, ypos), campName=f'{cont} Secondary Procedure Quantity', lenMax=8, lenMin=1, valueMin=1, valueMax=99999999, nullable=True)
             if type(can) == type(Response()): return can
             ypos -= reduceY
         return can

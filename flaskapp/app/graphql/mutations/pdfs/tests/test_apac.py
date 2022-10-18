@@ -152,9 +152,31 @@ def test_wrongtype_autorization_prof_name():
     assert data_to_use(autorization_prof_name=123124).status == Response(status=400).status
 
 
+####################################################################
+# TEST CNES 
+# establishment_solitc_cnes
+# establishment_exec_cnes
+# empty
+# wrong type
+# invalid cnes
 
+def test_empty_establishment_solitc_cnes():
+    assert data_to_use(establishment_solitc_cnes='').status == Response(status=400).status
 
+def test_wrongtype_establishment_solitc_cnes():
+    assert data_to_use(establishment_solitc_cnes='adsadad').status == Response(status=400).status
 
+def test_invalidcnes_establishment_solitc_cnes():
+    assert data_to_use(establishment_solitc_cnes=451236548).status == Response(status=400).status
+
+def test_empty_establishment_exec_cnes():
+    assert data_to_use(establishment_exec_cnes='').status == Response(status=400).status
+
+def test_wrongtype_establishment_exec_cnes():
+    assert data_to_use(establishment_exec_cnes='adsadad').status == Response(status=400).status
+
+def test_invalidcnes_establishment_exec_cnes():
+    assert data_to_use(establishment_exec_cnes=451236548).status == Response(status=400).status
 
 
 
