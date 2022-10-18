@@ -19,7 +19,7 @@ template_directory = "./graphql/mutations/pdfs/pdfs_templates/apac.pdf"
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
 
-def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, document_chart_number:int=None, patient_adress_city_IBGEcode:int=None, procedure_justification_description:str=None, prodedure_justification_main_cid10:str=None, prodedure_justification_sec_cid10:str=None, prodedure_justification_associated_cause_cid10:str=None, prodedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitant_document:dict=None, prof_solicitant_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None):
+def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, document_chart_number:int=None, patient_adress_city_IBGEcode:int=None, procedure_justification_description:str=None, prodedure_justification_main_cid10:str=None, prodedure_justification_sec_cid10:str=None, prodedure_justification_associated_cause_cid10:str=None, prodedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitant_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -101,6 +101,10 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=establishment_exec_name, pos=(36, 30), campName='Establishment Exec Name', lenMax=71, lenMin=5, nullable=True)
             if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 206), campName='Profissional Solicitor Name', lenMax=48, lenMin=5, nullable=True)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=autorization_prof_name, pos=(36, 136), campName='Profissional Authorizator Name', lenMax=46, lenMin=5, nullable=True)
+            if type(c) == type(Response()): return c
         
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
@@ -151,7 +155,7 @@ if __name__ == "__main__":
         prodedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', 
         establishment_exec_cnes=7654321,
         prof_solicitant_document={'CPF':28445400070}, 
-        prof_solicitant_name='Profissional Solicit Name', 
+        prof_solicitor_name='Profissional Solicit Name', 
         solicitation_datetime=datetime.datetime.now(),
         autorization_prof_name='Autorization Professional Name', 
         emission_org_code='Cod121234', 
