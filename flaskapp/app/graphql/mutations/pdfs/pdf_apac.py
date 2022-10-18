@@ -145,6 +145,8 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list):
         if type(procedures) != type(list()):
             return Response('procedures has to be a list of dicts, like: [{"procedure_name":"Procedure Name", "procedure_code":"cod124235", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"another12", "quant":1}]', status=400)
         necessaryKeys = ["procedure_name", "procedure_code", "quant"]
+        if len(procedures) > 5:
+            return Response('You cannot add more than 5 secondary procedures', status=400)
         for proc in procedures:
             #verify if the item in list is a dict
             if type(proc) != type(dict()):
