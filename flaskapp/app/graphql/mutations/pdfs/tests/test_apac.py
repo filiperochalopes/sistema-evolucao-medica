@@ -523,10 +523,29 @@ def test_long_value_patient_adressCEP():
     assert data_to_use(patient_adressCEP=52352352352352352352352352352).status == Response(status=400).status
 
 
+#############################################################################
+# TEST BIG TEXT WITH LINE BRAKES
+# procedure_justification_comments
+# test wrong type
+# test empty value
+# test empty spaces 
+# test short text
+# test more than limit
 
+def test_wrong_type_procedure_justification_comments():
+    assert data_to_use(procedure_justification_comments=131).status == Response(status=400).status
 
+def test_empty_value_procedure_justification_comments():
+    assert type(data_to_use(procedure_justification_comments='')) != type(Response())
 
+def test_empty_spaces_procedure_justification_comments():
+    assert type(data_to_use(procedure_justification_comments='    ')) != type(Response())
 
+def test_shortText_procedure_justification_comments():
+    assert data_to_use(procedure_justification_comments='abla').status == Response(status=400).status
+
+def test_more_than_limit_procedure_justification_comments():
+    assert data_to_use(procedure_justification_comments=lenghtTest[:800]).status == Response(status=400).status
 
 
 

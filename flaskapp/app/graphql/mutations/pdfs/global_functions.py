@@ -272,8 +272,8 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         Response(flask.Response): with the error_summary_
     """    
     try:
-        if nullable or len(str(text).strip()) == 0:
-            if text == None:
+        if nullable:
+            if text == None or len(str(text).strip()) == 0:
                 return can
         if type(text) != type(str()):
             return Response(f'{campName} has to be string, if can be null, please add nullable option', status=400)
