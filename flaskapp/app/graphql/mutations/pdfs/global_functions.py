@@ -641,7 +641,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
             if document == None:
                 return can
         if type(document) != type(dict()):
-            return Response(f'{campName} document has to be a dict {"document":"number"}', status=400)
+            return Response(f'{campName} document has to be a dict ("document":"number")', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(square_size) != type(tuple()):

@@ -179,11 +179,45 @@ def test_invalidcnes_establishment_exec_cnes():
     assert data_to_use(establishment_exec_cnes=451236548).status == Response(status=400).status
 
 
+#################################################################
+# TEST DOCUMENTS CNS AND CPF
+# patient_cns
+# prof_solicitor_document
+# autorizaton_prof_document
+# wrong type
+# invalid cns
+# invalid cpf
+# wrong option
 
+def test_wrongtype_patient_cns():
+    assert data_to_use(patient_cns='451236548').status == Response(status=400).status
 
+def test_invalid_patient_cns():
+    assert data_to_use(patient_cns=451236548554).status == Response(status=400).status
 
+def test_wrongtype_prof_solicitor_document():
+    assert data_to_use(prof_solicitor_document='451236548554').status == Response(status=400).status
 
+def test_invalidcns_prof_solicitor_document():
+    assert data_to_use(prof_solicitor_document={'CNS':284123312123}).status == Response(status=400).status
 
+def test_invalidccpf_prof_solicitor_document():
+    assert data_to_use(prof_solicitor_document={'CPF':284123312123}).status == Response(status=400).status
+
+def test_wrongoption_prof_solicitor_document():
+    assert data_to_use(prof_solicitor_document={'BBB':284123312123}).status == Response(status=400).status
+
+def test_wrongtype_autorizaton_prof_document():
+    assert data_to_use(autorizaton_prof_document='451236548554').status == Response(status=400).status
+
+def test_invalidcns_autorizaton_prof_document():
+    assert data_to_use(autorizaton_prof_document={'CNS':284123312123}).status == Response(status=400).status
+
+def test_invalidccpf_autorizaton_prof_document():
+    assert data_to_use(autorizaton_prof_document={'CPF':284123312123}).status == Response(status=400).status
+
+def test_wrongoption_autorizaton_prof_document():
+    assert data_to_use(autorizaton_prof_document={'BBB':284123312123}).status == Response(status=400).status
 
 
 
