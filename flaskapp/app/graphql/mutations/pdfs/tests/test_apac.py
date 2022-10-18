@@ -225,7 +225,9 @@ def test_wrongoption_autorizaton_prof_document():
 # patient_birthday
 # solicitation_datetime
 # autorizaton_datetime
-# signature_datetime,
+# signature_datetime
+# validity_period_end 
+# validity_period_start
 # test wrong type
 # test valid datetime
 
@@ -252,6 +254,21 @@ def test_wrongtype_signature_datetime():
 
 def test_valid_signature_datetime():
     assert type(data_to_use(signature_datetime=datetime.datetime.now())) != type(Response())
+
+def test_wrongtype_validity_period_start():
+    assert data_to_use(validity_period_start='bahabah').status == Response(status=400).status
+
+def test_valid_validity_period_start():
+    assert type(data_to_use(validity_period_start=datetime.datetime.now())) != type(Response())
+
+def test_wrongtype_validity_period_end ():
+    assert data_to_use(validity_period_end ='bahabah').status == Response(status=400).status
+
+def test_valid_validity_period_end ():
+    assert type(data_to_use(validity_period_end =datetime.datetime.now())) != type(Response())
+
+
+
 
 ##################################################################
 # TEST MARKABLE OPTIONS
@@ -649,6 +666,118 @@ def test_empty_spaces_document_chart_number():
 
 def test_longValue_document_chart_number():
     assert data_to_use(document_chart_number=int(lenghtTest[:16])).status == Response(status=400).status
+
+
+
+##############################################################################
+# TEST STRING THAT CAN BE NULL
+# patient_ethnicity
+# patient_color
+# prodedure_justification_main_cid10
+# prodedure_justification_sec_cid10
+# procedure_justification_associated_cause_cid10
+# emission_org_code
+# test wront type
+# test empty value
+# test empty spaces
+# test long values
+# test short values
+
+def test_wrong_type_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=123).status == Response(status=400).status
+
+def test_empty_value_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=None)) != type(Response())
+
+def test_empty_spaces_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity='    ')) != type(Response())
+
+def test_longValue_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=lenghtTest[:20]).status == Response(status=400).status
+
+def test_shortValue_patient_ethnicity():
+    assert data_to_use(patient_ethnicity='aaa').status == Response(status=400).status
+
+def test_wrong_type_patient_color():
+    assert data_to_use(patient_color=123).status == Response(status=400).status
+
+def test_empty_value_patient_color():
+    assert type(data_to_use(patient_color=None)) != type(Response())
+
+def test_empty_spaces_patient_color():
+    assert type(data_to_use(patient_color='    ')) != type(Response())
+
+def test_longValue_patient_color():
+    assert data_to_use(patient_color=lenghtTest[:15]).status == Response(status=400).status
+
+def test_shortValue_patient_color():
+    assert data_to_use(patient_color='aaa').status == Response(status=400).status
+
+def test_wrong_type_prodedure_justification_main_cid10():
+    assert data_to_use(prodedure_justification_main_cid10=123).status == Response(status=400).status
+
+def test_empty_value_prodedure_justification_main_cid10():
+    assert type(data_to_use(prodedure_justification_main_cid10=None)) != type(Response())
+
+def test_empty_spaces_prodedure_justification_main_cid10():
+    assert type(data_to_use(prodedure_justification_main_cid10='    ')) != type(Response())
+
+def test_longValue_prodedure_justification_main_cid10():
+    assert data_to_use(prodedure_justification_main_cid10=lenghtTest[:6]).status == Response(status=400).status
+
+def test_shortValue_prodedure_justification_main_cid10():
+    assert data_to_use(prodedure_justification_main_cid10='aa').status == Response(status=400).status
+
+def test_wrong_type_prodedure_justification_sec_cid10():
+    assert data_to_use(prodedure_justification_sec_cid10=123).status == Response(status=400).status
+
+def test_empty_value_prodedure_justification_sec_cid10():
+    assert type(data_to_use(prodedure_justification_sec_cid10=None)) != type(Response())
+
+def test_empty_spaces_prodedure_justification_sec_cid10():
+    assert type(data_to_use(prodedure_justification_sec_cid10='    ')) != type(Response())
+
+def test_longValue_prodedure_justification_sec_cid10():
+    assert data_to_use(prodedure_justification_sec_cid10=lenghtTest[:6]).status == Response(status=400).status
+
+def test_shortValue_prodedure_justification_sec_cid10():
+    assert data_to_use(prodedure_justification_sec_cid10='aa').status == Response(status=400).status
+
+def test_wrong_type_procedure_justification_associated_cause_cid10():
+    assert data_to_use(procedure_justification_associated_cause_cid10 =123).status == Response(status=400).status
+
+def test_empty_value_procedure_justification_associated_cause_cid10():
+    assert type(data_to_use(procedure_justification_associated_cause_cid10 =None)) != type(Response())
+
+def test_empty_spaces_procedure_justification_associated_cause_cid10():
+    assert type(data_to_use(procedure_justification_associated_cause_cid10 ='    ')) != type(Response())
+
+def test_longValue_procedure_justification_associated_cause_cid10():
+    assert data_to_use(procedure_justification_associated_cause_cid10 =lenghtTest[:6]).status == Response(status=400).status
+
+def test_shortValue_procedure_justification_associated_cause_cid10():
+    assert data_to_use(procedure_justification_associated_cause_cid10 ='aa').status == Response(status=400).status
+
+def test_wrong_type_emission_org_code():
+    assert data_to_use(emission_org_code =123).status == Response(status=400).status
+
+def test_empty_value_emission_org_code():
+    assert type(data_to_use(emission_org_code =None)) != type(Response())
+
+def test_empty_spaces_emission_org_code():
+    assert type(data_to_use(emission_org_code ='    ')) != type(Response())
+
+def test_longValue_emission_org_code():
+    assert data_to_use(emission_org_code =lenghtTest[:20]).status == Response(status=400).status
+
+def test_shortValue_emission_org_code():
+    assert data_to_use(emission_org_code ='a').status == Response(status=400).status
+
+
+
+
+
+
 
 
 
