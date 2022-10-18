@@ -17,6 +17,15 @@ export default styled.button`
           background-color: ${({ theme }) => theme.colors.grayMedium};
           color: ${({ theme }) => theme.colors.black};
         `;
+      case "gray-300":
+        return css`
+          background-color: ${({ theme }) => theme.colors.gray};
+          color: ${({ theme }) => theme.colors.black};
+
+          :hover {
+            background-color: #e9e9e9;
+          }
+        `;
       default:
         return css`
           background-color: ${({ theme }) => theme.colors.blue};
