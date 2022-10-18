@@ -216,7 +216,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
     """
     try:
         if nullable:
-            if text == None:
+            if text == None or len(str(text).strip()) == 0:
                 return can
         if type(text) != type(str()):
             return Response(f'{campName} has to be string, if can be null, please add nullable option', status=400)
@@ -272,7 +272,7 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         Response(flask.Response): with the error_summary_
     """    
     try:
-        if nullable:
+        if nullable or len(str(text).strip()) == 0:
             if text == None:
                 return can
         if type(text) != type(str()):
@@ -327,9 +327,6 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
             return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)
     except:
         return Response(f'Unknow error while adding {campName}', status=500)
-
-
-
 
 
 
@@ -482,7 +479,7 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, sq
         Response(flask.Response): with the error
     """    
     try:
-        if nullable:
+        if nullable or len(str(sex).strip()) == 0:
             if sex == None:
                 return can
         if type(sex) != type(str()):
@@ -528,6 +525,10 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, campName:
         nullable (bool, optional): can be null. Defaults to False.
         formated (bool, optional): format (add '/' and ':'). Defaults to True.
         interval (str, optional): add interval between  day, month, year, hour, min, sec. Defaults to ''.
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
     """    
     try:
         if nullable:
@@ -568,8 +569,23 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, campName:
 
 
 def add_UF(can:canvas.Canvas, uf:str, pos:tuple, campName:str, nullable:bool=False, interval:str=''):
+    """Verify uf and add to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        uf (str): uf to add
+        pos (tuple): position uf
+        campName (str): camp name
+        nullable (bool, optional): can be null. Defaults to False.
+        interval (str, optional): and interval between char. Defaults to ''.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """    
     try:
-        if nullable:
+        if nullable or len(str(uf.strip())) == 0:
             if uf == None:
                 return can
         if type(uf) != type(str()):
@@ -598,6 +614,28 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, campName:str, nullable:bool=Fal
 
 
 def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False):
+    """Validate and add document to canvas, can be CPF, RG or CNS
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        document (dict): dict with the document
+        campName (str): camp name 
+        square_size (tuple, optional): suqare size if has mark option. Defaults to (9,9).
+        pos_cpf (tuple, optional): cpf number position in canvas. Defaults to None.
+        pos_cns (tuple, optional): cns number position in canvas. Defaults to None.
+        pos_rg (tuple, optional): rg number position in canvas. Defaults to None.
+        pos_square_cpf (tuple, optional): cpf square position in canvas. Defaults to None.
+        pos_square_cns (tuple, optional): cns square position in canvas. Defaults to None.
+        pos_square_rg (tuple, optional): rg number position in canvas. Defaults to None.
+        nullable (bool, optional): can be null. Defaults to False.
+        interval (str, optional): intervale between every number. Defaults to ''.
+        formated (bool, optional): has to format, format using the default for every doc (rg is exception). Defaults to False.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """    
     try:
         if nullable:
             if document == None:
