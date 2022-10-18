@@ -26,7 +26,7 @@ font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 # data de nascimento, 
 # sexo, -
 # municipio de residência,  -
-# código do procedimento principal 
+# código do procedimento principal -
 # nome do procedimento -
 # quantidade proced princiapl. -
 # A seção procedimento secundário é opcional. Descrição do diagnóstico, CID10 principal e observações são obrigattórios. Todo campo de seção "Solicitação" são obrigatórios

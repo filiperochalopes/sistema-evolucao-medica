@@ -207,6 +207,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
         lenMax (int): maximum text lenght
         nullable (bool, optional): Data can me None. Defaults to False.
         lenMin (int, optional): Minimum text lenght. Defaults to 0.
+        interval (str): interval to add betwaeen every char
     Returns:
         canvas(canvas.Canvas): canvas with all changes
         or
@@ -256,6 +257,8 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str
         pos (tuple): position in canvas
         campName (str): camp name to Responses
         lenMax (int): Maximum Lenght
+        valueMax (int): Maximum Value
+        valueMin (int): Minimun Value
         nullable (bool, optional): Data can me None. Defaults to False.
         lenMin (int, optional): Minimun Lenght. Defaults to 0.
 
