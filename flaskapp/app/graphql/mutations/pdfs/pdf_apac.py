@@ -19,7 +19,7 @@ template_directory = "./graphql/mutations/pdfs/pdfs_templates/apac.pdf"
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
 
-def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, document_chart_number:int=None, patient_adress_city_IBGEcode:int=None, procedure_justification_description:str=None, prodedure_justification_main_cid10:str=None, prodedure_justification_sec_cid10:str=None, prodedure_justification_associated_cause_cid10:str=None, prodedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitant_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None):
+def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, document_chart_number:int=None, patient_adress_city_IBGEcode:int=None, procedure_justification_description:str=None, prodedure_justification_main_cid10:str=None, prodedure_justification_sec_cid10:str=None, prodedure_justification_associated_cause_cid10:str=None, prodedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -66,6 +66,7 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             c.setFont('Roboto-Mono', 11)
             c = global_functions.add_oneline_intnumber(can=c, number=establishment_exec_cnes, pos=(450, 28), campName='Establishment Exec CNES', lenMax=7, lenMin=7,valueMin=0, valueMax=99999999, interval=' ')
             if type(c) == type(Response()): return c
+            
 
 
             c.setFont('Roboto-Mono', 9)
@@ -121,7 +122,9 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = global_functions.add_morelines_text(can=c, text=prodedure_justification_comments, initial_pos=(36, 318), decrease_ypos= 10, campName='Procedura justification Comments', lenMax=776, charPerLines=97, lenMin=5, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_document_cns_cpf_rg(can=c, document=prof_solicitant_document, pos_square_cpf=(103, 180), pos_square_cns=(51,180), pos_cns=(151, 181), pos_cpf=(151, 181),campName='Professional Solicitant Document', interval='  ',nullable=True)
+            c = global_functions.add_document_cns_cpf_rg(can=c, document=prof_solicitor_document, pos_square_cpf=(103, 180), pos_square_cns=(51,180), pos_cns=(151, 181), pos_cpf=(151, 181),campName='Professional Solicitor Document', interval='  ',nullable=True)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_document_cns_cpf_rg(can=c, document=autorizaton_prof_document, pos_square_cpf=(103, 104), pos_square_cns=(51,104), pos_cns=(149, 105), pos_cpf=(151, 105),campName='Professional Authorizator Document', interval='  ',nullable=True)
             if type(c) == type(Response()): return c
         
         except:
@@ -222,7 +225,7 @@ if __name__ == "__main__":
         prodedure_justification_sec_cid10='A01', prodedure_justification_associated_cause_cid10='A45',
         prodedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', 
         establishment_exec_cnes=7654321,
-        prof_solicitant_document={'CPF':28445400070}, 
+        prof_solicitor_document={'CPF':28445400070}, 
         prof_solicitor_name='Profissional Solicit Name', 
         solicitation_datetime=datetime.datetime.now(),
         signature_datetime=datetime.datetime.now(),
@@ -230,7 +233,8 @@ if __name__ == "__main__":
         validity_period_end=datetime.datetime.now(),
         autorization_prof_name='Autorization Professional Name', 
         emission_org_code='Cod121234', 
-        autorizaton_prof_document={'CNS':928976954930007}, 
+        #autorizaton_prof_document={'CNS':928976954930007}, 
+        autorizaton_prof_document={'CPF':28445400070}, 
         autorizaton_datetime=datetime.datetime.now(),
         secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]
     )
