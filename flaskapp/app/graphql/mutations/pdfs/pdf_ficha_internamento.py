@@ -136,7 +136,7 @@ def add_patientName(canvas:canvas.Canvas, name:str):
         # verify if patient name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 64:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(27, 674))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(27, 674))
             return canvas
         else:
             return Response("Unable to add patient name because is longer than 64 characters or Smaller than 7", status=400)
@@ -160,7 +160,7 @@ def add_doctorName(canvas:canvas.Canvas, name:str):
         # verify if doctor name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 49:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(304, 195))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(304, 195))
             return canvas
         else:
             return Response("Unable to add doctor name because is longer than 49 characters or Smaller than 7", status=400)
@@ -186,7 +186,7 @@ def add_patientCNS(canvas:canvas.Canvas, cns:int):
             # format cns to add in document
             cns = str(cns)
             cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
-            canvas = global_functions.add_data(canvas=canvas, data=cns, pos=(393, 674))
+            canvas = global_functions.add_data(can=canvas, data=cns, pos=(393, 674))
             return canvas
         else:
             return Response("Unable to add patient cns because is a invalid CNS", status=400)
@@ -212,7 +212,7 @@ def add_doctorCNS(canvas:canvas.Canvas, cns:int):
             # format cns to add in document
             cns = str(cns)
             cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
-            canvas = global_functions.add_data(canvas=canvas, data=cns, pos=(304, 163))
+            canvas = global_functions.add_data(can=canvas, data=cns, pos=(304, 163))
             return canvas
         else:
             return Response("Unable to add doctor cns because is a invalid CNS", status=400)
@@ -235,7 +235,7 @@ def add_doctorCRM(canvas:canvas.Canvas, crm:str):
             return Response('Doctor CRM has to be str', status=400)
         if 11 > len(crm) or len(crm) > 13:
             return Response('CRM is not valid, use the format "CRM/UF 123456"', status=400)
-        canvas = global_functions.add_data(canvas=canvas, data=crm, pos=(304, 131))
+        canvas = global_functions.add_data(can=canvas, data=crm, pos=(304, 131))
         return canvas
     except:
         return Response('Unknow error while adding doctor crm', status=500)
@@ -255,7 +255,7 @@ def add_documentDatetime(canvas:canvas.Canvas, docDatetime:datetime.datetime):
             return Response('Document Datetime isnt a datetime.datetime object', status=400)
         # Format docDatetime to format DD/MM/YYYY H:M:S
         docDatetime = docDatetime.strftime("%d/%m/%Y %H:%M:%S")
-        canvas = global_functions.add_data(canvas=canvas, data=docDatetime, pos=(400, 740))
+        canvas = global_functions.add_data(can=canvas, data=docDatetime, pos=(400, 740))
         return canvas
     except:
         return Response('Unkown error while adding document datetime', status=500)
@@ -276,7 +276,7 @@ def add_patientBirthday(canvas:canvas.Canvas, birthday:datetime.datetime):
             return Response('Pacient birthday isnt a datetime.datetime object', status=400)
         # Format birthday to format DD/MM/YYYY
         birthday = birthday.strftime("%d/%m/%Y")
-        canvas = global_functions.add_data(canvas=canvas, data=birthday, pos=(27, 642))
+        canvas = global_functions.add_data(can=canvas, data=birthday, pos=(27, 642))
         return canvas
     except:
         return Response('Unkown error while adding patient birthday', status=500)
@@ -300,10 +300,10 @@ def add_patient_sex(canvas:canvas.Canvas, sex:str):
             return Response('Pacient sex is not valid, use F or M', status=400)
         else:
             if sex == 'M':
-                canvas = global_functions.add_square(canvas=canvas, pos=(117, 640))
+                canvas = global_functions.add_square(can=canvas, pos=(117, 640))
                 return canvas
             else:
-                canvas = global_functions.add_square(canvas=canvas, pos=(147, 640))
+                canvas = global_functions.add_square(can=canvas, pos=(147, 640))
                 return canvas
     except:
         return Response('Unkown error while adding patient sex', status=500)
@@ -324,7 +324,7 @@ def add_patientMotherName(canvas:canvas.Canvas, motherName:str):
             return Response('Mother name has to be str', status=400)
         # verify if patient motherName is smaller than 60 characters
         if 7 < len(motherName.strip()) <= 69:
-            canvas = global_functions.add_data(canvas=canvas, data=motherName, pos=(194, 642))
+            canvas = global_functions.add_data(can=canvas, data=motherName, pos=(194, 642))
             return canvas
         else:
             return Response("Unable to add patient motherName because is longer than 69 characters or Smaller than 7", status=400)
@@ -348,8 +348,8 @@ def add_patientDocument(canvas:canvas.Canvas, document:dict):
         if 'RG' in document.keys():
             #The only verificatinon is that rg is not greater than 16 characteres
             if global_functions.isRGvalid(document['RG']):
-                canvas = global_functions.add_data(canvas=canvas, data=str(document['RG']), pos=(92, 610))
-                canvas = global_functions.add_square(canvas=canvas, pos=(58, 608))
+                canvas = global_functions.add_data(can=canvas, data=str(document['RG']), pos=(92, 610))
+                canvas = global_functions.add_square(can=canvas, pos=(58, 608))
                 return canvas
             else:
                 return Response('Patient RG is not valid', status=400)
@@ -358,8 +358,8 @@ def add_patientDocument(canvas:canvas.Canvas, document:dict):
             cpf = str(document['CPF'])
             cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
             if global_functions.isCPFvalid(cpf):
-                canvas = global_functions.add_data(canvas=canvas, data=cpf, pos=(92, 610))
-                canvas = global_functions.add_square(canvas=canvas, pos=(24, 608))
+                canvas = global_functions.add_data(can=canvas, data=cpf, pos=(92, 610))
+                canvas = global_functions.add_square(can=canvas, pos=(24, 608))
                 return canvas
             else:
                 return Response('Patient CPF is not valid', status=400)
@@ -384,7 +384,7 @@ def add_patientAdress(canvas:canvas.Canvas, adress:str):
             return Response('Adress has to be str', status=400)
         adress = adress.strip()
         if 7 < len(adress) <= 63:
-            canvas = global_functions.add_data(canvas=canvas, data=adress, pos=(230, 610))
+            canvas = global_functions.add_data(can=canvas, data=adress, pos=(230, 610))
             return canvas
         else:
             return Response("Unable to add patient adress because is longer than 63 characters or smaller than 7", status=400)
@@ -412,7 +412,7 @@ def add_patientPhoneNumber(canvas:canvas.Canvas, phonenumber:int):
         else:
             #Format phone number
             phonenumber = '(' + phonenumber[:2] + ') ' + phonenumber[2:7] + '-' + phonenumber[7:]
-            canvas = global_functions.add_data(canvas=canvas, data=phonenumber, pos=(173, 547))
+            canvas = global_functions.add_data(can=canvas, data=phonenumber, pos=(173, 547))
             return canvas
     except:
         Response('Unknow error while adding patient Phone Number', status=500)
@@ -435,7 +435,7 @@ def add_patient_drug_allergies(canvas:canvas.Canvas, drug_allergies:str):
         #catching all drug allergies
         drug_allergies = drug_allergies.strip()
         if 5 < len(drug_allergies) <= 100:
-            canvas = global_functions.add_data(canvas=canvas, data=drug_allergies, pos=(26, 481))
+            canvas = global_functions.add_data(can=canvas, data=drug_allergies, pos=(26, 481))
             return canvas
         else:
             return Response('Drug allergies has to be more than 5 characters and less than 100', status=400)
@@ -458,7 +458,7 @@ def add_patient_comorbidities(canvas:canvas.Canvas, comorbidities:str):
         if type(comorbidities)!= type(str()):
             return Response('Comorbidities has to be a str', status=400)
         if 5 < len(comorbidities) <= 100:
-            canvas = global_functions.add_data(canvas=canvas, data=comorbidities, pos=(26, 449))
+            canvas = global_functions.add_data(can=canvas, data=comorbidities, pos=(26, 449))
             return canvas
         else:
             return Response('patient commorbidities has to be more than 5 characters and less than 100', status=400)
@@ -490,7 +490,7 @@ def add_current_illness_history(canvas:canvas.Canvas, current_illness_history:st
         yposition = 418
         while brokeLinexTimes >= 0:
             str_current_illness_history = current_illness_history[lastline:currentLine]
-            canvas = global_functions.add_data(canvas=canvas, data=str_current_illness_history, pos=(26, yposition))
+            canvas = global_functions.add_data(can=canvas, data=str_current_illness_history, pos=(26, yposition))
             lastline = currentLine
             currentLine += 100
             brokeLinexTimes -= 1
@@ -520,7 +520,7 @@ def add_initial_diagnostic_suspicion(canvas:canvas.Canvas, ids:str):
         if type(ids) != type(str()):
             return Response('Initial Diagnostic Suspicion has do be string', status=400)
         if 5 < len(ids) < 100:
-            canvas = global_functions.add_data(canvas=canvas, data=ids, pos=(26, 244))
+            canvas = global_functions.add_data(can=canvas, data=ids, pos=(26, 244))
             return canvas
         return Response('inital diagnostic supicion has to be more than 5 characters and less than 100', status=400)
     except:
@@ -544,7 +544,7 @@ def add_patient_adressNumber(canvas:canvas.Canvas, adressNumber:int):
         if len(adressNumber) > 6:
             return Response('Adress Number is too long, theres be until 6 digits', status=400)
         else:
-            canvas = global_functions.add_data(canvas=canvas, data=adressNumber, pos=(24, 580))
+            canvas = global_functions.add_data(can=canvas, data=adressNumber, pos=(24, 580))
             return canvas
     except:
         return Response('Unknow error while adding patient Adress Number', status=500)
@@ -566,7 +566,7 @@ def add_patient_adressNeigh(canvas:canvas.Canvas, adressNeigh:str):
         if len(adressNeigh) > 31 or len(adressNeigh) < 4:
             return Response('patient neighborhood has to be at least 4 character and no more than 31 character long', status=400)
         else:
-            canvas = global_functions.add_data(canvas=canvas, data=adressNeigh, pos=(66, 580))
+            canvas = global_functions.add_data(can=canvas, data=adressNeigh, pos=(66, 580))
             return canvas
     except:
         return Response('Unknow error while adding patient Adress neighborhood', status=500)
@@ -588,7 +588,7 @@ def add_patientAdressCity(canvas:canvas.Canvas, adressCity:str):
         if len(adressCity) > 34 or len(adressCity) < 4:
             return Response('patient city has to be more than 4 characters and less than 34', status=400)
         else:
-            canvas = global_functions.add_data(canvas=canvas, data=adressCity, pos=(243, 580))
+            canvas = global_functions.add_data(can=canvas, data=adressCity, pos=(243, 580))
             return canvas
     except:
         return Response('Unknow error while adding patient Adress City', status=500)
@@ -610,7 +610,7 @@ def add_patientAdressUF(canvas:canvas.Canvas, adressUF:str):
         
         adressUF = adressUF.upper()
         if global_functions.ufExists(uf=adressUF):
-            canvas = global_functions.add_data(canvas=canvas, data=adressUF, pos=(443, 580))
+            canvas = global_functions.add_data(can=canvas, data=adressUF, pos=(443, 580))
             return canvas
         else:      
             return Response('Patient Adress UF not exists in Brazil', status=400) 
@@ -637,7 +637,7 @@ def add_patientAdressCEP(canvas:canvas.Canvas, adressCEP:int):
         else:
             #format CEP
             adressCEP = adressCEP[:5] + '-' + adressCEP[5:]
-            canvas = global_functions.add_data(canvas=canvas, data=adressCEP, pos=(483, 580))
+            canvas = global_functions.add_data(can=canvas, data=adressCEP, pos=(483, 580))
             return canvas
     except:
         return Response('Unknow error while adding patient Adress CEP', status=500)
@@ -660,7 +660,7 @@ def add_patientNationality(canvas:canvas.Canvas, nationality:str):
         if len(nationality) > 25 or len(nationality) < 3:
             return Response('patient nationality has to be more than 2 characters and less than 26 characters', status=400)
         else:
-            canvas = global_functions.add_data(canvas=canvas, data=nationality, pos=(27, 547))
+            canvas = global_functions.add_data(can=canvas, data=nationality, pos=(27, 547))
             return canvas
     except:
         return Response('Unknow error while adding patient nationality', status=500)
@@ -683,7 +683,7 @@ def add_patient_estimateWeight(canvas:canvas.Canvas, estimateWeight:float):
         if len(estimateWeight) > 6:
             return Response('Invalid estimate weight, is too high', status=400)
         else:
-            canvas = global_functions.add_data(canvas=canvas, data=estimateWeight, pos=(507, 547))
+            canvas = global_functions.add_data(can=canvas, data=estimateWeight, pos=(507, 547))
             return canvas
     except:
         return Response('Unknow error while adding patient estimate weight', status=500)
@@ -703,9 +703,9 @@ def add_has_additional_healthInsurance(canvas:canvas.Canvas, has_additional_heal
         if type(has_additional_healthInsurance) != type(bool()):
             return Response('Patient has additional healthInsurance has to be bool', status=400)
         if has_additional_healthInsurance:
-            canvas = global_functions.add_square(canvas=canvas, pos=(419, 544))
+            canvas = global_functions.add_square(can=canvas, pos=(419, 544))
         else:
-            canvas = global_functions.add_square(canvas=canvas, pos=(380, 544))
+            canvas = global_functions.add_square(can=canvas, pos=(380, 544))
         return canvas
     except:
         return Response('Unknow error while adding has additional health insurance', status=500)

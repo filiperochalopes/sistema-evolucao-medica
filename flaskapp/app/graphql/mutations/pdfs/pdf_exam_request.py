@@ -117,7 +117,7 @@ def add_patientName(canvas:canvas.Canvas, name:str):
         if 7 < len(name) <= 70:
             ypos = 775
             for x in range(pags_quant):
-                canvas = global_functions.add_data(canvas=canvas, data=name, pos=(7, ypos))
+                canvas = global_functions.add_data(can=canvas, data=name, pos=(7, ypos))
                 ypos -= 280
             return canvas
         else:
@@ -144,7 +144,7 @@ def add_prof_solicitor(canvas:canvas.Canvas, prof:str):
         if 7 < len(prof) <= 29:
             ypos = 595
             for x in range(pags_quant):
-                canvas = global_functions.add_data(canvas=canvas, data=prof, pos=(7, ypos))
+                canvas = global_functions.add_data(can=canvas, data=prof, pos=(7, ypos))
                 ypos -= 280
             return canvas
         else:
@@ -171,7 +171,7 @@ def add_prof_authorized(canvas:canvas.Canvas, prof:str):
         if 7 < len(prof) <= 29:
             ypos = 595
             for x in range(pags_quant):
-                canvas = global_functions.add_data(canvas=canvas, data=prof, pos=(174, ypos))
+                canvas = global_functions.add_data(can=canvas, data=prof, pos=(174, ypos))
                 ypos -= 280
             return canvas
         else:
@@ -198,7 +198,7 @@ def add_document_pacient_name(canvas:canvas.Canvas, name:str):
         if 7 < len(name) <= 46:
             ypos = 605
             for x in range(pags_quant):
-                canvas = global_functions.add_data(canvas=canvas, data=name, pos=(340, ypos))
+                canvas = global_functions.add_data(can=canvas, data=name, pos=(340, ypos))
                 ypos -= 280
             return canvas
         else:
@@ -236,7 +236,7 @@ def add_exams(canvas:canvas.Canvas, exams:str):
         for x in range(pags_quant):
             while brokeLinexTimes >= 0:
                 str_exams = exams[lastline:currentLine]
-                canvas = global_functions.add_data(canvas=canvas, data=str_exams, pos=(7, yposition))
+                canvas = global_functions.add_data(can=canvas, data=str_exams, pos=(7, yposition))
                 lastline = currentLine
                 currentLine += charByLine
                 brokeLinexTimes -= 1
@@ -276,7 +276,7 @@ def add_patient_cns(canvas:canvas.Canvas, cns:int):
             cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
             ypos = 765
             for x in range(pags_quant):
-                canvas = global_functions.add_data(canvas=canvas, data=cns, pos=(450, ypos))
+                canvas = global_functions.add_data(can=canvas, data=cns, pos=(450, ypos))
                 ypos -= 280
             return canvas
         else:
@@ -302,7 +302,7 @@ def add_patient_birthday(canvas:canvas.Canvas, birthday:datetime.datetime):
         birthday = str(birthday.day) + '/' + str(birthday.month) + '/' + str(birthday.year)
         ypos = 784
         for x in range(pags_quant):
-            canvas = global_functions.add_data(canvas=canvas, data=birthday, pos=(441, ypos))
+            canvas = global_functions.add_data(can=canvas, data=birthday, pos=(441, ypos))
             ypos -= 280
         return canvas
     except:
@@ -326,7 +326,7 @@ def add_solicitation_datetime(canvas:canvas.Canvas, solicit:datetime.datetime):
         solicit = str(solicit.day) + '/' + str(solicit.month) + '/' + str(solicit.year)
         ypos = 572
         for x in range(pags_quant):
-            canvas = global_functions.add_data(canvas=canvas, data=solicit, pos=(30, ypos))
+            canvas = global_functions.add_data(can=canvas, data=solicit, pos=(30, ypos))
             ypos -= 280
         return canvas
     except:
@@ -350,7 +350,7 @@ def add_autorization_datetime(canvas:canvas.Canvas, autori:datetime.datetime):
         autori = str(autori.day) + '/' + str(autori.month) + '/' + str(autori.year)
         ypos = 572
         for x in range(pags_quant):
-            canvas = global_functions.add_data(canvas=canvas, data=autori, pos=(195, ypos))
+            canvas = global_functions.add_data(can=canvas, data=autori, pos=(195, ypos))
             ypos -= 280
         return canvas
     except:
@@ -374,7 +374,7 @@ def add_document_pacient_date(canvas:canvas.Canvas, date:datetime.datetime):
         date = str(date.day) + '/' + str(date.month) + '/' + str(date.year)
         ypos = 572
         for x in range(pags_quant):
-            canvas = global_functions.add_data(canvas=canvas, data=date, pos=(362, ypos))
+            canvas = global_functions.add_data(can=canvas, data=date, pos=(362, ypos))
             ypos -= 280
         return canvas
     except:
@@ -404,12 +404,12 @@ def add_patient_adress(canvas:canvas.Canvas, adress:str):
             yposition = 734
             while brokeLinexTimes >= 0:
                 str_adress = adress[lastline:currentLine]
-                canvas = global_functions.add_data(canvas=canvas, data=str_adress, pos=(7, yposition))
+                canvas = global_functions.add_data(can=canvas, data=str_adress, pos=(7, yposition))
                 if pags_quant == 2:
-                    canvas = global_functions.add_data(canvas=canvas, data=str_adress, pos=(7, yposition - 280))
+                    canvas = global_functions.add_data(can=canvas, data=str_adress, pos=(7, yposition - 280))
                 elif pags_quant == 3:
-                    canvas = global_functions.add_data(canvas=canvas, data=str_adress, pos=(7, yposition - 280))
-                    canvas = global_functions.add_data(canvas=canvas, data=str_adress, pos=(7, yposition - 560))
+                    canvas = global_functions.add_data(can=canvas, data=str_adress, pos=(7, yposition - 280))
+                    canvas = global_functions.add_data(can=canvas, data=str_adress, pos=(7, yposition - 560))
                 lastline = currentLine
                 currentLine += charByLine
                 brokeLinexTimes -= 1
@@ -450,12 +450,12 @@ def add_solicitation_reason(canvas:canvas.Canvas, reason:str):
             yposition = 690
             while brokeLinexTimes >= 0:
                 str_reason = reason[lastline:currentLine]
-                canvas = global_functions.add_data(canvas=canvas, data=str_reason, pos=(7, yposition))
+                canvas = global_functions.add_data(can=canvas, data=str_reason, pos=(7, yposition))
                 if pags_quant == 2:
-                    canvas = global_functions.add_data(canvas=canvas, data=str_reason, pos=(7, yposition - 280))
+                    canvas = global_functions.add_data(can=canvas, data=str_reason, pos=(7, yposition - 280))
                 if pags_quant == 3:
-                    canvas = global_functions.add_data(canvas=canvas, data=str_reason, pos=(7, yposition - 280))
-                    canvas = global_functions.add_data(canvas=canvas, data=str_reason, pos=(7, yposition - 560))
+                    canvas = global_functions.add_data(can=canvas, data=str_reason, pos=(7, yposition - 280))
+                    canvas = global_functions.add_data(can=canvas, data=str_reason, pos=(7, yposition - 560))
                 lastline = currentLine
                 currentLine += charByLine
                 brokeLinexTimes -= 1

@@ -107,7 +107,7 @@ def add_patientName(canvas:canvas.Canvas, name:str):
         # verify if patient name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 64:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(27, 674))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(27, 674))
             return canvas
         else:
             return Response("Unable to add patient name because is longer than 64 characters or Smaller than 7", status=400)
@@ -131,7 +131,7 @@ def add_doctorName(canvas:canvas.Canvas, name:str):
         # verify if doctor name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 49:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(304, 195))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(304, 195))
             return canvas
         else:
             return Response("Unable to add doctor name because is longer than 49 characters or Smaller than 7", status=400)
@@ -157,7 +157,7 @@ def add_patientCNS(canvas:canvas.Canvas, cns:int):
             # format cns to add in document
             cns = str(cns)
             cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
-            canvas = global_functions.add_data(canvas=canvas, data=cns, pos=(393, 674))
+            canvas = global_functions.add_data(can=canvas, data=cns, pos=(393, 674))
             return canvas
         else:
             return Response("Unable to add patient cns because is a invalid CNS", status=400)
@@ -183,7 +183,7 @@ def add_doctorCNS(canvas:canvas.Canvas, cns:int):
             # format cns to add in document
             cns = str(cns)
             cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
-            canvas = global_functions.add_data(canvas=canvas, data=cns, pos=(304, 163))
+            canvas = global_functions.add_data(can=canvas, data=cns, pos=(304, 163))
             return canvas
         else:
             return Response("Unable to add doctor cns because is a invalid CNS", status=400)
@@ -206,7 +206,7 @@ def add_doctorCRM(canvas:canvas.Canvas, crm:str):
             return Response('Doctor CRM has to be str', status=400)
         if 11 > len(crm) or len(crm) > 13:
             return Response('CRM is not valid, use the format "CRM/UF 123456"', status=400)
-        canvas = global_functions.add_data(canvas=canvas, data=crm, pos=(304, 131))
+        canvas = global_functions.add_data(can=canvas, data=crm, pos=(304, 131))
         return canvas
     except:
         return Response('Unknow error while adding doctor crm', status=500)
@@ -227,7 +227,7 @@ def add_documentDatetime(canvas:canvas.Canvas, docDatetime:datetime.datetime):
         # Format docDatetime to format DD/MM/YYYY H:M:S
         docDatetime = docDatetime.strftime("%d/%m/%Y %H:%M:%S")
 
-        canvas = global_functions.add_data(canvas=canvas, data=docDatetime, pos=(410, 740))
+        canvas = global_functions.add_data(can=canvas, data=docDatetime, pos=(410, 740))
         return canvas
     except:
         return Response('Unkown error while adding document datetime', status=500)
@@ -248,7 +248,7 @@ def add_patientBirthday(canvas:canvas.Canvas, birthday:datetime.datetime):
             return Response('Pacient birthday isnt a datetime.datetime object', status=400)
         # Format birthday to format DD/MM/YYYY
         birthday = str(birthday.day) + '/' + str(birthday.month) + '/' + str(birthday.year)
-        canvas = global_functions.add_data(canvas=canvas, data=birthday, pos=(27, 642))
+        canvas = global_functions.add_data(can=canvas, data=birthday, pos=(27, 642))
         return canvas
     except:
         return Response('Unkown error while adding patient birthday', status=500)
@@ -272,10 +272,10 @@ def add_patient_sex(canvas:canvas.Canvas, sex:str):
             return Response('Pacient sex is not valid, use F or M', status=400)
         else:
             if sex == 'M':
-                canvas = global_functions.add_square(canvas=canvas, pos=(117, 640))
+                canvas = global_functions.add_square(can=canvas, pos=(117, 640))
                 return canvas
             else:
-                canvas = global_functions.add_square(canvas=canvas, pos=(147, 640))
+                canvas = global_functions.add_square(can=canvas, pos=(147, 640))
                 return canvas
     except:
         return Response('Unkown error while adding patient sex', status=500)
@@ -296,7 +296,7 @@ def add_patientMotherName(canvas:canvas.Canvas, motherName:str):
             return Response('Mother name has to be str', status=400)
         # verify if patient motherName is smaller than 60 characters
         if 7 < len(motherName.strip()) <= 69:
-            canvas = global_functions.add_data(canvas=canvas, data=motherName, pos=(194, 642))
+            canvas = global_functions.add_data(can=canvas, data=motherName, pos=(194, 642))
             return canvas
         else:
             return Response("Unable to add patient motherName because is longer than 69 characters or Smaller than 7", status=400)
@@ -320,8 +320,8 @@ def add_patientDocument(canvas:canvas.Canvas, document:dict):
         if 'RG' in document.keys():
             #The only verificatinon is that rg is not greater than 16 characteres
             if global_functions.isRGvalid(document['RG']):
-                canvas = global_functions.add_data(canvas=canvas, data=str(document['RG']), pos=(92, 610))
-                canvas = global_functions.add_square(canvas=canvas, pos=(58, 608))
+                canvas = global_functions.add_data(can=canvas, data=str(document['RG']), pos=(92, 610))
+                canvas = global_functions.add_square(can=canvas, pos=(58, 608))
                 return canvas
             else:
                 return Response('Patient RG is not valid', status=400)
@@ -330,8 +330,8 @@ def add_patientDocument(canvas:canvas.Canvas, document:dict):
             cpf = str(document['CPF'])
             cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
             if global_functions.isCPFvalid(cpf):
-                canvas = global_functions.add_data(canvas=canvas, data=cpf, pos=(92, 610))
-                canvas = global_functions.add_square(canvas=canvas, pos=(24, 608))
+                canvas = global_functions.add_data(can=canvas, data=cpf, pos=(92, 610))
+                canvas = global_functions.add_square(can=canvas, pos=(24, 608))
                 return canvas
             else:
                 return Response('Patient CPF is not valid', status=400)
@@ -356,7 +356,7 @@ def add_patientAdress(canvas:canvas.Canvas, adress:str):
             return Response('Adress has to be str', status=400)
         adress = adress.strip()
         if 7 < len(adress) <= 63:
-            canvas = global_functions.add_data(canvas=canvas, data=adress, pos=(230, 610))
+            canvas = global_functions.add_data(can=canvas, data=adress, pos=(230, 610))
             return canvas
         else:
             return Response("Unable to add patient adress because is longer than 63 characters or smaller than 7", status=400)
@@ -388,7 +388,7 @@ def add_evolution(canvas:canvas.Canvas, evol:str):
         yposition = 540
         while brokeLinexTimes >= 0:
             str_evol = evol[lastline:currentLine]
-            canvas = global_functions.add_data(canvas=canvas, data=str_evol, pos=(26, yposition))
+            canvas = global_functions.add_data(can=canvas, data=str_evol, pos=(26, yposition))
             lastline = currentLine
             currentLine += 100
             brokeLinexTimes -= 1
@@ -428,7 +428,7 @@ def add_orientations(canvas:canvas.Canvas, orientations:str):
         yposition = 312
         while brokeLinexTimes >= 0:
             str_orientations = orientations[lastline:currentLine]
-            canvas = global_functions.add_data(canvas=canvas, data=str_orientations, pos=(26, yposition))
+            canvas = global_functions.add_data(can=canvas, data=str_orientations, pos=(26, yposition))
             lastline = currentLine
             currentLine += 100
             brokeLinexTimes -= 1

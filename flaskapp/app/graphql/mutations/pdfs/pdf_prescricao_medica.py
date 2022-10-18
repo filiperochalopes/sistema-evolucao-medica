@@ -79,8 +79,8 @@ def add_patient_name(canvas:canvas.Canvas, name:str):
         # verify if patient name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 34:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(120, 505))
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(571, 505))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(120, 505))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(571, 505))
             return canvas
         else:
             return Response("Unable to add patient name because is longer than 34 characters or Smaller than 7", status=400)
@@ -105,8 +105,8 @@ def add_document_datetime(canvas:canvas.Canvas, date:datetime.datetime):
         date = str(date.day) + '.' + str(date.month) + '.' + str(date.year)
         interval = ' ' * 2
         date = date.replace('.', interval)
-        canvas = global_functions.add_data(canvas=canvas, data=date, pos=(294, 38))
-        canvas = global_functions.add_data(canvas=canvas, data=date, pos=(744, 38))
+        canvas = global_functions.add_data(can=canvas, data=date, pos=(294, 38))
+        canvas = global_functions.add_data(can=canvas, data=date, pos=(744, 38))
         return canvas
     except:
         return Response('Unkown error while adding document datetime', status=500)
@@ -166,14 +166,14 @@ def add_prescription(canvas:canvas.Canvas, prescription:list):
         dotQuant = 61 - len(medicine_name + amount)
         str_title = medicine_name + '.' * dotQuant + amount
         #Add medicinename and amount
-        canvas = global_functions.add_data(canvas=canvas, data=str_title, pos=(22, yposition))
-        canvas = global_functions.add_data(canvas=canvas, data=str_title, pos=(472, yposition))
+        canvas = global_functions.add_data(can=canvas, data=str_title, pos=(22, yposition))
+        canvas = global_functions.add_data(can=canvas, data=str_title, pos=(472, yposition))
         yposition -= 10
         # Making the line break whem has 61 charater in a line
         while brokeLinexTimes >= 0:
             str_use_mode = use_mode[lastline:currentLine]
-            canvas = global_functions.add_data(canvas=canvas, data=str_use_mode, pos=(22, yposition))
-            canvas = global_functions.add_data(canvas=canvas, data=str_use_mode, pos=(472, yposition))
+            canvas = global_functions.add_data(can=canvas, data=str_use_mode, pos=(22, yposition))
+            canvas = global_functions.add_data(can=canvas, data=str_use_mode, pos=(472, yposition))
             lastline = currentLine
             currentLine += charByLine
             brokeLinexTimes -= 1

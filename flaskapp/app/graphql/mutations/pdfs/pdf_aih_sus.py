@@ -196,7 +196,7 @@ def add_establishment_solitc_name(canvas:canvas.Canvas, name:str):
         # verify if Solicitate Establishment name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 82:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(25, 750))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(25, 750))
             return canvas
         else:
             return Response("Unable to add Solicitate Establishment name because is longer than 82 characters or Smaller than 7", status=400)
@@ -220,7 +220,7 @@ def add_patient_ethnicity(canvas:canvas.Canvas, ethnicity:str):
         # verify if Patient ethnicity is smaller than 60 characters
         ethnicity = str(ethnicity)
         if 4 < len(ethnicity.strip()) <= 11:
-            canvas = global_functions.add_data(canvas=canvas, data=ethnicity, pos=(510, 658))
+            canvas = global_functions.add_data(can=canvas, data=ethnicity, pos=(510, 658))
             return canvas
         else:
             return Response("Unable to add Patient ethnicity because is longer than 11 characters or Smaller than 5", status=400)
@@ -247,7 +247,7 @@ def add_establishment_solitc_cnes(canvas:canvas.Canvas, cnes:int):
             # Add empty spaces interval between averu character
             interval = ' ' * 2
             cnes = interval.join(cnes)
-            canvas = global_functions.add_data(canvas=canvas, data=cnes, pos=(470, 750))
+            canvas = global_functions.add_data(can=canvas, data=cnes, pos=(470, 750))
             return canvas
         return Response('unable to add establshment CNES because is a invalid CNES', status=400)
     except:
@@ -270,7 +270,7 @@ def add_establishment_exec_name(canvas:canvas.Canvas, name:str):
         # verify if Exec Establishment name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 82:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(25, 726))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(25, 726))
             return canvas
         else:
             return Response("Unable to add Exec Establishment name because is longer than 82 characters or Smaller than 7", status=400)
@@ -297,7 +297,7 @@ def add_establishment_exec_cnes(canvas:canvas.Canvas, cnes:int):
             # Add empty spaces interval between averu character
             interval = ' ' * 2
             cnes = interval.join(cnes)
-            canvas = global_functions.add_data(canvas=canvas, data=cnes, pos=(470, 726))
+            canvas = global_functions.add_data(can=canvas, data=cnes, pos=(470, 726))
             return canvas
         return Response('unable to add Establishment Exec Cnes because is a invalid CNES', status=400)
     except:
@@ -319,7 +319,7 @@ def add_patient_name(canvas:canvas.Canvas, name:str):
         # verify if patient name is smaller than 60 characters
         name = str(name)
         if 7 < len(name.strip()) <= 79:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(25, 683))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(25, 683))
             return canvas
         else:
             return Response("Unable to add patient name because is longer than 79 characters or Smaller than 7", status=400)
@@ -343,7 +343,7 @@ def add_prof_solicitant_name(canvas:canvas.Canvas, name:str):
         # verify if Professional solitic name is smaller than 49 characters
         name = str(name)
         if 7 < len(name.strip()) <= 48:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(25, 222))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(25, 222))
             return canvas
         else:
             return Response("Unable to add Professional solitic name because is longer than 48 characters or Smaller than 7", status=400)
@@ -367,7 +367,7 @@ def add_autorization_prof_name(canvas:canvas.Canvas, name:str):
         # verify if Professional autorizator name is smaller than 49 characters
         name = str(name)
         if 7 < len(name.strip()) <= 48:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(25, 93))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(25, 93))
             return canvas
         else:
             return Response("Unable to add Professional autorizator name because is longer than 48 characters or Smaller than 7", status=400)
@@ -395,7 +395,7 @@ def add_patient_cns(canvas:canvas.Canvas, cns:int):
             # Add empty spaces interval between averu character
             interval = ' '  * 2
             cns = interval.join(cns)
-            canvas = global_functions.add_data(canvas=canvas, data=cns, pos=(28, 658))
+            canvas = global_functions.add_data(can=canvas, data=cns, pos=(28, 658))
 
             return canvas
         else:
@@ -421,7 +421,7 @@ def add_patient_birthday(canvas:canvas.Canvas, birthday:datetime.datetime):
         date = str(birthday.day) + '.' + str(birthday.month) + '.' + str(birthday.year)
         interval = ' ' * 2
         date = date.replace('.', interval)
-        canvas = global_functions.add_data(canvas=canvas, data=date, pos=(312, 658))
+        canvas = global_functions.add_data(can=canvas, data=date, pos=(312, 658))
         return canvas
     except:
         return Response('Unkown error while adding patient birthday', status=500)
@@ -444,7 +444,7 @@ def add_solicitation_datetime(canvas:canvas.Canvas, solitDate:datetime.datetime)
         date = str(solitDate.day) + '.' + str(solitDate.month) + '.' + str(solitDate.year)
         interval = ' ' * 2
         date = date.replace('.', interval)
-        canvas = global_functions.add_data(canvas=canvas, data=date, pos=(300, 222))
+        canvas = global_functions.add_data(can=canvas, data=date, pos=(300, 222))
         return canvas
     except:
         return Response('Unkown error while adding solitication date', status=500)
@@ -467,7 +467,7 @@ def add_autorizaton_datetime(canvas:canvas.Canvas, authDate:datetime.datetime):
         date = str(authDate.day) + '.' + str(authDate.month) + '.' + str(authDate.year)
         interval = ' ' * 2
         date = date.replace('.', interval)
-        canvas = global_functions.add_data(canvas=canvas, data=date, pos=(30, 30))
+        canvas = global_functions.add_data(can=canvas, data=date, pos=(30, 30))
         return canvas
     except:
         return Response('Unkown error while adding autorization date', status=500)
@@ -491,10 +491,10 @@ def add_patient_sex(canvas:canvas.Canvas, sex:str):
             return Response('Pacient sex is not valid, use F or M', status=400)
         else:
             if sex == 'M':
-                canvas = global_functions.add_square(canvas=canvas, pos=(415, 657), size=(8, 9))
+                canvas = global_functions.add_square(can=canvas, pos=(415, 657), size=(8, 9))
                 return canvas
             else:
-                canvas = global_functions.add_square(canvas=canvas, pos=(468, 657), size=(8, 9))
+                canvas = global_functions.add_square(can=canvas, pos=(468, 657), size=(8, 9))
                 return canvas
     except:
         return Response('Unkown error while adding patient sex', status=500)
@@ -516,7 +516,7 @@ def add_patient_mother_name(canvas:canvas.Canvas, motherName:str):
         # verify if patient motherName is smaller than 60 characters
         motherName = motherName.strip()
         if 7 < len(motherName) <= 70:
-            canvas = global_functions.add_data(canvas=canvas, data=motherName, pos=(25, 636))
+            canvas = global_functions.add_data(can=canvas, data=motherName, pos=(25, 636))
             return canvas
         else:
             return Response("Unable to add patient motherName because is longer than 70 characters or Smaller than 7", status=400)
@@ -540,7 +540,7 @@ def add_patient_responsible_name(canvas:canvas.Canvas, name:str):
         # verify if patient responsible name is smaller than 60 characters
         name = name.strip()
         if 7 < len(name) <= 70:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(25, 612))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(25, 612))
             return canvas
         else:
             return Response("Unable to add responsible name because is longer than 70 characters or Smaller than 7", status=400)
@@ -564,7 +564,7 @@ def add_emission_org_code(canvas:canvas.Canvas, code:str):
         # verify if emission_org_code is smaller than 60 characters
         code = code.strip()
         if 2 < len(code) <= 17:
-            canvas = global_functions.add_data(canvas=canvas, data=code, pos=(292, 93))
+            canvas = global_functions.add_data(can=canvas, data=code, pos=(292, 93))
             return canvas
         else:
             return Response("Unable to add emission org code( because is longer than 17 characters or Smaller than 2", status=400)
@@ -586,7 +586,7 @@ def add_patient_adress(canvas:canvas.Canvas, adress:str):
         if type(adress)!= type(str()):
             return Response('Adress has to be str', status=400)
         if 7 < len(adress) <= 101:
-            canvas = global_functions.add_data(canvas=canvas, data=adress, pos=(25, 593))
+            canvas = global_functions.add_data(can=canvas, data=adress, pos=(25, 593))
             return canvas
         else:
             return Response("Unable to add patient adress because is longer than 101 characters or smaller than 7", status=400)
@@ -611,7 +611,7 @@ def add_patient_adressCity(canvas:canvas.Canvas, city:str):
         if 7 > len(city) or len(city) > 61:
             return Response('Unable to add patient city is longer than 61 characters or smaller than 7', status=400)
         else:
-            canvas = global_functions.add_data(canvas=canvas, data=city, pos=(25, 566))
+            canvas = global_functions.add_data(can=canvas, data=city, pos=(25, 566))
             return canvas
     except:
         return Response('Unknow error while adding patient Adress City', status=500)
@@ -634,7 +634,7 @@ def add_patient_adressCity_ibgeCode(canvas:canvas.Canvas, ibgeCode:int):
         if len(ibgeCode) != 7:
             return Response('Patient adress city Igbe code do not have 7 digits', status=400) 
         else:
-            canvas = global_functions.add_data(canvas=canvas, data=ibgeCode, pos=(388, 566))
+            canvas = global_functions.add_data(can=canvas, data=ibgeCode, pos=(388, 566))
             return canvas
     except:
         return Response('Unknow error while adding Patient adress city Igbe code', status=500)
@@ -658,7 +658,7 @@ def add_patient_adressUF(canvas:canvas.Canvas, uf:str):
             # Add empty spaces interval between averu character
             interval = ' ' * 2
             uf = interval.join(uf)
-            canvas = global_functions.add_data(canvas=canvas, data=uf, pos=(450, 566))
+            canvas = global_functions.add_data(can=canvas, data=uf, pos=(450, 566))
             return canvas
         else:
             return Response('Patient Adress UF not exists in Brazil', status=400) 
@@ -686,7 +686,7 @@ def add_patient_adressCEP(canvas:canvas.Canvas, cep:int):
             # Add empty spaces interval between averu character
             interval = ' ' * 1
             cep = interval.join(cep)
-            canvas = global_functions.add_data(canvas=canvas, data=cep, pos=(482, 566))
+            canvas = global_functions.add_data(can=canvas, data=cep, pos=(482, 566))
 
             return canvas
     except:
@@ -711,7 +711,7 @@ def add_insurance_company_cnpj(canvas:canvas.Canvas, cnpj:int):
             # Add empty spaces interval between averu character
             interval = ' ' * 2
             cnpj = interval.join(cnpj)
-            canvas = global_functions.add_data(canvas=canvas, data=cnpj, pos=(168, 183))
+            canvas = global_functions.add_data(can=canvas, data=cnpj, pos=(168, 183))
             return canvas
         else:
             return Response('Insurance company cnpj is not valid', status=400) 
@@ -737,7 +737,7 @@ def add_company_cnpj(canvas:canvas.Canvas, cnpj:int):
             # Add empty spaces interval between averu character
             interval = ' ' * 2
             cnpj = interval.join(cnpj)
-            canvas = global_functions.add_data(canvas=canvas, data=cnpj, pos=(168, 156))
+            canvas = global_functions.add_data(can=canvas, data=cnpj, pos=(168, 156))
             return canvas
         else:
             return Response('Company cnpj is not valid', status=400) 
@@ -762,7 +762,7 @@ def add_company_cnae(canvas:canvas.Canvas, cnae:int):
         if len(cnae) == 7:
             #Format cnae to add in doc
             cnae = cnae[:2] + '.' + cnae[2:4] + '-' + cnae[4] + '-' + cnae[5:]
-            canvas = global_functions.add_data(canvas=canvas, data=cnae, pos=(434, 156))
+            canvas = global_functions.add_data(can=canvas, data=cnae, pos=(434, 156))
             return canvas
         else:
             return Response('Company cnae is longer than 7 digits', status=400) 
@@ -787,7 +787,7 @@ def add_company_cbor(canvas:canvas.Canvas, cbo:int):
         if len(cbo) == 6:
             #Format cbo to add in doc
             cbo = cbo[:5] + '-' + cbo[5:]
-            canvas = global_functions.add_data(canvas=canvas, data=cbo, pos=(529, 156))
+            canvas = global_functions.add_data(can=canvas, data=cbo, pos=(529, 156))
             return canvas
         else:
             return Response('Company cbo is longer than 6 digits, remeber to use CBO 2002 format', status=400) 
@@ -812,7 +812,7 @@ def add_chart_number(canvas:canvas.Canvas, number:int):
         if len(number) > 20:
             return Response('Chart number cannot has more than 20 digits', status=400) 
         else:
-            canvas = global_functions.add_data(canvas=canvas, data=number, pos=(466,683))
+            canvas = global_functions.add_data(can=canvas, data=number, pos=(466,683))
             return canvas
     except:
         return Response('Unknow error while adding Chart number', status=500)
@@ -836,7 +836,7 @@ def add_hospitalization_autorization_number(canvas:canvas.Canvas, number:int):
             return Response('Hospitalization autorizaton number cannot has more than 18 digits', status=400) 
         else:
             #Add the string centetred only this time
-            canvas = global_functions.add_centralized_data(canvas=canvas, data=number, pos=(480,66))
+            canvas = global_functions.add_centralized_data(can=canvas, data=number, pos=(480,66))
             return canvas
     except:
         return Response('Unknow error while adding Hospitalization autorizaton number', status=500)
@@ -867,7 +867,7 @@ def add_main_clinical_signs_symptoms(canvas:canvas.Canvas, symptoms:str):
         # Making the line break whem has 101 charater in a line
         while brokeLinexTimes >= 0:
             str_symptoms = symptoms[lastline:currentLine]
-            canvas = global_functions.add_data(canvas=canvas, data=str_symptoms, pos=(25, yposition))
+            canvas = global_functions.add_data(can=canvas, data=str_symptoms, pos=(25, yposition))
             lastline = currentLine
             currentLine += charByLine
             brokeLinexTimes -= 1
@@ -907,7 +907,7 @@ def add_conditions_justify_hospitalization(canvas:canvas.Canvas, conditions:str)
         # Making the line break whem has 101 charater in a line
         while brokeLinexTimes >= 0:
             str_conditions = conditions[lastline:currentLine]
-            canvas = global_functions.add_data(canvas=canvas, data=str_conditions, pos=(25, yposition))
+            canvas = global_functions.add_data(can=canvas, data=str_conditions, pos=(25, yposition))
             lastline = currentLine
             currentLine += charByLine
             brokeLinexTimes -= 1
@@ -947,7 +947,7 @@ def add_exam_results(canvas:canvas.Canvas, results:str):
         # Making the line break whem has 101 charater in a line
         while brokeLinexTimes >= 0:
             str_results = results[lastline:currentLine]
-            canvas = global_functions.add_data(canvas=canvas, data=str_results, pos=(25, yposition))
+            canvas = global_functions.add_data(can=canvas, data=str_results, pos=(25, yposition))
             lastline = currentLine
             currentLine += charByLine
             brokeLinexTimes -= 1
@@ -979,7 +979,7 @@ def add_initial_diagnostic(canvas:canvas.Canvas, diagnostic:str):
         # verify if patient diagnostic is smaller than 60 characters
         diagnostic = str(diagnostic).strip()
         if 4 < len(diagnostic) <= 44:
-            canvas = global_functions.add_data(canvas=canvas, data=diagnostic, pos=(25, 314))
+            canvas = global_functions.add_data(can=canvas, data=diagnostic, pos=(25, 314))
             return canvas
         else:
             return Response("Unable to add patient initial diagnostic because is longer than 44 characters or Smaller than 4", status=400)
@@ -1003,7 +1003,7 @@ def add_principalCid10(canvas:canvas.Canvas, cid10:str):
         # verify if patient cid10 is smaller than 5 characters
         cid10 = str(cid10).strip()
         if 2 < len(cid10) <= 4:
-            canvas = global_functions.add_data(canvas=canvas, data=cid10, pos=(306, 314))
+            canvas = global_functions.add_data(can=canvas, data=cid10, pos=(306, 314))
             return canvas
         else:
             return Response("Unable to add patient principal cid10 because is longer than 4 characters or Smaller than 3", status=400)
@@ -1027,7 +1027,7 @@ def add_secondary_cid10(canvas:canvas.Canvas, cid10:str):
         # verify if patient secondary cid10 is smaller than 5 characters
         cid10 = str(cid10).strip()
         if 2 < len(cid10) <= 4:
-            canvas = global_functions.add_data(canvas=canvas, data=cid10, pos=(406, 314))
+            canvas = global_functions.add_data(can=canvas, data=cid10, pos=(406, 314))
             return canvas
         else:
             return Response("Unable to add patient secondary cid10 because is longer than 4 characters or Smaller than 3", status=400)
@@ -1051,7 +1051,7 @@ def add_cid10_associated_causes(canvas:canvas.Canvas, cid10:str):
         # verify if Cid10 associated causes is smaller than 5 characters
         cid10 = str(cid10).strip()
         if 2 < len(cid10) <= 4:
-            canvas = global_functions.add_data(canvas=canvas, data=cid10, pos=(512, 314))
+            canvas = global_functions.add_data(can=canvas, data=cid10, pos=(512, 314))
             return canvas
         else:
             return Response("Unable to add Cid10 associated causes because is longer than 4 characters or Smaller than 3", status=400)
@@ -1075,7 +1075,7 @@ def add_insurance_company_series(canvas:canvas.Canvas, series:str):
         # verify if Insurance company series is longer than 13 characters
         series = str(series).strip()
         if len(series) <= 10:
-            canvas = global_functions.add_centralized_data(canvas=canvas, data=series, pos=(543, 183))
+            canvas = global_functions.add_centralized_data(can=canvas, data=series, pos=(543, 183))
             return canvas
         else:
             return Response("Unable to add Insurance company series because is longer than 10 characters", status=400)
@@ -1099,7 +1099,7 @@ def add_procedure_solicited(canvas:canvas.Canvas, procedure:str):
         # verify if patient procedure is smaller than 5 characters
         procedure = str(procedure).strip()
         if 5 < len(procedure) <= 65:
-            canvas = global_functions.add_data(canvas=canvas, data=procedure, pos=(25, 269))
+            canvas = global_functions.add_data(can=canvas, data=procedure, pos=(25, 269))
             return canvas
         else:
             return Response("Unable to add patient procedure solicited because is longer than 65 characters or Smaller than 5", status=400)
@@ -1126,7 +1126,7 @@ def add_procedure_code(canvas:canvas.Canvas, code:str):
             # Add empty spaces interval between averu character
             interval = ' ' * 2
             code = interval.join(code)
-            canvas = global_functions.add_data(canvas=canvas, data=code, pos=(404, 269))
+            canvas = global_functions.add_data(can=canvas, data=code, pos=(404, 269))
             return canvas
         else:
             return Response("Procedure code solicited dont have 10 characters", status=400)
@@ -1152,7 +1152,7 @@ def add_patient_mother_phonenumber(canvas:canvas.Canvas, number:int):
             # Add empty spaces interval between averu character
             interval = ' ' * 2
             number = interval.join(number)
-            canvas = global_functions.add_data(canvas=canvas, data=number, pos=(415, 631))
+            canvas = global_functions.add_data(can=canvas, data=number, pos=(415, 631))
 
             return canvas
         else:
@@ -1179,7 +1179,7 @@ def add_patient_responsible_phonenumber(canvas:canvas.Canvas, number:int):
             # Add empty spaces interval between averu character
             interval = ' ' * 2
             number = interval.join(number)
-            canvas = global_functions.add_data(canvas=canvas, data=number, pos=(415, 608))
+            canvas = global_functions.add_data(can=canvas, data=number, pos=(415, 608))
             return canvas
         else:
             return Response("responsible phone number solicited has to be 10 digits, do not add the 9 after DDD", status=400)
@@ -1201,7 +1201,7 @@ def add_insurance_company_ticket_number(canvas:canvas.Canvas, ticket:int):
             return Response('Insurance Company ticket number has to be int', status=400)
         ticket = str(ticket)
         if len(ticket) <= 16:
-            canvas = global_functions.add_centralized_data(canvas=canvas, data=ticket, pos=(465, 183))
+            canvas = global_functions.add_centralized_data(can=canvas, data=ticket, pos=(465, 183))
             return canvas
         else:
             return Response("Insurance company ticket has to be smaller than 16 digits", status=400)
@@ -1226,7 +1226,7 @@ def add_clinic(canvas:canvas.Canvas, name:str):
         # verify if clinic name is smaller than 5 characters
         name = str(name).strip()
         if 5 < len(name) <= 18:
-            canvas = global_functions.add_data(canvas=canvas, data=name, pos=(25, 246))
+            canvas = global_functions.add_data(can=canvas, data=name, pos=(25, 246))
             return canvas
         else:
             return Response("Unable to add Clinic because is longer than 18 characters or Smaller than 5", status=400)
@@ -1250,7 +1250,7 @@ def add_internation_carater(canvas:canvas.Canvas, carater:str):
         # verify if internation carater is smaller than 5 characters
         carater = str(carater).strip()
         if 5 < len(carater) <= 19:
-            canvas = global_functions.add_data(canvas=canvas, data=carater, pos=(128, 246))
+            canvas = global_functions.add_data(can=canvas, data=carater, pos=(128, 246))
             return canvas
         else:
             return Response("Unable to add internation carater because is longer than 19 characters or Smaller than 5", status=400)
@@ -1276,12 +1276,12 @@ def add_prof_solicitant_document(canvas:canvas.Canvas, document:dict):
             if type(document['CNS']) != type(int()):
                 return Response('Profissional solicitate value CNS has to be int', status=400)
             if global_functions.isCNSvalid(document['CNS']):
-                canvas = global_functions.add_square(canvas=canvas, pos=(247, 244))
+                canvas = global_functions.add_square(can=canvas, pos=(247, 244))
                 # Add empty spaces interval between averu character
                 interval = ' ' * 2
                 cns = str(document['CNS'])
                 cns = interval.join(cns)
-                canvas = global_functions.add_data(canvas=canvas, data=cns, pos=(335, 246))
+                canvas = global_functions.add_data(can=canvas, data=cns, pos=(335, 246))
                 return canvas
             else:
                 return Response('Profissional solicitate CNS is not valid', status=400)
@@ -1293,11 +1293,11 @@ def add_prof_solicitant_document(canvas:canvas.Canvas, document:dict):
             numbersCpf = str(cpf)
             cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
             if global_functions.isCPFvalid(cpf):
-                canvas = global_functions.add_square(canvas=canvas, pos=(290, 244))
+                canvas = global_functions.add_square(can=canvas, pos=(290, 244))
                 # Add empty spaces interval between averu character
                 interval = ' ' * 2
                 numbersCpf = interval.join(numbersCpf)
-                canvas = global_functions.add_data(canvas=canvas, data=numbersCpf, pos=(335, 246))
+                canvas = global_functions.add_data(can=canvas, data=numbersCpf, pos=(335, 246))
                 return canvas
             else:
                 return Response('Profissional solicitate CPF is not valid', status=400)
@@ -1325,12 +1325,12 @@ def add_autorizaton_prof_document(canvas:canvas.Canvas, document:dict):
             if type(document['CNS']) != type(int()):
                 return Response('Profissional autorizate value CNS has to be int', status=400)
             if global_functions.isCNSvalid(document['CNS']):
-                canvas = global_functions.add_square(canvas=canvas, pos=(41, 66))
+                canvas = global_functions.add_square(can=canvas, pos=(41, 66))
                 # Add empty spaces interval between averu character
                 interval = ' ' * 2
                 cns = str(document['CNS'])
                 cns = interval.join(cns)
-                canvas = global_functions.add_data(canvas=canvas, data=cns, pos=(146, 66))
+                canvas = global_functions.add_data(can=canvas, data=cns, pos=(146, 66))
                 return canvas
             else:
                 return Response('Profissional autorizate CNS is not valid', status=400)
@@ -1342,11 +1342,11 @@ def add_autorizaton_prof_document(canvas:canvas.Canvas, document:dict):
             numbersCpf = str(cpf)
             cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
             if global_functions.isCPFvalid(cpf):
-                canvas = global_functions.add_square(canvas=canvas, pos=(95, 66))
+                canvas = global_functions.add_square(can=canvas, pos=(95, 66))
                 # Add empty spaces interval between averu character
                 interval = ' ' * 2
                 numbersCpf = interval.join(numbersCpf)
-                canvas = global_functions.add_data(canvas=canvas, data=numbersCpf, pos=(146, 66))
+                canvas = global_functions.add_data(can=canvas, data=numbersCpf, pos=(146, 66))
                 return canvas
             else:
                 return Response('Profissional autorizate CPF is not valid', status=400)
@@ -1374,13 +1374,13 @@ def add_acident_type(canvas:canvas.Canvas, acident:str):
         acident = acident.lower()
         if acident in acidentTypes:
             if acident == 'traffic':
-                canvas = global_functions.add_square(canvas=canvas, pos=(38, 184))
+                canvas = global_functions.add_square(can=canvas, pos=(38, 184))
                 return canvas
             elif acident == 'work':
-                canvas = global_functions.add_square(canvas=canvas, pos=(38, 170))
+                canvas = global_functions.add_square(can=canvas, pos=(38, 170))
                 return canvas
             elif acident == 'work_path':
-                canvas = global_functions.add_square(canvas=canvas, pos=(38, 156))
+                canvas = global_functions.add_square(can=canvas, pos=(38, 156))
                 return canvas
             else:
                 return Response('Unknow error while searching Acident type', status=500)
@@ -1409,22 +1409,22 @@ def add_pension_status(canvas:canvas.Canvas, status:str):
         ypos = 131
         if status in statusTypes:
             if status == 'worker':
-                canvas = global_functions.add_square(canvas=canvas, pos=(33, ypos))
+                canvas = global_functions.add_square(can=canvas, pos=(33, ypos))
                 return canvas
             elif status == 'employer':
-                canvas = global_functions.add_square(canvas=canvas, pos=(124, ypos))
+                canvas = global_functions.add_square(can=canvas, pos=(124, ypos))
                 return canvas
             elif status == 'autonomous':
-                canvas = global_functions.add_square(canvas=canvas, pos=(219, ypos))
+                canvas = global_functions.add_square(can=canvas, pos=(219, ypos))
                 return canvas
             elif status == 'unemployed':
-                canvas = global_functions.add_square(canvas=canvas, pos=(305, ypos))
+                canvas = global_functions.add_square(can=canvas, pos=(305, ypos))
                 return canvas
             elif status == 'retired':
-                canvas = global_functions.add_square(canvas=canvas, pos=(408, ypos))
+                canvas = global_functions.add_square(can=canvas, pos=(408, ypos))
                 return canvas
             elif status == 'not_insured':
-                canvas = global_functions.add_square(canvas=canvas, pos=(500, ypos))
+                canvas = global_functions.add_square(can=canvas, pos=(500, ypos))
                 return canvas
             else:
                 return Response('Unknow error while searching pension status type', status=500)
