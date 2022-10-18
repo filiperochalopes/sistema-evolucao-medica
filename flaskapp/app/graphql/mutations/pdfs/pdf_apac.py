@@ -111,6 +111,12 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = global_functions.add_datetime(can=c, date=autorizaton_datetime, pos=(36, 68), campName='Authorization Datetime', hours=False,formated=True, nullable=True)
             if type(c) == type(Response()): return c
+            c = global_functions.add_datetime(can=c, date=signature_datetime, pos=(154, 68), campName='Signature Datetime', hours=False, interval='  ', formated=False, nullable=True)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_datetime(can=c, date=validity_period_start, pos=(402, 66), campName='Validity Period Start', hours=False, interval='  ', formated=False, nullable=True)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_datetime(can=c, date=validity_period_end, pos=(492, 66), campName='Validity Period End', hours=False, interval='  ', formated=False, nullable=True)
+            if type(c) == type(Response()): return c
         
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
@@ -163,6 +169,7 @@ if __name__ == "__main__":
         prof_solicitant_document={'CPF':28445400070}, 
         prof_solicitor_name='Profissional Solicit Name', 
         solicitation_datetime=datetime.datetime.now(),
+        signature_datetime=datetime.datetime.now(),
         validity_period_start=datetime.datetime.now(),
         validity_period_end=datetime.datetime.now(),
         autorization_prof_name='Autorization Professional Name', 
