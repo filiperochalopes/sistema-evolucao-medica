@@ -366,6 +366,22 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=Fa
 
 
 def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, square_size:tuple, campName:str, nullable:bool=False):
+    """Add sex square to canvas
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        sex (str): sex select
+        pos_male (tuple): male option position
+        pos_fem (tuple): female option position
+        square_size (tuple): square size
+        campName (str): camp name
+        nullable (bool, optional): can be null. Defaults to False.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """    
     try:
         if nullable:
             if sex == None:
