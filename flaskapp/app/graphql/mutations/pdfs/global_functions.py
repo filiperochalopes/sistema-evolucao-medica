@@ -128,7 +128,7 @@ def add_data(can:canvas.Canvas, data:str, pos:tuple):
     Returns:
         can(canvas.Canvas): canvas with all changes
         or
-        Response(flask.Response: with the error)
+        Response(flask.Response): with the error
     """
     try:
         can.drawString(pos[0], pos[1], data)
@@ -148,7 +148,7 @@ def add_square(canvas:canvas.Canvas, pos:tuple, size:tuple=(9, 9)):
     Returns:
         canvas(canvas.Canvas): canvas with all changes
         or
-        Response(flask.Response: with the error)
+        Response(flask.Response): with the error
     """    
     try:
         canvas.rect(x=pos[0], y=pos[1], width=size[0], height=size[1], fill=1)
@@ -168,7 +168,7 @@ def add_centralized_data(canvas:canvas.Canvas, data:str, pos:tuple):
     Returns:
         canvas(canvas.Canvas): canvas with all changes
         or
-        Response(flask.Response: with the error)
+        Response(flask.Response): with the error
     """
     try:
         canvas.drawCentredString(pos[0], pos[1], data)
@@ -186,7 +186,7 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str):
     Returns:
         None
         or
-        Response(flask.Response: with the error)
+        Response(flask.Response): with the error
     """ 
     try:
         outputFile = open(new_directory, 'wb')
@@ -205,8 +205,13 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
         pos (tuple): position in canvas
         campName (str): Camp name, this is used when return Responses
         lenMax (int): maximum text lenght
+        nullable (bool, optional): Data can me None. Defaults to False.
         lenMin (int, optional): Minimum text lenght. Defaults to 0.
-    """    
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """
     try:
         if nullable:
             if text == None:
@@ -242,6 +247,22 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
 
 
 def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, lenMax:int, nullable:bool=False, lenMin:int=0):
+    """Add one line number to canvas
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        number (int): number to add
+        pos (tuple): position in canvas
+        campName (str): camp name to Responses
+        lenMax (int): Maximum Lenght
+        nullable (bool, optional): Data can me None. Defaults to False.
+        lenMin (int, optional): Minimun Lenght. Defaults to 0.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """    
     try:
         if nullable:
             if number == None:
@@ -268,6 +289,80 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str
             return can
         else:
             return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)
+    except:
+        return Response(f'Unknow error while adding {campName}', status=500)
+
+
+def add_interval_to_data(data:str, interval:str):
+    """add interval to data
+
+    Args:
+        data (str): data
+        interval (str): interval to add betwaeen every char
+
+    Returns:
+        interval(str): data with the intervals add
+        or
+        Response(flask.Response): with the error
+    """    
+    if type(data) != type(str()):
+        return Response('The api has to use data in add interval as string, please check te function', status=500)
+    elif type(interval) != type(str()):
+        return Response('The api has to use interval in add interval as string, please check te function', status=500)
+    # Add nterval between data
+    return interval.join(data)
+
+
+def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=False, formatCns:bool=False, interval:str=''):
+    """Add cns to canvas
+
+    Args:
+        can (canvas.Canvas): canvas to add
+        cns (int): cns to add
+        pos (tuple): position in canvas
+        campName (str): camp nam
+        nullable (bool, optional): can be null. Defaults to False.
+        formatCns (bool, optional): format cns to xxx xxxx xxxx xxxx. Defaults to False.
+        interval (str, optional): interval to add between interval. Defaults to ''.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """    
+    try:
+        if nullable:
+            if cns == None:
+                return can
+        if type(cns) != type(int()):
+            return Response(f'{campName} has to be str', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos) != type(tuple()):
+            return Response(f'pos has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(formatCns) != type(bool()):
+            return Response(f'formatCns has to be bool', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
+
+        # Verify if the cns is valid
+        if isCNSvalid(cns):
+            cns = str(cns)
+            # Add interval selected
+            cns = add_interval_to_data(data=cns, interval=interval)
+            if type(cns) == type(Response()): return cns
+            if formatCns: 
+                cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
+            print('chegouaqui')
+            print(cns)
+            can = add_data(can=can, data=cns, pos=pos)
+            return can
+        else:
+            return Response(f"Unable to add {campName} because is a invalid CNS", status=400)
     except:
         return Response(f'Unknow error while adding {campName}', status=500)
 
