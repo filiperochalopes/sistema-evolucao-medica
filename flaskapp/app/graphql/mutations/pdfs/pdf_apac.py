@@ -187,6 +187,7 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list):
     except: 
         return Response('Unkown error while adding Secondaries Procedures', status=500)
 
+
 if __name__ == "__main__":
     import global_functions
     output = fill_pdf_apac(
