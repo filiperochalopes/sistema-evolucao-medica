@@ -85,7 +85,9 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = global_functions.add_UF(can=c, uf=patient_adressUF, pos=(443, 582), campName='Patient Adress UF', nullable=True, interval='  ')
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=procedure_justification_description, pos=(36, 346), campName='Procedure Justification Description', lenMax=55, lenMin=4, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=procedure_justification_description, pos=(36, 344), campName='Procedure Justification Description', lenMax=55, lenMin=4, nullable=True)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=prodedure_justification_main_cid10, pos=(352, 344), campName='Procedure Justification main CID10', lenMax=4, lenMin=3, nullable=True)
             if type(c) == type(Response()): return c
         
         except:
