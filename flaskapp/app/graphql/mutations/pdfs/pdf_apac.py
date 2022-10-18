@@ -19,7 +19,7 @@ template_directory = "./graphql/mutations/pdfs/pdfs_templates/apac.pdf"
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
 
-def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, document_chart_number:int=None, patient_adress_city_IBGEcode:int=None, procedure_justification_description:str=None, prodedure_justification_main_cid10:str=None, prodedure_justification_sec_cid10:str=None, prodedure_justification_associated_cause_cid10:str=None, prodedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitant_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None):
+def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, document_chart_number:int=None, patient_adress_city_IBGEcode:int=None, procedure_justification_description:str=None, prodedure_justification_main_cid10:str=None, prodedure_justification_sec_cid10:str=None, prodedure_justification_associated_cause_cid10:str=None, prodedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitant_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -117,6 +117,8 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = global_functions.add_datetime(can=c, date=validity_period_end, pos=(492, 66), campName='Validity Period End', hours=False, interval='  ', formated=False, nullable=True)
             if type(c) == type(Response()): return c
+            c = add_secondary_procedures(can=c, procedures=secondaries_procedures)
+            if type(c) == type(Response()): return c
         
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
@@ -137,6 +139,53 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
         return Response("Error while filling apac", status=500)
 
 
+def add_secondary_procedures(can:canvas.Canvas, procedures:list):
+    #verify if the type is list
+    try:
+        if type(procedures) != type(list()):
+            return Response('procedures has to be a list of dicts, like: [{"procedure_name":"Procedure Name", "procedure_code":"cod124235", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"another12", "quant":1}]', status=400)
+        necessaryKeys = ["procedure_name", "procedure_code", "quant"]
+        for proc in procedures:
+            #verify if the item in list is a dict
+            if type(proc) != type(dict()):
+                return Response('All itens in list has to be a dict', status=400)
+            #Verify if the necessary keys are in the dict
+            if 'procedure_name' not in proc.keys() or 'procedure_code' not in proc.keys() or "quant" not in proc.keys():
+                return Response('Some keys in dict is missing, dict has to have "procedure_name", "procedure_code", "quant"', status=400)
+            #Verify if the value in the dics is the needed
+            elif type(proc['procedure_name']) != type(str()) or type(proc['procedure_code']) != type(str()) or type(proc["quant"]) != type(int()):
+                return Response('The values in the keys "procedure_name", "procedure_code" has to be string and "quant" has to be int', status=400)
+        
+            #Verify if the dict has more keys than the needed
+            for key in proc.keys():
+                if key not in necessaryKeys:
+                    return Response('The dict can only have 3 keys "procedure_name", "procedure_code", "quant"', status=400)
+            
+        #Add to cnavas
+        cont = 1
+        namexpos = 220
+        codexpos = 36
+        quantxpos = 516
+        ypos = 495
+        reduceY = 26
+        #Add code fist with upper font
+        can.setFont('Roboto-Mono', 10)
+        for proc in procedures:
+            can = global_functions.add_oneline_text(can=can, text=proc['procedure_code'], pos=(codexpos, ypos), campName=f'{cont} Secondary Procedure Code', lenMax=10, lenMin=10, interval='  ')
+            if type(can) == type(Response()): return can
+            ypos -= reduceY
+
+        can.setFont('Roboto-Mono', 9)
+        ypos = 495
+        for proc in procedures:
+            can = global_functions.add_oneline_text(can=can, text=proc['procedure_name'], pos=(namexpos, ypos), campName=f'{cont} Secondary procedure name', lenMax=54, lenMin=7)
+            if type(can) == type(Response()): return can
+            can = global_functions.add_oneline_intnumber(can=can, number=proc['quant'], pos=(quantxpos, ypos), campName=f'{cont} Secondary Procedure Quantity', lenMax=8, lenMin=1, valueMin=1, valueMax=99999999)
+            if type(can) == type(Response()): return can
+            ypos -= reduceY
+        return can
+    except: 
+        return Response('Unkown error while adding Secondaries Procedures', status=500)
 
 if __name__ == "__main__":
     import global_functions
@@ -175,7 +224,8 @@ if __name__ == "__main__":
         autorization_prof_name='Autorization Professional Name', 
         emission_org_code='Cod121234', 
         autorizaton_prof_document={'CNS':928976954930007}, 
-        autorizaton_datetime=datetime.datetime.now()
+        autorizaton_datetime=datetime.datetime.now(),
+        secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]
     )
 
     if type(output) == type(Response()): 
