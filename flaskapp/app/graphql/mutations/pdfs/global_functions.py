@@ -3,6 +3,7 @@ from flask import Response
 from itertools import cycle
 from reportlab.pdfgen import canvas
 from PyPDF2  import PdfWriter
+import datetime
 
 ufs = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MS','MT','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
 
@@ -425,6 +426,60 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, sq
                 return can
     except:
         return Response(f'Unkown error while adding {campName}', status=500)
+
+
+def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, campName:str, hours:bool=True,nullable:bool=False, formated:bool=True, interval:str=''):
+    """Add datetime to canvas
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        date (datetime.datetime): date to use
+        pos (tuple): position
+        campName (str): camp name
+        hours (bool): add hours. Defaults to True
+        nullable (bool, optional): can be null. Defaults to False.
+        formated (bool, optional): format (add '/' and ':'). Defaults to True.
+        interval (str, optional): add interval between  day, month, year, hour, min, sec. Defaults to ''.
+    """    
+    try:
+        if nullable:
+            if date == None:
+                return can
+        if type(date) != type(datetime.datetime.now()):
+            return Response(f'{campName} has to be datetime object', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos) != type(tuple()):
+            return Response(f'pos has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(formated) != type(bool()):
+            return Response(f'formated has to be bool', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
+
+        #Add to respective fields
+        if hours:  
+            if formated:
+                date = date.strftime(f"%d/%m/%Y %H:%M:%S")
+            else:
+                date = date.strftime(f"%d{interval}%m{interval}%Y{interval}%H{interval}%M{interval}%S")
+        else:
+            if formated:
+                date = str(date.day) + interval + '/' + interval + str(date.month) + interval + '/' + interval + str(date.year)
+            else:
+                date = str(date.day) + interval + str(date.month) + interval + str(date.year)
+
+        can = add_data(can=can, data=date, pos=pos)
+        return can
+
+    except:
+        return Response(f'Unkown error while adding {campName}', status=500)
+
+
+
 
 
 

@@ -23,14 +23,14 @@ font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 # CNES, -
 # Nome do paciente,  -
 # CNS, -
-# data de nascimento, 
+# data de nascimento 
 # sexo, -
 # municipio de residência,  -
 # código do procedimento principal -
 # nome do procedimento -
 # quantidade proced princiapl. -
 # A seção procedimento secundário é opcional. Descrição do diagnóstico, CID10 principal e observações são obrigattórios. Todo campo de seção "Solicitação" são obrigatórios
-def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int):
+def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -56,6 +56,8 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
 
             c.setFont('Roboto-Mono', 9)
+            c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(315, 678), campName='Patient Birthday', hours=False, interval='  ', formated=False)
+            if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(36, 584), campName='Patient Adress City', lenMax=58, lenMin=7)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=main_procedure_name, pos=(220, 542), campName='Main Procedure Name', lenMax=50, lenMin=7)
@@ -97,6 +99,7 @@ if __name__ == "__main__":
         patient_name='Patient Name',
         patient_cns=928976954930007,
         patient_sex='M',
+        patient_birthday=datetime.datetime.now(),
         patient_adress_city='Patient Adress City',
         main_procedure_name='Main procedure Name',
         main_procedure_code='1234567890',
