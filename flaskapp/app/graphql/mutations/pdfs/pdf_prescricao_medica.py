@@ -32,10 +32,17 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
             c.setFont('Roboto-Mono', 12)
             # Writing all data in respective fields
             # not null data
+            initial_dateXpos = 294
+            initial_nameXpos = 120
+            for x in range(0, 2):
+                c = global_functions.add_datetime(can=c, date=document_datetime, pos=(initial_dateXpos, 38), campName='Document Datetime', hours=False, interval='  ', formated=False)
+                c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(initial_nameXpos, 505), campName='Patient Name', lenMax=34, lenMin=7)
+                initial_dateXpos += 450
+                initial_nameXpos += 450
 
-            c = add_document_datetime(canvas=c, date=document_datetime)
+            #c = add_document_datetime(canvas=c, date=document_datetime)
             if type(c) == type(Response()): return c
-            c = add_patient_name(canvas=c, name=patient_name)
+            #c = add_patient_name(canvas=c, name=patient_name)
             if type(c) == type(Response()): return c
             c.setFont('Roboto-Mono', 10)
             c = add_prescription(canvas=c, prescription=prescription)

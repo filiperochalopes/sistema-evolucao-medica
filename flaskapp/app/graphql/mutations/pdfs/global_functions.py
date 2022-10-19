@@ -77,7 +77,7 @@ def ufExists(uf:str):
     """Verify if a uf exists in Brazil
 
     Args:
-        uf (str): uf to berify
+        uf (str): uf to verify 
 
     Returns:
         Bollean true or false
@@ -85,7 +85,7 @@ def ufExists(uf:str):
     """    
     if type(uf) != type(str()):
         return Response('The api has to use UF as string to validate, please check te function', status=500)
-    return bool(re.match(r'^(\s*(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)?)$', uf))
+    return bool(re.match(r'^(\s*(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)?)$', uf, flags=re.I))
 
 
 def isCNPJvalid(cnpj:str):
