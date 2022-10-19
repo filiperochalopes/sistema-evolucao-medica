@@ -371,6 +371,7 @@ def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, null
             if formated:
                 number = '(' + number[:2] + ') ' + number[2:7] + '-' + number[7:]
 
+            number = add_interval_to_data(data=number, interval=interval)
             can = add_data(can=can, data=number, pos=pos)
             return can
         else:

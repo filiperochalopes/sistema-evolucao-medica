@@ -116,9 +116,9 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_responsible_name, pos=(25, 612), campName='Patient Responsible Name', lenMax=70, lenMin=7, nullable=True)        
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=patient_mother_phonenumber, pos=(415, 631), campName='Patient Mother phone number', lenMax=10, lenMin=10, valueMin=1111111111, valueMax=9999999999, nullable=True, interval='  ')
+            c = global_functions.add_phonenumber(can=c, number=patient_mother_phonenumber, pos=(415, 631), campName='Patient Mother phone number', nullable=True, interval='  ')
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=patient_responsible_phonenumber, pos=(415, 608), campName='Patient responsible phone number', lenMax=10, lenMin=10, valueMin=1111111111, valueMax=9999999999, nullable=True, interval='  ')
+            c = global_functions.add_phonenumber(can=c, number=patient_responsible_phonenumber, pos=(415, 608), campName='Patient responsible phone number', nullable=True, interval='  ')
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=secondary_cid10, pos=(406, 314), campName='Secondary Cid10', lenMax=4, lenMin=3, nullable=True)
             if type(c) == type(Response()): return c
