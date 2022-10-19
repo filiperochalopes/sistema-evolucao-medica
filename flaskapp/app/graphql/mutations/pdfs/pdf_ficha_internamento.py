@@ -29,14 +29,17 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
         # Writing all data in respective fields
         # not null data
         try:
-            c = add_patientName(canvas=c, name=patient_name)
+            c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(27, 674), campName='Patient Name', lenMax=64, lenMin=7)
+            #c = add_patientName(canvas=c, name=patient_name)
             # verify if c is a error at some point
             if type(c) == type(Response()): return c
-            c = add_patientCNS(canvas=c, cns=patient_cns)
+            c = global_functions.add_cns(can=c, cns=patient_cns, pos=(393, 674), campName='Patient CNS', formated=True)
+            #c = add_patientCNS(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
             # change font size to datetime            
-            c.setFont('Roboto-Mono', 14)            
-            c = add_documentDatetime(canvas=c, docDatetime=documentDatetime)
+            c.setFont('Roboto-Mono', 14)
+            c = global_functions.add_datetime(can=c, date=documentDatetime, pos=(400, 740), campName='Document Datetime', hours=True, formated=True)
+            #c = add_documentDatetime(canvas=c, docDatetime=documentDatetime)
             if type(c) == type(Response()): return c            
             c.setFont('Roboto-Mono', 9)            
             c = add_patientBirthday(canvas=c, birthday=patient_birthday)
