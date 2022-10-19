@@ -330,7 +330,7 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
 
 
 
-def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, lenMax:int, valueMin:int, valueMax:int, nullable:bool=False, lenMin:int=0, interval:str=''):
+def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, lenMax:int, valueMin:int, valueMax:int, nullable:bool=False, lenMin:int=0, interval:str='', centralized:bool=False):
     """Add one line number to canvas
 
     Args:
@@ -344,6 +344,7 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str
         nullable (bool, optional): Data can me None. Defaults to False.
         lenMin (int, optional): Minimun Lenght. Defaults to 0.
         interval (str): interval to add between every char
+        centralized (bool, optional): Data has to be centralized. Defaults to False.
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
@@ -374,6 +375,8 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str
             return Response(f'nullable has to be bool', status=500)
         elif type(interval) != type(str()):
             return Response(f'interval has to be str', status=500)
+        elif type(centralized) != type(bool()):
+            return Response(f'centralized has to be bool', status=500)
 
         # verify if number is in the need lenght
         if valueMin > number or valueMax < number:
@@ -381,7 +384,10 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str
         number = str(number)
         if lenMin <= len(number) <= lenMax:
             number = add_interval_to_data(data=number, interval=interval)
-            can = add_data(can=can, data=number, pos=pos)
+            if centralized:
+                can = add_centralized_data(can=can, data=number, pos=pos)
+            else:
+                can = add_data(can=can, data=number, pos=pos)
             return can
         else:
             return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)

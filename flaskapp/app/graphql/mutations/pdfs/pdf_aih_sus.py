@@ -11,11 +11,14 @@ from flask import Response
 if __name__ != "__main__":
     from . import global_functions
 
+lenghtTest = ''
+for x in range(0, 2000):
+    lenghtTest += str(x)
 
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/aih_sus.pdf"
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
-def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int, establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitant_document:dict, prof_solicitant_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cid10:str=None, cid10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:int=None, insurance_company_ticket_number:int=None, insurance_company_series:str=None,company_cnpj:int=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None):
+def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int, establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cid10:str=None, cid10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:int=None, insurance_company_ticket_number:int=None, insurance_company_series:str=None,company_cnpj:int=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None):
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -57,50 +60,72 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             
             c.setFont('Roboto-Mono', 9)
-            c = add_patient_birthday(canvas=c, birthday=patient_birthday)
+            c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(312, 658), campName='Patient Birthday', hours=False, interval='  ', formated=False)
+            #c = add_patient_birthday(canvas=c, birthday=patient_birthday)
             if type(c) == type(Response()): return c
-            c = add_patient_sex(canvas=c, sex=patient_sex)
+            c = global_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(415, 657), pos_fem=(468, 657), campName='Patient Sex', square_size=(8,9))
+            #c = add_patient_sex(canvas=c, sex=patient_sex)
             if type(c) == type(Response()): return c
-            c = add_patient_mother_name(canvas=c, motherName=patient_mother_name)
+            c = global_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(25, 636), campName='Patient Mother Name', lenMax=70, lenMin=7)
+            #c = add_patient_mother_name(canvas=c, motherName=patient_mother_name)
             if type(c) == type(Response()): return c
-            c = add_patient_adress(canvas=c, adress=patient_adress)
+            c = global_functions.add_oneline_text(can=c, text=patient_adress, pos=(25, 593), campName='Patient Adress', lenMax=101, lenMin=7)
+            #c = add_patient_adress(canvas=c, adress=patient_adress)
             if type(c) == type(Response()): return c
-            c = add_patient_adressCity(canvas=c, city=patient_adressCity)
+            c = global_functions.add_oneline_text(can=c, text=patient_adressCity, pos=(25, 566), campName='Patient Adress City', lenMax=58, lenMin=7)
+            #c = add_patient_adressCity(canvas=c, city=patient_adressCity)
             if type(c) == type(Response()): return c
-            c = add_patient_adressCity_ibgeCode(canvas=c, ibgeCode=patient_adressCity_ibgeCode)
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressCity_ibgeCode, pos=(388, 566), campName='Patient Adress City IBGE code', lenMax=7, lenMin=7, valueMin=0, valueMax=9999999)
+            #c = add_patient_adressCity_ibgeCode(canvas=c, ibgeCode=patient_adressCity_ibgeCode)
             if type(c) == type(Response()): return c
-            c = add_patient_adressUF(canvas=c, uf=patient_adressUF)
+            c = global_functions.add_UF(can=c, uf=patient_adressUF, pos=(450, 566), campName='Patient Adress UF', interval='  ')
+            #c = add_patient_adressUF(canvas=c, uf=patient_adressUF)
             if type(c) == type(Response()): return c
-            c = add_main_clinical_signs_symptoms(canvas=c, symptoms=main_clinical_signs_symptoms)
+            c = global_functions.add_morelines_text(can=c, text=main_clinical_signs_symptoms, initial_pos=(25, 530), decrease_ypos= 10, campName='Main Clinical Signs Symptoms', lenMax=1009, charPerLines=101, lenMin=5)
+            #c = add_main_clinical_signs_symptoms(canvas=c, symptoms=main_clinical_signs_symptoms)
             if type(c) == type(Response()): return c
-            c = add_conditions_justify_hospitalization(canvas=c, conditions=conditions_justify_hospitalization)
+            c = global_functions.add_morelines_text(can=c, text=conditions_justify_hospitalization, initial_pos=(25, 422), decrease_ypos= 10, campName='Conditions that Justify hospitalization', lenMax=403, charPerLines=101, lenMin=5)
+            #c = add_conditions_justify_hospitalization(canvas=c, conditions=conditions_justify_hospitalization)
             if type(c) == type(Response()): return c
-            c = add_initial_diagnostic(canvas=c, diagnostic=initial_diagnostic)
+            c = global_functions.add_oneline_text(can=c, text=initial_diagnostic, pos=(25, 314), campName='Initial Diagnostic', lenMax=44, lenMin=5)
+            #c = add_initial_diagnostic(canvas=c, diagnostic=initial_diagnostic)
             if type(c) == type(Response()): return c
-            c = add_principalCid10(canvas=c, cid10=principalCid10)
+            c = global_functions.add_oneline_text(can=c, text=principalCid10, pos=(306, 314), campName='Principal Cid10', lenMax=4, lenMin=3)
+            #c = add_principalCid10(canvas=c, cid10=principalCid10)
             if type(c) == type(Response()): return c
-            c = add_procedure_solicited(canvas=c, procedure=procedure_solicited)
+            c = global_functions.add_oneline_text(can=c, text=procedure_solicited, pos=(25, 269), campName='Procedure Solicited', lenMax=65, lenMin=6)
+            #c = add_procedure_solicited(canvas=c, procedure=procedure_solicited)
             if type(c) == type(Response()): return c
-            c = add_clinic(canvas=c, name=clinic)
+            c = global_functions.add_oneline_text(can=c, text=clinic, pos=(25, 246), campName='Clinic', lenMax=18, lenMin=6)
+            #c = add_clinic(canvas=c, name=clinic)
             if type(c) == type(Response()): return c
-            c = add_internation_carater(canvas=c, carater=internation_carater)
+            c = global_functions.add_oneline_text(can=c, text=internation_carater, pos=(128, 246), campName='Internation Caracter', lenMax=19, lenMin=6)
+            #c = add_internation_carater(canvas=c, carater=internation_carater)
             if type(c) == type(Response()): return c
-            c = add_prof_solicitant_document(canvas=c, document=prof_solicitant_document)
+            c = global_functions.add_document_cns_cpf_rg(can=c, document=prof_solicitor_document, pos_square_cpf=(290, 244), pos_square_cns=(247,244), pos_cns=(335, 246), pos_cpf=(335, 246),campName='Professional Solicitor Document', interval='  ',nullable=True)
+            #c = add_prof_solicitor_document(canvas=c, document=prof_solicitor_document)
             if type(c) == type(Response()): return c
-            c = add_prof_solicitant_name(canvas=c, name=prof_solicitant_name)
+            c = global_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(25, 222), campName='Professional Solicitor Name', lenMax=48, lenMin=8)
+            #c = add_prof_solicitor_name(canvas=c, name=prof_solicitor_name)
             if type(c) == type(Response()): return c
-            c = add_solicitation_datetime(canvas=c, solitDate=solicitation_datetime)
+            c = global_functions.add_datetime(can=c, date=solicitation_datetime, pos=(300, 222), campName='Solicitation Datetime', hours=False, interval='  ', formated=False)
+            #c = add_solicitation_datetime(canvas=c, solitDate=solicitation_datetime)
             if type(c) == type(Response()): return c
-            c = add_autorization_prof_name(canvas=c, name=autorization_prof_name)
+            c = global_functions.add_oneline_text(can=c, text=autorization_prof_name, pos=(25, 93), campName='Professional Authorizator Name', lenMax=48, lenMin=8)
+            #c = add_autorization_prof_name(canvas=c, name=autorization_prof_name)
             if type(c) == type(Response()): return c
-            c = add_emission_org_code(canvas=c, code=emission_org_code)
+            c = global_functions.add_oneline_text(can=c, text=emission_org_code, pos=(292, 93), campName='Emission Organization Code', lenMax=17, lenMin=2)
+            #c = add_emission_org_code(canvas=c, code=emission_org_code)
             if type(c) == type(Response()): return c
-            c = add_autorizaton_prof_document(canvas=c, document=autorizaton_prof_document)
+            c = global_functions.add_document_cns_cpf_rg(can=c, document=autorizaton_prof_document, pos_square_cpf=(95, 66), pos_square_cns=(41,66), pos_cns=(146, 66), pos_cpf=(146, 66),campName='Professional Authorizator Document', interval='  ')
+            #c = add_autorizaton_prof_document(canvas=c, document=autorizaton_prof_document)
             if type(c) == type(Response()): return c
-            c = add_autorizaton_datetime(canvas=c, authDate=autorizaton_datetime)
+            c = global_functions.add_datetime(can=c, date=autorizaton_datetime, pos=(30, 30), campName='Authorization Datetime', hours=False, interval='  ', formated=False)
+            #c = add_autorizaton_datetime(canvas=c, authDate=autorizaton_datetime)
             if type(c) == type(Response()): return c
             c.setFont('Roboto-Mono', 16)       
-            c = add_hospitalization_autorization_number(canvas=c, number=hospitalization_autorization_number)
+            c = global_functions.add_oneline_intnumber(can=c, number=hospitalization_autorization_number, pos=(480, 66), campName='Hospitalization autorization Number', lenMax=18, lenMin=1, valueMin=0, valueMax=999999999999999999, centralized=True)
+            #c = add_hospitalization_autorization_number(canvas=c, number=hospitalization_autorization_number)
             if type(c) == type(Response()): return c
             c.setFont('Roboto-Mono', 9)       
 
@@ -336,12 +361,12 @@ def add_patient_name(canvas:canvas.Canvas, name:str):
         return Response('Unknow error while adding patient name', status=500)
 
 
-def add_prof_solicitant_name(canvas:canvas.Canvas, name:str):
-    """add professional solicitant name
+def add_prof_solicitor_name(canvas:canvas.Canvas, name:str):
+    """add professional solicitor name
 
     Args:
         canvas (canvas.Canvas): canvas to use
-        name (str): professional solicitant name
+        name (str): professional solicitor name
 
     Returns:
         canvas or Response:canvas if everthing is allright or Response if hapens some error 
@@ -1267,8 +1292,8 @@ def add_internation_carater(canvas:canvas.Canvas, carater:str):
         return Response('Unknow error while adding Clinic', status=500)
 
 
-def add_prof_solicitant_document(canvas:canvas.Canvas, document:dict):
-    """add prof solicitanto document
+def add_prof_solicitor_document(canvas:canvas.Canvas, document:dict):
+    """add prof solicitoro document
 
     Args:
         canvas (canvas.Canvas): canvas to use
@@ -1461,7 +1486,7 @@ if __name__ == "__main__":
         patient_adressCity_ibgeCode=1234567,
         patient_adressUF='SP',
         patient_adressCEP=12345678,
-        main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",
+        main_clinical_signs_symptoms="Patient main clinical signs sympthoms",
         conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',
         initial_diagnostic='Patient Initial Diagnostic',
         principalCid10="A00",
@@ -1469,8 +1494,8 @@ if __name__ == "__main__":
         procedure_code='1234567890', 
         clinic='Clinic Name', 
         internation_carater='Internation Carater', 
-        prof_solicitant_document={'CPF':28445400070},
-        prof_solicitant_name='Profissional Solicit Name', 
+        prof_solicitor_document={'CPF':28445400070},
+        prof_solicitor_name='Profissional Solicit Name', 
         solicitation_datetime=datetime.datetime.now(), 
         autorization_prof_name='Autorization professional name', 
         emission_org_code='OrgCode2022', 
