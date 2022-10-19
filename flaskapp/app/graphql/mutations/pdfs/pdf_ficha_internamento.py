@@ -30,58 +30,42 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
         # not null data
         try:
             c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(27, 674), campName='Patient Name', lenMax=64, lenMin=7)
-            #c = add_patientName(canvas=c, name=patient_name)
             # verify if c is a error at some point
             if type(c) == type(Response()): return c
             c = global_functions.add_cns(can=c, cns=patient_cns, pos=(393, 674), campName='Patient CNS', formated=True)
-            #c = add_patientCNS(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
 
             # change font size to datetime            
             c.setFont('Roboto-Mono', 14)
             c = global_functions.add_datetime(can=c, date=documentDatetime, pos=(400, 740), campName='Document Datetime', hours=True, formated=True)
-            #c = add_documentDatetime(canvas=c, docDatetime=documentDatetime)
             if type(c) == type(Response()): return c      
 
             c.setFont('Roboto-Mono', 9)
             c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(27, 642), campName='Patient Birthday', hours=False, formated=True)
-            #c = add_patientBirthday(canvas=c, birthday=patient_birthday)
             if type(c) == type(Response()): return c
             c = global_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(117, 640), pos_fem=(147, 640), campName='Patient Sex', square_size=(9,9))
-            #c = add_patient_sex(canvas=c, sex=patient_sex)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_motherName, pos=(194, 642), campName='Patient Mother Name', lenMax=69, lenMin=7)
-            #c = add_patientMotherName(canvas=c, motherName=patient_motherName)
             if type(c) == type(Response()): return c
             c = global_functions.add_document_cns_cpf_rg(can=c, document=patient_document, pos_square_cpf=(24, 608), pos_square_rg=(58,608), pos_rg=(92, 610), pos_cpf=(92, 610),campName='Pacient Document', formated=True)
-            #c = add_patientDocument(canvas=c, document=patient_document)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_adress, pos=(230, 610), campName='Patient Adress', lenMax=63, lenMin=7)
-            #c = add_patientAdress(canvas=c, adress=patient_adress)
             if type(c) == type(Response()): return c
             c = global_functions.add_phonenumber(can=c, number=patient_phonenumber, pos=(173, 547), campName='Patient phone number', formated=True)
-            #c = add_patientPhoneNumber(canvas=c, phonenumber=patient_phonenumber)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_drug_allergies, pos=(26, 481), campName='Patient Drugs Allergies', lenMax=100, lenMin=5)
-            #c = add_patient_drug_allergies(canvas=c, drug_allergies=patient_drug_allergies)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_comorbidities, pos=(26, 449), campName='Patient Commorbidites', lenMax=100, lenMin=5)
-            #c = add_patient_comorbidities(canvas=c, comorbidities=patient_comorbidities)
             if type(c) == type(Response()): return c
             c = global_functions.add_morelines_text(can=c, text=current_illness_history, initial_pos=(26, 418), decrease_ypos= 10, campName='Current Illness History', lenMax=1600, charPerLines=100, lenMin=10)
-            #c = add_current_illness_history(canvas=c, current_illness_history=current_illness_history)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=initial_diagnostic_suspicion, pos=(26, 244), campName='Initial Diagnostic Suspicion', lenMax=100, lenMin=5)
-            #c = add_initial_diagnostic_suspicion(canvas=c, ids=initial_diagnostic_suspicion)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=doctor_name, pos=(304, 195), campName='Doctor Name', lenMax=49, lenMin=7)
-            #c = add_doctorName(canvas=c, name=doctor_name)
             if type(c) == type(Response()): return c
             c = global_functions.add_cns(can=c, cns=doctor_cns, pos=(304, 163), campName='Doctor CNS', formated=True)
-            #c = add_doctorCNS(canvas=c, cns=doctor_cns)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=doctor_crm, pos=(304, 131), campName='Doctor CRM', lenMax=13, lenMin=11)
-            #c = add_doctorCRM(canvas=c, crm=doctor_crm)
             if type(c) == type(Response()): return c
             
         except:
@@ -109,7 +93,6 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             if has_additional_healthInsurance is not None:
                 c = add_has_additional_healthInsurance(canvas=c, has_additional_healthInsurance=has_additional_healthInsurance)
             if type(c) == type(Response()): return c
-
 
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
