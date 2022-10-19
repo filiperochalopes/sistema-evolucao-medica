@@ -24,23 +24,25 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
         pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
-        c.setFont('Roboto-Mono', 9)
+        c.setFont('Roboto-Mono', 12)
 
         # Writing all data in respective fields
         # not null data
         try:
+            # change font size to datetime            
+            c = global_functions.add_datetime(can=c, date=documentDatetime, pos=(400, 740), campName='Document Datetime', hours=True, formated=True)
+            if type(c) == type(Response()): return c      
+            
+            
+            c.setFont('Roboto-Mono', 9)
+            #Normal font size
             c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(27, 674), campName='Patient Name', lenMax=64, lenMin=7)
             # verify if c is a error at some point
             if type(c) == type(Response()): return c
             c = global_functions.add_cns(can=c, cns=patient_cns, pos=(393, 674), campName='Patient CNS', formated=True)
             if type(c) == type(Response()): return c
 
-            # change font size to datetime            
-            c.setFont('Roboto-Mono', 14)
-            c = global_functions.add_datetime(can=c, date=documentDatetime, pos=(400, 740), campName='Document Datetime', hours=True, formated=True)
-            if type(c) == type(Response()): return c      
 
-            c.setFont('Roboto-Mono', 9)
             c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(27, 642), campName='Patient Birthday', hours=False, formated=True)
             if type(c) == type(Response()): return c
             c = global_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(117, 640), pos_fem=(147, 640), campName='Patient Sex', square_size=(9,9))

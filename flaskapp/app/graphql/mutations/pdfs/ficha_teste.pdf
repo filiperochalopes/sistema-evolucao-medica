@@ -21,7 +21,7 @@ endobj
 /Font <<
 /F2 112 0 R
 /F1 16 0 R
-/F1f410dea0-459d-47cb-9557-ed08cb5ae200 <<
+/F1e07b9923-942d-4973-a5f9-0ec5601476a0 <<
 /BaseFont /Helvetica
 /Encoding /WinAnsiEncoding
 /Name /F1
@@ -35,7 +35,7 @@ endobj
 /X3 8 0 R
 /X1 6 0 R
 >>
-/ProcSet [ /ImageB /Text /ImageI /PDF /ImageC ]
+/ProcSet [ /ImageI /PDF /ImageB /ImageC /Text ]
 >>
 /Contents 5 0 R
 /Parent 1 0 R
@@ -21285,8 +21285,15 @@ W
 n
 1 0 0 1 0 0 cm
 BT
-/F1f410dea0-459d-47cb-9557-ed08cb5ae200 12 Tf
+/F1e07b9923-942d-4973-a5f9-0ec5601476a0 12 Tf
 14.4 TL
+ET
+BT
+1 0 0 1 400 740 Tm
+/F2+0 12 Tf
+14.4 TL
+(19\05710\0572022\04018\07233\07244) Tj
+T*
 ET
 BT
 1 0 0 1 27 674 Tm
@@ -21300,13 +21307,6 @@ BT
 /F2+0 9 Tf
 10.8 TL
 (928\0409769\0405493\0400007) Tj
-T*
-ET
-BT
-1 0 0 1 400 740 Tm
-/F2+0 14 Tf
-16.8 TL
-(19\05710\0572022\04017\07247\07223) Tj
 T*
 ET
 BT

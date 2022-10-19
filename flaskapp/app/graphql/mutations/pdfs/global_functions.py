@@ -32,7 +32,7 @@ def isRGvalid(rg:int) -> bool:
     #the only verification that can do is the maximum value
     if type(rg) != type(int()):
         return Response('The api has to use RG as intenger to validate, please check te function', status=500)
-    if 5 < len(str(rg)) and len(str(rg)) < 17:
+    if 5 < len(str(rg)) < 17:
         return True
     return False
 
@@ -789,8 +789,8 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
         Response(flask.Response): with the error
     """    
     try:
-        if nullable or len(str(sex).strip()) == 0:
-            if sex == None:
+        if nullable:
+            if sex == None or len(str(sex).strip()) == 0:
                 return can
         if type(sex) != type(str()):
             return Response(f'{campName} has to be str', status=400)
@@ -977,7 +977,8 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
             return Response(f'formated has to be bool', status=500)
         
         # See id document is CPF, CNS or RG
-        if 'CNS' in document.keys():
+        allDocumentsKeys = document.keys()
+        if 'CNS' in allDocumentsKeys:
             if type(document['CNS']) != type(int()):
                 return Response(f'{campName} value CNS has to be int', status=400)
             if isCNSvalid(document['CNS']):
@@ -993,7 +994,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
                 return can
             else:
                 return Response(f'{campName} CNS is not valid', status=400)
-        elif 'CPF' in document.keys():
+        elif 'CPF' in allDocumentsKeys:
             if type(document['CPF']) != type(int()):
                 return Response(f'{campName} value CPF has to be int', status=400)
             #Format cpf to validate
@@ -1013,14 +1014,16 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
                 return can
             else:
                 return Response(f'{campName} CPF is not valid', status=400)
-        elif 'RG' in document.keys():
-            if type(document['RG']) != type(int()):
+        elif 'RG' in allDocumentsKeys:
+            rg = document['RG']
+            if type(rg) != type(int()):
                 return Response(f'{campName} value RG has to be int', status=400)
             #The only verificatinon is that rg is not greater than 16 characteres
-            if isRGvalid(document['RG']):
+            if isRGvalid(rg):
+                rg = str(document['RG'])
                 if pos_square_rg != None:
                     can = add_square(can=can, pos=pos_square_rg, size=square_size)
-                can = add_data(can=can, data=str(document['RG']), pos=pos_rg)
+                can = add_data(can=can, data=rg, pos=pos_rg)
                 return can
             else:
                 return Response(f'{campName} RG is not valid', status=400)
