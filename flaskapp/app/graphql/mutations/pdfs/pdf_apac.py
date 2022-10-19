@@ -69,11 +69,11 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             c.setFont('Roboto-Mono', 9)
             c = global_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 654), campName='Patient Mother Name', lenMax=67, lenMin=7, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=patient_mother_phonenumber, pos=(409, 650), campName='Patient Mother Phone Number', lenMax=10, lenMin=10, valueMin=0, valueMax=9999999999, nullable=True, interval='  ')
+            c = global_functions.add_phonenumber(can=c, number=patient_mother_phonenumber, pos=(409, 650), campName='Patient Mother Phone Number', nullable=True, interval='  ')
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_responsible_name, pos=(36, 630), campName='Patient Responsible Name', lenMax=67, lenMin=7, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=patient_responsible_phonenumber, pos=(409, 626), campName='Patient Responsible Phone Number', lenMax=10, lenMin=10, valueMin=0, valueMax=9999999999, nullable=True, interval='  ')
+            c = global_functions.add_phonenumber(can=c, number=patient_responsible_phonenumber, pos=(409, 626), campName='Patient Responsible Phone Number', nullable=True, interval='  ')
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_adress, pos=(36, 608), campName='Patient Adress', lenMax=97, lenMin=7, nullable=True)
             if type(c) == type(Response()): return c
