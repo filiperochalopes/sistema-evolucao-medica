@@ -41,17 +41,40 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
             c, pags_quant = add_exams(canvas=c, exams=exams)
             # verify if c is a error at some point
             if type(c) == type(Response()): return c
-            c = add_patientName(canvas=c, name=patient_name)
+            decreaseYpos = 280
+            patient_name_ypos = 775
+            patient_cns_ypos = 765
+            patient_birthday_ypos = 784
+            patient_adress_ypos = 734
+            solicitation_reason_ypos = 690
+            prof_solicitor_ypos = 595
+            for x in range(pags_quant):
+                c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(7, patient_name_ypos), campName='Patient Name', lenMax=70, lenMin=7)
+                c = global_functions.add_cns(can=c, cns=patient_cns, pos=(450, patient_cns_ypos), campName='Patient CNS',formated=True)
+                c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(441, patient_birthday_ypos), campName='Patient Birthday', hours=False, formated=True)
+                c = global_functions.add_morelines_text(can=c, text=patient_adress, initial_pos=(7, patient_adress_ypos), decrease_ypos=10, campName='Patient Adress', lenMax=216, lenMin=7, charPerLines=108)
+                c = global_functions.add_morelines_text(can=c, text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, campName='Solicitation Reason', lenMax=216, lenMin=7, charPerLines=108)
+                c = global_functions.add_oneline_text(can=c, text=prof_solicitor, pos=(7, prof_solicitor_ypos), campName='Professional Solicitor Name', lenMax=29, lenMin=7)
+
+                #Decrese ypos in all lines to complete the page
+                patient_name_ypos -= decreaseYpos
+                patient_cns_ypos -= decreaseYpos
+                patient_birthday_ypos -= decreaseYpos
+                patient_adress_ypos -= decreaseYpos
+                solicitation_reason_ypos -= decreaseYpos
+                prof_solicitor_ypos -= decreaseYpos
+
+            #c = add_patientName(canvas=c, name=patient_name)
             if type(c) == type(Response()): return c
-            c = add_patient_cns(canvas=c, cns=patient_cns)
+            #c = add_patient_cns(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
-            c = add_patient_birthday(canvas=c, birthday=patient_birthday)
+            #c = add_patient_birthday(canvas=c, birthday=patient_birthday)
             if type(c) == type(Response()): return c
-            c = add_patient_adress(canvas=c, adress=patient_adress)
+            #c = add_patient_adress(canvas=c, adress=patient_adress)
             if type(c) == type(Response()): return c
-            c = add_solicitation_reason(canvas=c, reason=solicitation_reason)
+            #c = add_solicitation_reason(canvas=c, reason=solicitation_reason)
             if type(c) == type(Response()): return c
-            c = add_prof_solicitor(canvas=c, prof=prof_solicitor)
+            #c = add_prof_solicitor(canvas=c, prof=prof_solicitor)
             if type(c) == type(Response()): return c
 
         except:

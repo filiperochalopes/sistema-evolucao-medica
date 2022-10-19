@@ -421,7 +421,7 @@ def add_interval_to_data(data:str, interval:str):
     return interval.join(data)
 
 
-def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=False, formatCns:bool=False, interval:str=''):
+def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=False, formated:bool=False, interval:str=''):
     """Add cns to canvas
 
     Args:
@@ -430,7 +430,7 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=Fa
         pos (tuple): position in canvas
         campName (str): camp nam
         nullable (bool, optional): can be null. Defaults to False.
-        formatCns (bool, optional): format cns to xxx xxxx xxxx xxxx. Defaults to False.
+        formated (bool, optional): format cns to xxx xxxx xxxx xxxx. Defaults to False.
         interval (str, optional): interval to add between interval. Defaults to ''.
 
     Returns:
@@ -452,8 +452,8 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=Fa
             return Response(f'campName has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
-        elif type(formatCns) != type(bool()):
-            return Response(f'formatCns has to be bool', status=500)
+        elif type(formated) != type(bool()):
+            return Response(f'formated has to be bool', status=500)
         elif type(interval) != type(str()):
             return Response(f'interval has to be str', status=500)
 
@@ -463,7 +463,7 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=Fa
             # Add interval selected
             cns = add_interval_to_data(data=cns, interval=interval)
             if type(cns) == type(Response()): return cns
-            if formatCns: 
+            if formated: 
                 cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
             can = add_data(can=can, data=cns, pos=pos)
             return can
