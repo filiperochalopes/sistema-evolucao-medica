@@ -138,56 +138,72 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
 
         #Adding data that can be null
         try:
-            if exam_results is not None and str(exam_results).strip() != "":
-                c = add_exam_results(canvas=c, results=exam_results)
+            c = global_functions.add_morelines_text(can=c, text=exam_results, initial_pos=(25, 362), decrease_ypos= 10, campName='Exam Results', lenMax=403, charPerLines=101, lenMin=5, nullable=True)
+            #if exam_results is not None and str(exam_results).strip() != "":
+            #    c = add_exam_results(canvas=c, results=exam_results)
             if type(c) == type(Response()): return c
-            if chart_number is not None:
-                c = add_chart_number(canvas=c, number=chart_number)
+            c = global_functions.add_oneline_intnumber(can=c, number=chart_number, pos=(466, 683), campName='Chart Number', lenMax=20, lenMin=1, valueMin=0, valueMax=99999999999999999999, nullable=True)
+            #if chart_number is not None:
+            #    c = add_chart_number(canvas=c, number=chart_number)
             if type(c) == type(Response()): return c
-            if patient_ethnicity is not None and str(patient_ethnicity).strip() != "":
-                c = add_patient_ethnicity(canvas=c, ethnicity=patient_ethnicity)
+            c = global_functions.add_oneline_text(can=c, text=patient_ethnicity, pos=(510, 658), campName='Patient Ehinicity', lenMax=11, lenMin=4, nullable=True)
+            #if patient_ethnicity is not None and str(patient_ethnicity).strip() != "":
+            #    c = add_patient_ethnicity(canvas=c, ethnicity=patient_ethnicity)
             if type(c) == type(Response()): return c
-            if patient_responsible_name is not None and str(patient_responsible_name).strip() != "":
-                c = add_patient_responsible_name(canvas=c, name=patient_responsible_name)
+            c = global_functions.add_oneline_text(can=c, text=patient_responsible_name, pos=(25, 612), campName='Patient Responsible Name', lenMax=70, lenMin=7, nullable=True)
+            #if patient_responsible_name is not None and str(patient_responsible_name).strip() != "":
+            #    c = add_patient_responsible_name(canvas=c, name=patient_responsible_name)
             if type(c) == type(Response()): return c
-            if patient_mother_phonenumber is not None:
-                c = add_patient_mother_phonenumber(canvas=c, number=patient_mother_phonenumber)
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_mother_phonenumber, pos=(415, 631), campName='Patient Mother phone number', lenMax=10, lenMin=10, valueMin=1111111111, valueMax=9999999999, nullable=True, interval='  ')
+            #if patient_mother_phonenumber is not None:
+            #    c = add_patient_mother_phonenumber(canvas=c, number=patient_mother_phonenumber)
             if type(c) == type(Response()): return c
-            if patient_responsible_phonenumber is not None:
-                c = add_patient_responsible_phonenumber(canvas=c, number=patient_responsible_phonenumber)
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_responsible_phonenumber, pos=(415, 608), campName='Patient responsible phone number', lenMax=10, lenMin=10, valueMin=1111111111, valueMax=9999999999, nullable=True, interval='  ')
+            #if patient_responsible_phonenumber is not None:
+            #    c = add_patient_responsible_phonenumber(canvas=c, number=patient_responsible_phonenumber)
             if type(c) == type(Response()): return c
-            if secondary_cid10 is not None and str(secondary_cid10).strip() != "":
-                c = add_secondary_cid10(canvas=c, cid10=secondary_cid10)
+            c = global_functions.add_oneline_text(can=c, text=secondary_cid10, pos=(406, 314), campName='Secondary Cid10', lenMax=4, lenMin=3, nullable=True)
+            #if secondary_cid10 is not None and str(secondary_cid10).strip() != "":
+            #    c = add_secondary_cid10(canvas=c, cid10=secondary_cid10)
             if type(c) == type(Response()): return c
-            if cid10_associated_causes is not None and str(cid10_associated_causes).strip() != "":
-                c = add_cid10_associated_causes(canvas=c, cid10=cid10_associated_causes)
+            c = global_functions.add_oneline_text(can=c, text=cid10_associated_causes, pos=(512, 314), campName='Associated causes Cid10', lenMax=4, lenMin=3, nullable=True)
+            #if cid10_associated_causes is not None and str(cid10_associated_causes).strip() != "":
+            #    c = add_cid10_associated_causes(canvas=c, cid10=cid10_associated_causes)
             if type(c) == type(Response()): return c
+###############################################################################
             if acident_type is not None and str(acident_type).strip() != "":
                 c = add_acident_type(canvas=c, acident=acident_type)
             if type(c) == type(Response()): return c
+#######################################################################
             #Data that change Font Size
-
             c.setFont('Roboto-Mono', 10)
-            if insurance_company_cnpj is not None:
-                c = add_insurance_company_cnpj(canvas=c, cnpj=insurance_company_cnpj)
+            c = global_functions.add_cnpj(can=c, cnpj=insurance_company_cnpj, pos=(168,183), campName='Insurance Company CNPJ', nullable=True, interval='  ')
+            #if insurance_company_cnpj is not None:
+            #    c = add_insurance_company_cnpj(canvas=c, cnpj=insurance_company_cnpj)
             if type(c) == type(Response()): return c
-            if company_cnpj is not None:
-                c = add_company_cnpj(canvas=c, cnpj=company_cnpj)
+            c = global_functions.add_cnpj(can=c, cnpj=company_cnpj, pos=(168,156), campName='Company CNPJ', nullable=True, interval='  ')
+            #if company_cnpj is not None:
+            #    c = add_company_cnpj(canvas=c, cnpj=company_cnpj)
             if type(c) == type(Response()): return c
             
             
             c.setFont('Roboto-Mono', 9)
-            if insurance_company_ticket_number is not None:
-                c = add_insurance_company_ticket_number(canvas=c, ticket=insurance_company_ticket_number)
+            c = global_functions.add_oneline_intnumber(can=c, number=insurance_company_ticket_number, pos=(465, 183), campName='Insurance company ticket number', lenMax=16, lenMin=1, valueMin=0, valueMax=9999999999999999, nullable=True, centralized=True)
+            #if insurance_company_ticket_number is not None:
+            #    c = add_insurance_company_ticket_number(canvas=c, ticket=insurance_company_ticket_number)
             if type(c) == type(Response()): return c
-            if insurance_company_series is not None and str(insurance_company_series).strip() != "":
-                c = add_insurance_company_series(canvas=c, series=insurance_company_series)
+            c = global_functions.add_oneline_text(can=c, text=insurance_company_series, pos=(543, 183), campName='Insurance Company Series', lenMax=10, lenMin=1, nullable=True, centralized=True)
+
+            #if insurance_company_series is not None and str(insurance_company_series).strip() != "":
+            #    c = add_insurance_company_series(canvas=c, series=insurance_company_series)
             if type(c) == type(Response()): return c
-            if company_cnae is not None :
-                c = add_company_cnae(canvas=c, cnae=company_cnae)
+            c = global_functions.add_cnae(can=c, cnae=company_cnae, pos=(434, 156), campName='Company CNAE', nullable=True, formated=True)
+            #if company_cnae is not None:
+            #    c = add_company_cnae(canvas=c, cnae=company_cnae)
             if type(c) == type(Response()): return c
-            if company_cbor is not None :
-                c = add_company_cbor(canvas=c, cbo=company_cbor)
+            c = global_functions.add_cbor(can=c, cbor=company_cbor, pos=(529, 156), campName='Company CBOR', nullable=True, formated=True)
+            #if company_cbor is not None :
+            #    c = add_company_cbor(canvas=c, cbo=company_cbor)
             if type(c) == type(Response()): return c
             if pension_status is not None and str(pension_status).strip() != "":
                 c = add_pension_status(canvas=c, status=pension_status)

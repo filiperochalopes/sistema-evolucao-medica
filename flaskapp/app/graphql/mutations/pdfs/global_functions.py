@@ -197,7 +197,7 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str):
         return Response("Error when writing new pdf", status=500)
 
 
-def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMax:int, nullable:bool=False, lenMin:int=0, interval:str=''):
+def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMax:int, nullable:bool=False, lenMin:int=0, interval:str='', centralized:bool=False):
     """Add text that is fill in one line
 
     Args:
@@ -209,6 +209,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
         nullable (bool, optional): Data can me None. Defaults to False.
         lenMin (int, optional): Minimum text lenght. Defaults to 0.
         interval (str): interval to add between every char
+        centralized (bool, optional): Data has to be centralized. Defaults to False.
     Returns:
         canvas(canvas.Canvas): canvas with all changes
         or
@@ -234,6 +235,8 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
             return Response(f'nullable has to be bool', status=500)
         elif type(interval) != type(str()):
             return Response(f'interval has to be str', status=500)
+        elif type(centralized) != type(bool()):
+            return Response(f'centralized has to be bool', status=500)
 
         if not nullable:
             text = text.strip()
@@ -243,7 +246,10 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
         text = text.strip()
         if lenMin <= len(text) <= lenMax:
             text = add_interval_to_data(data=text, interval=interval)
-            can = add_data(can=can, data=text, pos=pos)
+            if centralized:
+                can = add_centralized_data(can=can, data=text, pos=pos)
+            else:
+                can = add_data(can=can, data=text, pos=pos)
             return can
         else:
             return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)
@@ -463,6 +469,146 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=Fa
             return can
         else:
             return Response(f"Unable to add {campName} because is a invalid CNS", status=400)
+    except:
+        return Response(f'Unknow error while adding {campName}', status=500)
+
+
+def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, campName:str,nullable:bool=False, interval:str=''):
+    """Add cnpj to canvas
+
+    Args:
+        can (canvas.Canvas): canvas to add
+        cnpj (int): cnpj to add
+        pos (tuple): position in canvas
+        campName (str): camp nam
+        nullable (bool, optional): can be null. Defaults to False.
+        interval (str, optional): interval to add between interval. Defaults to ''.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """    
+    try:
+        if nullable:
+            if cnpj == None:
+                return can
+        if type(cnpj) != type(int()):
+            return Response(f'{campName} has to be int', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos) != type(tuple()):
+            return Response(f'pos has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
+
+        # Verify if the cnpj is valid
+        if isCNPJvalid(cnpj):
+            cnpj = str(cnpj)
+            # Add interval selected
+            cnpj = add_interval_to_data(data=cnpj, interval=interval)
+            if type(cnpj) == type(Response()): return cnpj
+            can = add_data(can=can, data=cnpj, pos=pos)
+            return can
+        else:
+            return Response(f"Unable to add {campName} because is a invalid cnpj", status=400)
+    except:
+        return Response(f'Unknow error while adding {campName}', status=500)
+
+
+def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, campName:str,nullable:bool=False, formated:bool=False):
+    """Add cnae to canvas
+
+    Args:
+        can (canvas.Canvas): canvas to add
+        cnae (int): cnae to add
+        pos (tuple): position in canvas
+        campName (str): camp nam
+        nullable (bool, optional): can be null. Defaults to False.
+        interval (str, optional): interval to add between interval. Defaults to ''.
+        formated (bool, optional): format (add '/' and ':'). Defaults to True.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """    
+    try:
+        if nullable:
+            if cnae == None:
+                return can
+        if type(cnae) != type(int()):
+            return Response(f'{campName} has to be int', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos) != type(tuple()):
+            return Response(f'pos has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(formated) != type(bool()):
+            return Response(f'formated has to be bool', status=500)
+
+        cnae = str(cnae)
+        if len(cnae) == 7:
+            #Format cnae to add in doc
+            if formated:
+                cnae = cnae[:2] + '.' + cnae[2:4] + '-' + cnae[4] + '-' + cnae[5:]
+            can = add_data(can=can, data=cnae, pos=pos)
+            return can
+        else:
+            return Response(f"Unable to add {campName} because is a invalid cnae", status=400)
+    except:
+        return Response(f'Unknow error while adding {campName}', status=500)
+
+
+def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, campName:str, nullable:bool=False, formated:bool=False):
+    """Add cbor to canvas
+
+    Args:
+        can (canvas.Canvas): canvas to add
+        cbor (int): cbor to add
+        pos (tuple): position in canvas
+        campName (str): camp nam
+        nullable (bool, optional): can be null. Defaults to False.
+        formated (bool, optional): format (add '/' and ':'). Defaults to True.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """    
+    try:
+        if nullable:
+            if cbor == None:
+                return can
+        if type(cbor) != type(int()):
+            return Response(f'{campName} has to be int', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos) != type(tuple()):
+            return Response(f'pos has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(formated) != type(bool()):
+            return Response(f'formated has to be bool', status=500)
+
+        cbor = str(cbor)
+        if len(cbor) == 6:
+            #Format cbor to add in doc
+            if formated:
+                cbor = cbor[:5] + '-' + cbor[5:]
+            can = add_data(can=can, data=cbor, pos=pos)
+            return can
+        else:
+            return Response(f"Unable to add {campName} because is a invalid cbor", status=400)
     except:
         return Response(f'Unknow error while adding {campName}', status=500)
 
