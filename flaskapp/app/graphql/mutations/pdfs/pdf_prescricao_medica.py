@@ -36,13 +36,12 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
             initial_nameXpos = 120
             for x in range(0, 2):
                 c = global_functions.add_datetime(can=c, date=document_datetime, pos=(initial_dateXpos, 38), campName='Document Datetime', hours=False, interval='  ', formated=False)
+                if type(c) == type(Response()): return c
                 c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(initial_nameXpos, 505), campName='Patient Name', lenMax=34, lenMin=7)
+                if type(c) == type(Response()): return c
                 initial_dateXpos += 450
-                initial_nameXpos += 450
+                initial_nameXpos += 451
 
-            #c = add_document_datetime(canvas=c, date=document_datetime)
-            if type(c) == type(Response()): return c
-            #c = add_patient_name(canvas=c, name=patient_name)
             if type(c) == type(Response()): return c
             c.setFont('Roboto-Mono', 10)
             c = add_prescription(canvas=c, prescription=prescription)
@@ -68,55 +67,6 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
         return output
     except:
         return Response('Unknow error while adding medical prescription', status=500)
-
-
-def add_patient_name(canvas:canvas.Canvas, name:str):
-    """Add patient name to document
-
-    Args:
-        canvas (canvas.Canvas): canvas to add
-        name (str): name to add
-
-    Returns:
-        canvas or Response:canvas if everthing is allright or Response if hapens some error 
-    """    
-    try:
-        if type(name) != type(str()):
-            return Response('patient name has to be string', status=400)
-        # verify if patient name is smaller than 60 characters
-        name = str(name)
-        if 7 < len(name.strip()) <= 34:
-            canvas = global_functions.add_data(can=canvas, data=name, pos=(120, 505))
-            canvas = global_functions.add_data(can=canvas, data=name, pos=(571, 505))
-            return canvas
-        else:
-            return Response("Unable to add patient name because is longer than 34 characters or Smaller than 7", status=400)
-    except:
-        return Response('Unknow error while adding patient name', status=500)
-
-
-def add_document_datetime(canvas:canvas.Canvas, date:datetime.datetime):
-    """add document datetime to respective fields
-
-    Args:
-        canvas (canvas.Canvas): canvas to add
-        date (datetime.datetime): document datetime
-
-    Returns:
-        canvas or Response:canvas if everthing is allright or Response if hapens some error 
-    """    
-    try:
-        if type(date) != type(datetime.datetime.now()):
-            return Response('Document datetime isnt a datetime.datetime object', status=400)
-        #Add to respective fields
-        date = str(date.day) + '.' + str(date.month) + '.' + str(date.year)
-        interval = ' ' * 2
-        date = date.replace('.', interval)
-        canvas = global_functions.add_data(can=canvas, data=date, pos=(294, 38))
-        canvas = global_functions.add_data(can=canvas, data=date, pos=(744, 38))
-        return canvas
-    except:
-        return Response('Unkown error while adding document datetime', status=500)
 
 
 def add_prescription(canvas:canvas.Canvas, prescription:list):
