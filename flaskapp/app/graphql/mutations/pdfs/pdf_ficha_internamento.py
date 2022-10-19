@@ -92,20 +92,25 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
 
         #Adding data that can be null
         try:
-            if patient_adressNumber is not None:
-                c = add_patient_adressNumber(canvas=c,adressNumber=patient_adressNumber)
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressNumber, pos=(24, 580), campName='Patient Adress Number', lenMax=6, lenMin=1, valueMin=0, valueMax=999999, nullable=True)
+            #if patient_adressNumber is not None:
+                #c = add_patient_adressNumber(canvas=c,adressNumber=patient_adressNumber)
             if type(c) == type(Response()): return c
-            if patient_adressNeigh is not None and str(patient_adressNeigh).strip() != "":
-                c = add_patient_adressNeigh(canvas=c, adressNeigh=patient_adressNeigh)
+            c = global_functions.add_oneline_text(can=c, text=patient_adressNeigh, pos=(66, 580), campName='Patient Adress Neighborhood', lenMax=31, lenMin=4, nullable=True)
+            #if patient_adressNeigh is not None and str(patient_adressNeigh).strip() != "":
+                #c = add_patient_adressNeigh(canvas=c, adressNeigh=patient_adressNeigh)
             if type(c) == type(Response()): return c
-            if patient_adressCity is not None and str(patient_adressCity).strip() != "":
-                c = add_patientAdressCity(canvas=c, adressCity=patient_adressCity)
+            c = global_functions.add_oneline_text(can=c, text=patient_adressCity, pos=(243, 580), campName='Patient Adress City', lenMax=34, lenMin=4, nullable=True)
+            #if patient_adressCity is not None and str(patient_adressCity).strip() != "":
+                #c = add_patientAdressCity(canvas=c, adressCity=patient_adressCity)
             if type(c) == type(Response()): return c
-            if patient_adressUF is not None and str(patient_adressUF).strip() != '':
-                c = add_patientAdressUF(canvas=c, adressUF=patient_adressUF)
+            c = global_functions.add_UF(can=c, uf=patient_adressUF, pos=(443, 580), campName='Patient Adress UF', nullable=True)
+            #if patient_adressUF is not None and str(patient_adressUF).strip() != '':
+                #c = add_patientAdressUF(canvas=c, adressUF=patient_adressUF)
             if type(c) == type(Response()): return c
-            if patient_adressCEP is not None:
-                c = add_patientAdressCEP(canvas=c, adressCEP=patient_adressCEP)
+            c = global_functions.add_CEP(can=c, cep=patient_adressCEP, pos=(483, 580), campName='Patient Adress CEP', nullable=True, formated=True)
+            #if patient_adressCEP is not None:
+                #c = add_patientAdressCEP(canvas=c, adressCEP=patient_adressCEP)
             if type(c) == type(Response()): return c
             if patient_nationality is not None and str(patient_nationality).strip() != '':
                 c = add_patientNationality(canvas=c, nationality=patient_nationality)

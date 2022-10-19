@@ -380,6 +380,50 @@ def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, null
         return Response(f'Unknow error while adding {campName}', status=500)
 
 
+def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, campName:str, nullable:bool=False, interval:str='', formated:bool=False):
+    """_summary_
+
+    Args:
+        can (canvas.Canvas):  canvas to use
+        cep (int): cep to add
+        pos (tuple): position in canvas
+        campName (str): camp name to Responses
+        nullable (bool, optional):  Data can me None. Defaults to False.
+        interval (str, optional): interval to add between every char
+        formated (bool, optional): format phone cep to xxxxx-xxx. Defaults to False.
+    """
+    try:
+        if nullable:
+            if cep == None:
+                return can
+        if type(cep) != type(int()):
+            return Response(f'{campName} has to be int, if can be null, please add nullable option', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos) != type(tuple()):
+            return Response(f'pos has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
+        elif type(formated) != type(bool()):
+            return Response(f'formated has to be bool', status=500)
+        
+        cep = str(cep)
+        if len(cep) == 8:
+            if formated:
+                cep = cep[:5] + '-' + cep[5:]
+
+            cep = add_interval_to_data(data=cep, interval=interval)
+            can = add_data(can=can, data=cep, pos=pos)
+            return can
+        else:
+            return Response(f"Unable to add {campName} because cpf dont have 8 digits", status=400)
+    except:
+        return Response(f'Unknow error while adding {campName}', status=500)
+
 
 def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, lenMax:int, valueMin:int, valueMax:int, nullable:bool=False, lenMin:int=0, interval:str='', centralized:bool=False):
     """Add one line number to canvas
