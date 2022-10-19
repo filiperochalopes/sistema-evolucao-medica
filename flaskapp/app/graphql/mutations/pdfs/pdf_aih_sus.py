@@ -170,12 +170,10 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             #if cid10_associated_causes is not None and str(cid10_associated_causes).strip() != "":
             #    c = add_cid10_associated_causes(canvas=c, cid10=cid10_associated_causes)
             if type(c) == type(Response()): return c
-###############################################################################
             c = global_functions.add_markable_square(can=c, option=acident_type, valid_options=['TRAFFIC', 'WORK', 'WORK_PATH'], options_positions=((38,184),(38,170), (38,156)), square_size=(9,9), campName='Acident Type', nullable=True)
             #if acident_type is not None and str(acident_type).strip() != "":
             #    c = add_acident_type(canvas=c, acident=acident_type)
             if type(c) == type(Response()): return c
-#######################################################################
             #Data that change Font Size
             c.setFont('Roboto-Mono', 10)
             c = global_functions.add_cnpj(can=c, cnpj=insurance_company_cnpj, pos=(168,183), campName='Insurance Company CNPJ', nullable=True, interval='  ')
@@ -206,8 +204,9 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             #if company_cbor is not None :
             #    c = add_company_cbor(canvas=c, cbo=company_cbor)
             if type(c) == type(Response()): return c
-            if pension_status is not None and str(pension_status).strip() != "":
-                c = add_pension_status(canvas=c, status=pension_status)
+            c = global_functions.add_markable_square(can=c, option=pension_status, valid_options=['WORKER', 'EMPLOYER', 'AUTONOMOUS', 'UNEMPLOYED', 'RETIRED', 'NOT_INSURED'], options_positions=((33,131),(124,131),(219,131),(305,131),(408,131),(500,131),), square_size=(9,9), campName='Pension Status', nullable=True)
+            #if pension_status is not None and str(pension_status).strip() != "":
+            #    c = add_pension_status(canvas=c, status=pension_status)
             if type(c) == type(Response()): return c
 
 
@@ -1534,7 +1533,7 @@ if __name__ == "__main__":
         company_cnpj=37549670000171, 
         company_cnae=5310501, 
         company_cbor=123456, 
-        pension_status='not_insured'
+        pension_status='retired'
     )
 
     if type(output) == type(Response()): 
