@@ -62,19 +62,26 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             c = global_functions.add_phonenumber(can=c, number=patient_phonenumber, pos=(173, 547), campName='Patient phone number', formated=True)
             #c = add_patientPhoneNumber(canvas=c, phonenumber=patient_phonenumber)
             if type(c) == type(Response()): return c
-            c = add_patient_drug_allergies(canvas=c, drug_allergies=patient_drug_allergies)
+            c = global_functions.add_oneline_text(can=c, text=patient_drug_allergies, pos=(26, 481), campName='Patient Drugs Allergies', lenMax=100, lenMin=5)
+            #c = add_patient_drug_allergies(canvas=c, drug_allergies=patient_drug_allergies)
             if type(c) == type(Response()): return c
-            c = add_patient_comorbidities(canvas=c, comorbidities=patient_comorbidities)
+            c = global_functions.add_oneline_text(can=c, text=patient_comorbidities, pos=(26, 449), campName='Patient Commorbidites', lenMax=100, lenMin=5)
+            #c = add_patient_comorbidities(canvas=c, comorbidities=patient_comorbidities)
             if type(c) == type(Response()): return c
-            c = add_current_illness_history(canvas=c, current_illness_history=current_illness_history)
+            c = global_functions.add_morelines_text(can=c, text=current_illness_history, initial_pos=(26, 418), decrease_ypos= 10, campName='Current Illness History', lenMax=1600, charPerLines=100, lenMin=10)
+            #c = add_current_illness_history(canvas=c, current_illness_history=current_illness_history)
             if type(c) == type(Response()): return c
-            c = add_initial_diagnostic_suspicion(canvas=c, ids=initial_diagnostic_suspicion)
+            c = global_functions.add_oneline_text(can=c, text=initial_diagnostic_suspicion, pos=(26, 244), campName='Initial Diagnostic Suspicion', lenMax=100, lenMin=5)
+            #c = add_initial_diagnostic_suspicion(canvas=c, ids=initial_diagnostic_suspicion)
             if type(c) == type(Response()): return c
-            c = add_doctorName(canvas=c, name=doctor_name)
+            c = global_functions.add_oneline_text(can=c, text=doctor_name, pos=(304, 195), campName='Doctor Name', lenMax=49, lenMin=7)
+            #c = add_doctorName(canvas=c, name=doctor_name)
             if type(c) == type(Response()): return c
-            c = add_doctorCNS(canvas=c, cns=doctor_cns)
+            c = global_functions.add_cns(can=c, cns=doctor_cns, pos=(304, 163), campName='Doctor CNS', formated=True)
+            #c = add_doctorCNS(canvas=c, cns=doctor_cns)
             if type(c) == type(Response()): return c
-            c = add_doctorCRM(canvas=c, crm=doctor_crm)
+            c = global_functions.add_oneline_text(can=c, text=doctor_crm, pos=(304, 131), campName='Doctor CRM', lenMax=13, lenMin=11)
+            #c = add_doctorCRM(canvas=c, crm=doctor_crm)
             if type(c) == type(Response()): return c
             
         except:

@@ -641,7 +641,7 @@ def test_empty_spaces_patient_mother_phonenumber():
     assert data_to_use(patient_mother_phonenumber='    ').status == Response(status=400).status
 
 def test_longValue_patient_mother_phonenumber():
-    assert data_to_use(patient_mother_phonenumber=int(lenghtTest[:12])).status == Response(status=400).status
+    assert data_to_use(patient_mother_phonenumber=int(lenghtTest[:14])).status == Response(status=400).status
 
 def test_wrong_type_patient_responsible_phonenumber():
     assert data_to_use(patient_responsible_phonenumber='131').status == Response(status=400).status
@@ -653,7 +653,7 @@ def test_empty_spaces_patient_responsible_phonenumber():
     assert data_to_use(patient_responsible_phonenumber='    ').status == Response(status=400).status
 
 def test_longValue_patient_responsible_phonenumber():
-    assert data_to_use(patient_responsible_phonenumber=int(lenghtTest[:12])).status == Response(status=400).status
+    assert data_to_use(patient_responsible_phonenumber=int(lenghtTest[:14])).status == Response(status=400).status
 
 def test_wrong_type_document_chart_number():
     assert data_to_use(document_chart_number='131').status == Response(status=400).status
