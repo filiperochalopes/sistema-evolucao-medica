@@ -591,8 +591,8 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, campName:str, nullable:bool=Fal
         Response(flask.Response): with the error
     """    
     try:
-        if nullable or len(str(uf.strip())) == 0:
-            if uf == None:
+        if nullable:
+            if uf == None or len(str(uf.strip())) == 0:
                 return can
         if type(uf) != type(str()):
             return Response(f'{campName} has to be string, if can be null, please add nullable option', status=400)
