@@ -5,7 +5,6 @@ from reportlab.pdfgen import canvas
 from PyPDF2  import PdfWriter
 import datetime
 
-ufs = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MS','MT','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
 
 def isCNSvalid(cns:int) -> bool:
     """verify if the CNS is valid
@@ -86,8 +85,7 @@ def ufExists(uf:str):
     """    
     if type(uf) != type(str()):
         return Response('The api has to use UF as string to validate, please check te function', status=500)
-    
-    return True if uf.upper() in ufs else False
+    return bool(re.match(r'^(\s*(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)?)$', uf))
 
 
 def isCNPJvalid(cnpj:str):
