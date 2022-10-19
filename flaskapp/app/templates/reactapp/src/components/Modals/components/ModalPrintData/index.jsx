@@ -27,15 +27,27 @@ const ModalPrintData = ({ confirmButton }) => {
         customType="gray-300"
         type="button"
         onClick={() =>
-          addModal(additionalDataScreen({ type: "evolutionForm" }))
+          addModal(additionalDataScreen({ type: "EvolutionForm" }))
         }
       >
         Folha de Evolução
       </Button>
-      <Button customType="gray-300" type="button">
+      <Button
+        customType="gray-300"
+        type="button"
+        onClick={() =>
+          addModal(additionalDataScreen({ type: "PrescriptionSheet" }))
+        }
+      >
         Folha Prescrição
       </Button>
-      <Button customType="gray-300" type="button">
+      <Button
+        customType="gray-300"
+        type="button"
+        onClick={() =>
+          addModal(additionalDataScreen({ type: "DischargeForm" }))
+        }
+      >
         Ficha de Alta
       </Button>
       <Button customType="gray-300" type="button">
