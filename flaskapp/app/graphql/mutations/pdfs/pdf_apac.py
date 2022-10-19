@@ -146,6 +146,8 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
 def add_secondary_procedures(can:canvas.Canvas, procedures:list):
     #verify if the type is list
     try:
+        if procedures == None:
+            return can
         if type(procedures) != type(list()):
             return Response('procedures has to be a list of dicts, like: [{"procedure_name":"Procedure Name", "procedure_code":"cod124235", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"another12", "quant":1}]', status=400)
         necessaryKeys = ["procedure_name", "procedure_code", "quant"]
@@ -161,6 +163,7 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list):
             #Verify if the value in the dics is the needed
             elif type(proc['procedure_name']) != type(str()) or type(proc['procedure_code']) != type(str()) or type(proc["quant"]) != type(int()):
                 return Response('The values in the keys "procedure_name", "procedure_code" has to be string and "quant" has to be int', status=400)
+
         
             #Verify if the dict has more keys than the needed
             for key in proc.keys():
@@ -177,16 +180,16 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list):
         #Add code fist with upper font
         can.setFont('Roboto-Mono', 10)
         for proc in procedures:
-            can = global_functions.add_oneline_text(can=can, text=proc['procedure_code'], pos=(codexpos, ypos), campName=f'{cont} Secondary Procedure Code', lenMax=10, lenMin=10, interval='  ', nullable=True)
+            can = global_functions.add_oneline_text(can=can, text=proc['procedure_code'], pos=(codexpos, ypos), campName=f'{cont} Secondary Procedure Code', lenMax=10, lenMin=10, interval='  ')
             if type(can) == type(Response()): return can
             ypos -= reduceY
 
         can.setFont('Roboto-Mono', 9)
         ypos = 495
         for proc in procedures:
-            can = global_functions.add_oneline_text(can=can, text=proc['procedure_name'], pos=(namexpos, ypos), campName=f'{cont} Secondary procedure name', lenMax=54, lenMin=7, nullable=True)
+            can = global_functions.add_oneline_text(can=can, text=proc['procedure_name'], pos=(namexpos, ypos), campName=f'{cont} Secondary procedure name', lenMax=54, lenMin=7)
             if type(can) == type(Response()): return can
-            can = global_functions.add_oneline_intnumber(can=can, number=proc['quant'], pos=(quantxpos, ypos), campName=f'{cont} Secondary Procedure Quantity', lenMax=8, lenMin=1, valueMin=1, valueMax=99999999, nullable=True)
+            can = global_functions.add_oneline_intnumber(can=can, number=proc['quant'], pos=(quantxpos, ypos), campName=f'{cont} Secondary Procedure Quantity', lenMax=8, lenMin=1, valueMin=1, valueMax=99999999)
             if type(can) == type(Response()): return can
             ypos -= reduceY
         return can

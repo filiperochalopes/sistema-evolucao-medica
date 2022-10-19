@@ -775,6 +775,9 @@ def test_shortValue_emission_org_code():
 
 # TEST secondaries_procedures
 # test wront type
+# test wront type procedure_code
+# test wront type procedure_name
+# test wront type quant
 # test empty value in keys
 # test empty spaces in keys
 # test empty value in procedure_code
@@ -792,11 +795,66 @@ def test_shortValue_emission_org_code():
 # test short values in quant
 
 
+def test_wrong_type_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=123).status == Response(status=400).status
+
+def test_wrong_type_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=123).status == Response(status=400).status
+
+def test_wrong_type_procedure_name_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":1313, "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
+
+def test_wrong_type_procedure_code_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":58, "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
+
+def test_wrong_type_quant_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":58, "quant":'5'}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
 
 
+def test_empty_value_keys_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, {"":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
 
+def test_empty_spaces_keys_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{" ":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, {"  ":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
 
+def test_empty_value_procedure_code_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":"", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
 
+def test_empty_value_procedure_name_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
+
+def test_empty_value_quant_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"", "procedure_code":"cod4521578", "quant":""}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
+
+def test_empty_spaces_quant_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"", "procedure_code":"cod4521578", "quant":"  "}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
+
+def test_empty_spaces_procedure_name_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"  ", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
+
+def test_empty_spaces_procedure_code_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":" ", "quant":1}]).status == Response(status=400).status
+
+def test_more_than_limit_dict_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1},{"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}, {"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
+
+def test_long_values_procedure_code_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":lenghtTest[:13], "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
+
+def test_long_values_procedure_name_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":lenghtTest[:60], "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
+
+def test_long_values_quant_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":int(lenghtTest[:10])}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
+
+def test_short_values_quant_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":0}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
+
+def test_short_values_procedure_name_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"Name", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
+
+def test_short_values_procedure_code_secondaries_procedures():
+    assert data_to_use(secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":"123as", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]).status == Response(status=400).status
 
 
 
