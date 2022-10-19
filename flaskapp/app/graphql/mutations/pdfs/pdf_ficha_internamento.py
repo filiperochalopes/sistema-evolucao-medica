@@ -112,11 +112,13 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
             #if patient_adressCEP is not None:
                 #c = add_patientAdressCEP(canvas=c, adressCEP=patient_adressCEP)
             if type(c) == type(Response()): return c
-            if patient_nationality is not None and str(patient_nationality).strip() != '':
-                c = add_patientNationality(canvas=c, nationality=patient_nationality)
+            c = global_functions.add_oneline_text(can=c, text=patient_nationality, pos=(27, 547), campName='Patient nationality', lenMax=25, lenMin=3, nullable=True)
+            #if patient_nationality is not None and str(patient_nationality).strip() != '':
+                #c = add_patientNationality(canvas=c, nationality=patient_nationality)
             if type(c) == type(Response()): return c
-            if patient_estimateWeight is not None:
-                c = add_patient_estimateWeight(canvas=c, estimateWeight=patient_estimateWeight)
+            c = global_functions.add_oneline_floatnumber(can=c, number=patient_estimateWeight, pos=(507, 547), campName='Patient Estimate Weight', lenMax=6, lenMin=1, valueMin=0.1, valueMax=500.10, nullable=True, ndigits=2)
+            #if patient_estimateWeight is not None:
+                #c = add_patient_estimateWeight(canvas=c, estimateWeight=patient_estimateWeight)
             if type(c) == type(Response()): return c
             if has_additional_healthInsurance is not None:
                 c = add_has_additional_healthInsurance(canvas=c, has_additional_healthInsurance=has_additional_healthInsurance)

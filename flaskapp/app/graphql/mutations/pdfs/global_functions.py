@@ -490,6 +490,75 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str
         return Response(f'Unknow error while adding {campName}', status=500)
 
 
+def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, campName:str, lenMax:int, valueMin:float, valueMax:float, nullable:bool=False, lenMin:int=0, interval:str='', centralized:bool=False, ndigits:int=2):
+    """Add one line number to canvas
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        number (float): number to add
+        pos (tuple): position in canvas
+        campName (str): camp name to Responses
+        lenMax (int): Maximum Lenght
+        valueMax (float): Maximum Value
+        valueMin (float): Minimun Value
+        nullable (bool, optional): Data can me None. Defaults to False.
+        lenMin (int, optional): Minimun Lenght. Defaults to 0.
+        interval (str): interval to add between every char
+        centralized (bool, optional): Data has to be centralized. Defaults to False.
+        ndigits (int, optional): Number of digits after , . Defaults to 2.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """    
+    try:
+        if nullable:
+            if number == None:
+                return can
+        if type(number) != type(float()) and type(number) != type(int()):
+            return Response(f'{campName} has to be float, if can be null, please add nullable option', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos) != type(tuple()):
+            return Response(f'pos has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(lenMax) != type(int()):
+            return Response(f'lenMax has to be int', status=500)
+        elif type(lenMin) != type(int()):
+            return Response(f'lenMin has to be int', status=500)
+        elif type(valueMax) != type(float()) and type(number) != type(int()):
+            return Response(f'valueMax has to be float', status=500)
+        elif type(valueMin) != type(float()) and type(number) != type(int()):
+            return Response(f'valueMin has to be float', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
+        elif type(centralized) != type(bool()):
+            return Response(f'centralized has to be bool', status=500)
+        elif type(ndigits) != type(int()):
+            return Response(f'ndigits has to be int', status=500)
+
+        # verify if number is in the need lenght
+        if valueMin > number or valueMax < number:
+            return Response(f"Unable to add {campName} because is bigger than {valueMax} and smaller than {valueMin}", status=400)
+        number = round(number, ndigits)
+        number = str(number)
+        if lenMin <= len(number) <= lenMax:
+            number = add_interval_to_data(data=number, interval=interval)
+            if centralized:
+                can = add_centralized_data(can=can, data=number, pos=pos)
+            else:
+                can = add_data(can=can, data=number, pos=pos)
+            return can
+        else:
+            return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)
+    except:
+        return Response(f'Unknow error while adding {campName}', status=500)
+
+
 def add_interval_to_data(data:str, interval:str):
     """add interval to data
 
