@@ -81,6 +81,7 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
             
         #Adding data that can be null
         try:
+            c = global_functions.add_morelines_text(can=c, text=orientations, initial_pos=(26, 312), decrease_ypos=10, campName='Orientations', lenMax=800, lenMin=10, charPerLines=100, nullable=True)
             if orientations is not None and str(orientations).strip() != "":
                 c = add_orientations(canvas=c, orientations=orientations)
             if type(c) == type(Response()): return c
@@ -471,7 +472,8 @@ if __name__ == "__main__":
         doctor_name='Doctor Name',
         doctor_cns=928976954930007,
         doctor_crm='CRM/UF 123456',
-        orientations='Do not jump'
+        #orientations='Do not jump'
+        orientations=lenghtTest[:700]
         )
     if type(output) == type(Response()): 
         print(output.response)
