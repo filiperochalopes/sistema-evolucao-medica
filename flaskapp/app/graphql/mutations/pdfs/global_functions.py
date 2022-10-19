@@ -507,8 +507,8 @@ def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, campName:str,nullable:bool=
             return Response(f'interval has to be str', status=500)
 
         # Verify if the cnpj is valid
+        cnpj = str(cnpj)
         if isCNPJvalid(cnpj):
-            cnpj = str(cnpj)
             # Add interval selected
             cnpj = add_interval_to_data(data=cnpj, interval=interval)
             if type(cnpj) == type(Response()): return cnpj
