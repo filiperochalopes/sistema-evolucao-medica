@@ -71,6 +71,7 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
         #Adding data that can be null
         try:
             c = global_functions.add_morelines_text(can=c, text=orientations, initial_pos=(26, 312), decrease_ypos=10, campName='Orientations', lenMax=800, lenMin=10, charPerLines=100, nullable=True)
+            if type(c) == type(Response()): return c
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)
         
