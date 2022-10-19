@@ -335,6 +335,50 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         return Response(f'Unknow error while adding {campName}', status=500)
 
 
+def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, nullable:bool=False, interval:str='', formated:bool=False):
+    """_summary_
+
+    Args:
+        can (canvas.Canvas):  canvas to use
+        number (int): number to add
+        pos (tuple): position in canvas
+        campName (str): camp name to Responses
+        nullable (bool, optional):  Data can me None. Defaults to False.
+        interval (str, optional): interval to add between every char
+        formated (bool, optional): format phone number to (xx) xxxxx-xxxx. Defaults to False.
+    """
+    try:
+        if nullable:
+            if number == None:
+                return can
+        if type(number) != type(int()):
+            return Response(f'{campName} has to be int, if can be null, please add nullable option', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos) != type(tuple()):
+            return Response(f'pos has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
+        elif type(formated) != type(bool()):
+            return Response(f'formated has to be bool', status=500)
+        
+        number = str(number)
+        if 10 <= len(number) <= 11:
+            if formated:
+                number = '(' + number[:2] + ') ' + number[2:7] + '-' + number[7:]
+
+            can = add_data(can=can, data=number, pos=pos)
+            return can
+        else:
+            return Response(f"Unable to add {campName} because is longer than {10} characters or smaller than {11}", status=400)
+    except:
+        return Response(f'Unknow error while adding {campName}', status=500)
+
+
 
 def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, lenMax:int, valueMin:int, valueMax:int, nullable:bool=False, lenMin:int=0, interval:str='', centralized:bool=False):
     """Add one line number to canvas
