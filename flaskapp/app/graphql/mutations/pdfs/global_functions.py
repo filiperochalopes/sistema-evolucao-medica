@@ -520,7 +520,7 @@ def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, campName:str,nullable:bool=
         return Response(f'Unknow error while adding {campName}', status=500)
 
 
-def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, campName:str,nullable:bool=False, formated:bool=False):
+def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, campName:str, nullable:bool=False, formated:bool=False):
     """Add cnae to canvas
 
     Args:
@@ -613,7 +613,7 @@ def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, campName:str, nullable:bool
         return Response(f'Unknow error while adding {campName}', status=500)
 
 
-def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, square_size:tuple, campName:str, nullable:bool=False):
+def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, campName:str, square_size:tuple=(9,9), nullable:bool=False):
     """Add sex square to canvas
 
     Args:
@@ -621,7 +621,7 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, sq
         sex (str): sex select
         pos_male (tuple): male option position
         pos_fem (tuple): female option position
-        square_size (tuple): square size
+        square_size (tuple): square size. Defaults to (9,9).
         campName (str): camp name
         nullable (bool, optional): can be null. Defaults to False.
 
@@ -871,6 +871,62 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
             return Response('The document was not CPF, CNS or RG', status=400)
     except:
         return Response(f'Unknow error while adding {campName} Document', status=500)
+
+
+def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, options_positions:tuple, campName:str, square_size:tuple=(9,9), nullable:bool=False):
+    """Verifiy option choose and add to canvas
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        option (str): option select, will be upperCased
+        valid_options (list): list of valid options, recommendend UPPER (str)
+        options_positions (tuple): tuple of tuples with positions to every option
+        square_size (tuple): square size. Defaults to (9,9).
+        campName (str): camp name
+        nullable (bool, optional): can be null. Defaults to False.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """    
+    try:
+        if nullable:
+            if option == None or len(str(option).strip()) == 0:
+                return can
+        if type(option) != type(str()):
+            return Response(f'{campName} has to be str', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(valid_options) != type(list()):
+            return Response(f'valid_options has to be list', status=500)
+        elif type(options_positions) != type(tuple()):
+            return Response(f'options_positions has to be tuple', status=500)
+        elif type(square_size) != type(tuple()):
+            return Response(f'square_size has to be tuple', status=500)
+        elif type(campName) != type(str()):
+            return Response(f'campName has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif len(valid_options) != len(options_positions):
+            return Response(f'valid_options and options_positions has to be the same size', status=500)
+
+
+        option = option.upper()
+        for opt in range(0, len(valid_options)):
+            if option == valid_options[opt]:
+                can = add_square(can=can, pos=options_positions[opt], size=square_size)
+                return can
+        return Response(f'Cannot add {campName} because the option choosed does not exists', status=400)
+    except:
+        return Response(f'Unkown error while adding {campName}', status=500)
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":

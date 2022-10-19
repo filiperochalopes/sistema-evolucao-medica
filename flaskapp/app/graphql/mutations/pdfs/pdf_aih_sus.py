@@ -171,8 +171,9 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             #    c = add_cid10_associated_causes(canvas=c, cid10=cid10_associated_causes)
             if type(c) == type(Response()): return c
 ###############################################################################
-            if acident_type is not None and str(acident_type).strip() != "":
-                c = add_acident_type(canvas=c, acident=acident_type)
+            c = global_functions.add_markable_square(can=c, option=acident_type, valid_options=['TRAFFIC', 'WORK', 'WORK_PATH'], options_positions=((38,184),(38,170), (38,156)), square_size=(9,9), campName='Acident Type', nullable=True)
+            #if acident_type is not None and str(acident_type).strip() != "":
+            #    c = add_acident_type(canvas=c, acident=acident_type)
             if type(c) == type(Response()): return c
 #######################################################################
             #Data that change Font Size
@@ -1526,7 +1527,7 @@ if __name__ == "__main__":
         patient_responsible_phonenumber=8564721598, 
         secondary_cid10='A01',
         cid10_associated_causes='A02',
-        acident_type='work_path', 
+        acident_type='traffic', 
         insurance_company_cnpj=37549670000171, 
         insurance_company_ticket_number=123450123456, 
         insurance_company_series='Insurn',
