@@ -30,7 +30,7 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
         # not null data
         try:
             # change font size to datetime            
-            c = global_functions.add_datetime(can=c, date=documentDatetime, pos=(400, 740), campName='Document Datetime', hours=True, formated=True)
+            c = global_functions.add_datetime(can=c, date=documentDatetime, pos=(410, 740), campName='Document Datetime', hours=True, formated=True)
             if type(c) == type(Response()): return c      
             
             
