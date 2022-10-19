@@ -41,6 +41,8 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
             c, pags_quant = add_exams(canvas=c, exams=exams)
             # verify if c is a error at some point
             if type(c) == type(Response()): return c
+
+            #Add to multiple pages
             decreaseYpos = 280
             patient_name_ypos = 775
             patient_cns_ypos = 765
@@ -50,11 +52,17 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
             prof_solicitor_ypos = 595
             for x in range(pags_quant):
                 c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(7, patient_name_ypos), campName='Patient Name', lenMax=70, lenMin=7)
+                if type(c) == type(Response()): return c
                 c = global_functions.add_cns(can=c, cns=patient_cns, pos=(450, patient_cns_ypos), campName='Patient CNS',formated=True)
+                if type(c) == type(Response()): return c
                 c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(441, patient_birthday_ypos), campName='Patient Birthday', hours=False, formated=True)
+                if type(c) == type(Response()): return c
                 c = global_functions.add_morelines_text(can=c, text=patient_adress, initial_pos=(7, patient_adress_ypos), decrease_ypos=10, campName='Patient Adress', lenMax=216, lenMin=7, charPerLines=108)
+                if type(c) == type(Response()): return c
                 c = global_functions.add_morelines_text(can=c, text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, campName='Solicitation Reason', lenMax=216, lenMin=7, charPerLines=108)
+                if type(c) == type(Response()): return c
                 c = global_functions.add_oneline_text(can=c, text=prof_solicitor, pos=(7, prof_solicitor_ypos), campName='Professional Solicitor Name', lenMax=29, lenMin=7)
+                if type(c) == type(Response()): return c
 
                 #Decrese ypos in all lines to complete the page
                 patient_name_ypos -= decreaseYpos
@@ -85,18 +93,38 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
 
         #Adding data that can be null
         try:
-            if prof_authorized is not None and str(prof_authorized).strip() != "":
-                c = add_prof_authorized(canvas=c, prof=prof_authorized)
+            prof_authorized_ypos = 595
+            document_pacient_name_ypos = 605
+            solicitation_datetime_ypos = 572
+            autorization_datetime_ypos = 572
+            document_pacient_date_ypos = 572
+            for x in range(pags_quant):
+                c = global_functions.add_oneline_text(can=c, text=prof_authorized, pos=(174, prof_authorized_ypos), campName='Professional Authorized Name', lenMax=29, lenMin=7, nullable=True)
+                if type(c) == type(Response()): return c
+                c = global_functions.add_oneline_text(can=c, text=document_pacient_name, pos=(340, document_pacient_name_ypos), campName='Document Pacient Name', lenMax=46, lenMin=7, nullable=True)
+                if type(c) == type(Response()): return c
+                c = global_functions.add_datetime(can=c, date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), campName='Solicitation Datetime', hours=False, formated=True)
+                c = global_functions.add_datetime(can=c, date=autorization_datetime, pos=(195, autorization_datetime_ypos), campName='Authorization Datetime', hours=False, formated=True)
+                c = global_functions.add_datetime(can=c, date=document_pacient_date, pos=(362, document_pacient_date_ypos), campName='Document Pacient Datetime', hours=False, formated=True)
+
+                prof_authorized_ypos -= decreaseYpos
+                document_pacient_name_ypos -= decreaseYpos
+                solicitation_datetime_ypos -= decreaseYpos
+                autorization_datetime_ypos -= decreaseYpos
+                document_pacient_date_ypos -= decreaseYpos
+
+
+            #if prof_authorized is not None and str(prof_authorized).strip() != "":
+            #    c = add_prof_authorized(canvas=c, prof=prof_authorized)
             if type(c) == type(Response()): return c
-            if document_pacient_name is not None and str(document_pacient_name).strip() != "":
-                c = add_document_pacient_name(canvas=c, name=document_pacient_name)
+            #if document_pacient_name is not None and str(document_pacient_name).strip() != "":
+            #    c = add_document_pacient_name(canvas=c, name=document_pacient_name)
             if type(c) == type(Response()): return c
-            
-            if solicitation_datetime is not None:
-                c = add_solicitation_datetime(canvas=c, solicit=solicitation_datetime)
+            #if solicitation_datetime is not None:
+            #    c = add_solicitation_datetime(canvas=c, solicit=solicitation_datetime)
             if type(c) == type(Response()): return c
-            if autorization_datetime is not None:
-                c = add_autorization_datetime(canvas=c, autori=autorization_datetime)
+            #if autorization_datetime is not None:
+            #    c = add_autorization_datetime(canvas=c, autori=autorization_datetime)
             if type(c) == type(Response()): return c
             if document_pacient_date is not None:
                 c = add_document_pacient_date(canvas=c, date=document_pacient_date)
