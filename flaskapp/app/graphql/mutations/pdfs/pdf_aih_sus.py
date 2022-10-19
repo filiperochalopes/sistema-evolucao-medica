@@ -27,24 +27,33 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
         # Writing all data in respective fields
         # not null data
         try:
-            c = add_establishment_solitc_name(canvas=c, name=establishment_solitc_name)
+            c = global_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(25, 750), campName='Establishment Solicit Name', lenMax=82, lenMin=8)
             if type(c) == type(Response()): return c
-            c = add_establishment_solitc_cnes(canvas=c, cnes=establishment_solitc_cnes)
+            #c = add_establishment_solitc_name(canvas=c, name=establishment_solitc_name)
             if type(c) == type(Response()): return c
-            c = add_establishment_exec_name(canvas=c, name=establishment_exec_name)
+            c = global_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(470, 750), campName='Establishment Solict CNES', lenMax=7, lenMin=7,valueMin=0, valueMax=99999999, interval='  ')
+            #c = add_establishment_solitc_cnes(canvas=c, cnes=establishment_solitc_cnes)
             if type(c) == type(Response()): return c
-            c = add_establishment_exec_cnes(canvas=c, cnes=establishment_exec_cnes)
+            c = global_functions.add_oneline_text(can=c, text=establishment_exec_name, pos=(25, 726), campName='Establishment Exec Name', lenMax=82, lenMin=8)
+            #c = add_establishment_exec_name(canvas=c, name=establishment_exec_name)
             if type(c) == type(Response()): return c
-            c = add_patient_name(canvas=c, name=patient_name)
+            c = global_functions.add_oneline_intnumber(can=c, number=establishment_exec_cnes, pos=(470, 726), campName='Establishment Exec CNES', lenMax=7, lenMin=7,valueMin=0, valueMax=99999999, interval='  ')
+            #c = add_establishment_exec_cnes(canvas=c, cnes=establishment_exec_cnes)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(25, 683), campName='Patient Name', lenMax=79, lenMin=7)
+            #c = add_patient_name(canvas=c, name=patient_name)
             if type(c) == type(Response()): return c
             #Data that change Font Size
 
             c.setFont('Roboto-Mono', 10)
-            c = add_patient_cns(canvas=c, cns=patient_cns)
+            c = global_functions.add_cns(can=c, cns=patient_cns, pos=(28, 658), campName='Patient CNS', interval='  ')
+            #c = add_patient_cns(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
-            c = add_patient_adressCEP(canvas=c, cep=patient_adressCEP)
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressCEP, pos=(482, 566), campName='Patient Adress CEP', lenMax=8, lenMin=8, valueMin=0, valueMax=99999999, nullable=True, interval=' ')
+            #c = add_patient_adressCEP(canvas=c, cep=patient_adressCEP)
             if type(c) == type(Response()): return c
-            c = add_procedure_code(canvas=c, code=procedure_code)
+            c = global_functions.add_oneline_text(can=c, text=procedure_code, pos=(404, 269), campName='Procedure Code', lenMax=10, lenMin=10, interval='  ')
+            #c = add_procedure_code(canvas=c, code=procedure_code)
             if type(c) == type(Response()): return c
             
             c.setFont('Roboto-Mono', 9)
