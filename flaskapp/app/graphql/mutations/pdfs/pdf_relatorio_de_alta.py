@@ -26,38 +26,51 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
         pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
-        c.setFont('Roboto-Mono', 9)
+        c.setFont('Roboto-Mono', 12)
     
         # Writing all data in respective fields
         # not null data
         try:
-            c = add_patientName(canvas=c, name=patient_name)
+            c = global_functions.add_datetime(can=c, date=documentDatetime, pos=(410, 740), campName='Document Datetime', hours=True, formated=True)
+            #c = add_documentDatetime(canvas=c, docDatetime=documentDatetime)
+            if type(c) == type(Response()): return c          
+            
+            
+            # change font size to normal            
+            c.setFont('Roboto-Mono', 9)            
+            c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(27, 674), campName='Patient Name', lenMax=64, lenMin=7)
+            #c = add_patientName(canvas=c, name=patient_name)
             # verify if c is a error at some point
             if type(c) == type(Response()): return c
-            c = add_patientCNS(canvas=c, cns=patient_cns)
+            c = global_functions.add_cns(can=c, cns=patient_cns, pos=(393, 674), campName='Patient CNS', formated=True)
+            #c = add_patientCNS(canvas=c, cns=patient_cns)
             if type(c) == type(Response()): return c
-            # change font size to datetime            
-            c.setFont('Roboto-Mono', 13)            
-            c = add_documentDatetime(canvas=c, docDatetime=documentDatetime)
-            if type(c) == type(Response()): return c            
-            c.setFont('Roboto-Mono', 9)            
-            c = add_patientBirthday(canvas=c, birthday=patient_birthday)
+            c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(27, 642), campName='Patient Birthday', hours=False, formated=True)
+            #c = add_patientBirthday(canvas=c, birthday=patient_birthday)
             if type(c) == type(Response()): return c
-            c = add_patient_sex(canvas=c, sex=patient_sex)
+            c = global_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(117, 640), pos_fem=(147, 640), campName='Patient Sex', square_size=(9,9))
+            #c = add_patient_sex(canvas=c, sex=patient_sex)
             if type(c) == type(Response()): return c
-            c = add_patientMotherName(canvas=c, motherName=patient_motherName)
+            c = global_functions.add_oneline_text(can=c, text=patient_motherName, pos=(194, 642), campName='Patient Mother Name', lenMax=69, lenMin=7)
+            #c = add_patientMotherName(canvas=c, motherName=patient_motherName)
             if type(c) == type(Response()): return c
-            c = add_patientDocument(canvas=c, document=patient_document)
+            c = global_functions.add_document_cns_cpf_rg(can=c, document=patient_document, pos_square_cpf=(24, 608), pos_square_rg=(58,608), pos_rg=(92, 610), pos_cpf=(92, 610),campName='Pacient Document', formated=True)
+            #c = add_patientDocument(canvas=c, document=patient_document)
             if type(c) == type(Response()): return c
-            c = add_patientAdress(canvas=c, adress=patient_adress)
+            c = global_functions.add_oneline_text(can=c, text=patient_adress, pos=(230, 610), campName='Patient Adress', lenMax=63, lenMin=7)
+            #c = add_patientAdress(canvas=c, adress=patient_adress)
             if type(c) == type(Response()): return c
-            c = add_doctorName(canvas=c, name=doctor_name)
+            c = global_functions.add_oneline_text(can=c, text=doctor_name, pos=(304, 195), campName='Doctor Name', lenMax=49, lenMin=7)
+            #c = add_doctorName(canvas=c, name=doctor_name)
             if type(c) == type(Response()): return c
-            c = add_doctorCNS(canvas=c, cns=doctor_cns)
+            c = global_functions.add_cns(can=c, cns=doctor_cns, pos=(304, 163), campName='Doctor CNS', formated=True)
+            #c = add_doctorCNS(canvas=c, cns=doctor_cns)
             if type(c) == type(Response()): return c
-            c = add_doctorCRM(canvas=c, crm=doctor_crm)
+            c = global_functions.add_oneline_text(can=c, text=doctor_crm, pos=(304, 131), campName='Doctor CRM', lenMax=13, lenMin=11)
+            #c = add_doctorCRM(canvas=c, crm=doctor_crm)
             if type(c) == type(Response()): return c
-            c = add_evolution(canvas=c, evol=evolution)
+            c = global_functions.add_morelines_text(can=c, text=evolution, initial_pos=(26, 540), decrease_ypos=10, campName='Evolution Resume', lenMax=2100, lenMin=10, charPerLines=100)
+            #c = add_evolution(canvas=c, evol=evolution)
             if type(c) == type(Response()): return c
         
         except:
