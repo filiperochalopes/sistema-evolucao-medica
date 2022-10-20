@@ -1,15 +1,22 @@
 run:
-	docker-compose up -d --build
+	docker-compose up --build
 logs:
 	docker-compose logs -f
 seed:
-	docker exec -it mapa_ga_filipelopesmedbr_flaskapp bash -c "FLASK_APP=app/__init__.py && \
+	docker exec -it evolucao_hospitalar_flaskapp bash -c "FLASK_APP=app/__init__.py && \
 	flask seed"
 terminal:
-	docker exec -it mapa_ga_filipelopesmedbr_flaskapp bash
+	docker exec -it evolucao_hospitalar_flaskapp bash
 shell:
-	docker exec -it mapa_ga_filipelopesmedbr_flaskapp bash -c "flask shell"
+	docker exec -it evolucao_hospitalar_flaskapp bash -c "flask shell"
 migrate:
-	docker exec -it mapa_ga_filipelopesmedbr_flaskapp bash -c "flask db upgrade"
+	docker exec -it evolucao_hospitalar_flaskapp bash -c "flask db upgrade"
 makemigrations:
-	docker exec -it mapa_ga_filipelopesmedbr_flaskapp bash -c 'flask db migrate -m "$(m)"'
+	docker exec -it evolucao_hospitalar_flaskapp bash -c 'flask db migrate -m "$(m)"'
+reset_db:
+	docker exec -it evolucao_hospitalar_flaskapp bash -c ' \
+		rm -rf migrations && \
+		rm app/local.db && \
+		flask db init && \
+		flask db migrate -m "Initial migration" && \
+		flask db upgrade'

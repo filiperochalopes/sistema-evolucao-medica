@@ -27,12 +27,14 @@ make migrate
 
 ```sh
 make migrate
-make comment="update some table" makemigrations
+make m="update some table" makemigrations
 ```
 
-## Utilizando o alembic no
+## Utilizando o alembic no ambiente de desenvolvimento
 
 ```sh
+# Abrindo terminal no container flask
+make terminal
 flask db init
 flask db migrate -m "Initial migration"
 flask db upgrade

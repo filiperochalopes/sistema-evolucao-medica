@@ -1,7 +1,7 @@
 version: "3"
 services:
   flaskapp:
-    container_name: mapa_ga_filipelopesmedbr_flaskapp
+    container_name: evolucao_hospitalar_flaskapp
     restart: always
     build:
       context: ./flaskapp
@@ -10,10 +10,11 @@ services:
       - ./flaskapp:/app
     environment:
       - SECRET_KEY=${SECRET_KEY}
+      - MASTER_KEY=${MASTER_KEY}
     ports:
       - "${FLASKAPP_PORT}:5000"
   nginx:
-    container_name: mapa_ga_filipelopesmedbr_nginx
+    container_name: evolucao_hospitalar_nginx
     restart: always
     build:
       context: .
