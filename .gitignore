@@ -2,6 +2,5 @@ __pycache__
 .env
 sqlite3.db
 db.sqlite3
-flaskapp/app/graphql/mutations/pdfs/pythrun.py
 flaskapp/app/assets/pdfs_templates/*
 flaskapp/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/*
