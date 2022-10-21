@@ -3,4 +3,13 @@ __pycache__
 sqlite3.db
 db.sqlite3
 flaskapp/app/graphql/mutations/pdfs/pythrun.py
-flaskapp/app/assets/pdfs_templates/*
+flaskapp/app/assets/pdfs_templates/aih_sus.pdf
+flaskapp/app/assets/pdfs_templates/apac.pdf
+flaskapp/app/assets/pdfs_templates/one_exam_request.pdf
+flaskapp/app/assets/pdfs_templates/ficha_de_internamento_hmlem.pdf
+flaskapp/app/assets/pdfs_templates/one_page_prescricao_medica.pdf
+flaskapp/app/assets/pdfs_templates/two_exam_request.pdf
+flaskapp/app/assets/pdfs_templates/two_pages_precricao_medica_template.pdf
+flaskapp/app/assets/pdfs_templates/three_exam_request.pdf
+flaskapp/app/assets/pdfs_templates/relatorio_de_alta.pdf
+flaskapp/app/assets/pdfs_templates/solicitacao_de_exames.pdf
