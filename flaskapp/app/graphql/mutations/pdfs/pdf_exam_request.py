@@ -145,29 +145,29 @@ def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]
         #Calculate how many pags will have, ceil function round to upper int
         pags_quant = ceil(len(exams)/324)
         CHAR_PER_LINES = 108
-        brokeLinexTimes = int(len(exams)/CHAR_PER_LINES)
-        currentLine = CHAR_PER_LINES
-        lastline = 0
-        yposition = 649
+        broke_lines_times = int(len(exams)/CHAR_PER_LINES)
+        current_line = CHAR_PER_LINES
+        last_line = 0
+        y_position = 649
         cont = 0
         for x in range(pags_quant):
-            while brokeLinexTimes >= 0:
-                str_exams = exams[lastline:currentLine]
-                canvas = global_functions.add_data(can=canvas, data=str_exams, pos=(7, yposition))
-                lastline = currentLine
-                currentLine += CHAR_PER_LINES
-                brokeLinexTimes -= 1
+            while broke_lines_times >= 0:
+                str_exams = exams[last_line:current_line]
+                canvas = global_functions.add_data(can=canvas, data=str_exams, pos=(7, y_position))
+                last_line = current_line
+                current_line += CHAR_PER_LINES
+                broke_lines_times -= 1
                 cont += 1
                 if cont%3 == 0:
                     break
-                yposition -= 10
-            yposition -= 260
+                y_position -= 10
+            y_position -= 260
 
         del(str_exams)
-        del(brokeLinexTimes)
-        del(currentLine)
-        del(lastline)
-        del(yposition)
+        del(broke_lines_times)
+        del(current_line)
+        del(last_line)
+        del(y_position)
         return canvas, pags_quant
     except:
         return Response('Unknow error while adding Solicited Exams', status=500), 0
