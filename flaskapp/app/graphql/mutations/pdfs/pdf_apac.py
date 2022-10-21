@@ -31,29 +31,29 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
         # Writing all data in respective fields
         # not null data
         try:
-            c = global_functions.add_cns(can=c, cns=patient_cns, pos=(36, 678), campName='Patient CNS', interval='  ')
+            c = global_functions.add_cns(can=c, cns=patient_cns, pos=(36, 678), camp_name='Patient CNS', interval='  ')
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=main_procedure_code, pos=(36, 542), campName='Main Procedure Code', lenMax=10, lenMin=10, interval='  ')
+            c = global_functions.add_oneline_text(can=c, text=main_procedure_code, pos=(36, 542), camp_name='Main Procedure Code', len_max=10, len_min=10, interval='  ')
             if type(c) == type(Response()): return c
 
             c.setFont('Roboto-Mono', 9)
-            c = global_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(36, 742), campName='Establishment Solict Name', lenMax=77, lenMin=7)
+            c = global_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(36, 742), camp_name='Establishment Solict Name', len_max=77, len_min=7)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(36, 702), campName='Patient Name', lenMax=67, lenMin=7)
+            c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(36, 702), camp_name='Patient Name', len_max=67, len_min=7)
             if type(c) == type(Response()): return c
-            c = global_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(423, 699), pos_fem=(456, 699), campName='Patient Sex', square_size=(9,9))
+            c = global_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(423, 699), pos_fem=(456, 699), camp_name='Patient Sex', square_size=(9,9))
             if type(c) == type(Response()): return c
 
             
-            c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(315, 678), campName='Patient Birthday', hours=False, interval='  ', formated=False)
+            c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(315, 678), camp_name='Patient Birthday', hours=False, interval='  ', formated=False)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(36, 584), campName='Patient Adress City', lenMax=58, lenMin=7)
+            c = global_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(36, 584), camp_name='Patient Adress City', len_max=58, len_min=7)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=main_procedure_name, pos=(220, 542), campName='Main Procedure Name', lenMax=50, lenMin=7)
+            c = global_functions.add_oneline_text(can=c, text=main_procedure_name, pos=(220, 542), camp_name='Main Procedure Name', len_max=50, len_min=7)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=main_procedure_quant, pos=(508, 542), campName='Main Procedure Quantity', lenMax=8, lenMin=1, valueMin=1, valueMax=99999999)
+            c = global_functions.add_oneline_intnumber(can=c, number=main_procedure_quant, pos=(508, 542), camp_name='Main Procedure Quantity', len_max=8, len_min=1, valueMin=1, valueMax=99999999)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(468, 742), campName='Establishment Solict CNES', lenMax=7, lenMin=7,valueMin=0, valueMax=99999999)
+            c = global_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(468, 742), camp_name='Establishment Solict CNES', len_max=7, len_min=7,valueMin=0, valueMax=99999999)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -64,64 +64,64 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
         #Adding data that can be null
         try:
             c.setFont('Roboto-Mono', 11)
-            c = global_functions.add_oneline_intnumber(can=c, number=establishment_exec_cnes, pos=(450, 28), campName='Establishment Exec CNES', lenMax=7, lenMin=7,valueMin=0, valueMax=99999999, interval=' ', nullable=True)
+            c = global_functions.add_oneline_intnumber(can=c, number=establishment_exec_cnes, pos=(450, 28), camp_name='Establishment Exec CNES', len_max=7, len_min=7,valueMin=0, valueMax=99999999, interval=' ', nullable=True)
             if type(c) == type(Response()): return c
             c.setFont('Roboto-Mono', 9)
-            c = global_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 654), campName='Patient Mother Name', lenMax=67, lenMin=7, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 654), camp_name='Patient Mother Name', len_max=67, len_min=7, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_phonenumber(can=c, number=patient_mother_phonenumber, pos=(409, 650), campName='Patient Mother Phone Number', nullable=True, interval='  ')
+            c = global_functions.add_phonenumber(can=c, number=patient_mother_phonenumber, pos=(409, 650), camp_name='Patient Mother Phone Number', nullable=True, interval='  ')
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_responsible_name, pos=(36, 630), campName='Patient Responsible Name', lenMax=67, lenMin=7, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=patient_responsible_name, pos=(36, 630), camp_name='Patient Responsible Name', len_max=67, len_min=7, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_phonenumber(can=c, number=patient_responsible_phonenumber, pos=(409, 626), campName='Patient Responsible Phone Number', nullable=True, interval='  ')
+            c = global_functions.add_phonenumber(can=c, number=patient_responsible_phonenumber, pos=(409, 626), camp_name='Patient Responsible Phone Number', nullable=True, interval='  ')
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_adress, pos=(36, 608), campName='Patient Adress', lenMax=97, lenMin=7, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=patient_adress, pos=(36, 608), camp_name='Patient Adress', len_max=97, len_min=7, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_color, pos=(404, 678), campName='Patient Color', lenMax=10, lenMin=4, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=patient_color, pos=(404, 678), camp_name='Patient Color', len_max=10, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_ethnicity, pos=(470, 678), campName='Patient Ehinicity', lenMax=17, lenMin=4, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=patient_ethnicity, pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressCEP, pos=(476, 582), campName='Patient Adress CEP', lenMax=8, lenMin=8, valueMin=0, valueMax=99999999, nullable=True, interval=' ')
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressCEP, pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, valueMin=0, valueMax=99999999, nullable=True, interval=' ')
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=document_chart_number, pos=(483, 702), campName='Document Chart Number', lenMax=14, lenMin=1, valueMin=0, valueMax=99999999999999, nullable=True)
+            c = global_functions.add_oneline_intnumber(can=c, number=document_chart_number, pos=(483, 702), camp_name='Document Chart Number', len_max=14, len_min=1, valueMin=0, valueMax=99999999999999, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=patient_adress_city_IBGEcode, pos=(370, 582), campName='Patient Adress City IBGE code', lenMax=7, lenMin=7, valueMin=0, valueMax=9999999, nullable=True)
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_adress_city_IBGEcode, pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, valueMin=0, valueMax=9999999, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_UF(can=c, uf=patient_adressUF, pos=(443, 582), campName='Patient Adress UF', nullable=True, interval='  ')
+            c = global_functions.add_UF(can=c, uf=patient_adressUF, pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=procedure_justification_description, pos=(36, 344), campName='Procedure Justification Description', lenMax=55, lenMin=4, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=procedure_justification_description, pos=(36, 344), camp_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=procedure_justification_main_cid10, pos=(352, 344), campName='Procedure Justification main CID10', lenMax=4, lenMin=3, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=procedure_justification_main_cid10, pos=(352, 344), camp_name='Procedure Justification main CID10', len_max=4, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=procedure_justification_sec_cid10, pos=(420, 344), campName='Procedure Justification secondary CID10', lenMax=4, lenMin=3, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=procedure_justification_sec_cid10, pos=(420, 344), camp_name='Procedure Justification secondary CID10', len_max=4, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=procedure_justification_associated_cause_cid10, pos=(505, 344), campName='Procedure Justification Associated Causes CID10', lenMax=4, lenMin=3, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=procedure_justification_associated_cause_cid10, pos=(505, 344), camp_name='Procedure Justification Associated Causes CID10', len_max=4, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=establishment_exec_name, pos=(36, 30), campName='Establishment Exec Name', lenMax=71, lenMin=5, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=establishment_exec_name, pos=(36, 30), camp_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 204), campName='Profissional Solicitor Name', lenMax=48, lenMin=5, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 204), camp_name='Profissional Solicitor Name', len_max=48, len_min=5, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=autorization_prof_name, pos=(36, 136), campName='Profissional Authorizator Name', lenMax=46, lenMin=5, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=autorization_prof_name, pos=(36, 136), camp_name='Profissional Authorizator Name', len_max=46, len_min=5, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=emission_org_code, pos=(290, 136), campName='Emission Org Code', lenMax=16, lenMin=2, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=emission_org_code, pos=(290, 136), camp_name='Emission Org Code', len_max=16, len_min=2, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_datetime(can=c, date=solicitation_datetime, pos=(310, 204), campName='Solicitation Datetime', hours=False, interval='  ', formated=False, nullable=True)
+            c = global_functions.add_datetime(can=c, date=solicitation_datetime, pos=(310, 204), camp_name='Solicitation Datetime', hours=False, interval='  ', formated=False, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_datetime(can=c, date=autorizaton_datetime, pos=(36, 68), campName='Authorization Datetime', hours=False,formated=True, nullable=True)
+            c = global_functions.add_datetime(can=c, date=autorizaton_datetime, pos=(36, 68), camp_name='Authorization Datetime', hours=False,formated=True, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_datetime(can=c, date=signature_datetime, pos=(154, 68), campName='Signature Datetime', hours=False, interval='  ', formated=False, nullable=True)
+            c = global_functions.add_datetime(can=c, date=signature_datetime, pos=(154, 68), camp_name='Signature Datetime', hours=False, interval='  ', formated=False, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_datetime(can=c, date=validity_period_start, pos=(402, 66), campName='Validity Period Start', hours=False, interval='  ', formated=False, nullable=True)
+            c = global_functions.add_datetime(can=c, date=validity_period_start, pos=(402, 66), camp_name='Validity Period Start', hours=False, interval='  ', formated=False, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_datetime(can=c, date=validity_period_end, pos=(492, 66), campName='Validity Period End', hours=False, interval='  ', formated=False, nullable=True)
+            c = global_functions.add_datetime(can=c, date=validity_period_end, pos=(492, 66), camp_name='Validity Period End', hours=False, interval='  ', formated=False, nullable=True)
             if type(c) == type(Response()): return c
             c = add_secondary_procedures(can=c, procedures=secondaries_procedures)
             if type(c) == type(Response()): return c
-            c = global_functions.add_morelines_text(can=c, text=procedure_justification_comments, initial_pos=(36, 318), decrease_ypos= 10, campName='Procedura justification Comments', lenMax=776, charPerLines=97, lenMin=5, nullable=True)
+            c = global_functions.add_morelines_text(can=c, text=procedure_justification_comments, initial_pos=(36, 318), decrease_ypos= 10, camp_name='Procedura justification Comments', len_max=776, char_per_lines=97, len_min=5, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_document_cns_cpf_rg(can=c, document=prof_solicitor_document, pos_square_cpf=(103, 180), pos_square_cns=(51,180), pos_cns=(151, 181), pos_cpf=(151, 181),campName='Professional Solicitor Document', interval='  ',nullable=True)
+            c = global_functions.add_document_cns_cpf_rg(can=c, document=prof_solicitor_document, pos_square_cpf=(103, 180), pos_square_cns=(51,180), pos_cns=(151, 181), pos_cpf=(151, 181),camp_name='Professional Solicitor Document', interval='  ',nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_document_cns_cpf_rg(can=c, document=autorizaton_prof_document, pos_square_cpf=(103, 104), pos_square_cns=(51,104), pos_cns=(149, 105), pos_cpf=(151, 105),campName='Professional Authorizator Document', interval='  ',nullable=True)
+            c = global_functions.add_document_cns_cpf_rg(can=c, document=autorizaton_prof_document, pos_square_cpf=(103, 104), pos_square_cns=(51,104), pos_cns=(149, 105), pos_cpf=(151, 105),camp_name='Professional Authorizator Document', interval='  ',nullable=True)
             if type(c) == type(Response()): return c
         
         except:
@@ -180,16 +180,16 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list):
         #Add code fist with upper font
         can.setFont('Roboto-Mono', 10)
         for proc in procedures:
-            can = global_functions.add_oneline_text(can=can, text=proc['procedure_code'], pos=(codexpos, ypos), campName=f'{cont} Secondary Procedure Code', lenMax=10, lenMin=10, interval='  ')
+            can = global_functions.add_oneline_text(can=can, text=proc['procedure_code'], pos=(codexpos, ypos), camp_name=f'{cont} Secondary Procedure Code', len_max=10, len_min=10, interval='  ')
             if type(can) == type(Response()): return can
             ypos -= reduceY
 
         can.setFont('Roboto-Mono', 9)
         ypos = 495
         for proc in procedures:
-            can = global_functions.add_oneline_text(can=can, text=proc['procedure_name'], pos=(namexpos, ypos), campName=f'{cont} Secondary procedure name', lenMax=54, lenMin=7)
+            can = global_functions.add_oneline_text(can=can, text=proc['procedure_name'], pos=(namexpos, ypos), camp_name=f'{cont} Secondary procedure name', len_max=54, len_min=7)
             if type(can) == type(Response()): return can
-            can = global_functions.add_oneline_intnumber(can=can, number=proc['quant'], pos=(quantxpos, ypos), campName=f'{cont} Secondary Procedure Quantity', lenMax=8, lenMin=1, valueMin=1, valueMax=99999999)
+            can = global_functions.add_oneline_intnumber(can=can, number=proc['quant'], pos=(quantxpos, ypos), camp_name=f'{cont} Secondary Procedure Quantity', len_max=8, len_min=1, valueMin=1, valueMax=99999999)
             if type(can) == type(Response()): return can
             ypos -= reduceY
         return can

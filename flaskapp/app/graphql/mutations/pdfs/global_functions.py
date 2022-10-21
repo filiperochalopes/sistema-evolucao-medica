@@ -195,17 +195,17 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str):
         return Response("Error when writing new pdf", status=500)
 
 
-def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMax:int, nullable:bool=False, lenMin:int=0, interval:str='', centralized:bool=False):
+def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False):
     """Add text that is fill in one line
 
     Args:
         can (canvas.Canvas): canvas to use
         text (str): text value
         pos (tuple): position in canvas
-        campName (str): Camp name, this is used when return Responses
-        lenMax (int): maximum text lenght
+        camp_name (str): Camp name, this is used when return Responses
+        len_max (int): maximum text lenght
         nullable (bool, optional): Data can me None. Defaults to False.
-        lenMin (int, optional): Minimum text lenght. Defaults to 0.
+        len_min (int, optional): Minimum text lenght. Defaults to 0.
         interval (str): interval to add between every char
         centralized (bool, optional): Data has to be centralized. Defaults to False.
     Returns:
@@ -218,17 +218,17 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
             if text == None or len(str(text).strip()) == 0:
                 return can
         if type(text) != type(str()):
-            return Response(f'{campName} has to be string, if can be null, please add nullable option', status=400)
+            return Response(f'{camp_name} has to be string, if can be null, please add nullable option', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
             return Response(f'pos has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
-        elif type(lenMax) != type(int()):
-            return Response(f'lenMax has to be int', status=500)
-        elif type(lenMin) != type(int()):
-            return Response(f'lenMin has to be int', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
+        elif type(len_max) != type(int()):
+            return Response(f'len_max has to be int', status=500)
+        elif type(len_min) != type(int()):
+            return Response(f'len_min has to be int', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(interval) != type(str()):
@@ -239,10 +239,10 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
         if not nullable:
             text = text.strip()
             if len(text) == 0:
-                return Response(f'{campName} cannot be empty', status=400)
+                return Response(f'{camp_name} cannot be empty', status=400)
         # verify if text is in the need lenght
         text = text.strip()
-        if lenMin <= len(text) <= lenMax:
+        if len_min <= len(text) <= len_max:
             text = add_interval_to_data(data=text, interval=interval)
             if centralized:
                 can = add_centralized_data(can=can, data=text, pos=pos)
@@ -250,12 +250,12 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, campName:str, lenMa
                 can = add_data(can=can, data=text, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)
+            return Response(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}", status=400)
     except:
-        return Response(f'Unknow error while adding {campName}', status=500)
+        return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_ypos:int, campName:str, lenMax:int, charPerLines:int, maxLinesAmount:int=None, nullable:bool=False, lenMin:int=0, interval:str=''):
+def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str=''):
     """Add text that is fill in one line
 
     Args:
@@ -263,12 +263,12 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         text (str): text value
         initial_pos (tuple): initial position in canvas
         decrease_ypos (int): decrease y value to break lines
-        campName (str): Camp name, this is used when return Responses
-        lenMax (int): maximum text lenght
-        charPerLines (int): char amount for every lines
-        maxLinesAmount (int, optional): maximum lines amount . Defaults to None.
+        camp_name (str): Camp name, this is used when return Responses
+        len_max (int): maximum text lenght
+        char_per_lines (int): char amount for every lines
+        max_lines_amount (int, optional): maximum lines amount . Defaults to None.
         nullable (bool, optional): Data can me None. Defaults to False.
-        lenMin (int, optional): Minimum text lenght. Defaults to 0.
+        len_min (int, optional): Minimum text lenght. Defaults to 0.
         interval (str): interval to add between every char
     Returns:
         canvas(canvas.Canvas): canvas with all changes
@@ -280,23 +280,23 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
             if text == None or len(str(text).strip()) == 0:
                 return can
         if type(text) != type(str()):
-            return Response(f'{campName} has to be string, if can be null, please add nullable option', status=400)
+            return Response(f'{camp_name} has to be string, if can be null, please add nullable option', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(initial_pos) != type(tuple()):
             return Response(f'initial_pos has to be tuple', status=500)
         elif type(decrease_ypos) != type(int()):
             return Response(f'decrease_ypos has to be int', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
-        elif type(lenMax) != type(int()):
-            return Response(f'lenMax has to be int', status=500)
-        elif type(charPerLines) != type(int()):
-            return Response(f'charPerLines has to be int', status=500)
-        elif type(maxLinesAmount) != type(int()) and maxLinesAmount != None:
-            return Response(f'maxLinesAmount has to be int', status=500)
-        elif type(lenMin) != type(int()):
-            return Response(f'lenMin has to be int', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
+        elif type(len_max) != type(int()):
+            return Response(f'len_max has to be int', status=500)
+        elif type(char_per_lines) != type(int()):
+            return Response(f'char_per_lines has to be int', status=500)
+        elif type(max_lines_amount) != type(int()) and max_lines_amount != None:
+            return Response(f'max_lines_amount has to be int', status=500)
+        elif type(len_min) != type(int()):
+            return Response(f'len_min has to be int', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(interval) != type(str()):
@@ -305,15 +305,15 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         if not nullable:
             text = text.strip()
             if len(text) == 0:
-                return Response(f'{campName} cannot be empty', status=400)
+                return Response(f'{camp_name} cannot be empty', status=400)
         # verify if text is in the need lenght
         text = text.strip()
-        if lenMin <= len(text) <= lenMax:
+        if len_min <= len(text) <= len_max:
             str_to_line = ''
-            brokeLinexTimes = int(len(text)/charPerLines)
-            if maxLinesAmount != None and brokeLinexTimes + 1 > maxLinesAmount:
-                return Response(f'Unable to add {campName} because lines amount needed is more than {maxLinesAmount}', status=500)
-            currentLine = charPerLines
+            brokeLinexTimes = int(len(text)/char_per_lines)
+            if max_lines_amount != None and brokeLinexTimes + 1 > max_lines_amount:
+                return Response(f'Unable to add {camp_name} because lines amount needed is more than {max_lines_amount}', status=500)
+            currentLine = char_per_lines
             lastline = 0
             xpos = initial_pos[0]
             ypos = initial_pos[1]
@@ -322,25 +322,25 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
                 str_to_line = text[lastline:currentLine]
                 can = add_data(can=can, data=str_to_line, pos=(xpos, ypos))
                 lastline = currentLine
-                currentLine += charPerLines
+                currentLine += char_per_lines
                 brokeLinexTimes -= 1
                 ypos -= decrease_ypos
 
             return can
         else:
-            return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)
+            return Response(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}", status=400)
     except:
-        return Response(f'Unknow error while adding {campName}', status=500)
+        return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, nullable:bool=False, interval:str='', formated:bool=False):
+def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False):
     """_summary_
 
     Args:
         can (canvas.Canvas):  canvas to use
         number (int): number to add
         pos (tuple): position in canvas
-        campName (str): camp name to Responses
+        camp_name (str): camp name to Responses
         nullable (bool, optional):  Data can me None. Defaults to False.
         interval (str, optional): interval to add between every char
         formated (bool, optional): format phone number to (xx) xxxxx-xxxx. Defaults to False.
@@ -350,13 +350,13 @@ def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, null
             if number == None:
                 return can
         if type(number) != type(int()):
-            return Response(f'{campName} has to be int, if can be null, please add nullable option', status=400)
+            return Response(f'{camp_name} has to be int, if can be null, please add nullable option', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
             return Response(f'pos has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(interval) != type(str()):
@@ -373,19 +373,19 @@ def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, null
             can = add_data(can=can, data=number, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {campName} because is longer than {10} characters or smaller than {11}", status=400)
+            return Response(f"Unable to add {camp_name} because is longer than {10} characters or smaller than {11}", status=400)
     except:
-        return Response(f'Unknow error while adding {campName}', status=500)
+        return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, campName:str, nullable:bool=False, interval:str='', formated:bool=False):
+def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False):
     """_summary_
 
     Args:
         can (canvas.Canvas):  canvas to use
         cep (int): cep to add
         pos (tuple): position in canvas
-        campName (str): camp name to Responses
+        camp_name (str): camp name to Responses
         nullable (bool, optional):  Data can me None. Defaults to False.
         interval (str, optional): interval to add between every char
         formated (bool, optional): format phone cep to xxxxx-xxx. Defaults to False.
@@ -395,13 +395,13 @@ def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, campName:str, nullable:bool=F
             if cep == None:
                 return can
         if type(cep) != type(int()):
-            return Response(f'{campName} has to be int, if can be null, please add nullable option', status=400)
+            return Response(f'{camp_name} has to be int, if can be null, please add nullable option', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
             return Response(f'pos has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(interval) != type(str()):
@@ -418,24 +418,24 @@ def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, campName:str, nullable:bool=F
             can = add_data(can=can, data=cep, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {campName} because cpf dont have 8 digits", status=400)
+            return Response(f"Unable to add {camp_name} because cpf dont have 8 digits", status=400)
     except:
-        return Response(f'Unknow error while adding {campName}', status=500)
+        return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str, lenMax:int, valueMin:int, valueMax:int, nullable:bool=False, lenMin:int=0, interval:str='', centralized:bool=False):
+def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, len_max:int, valueMin:int, valueMax:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False):
     """Add one line number to canvas
 
     Args:
         can (canvas.Canvas): canvas to use
         number (int): number to add
         pos (tuple): position in canvas
-        campName (str): camp name to Responses
-        lenMax (int): Maximum Lenght
+        camp_name (str): camp name to Responses
+        len_max (int): Maximum Lenght
         valueMax (int): Maximum Value
         valueMin (int): Minimun Value
         nullable (bool, optional): Data can me None. Defaults to False.
-        lenMin (int, optional): Minimun Lenght. Defaults to 0.
+        len_min (int, optional): Minimun Lenght. Defaults to 0.
         interval (str): interval to add between every char
         centralized (bool, optional): Data has to be centralized. Defaults to False.
 
@@ -449,17 +449,17 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str
             if number == None:
                 return can
         if type(number) != type(int()):
-            return Response(f'{campName} has to be int, if can be null, please add nullable option', status=400)
+            return Response(f'{camp_name} has to be int, if can be null, please add nullable option', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
             return Response(f'pos has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
-        elif type(lenMax) != type(int()):
-            return Response(f'lenMax has to be int', status=500)
-        elif type(lenMin) != type(int()):
-            return Response(f'lenMin has to be int', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
+        elif type(len_max) != type(int()):
+            return Response(f'len_max has to be int', status=500)
+        elif type(len_min) != type(int()):
+            return Response(f'len_min has to be int', status=500)
         elif type(valueMax) != type(int()):
             return Response(f'valueMax has to be int', status=500)
         elif type(valueMin) != type(int()):
@@ -473,9 +473,9 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str
 
         # verify if number is in the need lenght
         if valueMin > number or valueMax < number:
-            return Response(f"Unable to add {campName} because is bigger than {valueMax} and smaller than {valueMin}", status=400)
+            return Response(f"Unable to add {camp_name} because is bigger than {valueMax} and smaller than {valueMin}", status=400)
         number = str(number)
-        if lenMin <= len(number) <= lenMax:
+        if len_min <= len(number) <= len_max:
             number = add_interval_to_data(data=number, interval=interval)
             if centralized:
                 can = add_centralized_data(can=can, data=number, pos=pos)
@@ -483,24 +483,24 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, campName:str
                 can = add_data(can=can, data=number, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)
+            return Response(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}", status=400)
     except:
-        return Response(f'Unknow error while adding {campName}', status=500)
+        return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, campName:str, lenMax:int, valueMin:float, valueMax:float, nullable:bool=False, lenMin:int=0, interval:str='', centralized:bool=False, ndigits:int=2):
+def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_name:str, len_max:int, valueMin:float, valueMax:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2):
     """Add one line number to canvas
 
     Args:
         can (canvas.Canvas): canvas to use
         number (float): number to add
         pos (tuple): position in canvas
-        campName (str): camp name to Responses
-        lenMax (int): Maximum Lenght
+        camp_name (str): camp name to Responses
+        len_max (int): Maximum Lenght
         valueMax (float): Maximum Value
         valueMin (float): Minimun Value
         nullable (bool, optional): Data can me None. Defaults to False.
-        lenMin (int, optional): Minimun Lenght. Defaults to 0.
+        len_min (int, optional): Minimun Lenght. Defaults to 0.
         interval (str): interval to add between every char
         centralized (bool, optional): Data has to be centralized. Defaults to False.
         ndigits (int, optional): Number of digits after , . Defaults to 2.
@@ -515,17 +515,17 @@ def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, campName
             if number == None:
                 return can
         if type(number) != type(float()) and type(number) != type(int()):
-            return Response(f'{campName} has to be float, if can be null, please add nullable option', status=400)
+            return Response(f'{camp_name} has to be float, if can be null, please add nullable option', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
             return Response(f'pos has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
-        elif type(lenMax) != type(int()):
-            return Response(f'lenMax has to be int', status=500)
-        elif type(lenMin) != type(int()):
-            return Response(f'lenMin has to be int', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
+        elif type(len_max) != type(int()):
+            return Response(f'len_max has to be int', status=500)
+        elif type(len_min) != type(int()):
+            return Response(f'len_min has to be int', status=500)
         elif type(valueMax) != type(float()) and type(number) != type(int()):
             return Response(f'valueMax has to be float', status=500)
         elif type(valueMin) != type(float()) and type(number) != type(int()):
@@ -541,10 +541,10 @@ def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, campName
 
         # verify if number is in the need lenght
         if valueMin > number or valueMax < number:
-            return Response(f"Unable to add {campName} because is bigger than {valueMax} and smaller than {valueMin}", status=400)
+            return Response(f"Unable to add {camp_name} because is bigger than {valueMax} and smaller than {valueMin}", status=400)
         number = round(number, ndigits)
         number = str(number)
-        if lenMin <= len(number) <= lenMax:
+        if len_min <= len(number) <= len_max:
             number = add_interval_to_data(data=number, interval=interval)
             if centralized:
                 can = add_centralized_data(can=can, data=number, pos=pos)
@@ -552,9 +552,9 @@ def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, campName
                 can = add_data(can=can, data=number, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {campName} because is longer than {lenMax} characters or smaller than {lenMin}", status=400)
+            return Response(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}", status=400)
     except:
-        return Response(f'Unknow error while adding {campName}', status=500)
+        return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
 def add_interval_to_data(data:str, interval:str):
@@ -577,14 +577,14 @@ def add_interval_to_data(data:str, interval:str):
     return interval.join(data)
 
 
-def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=False, formated:bool=False, interval:str=''):
+def add_cns(can:canvas.Canvas, cns:int, pos:tuple, camp_name:str,nullable:bool=False, formated:bool=False, interval:str=''):
     """Add cns to canvas
 
     Args:
         can (canvas.Canvas): canvas to add
         cns (int): cns to add
         pos (tuple): position in canvas
-        campName (str): camp nam
+        camp_name (str): camp nam
         nullable (bool, optional): can be null. Defaults to False.
         formated (bool, optional): format cns to xxx xxxx xxxx xxxx. Defaults to False.
         interval (str, optional): interval to add between interval. Defaults to ''.
@@ -599,13 +599,13 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=Fa
             if cns == None:
                 return can
         if type(cns) != type(int()):
-            return Response(f'{campName} has to be int', status=400)
+            return Response(f'{camp_name} has to be int', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
             return Response(f'pos has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(formated) != type(bool()):
@@ -624,19 +624,19 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=Fa
             can = add_data(can=can, data=cns, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {campName} because is a invalid CNS", status=400)
+            return Response(f"Unable to add {camp_name} because is a invalid CNS", status=400)
     except:
-        return Response(f'Unknow error while adding {campName}', status=500)
+        return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, campName:str,nullable:bool=False, interval:str=''):
+def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, camp_name:str,nullable:bool=False, interval:str=''):
     """Add cnpj to canvas
 
     Args:
         can (canvas.Canvas): canvas to add
         cnpj (int): cnpj to add
         pos (tuple): position in canvas
-        campName (str): camp nam
+        camp_name (str): camp nam
         nullable (bool, optional): can be null. Defaults to False.
         interval (str, optional): interval to add between interval. Defaults to ''.
 
@@ -650,13 +650,13 @@ def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, campName:str,nullable:bool=
             if cnpj == None:
                 return can
         if type(cnpj) != type(int()):
-            return Response(f'{campName} has to be int', status=400)
+            return Response(f'{camp_name} has to be int', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
             return Response(f'pos has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(interval) != type(str()):
@@ -671,19 +671,19 @@ def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, campName:str,nullable:bool=
             can = add_data(can=can, data=cnpj, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {campName} because is a invalid cnpj", status=400)
+            return Response(f"Unable to add {camp_name} because is a invalid cnpj", status=400)
     except:
-        return Response(f'Unknow error while adding {campName}', status=500)
+        return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, campName:str, nullable:bool=False, formated:bool=False):
+def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False):
     """Add cnae to canvas
 
     Args:
         can (canvas.Canvas): canvas to add
         cnae (int): cnae to add
         pos (tuple): position in canvas
-        campName (str): camp nam
+        camp_name (str): camp nam
         nullable (bool, optional): can be null. Defaults to False.
         interval (str, optional): interval to add between interval. Defaults to ''.
         formated (bool, optional): format (add '/' and ':'). Defaults to True.
@@ -698,13 +698,13 @@ def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, campName:str, nullable:bool
             if cnae == None:
                 return can
         if type(cnae) != type(int()):
-            return Response(f'{campName} has to be int', status=400)
+            return Response(f'{camp_name} has to be int', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
             return Response(f'pos has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(formated) != type(bool()):
@@ -718,19 +718,19 @@ def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, campName:str, nullable:bool
             can = add_data(can=can, data=cnae, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {campName} because is a invalid cnae", status=400)
+            return Response(f"Unable to add {camp_name} because is a invalid cnae", status=400)
     except:
-        return Response(f'Unknow error while adding {campName}', status=500)
+        return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, campName:str, nullable:bool=False, formated:bool=False):
+def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False):
     """Add cbor to canvas
 
     Args:
         can (canvas.Canvas): canvas to add
         cbor (int): cbor to add
         pos (tuple): position in canvas
-        campName (str): camp nam
+        camp_name (str): camp nam
         nullable (bool, optional): can be null. Defaults to False.
         formated (bool, optional): format (add '/' and ':'). Defaults to True.
 
@@ -744,13 +744,13 @@ def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, campName:str, nullable:bool
             if cbor == None:
                 return can
         if type(cbor) != type(int()):
-            return Response(f'{campName} has to be int', status=400)
+            return Response(f'{camp_name} has to be int', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
             return Response(f'pos has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(formated) != type(bool()):
@@ -764,12 +764,12 @@ def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, campName:str, nullable:bool
             can = add_data(can=can, data=cbor, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {campName} because is a invalid cbor", status=400)
+            return Response(f"Unable to add {camp_name} because is a invalid cbor", status=400)
     except:
-        return Response(f'Unknow error while adding {campName}', status=500)
+        return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, campName:str, square_size:tuple=(9,9), nullable:bool=False):
+def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False):
     """Add sex square to canvas
 
     Args:
@@ -778,7 +778,7 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
         pos_male (tuple): male option position
         pos_fem (tuple): female option position
         square_size (tuple): square size. Defaults to (9,9).
-        campName (str): camp name
+        camp_name (str): camp name
         nullable (bool, optional): can be null. Defaults to False.
 
     Returns:
@@ -791,7 +791,7 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
             if sex == None or len(str(sex).strip()) == 0:
                 return can
         if type(sex) != type(str()):
-            return Response(f'{campName} has to be str', status=400)
+            return Response(f'{camp_name} has to be str', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos_male) != type(tuple()):
@@ -800,16 +800,16 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
             return Response(f'pos_fem has to be tuple', status=500)
         elif type(square_size) != type(tuple()):
             return Response(f'square_size has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
 
         sex = sex.upper()
         if len(sex) != 1:
-            return Response(f'{campName} has to be only one character F or M', status=400)
+            return Response(f'{camp_name} has to be only one character F or M', status=400)
         if sex not in ['M', 'F']:
-            return Response(f'{campName} is not valid, use F or M', status=400)
+            return Response(f'{camp_name} is not valid, use F or M', status=400)
         else:
             if sex == 'M':
                 can = add_square(can=can, pos=pos_male, size=square_size)
@@ -818,17 +818,17 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
                 can = add_square(can=can, pos=pos_fem, size=square_size)
                 return can
     except:
-        return Response(f'Unkown error while adding {campName}', status=500)
+        return Response(f'Unkown error while adding {camp_name}', status=500)
 
 
-def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, campName:str, hours:bool=True,nullable:bool=False, formated:bool=True, interval:str=''):
+def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name:str, hours:bool=True,nullable:bool=False, formated:bool=True, interval:str=''):
     """Add datetime to canvas
 
     Args:
         can (canvas.Canvas): canvas to use
         date (datetime.datetime): date to use
         pos (tuple): position
-        campName (str): camp name
+        camp_name (str): camp name
         hours (bool): add hours. Defaults to True
         nullable (bool, optional): can be null. Defaults to False.
         formated (bool, optional): format (add '/' and ':'). Defaults to True.
@@ -843,13 +843,13 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, campName:
             if date == None:
                 return can
         if type(date) != type(datetime.datetime.now()):
-            return Response(f'{campName} has to be datetime object', status=400)
+            return Response(f'{camp_name} has to be datetime object', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
             return Response(f'pos has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(formated) != type(bool()):
@@ -872,17 +872,17 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, campName:
         return can
 
     except:
-        return Response(f'Unkown error while adding {campName}', status=500)
+        return Response(f'Unkown error while adding {camp_name}', status=500)
 
 
-def add_UF(can:canvas.Canvas, uf:str, pos:tuple, campName:str, nullable:bool=False, interval:str=''):
+def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str=''):
     """Verify uf and add to document
 
     Args:
         can (canvas.Canvas): canvas to use
         uf (str): uf to add
         pos (tuple): position uf
-        campName (str): camp name
+        camp_name (str): camp name
         nullable (bool, optional): can be null. Defaults to False.
         interval (str, optional): and interval between char. Defaults to ''.
 
@@ -896,13 +896,13 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, campName:str, nullable:bool=Fal
             if uf == None or len(str(uf).strip()) == 0:
                 return can
         if type(uf) != type(str()):
-            return Response(f'{campName} has to be string, if can be null, please add nullable option', status=400)
+            return Response(f'{camp_name} has to be string, if can be null, please add nullable option', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(pos) != type(tuple()):
             return Response(f'pos has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(interval) != type(str()):
@@ -915,18 +915,18 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, campName:str, nullable:bool=Fal
             can = add_data(can=can, data=uf, pos=pos)
             return can
         else:
-            return Response(f'{campName} not exists in Brazil', status=400) 
+            return Response(f'{camp_name} not exists in Brazil', status=400) 
     except:
-        return Response(f'Unknow error while adding {campName}', status=500)
+        return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False):
+def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False):
     """Validate and add document to canvas, can be CPF, RG or CNS
 
     Args:
         can (canvas.Canvas): canvas to use
         document (dict): dict with the document
-        campName (str): camp name 
+        camp_name (str): camp name 
         square_size (tuple, optional): suqare size if has mark option. Defaults to (9,9).
         pos_cpf (tuple, optional): cpf number position in canvas. Defaults to None.
         pos_cns (tuple, optional): cns number position in canvas. Defaults to None.
@@ -948,7 +948,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
             if document == None:
                 return can
         if type(document) != type(dict()):
-            return Response(f'{campName} document has to be a dict ("document":"number")', status=400)
+            return Response(f'{camp_name} document has to be a dict ("document":"number")', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(square_size) != type(tuple()):
@@ -965,8 +965,8 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
             return Response(f'pos_square_cns has to be tuple', status=500)
         elif type(pos_square_rg) != type(tuple()) and pos_square_rg != None:
             return Response(f'pos_square_rg has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(interval) != type(str()):
@@ -978,7 +978,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
         allDocumentsKeys = document.keys()
         if 'CNS' in allDocumentsKeys:
             if type(document['CNS']) != type(int()):
-                return Response(f'{campName} value CNS has to be int', status=400)
+                return Response(f'{camp_name} value CNS has to be int', status=400)
             if is_CNS_valid(document['CNS']):
                 if pos_square_cns != None:
                     can = add_square(can=can, pos=pos_square_cns, size=square_size)
@@ -991,10 +991,10 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
                 can = add_data(can=can, data=cns, pos=pos_cns)
                 return can
             else:
-                return Response(f'{campName} CNS is not valid', status=400)
+                return Response(f'{camp_name} CNS is not valid', status=400)
         elif 'CPF' in allDocumentsKeys:
             if type(document['CPF']) != type(int()):
-                return Response(f'{campName} value CPF has to be int', status=400)
+                return Response(f'{camp_name} value CPF has to be int', status=400)
             #Format cpf to validate
             cpf = str(document['CPF'])
             numbersCpf = str(cpf)
@@ -1011,11 +1011,11 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
                 can = add_data(can=can, data=cpf, pos=pos_cpf)
                 return can
             else:
-                return Response(f'{campName} CPF is not valid', status=400)
+                return Response(f'{camp_name} CPF is not valid', status=400)
         elif 'RG' in allDocumentsKeys:
             rg = document['RG']
             if type(rg) != type(int()):
-                return Response(f'{campName} value RG has to be int', status=400)
+                return Response(f'{camp_name} value RG has to be int', status=400)
             #The only verificatinon is that rg is not greater than 16 characteres
             if is_RG_valid(rg):
                 rg = str(document['RG'])
@@ -1024,14 +1024,14 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
                 can = add_data(can=can, data=rg, pos=pos_rg)
                 return can
             else:
-                return Response(f'{campName} RG is not valid', status=400)
+                return Response(f'{camp_name} RG is not valid', status=400)
         else:
             return Response('The document was not CPF, CNS or RG', status=400)
     except:
-        return Response(f'Unknow error while adding {campName} Document', status=500)
+        return Response(f'Unknow error while adding {camp_name} Document', status=500)
 
 
-def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, options_positions:tuple, campName:str, square_size:tuple=(9,9), nullable:bool=False):
+def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False):
     """Verifiy option choose and add to canvas
 
     Args:
@@ -1040,7 +1040,7 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
         valid_options (list): list of valid options, recommendend UPPER (str)
         options_positions (tuple): tuple of tuples with positions to every option
         square_size (tuple): square size. Defaults to (9,9).
-        campName (str): camp name
+        camp_name (str): camp name
         nullable (bool, optional): can be null. Defaults to False.
 
     Returns:
@@ -1053,7 +1053,7 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
             if option == None or len(str(option).strip()) == 0:
                 return can
         if type(option) != type(str()):
-            return Response(f'{campName} has to be str', status=400)
+            return Response(f'{camp_name} has to be str', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
             return Response(f'can has to be canvas.Canvas object', status=500)
         elif type(valid_options) != type(list()):
@@ -1062,8 +1062,8 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
             return Response(f'options_positions has to be tuple', status=500)
         elif type(square_size) != type(tuple()):
             return Response(f'square_size has to be tuple', status=500)
-        elif type(campName) != type(str()):
-            return Response(f'campName has to be str', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif len(valid_options) != len(options_positions):
@@ -1075,9 +1075,9 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
             if option == valid_options[opt]:
                 can = add_square(can=can, pos=options_positions[opt], size=square_size)
                 return can
-        return Response(f'Cannot add {campName} because the option choosed does not exists', status=400)
+        return Response(f'Cannot add {camp_name} because the option choosed does not exists', status=400)
     except:
-        return Response(f'Unkown error while adding {campName}', status=500)
+        return Response(f'Unkown error while adding {camp_name}', status=500)
 
 
 

@@ -30,44 +30,44 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
         # not null data
         try:
             # change font size to datetime            
-            c = global_functions.add_datetime(can=c, date=document_datetime, pos=(410, 740), campName='Document Datetime', hours=True, formated=True)
+            c = global_functions.add_datetime(can=c, date=document_datetime, pos=(410, 740), camp_name='Document Datetime', hours=True, formated=True)
             if type(c) == type(Response()): return c      
             
             
             c.setFont('Roboto-Mono', 9)
             #Normal font size
-            c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(27, 674), campName='Patient Name', lenMax=64, lenMin=7)
+            c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(27, 674), camp_name='Patient Name', len_max=64, len_min=7)
             # verify if c is a error at some point
             if type(c) == type(Response()): return c
-            c = global_functions.add_cns(can=c, cns=patient_cns, pos=(393, 674), campName='Patient CNS', formated=True)
+            c = global_functions.add_cns(can=c, cns=patient_cns, pos=(393, 674), camp_name='Patient CNS', formated=True)
             if type(c) == type(Response()): return c
 
 
-            c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(27, 642), campName='Patient Birthday', hours=False, formated=True)
+            c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(27, 642), camp_name='Patient Birthday', hours=False, formated=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(117, 640), pos_fem=(147, 640), campName='Patient Sex', square_size=(9,9))
+            c = global_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(117, 640), pos_fem=(147, 640), camp_name='Patient Sex', square_size=(9,9))
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_motherName, pos=(194, 642), campName='Patient Mother Name', lenMax=69, lenMin=7)
+            c = global_functions.add_oneline_text(can=c, text=patient_motherName, pos=(194, 642), camp_name='Patient Mother Name', len_max=69, len_min=7)
             if type(c) == type(Response()): return c
-            c = global_functions.add_document_cns_cpf_rg(can=c, document=patient_document, pos_square_cpf=(24, 608), pos_square_rg=(58,608), pos_rg=(92, 610), pos_cpf=(92, 610),campName='Pacient Document', formated=True)
+            c = global_functions.add_document_cns_cpf_rg(can=c, document=patient_document, pos_square_cpf=(24, 608), pos_square_rg=(58,608), pos_rg=(92, 610), pos_cpf=(92, 610),camp_name='Pacient Document', formated=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_adress, pos=(230, 610), campName='Patient Adress', lenMax=63, lenMin=7)
+            c = global_functions.add_oneline_text(can=c, text=patient_adress, pos=(230, 610), camp_name='Patient Adress', len_max=63, len_min=7)
             if type(c) == type(Response()): return c
-            c = global_functions.add_phonenumber(can=c, number=patient_phonenumber, pos=(173, 547), campName='Patient phone number', formated=True)
+            c = global_functions.add_phonenumber(can=c, number=patient_phonenumber, pos=(173, 547), camp_name='Patient phone number', formated=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_drug_allergies, pos=(26, 481), campName='Patient Drugs Allergies', lenMax=100, lenMin=5)
+            c = global_functions.add_oneline_text(can=c, text=patient_drug_allergies, pos=(26, 481), camp_name='Patient Drugs Allergies', len_max=100, len_min=5)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_comorbidities, pos=(26, 449), campName='Patient Commorbidites', lenMax=100, lenMin=5)
+            c = global_functions.add_oneline_text(can=c, text=patient_comorbidities, pos=(26, 449), camp_name='Patient Commorbidites', len_max=100, len_min=5)
             if type(c) == type(Response()): return c
-            c = global_functions.add_morelines_text(can=c, text=current_illness_history, initial_pos=(26, 418), decrease_ypos= 10, campName='Current Illness History', lenMax=1600, charPerLines=100, lenMin=10)
+            c = global_functions.add_morelines_text(can=c, text=current_illness_history, initial_pos=(26, 418), decrease_ypos= 10, camp_name='Current Illness History', len_max=1600, char_per_lines=100, len_min=10)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=initial_diagnostic_suspicion, pos=(26, 244), campName='Initial Diagnostic Suspicion', lenMax=100, lenMin=5)
+            c = global_functions.add_oneline_text(can=c, text=initial_diagnostic_suspicion, pos=(26, 244), camp_name='Initial Diagnostic Suspicion', len_max=100, len_min=5)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=doctor_name, pos=(304, 195), campName='Doctor Name', lenMax=49, lenMin=7)
+            c = global_functions.add_oneline_text(can=c, text=doctor_name, pos=(304, 195), camp_name='Doctor Name', len_max=49, len_min=7)
             if type(c) == type(Response()): return c
-            c = global_functions.add_cns(can=c, cns=doctor_cns, pos=(304, 163), campName='Doctor CNS', formated=True)
+            c = global_functions.add_cns(can=c, cns=doctor_cns, pos=(304, 163), camp_name='Doctor CNS', formated=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=doctor_crm, pos=(304, 131), campName='Doctor CRM', lenMax=13, lenMin=11)
+            c = global_functions.add_oneline_text(can=c, text=doctor_crm, pos=(304, 131), camp_name='Doctor CRM', len_max=13, len_min=11)
             if type(c) == type(Response()): return c
             
         except:
@@ -78,19 +78,19 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
 
         #Adding data that can be null
         try:
-            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressNumber, pos=(24, 580), campName='Patient Adress Number', lenMax=6, lenMin=1, valueMin=0, valueMax=999999, nullable=True)
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressNumber, pos=(24, 580), camp_name='Patient Adress Number', len_max=6, len_min=1, valueMin=0, valueMax=999999, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_adressNeigh, pos=(66, 580), campName='Patient Adress Neighborhood', lenMax=31, lenMin=4, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=patient_adressNeigh, pos=(66, 580), camp_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_adressCity, pos=(243, 580), campName='Patient Adress City', lenMax=34, lenMin=4, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=patient_adressCity, pos=(243, 580), camp_name='Patient Adress City', len_max=34, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_UF(can=c, uf=patient_adressUF, pos=(443, 580), campName='Patient Adress UF', nullable=True)
+            c = global_functions.add_UF(can=c, uf=patient_adressUF, pos=(443, 580), camp_name='Patient Adress UF', nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_CEP(can=c, cep=patient_adressCEP, pos=(483, 580), campName='Patient Adress CEP', nullable=True, formated=True)
+            c = global_functions.add_CEP(can=c, cep=patient_adressCEP, pos=(483, 580), camp_name='Patient Adress CEP', nullable=True, formated=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_text(can=c, text=patient_nationality, pos=(27, 547), campName='Patient nationality', lenMax=25, lenMin=3, nullable=True)
+            c = global_functions.add_oneline_text(can=c, text=patient_nationality, pos=(27, 547), camp_name='Patient nationality', len_max=25, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_floatnumber(can=c, number=patient_estimateWeight, pos=(507, 547), campName='Patient Estimate Weight', lenMax=6, lenMin=1, valueMin=0.1, valueMax=500.10, nullable=True, ndigits=2)
+            c = global_functions.add_oneline_floatnumber(can=c, number=patient_estimateWeight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, valueMin=0.1, valueMax=500.10, nullable=True, ndigits=2)
             if type(c) == type(Response()): return c
             if has_additional_healthInsurance is not None:
                 c = add_has_additional_healthInsurance(canvas=c, has_additional_healthInsurance=has_additional_healthInsurance)
