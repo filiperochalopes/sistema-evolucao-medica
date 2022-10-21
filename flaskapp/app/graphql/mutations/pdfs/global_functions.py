@@ -423,7 +423,7 @@ def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, camp_name:str, nullable:bool=
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, len_max:int, valueMin:int, valueMax:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False):
+def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, len_max:int, value_min:int, value_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False):
     """Add one line number to canvas
 
     Args:
@@ -432,8 +432,8 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:st
         pos (tuple): position in canvas
         camp_name (str): camp name to Responses
         len_max (int): Maximum Lenght
-        valueMax (int): Maximum Value
-        valueMin (int): Minimun Value
+        value_max (int): Maximum Value
+        value_min (int): Minimun Value
         nullable (bool, optional): Data can me None. Defaults to False.
         len_min (int, optional): Minimun Lenght. Defaults to 0.
         interval (str): interval to add between every char
@@ -460,10 +460,10 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:st
             return Response(f'len_max has to be int', status=500)
         elif type(len_min) != type(int()):
             return Response(f'len_min has to be int', status=500)
-        elif type(valueMax) != type(int()):
-            return Response(f'valueMax has to be int', status=500)
-        elif type(valueMin) != type(int()):
-            return Response(f'valueMin has to be int', status=500)
+        elif type(value_max) != type(int()):
+            return Response(f'value_max has to be int', status=500)
+        elif type(value_min) != type(int()):
+            return Response(f'value_min has to be int', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(interval) != type(str()):
@@ -472,8 +472,8 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:st
             return Response(f'centralized has to be bool', status=500)
 
         # verify if number is in the need lenght
-        if valueMin > number or valueMax < number:
-            return Response(f"Unable to add {camp_name} because is bigger than {valueMax} and smaller than {valueMin}", status=400)
+        if value_min > number or value_max < number:
+            return Response(f"Unable to add {camp_name} because is bigger than {value_max} and smaller than {value_min}", status=400)
         number = str(number)
         if len_min <= len(number) <= len_max:
             number = add_interval_to_data(data=number, interval=interval)
@@ -488,7 +488,7 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:st
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_name:str, len_max:int, valueMin:float, valueMax:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2):
+def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_name:str, len_max:int, value_min:float, value_max:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2):
     """Add one line number to canvas
 
     Args:
@@ -497,8 +497,8 @@ def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_nam
         pos (tuple): position in canvas
         camp_name (str): camp name to Responses
         len_max (int): Maximum Lenght
-        valueMax (float): Maximum Value
-        valueMin (float): Minimun Value
+        value_max (float): Maximum Value
+        value_min (float): Minimun Value
         nullable (bool, optional): Data can me None. Defaults to False.
         len_min (int, optional): Minimun Lenght. Defaults to 0.
         interval (str): interval to add between every char
@@ -526,10 +526,10 @@ def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_nam
             return Response(f'len_max has to be int', status=500)
         elif type(len_min) != type(int()):
             return Response(f'len_min has to be int', status=500)
-        elif type(valueMax) != type(float()) and type(number) != type(int()):
-            return Response(f'valueMax has to be float', status=500)
-        elif type(valueMin) != type(float()) and type(number) != type(int()):
-            return Response(f'valueMin has to be float', status=500)
+        elif type(value_max) != type(float()) and type(number) != type(int()):
+            return Response(f'value_max has to be float', status=500)
+        elif type(value_min) != type(float()) and type(number) != type(int()):
+            return Response(f'value_min has to be float', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
         elif type(interval) != type(str()):
@@ -540,8 +540,8 @@ def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_nam
             return Response(f'ndigits has to be int', status=500)
 
         # verify if number is in the need lenght
-        if valueMin > number or valueMax < number:
-            return Response(f"Unable to add {camp_name} because is bigger than {valueMax} and smaller than {valueMin}", status=400)
+        if value_min > number or value_max < number:
+            return Response(f"Unable to add {camp_name} because is bigger than {value_max} and smaller than {value_min}", status=400)
         number = round(number, ndigits)
         number = str(number)
         if len_min <= len(number) <= len_max:

@@ -33,11 +33,11 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             c = global_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(25, 750), camp_name='Establishment Solicit Name', len_max=82, len_min=8)
             if type(c) == type(Response()): return c
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(470, 750), camp_name='Establishment Solict CNES', len_max=7, len_min=7,valueMin=0, valueMax=99999999, interval='  ')
+            c = global_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(470, 750), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='  ')
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=establishment_exec_name, pos=(25, 726), camp_name='Establishment Exec Name', len_max=82, len_min=8)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=establishment_exec_cnes, pos=(470, 726), camp_name='Establishment Exec CNES', len_max=7, len_min=7,valueMin=0, valueMax=99999999, interval='  ')
+            c = global_functions.add_oneline_intnumber(can=c, number=establishment_exec_cnes, pos=(470, 726), camp_name='Establishment Exec CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='  ')
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(25, 683), camp_name='Patient Name', len_max=79, len_min=7)
             if type(c) == type(Response()): return c
@@ -46,7 +46,7 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             c.setFont('Roboto-Mono', 10)
             c = global_functions.add_cns(can=c, cns=patient_cns, pos=(28, 658), camp_name='Patient CNS', interval='  ')
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressCEP, pos=(482, 566), camp_name='Patient Adress CEP', len_max=8, len_min=8, valueMin=0, valueMax=99999999, nullable=True, interval=' ')
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressCEP, pos=(482, 566), camp_name='Patient Adress CEP', len_max=8, len_min=8, value_min=0, value_max=99999999, nullable=True, interval=' ')
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=procedure_code, pos=(404, 269), camp_name='Procedure Code', len_max=10, len_min=10, interval='  ')
             if type(c) == type(Response()): return c
@@ -62,7 +62,7 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_adressCity, pos=(25, 566), camp_name='Patient Adress City', len_max=58, len_min=7)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressCity_ibgeCode, pos=(388, 566), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, valueMin=0, valueMax=9999999)
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressCity_ibgeCode, pos=(388, 566), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999)
             if type(c) == type(Response()): return c
             c = global_functions.add_UF(can=c, uf=patient_adressUF, pos=(450, 566), camp_name='Patient Adress UF', interval='  ')
             if type(c) == type(Response()): return c
@@ -95,7 +95,7 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             c = global_functions.add_datetime(can=c, date=autorizaton_datetime, pos=(30, 30), camp_name='Authorization Datetime', hours=False, interval='  ', formated=False)
             if type(c) == type(Response()): return c
             c.setFont('Roboto-Mono', 16)       
-            c = global_functions.add_oneline_intnumber(can=c, number=hospitalization_autorization_number, pos=(480, 66), camp_name='Hospitalization autorization Number', len_max=18, len_min=1, valueMin=0, valueMax=999999999999999999, centralized=True)
+            c = global_functions.add_oneline_intnumber(can=c, number=hospitalization_autorization_number, pos=(480, 66), camp_name='Hospitalization autorization Number', len_max=18, len_min=1, value_min=0, value_max=999999999999999999, centralized=True)
             if type(c) == type(Response()): return c
             c.setFont('Roboto-Mono', 9)       
 
@@ -110,7 +110,7 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
         try:
             c = global_functions.add_morelines_text(can=c, text=exam_results, initial_pos=(25, 362), decrease_ypos= 10, camp_name='Exam Results', len_max=403, char_per_lines=101, len_min=5, nullable=True)            
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=chart_number, pos=(466, 683), camp_name='Chart Number', len_max=20, len_min=1, valueMin=0, valueMax=99999999999999999999, nullable=True)            
+            c = global_functions.add_oneline_intnumber(can=c, number=chart_number, pos=(466, 683), camp_name='Chart Number', len_max=20, len_min=1, value_min=0, value_max=99999999999999999999, nullable=True)            
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_ethnicity, pos=(510, 658), camp_name='Patient Ehinicity', len_max=11, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
@@ -136,7 +136,7 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             
 
             c.setFont('Roboto-Mono', 9)
-            c = global_functions.add_oneline_intnumber(can=c, number=insurance_company_ticket_number, pos=(465, 183), camp_name='Insurance company ticket number', len_max=16, len_min=1, valueMin=0, valueMax=9999999999999999, nullable=True, centralized=True)           
+            c = global_functions.add_oneline_intnumber(can=c, number=insurance_company_ticket_number, pos=(465, 183), camp_name='Insurance company ticket number', len_max=16, len_min=1, value_min=0, value_max=9999999999999999, nullable=True, centralized=True)           
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=insurance_company_series, pos=(543, 183), camp_name='Insurance Company Series', len_max=10, len_min=1, nullable=True, centralized=True)           
             if type(c) == type(Response()): return c

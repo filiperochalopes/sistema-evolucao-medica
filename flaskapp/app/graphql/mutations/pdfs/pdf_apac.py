@@ -51,9 +51,9 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=main_procedure_name, pos=(220, 542), camp_name='Main Procedure Name', len_max=50, len_min=7)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=main_procedure_quant, pos=(508, 542), camp_name='Main Procedure Quantity', len_max=8, len_min=1, valueMin=1, valueMax=99999999)
+            c = global_functions.add_oneline_intnumber(can=c, number=main_procedure_quant, pos=(508, 542), camp_name='Main Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(468, 742), camp_name='Establishment Solict CNES', len_max=7, len_min=7,valueMin=0, valueMax=99999999)
+            c = global_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(468, 742), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
@@ -64,7 +64,7 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
         #Adding data that can be null
         try:
             c.setFont('Roboto-Mono', 11)
-            c = global_functions.add_oneline_intnumber(can=c, number=establishment_exec_cnes, pos=(450, 28), camp_name='Establishment Exec CNES', len_max=7, len_min=7,valueMin=0, valueMax=99999999, interval=' ', nullable=True)
+            c = global_functions.add_oneline_intnumber(can=c, number=establishment_exec_cnes, pos=(450, 28), camp_name='Establishment Exec CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval=' ', nullable=True)
             if type(c) == type(Response()): return c
             c.setFont('Roboto-Mono', 9)
             c = global_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 654), camp_name='Patient Mother Name', len_max=67, len_min=7, nullable=True)
@@ -81,11 +81,11 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_ethnicity, pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressCEP, pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, valueMin=0, valueMax=99999999, nullable=True, interval=' ')
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressCEP, pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, value_min=0, value_max=99999999, nullable=True, interval=' ')
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=document_chart_number, pos=(483, 702), camp_name='Document Chart Number', len_max=14, len_min=1, valueMin=0, valueMax=99999999999999, nullable=True)
+            c = global_functions.add_oneline_intnumber(can=c, number=document_chart_number, pos=(483, 702), camp_name='Document Chart Number', len_max=14, len_min=1, value_min=0, value_max=99999999999999, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_intnumber(can=c, number=patient_adress_city_IBGEcode, pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, valueMin=0, valueMax=9999999, nullable=True)
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_adress_city_IBGEcode, pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True)
             if type(c) == type(Response()): return c
             c = global_functions.add_UF(can=c, uf=patient_adressUF, pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
             if type(c) == type(Response()): return c
@@ -189,7 +189,7 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list):
         for proc in procedures:
             can = global_functions.add_oneline_text(can=can, text=proc['procedure_name'], pos=(namexpos, ypos), camp_name=f'{cont} Secondary procedure name', len_max=54, len_min=7)
             if type(can) == type(Response()): return can
-            can = global_functions.add_oneline_intnumber(can=can, number=proc['quant'], pos=(quantxpos, ypos), camp_name=f'{cont} Secondary Procedure Quantity', len_max=8, len_min=1, valueMin=1, valueMax=99999999)
+            can = global_functions.add_oneline_intnumber(can=can, number=proc['quant'], pos=(quantxpos, ypos), camp_name=f'{cont} Secondary Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
             if type(can) == type(Response()): return can
             ypos -= reduceY
         return can

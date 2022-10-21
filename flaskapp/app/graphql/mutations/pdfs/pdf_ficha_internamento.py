@@ -78,7 +78,7 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
 
         #Adding data that can be null
         try:
-            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressNumber, pos=(24, 580), camp_name='Patient Adress Number', len_max=6, len_min=1, valueMin=0, valueMax=999999, nullable=True)
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_adressNumber, pos=(24, 580), camp_name='Patient Adress Number', len_max=6, len_min=1, value_min=0, value_max=999999, nullable=True)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_adressNeigh, pos=(66, 580), camp_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
@@ -90,7 +90,7 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_nationality, pos=(27, 547), camp_name='Patient nationality', len_max=25, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_floatnumber(can=c, number=patient_estimateWeight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, valueMin=0.1, valueMax=500.10, nullable=True, ndigits=2)
+            c = global_functions.add_oneline_floatnumber(can=c, number=patient_estimateWeight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, value_min=0.1, value_max=500.10, nullable=True, ndigits=2)
             if type(c) == type(Response()): return c
             if has_additional_healthInsurance is not None:
                 c = add_has_additional_healthInsurance(canvas=c, has_additional_healthInsurance=has_additional_healthInsurance)
