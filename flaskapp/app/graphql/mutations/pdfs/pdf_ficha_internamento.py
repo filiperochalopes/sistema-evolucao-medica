@@ -15,7 +15,7 @@ if __name__ != "__main__":
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
-def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:int, doctor_crm:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:int=None, has_additional_healthInsurance:bool=None):
+def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:int, doctor_crm:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:int=None, has_additional_healthInsurance:bool=None):
 
     try:
         packet = io.BytesIO()
@@ -30,7 +30,7 @@ def fill_pdf_ficha_internamento(documentDatetime:datetime.datetime, patient_name
         # not null data
         try:
             # change font size to datetime            
-            c = global_functions.add_datetime(can=c, date=documentDatetime, pos=(410, 740), campName='Document Datetime', hours=True, formated=True)
+            c = global_functions.add_datetime(can=c, date=document_datetime, pos=(410, 740), campName='Document Datetime', hours=True, formated=True)
             if type(c) == type(Response()): return c      
             
             
@@ -141,7 +141,7 @@ def add_has_additional_healthInsurance(canvas:canvas.Canvas, has_additional_heal
 if __name__ == "__main__":
     import global_functions
     output = fill_pdf_ficha_internamento(
-        documentDatetime=datetime.datetime.now(), 
+        document_datetime=datetime.datetime.now(), 
         patient_name="Patient Name",
         patient_cns=928976954930007,
         patient_birthday=datetime.datetime.now(),
