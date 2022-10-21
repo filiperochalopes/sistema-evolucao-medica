@@ -4,6 +4,7 @@ from itertools import cycle
 from reportlab.pdfgen import canvas
 from PyPDF2  import PdfWriter
 import datetime
+from typing import Union
 
 
 def is_CNS_valid(cns:int) -> bool:
@@ -73,7 +74,7 @@ def is_CPF_valid(cpf: str) -> bool:
     return True
 
 
-def uf_exists(uf:str):
+def uf_exists(uf:str) -> Union[bool, Response]:
     """Verify if a uf exists in Brazil
 
     Args:
@@ -88,7 +89,7 @@ def uf_exists(uf:str):
     return bool(re.match(r'^(\s*(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)?)$', uf, flags=re.I))
 
 
-def is_CNPJ_valid(cnpj:str):
+def is_CNPJ_valid(cnpj:str) -> Union[bool, Response]:
     """Verify if a cnpj is valid
 
     Args:
@@ -116,7 +117,7 @@ def is_CNPJ_valid(cnpj:str):
     return True
 
 
-def add_data(can:canvas.Canvas, data:str, pos:tuple):
+def add_data(can:canvas.Canvas, data:str, pos:tuple) -> Union[canvas.Canvas, Response]:
     """Add data in pdf using canvas object
 
     Args:
@@ -136,7 +137,7 @@ def add_data(can:canvas.Canvas, data:str, pos:tuple):
         return Response("Error when adding data to document with canvas", status=500)
 
 
-def add_square(can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)):
+def add_square(can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)) -> Union[canvas.Canvas, Response]:
     """Add square in document using canvas object
 
     Args:
@@ -156,7 +157,7 @@ def add_square(can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)):
         return Response("Error when adding square to document with canvas", status=500)
 
 
-def add_centralized_data(can:canvas.Canvas, data:str, pos:tuple):
+def add_centralized_data(can:canvas.Canvas, data:str, pos:tuple) -> Union[canvas.Canvas, Response]:
     """Add centralized_data in pdf using canvas object
 
     Args:
@@ -176,7 +177,7 @@ def add_centralized_data(can:canvas.Canvas, data:str, pos:tuple):
         return Response("Error when adding centralized data to document with canvas", status=500)
 
         
-def write_newpdf(newpdf:PdfWriter, new_directory:str):
+def write_newpdf(newpdf:PdfWriter, new_directory:str) -> Union[None, Response]:
     """Write new pdf in a file
 
     Args:
@@ -195,7 +196,7 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str):
         return Response("Error when writing new pdf", status=500)
 
 
-def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False):
+def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> Union[canvas.Canvas, Response]:
     """Add text that is fill in one line
 
     Args:
@@ -255,7 +256,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str=''):
+def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='') -> Union[canvas.Canvas, Response]:
     """Add text that is fill in one line
 
     Args:
@@ -333,7 +334,7 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False):
+def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
     """_summary_
 
     Args:
@@ -378,7 +379,7 @@ def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, nul
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False):
+def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
     """_summary_
 
     Args:
@@ -423,7 +424,7 @@ def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, camp_name:str, nullable:bool=
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, len_max:int, value_min:int, value_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False):
+def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, len_max:int, value_min:int, value_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> Union[canvas.Canvas, Response]:
     """Add one line number to canvas
 
     Args:
@@ -488,7 +489,7 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:st
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_name:str, len_max:int, value_min:float, value_max:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2):
+def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_name:str, len_max:int, value_min:float, value_max:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2) -> Union[canvas.Canvas, Response]:
     """Add one line number to canvas
 
     Args:
@@ -557,7 +558,7 @@ def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_nam
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_interval_to_data(data:str, interval:str):
+def add_interval_to_data(data:str, interval:str) -> Union[str, Response]:
     """add interval to data
 
     Args:
@@ -577,7 +578,7 @@ def add_interval_to_data(data:str, interval:str):
     return interval.join(data)
 
 
-def add_cns(can:canvas.Canvas, cns:int, pos:tuple, camp_name:str,nullable:bool=False, formated:bool=False, interval:str=''):
+def add_cns(can:canvas.Canvas, cns:int, pos:tuple, camp_name:str,nullable:bool=False, formated:bool=False, interval:str='') -> Union[canvas.Canvas, Response]:
     """Add cns to canvas
 
     Args:
@@ -629,7 +630,7 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, camp_name:str,nullable:bool=F
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, camp_name:str,nullable:bool=False, interval:str=''):
+def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, camp_name:str,nullable:bool=False, interval:str='') -> Union[canvas.Canvas, Response]:
     """Add cnpj to canvas
 
     Args:
@@ -676,7 +677,7 @@ def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, camp_name:str,nullable:bool
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False):
+def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> Union[canvas.Canvas, Response]:
     """Add cnae to canvas
 
     Args:
@@ -723,7 +724,7 @@ def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:boo
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False):
+def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> Union[canvas.Canvas, Response]:
     """Add cbor to canvas
 
     Args:
@@ -769,7 +770,7 @@ def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:boo
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False):
+def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
     """Add sex square to canvas
 
     Args:
@@ -821,7 +822,7 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
         return Response(f'Unkown error while adding {camp_name}', status=500)
 
 
-def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name:str, hours:bool=True,nullable:bool=False, formated:bool=True, interval:str=''):
+def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name:str, hours:bool=True,nullable:bool=False, formated:bool=True, interval:str='') -> Union[canvas.Canvas, Response]:
     """Add datetime to canvas
 
     Args:
@@ -875,7 +876,7 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name
         return Response(f'Unkown error while adding {camp_name}', status=500)
 
 
-def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str=''):
+def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='') -> Union[canvas.Canvas, Response]:
     """Verify uf and add to document
 
     Args:
@@ -920,7 +921,7 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=Fa
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False):
+def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
     """Validate and add document to canvas, can be CPF, RG or CNS
 
     Args:
@@ -1031,7 +1032,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
         return Response(f'Unknow error while adding {camp_name} Document', status=500)
 
 
-def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False):
+def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
     """Verifiy option choose and add to canvas
 
     Args:
