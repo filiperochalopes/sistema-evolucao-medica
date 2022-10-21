@@ -169,5 +169,5 @@ if __name__ == "__main__":
         )
     if type(output) == type(Response()): 
         print(output.response)
-    global_functions.write_newpdf(output, "./graphql/mutations/pdfs/ficha_teste.pdf")
+    global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/ficha_teste.pdf")
     
