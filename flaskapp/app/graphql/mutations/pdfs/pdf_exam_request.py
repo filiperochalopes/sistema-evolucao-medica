@@ -7,6 +7,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from math import ceil
+from typing import Union
 
 # Doing the import this way only when is called by antoher file (like pytest)
 if __name__ != "__main__":
@@ -22,7 +23,7 @@ font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
 
 def fill_pdf_exam_request(patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_adress:str, solicitation_reason:str,
-exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_authorized:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None):
+exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_authorized:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> Union[PdfWriter, Response]:
 
     try:
         packet = io.BytesIO()
@@ -126,7 +127,7 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
     except:
         return Response("Error while filling exam request", status=500)
 
-def add_exams(canvas:canvas.Canvas, exams:str):
+def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]:
     """add solicited exams
 
     Args:
