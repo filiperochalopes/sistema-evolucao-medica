@@ -18,8 +18,8 @@ for x in range(0, 2000):
     lenghtTest += str(x)
 
 #The templat will change depending on exems lenght
-template_directory = ["./graphql/mutations/pdfs/pdfs_templates/one_exam_request.pdf", "./graphql/mutations/pdfs/pdfs_templates/two_exam_request.pdf", "./graphql/mutations/pdfs/pdfs_templates/three_exam_request.pdf"]
-font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
+template_directory = ["/app/app/assets/pdfs_templates/one_exam_request.pdf", "/app/app/assets/pdfs_templates/two_exam_request.pdf", "/app/app/assets/pdfs_templates/three_exam_request.pdf"]
+font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
 
 def fill_pdf_exam_request(patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_adress:str, solicitation_reason:str,

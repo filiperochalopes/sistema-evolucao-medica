@@ -16,9 +16,9 @@ lenghtTest = ''
 for x in range(0, 2000):
     lenghtTest += str(x)
 
-template_directory = "./graphql/mutations/pdfs/pdfs_templates/two_pages_precricao_medica_template.pdf"
+template_directory = "/app/app/assets/pdfs_templates/two_pages_precricao_medica_template.pdf"
 pagesizePoints = (841.92, 595.2)
-font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
+font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
 def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name:str, prescription:list) -> Union[PdfWriter, Response]:
 

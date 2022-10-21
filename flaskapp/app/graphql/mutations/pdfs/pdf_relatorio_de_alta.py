@@ -16,8 +16,8 @@ lenghtTest = ''
 for x in range(0, 2000):
     lenghtTest += str(x)
 
-template_directory = "./graphql/mutations/pdfs/pdfs_templates/relatorio_de_alta.pdf"
-font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
+template_directory = "/app/app/assets/pdfs_templates/relatorio_de_alta.pdf"
+font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
 def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:int, doctor_crm:str, orientations:str=None) -> Union[PdfWriter, Response]:
     try:
