@@ -173,16 +173,16 @@ def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]
         return Response('Unknow error while adding Solicited Exams', status=500), 0
 
 if __name__ == "__main__":
-    lenghtTest = ''
+    lenght_test = ''
     for x in range(0, 2000):
-        lenghtTest += str(x)
+        lenght_test += str(x)
     import global_functions
     output = fill_pdf_exam_request(
         patient_name='Patient Name', 
         patient_cns=928976954930007, 
         patient_birthday=datetime.datetime.now(), 
         patient_adress="Patient Adress", 
-        exams=lenghtTest[:800],
+        exams=lenght_test[:800],
         solicitation_reason="Solicitation Reason", 
         prof_solicitor="Professional Solicitor", 
         prof_authorized="Professional Authorized", 

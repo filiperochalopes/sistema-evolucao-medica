@@ -2,10 +2,10 @@ from .. import pdf_ficha_internamento
 import datetime
 from flask import Response
 
-global lenghtTest
-lenghtTest = ''
+global lenght_test
+lenght_test = ''
 for x in range(0, 2000):
-    lenghtTest += str(x)
+    lenght_test += str(x)
 
 
 def data_to_use(document_datetime=datetime.datetime.now(), patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime.datetime.now(),patient_sex='F',patient_motherName="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',patient_phonenumber=44387694628, patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.', patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',current_illness_history='Current illnes hsitoryaaaaaaaaaaa',initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456',patient_adressNumber=123456,patient_adressNeigh='Patient Neighborhood',patient_adressCity='Patient city',patient_adressUF='sp',patient_adressCEP=12345678,patient_nationality='Brasileira',patient_estimateWeight=123,has_additional_healthInsurance=False):
@@ -62,7 +62,7 @@ def test_with_space_patient_motherName():
     assert data_to_use(patient_motherName='  ').status == Response(status=400).status
 
 def test_long_patient_motherName():    
-    assert data_to_use(patient_motherName=str(lenghtTest[:71])).status == Response(status=400).status
+    assert data_to_use(patient_motherName=str(lenght_test[:71])).status == Response(status=400).status
 
 def test_short_patient_motherName():    
     assert data_to_use(patient_motherName='11113').status == Response(status=400).status
@@ -77,7 +77,7 @@ def test_with_space_doctor_name():
     assert data_to_use(doctor_name='  ').status == Response(status=400).status
 
 def test_long_doctor_name():    
-    assert data_to_use(doctor_name=str(lenghtTest[:52])).status == Response(status=400).status
+    assert data_to_use(doctor_name=str(lenght_test[:52])).status == Response(status=400).status
 
 def test_short_doctor_name():    
     assert data_to_use(doctor_name='11113').status == Response(status=400).status
@@ -197,7 +197,7 @@ def test_invalid_value_patient_adress():
     assert data_to_use(patient_adress='111').status == Response(status=400).status
 
 def test_long_value_patient_adress():
-    assert data_to_use(patient_adress=str(lenghtTest[:65])).status == Response(status=400).status
+    assert data_to_use(patient_adress=str(lenght_test[:65])).status == Response(status=400).status
 
 def test_wrongtype_patient_adressNumber():
     assert data_to_use(patient_adressNumber='1212312').status == Response(status=400).status
@@ -227,7 +227,7 @@ def test_invalid_value_patient_adressNeigh():
     assert data_to_use(patient_adressNeigh='123').status == Response(status=400).status
 
 def test_long_value_patient_adressNeigh():
-    assert data_to_use(patient_adressNeigh=str(lenghtTest[:33])).status == Response(status=400).status
+    assert data_to_use(patient_adressNeigh=str(lenght_test[:33])).status == Response(status=400).status
 
 def test_wrongtype_patient_adressCity():
     assert data_to_use(patient_adressCity=1212).status == Response(status=400).status
@@ -242,7 +242,7 @@ def test_invalid_value_patient_adressCity():
     assert data_to_use(patient_adressCity='123').status == Response(status=400).status
 
 def test_long_value_patient_adressCity():
-    assert data_to_use(patient_adressCity=str(lenghtTest[:36])).status == Response(status=400).status
+    assert data_to_use(patient_adressCity=str(lenght_test[:36])).status == Response(status=400).status
 
 def test_wrongtype_patient_adressCEP():
     assert data_to_use(patient_adressCEP='1212').status == Response(status=400).status
@@ -257,7 +257,7 @@ def test_invalid_value_patient_adressCEP():
     assert data_to_use(patient_adressCEP=1231).status == Response(status=400).status
 
 def test_long_value_patient_adressCEP():
-    assert data_to_use(patient_adressCEP=lenghtTest[:10]).status == Response(status=400).status
+    assert data_to_use(patient_adressCEP=lenght_test[:10]).status == Response(status=400).status
 
 def test_wrongtype_patient_adressUF():
     assert data_to_use(patient_adressUF=1231).status == Response(status=400).status
@@ -450,7 +450,7 @@ def test_shortText_current_illness_history():
     assert data_to_use(current_illness_history='ablas').status == Response(status=400).status
 
 def test_more_than_limit_current_illness_history():
-    assert data_to_use(current_illness_history=lenghtTest[:1610]).status == Response(status=400).status
+    assert data_to_use(current_illness_history=lenght_test[:1610]).status == Response(status=400).status
 
 #############################################################################
 # NORMAL TEXT VARIABLES THAT CANNOT/can BE NULL
@@ -478,7 +478,7 @@ def test_shortText_patient_drug_allergies():
     assert data_to_use(patient_drug_allergies='abla').status == Response(status=400).status
 
 def test_more_than_limit_patient_drug_allergies():
-    assert data_to_use(patient_drug_allergies=lenghtTest[:110]).status == Response(status=400).status
+    assert data_to_use(patient_drug_allergies=lenght_test[:110]).status == Response(status=400).status
 
 def test_wrong_type_patient_comorbidities():
     assert data_to_use(patient_comorbidities=131).status == Response(status=400).status
@@ -493,7 +493,7 @@ def test_shortText_patient_comorbidities():
     assert data_to_use(patient_comorbidities='abla').status == Response(status=400).status
 
 def test_more_than_limit_patient_comorbidities():
-    assert data_to_use(patient_comorbidities=lenghtTest[:110]).status == Response(status=400).status
+    assert data_to_use(patient_comorbidities=lenght_test[:110]).status == Response(status=400).status
 
 def test_wrong_type_initial_diagnostic_suspicion():
     assert data_to_use(initial_diagnostic_suspicion=131).status == Response(status=400).status
@@ -508,7 +508,7 @@ def test_shortText_initial_diagnostic_suspicion():
     assert data_to_use(initial_diagnostic_suspicion='abla').status == Response(status=400).status
 
 def test_more_than_limit_initial_diagnostic_suspicion():
-    assert data_to_use(initial_diagnostic_suspicion=lenghtTest[:110]).status == Response(status=400).status
+    assert data_to_use(initial_diagnostic_suspicion=lenght_test[:110]).status == Response(status=400).status
 
 def test_wrong_type_doctor_crm():
     assert data_to_use(doctor_crm=131).status == Response(status=400).status
@@ -523,7 +523,7 @@ def test_shortText_doctor_crm():
     assert data_to_use(doctor_crm='abla').status == Response(status=400).status
 
 def test_more_than_limit_doctor_crm():
-    assert data_to_use(doctor_crm=lenghtTest[:14]).status == Response(status=400).status
+    assert data_to_use(doctor_crm=lenght_test[:14]).status == Response(status=400).status
 
 def test_wrong_type_patient_nationality():
     assert data_to_use(patient_nationality=131).status == Response(status=400).status
@@ -538,7 +538,7 @@ def test_shortText_patient_nationality():
     assert data_to_use(patient_nationality='ab').status == Response(status=400).status
 
 def test_more_than_limit_patient_nationality():
-    assert data_to_use(patient_nationality=lenghtTest[:27]).status == Response(status=400).status
+    assert data_to_use(patient_nationality=lenght_test[:27]).status == Response(status=400).status
 
 #################################################################################
 # TEST CNS
@@ -595,7 +595,7 @@ def test_empty_spaces_patient_phonenumber():
     assert data_to_use(patient_phonenumber='    ').status == Response(status=400).status
 
 def test_longValue_patient_phonenumber():
-    assert data_to_use(patient_phonenumber=int(lenghtTest[:14])).status == Response(status=400).status
+    assert data_to_use(patient_phonenumber=int(lenght_test[:14])).status == Response(status=400).status
 
 def test_shortValue_patient_phonenumber():
     assert data_to_use(patient_phonenumber=1234567).status == Response(status=400).status
@@ -610,7 +610,7 @@ def test_empty_spaces_patient_estimateWeight():
     assert data_to_use(patient_estimateWeight='    ').status == Response(status=400).status
 
 def test_longValue_patient_estimateWeight():
-    assert data_to_use(patient_estimateWeight=float(lenghtTest[:8])).status == Response(status=400).status
+    assert data_to_use(patient_estimateWeight=float(lenght_test[:8])).status == Response(status=400).status
 
 def test_shortValue_patient_estimateWeight():
     assert type(data_to_use(patient_estimateWeight=123)) != type(Response())

@@ -2,10 +2,10 @@ from .. import pdf_aih_sus
 import datetime
 from flask import Response
 
-global lenghtTest
-lenghtTest = ''
+global lenght_test
+lenght_test = ''
 for x in range(0, 1100):
-    lenghtTest += str(x)
+    lenght_test += str(x)
 
 def data_to_use(establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,establishment_exec_name='Establshment Exec Name',establishment_exec_cnes=7654321,patient_name='Patient Name',patient_cns=928976954930007,patient_birthday=datetime.datetime.now(),patient_sex='F',patient_mother_name='Patient Mother Name',patient_adress='Patient Adress street neighobourd',patient_adressCity='Patient City',patient_adressCity_ibgeCode=1234567,patient_adressUF='SP',patient_adressCEP=12345678,main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnostic='Patient Initial Diagnostic',principalCid10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', prof_solicitor_document={'CNS':928976954930007},prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=datetime.datetime.now(), autorization_prof_name='Autorization professional name', emission_org_code='OrgCode2022', autorizaton_prof_document={'CPF':28445400070}, autorizaton_datetime=datetime.datetime.now(),hospitalization_autorization_number=1234567890,exam_results='Xray tibia broken',chart_number=1234,patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber=5613248546, patient_responsible_phonenumber=8564721598, secondary_cid10='A01',cid10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj=37549670000171, insurance_company_ticket_number=123450123456, insurance_company_series='Insurn',company_cnpj=37549670000171, company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
     return pdf_aih_sus.fill_pdf_aih_sus(establishment_solitc_name,establishment_solitc_cnes,establishment_exec_name,establishment_exec_cnes,patient_name,patient_cns,patient_birthday,patient_sex,patient_mother_name,patient_adress,patient_adressCity,patient_adressCity_ibgeCode,patient_adressUF,patient_adressCEP,main_clinical_signs_symptoms,conditions_justify_hospitalization,initial_diagnostic,principalCid10,procedure_solicited,procedure_code, clinic, internation_carater, prof_solicitor_document,prof_solicitor_name, solicitation_datetime, autorization_prof_name, emission_org_code, autorizaton_prof_document, autorizaton_datetime,hospitalization_autorization_number, exam_results,chart_number,patient_ethnicity, patient_responsible_name, patient_mother_phonenumber, patient_responsible_phonenumber,secondary_cid10,cid10_associated_causes,acident_type, insurance_company_cnpj, insurance_company_ticket_number, insurance_company_series,company_cnpj, company_cnae, company_cbor,pension_status)
@@ -75,7 +75,7 @@ def test_with_space_establishment_solitcname():
     assert data_to_use(establishment_solitc_name='  ').status == Response(status=400).status
 
 def test_long_establishment_solitcname():    
-    assert data_to_use(establishment_solitc_name=lenghtTest[:84]).status == Response(status=400).status
+    assert data_to_use(establishment_solitc_name=lenght_test[:84]).status == Response(status=400).status
 
 def test_short_establishment_solitcname():    
     assert data_to_use(establishment_solitc_name='bro').status == Response(status=400).status
@@ -90,7 +90,7 @@ def test_with_space_establishment_exec_name():
     assert data_to_use(establishment_exec_name='  ').status == Response(status=400).status
 
 def test_long_establishment_exec_name():    
-    assert data_to_use(establishment_exec_name=lenghtTest[:84]).status == Response(status=400).status
+    assert data_to_use(establishment_exec_name=lenght_test[:84]).status == Response(status=400).status
 
 def test_short_establishment_exec_name():    
     assert data_to_use(establishment_exec_name='bro').status == Response(status=400).status
@@ -105,7 +105,7 @@ def test_with_space_patient_name():
     assert data_to_use(patient_name='  ').status == Response(status=400).status
 
 def test_long_patient_name():    
-    assert data_to_use(patient_name=lenghtTest[:81]).status == Response(status=400).status
+    assert data_to_use(patient_name=lenght_test[:81]).status == Response(status=400).status
 
 def test_short_patient_name():    
     assert data_to_use(patient_name='bro').status == Response(status=400).status
@@ -120,7 +120,7 @@ def test_with_space_patient_mother_name():
     assert data_to_use(patient_mother_name='  ').status == Response(status=400).status
 
 def test_long_patient_mother_name():    
-    assert data_to_use(patient_mother_name=lenghtTest[:75]).status == Response(status=400).status
+    assert data_to_use(patient_mother_name=lenght_test[:75]).status == Response(status=400).status
 
 def test_short_patient_mother_name():    
     assert data_to_use(patient_mother_name='bro').status == Response(status=400).status
@@ -135,7 +135,7 @@ def test_with_space_prof_solicitor_name():
     assert data_to_use(prof_solicitor_name='  ').status == Response(status=400).status
 
 def test_long_prof_solicitor_name():    
-    assert data_to_use(prof_solicitor_name=lenghtTest[:51]).status == Response(status=400).status
+    assert data_to_use(prof_solicitor_name=lenght_test[:51]).status == Response(status=400).status
 
 def test_short_prof_solicitor_name():    
     assert data_to_use(prof_solicitor_name='bro').status == Response(status=400).status
@@ -150,7 +150,7 @@ def test_with_space_autorization_prof_name():
     assert data_to_use(autorization_prof_name='  ').status == Response(status=400).status
 
 def test_long_autorization_prof_name():    
-    assert data_to_use(autorization_prof_name=lenghtTest[:52]).status == Response(status=400).status
+    assert data_to_use(autorization_prof_name=lenght_test[:52]).status == Response(status=400).status
 
 def test_short_autorization_prof_name():    
     assert data_to_use(autorization_prof_name='bro').status == Response(status=400).status
@@ -165,7 +165,7 @@ def test_with_space_patient_responsible_name():
     assert type(data_to_use(patient_responsible_name='  ')) != Response(status=400).status
 
 def test_long_patient_responsible_name():    
-    assert data_to_use(patient_responsible_name=lenghtTest[:72]).status == Response(status=400).status
+    assert data_to_use(patient_responsible_name=lenght_test[:72]).status == Response(status=400).status
 
 def test_short_patient_responsible_name():    
     assert data_to_use(patient_responsible_name='bro').status == Response(status=400).status
@@ -586,7 +586,7 @@ def test_invalid_value_patient_adress():
     assert data_to_use(patient_adress='111').status == Response(status=400).status
 
 def test_long_value_patient_adress():
-    assert data_to_use(patient_adress=lenghtTest[:103]).status == Response(status=400).status
+    assert data_to_use(patient_adress=lenght_test[:103]).status == Response(status=400).status
 
 def test_wrongtype_patient_adressCity():
     assert data_to_use(patient_adressCity=1212312).status == Response(status=400).status
@@ -601,7 +601,7 @@ def test_invalid_value_patient_adressCity():
     assert data_to_use(patient_adressCity='111').status == Response(status=400).status
 
 def test_long_value_patient_adressCity():
-    assert data_to_use(patient_adressCity=lenghtTest[:73]).status == Response(status=400).status
+    assert data_to_use(patient_adressCity=lenght_test[:73]).status == Response(status=400).status
 
 def test_wrongtype_patient_adressCity_ibgeCode():
     assert data_to_use(patient_adressCity_ibgeCode='1212312').status == Response(status=400).status
@@ -658,7 +658,7 @@ def test_shortText_main_clinical_signs_symptoms():
     assert data_to_use(main_clinical_signs_symptoms='abla').status == Response(status=400).status
 
 def test_more_than_limit_main_clinical_signs_symptoms():
-    assert data_to_use(main_clinical_signs_symptoms=lenghtTest[:1030]).status == Response(status=400).status
+    assert data_to_use(main_clinical_signs_symptoms=lenght_test[:1030]).status == Response(status=400).status
 
 def test_wrong_type_conditions_justify_hospitalization():
     assert data_to_use(conditions_justify_hospitalization=131).status == Response(status=400).status
@@ -673,7 +673,7 @@ def test_shortText_conditions_justify_hospitalization():
     assert data_to_use(conditions_justify_hospitalization='abla').status == Response(status=400).status
 
 def test_more_than_limit_conditions_justify_hospitalization():
-    assert data_to_use(conditions_justify_hospitalization=lenghtTest[:410]).status == Response(status=400).status
+    assert data_to_use(conditions_justify_hospitalization=lenght_test[:410]).status == Response(status=400).status
 
 def test_wrong_type_exam_results():
     assert data_to_use(exam_results=131).status == Response(status=400).status
@@ -688,7 +688,7 @@ def test_shortText_exam_results():
     assert data_to_use(exam_results='abla').status == Response(status=400).status
 
 def test_more_than_limit_exam_results():
-    assert data_to_use(exam_results=lenghtTest[:410]).status == Response(status=400).status
+    assert data_to_use(exam_results=lenght_test[:410]).status == Response(status=400).status
 
 
 #############################################################################
@@ -719,7 +719,7 @@ def test_shortText_initial_diagnostic():
     assert data_to_use(initial_diagnostic='abla').status == Response(status=400).status
 
 def test_more_than_limit_initial_diagnostic():
-    assert data_to_use(initial_diagnostic=lenghtTest[:46]).status == Response(status=400).status
+    assert data_to_use(initial_diagnostic=lenght_test[:46]).status == Response(status=400).status
 
 def test_wrong_type_principalCid10():
     assert data_to_use(principalCid10=131).status == Response(status=400).status
@@ -734,7 +734,7 @@ def test_shortText_principalCid10():
     assert data_to_use(principalCid10='ab').status == Response(status=400).status
 
 def test_more_than_limit_principalCid10():
-    assert data_to_use(principalCid10=lenghtTest[:6]).status == Response(status=400).status
+    assert data_to_use(principalCid10=lenght_test[:6]).status == Response(status=400).status
 
 def test_wrong_type_procedure_solicited():
     assert data_to_use(procedure_solicited=131).status == Response(status=400).status
@@ -749,7 +749,7 @@ def test_shortText_procedure_solicited():
     assert data_to_use(procedure_solicited='ab11').status == Response(status=400).status
 
 def test_more_than_limit_procedure_solicited():
-    assert data_to_use(procedure_solicited=lenghtTest[:70]).status == Response(status=400).status
+    assert data_to_use(procedure_solicited=lenght_test[:70]).status == Response(status=400).status
 
 def test_wrong_type_procedure_code():
     assert data_to_use(procedure_code=131).status == Response(status=400).status
@@ -764,7 +764,7 @@ def test_shortText_procedure_code():
     assert data_to_use(procedure_code='ab11').status == Response(status=400).status
 
 def test_more_than_limit_procedure_code():
-    assert data_to_use(procedure_code=lenghtTest[:12]).status == Response(status=400).status
+    assert data_to_use(procedure_code=lenght_test[:12]).status == Response(status=400).status
 
 def test_wrong_type_clinic():
     assert data_to_use(clinic=131).status == Response(status=400).status
@@ -779,7 +779,7 @@ def test_shortText_clinic():
     assert data_to_use(clinic='ab11').status == Response(status=400).status
 
 def test_more_than_limit_clinic():
-    assert data_to_use(clinic=lenghtTest[:20]).status == Response(status=400).status
+    assert data_to_use(clinic=lenght_test[:20]).status == Response(status=400).status
 
 def test_wrong_type_internation_carater():
     assert data_to_use(internation_carater=131).status == Response(status=400).status
@@ -794,7 +794,7 @@ def test_shortText_internation_carater():
     assert data_to_use(internation_carater='ab11').status == Response(status=400).status
 
 def test_more_than_limit_internation_carater():
-    assert data_to_use(internation_carater=lenghtTest[:20]).status == Response(status=400).status
+    assert data_to_use(internation_carater=lenght_test[:20]).status == Response(status=400).status
 
 def test_wrong_type_emission_org_code():
     assert data_to_use(emission_org_code=131).status == Response(status=400).status
@@ -809,7 +809,7 @@ def test_shortText_emission_org_code():
     assert data_to_use(emission_org_code='a').status == Response(status=400).status
 
 def test_more_than_limit_emission_org_code():
-    assert data_to_use(emission_org_code=lenghtTest[:20]).status == Response(status=400).status
+    assert data_to_use(emission_org_code=lenght_test[:20]).status == Response(status=400).status
 
 
 
@@ -840,7 +840,7 @@ def test_empty_spaces_hospitalization_autorization_number():
     assert data_to_use(hospitalization_autorization_number='    ').status == Response(status=400).status
 
 def test_longValue_hospitalization_autorization_number():
-    assert data_to_use(hospitalization_autorization_number=int(lenghtTest[:20])).status == Response(status=400).status
+    assert data_to_use(hospitalization_autorization_number=int(lenght_test[:20])).status == Response(status=400).status
 
 def test_wrong_type_chart_number():
     assert data_to_use(chart_number='131').status == Response(status=400).status
@@ -852,7 +852,7 @@ def test_empty_spaces_chart_number():
     assert data_to_use(chart_number='    ').status == Response(status=400).status
 
 def test_longValue_chart_number():
-    assert data_to_use(chart_number=int(lenghtTest[:23])).status == Response(status=400).status
+    assert data_to_use(chart_number=int(lenght_test[:23])).status == Response(status=400).status
 
 def test_shortValue_chart_number():
     assert data_to_use(chart_number='a').status == Response(status=400).status
@@ -867,7 +867,7 @@ def test_empty_spaces_patient_mother_phonenumber():
     assert data_to_use(patient_mother_phonenumber='    ').status == Response(status=400).status
 
 def test_longValue_patient_mother_phonenumber():
-    assert data_to_use(patient_mother_phonenumber=int(lenghtTest[:14])).status == Response(status=400).status
+    assert data_to_use(patient_mother_phonenumber=int(lenght_test[:14])).status == Response(status=400).status
 
 def test_shortValue_patient_mother_phonenumber():
     assert data_to_use(patient_mother_phonenumber=1234567).status == Response(status=400).status
@@ -882,7 +882,7 @@ def test_empty_spaces_patient_responsible_phonenumber():
     assert data_to_use(patient_responsible_phonenumber='    ').status == Response(status=400).status
 
 def test_longValue_patient_responsible_phonenumber():
-    assert data_to_use(patient_responsible_phonenumber=int(lenghtTest[:14])).status == Response(status=400).status
+    assert data_to_use(patient_responsible_phonenumber=int(lenght_test[:14])).status == Response(status=400).status
 
 def test_shortValue_patient_responsible_phonenumber():
     assert data_to_use(patient_responsible_phonenumber=1234567).status == Response(status=400).status
@@ -897,7 +897,7 @@ def test_empty_spaces_insurance_company_ticket_number():
     assert data_to_use(insurance_company_ticket_number='    ').status == Response(status=400).status
 
 def test_longValue_insurance_company_ticket_number():
-    assert data_to_use(insurance_company_ticket_number=int(lenghtTest[:18])).status == Response(status=400).status
+    assert data_to_use(insurance_company_ticket_number=int(lenght_test[:18])).status == Response(status=400).status
 
 def test_shortValue_insurance_company_ticket_number():
     assert type(data_to_use(insurance_company_ticket_number=12)) != type(Response(status=400))
@@ -912,7 +912,7 @@ def test_empty_spaces_company_cnae():
     assert data_to_use(company_cnae='    ').status == Response(status=400).status
 
 def test_longValue_company_cnae():
-    assert data_to_use(company_cnae=int(lenghtTest[:9])).status == Response(status=400).status
+    assert data_to_use(company_cnae=int(lenght_test[:9])).status == Response(status=400).status
 
 def test_shortValue_company_cnae():
     assert data_to_use(company_cnae=12312).status == Response(status=400).status
@@ -927,7 +927,7 @@ def test_empty_spaces_company_cbor():
     assert data_to_use(company_cbor='    ').status == Response(status=400).status
 
 def test_longValue_company_cbor():
-    assert data_to_use(company_cbor=int(lenghtTest[:9])).status == Response(status=400).status
+    assert data_to_use(company_cbor=int(lenght_test[:9])).status == Response(status=400).status
 
 def test_shortValue_company_cbor():
     assert data_to_use(company_cbor=12542).status == Response(status=400).status
@@ -983,7 +983,7 @@ def test_empty_spaces_patient_ethnicity():
     assert type(data_to_use(patient_ethnicity='    ')) != type(Response())
 
 def test_longValue_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=lenghtTest[:15]).status == Response(status=400).status
+    assert data_to_use(patient_ethnicity=lenght_test[:15]).status == Response(status=400).status
 
 def test_shortValue_patient_ethnicity():
     assert data_to_use(patient_ethnicity='aaa').status == Response(status=400).status
@@ -998,7 +998,7 @@ def test_empty_spaces_patient_responsible_name():
     assert type(data_to_use(patient_responsible_name='    ')) != type(Response())
 
 def test_longValue_patient_responsible_name():
-    assert data_to_use(patient_responsible_name=lenghtTest[:72]).status == Response(status=400).status
+    assert data_to_use(patient_responsible_name=lenght_test[:72]).status == Response(status=400).status
 
 def test_shortValue_patient_responsible_name():
     assert data_to_use(patient_responsible_name='aaa').status == Response(status=400).status
@@ -1013,7 +1013,7 @@ def test_empty_spaces_secondary_cid10():
     assert type(data_to_use(secondary_cid10='    ')) != type(Response())
 
 def test_longValue_secondary_cid10():
-    assert data_to_use(secondary_cid10=lenghtTest[:6]).status == Response(status=400).status
+    assert data_to_use(secondary_cid10=lenght_test[:6]).status == Response(status=400).status
 
 def test_shortValue_secondary_cid10():
     assert data_to_use(secondary_cid10='aa').status == Response(status=400).status
@@ -1028,7 +1028,7 @@ def test_empty_spaces_cid10_associated_causes():
     assert type(data_to_use(cid10_associated_causes='    ')) != type(Response())
 
 def test_longValue_cid10_associated_causes():
-    assert data_to_use(cid10_associated_causes=lenghtTest[:6]).status == Response(status=400).status
+    assert data_to_use(cid10_associated_causes=lenght_test[:6]).status == Response(status=400).status
 
 def test_shortValue_cid10_associated_causes():
     assert data_to_use(cid10_associated_causes='aa').status == Response(status=400).status
@@ -1043,7 +1043,7 @@ def test_empty_spaces_insurance_company_series():
     assert type(data_to_use(insurance_company_series='    ')) != type(Response())
 
 def test_longValue_insurance_company_series():
-    assert data_to_use(insurance_company_series=lenghtTest[:12]).status == Response(status=400).status
+    assert data_to_use(insurance_company_series=lenght_test[:12]).status == Response(status=400).status
 
 def test_shortValue_insurance_company_series():
     assert type(data_to_use(insurance_company_series='123')) != type(Response())

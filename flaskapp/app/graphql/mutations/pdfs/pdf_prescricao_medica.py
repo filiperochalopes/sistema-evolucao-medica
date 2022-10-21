@@ -144,9 +144,9 @@ def add_prescription(canvas:canvas.Canvas, prescription:list) -> Union[canvas.Ca
 
 
 if __name__ == "__main__":
-    lenghtTest = ''
+    lenght_test = ''
     for x in range(0, 2000):
-        lenghtTest += str(x)
+        lenght_test += str(x)
     import global_functions
     output = fill_pdf_prescricao_medica(
         document_datetime=datetime.datetime.now(),

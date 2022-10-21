@@ -167,9 +167,9 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
 
 
 if __name__ == "__main__":
-    lenghtTest = ''
+    lenght_test = ''
     for x in range(0, 2000):
-        lenghtTest += str(x)
+        lenght_test += str(x)
     import global_functions
     output = fill_pdf_aih_sus(
         establishment_solitc_name='Establishment Solicit Name',

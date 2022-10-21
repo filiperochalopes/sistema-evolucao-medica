@@ -196,9 +196,9 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas
 
 
 if __name__ == "__main__":
-    lenghtTest = ''
+    lenght_test = ''
     for x in range(0, 2000):
-        lenghtTest += str(x)
+        lenght_test += str(x)
     import global_functions
     output = fill_pdf_apac(
         establishment_solitc_name='Establishment Solicit Name',

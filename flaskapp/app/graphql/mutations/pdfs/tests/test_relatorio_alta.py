@@ -2,10 +2,10 @@ from .. import pdf_relatorio_de_alta
 import datetime
 from flask import Response
 
-global lenghtTest
-lenghtTest = ''
+global lenght_test
+lenght_test = ''
 for x in range(0, 2200):
-    lenghtTest += str(x)
+    lenght_test += str(x)
 
 
 def data_to_use(documentDatetime=datetime.datetime.now(), patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime.datetime.now(),patient_sex='F',patient_motherName="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456',orientations='Do not jump'):
@@ -43,7 +43,7 @@ def test_with_space_patient_motherName():
     assert data_to_use(patient_motherName='  ').status == Response(status=400).status
 
 def test_long_patient_motherName():    
-    assert data_to_use(patient_motherName=str(lenghtTest[:71])).status == Response(status=400).status
+    assert data_to_use(patient_motherName=str(lenght_test[:71])).status == Response(status=400).status
 
 def test_short_patient_motherName():    
     assert data_to_use(patient_motherName='11113').status == Response(status=400).status
@@ -58,7 +58,7 @@ def test_with_space_doctor_name():
     assert data_to_use(doctor_name='  ').status == Response(status=400).status
 
 def test_long_doctor_name():    
-    assert data_to_use(doctor_name=str(lenghtTest[:52])).status == Response(status=400).status
+    assert data_to_use(doctor_name=str(lenght_test[:52])).status == Response(status=400).status
 
 def test_short_doctor_name():    
     assert data_to_use(doctor_name='11113').status == Response(status=400).status
@@ -154,7 +154,7 @@ def test_invalid_value_patient_adress():
     assert data_to_use(patient_adress='111').status == Response(status=400).status
 
 def test_long_value_patient_adress():
-    assert data_to_use(patient_adress=str(lenghtTest[:65])).status == Response(status=400).status
+    assert data_to_use(patient_adress=str(lenght_test[:65])).status == Response(status=400).status
 
 #############################################################################
 # TEST BIG TEXT WITH LINE BRAKES
@@ -174,7 +174,7 @@ def test_shortText_evolution():
     assert data_to_use(evolution='ablas').status == Response(status=400).status
 
 def test_more_than_limit_evolution():
-    assert data_to_use(evolution=lenghtTest[:2150]).status == Response(status=400).status
+    assert data_to_use(evolution=lenght_test[:2150]).status == Response(status=400).status
 
 def test_wrong_type_orientations():
     assert data_to_use(orientations=131).status == Response(status=400).status
@@ -189,7 +189,7 @@ def test_shortText_orientations():
     assert data_to_use(orientations='ablas').status == Response(status=400).status
 
 def test_more_than_limit_orientations():
-    assert data_to_use(orientations=lenghtTest[:850]).status == Response(status=400).status
+    assert data_to_use(orientations=lenght_test[:850]).status == Response(status=400).status
 
 
 #################################################################################
