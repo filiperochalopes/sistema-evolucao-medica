@@ -189,9 +189,9 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str) -> Union[None, Response]:
         Response(flask.Response): with the error
     """ 
     try:
-        outputFile = open(new_directory, 'wb')
-        newpdf.write(outputFile)
-        outputFile.close()
+        output_file = open(new_directory, 'wb')
+        newpdf.write(output_file)
+        output_file.close()
     except:
         return Response("Error when writing new pdf", status=500)
 
@@ -311,20 +311,20 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         text = text.strip()
         if len_min <= len(text) <= len_max:
             str_to_line = ''
-            brokeLinexTimes = int(len(text)/char_per_lines)
-            if max_lines_amount != None and brokeLinexTimes + 1 > max_lines_amount:
+            broke_lines_times = int(len(text)/char_per_lines)
+            if max_lines_amount != None and broke_lines_times + 1 > max_lines_amount:
                 return Response(f'Unable to add {camp_name} because lines amount needed is more than {max_lines_amount}', status=500)
-            currentLine = char_per_lines
-            lastline = 0
+            current_line = char_per_lines
+            last_line = 0
             xpos = initial_pos[0]
             ypos = initial_pos[1]
             # Making the line break whem has max charater limiti reached in a line
-            while brokeLinexTimes >= 0:
-                str_to_line = text[lastline:currentLine]
+            while broke_lines_times >= 0:
+                str_to_line = text[last_line:current_line]
                 can = add_data(can=can, data=str_to_line, pos=(xpos, ypos))
-                lastline = currentLine
-                currentLine += char_per_lines
-                brokeLinexTimes -= 1
+                last_line = current_line
+                current_line += char_per_lines
+                broke_lines_times -= 1
                 ypos -= decrease_ypos
 
             return can
@@ -822,7 +822,7 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
         return Response(f'Unkown error while adding {camp_name}', status=500)
 
 
-def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name:str, hours:bool=True,nullable:bool=False, formated:bool=True, interval:str='') -> Union[canvas.Canvas, Response]:
+def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='') -> Union[canvas.Canvas, Response]:
     """Add datetime to canvas
 
     Args:
