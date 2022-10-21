@@ -13,9 +13,6 @@ from typing import Union
 if __name__ != "__main__":
     from . import global_functions
 
-lenghtTest = ''
-for x in range(0, 2000):
-    lenghtTest += str(x)
 
 #The templat will change depending on exems lenght
 template_directory = ["/app/app/assets/pdfs_templates/one_exam_request.pdf", "/app/app/assets/pdfs_templates/two_exam_request.pdf", "/app/app/assets/pdfs_templates/three_exam_request.pdf"]
@@ -176,6 +173,9 @@ def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]
         return Response('Unknow error while adding Solicited Exams', status=500), 0
 
 if __name__ == "__main__":
+    lenghtTest = ''
+    for x in range(0, 2000):
+        lenghtTest += str(x)
     import global_functions
     output = fill_pdf_exam_request(
         patient_name='Patient Name', 

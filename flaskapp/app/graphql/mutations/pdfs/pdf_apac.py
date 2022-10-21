@@ -12,9 +12,6 @@ from typing import Union
 if __name__ != "__main__":
     from . import global_functions
 
-lenghtTest = ''
-for x in range(0, 2000):
-    lenghtTest += str(x)
 
 template_directory = "/app/app/assets/pdfs_templates/apac.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
@@ -199,6 +196,9 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas
 
 
 if __name__ == "__main__":
+    lenghtTest = ''
+    for x in range(0, 2000):
+        lenghtTest += str(x)
     import global_functions
     output = fill_pdf_apac(
         establishment_solitc_name='Establishment Solicit Name',
