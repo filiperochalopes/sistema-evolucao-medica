@@ -144,9 +144,9 @@ def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]
         str_exams = ''
         #Calculate how many pags will have, ceil function round to upper int
         pags_quant = ceil(len(exams)/324)
-        charByLine = 108
-        brokeLinexTimes = int(len(exams)/charByLine)
-        currentLine = charByLine
+        CHAR_PER_LINES = 108
+        brokeLinexTimes = int(len(exams)/CHAR_PER_LINES)
+        currentLine = CHAR_PER_LINES
         lastline = 0
         yposition = 649
         cont = 0
@@ -155,7 +155,7 @@ def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]
                 str_exams = exams[lastline:currentLine]
                 canvas = global_functions.add_data(can=canvas, data=str_exams, pos=(7, yposition))
                 lastline = currentLine
-                currentLine += charByLine
+                currentLine += CHAR_PER_LINES
                 brokeLinexTimes -= 1
                 cont += 1
                 if cont%3 == 0:
