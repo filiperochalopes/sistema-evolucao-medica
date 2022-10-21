@@ -6,6 +6,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
+from typing import Union
 
 # Doing the import this way only when is called by antoher file (like pytest)
 if __name__ != "__main__":
@@ -15,7 +16,7 @@ if __name__ != "__main__":
 template_directory = "./graphql/mutations/pdfs/pdfs_templates/ficha_de_internamento_hmlem.pdf"
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
-def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:int, doctor_crm:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:int=None, has_additional_healthInsurance:bool=None):
+def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:int, doctor_crm:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:int=None, has_additional_healthInsurance:bool=None) -> Union[PdfWriter, Response]:
 
     try:
         packet = io.BytesIO()
@@ -116,7 +117,7 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
         return Response("Error while filling ficha de internamento", status=500)
 
 
-def add_has_additional_healthInsurance(canvas:canvas.Canvas, has_additional_healthInsurance:bool):
+def add_has_additional_healthInsurance(canvas:canvas.Canvas, has_additional_healthInsurance:bool) -> Union[canvas.Canvas, Response]:
     """add has additional health insurance
 
     Args:

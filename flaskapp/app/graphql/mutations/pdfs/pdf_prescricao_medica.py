@@ -6,6 +6,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
+from typing import Union
 
 # Doing the import this way only when is called by antoher file (like pytest)
 if __name__ != "__main__":
@@ -19,7 +20,7 @@ template_directory = "./graphql/mutations/pdfs/pdfs_templates/two_pages_precrica
 pagesizePoints = (841.92, 595.2)
 font_directory = "./graphql/mutations/pdfs/Roboto-Mono.ttf"
 
-def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name:str, prescription:list):
+def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name:str, prescription:list) -> Union[PdfWriter, Response]:
 
     try:
         try:
@@ -69,7 +70,7 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
         return Response('Unknow error while adding medical prescription', status=500)
 
 
-def add_prescription(canvas:canvas.Canvas, prescription:list):
+def add_prescription(canvas:canvas.Canvas, prescription:list) -> Union[canvas.Canvas, Response]:
     """add prescription to database
 
     Args:
