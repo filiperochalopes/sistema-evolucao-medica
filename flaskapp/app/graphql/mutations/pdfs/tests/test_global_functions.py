@@ -4,218 +4,218 @@ from flask import Response
 
 #Testing globals functions
 def test_notvalidateCPF():
-    assert global_functions.isCPFvalid('434.123.123-99') == False
+    assert global_functions.is_CPF_valid('434.123.123-99') == False
 
 def test_truevalidateCPF():
-    assert global_functions.isCPFvalid('434.234.123-99') == True
+    assert global_functions.is_CPF_valid('434.234.123-99') == True
 
 def test_wrongCPFtype():
-    assert global_functions.isCPFvalid(8167423414).status == Response(status=500).status
+    assert global_functions.is_CPF_valid(8167423414).status == Response(status=500).status
 
 
 def test_emptyCPF():
-    assert global_functions.isCPFvalid('            ') == False
+    assert global_functions.is_CPF_valid('            ') == False
 
 def test_notvalidateCNS():
-    assert global_functions.isCNSvalid(914874125754123) == False
+    assert global_functions.is_CNS_valid(914874125754123) == False
 
 def test_truevalidateCNS():
-    assert global_functions.isCNSvalid(928976954930007) == True
+    assert global_functions.is_CNS_valid(928976954930007) == True
 
 def test_wrongCNStype():
-    assert global_functions.isCNSvalid('8167423414').status == Response(status=500).status
+    assert global_functions.is_CNS_valid('8167423414').status == Response(status=500).status
 
 
 def test_longnotvalidateRG():
-    assert global_functions.isRGvalid(9197841521982457189247195271597495195714) == False
+    assert global_functions.is_RG_valid(9197841521982457189247195271597495195714) == False
     
 def test_notvalidateRG():
-    assert global_functions.isRGvalid(91454) == False
+    assert global_functions.is_RG_valid(91454) == False
 
 def test_truevalidateRG():
-    assert global_functions.isRGvalid(928976954930007) == True
+    assert global_functions.is_RG_valid(928976954930007) == True
 
 def test_wrongRGtype():
-    assert global_functions.isRGvalid('8167423414').status == Response(status=500).status
+    assert global_functions.is_RG_valid('8167423414').status == Response(status=500).status
 
 
 #test CNPJ
 def test_notvalidateCNPJ():
-    assert global_functions.isCNPJvalid('375496712311271') == False
+    assert global_functions.is_CNPJ_valid('375496712311271') == False
 
 def test_truevalidateCNPJ():
-    assert global_functions.isCNPJvalid('37549670000171') == True
+    assert global_functions.is_CNPJ_valid('37549670000171') == True
 
 def test_wrongCNPJtype():
-    assert global_functions.isCNPJvalid(37549670000171).status == Response(status=500).status
+    assert global_functions.is_CNPJ_valid(37549670000171).status == Response(status=500).status
 
 
 #Test UF exists
 
 def test_wrongtype_patient_adressUF():
-    assert global_functions.ufExists(1231).status == Response(status=500).status
+    assert global_functions.uf_exists(1231).status == Response(status=500).status
 
 def test_notexistopiton_patient_adressUF():
-    assert global_functions.ufExists('AUYD') == False
+    assert global_functions.uf_exists('AUYD') == False
 
 def test_AC_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('AC') == True
+    assert global_functions.uf_exists('AC') == True
 
 def test_AC_optionLower_patient_adressUF():
-    assert global_functions.ufExists('ac') == True
+    assert global_functions.uf_exists('ac') == True
 
 def test_AL_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('AL') == True
+    assert global_functions.uf_exists('AL') == True
 
 def test_AL_optionLower_patient_adressUF():
-    assert global_functions.ufExists('al') == True
+    assert global_functions.uf_exists('al') == True
 
 def test_AP_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('AP') == True
+    assert global_functions.uf_exists('AP') == True
 
 def test_AP_optionLower_patient_adressUF():
-    assert global_functions.ufExists('ap') == True
+    assert global_functions.uf_exists('ap') == True
 
 def test_AM_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('AM') == True
+    assert global_functions.uf_exists('AM') == True
 
 def test_AM_optionLower_patient_adressUF():
-    assert global_functions.ufExists('am') == True
+    assert global_functions.uf_exists('am') == True
 
 def test_BA_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('BA') == True
+    assert global_functions.uf_exists('BA') == True
 
 def test_BA_optionLower_patient_adressUF():
-    assert global_functions.ufExists('ba') == True
+    assert global_functions.uf_exists('ba') == True
 
 def test_CE_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('CE') == True
+    assert global_functions.uf_exists('CE') == True
 
 def test_CE_optionLower_patient_adressUF():
-    assert global_functions.ufExists('ce') == True
+    assert global_functions.uf_exists('ce') == True
 
 def test_DF_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('DF') == True
+    assert global_functions.uf_exists('DF') == True
 
 def test_DF_optionLower_patient_adressUF():
-    assert global_functions.ufExists('df') == True
+    assert global_functions.uf_exists('df') == True
 
 def test_ES_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('ES') == True
+    assert global_functions.uf_exists('ES') == True
 
 def test_ES_optionLower_patient_adressUF():
-    assert global_functions.ufExists('es') == True
+    assert global_functions.uf_exists('es') == True
 
 def test_GO_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('GO') == True
+    assert global_functions.uf_exists('GO') == True
 
 def test_GO_optionLower_patient_adressUF():
-    assert global_functions.ufExists('go') == True
+    assert global_functions.uf_exists('go') == True
 
 def test_MA_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('MA') == True
+    assert global_functions.uf_exists('MA') == True
 
 def test_MA_optionLower_patient_adressUF():
-    assert global_functions.ufExists('ma') == True
+    assert global_functions.uf_exists('ma') == True
 
 def test_MS_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('MS') == True
+    assert global_functions.uf_exists('MS') == True
 
 def test_MS_optionLower_patient_adressUF():
-    assert global_functions.ufExists('ms') == True
+    assert global_functions.uf_exists('ms') == True
 
 def test_MT_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('MT') == True
+    assert global_functions.uf_exists('MT') == True
 
 def test_MT_optionLower_patient_adressUF():
-    assert global_functions.ufExists('mt') == True
+    assert global_functions.uf_exists('mt') == True
 
 def test_MG_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('MG') == True
+    assert global_functions.uf_exists('MG') == True
 
 def test_MG_optionLower_patient_adressUF():
-    assert global_functions.ufExists('mg') == True
+    assert global_functions.uf_exists('mg') == True
 
 def test_PA_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('PA') == True
+    assert global_functions.uf_exists('PA') == True
 
 def test_PA_optionLower_patient_adressUF():
-    assert global_functions.ufExists('pa') == True
+    assert global_functions.uf_exists('pa') == True
 
 def test_PB_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('PB') == True
+    assert global_functions.uf_exists('PB') == True
 
 def test_PB_optionLower_patient_adressUF():
-    assert global_functions.ufExists('pb') == True
+    assert global_functions.uf_exists('pb') == True
 
 def test_PR_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('PR') == True
+    assert global_functions.uf_exists('PR') == True
 
 def test_PR_optionLower_patient_adressUF():
-    assert global_functions.ufExists('pr') == True
+    assert global_functions.uf_exists('pr') == True
 
 def test_PE_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('PE') == True
+    assert global_functions.uf_exists('PE') == True
 
 def test_PE_optionLower_patient_adressUF():
-    assert global_functions.ufExists('pe') == True
+    assert global_functions.uf_exists('pe') == True
 
 def test_PI_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('PI') == True
+    assert global_functions.uf_exists('PI') == True
 
 def test_PI_optionLower_patient_adressUF():
-    assert global_functions.ufExists('pi') == True
+    assert global_functions.uf_exists('pi') == True
 
 def test_RJ_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('RJ') == True
+    assert global_functions.uf_exists('RJ') == True
 
 def test_RJ_optionLower_patient_adressUF():
-    assert global_functions.ufExists('rj') == True
+    assert global_functions.uf_exists('rj') == True
 
 def test_RN_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('RN') == True
+    assert global_functions.uf_exists('RN') == True
 
 def test_RN_optionLower_patient_adressUF():
-    assert global_functions.ufExists('rn') == True
+    assert global_functions.uf_exists('rn') == True
 
 def test_RS_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('RS') == True
+    assert global_functions.uf_exists('RS') == True
 
 def test_RS_optionLower_patient_adressUF():
-    assert global_functions.ufExists('rs') == True
+    assert global_functions.uf_exists('rs') == True
 
 def test_RO_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('RO') == True
+    assert global_functions.uf_exists('RO') == True
 
 def test_RO_optionLower_patient_adressUF():
-    assert global_functions.ufExists('ro') == True
+    assert global_functions.uf_exists('ro') == True
 
 def test_RR_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('RR') == True
+    assert global_functions.uf_exists('RR') == True
 
 def test_RR_optionLower_patient_adressUF():
-    assert global_functions.ufExists('rr') == True
+    assert global_functions.uf_exists('rr') == True
 
 def test_SC_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('SC') == True
+    assert global_functions.uf_exists('SC') == True
 
 def test_SC_optionLower_patient_adressUF():
-    assert global_functions.ufExists('sc') == True
+    assert global_functions.uf_exists('sc') == True
 
 def test_SP_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('SP') == True
+    assert global_functions.uf_exists('SP') == True
 
 def test_SP_optionLower_patient_adressUF():
-    assert global_functions.ufExists('sp') == True
+    assert global_functions.uf_exists('sp') == True
 
 def test_SE_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('SE') == True
+    assert global_functions.uf_exists('SE') == True
 
 def test_SE_optionLower_patient_adressUF():
-    assert global_functions.ufExists('se') == True
+    assert global_functions.uf_exists('se') == True
 
 def test_TO_optionUpper_patient_adressUF():
-    assert global_functions.ufExists('TO') == True
+    assert global_functions.uf_exists('TO') == True
 
 def test_TO_optionLower_patient_adressUF():
-    assert global_functions.ufExists('to') == True
+    assert global_functions.uf_exists('to') == True

@@ -6,7 +6,7 @@ from PyPDF2  import PdfWriter
 import datetime
 
 
-def isCNSvalid(cns:int) -> bool:
+def is_CNS_valid(cns:int) -> bool:
     """verify if the CNS is valid
     code by: philippeoz
 
@@ -24,7 +24,7 @@ def isCNSvalid(cns:int) -> bool:
     ) % 11 == 0
 
 
-def isRGvalid(rg:int) -> bool:
+def is_RG_valid(rg:int) -> bool:
     # Notice that RG changes a lot in every brazillian state
     # so theres a chance that a invalid RG has pass as Valid
     # just because RG is matematician valid dont mean that exists in government database
@@ -36,7 +36,7 @@ def isRGvalid(rg:int) -> bool:
     return False
 
 
-def isCPFvalid(cpf: str) -> bool:
+def is_CPF_valid(cpf: str) -> bool:
     """Verify if the CPF is valid
 
     Args:
@@ -73,7 +73,7 @@ def isCPFvalid(cpf: str) -> bool:
     return True
 
 
-def ufExists(uf:str):
+def uf_exists(uf:str):
     """Verify if a uf exists in Brazil
 
     Args:
@@ -88,7 +88,7 @@ def ufExists(uf:str):
     return bool(re.match(r'^(\s*(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)?)$', uf, flags=re.I))
 
 
-def isCNPJvalid(cnpj:str):
+def is_CNPJ_valid(cnpj:str):
     """Verify if a cnpj is valid
 
     Args:
@@ -614,7 +614,7 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, campName:str,nullable:bool=Fa
             return Response(f'interval has to be str', status=500)
 
         # Verify if the cns is valid
-        if isCNSvalid(cns):
+        if is_CNS_valid(cns):
             cns = str(cns)
             # Add interval selected
             cns = add_interval_to_data(data=cns, interval=interval)
@@ -664,7 +664,7 @@ def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, campName:str,nullable:bool=
 
         # Verify if the cnpj is valid
         cnpj = str(cnpj)
-        if isCNPJvalid(cnpj):
+        if is_CNPJ_valid(cnpj):
             # Add interval selected
             cnpj = add_interval_to_data(data=cnpj, interval=interval)
             if type(cnpj) == type(Response()): return cnpj
@@ -909,7 +909,7 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, campName:str, nullable:bool=Fal
             return Response(f'interval has to be str', status=500)
         
         uf = uf.upper().strip()
-        if ufExists(uf=uf):
+        if uf_exists(uf=uf):
             # Add empty spaces interval between averu character
             uf = add_interval_to_data(data=uf, interval=interval)
             can = add_data(can=can, data=uf, pos=pos)
@@ -979,7 +979,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
         if 'CNS' in allDocumentsKeys:
             if type(document['CNS']) != type(int()):
                 return Response(f'{campName} value CNS has to be int', status=400)
-            if isCNSvalid(document['CNS']):
+            if is_CNS_valid(document['CNS']):
                 if pos_square_cns != None:
                     can = add_square(can=can, pos=pos_square_cns, size=square_size)
                 # Add empty spaces interval between every character
@@ -999,7 +999,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
             cpf = str(document['CPF'])
             numbersCpf = str(cpf)
             formated_cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
-            if isCPFvalid(formated_cpf):
+            if is_CPF_valid(formated_cpf):
                 if pos_square_cpf != None:
                     can = add_square(can=can, pos=pos_square_cpf, size=square_size)
                 # Add empty spaces interval between averu character
@@ -1017,7 +1017,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, campName:str, squa
             if type(rg) != type(int()):
                 return Response(f'{campName} value RG has to be int', status=400)
             #The only verificatinon is that rg is not greater than 16 characteres
-            if isRGvalid(rg):
+            if is_RG_valid(rg):
                 rg = str(document['RG'])
                 if pos_square_rg != None:
                     can = add_square(can=can, pos=pos_square_rg, size=square_size)
@@ -1089,5 +1089,5 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
 
 if __name__ == "__main__":
     cpf = 142342343234
-    print(isCPFvalid(cpf))
+    print(is_CPF_valid(cpf))
     
