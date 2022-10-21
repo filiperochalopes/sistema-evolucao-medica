@@ -170,26 +170,26 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas
             
         #Add to cnavas
         cont = 1
-        namexpos = 220
-        codexpos = 36
-        quantxpos = 516
+        NAME_X_POS = 220
+        CODE_X_POS = 36
+        QUANT_X_POS = 516
         ypos = 495
-        reduceY = 26
+        REDUCE_Y = 26
         #Add code fist with upper font
         can.setFont('Roboto-Mono', 10)
         for proc in procedures:
-            can = global_functions.add_oneline_text(can=can, text=proc['procedure_code'], pos=(codexpos, ypos), camp_name=f'{cont} Secondary Procedure Code', len_max=10, len_min=10, interval='  ')
+            can = global_functions.add_oneline_text(can=can, text=proc['procedure_code'], pos=(CODE_X_POS, ypos), camp_name=f'{cont} Secondary Procedure Code', len_max=10, len_min=10, interval='  ')
             if type(can) == type(Response()): return can
-            ypos -= reduceY
+            ypos -= REDUCE_Y
 
         can.setFont('Roboto-Mono', 9)
         ypos = 495
         for proc in procedures:
-            can = global_functions.add_oneline_text(can=can, text=proc['procedure_name'], pos=(namexpos, ypos), camp_name=f'{cont} Secondary procedure name', len_max=54, len_min=7)
+            can = global_functions.add_oneline_text(can=can, text=proc['procedure_name'], pos=(NAME_X_POS, ypos), camp_name=f'{cont} Secondary procedure name', len_max=54, len_min=7)
             if type(can) == type(Response()): return can
-            can = global_functions.add_oneline_intnumber(can=can, number=proc['quant'], pos=(quantxpos, ypos), camp_name=f'{cont} Secondary Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
+            can = global_functions.add_oneline_intnumber(can=can, number=proc['quant'], pos=(QUANT_X_POS, ypos), camp_name=f'{cont} Secondary Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
             if type(can) == type(Response()): return can
-            ypos -= reduceY
+            ypos -= REDUCE_Y
         return can
     except: 
         return Response('Unkown error while adding Secondaries Procedures', status=500)
