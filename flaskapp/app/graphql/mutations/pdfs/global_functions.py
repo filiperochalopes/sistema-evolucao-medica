@@ -975,8 +975,8 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
             return Response(f'formated has to be bool', status=500)
         
         # See id document is CPF, CNS or RG
-        allDocumentsKeys = document.keys()
-        if 'CNS' in allDocumentsKeys:
+        all_document_keys = document.keys()
+        if 'CNS' in all_document_keys:
             if type(document['CNS']) != type(int()):
                 return Response(f'{camp_name} value CNS has to be int', status=400)
             if is_CNS_valid(document['CNS']):
@@ -992,12 +992,12 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
                 return can
             else:
                 return Response(f'{camp_name} CNS is not valid', status=400)
-        elif 'CPF' in allDocumentsKeys:
+        elif 'CPF' in all_document_keys:
             if type(document['CPF']) != type(int()):
                 return Response(f'{camp_name} value CPF has to be int', status=400)
             #Format cpf to validate
             cpf = str(document['CPF'])
-            numbersCpf = str(cpf)
+            numbers_cpf = str(cpf)
             formated_cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
             if is_CPF_valid(formated_cpf):
                 if pos_square_cpf != None:
@@ -1006,13 +1006,13 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
                 if formated:
                     cpf = add_interval_to_data(data=formated_cpf, interval=interval)
                 else:
-                    cpf = add_interval_to_data(data=numbersCpf, interval=interval)
+                    cpf = add_interval_to_data(data=numbers_cpf, interval=interval)
 
                 can = add_data(can=can, data=cpf, pos=pos_cpf)
                 return can
             else:
                 return Response(f'{camp_name} CPF is not valid', status=400)
-        elif 'RG' in allDocumentsKeys:
+        elif 'RG' in all_document_keys:
             rg = document['RG']
             if type(rg) != type(int()):
                 return Response(f'{camp_name} value RG has to be int', status=400)
