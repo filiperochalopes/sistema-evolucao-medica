@@ -79,7 +79,7 @@ def add_prescription(canvas:canvas.Canvas, prescription:list) -> Union[canvas.Ca
     #verify if the type is list
     if type(prescription) != type(list()):
         return Response('prescription has to be a list of dicts, like: [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]', status=400)
-    necessaryKeys = ["medicine_name", "amount", "use_mode"]
+    NECESSARY_KEYS = ["medicine_name", "amount", "use_mode"]
     totalChar = 0
     for presc in prescription:
         #verify if the item in list is a dict
@@ -99,7 +99,7 @@ def add_prescription(canvas:canvas.Canvas, prescription:list) -> Union[canvas.Ca
             return Response('"use_mode"cannot be longer than 244 characters', status=400)
         #Verify if the dict has more keys than the needed
         for key in presc.keys():
-            if key not in necessaryKeys:
+            if key not in NECESSARY_KEYS:
                 return Response('The dict can only have 3 keys "medicine_name", "amount", "use_mode"', status=400)
         #calculate the total lenght of use_mode
         totalChar += len(presc['use_mode'].strip())
@@ -113,32 +113,32 @@ def add_prescription(canvas:canvas.Canvas, prescription:list) -> Union[canvas.Ca
         amount = presc['amount'].strip()
         use_mode = presc['use_mode'].strip()
         str_use_mode = ''
-        charByLine = 61
-        brokeLinexTimes = int(len(use_mode)/charByLine)
-        currentLine = charByLine
-        lastline = 0
+        CHAR_PER_LINES = 61
+        broke_lines_times = int(len(use_mode)/CHAR_PER_LINES)
+        current_line = CHAR_PER_LINES
+        last_line = 0
         #Discover how many . dots hhas to be between medicinename and amount
-        dotQuant = 61 - len(medicine_name + amount)
-        str_title = medicine_name + '.' * dotQuant + amount
+        dot_quant = 61 - len(medicine_name + amount)
+        str_title = medicine_name + '.' * dot_quant + amount
         #Add medicinename and amount
         canvas = global_functions.add_data(can=canvas, data=str_title, pos=(22, yposition))
         canvas = global_functions.add_data(can=canvas, data=str_title, pos=(472, yposition))
         yposition -= 10
         # Making the line break whem has 61 charater in a line
-        while brokeLinexTimes >= 0:
-            str_use_mode = use_mode[lastline:currentLine]
+        while broke_lines_times >= 0:
+            str_use_mode = use_mode[last_line:current_line]
             canvas = global_functions.add_data(can=canvas, data=str_use_mode, pos=(22, yposition))
             canvas = global_functions.add_data(can=canvas, data=str_use_mode, pos=(472, yposition))
-            lastline = currentLine
-            currentLine += charByLine
-            brokeLinexTimes -= 1
+            last_line = current_line
+            current_line += CHAR_PER_LINES
+            broke_lines_times -= 1
             yposition -= 10
         yposition -= 10
 
     del(str_use_mode)
-    del(brokeLinexTimes)
-    del(currentLine)
-    del(lastline)
+    del(broke_lines_times)
+    del(current_line)
+    del(last_line)
     del(yposition)
     return canvas
 
