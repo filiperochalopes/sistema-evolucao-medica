@@ -1,4 +1,4 @@
-from .. import pdf_relatorio_de_alta
+from pdfs import pdf_relatorio_de_alta
 import datetime
 from flask import Response
 
