@@ -69,7 +69,7 @@ python -m venv path/to/myenv
 # ativando o ambiente virtual
 myenv/Scripts/activate
 FLASK_APP=app/__init__.py
-FLASK_ENV=production
+FLASK_DEBUG=false
 pip install -r requirements.txt
 gunicorn --bind 0.0.0.0:5000 wsgi:app --daemon
 ```
@@ -83,6 +83,6 @@ Salvar arquivo `C:\Users\(username)\AppData\Roaming\Microsoft\Windows\Start Menu
 cd C:\path\to\project
 myenv/Scripts/activate
 FLASK_APP=app/__init__.py
-FLASK_ENV=production
+FLASK_DEBUG=false
 gunicorn --bind 0.0.0.0:5000 wsgi:app --daemon
 ```

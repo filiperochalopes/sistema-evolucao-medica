@@ -1,4 +1,3 @@
-import sys
 import jwt
 import bcrypt
 import datetime

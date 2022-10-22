@@ -21,8 +21,6 @@ db.init_app(app)
 ma.init_app(app)
 
 
-
-# AutoCrud(app, db)
 migrate = Migrate(app, db)
 Scss(app, static_dir='app/static/css', asset_dir='app/assets/scss')
 
@@ -84,10 +82,6 @@ def seed():
         Config(key='insitution_cnes', value='2602202')
     ]
     db.session.bulk_save_objects(configs)
-
-    # Adicionando usuário para testes
-    user_test = User(username="medico", password="senha@123".encode('utf-8'))
-    db.session.add(user_test)
-
+    
     # Enviando informações para o banco
     db.session.commit()
