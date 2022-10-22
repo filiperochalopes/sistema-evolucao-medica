@@ -1,4 +1,4 @@
-from .. import pdf_ficha_internamento
+from pdfs import pdf_ficha_internamento
 import datetime
 from flask import Response
 
