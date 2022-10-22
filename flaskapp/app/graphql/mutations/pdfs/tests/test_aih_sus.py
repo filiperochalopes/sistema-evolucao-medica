@@ -1,6 +1,6 @@
-from .. import pdf_aih_sus
-import datetime
-from flask import Response
+from pdfs import pdf_aih_sus
+from pdfs import datetime
+from pdfs import Response
 
 global lenght_test
 lenght_test = ''
