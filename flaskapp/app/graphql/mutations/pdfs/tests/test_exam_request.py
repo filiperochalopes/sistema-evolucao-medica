@@ -1,4 +1,4 @@
-from .. import pdf_exam_request
+from pdfs import pdf_exam_request
 import datetime
 from flask import Response
 
