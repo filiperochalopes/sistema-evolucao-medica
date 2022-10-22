@@ -1,4 +1,4 @@
-from .. import pdf_apac
+from pdfs import pdf_apac
 import datetime
 from flask import Response
 

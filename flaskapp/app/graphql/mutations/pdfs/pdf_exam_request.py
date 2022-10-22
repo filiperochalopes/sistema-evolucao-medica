@@ -8,10 +8,12 @@ from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from math import ceil
 from typing import Union
+from pdfs import global_functions
+
 
 # Doing the import this way only when is called by antoher file (like pytest)
-if __name__ != "__main__":
-    from . import global_functions
+#if __name__ != "__main__":
+#    from . import global_functions
 
 
 #The templat will change depending on exems lenght
