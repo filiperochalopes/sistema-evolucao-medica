@@ -63,10 +63,6 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
 
         #Adding data that can be null
         try:
-            c.setFont('Roboto-Mono', 10)
-            
-            
-            
             c.setFont('Roboto-Mono', 9)
             c = global_functions.add_document_cns_cpf_rg(can=c, document=patient_document, pos_square_cpf=(40, 66), pos_square_cns=(84,66), pos_cns=(129, 66), pos_cpf=(129, 66),camp_name='Patient Document', interval='  ', nullable=True, square_size=(5, 8))
             if type(c) == type(Response()): return c
