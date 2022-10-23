@@ -1033,7 +1033,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
 
 
 def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
-    """Verifiy option choose and add to canvas
+    """Verifiy option choose and add to canvas, the option is automatic upper cased
 
     Args:
         can (canvas.Canvas): canvas to use

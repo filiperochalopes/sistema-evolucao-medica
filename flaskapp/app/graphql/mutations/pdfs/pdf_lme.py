@@ -16,7 +16,7 @@ if __name__ != "__main__":
 template_directory = "/app/app/assets/pdfs_templates/lme.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
-def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict) -> Union[PdfWriter, Response]:
+def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, diagnostic:str=None, patient_document:dict=None) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -39,7 +39,7 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
             if type(c) == type(Response()): return c
             c = global_functions.add_datetime(can=c, date=solicitation_datetime, pos=(292, 222), camp_name='Solicitation Datetime', hours=False, interval='   ', formated=False)
             if type(c) == type(Response()): return c
-            c = global_functions.add_document_cns_cpf_rg(can=c, document=prof_solicitor_document, pos_square_cpf=(41, 195), pos_square_cns=(84,194), pos_cns=(129, 195), pos_cpf=(129, 195),camp_name='Professional Solicitor Document', interval='  ',nullable=True, square_size=(5, 8))
+            c = global_functions.add_document_cns_cpf_rg(can=c, document=prof_solicitor_document, pos_square_cpf=(41, 195), pos_square_cns=(84,194), pos_cns=(129, 195), pos_cpf=(129, 195),camp_name='Professional Solicitor Document', interval='  ', square_size=(5, 8))
             if type(c) == type(Response()): return c
 
 
@@ -54,14 +54,28 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 224), camp_name='Professional Solicitor Name', len_max=45, len_min=8)
             if type(c) == type(Response()): return c
-            if type(c) == type(Response()): return c
-
 
         except:
             if type(c) == type(Response()):
                 return c
             else:
                 return Response('Some error happen when adding not null data to fields', status=500)
+
+        #Adding data that can be null
+        try:
+            c.setFont('Roboto-Mono', 10)
+            
+            
+            
+            c.setFont('Roboto-Mono', 9)
+            c = global_functions.add_document_cns_cpf_rg(can=c, document=patient_document, pos_square_cpf=(40, 66), pos_square_cns=(84,66), pos_cns=(129, 66), pos_cpf=(129, 66),camp_name='Patient Document', interval='  ', nullable=True, square_size=(5, 8))
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=diagnostic, pos=(105, 455), camp_name='Diagnostic', len_max=84, len_min=4, nullable=True)
+            if type(c) == type(Response()): return c
+
+
+        except:
+            return Response('Critical error happen when adding data that can be null to fields', status=500)
         # create a new PDF with Reportlab
         c.save()
         packet.seek(0)
@@ -96,7 +110,9 @@ if __name__ == "__main__":
         anamnese="Anamnese",
         prof_solicitor_name="Professional Solicitor Name",
         solicitation_datetime=datetime.datetime.now(),
-        prof_solicitor_document={'CPF':28445400070}
+        prof_solicitor_document={'CPF':28445400070},
+        diagnostic='Diagnostic',
+        patient_document={'CNS':928976954930007}
     )
 
     if type(output) == type(Response()): 
