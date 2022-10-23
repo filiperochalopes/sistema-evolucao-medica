@@ -16,7 +16,7 @@ if __name__ != "__main__":
 template_directory = "/app/app/assets/pdfs_templates/lme.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
-def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[PdfWriter, Response]:
+def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -53,6 +53,8 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
             c = global_functions.add_morelines_text(can=c, text=anamnese, initial_pos=(36, 430), decrease_ypos= 10, camp_name='Anamnese', len_max=485, char_per_lines=97, len_min=5)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 224), camp_name='Professional Solicitor Name', len_max=45, len_min=8)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_markable_square_and_onelinetext(can=c, option=capacity_attest[0], valid_options=['SIM','NAO'], text_options=['SIM'], text_pos=(308, 268), options_positions=((79, 271), (42,270)), camp_name='Capacity Attest', len_max=46, text=capacity_attest[1], len_min=5, square_size=(5, 8))
             if type(c) == type(Response()): return c
 
         except:
@@ -193,6 +195,7 @@ if __name__ == "__main__":
         prof_solicitor_name="Professional Solicitor Name",
         solicitation_datetime=datetime.datetime.now(),
         prof_solicitor_document={'CPF':28445400070},
+        capacity_attest=['nao', 'Responsible Name'],
         diagnostic='Diagnostic',
         patient_document={'CNS':928976954930007},
         patient_email='patietemail@gmail.com',

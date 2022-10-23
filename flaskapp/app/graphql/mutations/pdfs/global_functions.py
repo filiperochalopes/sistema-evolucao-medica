@@ -1142,7 +1142,7 @@ def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_opt
                     else:
                         #Add text line
                         can = add_oneline_text(can=can, text=text, pos=text_pos, camp_name=camp_name, len_max=len_max, len_min=len_min, interval=interval)
-                if type(can) == type(Response()): return c
+                if type(can) == type(Response()): return can
                 can = add_square(can=can, pos=options_positions[opt], size=square_size)
                 return can
         return Response(f'Cannot add {camp_name} because the option choosed does not exists', status=400)
