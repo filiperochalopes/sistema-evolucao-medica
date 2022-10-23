@@ -1081,6 +1081,73 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
         return Response(f'Unkown error while adding {camp_name}', status=500)
 
 
+def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
+    """Verifiy option choose and add to canvas, the option is automatic upper cased
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        option (str): option select, will be upperCased
+        valid_options (list): list of valid options, recommendend UPPER (str)
+        options_positions (tuple): tuple of tuples with positions to every option
+        square_size (tuple): square size. Defaults to (9,9).
+        camp_name (str): camp name
+        nullable (bool, optional): can be null. Defaults to False.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """    
+    try:
+        if nullable:
+            if option == None or len(str(option).strip()) == 0:
+                return can
+        if type(option) != type(str()):
+            return Response(f'{camp_name} has to be str', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(text_options) != type(list()):
+            return Response(f'text_options has to be list', status=500)
+        elif type(valid_options) != type(list()):
+            return Response(f'valid_options has to be list', status=500)
+        elif type(options_positions) != type(tuple()):
+            return Response(f'options_positions has to be tuple', status=500)
+        elif type(square_size) != type(tuple()):
+            return Response(f'square_size has to be tuple', status=500)
+        elif type(text_pos) != type(tuple()):
+            return Response(f'text_pos has to be tuple', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
+        elif type(text) != type(str()) or text == None:
+            return Response(f'text has to be str', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(len_max) != type(int()):
+            return Response(f'len_max has to be int', status=500)
+        elif type(len_min) != type(int()):
+            return Response(f'len_min has to be int', status=500)
+        elif len(valid_options) != len(options_positions):
+            return Response(f'valid_options and options_positions has to be the same size', status=500)
+
+        #Verify if option exist
+        option = option.upper()
+        for opt in range(0, len(valid_options)):
+            if option == valid_options[opt]:
+                #Verify if option requer a text
+                if option in text_options:
+                    if text == None or str(text).strip() == '':
+                        return Response(f'Cannot add {camp_name} because a text is required for {option} option', status=400)
+                    else:
+                        #Add text line
+                        can = add_oneline_text(can=can, text=text, pos=text_pos, camp_name=camp_name, len_max=len_max, len_min=len_min, interval=interval)
+                if type(can) == type(Response()): return c
+                can = add_square(can=can, pos=options_positions[opt], size=square_size)
+                return can
+        return Response(f'Cannot add {camp_name} because the option choosed does not exists', status=400)
+    except:
+        return Response(f'Unkown error while adding {camp_name}', status=500)
 
 
 
