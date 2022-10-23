@@ -16,7 +16,7 @@ if __name__ != "__main__":
 template_directory = "/app/app/assets/pdfs_templates/lme.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
-def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, diagnostic:str=None, patient_document:dict=None) -> Union[PdfWriter, Response]:
+def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -72,6 +72,10 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=diagnostic, pos=(105, 455), camp_name='Diagnostic', len_max=84, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=patient_email, pos=(36, 42), camp_name='Patient Email', len_max=62, len_min=8, nullable=True)
+            if type(c) == type(Response()): return c
+            c = add_contat_phonenumbers(can=c, phonenumbers=contacts_phonenumbers, pos=(384, 116), interval='  ')
+            if type(c) == type(Response()): return c
 
 
         except:
@@ -93,6 +97,36 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
         return Response("Error while filling aih sus", status=500)
 
 
+def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, interval:str):
+    try:
+        if type(phonenumbers) == None:
+            return can
+        elif type(phonenumbers) != type(list()):
+            return Response('contacts phonenumbers has to be list', status=400)
+        elif len(phonenumbers) > 2:
+            return Response('Contats phonenumbers list cannot has more than 2 phonenumbers', status=400)
+
+        #Verify if all numbers are int and has 10 digits
+        for number in phonenumbers:
+            if type(number) != type(int()):
+                return Response('Contats phonenumbers has to be a int', status=400)
+            elif len(str(number)) != 10:
+                return Response('Contats phonenumbers must have 10 digits', status=400)
+
+        cont = 1
+        for number in phonenumbers:
+            number = str(number)
+            formated_number = number[:2] + ' ' + number[2:]
+            can = global_functions.add_oneline_text(can=can, text=formated_number, pos=(pos[0], pos[1]), camp_name=f'Phone Number {cont}', len_max=11, len_min=11, nullable=True, interval=interval)
+            if type(can) == type(Response()): return can
+            cont += 1
+            pos = (pos[0], pos[1]-20)
+
+        return can
+    except:
+        return Response('Unknow erro when adding contact phone numbers', status=500)
+
+
 
 if __name__ == "__main__":
     lenght_test = ''
@@ -112,7 +146,10 @@ if __name__ == "__main__":
         solicitation_datetime=datetime.datetime.now(),
         prof_solicitor_document={'CPF':28445400070},
         diagnostic='Diagnostic',
-        patient_document={'CNS':928976954930007}
+        patient_document={'CNS':928976954930007},
+        patient_email='patietemail@gmail.com',
+        contacts_phonenumbers=[1254875652, 4578456598]
+
     )
 
     if type(output) == type(Response()): 
