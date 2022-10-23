@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 13b8c0c1f627
+Revision ID: b832748151f6
 Revises: 
-Create Date: 2022-10-17 07:52:06.518178
+Create Date: 2022-10-23 00:41:56.044275
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '13b8c0c1f627'
+revision = 'b832748151f6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -95,7 +95,7 @@ def upgrade():
     sa.Column('name', sa.String(), nullable=False),
     sa.Column('cpf', sa.String(), nullable=True),
     sa.Column('cns', sa.String(), nullable=True),
-    sa.Column('birthday', sa.String(), nullable=False),
+    sa.Column('birthday', sa.Date(), nullable=False),
     sa.Column('professional_category', sa.Enum('doc', 'nur', 'tec', name='professionalcategoryenum'), nullable=False),
     sa.Column('phone', sa.String(), nullable=True),
     sa.Column('professional_document_uf', sa.String(), nullable=True),
@@ -175,6 +175,7 @@ def upgrade():
     )
     op.create_table('internments',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('admission_datetime', sa.DateTime(), nullable=False),
     sa.Column('hpi', sa.Text(), nullable=False, comment='History of the Present Illness / HMA'),
     sa.Column('justification', sa.Text(), nullable=False, comment='Justificativa de internamento'),
     sa.Column('waiting_vacancy', sa.Boolean(), nullable=True, comment='Aguardando vaga na Regulação'),

@@ -36,7 +36,7 @@ class User(db.Model):
     name = db.Column(db.String, nullable=False)
     cpf = db.Column(db.String, unique=True)
     cns = db.Column(db.String, unique=True)
-    birthday = db.Column(db.String, nullable=False)
+    birthday = db.Column(db.Date, nullable=False)
     professional_category = db.Column(db.Enum(ProfessionalCategoryEnum), nullable=False)
     phone = db.Column(db.String)
     professional_document_uf = db.Column(db.String)
@@ -226,6 +226,7 @@ class Internment(db.Model):
     __tablename__ = 'internments'
 
     id = db.Column(db.Integer, primary_key=True)
+    admission_datetime = db.Column(db.DateTime, nullable=False)
     hpi = db.Column(
         db.Text, comment="History of the Present Illness / HMA", nullable=False)
     justification = db.Column(

@@ -34,6 +34,7 @@ class Cid10Schema(ma.SQLAlchemyAutoSchema):
 class UserSchema(CamelCaseSchema):
     professional_category = EnumToDictionary(
         attribute=('professional_category'))
+    birthday = fields.Date(format='%Y-%m-%d')
 
     class Meta:
         model = User

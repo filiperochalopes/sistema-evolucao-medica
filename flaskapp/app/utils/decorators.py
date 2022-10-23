@@ -20,6 +20,8 @@ def token_authorization(func):
             print(user, file=sys.stderr)
             if not user:
                 raise Exception('Token inválido')
+        else:
+            raise Exception('Token ausente. Adicione o Header Authorization: Bearer Token')
 
         return func(*args, **kwargs, current_user=user)
 

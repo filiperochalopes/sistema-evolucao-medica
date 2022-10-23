@@ -38,9 +38,15 @@ type_defs = gql('''
         """
         updatePatient(is: ID!, patient:PatientInput): Patient
         createInternment(
+            "No formato yyyy-mm-dd HH:MM"
+            admissionDatetime:String,
+            "Dados do paciente"
             patient:PatientInput, 
+            "História da doença atual"
             hpi: String, 
+            "Dados clínicos e de exames que justificam o internamento"
             justification:String,
+            "Diagnóstico inicial de internamento"
             cid10Code: String
         ): Internment
     }
@@ -118,6 +124,7 @@ type_defs = gql('''
 
     type Internment{
         id: ID!
+        admissionDatetime: String
         patient: Patient
         hpi: String
         justification: String

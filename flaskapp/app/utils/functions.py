@@ -5,6 +5,10 @@ import datetime
 from app.models import User, db
 from app.env import SECRET, TOKEN_HOUR_EXPIRATION
 
+from validate_docbr import CPF, CNS
+
+cpf_validator = CPF()
+cns_validator = CNS()
 
 def generate_token(email, password) -> dict:
     '''

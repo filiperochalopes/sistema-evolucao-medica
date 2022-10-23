@@ -16,7 +16,7 @@ makemigrations:
 reset_db:
 	docker exec -it evolucao_hospitalar_flaskapp bash -c ' \
 		rm -rf migrations && \
-		rm app/local.db && \
+		rm -rf instance && \
 		flask db init && \
 		flask db migrate -m "Initial migration" && \
 		flask db upgrade'
