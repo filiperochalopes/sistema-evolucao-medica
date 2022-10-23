@@ -16,7 +16,7 @@ if __name__ != "__main__":
 template_directory = "/app/app/assets/pdfs_templates/lme.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
-def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[PdfWriter, Response]:
+def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -55,6 +55,8 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
             c = global_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 224), camp_name='Professional Solicitor Name', len_max=45, len_min=8)
             if type(c) == type(Response()): return c
             c = global_functions.add_markable_square_and_onelinetext(can=c, option=capacity_attest[0], valid_options=['SIM','NAO'], text_options=['SIM'], text_pos=(308, 268), options_positions=((79, 271), (42,270)), camp_name='Capacity Attest', len_max=46, text=capacity_attest[1], len_min=5, square_size=(5, 8))
+            if type(c) == type(Response()): return c
+            c = add_filled_by(can=c, filled_by=filled_by)
             if type(c) == type(Response()): return c
 
         except:
@@ -176,6 +178,14 @@ def add_medicines(can:canvas.Canvas, medicines:list):
         return Response('Unkown error while adding Medicines', status=500)
 
 
+def add_filled_by(can:canvas.Canvas, filled_by:list):
+    can = global_functions.add_markable_square_and_onelinetext(can=can, option=filled_by[0], valid_options=['PACIENTE','MAE', 'RESPONSAVEL', 'MEDICO','OUTRO'], text_options=['OUTRO'], text_pos=(128, 152), options_positions=((227, 166), (277, 166), (354, 166), (486, 166), (40, 152)), camp_name='Filled By option and Name', len_max=42, text=filled_by[1], len_min=5, square_size=(5, 8))
+    if type(can) == type(Response()): return can
+    if filled_by[0].upper() == 'OUTRO':
+        can = global_functions.add_document_cns_cpf_rg(can=can, document=filled_by[2], pos_cpf=(388, 152),camp_name='Filled by CPF', interval='  ')
+    return can
+
+
 
 
 if __name__ == "__main__":
@@ -196,6 +206,7 @@ if __name__ == "__main__":
         solicitation_datetime=datetime.datetime.now(),
         prof_solicitor_document={'CPF':28445400070},
         capacity_attest=['nao', 'Responsible Name'],
+        filled_by=['MEDICO', 'Other name', {'CPF':28445400070}],
         diagnostic='Diagnostic',
         patient_document={'CNS':928976954930007},
         patient_email='patietemail@gmail.com',

@@ -1145,7 +1145,7 @@ def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_opt
                 if type(can) == type(Response()): return can
                 can = add_square(can=can, pos=options_positions[opt], size=square_size)
                 return can
-        return Response(f'Cannot add {camp_name} because the option choosed does not exists', status=400)
+        return Response(f'Cannot add {camp_name} because the option choosed does not exists in {valid_options}', status=400)
     except:
         return Response(f'Unkown error while adding {camp_name}', status=500)
 
