@@ -16,7 +16,7 @@ if __name__ != "__main__":
 template_directory = "/app/app/assets/pdfs_templates/lme.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
-def fill_pdf_lme(establishment_solitc_cnes:int) -> Union[PdfWriter, Response]:
+def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -31,6 +31,12 @@ def fill_pdf_lme(establishment_solitc_cnes:int) -> Union[PdfWriter, Response]:
         try:
             c = global_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(38, 658), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='   ')
             if type(c) == type(Response()): return c
+
+
+            c.setFont('Roboto-Mono', 9)
+            c = global_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(206, 658), camp_name='Establishment Solicit Name', len_max=65, len_min=8)
+            if type(c) == type(Response()): return c
+
 
         except:
             if type(c) == type(Response()):
@@ -61,6 +67,7 @@ if __name__ == "__main__":
         lenght_test += str(x)
     import global_functions
     output = fill_pdf_lme(
+        establishment_solitc_name='Establishment Solicit Name',
         establishment_solitc_cnes=1234567
     )
 
