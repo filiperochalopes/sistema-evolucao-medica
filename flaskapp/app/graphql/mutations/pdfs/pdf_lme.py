@@ -16,7 +16,7 @@ if __name__ != "__main__":
 template_directory = "/app/app/assets/pdfs_templates/lme.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
-def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int) -> Union[PdfWriter, Response]:
+def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -35,6 +35,8 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_intnumber(can=c, number=patient_height, pos=(485, 602), camp_name='Patient Height', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
             if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=cid10, pos=(34, 455), camp_name='Cid10', len_max=4, len_min=3, interval='  ')
+            if type(c) == type(Response()): return c
 
 
             c.setFont('Roboto-Mono', 9)
@@ -43,6 +45,9 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
             c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(36, 628), camp_name='Patient Name', len_max=79, len_min=7)
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 602), camp_name='Patient Mother Name', len_max=79, len_min=7)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_morelines_text(can=c, text=anamnese, initial_pos=(36, 430), decrease_ypos= 10, camp_name='Anamnese', len_max=485, char_per_lines=97, len_min=5)
+            if type(c) == type(Response()): return c
             if type(c) == type(Response()): return c
 
 
@@ -80,7 +85,9 @@ if __name__ == "__main__":
         patient_name='Patient Name',
         patient_mother_name='Patient Mother Name',
         patient_weight=142,
-        patient_height=180
+        patient_height=180,
+        cid10='A123',
+        anamnese="Anamnese"
     )
 
     if type(output) == type(Response()): 
