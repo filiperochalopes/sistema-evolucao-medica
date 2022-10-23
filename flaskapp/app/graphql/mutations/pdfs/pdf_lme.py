@@ -16,7 +16,7 @@ if __name__ != "__main__":
 template_directory = "/app/app/assets/pdfs_templates/lme.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
-def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[PdfWriter, Response]:
+def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -57,6 +57,8 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
             c = global_functions.add_markable_square_and_onelinetext(can=c, option=capacity_attest[0], valid_options=['SIM','NAO'], text_options=['SIM'], text_pos=(308, 268), options_positions=((79, 271), (42,270)), camp_name='Capacity Attest', len_max=46, text=capacity_attest[1], len_min=5, square_size=(5, 8))
             if type(c) == type(Response()): return c
             c = add_filled_by(can=c, filled_by=filled_by)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA', 'SEMINFO'], text_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'], text_pos=(192, 108), options_positions=((40, 121), (40, 108),(40, 93),(94, 118), (94, 106),(94, 93)), camp_name='Patietn Ethinicity', len_max=31, text=patient_ethnicity[1], len_min=4, square_size=(5, 8))
             if type(c) == type(Response()): return c
 
         except:
@@ -207,6 +209,7 @@ if __name__ == "__main__":
         prof_solicitor_document={'CPF':28445400070},
         capacity_attest=['nao', 'Responsible Name'],
         filled_by=['MEDICO', 'Other name', {'CPF':28445400070}],
+        patient_ethnicity=['SEMINFO', 'Patient Ethnicity'],
         diagnostic='Diagnostic',
         patient_document={'CNS':928976954930007},
         patient_email='patietemail@gmail.com',
