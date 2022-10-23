@@ -16,7 +16,7 @@ if __name__ != "__main__":
 template_directory = "/app/app/assets/pdfs_templates/lme.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
-def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str) -> Union[PdfWriter, Response]:
+def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -30,6 +30,10 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
 
         try:
             c = global_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(38, 658), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='   ')
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_weight, pos=(485, 628), camp_name='Patient Weight', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_height, pos=(485, 602), camp_name='Patient Height', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
             if type(c) == type(Response()): return c
 
 
@@ -74,7 +78,9 @@ if __name__ == "__main__":
         establishment_solitc_name='Establishment Solicit Name',
         establishment_solitc_cnes=1234567,
         patient_name='Patient Name',
-        patient_mother_name='Patient Mother Name'
+        patient_mother_name='Patient Mother Name',
+        patient_weight=142,
+        patient_height=180
     )
 
     if type(output) == type(Response()): 
