@@ -28,7 +28,7 @@ def test_awnser_with_only_required_data():
         main_procedure_name='Main procedure Name',
         main_procedure_code='1234567890',
         main_procedure_quant=4
-        ))
+        )) != type(Response())!= type(Response())
 
 ##############################################################
 # ERRORS IN NAMES CAMPS

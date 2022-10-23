@@ -105,7 +105,7 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
 
 def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, interval:str):
     try:
-        if type(phonenumbers) == None:
+        if phonenumbers == None:
             return can
         elif type(phonenumbers) != type(list()):
             return Response('contacts phonenumbers has to be list', status=400)
@@ -218,8 +218,6 @@ if __name__ == "__main__":
         patient_email='patietemail@gmail.com',
         contacts_phonenumbers=[1254875652, 4578456598],
         medicines=[{"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}]
-
-
     )
 
     if type(output) == type(Response()): 
