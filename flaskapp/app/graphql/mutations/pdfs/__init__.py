@@ -6,3 +6,4 @@ from . import pdf_ficha_internamento
 from . import pdf_prescricao_medica
 from . import pdf_relatorio_de_alta
 
+

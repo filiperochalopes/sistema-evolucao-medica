@@ -7,13 +7,11 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
-from pdfs import global_functions
-
 
 
 # Doing the import this way only when is called by antoher file (like pytest)
-#if __name__ != "__main__":
-#    from . import global_functions
+if __name__ != "__main__":
+    from pdfs import global_functions
 
 template_directory = "/app/app/assets/pdfs_templates/aih_sus.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
