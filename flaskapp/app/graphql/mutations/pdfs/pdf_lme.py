@@ -16,7 +16,7 @@ if __name__ != "__main__":
 template_directory = "/app/app/assets/pdfs_templates/lme.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
-def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int) -> Union[PdfWriter, Response]:
+def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -35,6 +35,10 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int) -
 
             c.setFont('Roboto-Mono', 9)
             c = global_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(206, 658), camp_name='Establishment Solicit Name', len_max=65, len_min=8)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(36, 628), camp_name='Patient Name', len_max=79, len_min=7)
+            if type(c) == type(Response()): return c
+            c = global_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 602), camp_name='Patient Mother Name', len_max=79, len_min=7)
             if type(c) == type(Response()): return c
 
 
@@ -68,7 +72,9 @@ if __name__ == "__main__":
     import global_functions
     output = fill_pdf_lme(
         establishment_solitc_name='Establishment Solicit Name',
-        establishment_solitc_cnes=1234567
+        establishment_solitc_cnes=1234567,
+        patient_name='Patient Name',
+        patient_mother_name='Patient Mother Name'
     )
 
     if type(output) == type(Response()): 
