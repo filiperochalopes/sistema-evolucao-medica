@@ -128,6 +128,8 @@ def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, int
 
 
 
+
+
 if __name__ == "__main__":
     lenght_test = ''
     for x in range(0, 2000):
