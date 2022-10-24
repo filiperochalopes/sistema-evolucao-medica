@@ -148,7 +148,21 @@ def test_wrongtype_capacity_attest_responsible_name():
     assert data_to_use(capacity_attest=123124).status == Response(status=400).status
 
 
+####################################################################
+# TEST CNES 
+# establishment_solitc_cnes
+# empty
+# wrong type
+# invalid cnes
 
+def test_empty_establishment_solitc_cnes():
+    assert data_to_use(establishment_solitc_cnes='').status == Response(status=400).status
+
+def test_wrongtype_establishment_solitc_cnes():
+    assert data_to_use(establishment_solitc_cnes='adsadad').status == Response(status=400).status
+
+def test_invalidcnes_establishment_solitc_cnes():
+    assert data_to_use(establishment_solitc_cnes=451236548).status == Response(status=400).status
 
 
 
