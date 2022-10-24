@@ -9,10 +9,8 @@ from flask import Response
 from math import ceil
 from typing import Union
 from pdfs import global_functions
+from pdfs.constants import FONT_DIRECTORY, TEMPLATE_EXAM_REQUEST_DIRECTORY
 
-#The templat will change depending on exems lenght
-template_directory = ["/app/app/assets/pdfs_templates/one_exam_request.pdf", "/app/app/assets/pdfs_templates/two_exam_request.pdf", "/app/app/assets/pdfs_templates/three_exam_request.pdf"]
-font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
 
 def fill_pdf_exam_request(patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_adress:str, solicitation_reason:str,
@@ -24,7 +22,7 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
         c = canvas.Canvas(packet, pagesize=letter)
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
-        pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
+        pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
         c.setFont('Roboto-Mono', 9)
 
         # Writing all data in respective fields
@@ -109,7 +107,7 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
         packet.seek(0)
         new_pdf = PdfReader(packet)
         # read the template pdf 
-        template_pdf = PdfReader(open(template_directory[pags_quant-1], "rb"))
+        template_pdf = PdfReader(open(TEMPLATE_EXAM_REQUEST_DIRECTORY[pags_quant-1], "rb"))
         output = PdfWriter()
         # add the "watermark" (which is the new pdf) on the existing page
         page = template_pdf.pages[0]
