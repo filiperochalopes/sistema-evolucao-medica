@@ -486,17 +486,52 @@ def test_seminfo_with_longtext_patient_ethnicity():
     assert type(data_to_use(patient_ethnicity=['SEMINFO', lenght_test[:35]])) != type(Response())
 
 
+def test_wrongtype_previous_treatment():
+    assert data_to_use(previous_treatment=1231).status == Response(status=400).status
 
+def test_notexistopiton_previous_treatment():
+    assert data_to_use(previous_treatment=['WTAHST', 'Patient Ethnicity']).status == Response(status=400).status
 
+def test_sim_optionUpper_previous_treatment():
+    assert type(data_to_use(previous_treatment=['SIM', 'Patient Ethnicity'])) != type(Response())
 
+def test_sim_optionLower_previous_treatment():
+    assert type(data_to_use(previous_treatment=['sim', 'Patient Ethnicity'])) != type(Response())
 
+def test_sim_with_text_previous_treatment():
+    assert type(data_to_use(previous_treatment=['SIM', 'Patient Ethnicity'])) != type(Response())
 
+def test_nao_with_text_previous_treatment():
+    assert type(data_to_use(previous_treatment=['NAO', 'Patient Ethnicity'])) != type(Response())
 
+def test_sim_without_text_previous_treatment():
+    assert data_to_use(previous_treatment=['SIM', None]).status == Response(status=400).status
 
+def test_nao_without_text_previous_treatment():
+    assert type(data_to_use(previous_treatment=['NAO', None])) != type(Response())
 
+def test_sim_with_empty_previous_treatment():
+    assert data_to_use(previous_treatment=['SIM', None]).status == Response(status=400).status
 
+def test_nao_with_empty_previous_treatment():
+    assert type(data_to_use(previous_treatment=['NAO', None])) != type(Response())
 
+def test_sim_with_space_text_previous_treatment():
+    assert data_to_use(previous_treatment=['SIM', ' ']).status == Response(status=400).status
 
+def test_nao_with_space_text_previous_treatment():
+    assert type(data_to_use(previous_treatment=['NAO', ' '])) != type(Response())
 
+def test_sim_with_shorttext_previous_treatment():
+    assert data_to_use(previous_treatment=['SIM', lenght_test[:3]]).status == Response(status=400).status
+
+def test_nao_with_shorttext_previous_treatment():
+    assert type(data_to_use(previous_treatment=['NAO', lenght_test[:3]])) != type(Response())
+
+def test_sim_with_longtext_previous_treatment():
+    assert data_to_use(previous_treatment=['SIM', lenght_test[:172]]).status == Response(status=400).status
+
+def test_nao_with_longtext_previous_treatment():
+    assert type(data_to_use(previous_treatment=['NAO', lenght_test[:170]])) != type(Response())
 
 
