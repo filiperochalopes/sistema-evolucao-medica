@@ -54,11 +54,20 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 224), camp_name='Professional Solicitor Name', len_max=45, len_min=8)
             if type(c) == type(Response()): return c
+            if type(capacity_attest) != type(list()) or len(capacity_attest) > 2:
+                c = Response('Cappacity Attest has to be a list with 2 itens', status=400)
+            if type(c) == type(Response()): return c
             c = global_functions.add_markable_square_and_onelinetext(can=c, option=capacity_attest[0], valid_options=['SIM','NAO'], text_options=['SIM'], text_pos=(308, 268), options_positions=((79, 271), (42,270)), camp_name='Capacity Attest', len_max=46, text=capacity_attest[1], len_min=5, square_size=(5, 8))
             if type(c) == type(Response()): return c
             c = add_filled_by(can=c, filled_by=filled_by)
             if type(c) == type(Response()): return c
+            if type(patient_ethnicity) != type(list()) or len(patient_ethnicity) > 2:
+                c = Response('patient_ethnicity has to be a list with 2 itens', status=400)
+            if type(c) == type(Response()): return c
             c = global_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA', 'SEMINFO'], text_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'], text_pos=(192, 108), options_positions=((40, 121), (40, 108),(40, 93),(94, 118), (94, 106),(94, 93)), camp_name='Patietn Ethinicity', len_max=31, text=patient_ethnicity[1], len_min=4, square_size=(5, 8))
+            if type(c) == type(Response()): return c
+            if type(previous_treatment) != type(list()) or len(previous_treatment) > 2:
+                c = Response('previous_treatment has to be a list with 2 itens', status=400)
             if type(c) == type(Response()): return c
             c = global_functions.add_markable_square_and_morelinestext(can=c, option=previous_treatment[0], valid_options=['SIM','NAO'],text_options=['SIM'], text_pos=(100, 355), options_positions=((40, 355), (40, 337)), camp_name='Previous Treatment', len_max=170, text=previous_treatment[1], len_min=4, square_size=(5, 8),char_per_lines=85, decrease_ypos=15)
             if type(c) == type(Response()): return c
@@ -223,15 +232,4 @@ if __name__ == "__main__":
     if type(output) == type(Response()): 
         print(output.response)
     global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/lme_teste.pdf")
-
-
-
-
-
-
-
-
-
-
-
 

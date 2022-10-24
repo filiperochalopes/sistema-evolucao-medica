@@ -58,10 +58,94 @@ patient_ethnicity=['SEMINFO', 'Patient Ethnicity'],
 previous_treatment=['SIM', 'Previout Theatment'])) != type(Response())
 
 
+##############################################################
+# ERRORS IN NAMES CAMPS
+# establishment_solitc_name
+# patient_name
+# patient_mother_name
+# cappacity attest [patient_responsible_name]
+# prof_solicitor_name
+# !!!!!!! TESTING !!!!!!!
+# Name empty
+# Name with space
+# long name
+# short name
+# wrong name type
 
+def test_empty_establishment_solitc_name():    
+    assert data_to_use(establishment_solitc_name='').status == Response(status=400).status
 
+def test_with_space_establishment_solitc_name():    
+    assert data_to_use(establishment_solitc_name='  ').status == Response(status=400).status
 
+def test_long_establishment_solitc_name():    
+    assert data_to_use(establishment_solitc_name=lenght_test[:70]).status == Response(status=400).status
 
+def test_short_establishment_solitc_name():    
+    assert data_to_use(establishment_solitc_name='bro').status == Response(status=400).status
+
+def test_wrongtype_establishment_solitc_name():    
+    assert data_to_use(establishment_solitc_name=123124).status == Response(status=400).status
+
+def test_empty_patient_name():    
+    assert data_to_use(patient_name='').status == Response(status=400).status
+
+def test_with_space_patient_name():    
+    assert data_to_use(patient_name='  ').status == Response(status=400).status
+
+def test_long_patient_name():    
+    assert data_to_use(patient_name=lenght_test[:81]).status == Response(status=400).status
+
+def test_short_patient_name():    
+    assert data_to_use(patient_name='bro').status == Response(status=400).status
+
+def test_wrongtype_patient_name():    
+    assert data_to_use(patient_name=123124).status == Response(status=400).status
+
+def test_empty_patient_mother_name():    
+    assert data_to_use(patient_mother_name='').status == Response(status=400).status
+
+def test_with_space_patient_mother_name():    
+    assert data_to_use(patient_mother_name='  ').status == Response(status=400).status
+
+def test_long_patient_mother_name():    
+    assert data_to_use(patient_mother_name=lenght_test[:81]).status == Response(status=400).status
+
+def test_short_patient_mother_name():    
+    assert data_to_use(patient_mother_name='bro').status == Response(status=400).status
+
+def test_wrongtype_patient_mother_name():    
+    assert data_to_use(patient_mother_name=123124).status == Response(status=400).status
+
+def test_empty_prof_solicitor_name():    
+    assert data_to_use(prof_solicitor_name='').status == Response(status=400).status
+
+def test_with_space_prof_solicitor_name():    
+    assert data_to_use(prof_solicitor_name='  ').status == Response(status=400).status
+
+def test_long_prof_solicitor_name():    
+    assert data_to_use(prof_solicitor_name=lenght_test[:50]).status == Response(status=400).status
+
+def test_short_prof_solicitor_name():    
+    assert data_to_use(prof_solicitor_name='bro').status == Response(status=400).status
+
+def test_wrongtype_prof_solicitor_name():    
+    assert data_to_use(prof_solicitor_name=123124).status == Response(status=400).status
+
+def test_empty_capacity_attest_responsible_name():    
+    assert data_to_use(capacity_attest='').status == Response(status=400).status
+
+def test_with_space_capacity_attest_responsible_name():    
+    assert data_to_use(capacity_attest='  ').status == Response(status=400).status
+
+def test_long_capacity_attest_responsible_name():    
+    assert data_to_use(capacity_attest=['sim', lenght_test[:50]]).status == Response(status=400).status
+
+def test_short_capacity_attest_responsible_name():    
+    assert data_to_use(capacity_attest='bro').status == Response(status=400).status
+
+def test_wrongtype_capacity_attest_responsible_name():    
+    assert data_to_use(capacity_attest=123124).status == Response(status=400).status
 
 
 
