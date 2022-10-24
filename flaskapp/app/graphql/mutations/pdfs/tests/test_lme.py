@@ -275,6 +275,215 @@ def test_responsavel_with_empty_text_filled_by():
 def test_outro_with_empty_text_filled_by():
     assert data_to_use(filled_by=['OUTRO', '', {'CPF':28445400070}]).status == Response(status=400).status
 
+def test_medico_with_space_text_filled_by():
+    assert type(data_to_use(filled_by=['MEDICO', ' ', {'CPF':28445400070}])) != type(Response())
+
+def test_paciente_with_space_text_filled_by():
+    assert type(data_to_use(filled_by=['PACIENTE', ' ', {'CPF':28445400070}])) != type(Response())
+
+def test_mae_with_space_text_filled_by():
+    assert type(data_to_use(filled_by=['MAE', ' ', {'CPF':28445400070}])) != type(Response())
+
+def test_responsavel_with_space_text_filled_by():
+    assert type(data_to_use(filled_by=['RESPONSAVEL', ' ', {'CPF':28445400070}])) != type(Response())
+
+def test_outro_with_space_text_filled_by():
+    assert data_to_use(filled_by=['OUTRO', ' ', {'CPF':28445400070}]).status == Response(status=400).status
+
+def test_medico_with_shorttext_filled_by():
+    assert type(data_to_use(filled_by=['MEDICO', lenght_test[:3], {'CPF':28445400070}])) != type(Response())
+
+def test_paciente_with_shorttext_filled_by():
+    assert type(data_to_use(filled_by=['PACIENTE', lenght_test[:3], {'CPF':28445400070}])) != type(Response())
+
+def test_mae_with_shorttext_filled_by():
+    assert type(data_to_use(filled_by=['MAE', lenght_test[:3], {'CPF':28445400070}])) != type(Response())
+
+def test_responsavel_with_shorttext_filled_by():
+    assert type(data_to_use(filled_by=['RESPONSAVEL', lenght_test[:3], {'CPF':28445400070}])) != type(Response())
+
+def test_outro_with_shorttext_filled_by():
+    assert data_to_use(filled_by=['OUTRO', lenght_test[:3], {'CPF':28445400070}]).status == Response(status=400).status
+
+def test_medico_with_longtext_filled_by():
+    assert type(data_to_use(filled_by=['MEDICO', lenght_test[:45], {'CPF':28445400070}])) != type(Response())
+
+def test_paciente_with_longtext_filled_by():
+    assert type(data_to_use(filled_by=['PACIENTE', lenght_test[:45], {'CPF':28445400070}])) != type(Response())
+
+def test_mae_with_longtext_filled_by():
+    assert type(data_to_use(filled_by=['MAE', lenght_test[:45], {'CPF':28445400070}])) != type(Response())
+
+def test_responsavel_with_longtext_filled_by():
+    assert type(data_to_use(filled_by=['RESPONSAVEL', lenght_test[:45], {'CPF':28445400070}])) != type(Response())
+
+def test_outro_with_longtext_filled_by():
+    assert data_to_use(filled_by=['OUTRO', lenght_test[:45], {'CPF':28445400070}]).status == Response(status=400).status
+
+def test_medico_with_wrong_type_text_filled_by():
+    assert data_to_use(filled_by=['MEDICO', 123, {'CPF':28445400070}]).status == Response(status=400).status
+
+def test_paciente_with_wrong_type_text_filled_by():
+    assert data_to_use(filled_by=['PACIENTE', 123, {'CPF':28445400070}]).status == Response(status=400).status
+
+def test_mae_with_wrong_type_text_filled_by():
+    assert data_to_use(filled_by=['MAE', 123, {'CPF':28445400070}]).status == Response(status=400).status
+
+def test_responsavel_with_wrong_type_text_filled_by():
+    assert data_to_use(filled_by=['RESPONSAVEL', 123, {'CPF':28445400070}]).status == Response(status=400).status
+
+def test_outro_with_wrong_type_text_filled_by():
+    assert data_to_use(filled_by=['OUTRO', 123, {'CPF':28445400070}]).status == Response(status=400).status
+
+def test_wrongtype_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=1231).status == Response(status=400).status
+
+def test_notexistopiton_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['WTAHST', 'Patient Ethnicity']).status == Response(status=400).status
+
+def test_branca_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['BRANCA', 'Patient Ethnicity'])) != type(Response())
+
+def test_branca_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['branca', 'Patient Ethnicity'])) != type(Response())
+
+def test_preta_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['PRETA', 'Patient Ethnicity'])) != type(Response())
+
+def test_preta_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['preta', 'Patient Ethnicity'])) != type(Response())
+
+def test_parda_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['PARDA', 'Patient Ethnicity'])) != type(Response())
+
+def test_parda_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['parda', 'Patient Ethnicity'])) != type(Response())
+
+def test_amarela_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['AMARELA', 'Patient Ethnicity'])) != type(Response())
+
+def test_amarela_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['amarela', 'Patient Ethnicity'])) != type(Response())
+
+def test_indigena_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['INDIGENA', 'Patient Ethnicity'])) != type(Response())
+
+def test_indigena_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['indigena', 'Patient Ethnicity'])) != type(Response())
+
+def test_seminfo_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['SEMINFO', 'Patient Ethnicity'])) != type(Response())
+
+def test_seminfo_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['seminfo', 'Patient Ethnicity'])) != type(Response())
+
+def test_branca_with_text_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['BRANCA', 'Patient Ethnicity'])) != type(Response())
+
+def test_preta_with_text_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['PRETA', 'Patient Ethnicity'])) != type(Response())
+
+def test_parda_with_text_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['PARDA', 'Patient Ethnicity'])) != type(Response())
+
+def test_amarela_with_text_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['AMARELA', 'Patient Ethnicity'])) != type(Response())
+
+def test_indigena_with_text_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['INDIGENA', 'Patient Ethnicity'])) != type(Response())
+
+def test_seminfo_with_text_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['SEMINFO', 'Patient Ethnicity'])) != type(Response())
+
+def test_branca_without_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['BRANCA', None]).status == Response(status=400).status
+
+def test_preta_without_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['PRETA', None]).status == Response(status=400).status
+
+def test_parda_without_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['PARDA', None]).status == Response(status=400).status
+
+def test_amarela_without_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['AMARELA', None]).status == Response(status=400).status
+
+def test_indigena_without_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['INDIGENA', None]).status == Response(status=400).status
+
+def test_seminfo_without_text_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['SEMINFO', None])) != type(Response())
+
+def test_branca_with_empty_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['BRANCA', '']).status == Response(status=400).status
+
+def test_preta_with_empty_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['PRETA', '']).status == Response(status=400).status
+
+def test_parda_with_empty_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['PARDA', '']).status == Response(status=400).status
+
+def test_amarela_with_empty_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['AMARELA', '']).status == Response(status=400).status
+
+def test_indigena_with_empty_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['INDIGENA', '']).status == Response(status=400).status
+
+def test_seminfo_with_empty_text_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['SEMINFO', ''])) != type(Response())
+
+def test_branca_with_space_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['BRANCA', ' ']).status == Response(status=400).status
+
+def test_preta_with_space_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['PRETA', ' ']).status == Response(status=400).status
+
+def test_parda_with_space_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['PARDA', ' ']).status == Response(status=400).status
+
+def test_amarela_with_space_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['AMARELA', ' ']).status == Response(status=400).status
+
+def test_indigena_with_space_text_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['INDIGENA', ' ']).status == Response(status=400).status
+
+def test_seminfo_with_space_text_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['SEMINFO', ' '])) != type(Response())
+
+def test_branca_with_shorttext_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['BRANCA', lenght_test[:3]]).status == Response(status=400).status
+
+def test_preta_with_shorttext_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['PRETA', lenght_test[:3]]).status == Response(status=400).status
+
+def test_parda_with_shorttext_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['PARDA', lenght_test[:3]]).status == Response(status=400).status
+
+def test_amarela_with_shorttext_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['AMARELA', lenght_test[:3]]).status == Response(status=400).status
+
+def test_indigena_with_shorttext_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['INDIGENA', lenght_test[:3]]).status == Response(status=400).status
+
+def test_seminfo_with_shorttext_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['SEMINFO', lenght_test[:3]])) != type(Response())
+
+def test_branca_with_longtext_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['BRANCA', lenght_test[:35]]).status == Response(status=400).status
+
+def test_preta_with_longtext_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['PRETA', lenght_test[:35]]).status == Response(status=400).status
+
+def test_parda_with_longtext_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['PARDA', lenght_test[:35]]).status == Response(status=400).status
+
+def test_amarela_with_longtext_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['AMARELA', lenght_test[:35]]).status == Response(status=400).status
+
+def test_indigena_with_longtext_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['INDIGENA', lenght_test[:35]]).status == Response(status=400).status
+
+def test_seminfo_with_longtext_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['SEMINFO', lenght_test[:35]])) != type(Response())
 
 
 
