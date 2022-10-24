@@ -39,8 +39,6 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
             if type(c) == type(Response()): return c
             c = global_functions.add_cns(can=c, cns=patient_cns, pos=(393, 674), camp_name='Patient CNS', formated=True)
             if type(c) == type(Response()): return c
-
-
             c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(27, 642), camp_name='Patient Birthday', hours=False, formated=True)
             if type(c) == type(Response()): return c
             c = global_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(117, 640), pos_fem=(147, 640), camp_name='Patient Sex', square_size=(9,9))
@@ -92,7 +90,6 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
             if type(c) == type(Response()): return c
             if has_additional_healthInsurance != None:
                 c = global_functions.add_markable_square(can=c, option=str(has_additional_healthInsurance), valid_options=['TRUE','FALSE'], options_positions=((419, 544), (380, 544)), camp_name='Has additional Healt insurance', nullable=False)
-
             if type(c) == type(Response()): return c
 
         except:
@@ -113,25 +110,3 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
         return output
     except:
         return Response("Error while filling ficha de internamento", status=500)
-
-
-def add_has_additional_healthInsurance(canvas:canvas.Canvas, has_additional_healthInsurance:bool) -> Union[canvas.Canvas, Response]:
-    """add has additional health insurance
-
-    Args:
-        canvas (canvas.Canvas): canvas to use
-        has_additional_healthInsurance (bool): status
-
-    Returns:
-        canvas or Response:canvas if everthing is allright or Response if hapens some error
-    """    
-    try:
-        if type(has_additional_healthInsurance) != type(bool()):
-            return Response('Patient has additional healthInsurance has to be bool', status=400)
-        if has_additional_healthInsurance:
-            canvas = global_functions.add_square(can=canvas, pos=(419, 544))
-        else:
-            canvas = global_functions.add_square(can=canvas, pos=(380, 544))
-        return canvas
-    except:
-        return Response('Unknow error while adding has additional health insurance', status=500)

@@ -853,6 +853,8 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name
             return Response(f'camp_name has to be str', status=500)
         elif type(nullable) != type(bool()):
             return Response(f'nullable has to be bool', status=500)
+        elif type(hours) != type(bool()):
+            return Response(f'hours has to be bool', status=500)
         elif type(formated) != type(bool()):
             return Response(f'formated has to be bool', status=500)
         elif type(interval) != type(str()):
