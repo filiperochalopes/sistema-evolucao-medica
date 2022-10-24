@@ -59,6 +59,9 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
             if type(c) == type(Response()): return c
             c = global_functions.add_markable_square_and_onelinetext(can=c, option=capacity_attest[0], valid_options=['SIM','NAO'], text_options=['SIM'], text_pos=(308, 268), options_positions=((79, 271), (42,270)), camp_name='Capacity Attest', len_max=46, text=capacity_attest[1], len_min=5, square_size=(5, 8))
             if type(c) == type(Response()): return c
+            if type(filled_by) != type(list()) or len(filled_by) > 3:
+                c = Response('filled_by has to be a list with 3 itens', status=400)
+            if type(c) == type(Response()): return c
             c = add_filled_by(can=c, filled_by=filled_by)
             if type(c) == type(Response()): return c
             if type(patient_ethnicity) != type(list()) or len(patient_ethnicity) > 2:

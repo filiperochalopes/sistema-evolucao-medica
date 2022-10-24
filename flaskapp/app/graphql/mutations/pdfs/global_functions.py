@@ -1118,8 +1118,8 @@ def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_opt
             return Response(f'text_pos has to be tuple', status=500)
         elif type(camp_name) != type(str()):
             return Response(f'camp_name has to be str', status=500)
-        elif type(text) != type(str()) or text == None:
-            return Response(f'text has to be str', status=500)
+        elif type(text) != type(str()) and text != None:
+            return Response(f'text has to be str or None', status=400)
         elif type(interval) != type(str()):
             return Response(f'interval has to be str', status=500)
         elif type(nullable) != type(bool()):

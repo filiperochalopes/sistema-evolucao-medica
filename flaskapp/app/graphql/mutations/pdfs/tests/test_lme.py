@@ -178,6 +178,112 @@ def test_valid_solicitation_datetime():
     assert type(data_to_use(solicitation_datetime=datetime.datetime.now())) != type(Response())
 
 
+##################################################################
+# TEST MARKABLE OPTIONS WITH TEXT
+# filled_by
+# patient_ethnicity
+# previous_treatment
+# test not exist option
+# test all options in Upper Case
+# test all options in lower Case
+# test text without correct option
+# test text with correct option
+# test text empty
+# test text with space
+# test long text
+# test short text
+# test wrong text type 
+
+def test_wrongtype_filled_by():
+    assert data_to_use(filled_by=1231).status == Response(status=400).status
+
+def test_notexistopiton_filled_by():
+    assert data_to_use(filled_by=['WTAHST', 'Other name', {'CPF':28445400070}]).status == Response(status=400).status
+
+def test_medico_optionUpper_filled_by():
+    assert type(data_to_use(filled_by=['MEDICO', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_medico_optionLower_filled_by():
+    assert type(data_to_use(filled_by=['medico', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_paciente_optionUpper_filled_by():
+    assert type(data_to_use(filled_by=['PACIENTE', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_paciente_optionLower_filled_by():
+    assert type(data_to_use(filled_by=['paciente', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_mae_optionUpper_filled_by():
+    assert type(data_to_use(filled_by=['MAE', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_mae_optionLower_filled_by():
+    assert type(data_to_use(filled_by=['mae', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_responsavel_optionUpper_filled_by():
+    assert type(data_to_use(filled_by=['RESPONSAVEL', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_responsavel_optionLower_filled_by():
+    assert type(data_to_use(filled_by=['responsavel', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_outro_optionUpper_filled_by():
+    assert type(data_to_use(filled_by=['OUTRO', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_outro_optionLower_filled_by():
+    assert type(data_to_use(filled_by=['outro', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_medico_with_text_filled_by():
+    assert type(data_to_use(filled_by=['MEDICO', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_paciente_with_text_filled_by():
+    assert type(data_to_use(filled_by=['PACIENTE', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_mae_with_text_filled_by():
+    assert type(data_to_use(filled_by=['MAE', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_responsavel_with_text_filled_by():
+    assert type(data_to_use(filled_by=['RESPONSAVEL', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_outro_with_text_filled_by():
+    assert type(data_to_use(filled_by=['OUTRO', 'Other name', {'CPF':28445400070}])) != type(Response())
+
+def test_medico_without_text_filled_by():
+    assert type(data_to_use(filled_by=['MEDICO', None, {'CPF':28445400070}])) != type(Response())
+
+def test_paciente_without_text_filled_by():
+    assert type(data_to_use(filled_by=['PACIENTE', None, {'CPF':28445400070}])) != type(Response())
+
+def test_mae_without_text_filled_by():
+    assert type(data_to_use(filled_by=['MAE', None, {'CPF':28445400070}])) != type(Response())
+
+def test_responsavel_without_text_filled_by():
+    assert type(data_to_use(filled_by=['RESPONSAVEL', None, {'CPF':28445400070}])) != type(Response())
+
+def test_outro_without_text_filled_by():
+    assert data_to_use(filled_by=['OUTRO', None, {'CPF':28445400070}]).status == Response(status=400).status
+
+def test_medico_with_empty_text_filled_by():
+    assert type(data_to_use(filled_by=['MEDICO', '', {'CPF':28445400070}])) != type(Response())
+
+def test_paciente_with_empty_text_filled_by():
+    assert type(data_to_use(filled_by=['PACIENTE', '', {'CPF':28445400070}])) != type(Response())
+
+def test_mae_with_empty_text_filled_by():
+    assert type(data_to_use(filled_by=['MAE', '', {'CPF':28445400070}])) != type(Response())
+
+def test_responsavel_with_empty_text_filled_by():
+    assert type(data_to_use(filled_by=['RESPONSAVEL', '', {'CPF':28445400070}])) != type(Response())
+
+def test_outro_with_empty_text_filled_by():
+    assert data_to_use(filled_by=['OUTRO', '', {'CPF':28445400070}]).status == Response(status=400).status
+
+
+
+
+
+
+
+
+
+
 
 
 
