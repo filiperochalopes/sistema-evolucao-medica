@@ -8,10 +8,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
 from pdfs import global_functions
-
-
-template_directory = "/app/app/assets/pdfs_templates/apac.pdf"
-font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
+from pdfs.constants import FONT_DIRECTORY, TEMPLATE_APAC_DIRECTORY
 
 
 def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, document_chart_number:int=None, patient_adress_city_IBGEcode:int=None, procedure_justification_description:str=None, procedure_justification_main_cid10:str=None, procedure_justification_sec_cid10:str=None, procedure_justification_associated_cause_cid10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> Union[PdfWriter, Response]:
@@ -21,7 +18,7 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
         c = canvas.Canvas(packet, pagesize=letter)
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
-        pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
+        pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
         c.setFont('Roboto-Mono', 10)
         # Writing all data in respective fields
         # not null data
@@ -126,7 +123,7 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
         packet.seek(0)
         new_pdf = PdfReader(packet)
         # read the template pdf 
-        template_pdf = PdfReader(open(template_directory, "rb"))
+        template_pdf = PdfReader(open(TEMPLATE_APAC_DIRECTORY, "rb"))
         output = PdfWriter()
         # add the "watermark" (which is the new pdf) on the existing page
         page = template_pdf.pages[0]

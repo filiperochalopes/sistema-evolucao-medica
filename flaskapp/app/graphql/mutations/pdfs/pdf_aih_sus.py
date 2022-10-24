@@ -8,9 +8,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
 from pdfs import global_functions
-
-template_directory = "/app/app/assets/pdfs_templates/aih_sus.pdf"
-font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
+from pdfs.constants import FONT_DIRECTORY, TEMPLATE_AIH_SUS_DIRECTORY
 
 def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int, establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cid10:str=None, cid10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:int=None, insurance_company_ticket_number:int=None, insurance_company_series:str=None,company_cnpj:int=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> Union[PdfWriter, Response]:
     try:
@@ -19,7 +17,7 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
         c = canvas.Canvas(packet, pagesize=letter)
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
-        pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
+        pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
         c.setFont('Roboto-Mono', 9)
         # Writing all data in respective fields
         # not null data
@@ -150,7 +148,7 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
         packet.seek(0)
         new_pdf = PdfReader(packet)
         # read the template pdf 
-        template_pdf = PdfReader(open(template_directory, "rb"))
+        template_pdf = PdfReader(open(TEMPLATE_AIH_SUS_DIRECTORY, "rb"))
         output = PdfWriter()
         # add the "watermark" (which is the new pdf) on the existing page
         page = template_pdf.pages[0]

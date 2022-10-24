@@ -1,9 +1,1 @@
-from . import global_functions
-from . import pdf_aih_sus
-from . import pdf_apac
-from . import pdf_exam_request
-from . import pdf_ficha_internamento
-from . import pdf_prescricao_medica
-from . import pdf_relatorio_de_alta
-from . import pdf_lme
-
+from . import global_functions, pdf_aih_sus, pdf_apac, pdf_exam_request,pdf_ficha_internamento, pdf_prescricao_medica, pdf_relatorio_de_alta, pdf_lme, constants
