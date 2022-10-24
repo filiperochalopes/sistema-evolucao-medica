@@ -716,3 +716,52 @@ def test_invalidccpf_filled_by():
 def test_wrongoption_filled_by():
     assert data_to_use(filled_by=['OUTRO', 'Other name', {'BBB':284123312123}]).status == Response(status=400).status
 
+# TEST medicines
+# test wront type
+# test wront type medicine_name
+# test wront type quant_1month
+# test wront type quant_2month
+# test wront type quant_3month
+# test empty value in keys
+# test empty spaces in keys
+# test empty value in medicine_name
+# test empty value in quant_1month
+# test empty value in quant_2month
+# test empty value in quant_3month
+# test empty spaces in medicine_name
+# test empty spaces in quant_1month
+# test empty spaces in quant_2month
+# test empty spaces in quant_3month
+# test more than limit dicts
+# test long values in medicine_name
+# test long values in quant_1month
+# test long values in quant_2month
+# test long values in quant_3month
+# test short values in medicine_name
+# test short values in quant_1month
+# test short values in quant_2month
+# test short values in quant_3month
+
+def test_wrong_type_medicines():
+    assert data_to_use(medicines=123).status == Response(status=400).status
+
+def test_wrong_type_medicines():
+    assert data_to_use(medicines=123).status == Response(status=400).status
+
+def test_wrong_type_medicine_name():
+    assert data_to_use(medicines=[{"medicine_name":234234, "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}]).status == Response(status=400).status
+
+def test_wrong_type_quant_1month():
+    assert data_to_use(medicines=[{"medicine_name":'234234', "quant_1month":541, "quant_2month":"15 comp", "quant_3month":"5 comp"}]).status == Response(status=400).status
+
+def test_wrong_type_quant_2month():
+    assert data_to_use(medicines=[{"medicine_name":'234234', "quant_1month":'541', "quant_2month":649781, "quant_3month":"5 comp"}]).status == Response(status=400).status
+
+def test_wrong_type_quant_3month():
+    assert data_to_use(medicines=[{"medicine_name":'234234', "quant_1month":'541', "quant_2month":'64981', "quant_3month":234234}]).status == Response(status=400).status
+
+
+
+
+
+
