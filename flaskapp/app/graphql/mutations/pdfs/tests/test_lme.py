@@ -818,5 +818,3 @@ def test_long_value_quant_2month():
 def test_long_value_quant_3month():
     assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'adasdasda', "quant_3month":lenght_test[:11]}]).status == Response(status=400).status
 
-
-
