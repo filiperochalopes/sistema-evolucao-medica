@@ -7,11 +7,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
-#from pdfs import global_functions
-
-# Doing the import this way only when is called by antoher file (like pytest)
-if __name__ != "__main__":
-    from pdfs import global_functions
+from pdfs import global_functions
 
 
 template_directory = "/app/app/assets/pdfs_templates/apac.pdf"
@@ -194,52 +190,3 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas
         return can
     except: 
         return Response('Unkown error while adding Secondaries Procedures', status=500)
-
-
-if __name__ == "__main__":
-    lenght_test = ''
-    for x in range(0, 2000):
-        lenght_test += str(x)
-    import global_functions
-    output = fill_pdf_apac(
-        establishment_solitc_name='Establishment Solicit Name',
-        establishment_solitc_cnes=1234567,
-        patient_name='Patient Name',
-        patient_cns=928976954930007,
-        patient_sex='M',
-        patient_birthday=datetime.datetime.now(),
-        patient_adress_city='Patient Adress City',
-        main_procedure_name='Main procedure Name',
-        main_procedure_code='1234567890',
-        main_procedure_quant=4,
-        patient_mother_name='Patient Mother Name',
-        patient_mother_phonenumber=5286758957, 
-        patient_responsible_name='Patient Responsible Name', patient_responsible_phonenumber=5465981345, 
-        patient_adress='Patient Adress',
-        patient_color='Branca',
-        patient_ethnicity='Indigena',
-        patient_adressUF='BA',
-        patient_adressCEP=86425910, 
-        document_chart_number=12345,
-        patient_adress_city_IBGEcode=4528765,
-        procedure_justification_description='Procedure Justification Description', 
-        procedure_justification_main_cid10='A98', 
-        procedure_justification_sec_cid10='A01', procedure_justification_associated_cause_cid10='A45',
-        procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', 
-        establishment_exec_cnes=7654321,
-        prof_solicitor_document={'CPF':28445400070}, 
-        prof_solicitor_name='Profissional Solicit Name', 
-        solicitation_datetime=datetime.datetime.now(),
-        signature_datetime=datetime.datetime.now(),
-        validity_period_start=datetime.datetime.now(),
-        validity_period_end=datetime.datetime.now(),
-        autorization_prof_name='Autorization Professional Name', 
-        emission_org_code='Cod121234', 
-        autorizaton_prof_document={'CPF':28445400070}, 
-        autorizaton_datetime=datetime.datetime.now(),
-        secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]
-    )
-
-    if type(output) == type(Response()): 
-        print(output.response)
-    global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/apac_teste.pdf")

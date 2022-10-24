@@ -7,11 +7,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
-
-
-# Doing the import this way only when is called by antoher file (like pytest)
-if __name__ != "__main__":
-    from pdfs import global_functions
+from pdfs import global_functions
 
 template_directory = "/app/app/assets/pdfs_templates/aih_sus.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
@@ -166,60 +162,3 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
         return Response("Error while filling aih sus", status=500)
 
 
-if __name__ == "__main__":
-    lenght_test = ''
-    for x in range(0, 2000):
-        lenght_test += str(x)
-    import global_functions
-    output = fill_pdf_aih_sus(
-        establishment_solitc_name='Establishment Solicit Name',
-        establishment_solitc_cnes=1234567,
-        establishment_exec_name='Establshment Exec Name',
-        establishment_exec_cnes=7654321,
-        patient_name='Patient Name',
-        patient_cns=928976954930007,
-        patient_birthday=datetime.datetime.now(),
-        patient_sex='F',
-        patient_mother_name='Patient Mother Name',
-        patient_adress='Patient Adress street neighobourd',
-        patient_adressCity='Patient City',
-        patient_adressCity_ibgeCode=1234567,
-        patient_adressUF='SP',
-        patient_adressCEP=12345678,
-        main_clinical_signs_symptoms="Patient main clinical signs sympthoms",
-        conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',
-        initial_diagnostic='Patient Initial Diagnostic',
-        principalCid10="A00",
-        procedure_solicited='Procedure Solicited',
-        procedure_code='1234567890', 
-        clinic='Clinic Name', 
-        internation_carater='Internation Carater', 
-        prof_solicitor_document={'CPF':28445400070},
-        prof_solicitor_name='Profissional Solicit Name', 
-        solicitation_datetime=datetime.datetime.now(), 
-        autorization_prof_name='Autorization professional name', 
-        emission_org_code='OrgCode2022', 
-        autorizaton_prof_document={'CNS':928976954930007}, 
-        autorizaton_datetime=datetime.datetime.now(),
-        hospitalization_autorization_number=1234567890,
-        exam_results='Xray tibia broken',
-        chart_number=1234,
-        patient_ethnicity='Preta', 
-        patient_responsible_name='Patient Responsible Name', 
-        patient_mother_phonenumber=5613248546, 
-        patient_responsible_phonenumber=8564721598, 
-        secondary_cid10='A01',
-        cid10_associated_causes='A02',
-        acident_type='traffic', 
-        insurance_company_cnpj=37549670000171, 
-        insurance_company_ticket_number=123450123456, 
-        insurance_company_series='Insurn',
-        company_cnpj=37549670000171, 
-        company_cnae=5310501, 
-        company_cbor=123456, 
-        pension_status='retired'
-    )
-
-    if type(output) == type(Response()): 
-        print(output.response)
-    global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/aih_sus_teste.pdf")

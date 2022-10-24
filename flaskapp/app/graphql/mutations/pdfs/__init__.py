@@ -7,4 +7,3 @@ from . import pdf_prescricao_medica
 from . import pdf_relatorio_de_alta
 from . import pdf_lme
 
-

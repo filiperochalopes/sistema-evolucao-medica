@@ -10,12 +10,6 @@ from math import ceil
 from typing import Union
 from pdfs import global_functions
 
-
-# Doing the import this way only when is called by antoher file (like pytest)
-#if __name__ != "__main__":
-#    from . import global_functions
-
-
 #The templat will change depending on exems lenght
 template_directory = ["/app/app/assets/pdfs_templates/one_exam_request.pdf", "/app/app/assets/pdfs_templates/two_exam_request.pdf", "/app/app/assets/pdfs_templates/three_exam_request.pdf"]
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
@@ -174,24 +168,4 @@ def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]
     except:
         return Response('Unknow error while adding Solicited Exams', status=500), 0
 
-if __name__ == "__main__":
-    lenght_test = ''
-    for x in range(0, 2000):
-        lenght_test += str(x)
-    import global_functions
-    output = fill_pdf_exam_request(
-        patient_name='Patient Name', 
-        patient_cns=928976954930007, 
-        patient_birthday=datetime.datetime.now(), 
-        patient_adress="Patient Adress", 
-        exams=lenght_test[:800],
-        solicitation_reason="Solicitation Reason", 
-        prof_solicitor="Professional Solicitor", 
-        prof_authorized="Professional Authorized", 
-        solicitation_datetime=datetime.datetime.now(), 
-        autorization_datetime=datetime.datetime.now(), document_pacient_date=datetime.datetime.now(), 
-        document_pacient_name='Document pacient name'
-    )
-    if type(output) == type(Response()): 
-        print(output.response)
-    global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/exam_request.pdf")
+

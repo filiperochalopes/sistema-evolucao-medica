@@ -9,10 +9,6 @@ from flask import Response
 from typing import Union
 from pdfs import global_functions
 
-# Doing the import this way only when is called by antoher file (like pytest)
-#if __name__ != "__main__":
-#    from . import global_functions
-
 
 template_directory = "/app/app/assets/pdfs_templates/two_pages_precricao_medica_template.pdf"
 page_size_points = (841.92, 595.2)
@@ -143,18 +139,3 @@ def add_prescription(canvas:canvas.Canvas, prescription:list) -> Union[canvas.Ca
     del(yposition)
     return canvas
 
-
-if __name__ == "__main__":
-    lenght_test = ''
-    for x in range(0, 2000):
-        lenght_test += str(x)
-    import global_functions
-    output = fill_pdf_prescricao_medica(
-        document_datetime=datetime.datetime.now(),
-        patient_name='Pacient Name',
-        prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]
-    )
-
-    if type(output) == type(Response()): 
-        print(output.response)
-    global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/prescricao_medica_teste.pdf")

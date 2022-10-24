@@ -9,10 +9,6 @@ from flask import Response
 from typing import Union
 from pdfs import global_functions
 
-# Doing the import this way only when is called by antoher file (like pytest)
-#if __name__ != "__main__":
-#    from . import global_functions
-
 
 template_directory = "/app/app/assets/pdfs_templates/ficha_de_internamento_hmlem.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
@@ -94,8 +90,9 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_floatnumber(can=c, number=patient_estimateWeight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, value_min=0.1, value_max=500.10, nullable=True, ndigits=2)
             if type(c) == type(Response()): return c
-            if has_additional_healthInsurance is not None:
-                c = add_has_additional_healthInsurance(canvas=c, has_additional_healthInsurance=has_additional_healthInsurance)
+            if has_additional_healthInsurance != None:
+                c = global_functions.add_markable_square(can=c, option=str(has_additional_healthInsurance), valid_options=['TRUE','FALSE'], options_positions=((419, 544), (380, 544)), camp_name='Has additional Healt insurance', nullable=False)
+
             if type(c) == type(Response()): return c
 
         except:
@@ -138,37 +135,3 @@ def add_has_additional_healthInsurance(canvas:canvas.Canvas, has_additional_heal
         return canvas
     except:
         return Response('Unknow error while adding has additional health insurance', status=500)
-
-
-if __name__ == "__main__":
-    import global_functions
-    output = fill_pdf_ficha_internamento(
-        document_datetime=datetime.datetime.now(), 
-        patient_name="Patient Name",
-        patient_cns=928976954930007,
-        patient_birthday=datetime.datetime.now(),
-        patient_sex='F',
-        patient_motherName="Patient Mother Name",
-        patient_document={'CPF':28445400070},
-        patient_adress='pacient street, 43, paciten, USA',
-        patient_phonenumber=44387694628,
-        patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.',
-        patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',
-        current_illness_history='Current illnes hsitoryaaaaaaaaaaaedqeqa',
-        initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral.',
-        doctor_name='Doctor Name',
-        doctor_cns=928976954930007,
-        doctor_crm='CRM/UF 123456',
-        patient_adressNumber=123456,
-        patient_adressNeigh='Patient Neighborhood',
-        patient_adressCity='Patient city',
-        patient_adressUF='sp',
-        patient_adressCEP=12345678,
-        patient_nationality='Brasileira',
-        patient_estimateWeight=123.32,
-        has_additional_healthInsurance=False
-        )
-    if type(output) == type(Response()): 
-        print(output.response)
-    global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/ficha_teste.pdf")
-    

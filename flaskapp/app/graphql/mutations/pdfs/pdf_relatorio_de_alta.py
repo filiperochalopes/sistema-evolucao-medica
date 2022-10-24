@@ -9,9 +9,6 @@ from flask import Response
 from typing import Union
 from pdfs import global_functions
 
-# Doing the import this way only when is called by antoher file (like pytest)
-#if __name__ != "__main__":
-#    from . import global_functions
 
 
 template_directory = "/app/app/assets/pdfs_templates/relatorio_de_alta.pdf"
@@ -89,30 +86,3 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
         return output
     except:
         return Response("Error while filling relatorio de alta", status=500)
-
-
-if __name__ == "__main__":
-    
-    lenght_test = ''
-    for x in range(0, 2000):
-        lenght_test += str(x)
-    import global_functions
-    output = fill_pdf_relatorio_alta(
-        documentDatetime=datetime.datetime.now(), 
-        patient_name="Patient Name",
-        patient_cns=928976954930007,
-        patient_birthday=datetime.datetime.now(),
-        patient_sex='F',
-        patient_motherName="Patient Mother Name",
-        patient_document={'CPF':28445400070},
-        patient_adress='pacient street, 43, paciten, USA',
-        evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',
-        doctor_name='Doctor Name',
-        doctor_cns=928976954930007,
-        doctor_crm='CRM/UF 123456',
-        orientations='Do not jump'
-        )
-    if type(output) == type(Response()): 
-        print(output.response)
-    global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/relatorio_alta_teste.pdf")
-    

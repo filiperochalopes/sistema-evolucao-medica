@@ -7,11 +7,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
-
-
-# Doing the import this way only when is called by antoher file (like pytest)
-if __name__ != "__main__":
-    from pdfs import global_functions
+from pdfs import global_functions
 
 template_directory = "/app/app/assets/pdfs_templates/lme.pdf"
 font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
@@ -200,39 +196,4 @@ def add_filled_by(can:canvas.Canvas, filled_by:list):
     if filled_by[0].upper() == 'OUTRO':
         can = global_functions.add_document_cns_cpf_rg(can=can, document=filled_by[2], pos_cpf=(388, 152),camp_name='Filled by CPF', interval='  ')
     return can
-
-
-
-
-if __name__ == "__main__":
-    lenght_test = ''
-    for x in range(0, 2000):
-        lenght_test += str(x)
-    import global_functions
-    output = fill_pdf_lme(
-        establishment_solitc_name='Establishment Solicit Name',
-        establishment_solitc_cnes=1234567,
-        patient_name='Patient Name',
-        patient_mother_name='Patient Mother Name',
-        patient_weight=142,
-        patient_height=180,
-        cid10='A123',
-        anamnese="Anamnese",
-        prof_solicitor_name="Professional Solicitor Name",
-        solicitation_datetime=datetime.datetime.now(),
-        prof_solicitor_document={'CPF':28445400070},
-        capacity_attest=['nao', 'Responsible Name'],
-        filled_by=['MEDICO', 'Other name', {'CPF':28445400070}],
-        patient_ethnicity=['SEMINFO', 'Patient Ethnicity'],
-        previous_treatment=['SIM', 'Previout Theatment'],
-        diagnostic='Diagnostic',
-        patient_document={'CNS':928976954930007},
-        patient_email='patietemail@gmail.com',
-        contacts_phonenumbers=[1254875652, 4578456598],
-        medicines=[{"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}]
-    )
-
-    if type(output) == type(Response()): 
-        print(output.response)
-    global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/lme_teste.pdf")
 

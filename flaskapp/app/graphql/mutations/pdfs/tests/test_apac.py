@@ -18,7 +18,8 @@ def test_answer_with_all_fields():
     assert type(data_to_use()) != type(Response())
 
 def test_awnser_with_only_required_data():
-    assert type(pdf_apac.fill_pdf_apac(establishment_solitc_name='Establishment Solicit Name',
+    assert type(pdf_apac.fill_pdf_apac(
+        establishment_solitc_name='Establishment Solicit Name',
         establishment_solitc_cnes=1234567,
         patient_name='Patient Name',
         patient_cns=928976954930007,
@@ -28,7 +29,7 @@ def test_awnser_with_only_required_data():
         main_procedure_name='Main procedure Name',
         main_procedure_code='1234567890',
         main_procedure_quant=4
-        )) != type(Response())!= type(Response())
+        )) != type(Response())
 
 ##############################################################
 # ERRORS IN NAMES CAMPS
