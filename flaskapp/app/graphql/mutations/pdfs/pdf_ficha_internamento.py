@@ -86,7 +86,7 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_nationality, pos=(27, 547), camp_name='Patient nationality', len_max=25, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_oneline_floatnumber(can=c, number=patient_estimateWeight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, value_min=0.1, value_max=500.10, nullable=True, ndigits=2)
+            c = global_functions.add_oneline_intnumber(can=c, number=patient_estimateWeight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, value_min=1, value_max=500, nullable=True)
             if type(c) == type(Response()): return c
             if has_additional_healthInsurance != None:
                 c = global_functions.add_markable_square(can=c, option=str(has_additional_healthInsurance), valid_options=['TRUE','FALSE'], options_positions=((419, 544), (380, 544)), camp_name='Has additional Healt insurance', nullable=False)

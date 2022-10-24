@@ -149,7 +149,7 @@ def test_create_ficha_internamento_pdf():
         patient_adressUF='sp',
         patient_adressCEP=12345678,
         patient_nationality='Brasileira',
-        patient_estimateWeight=123.32,
+        patient_estimateWeight=123,
         has_additional_healthInsurance=False
         )
     result = pdfs.global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/ficha_teste.pdf")

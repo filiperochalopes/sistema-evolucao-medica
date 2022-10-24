@@ -7,8 +7,9 @@ lenght_test = ''
 for x in range(0, 2000):
     lenght_test += str(x)
 
+datetime_to_use = datetime.datetime.now()
 
-def data_to_use(document_datetime=datetime.datetime.now(), patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime.datetime.now(),patient_sex='F',patient_motherName="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',patient_phonenumber=44387694628, patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.', patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',current_illness_history='Current illnes hsitoryaaaaaaaaaaa',initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456',patient_adressNumber=123456,patient_adressNeigh='Patient Neighborhood',patient_adressCity='Patient city',patient_adressUF='sp',patient_adressCEP=12345678,patient_nationality='Brasileira',patient_estimateWeight=123,has_additional_healthInsurance=False):
+def data_to_use(document_datetime=datetime_to_use, patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_motherName="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',patient_phonenumber=44387694628, patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.', patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',current_illness_history='Current illnes hsitoryaaaaaaaaaaa',initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456',patient_adressNumber=123456,patient_adressNeigh='Patient Neighborhood',patient_adressCity='Patient city',patient_adressUF='sp',patient_adressCEP=12345678,patient_nationality='Brasileira',patient_estimateWeight=123,has_additional_healthInsurance=False):
     return pdf_ficha_internamento.fill_pdf_ficha_internamento(document_datetime,patient_name, patient_cns, patient_birthday, patient_sex,  patient_motherName, patient_document, patient_adress, patient_phonenumber, patient_drug_allergies, patient_comorbidities, current_illness_history,initial_diagnostic_suspicion, doctor_name, doctor_cns, doctor_crm,patient_adressNumber, patient_adressNeigh, patient_adressCity, patient_adressUF, patient_adressCEP, patient_nationality, patient_estimateWeight, has_additional_healthInsurance)
 
 
@@ -20,10 +21,10 @@ def test_answer_with_all_fields():
 
 def test_awnser_with_only_required_data():
     assert type(pdf_ficha_internamento.fill_pdf_ficha_internamento(
-        document_datetime=datetime.datetime.now(), 
+        document_datetime=datetime_to_use, 
         patient_name="Patient Name",
         patient_cns=928976954930007,
-        patient_birthday=datetime.datetime.now(),
+        patient_birthday=datetime_to_use,
         patient_sex='F',
         patient_motherName="Patient Mother Name",
         patient_document={'CPF':28445400070},
@@ -122,14 +123,14 @@ def test_wrongtype_documentDatetime():
     assert data_to_use(document_datetime='bahabah').status == Response(status=400).status
 
 def test_valid_documentDatetime():
-    assert type(data_to_use(document_datetime=datetime.datetime.now())) != type(Response())
+    assert type(data_to_use(document_datetime=datetime_to_use)) != type(Response())
 
 
 def test_wrongtype_patient_birthday():
     assert data_to_use(patient_birthday='bahabah').status == Response(status=400).status
 
 def test_valid_patient_birthday():
-    assert type(data_to_use(patient_birthday=datetime.datetime.now())) != type(Response())
+    assert type(data_to_use(patient_birthday=datetime_to_use)) != type(Response())
 
 ##################################################################
 # TEST MARKABLE OPTIONS
