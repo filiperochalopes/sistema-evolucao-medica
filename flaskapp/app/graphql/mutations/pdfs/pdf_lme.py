@@ -8,9 +8,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
 from pdfs import global_functions
+from pdfs.constants import FONT_DIRECTORY, TEMPLATE_LME_DIRECTORY
 
-template_directory = "/app/app/assets/pdfs_templates/lme.pdf"
-font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
 def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[PdfWriter, Response]:
     try:
@@ -19,7 +18,7 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
         c = canvas.Canvas(packet, pagesize=letter)
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
-        pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
+        pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
         c.setFont('Roboto-Mono', 10)
         # Writing all data in respective fields
         # not null data
@@ -99,7 +98,7 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
         packet.seek(0)
         new_pdf = PdfReader(packet)
         # read the template pdf 
-        template_pdf = PdfReader(open(template_directory, "rb"))
+        template_pdf = PdfReader(open(TEMPLATE_LME_DIRECTORY, "rb"))
         output = PdfWriter()
         # add the "watermark" (which is the new pdf) on the existing page
         page = template_pdf.pages[0]

@@ -8,11 +8,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
 from pdfs import global_functions
+from pdfs.constants import FONT_DIRECTORY, TEMPLATE_RELATORIO_ALTA_DIRECTORY
 
-
-
-template_directory = "/app/app/assets/pdfs_templates/relatorio_de_alta.pdf"
-font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
 def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:int, doctor_crm:str, orientations:str=None) -> Union[PdfWriter, Response]:
     try:
@@ -21,7 +18,7 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
         c = canvas.Canvas(packet, pagesize=letter)
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
-        pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
+        pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
         c.setFont('Roboto-Mono', 12)
     
         # Writing all data in respective fields
@@ -76,7 +73,7 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
         packet.seek(0)
         new_pdf = PdfReader(packet)
         # read the template pdf 
-        template_pdf = PdfReader(open(template_directory, "rb"))
+        template_pdf = PdfReader(open(TEMPLATE_RELATORIO_ALTA_DIRECTORY, "rb"))
         output = PdfWriter()
         # add the "watermark" (which is the new pdf) on the existing page
         page = template_pdf.pages[0]

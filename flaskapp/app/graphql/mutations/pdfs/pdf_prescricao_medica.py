@@ -8,11 +8,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
 from pdfs import global_functions
+from pdfs.constants import FONT_DIRECTORY, TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY
 
-
-template_directory = "/app/app/assets/pdfs_templates/two_pages_precricao_medica_template.pdf"
-page_size_points = (841.92, 595.2)
-font_directory = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
 
 def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name:str, prescription:list) -> Union[PdfWriter, Response]:
 
@@ -20,10 +17,11 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
         try:
             packet = io.BytesIO()
             # Create canvas and add data
+            page_size_points = (841.92, 595.2)
             c = canvas.Canvas(packet, pagesize=page_size_points)
             # Change canvas font to mach with the document
             # this is also changed in the document to some especific fields
-            pdfmetrics.registerFont(TTFont('Roboto-Mono', font_directory))
+            pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
             c.setFont('Roboto-Mono', 12)
             # Writing all data in respective fields
             # not null data
@@ -53,7 +51,7 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
         packet.seek(0)
         new_pdf = PdfReader(packet)
         # read the template pdf 
-        template_pdf = PdfReader(open(template_directory, "rb"))
+        template_pdf = PdfReader(open(TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY, "rb"))
         output = PdfWriter()
         # add the "watermark" (which is the new pdf) on the existing page
         page = template_pdf.pages[0]
