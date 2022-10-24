@@ -861,17 +861,17 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name
             return Response(f'interval has to be str', status=500)
 
         #Add to respective fields
-        date = '%02d/%02d/%d %02d:%02d:%02d' % (date.day, date.month, date.year, date.hour, date.minute, date.second)
+        str_date = str('%02d/%02d/%d %02d:%02d:%02d') % (date.day, date.month, date.year, date.hour, date.minute, date.second)
         if hours:  
             if not formated:
-                date = date.replace('/', interval)
-                date = date.replace(':', interval)
+                str_date = str_date.replace('/', interval)
+                str_date = str_date.replace(':', interval)
         else:
-            date = date[0:10]
+            str_date = str_date[0:10]
             if not formated:
-                date = date.replace('/', interval)
+                str_date = str_date.replace('/', interval)
 
-        can = add_data(can=can, data=date, pos=pos)
+        can = add_data(can=can, data=str_date, pos=pos)
         return can
 
     except:
