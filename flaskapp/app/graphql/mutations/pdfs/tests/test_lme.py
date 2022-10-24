@@ -165,8 +165,17 @@ def test_invalidcnes_establishment_solitc_cnes():
     assert data_to_use(establishment_solitc_cnes=451236548).status == Response(status=400).status
 
 
+#################################################################
+# TEST DATETIMES VARIABLES
+# solicitation_datetime
+# test wrong type
+# test valid datetime
 
+def test_wrongtype_solicitation_datetime():
+    assert data_to_use(solicitation_datetime='bahabah').status == Response(status=400).status
 
+def test_valid_solicitation_datetime():
+    assert type(data_to_use(solicitation_datetime=datetime.datetime.now())) != type(Response())
 
 
 
