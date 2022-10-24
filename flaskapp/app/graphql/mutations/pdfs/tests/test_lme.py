@@ -535,3 +535,166 @@ def test_nao_with_longtext_previous_treatment():
     assert type(data_to_use(previous_treatment=['NAO', lenght_test[:170]])) != type(Response())
 
 
+#############################################################################
+# TEST BIG TEXT WITH LINE BRAKES
+# anamnese
+# test wrong type
+# test empty value
+# test empty spaces 
+# test short text
+# test more than limit
+
+def test_wrong_type_anamnese():
+    assert data_to_use(anamnese=131).status == Response(status=400).status
+
+def test_empty_value_anamnese():
+    assert data_to_use(anamnese='').status == Response(status=400).status
+
+def test_empty_spaces_anamnese():
+    assert data_to_use(anamnese='    ').status == Response(status=400).status
+
+def test_shortText_anamnese():
+    assert data_to_use(anamnese='abla').status == Response(status=400).status
+
+def test_more_than_limit_anamnese():
+    assert data_to_use(anamnese=lenght_test[:500]).status == Response(status=400).status
+
+
+#############################################################################
+# TEST STRING THAT CAN/CANNOT BE NULL
+# diagnostic
+# patient_email
+# cid10
+# test wrong type
+# test empty value
+# test empty spaces 
+# test short text
+# test more than limit
+
+def test_wrong_type_diagnostic():
+    assert data_to_use(diagnostic=123).status == Response(status=400).status
+
+def test_empty_value_diagnostic():
+    assert type(data_to_use(diagnostic=None)) != type(Response())
+
+def test_empty_spaces_diagnostic():
+    assert type(data_to_use(diagnostic='    ')) != type(Response())
+
+def test_longValue_diagnostic():
+    assert data_to_use(diagnostic=lenght_test[:86]).status == Response(status=400).status
+
+def test_shortValue_diagnostic():
+    assert data_to_use(diagnostic='aaa').status == Response(status=400).status
+
+def test_wrong_type_patient_email():
+    assert data_to_use(patient_email=123).status == Response(status=400).status
+
+def test_empty_value_patient_email():
+    assert type(data_to_use(patient_email=None)) != type(Response())
+
+def test_empty_spaces_patient_email():
+    assert type(data_to_use(patient_email='    ')) != type(Response())
+
+def test_longValue_patient_email():
+    assert data_to_use(patient_email=lenght_test[:65]).status == Response(status=400).status
+
+def test_shortValue_patient_email():
+    assert data_to_use(patient_email='aaa').status == Response(status=400).status
+
+def test_wrong_type_cid10():
+    assert data_to_use(cid10=123).status == Response(status=400).status
+
+def test_empty_value_cid10():
+    assert data_to_use(cid10=None).status == Response(status=400).status
+
+def test_empty_spaces_cid10():
+    assert data_to_use(cid10='    ').status == Response(status=400).status
+
+def test_longValue_cid10():
+    assert data_to_use(cid10=lenght_test[:6]).status == Response(status=400).status
+
+def test_shortValue_cid10():
+    assert data_to_use(cid10='aa').status == Response(status=400).status
+
+#################################################################################
+# TEST INT VARIABLES CAN/CANNOT BE NULL
+# patient_weight
+# patient_height
+# !!!!! TESTING
+# wrong type
+# test empty value
+# test empty space
+# short value
+# long value  
+
+def test_wrong_type_patient_weight():
+    assert data_to_use(patient_weight='131').status == Response(status=400).status
+
+def test_empty_value_patient_weight():
+    assert data_to_use(patient_weight='').status == Response(status=400).status
+
+def test_empty_spaces_patient_weight():
+    assert data_to_use(patient_weight='    ').status == Response(status=400).status
+
+def test_longValue_patient_weight():
+    assert data_to_use(patient_weight=5487).status == Response(status=400).status
+
+def test_wrong_type_patient_height():
+    assert data_to_use(patient_height='131').status == Response(status=400).status
+
+def test_empty_value_patient_height():
+    assert data_to_use(patient_height='').status == Response(status=400).status
+
+def test_empty_spaces_patient_height():
+    assert data_to_use(patient_height='    ').status == Response(status=400).status
+
+def test_longValue_patient_height():
+    assert data_to_use(patient_height=5487).status == Response(status=400).status
+
+
+#################################################################
+# TEST DOCUMENTS CNS AND CPF
+# prof_solicitor_document
+# patient_document
+# filled_by
+# wrong type
+# invalid cns
+# invalid cpf
+# wrong option
+
+def test_wrongtype_prof_solicitor_document():
+    assert data_to_use(prof_solicitor_document='451236548554').status == Response(status=400).status
+
+def test_invalidcns_prof_solicitor_document():
+    assert data_to_use(prof_solicitor_document={'CNS':284123312123}).status == Response(status=400).status
+
+def test_invalidccpf_prof_solicitor_document():
+    assert data_to_use(prof_solicitor_document={'CPF':284123312123}).status == Response(status=400).status
+
+def test_wrongoption_prof_solicitor_document():
+    assert data_to_use(prof_solicitor_document={'BBB':284123312123}).status == Response(status=400).status
+
+def test_wrongtype_patient_document():
+    assert data_to_use(patient_document='451236548554').status == Response(status=400).status
+
+def test_invalidcns_patient_document():
+    assert data_to_use(patient_document={'CNS':284123312123}).status == Response(status=400).status
+
+def test_invalidccpf_patient_document():
+    assert data_to_use(patient_document={'CPF':284123312123}).status == Response(status=400).status
+
+def test_wrongoption_patient_document():
+    assert data_to_use(patient_document={'BBB':284123312123}).status == Response(status=400).status
+
+def test_wrongtype_filled_by():
+    assert data_to_use(filled_by='451236548554').status == Response(status=400).status
+
+def test_invalidcns_filled_by():
+    assert data_to_use(filled_by=['OUTRO', 'Other name', {'CNS':284123312123}]).status == Response(status=400).status
+
+def test_invalidccpf_filled_by():
+    assert data_to_use(filled_by=['OUTRO', 'Other name', {'CPF':284123312123}]).status == Response(status=400).status
+
+def test_wrongoption_filled_by():
+    assert data_to_use(filled_by=['OUTRO', 'Other name', {'BBB':284123312123}]).status == Response(status=400).status
+
