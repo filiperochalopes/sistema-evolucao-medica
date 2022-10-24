@@ -7,8 +7,9 @@ lenght_test = ''
 for x in range(0, 2200):
     lenght_test += str(x)
 
+datetime_to_use = datetime.datetime.now()
 
-def data_to_use(documentDatetime=datetime.datetime.now(), patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime.datetime.now(),patient_sex='F',patient_motherName="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456',orientations='Do not jump'):
+def data_to_use(documentDatetime=datetime_to_use, patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_motherName="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456',orientations='Do not jump'):
     return pdf_relatorio_de_alta.fill_pdf_relatorio_alta(documentDatetime,  patient_name, patient_cns, patient_birthday, patient_sex, patient_motherName, patient_document,  patient_adress, evolution, doctor_name, doctor_cns, doctor_crm, orientations)
 
 #Testing telatorio alta
@@ -17,7 +18,7 @@ def test_answer_with_all_fields():
     assert data_to_use() != type(Response())
 
 def test_awnser_with_only_required_data():
-    assert type(pdf_relatorio_de_alta.fill_pdf_relatorio_alta(documentDatetime=datetime.datetime.now(), patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime.datetime.now(),patient_sex='F',patient_motherName="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456') != type(Response()))
+    assert type(pdf_relatorio_de_alta.fill_pdf_relatorio_alta(documentDatetime=datetime_to_use, patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_motherName="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456') != type(Response()))
 
 
 ##############################################################
@@ -103,14 +104,14 @@ def test_wrongtype_documentDatetime():
     assert data_to_use(documentDatetime='bahabah').status == Response(status=400).status
 
 def test_valid_documentDatetime():
-    assert type(data_to_use(documentDatetime=datetime.datetime.now())) != type(Response())
+    assert type(data_to_use(documentDatetime=datetime_to_use)) != type(Response())
 
 
 def test_wrongtype_patient_birthday():
     assert data_to_use(patient_birthday='bahabah').status == Response(status=400).status
 
 def test_valid_patient_birthday():
-    assert type(data_to_use(patient_birthday=datetime.datetime.now())) != type(Response())
+    assert type(data_to_use(patient_birthday=datetime_to_use)) != type(Response())
 
 
 ##################################################################

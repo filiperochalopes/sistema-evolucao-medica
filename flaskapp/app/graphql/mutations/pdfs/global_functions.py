@@ -896,7 +896,7 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=Fa
     """    
     try:
         if nullable:
-            if uf == None or len(str(uf).strip()) == 0:
+            if uf == None or str(uf).strip() == '':
                 return can
         if type(uf) != type(str()):
             return Response(f'{camp_name} has to be string, if can be null, please add nullable option', status=400)
@@ -911,7 +911,7 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=Fa
         elif type(interval) != type(str()):
             return Response(f'interval has to be str', status=500)
         
-        uf = uf.upper().strip()
+        uf = uf.strip()
         if uf_exists(uf=uf):
             # Add empty spaces interval between averu character
             uf = add_interval_to_data(data=uf, interval=interval)

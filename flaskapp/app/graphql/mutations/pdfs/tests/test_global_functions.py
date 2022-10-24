@@ -1,4 +1,4 @@
-from .. import global_functions
+from pdfs import global_functions
 from flask import Response
 
 

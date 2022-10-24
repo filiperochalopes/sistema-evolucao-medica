@@ -80,7 +80,7 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
             if type(c) == type(Response()): return c
             c = global_functions.add_oneline_text(can=c, text=patient_adressCity, pos=(243, 580), camp_name='Patient Adress City', len_max=34, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
-            c = global_functions.add_UF(can=c, uf=patient_adressUF, pos=(443, 580), camp_name='Patient Adress UF', nullable=True)
+            c = global_functions.add_UF(can=c, uf=patient_adressUF, pos=(444, 580), camp_name='Patient Adress UF', nullable=True)
             if type(c) == type(Response()): return c
             c = global_functions.add_CEP(can=c, cep=patient_adressCEP, pos=(483, 580), camp_name='Patient Adress CEP', nullable=True, formated=True)
             if type(c) == type(Response()): return c

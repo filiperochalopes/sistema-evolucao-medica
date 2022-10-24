@@ -7,6 +7,7 @@ lenght_test = ''
 for x in range(0, 1100):
     lenght_test += str(x)
 
+datetime_to_use = datetime.datetime.now()
 
 def test_create_aih_sus_pdf():
     output = pdfs.pdf_aih_sus.fill_pdf_aih_sus(
@@ -16,7 +17,7 @@ def test_create_aih_sus_pdf():
         establishment_exec_cnes=7654321,
         patient_name='Patient Name',
         patient_cns=928976954930007,
-        patient_birthday=datetime.datetime.now(),
+        patient_birthday=datetime_to_use,
         patient_sex='F',
         patient_mother_name='Patient Mother Name',
         patient_adress='Patient Adress street neighobourd',
@@ -34,11 +35,11 @@ def test_create_aih_sus_pdf():
         internation_carater='Internation Carater', 
         prof_solicitor_document={'CPF':28445400070},
         prof_solicitor_name='Profissional Solicit Name', 
-        solicitation_datetime=datetime.datetime.now(), 
+        solicitation_datetime=datetime_to_use, 
         autorization_prof_name='Autorization professional name', 
         emission_org_code='OrgCode2022', 
         autorizaton_prof_document={'CNS':928976954930007}, 
-        autorizaton_datetime=datetime.datetime.now(),
+        autorizaton_datetime=datetime_to_use,
         hospitalization_autorization_number=1234567890,
         exam_results='Xray tibia broken',
         chart_number=1234,
@@ -69,7 +70,7 @@ def test_create_apac_pdf():
         patient_name='Patient Name',
         patient_cns=928976954930007,
         patient_sex='M',
-        patient_birthday=datetime.datetime.now(),
+        patient_birthday=datetime_to_use,
         patient_adress_city='Patient Adress City',
         main_procedure_name='Main procedure Name',
         main_procedure_code='1234567890',
@@ -91,14 +92,14 @@ def test_create_apac_pdf():
         establishment_exec_cnes=7654321,
         prof_solicitor_document={'CPF':28445400070}, 
         prof_solicitor_name='Profissional Solicit Name', 
-        solicitation_datetime=datetime.datetime.now(),
-        signature_datetime=datetime.datetime.now(),
-        validity_period_start=datetime.datetime.now(),
-        validity_period_end=datetime.datetime.now(),
+        solicitation_datetime=datetime_to_use,
+        signature_datetime=datetime_to_use,
+        validity_period_start=datetime_to_use,
+        validity_period_end=datetime_to_use,
         autorization_prof_name='Autorization Professional Name', 
         emission_org_code='Cod121234', 
         autorizaton_prof_document={'CPF':28445400070}, 
-        autorizaton_datetime=datetime.datetime.now(),
+        autorizaton_datetime=datetime_to_use,
         secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]
     )
     result = pdfs.global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/apac_teste.pdf")
@@ -110,14 +111,14 @@ def test_create_exam_request_pdf():
     output = pdfs.pdf_exam_request.fill_pdf_exam_request(
         patient_name='Patient Name', 
         patient_cns=928976954930007, 
-        patient_birthday=datetime.datetime.now(), 
+        patient_birthday=datetime_to_use, 
         patient_adress="Patient Adress", 
         exams=lenght_test[:800],
         solicitation_reason="Solicitation Reason", 
         prof_solicitor="Professional Solicitor", 
         prof_authorized="Professional Authorized", 
-        solicitation_datetime=datetime.datetime.now(), 
-        autorization_datetime=datetime.datetime.now(), document_pacient_date=datetime.datetime.now(), 
+        solicitation_datetime=datetime_to_use, 
+        autorization_datetime=datetime_to_use, document_pacient_date=datetime_to_use, 
         document_pacient_name='Document pacient name'
     )
     result = pdfs.global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/exam_request.pdf")
@@ -127,10 +128,10 @@ def test_create_exam_request_pdf():
 
 def test_create_ficha_internamento_pdf():
     output = pdfs.pdf_ficha_internamento.fill_pdf_ficha_internamento(
-        document_datetime=datetime.datetime.now(), 
+        document_datetime=datetime_to_use, 
         patient_name="Patient Name",
         patient_cns=928976954930007,
-        patient_birthday=datetime.datetime.now(),
+        patient_birthday=datetime_to_use,
         patient_sex='F',
         patient_motherName="Patient Mother Name",
         patient_document={'CPF':28445400070},
@@ -168,7 +169,7 @@ def test_create_lme_pdf():
         cid10='A123',
         anamnese="Anamnese",
         prof_solicitor_name="Professional Solicitor Name",
-        solicitation_datetime=datetime.datetime.now(),
+        solicitation_datetime=datetime_to_use,
         prof_solicitor_document={'CPF':28445400070},
         capacity_attest=['nao', 'Responsible Name'],
         filled_by=['MEDICO', 'Other name', {'CPF':28445400070}],
@@ -186,7 +187,7 @@ def test_create_lme_pdf():
 
 def test_create_precricao_medica_pdf():
     output = pdfs.pdf_prescricao_medica.fill_pdf_prescricao_medica(
-        document_datetime=datetime.datetime.now(),
+        document_datetime=datetime_to_use,
         patient_name='Pacient Name',
         prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]
     )
@@ -196,10 +197,10 @@ def test_create_precricao_medica_pdf():
 
 def test_create_relatorio_alta_pdf():
     output = pdfs.pdf_relatorio_de_alta.fill_pdf_relatorio_alta(
-        documentDatetime=datetime.datetime.now(), 
+        documentDatetime=datetime_to_use, 
         patient_name="Patient Name",
         patient_cns=928976954930007,
-        patient_birthday=datetime.datetime.now(),
+        patient_birthday=datetime_to_use,
         patient_sex='F',
         patient_motherName="Patient Mother Name",
         patient_document={'CPF':28445400070},

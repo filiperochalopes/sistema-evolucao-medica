@@ -7,7 +7,9 @@ lenght_test = ''
 for x in range(0, 2000):
     lenght_test += str(x)
 
-def data_to_use(document_datetime=datetime.datetime.now(),
+datetime_to_use = datetime.datetime.now()
+
+def data_to_use(document_datetime=datetime_to_use,
         patient_name='Pacient Name',
         prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]):
         return pdf_prescricao_medica.fill_pdf_prescricao_medica(document_datetime, patient_name, prescription)
@@ -45,7 +47,7 @@ def test_wrongtype_document_datetime():
     assert data_to_use(document_datetime='bahabah').status == Response(status=400).status
 
 def test_valid_document_datetime():
-    assert type(data_to_use(document_datetime=datetime.datetime.now())) != type(Response())
+    assert type(data_to_use(document_datetime=datetime_to_use)) != type(Response())
 
 #################################################################
 # TEST prescriptions

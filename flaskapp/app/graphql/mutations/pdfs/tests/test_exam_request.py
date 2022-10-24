@@ -7,7 +7,9 @@ lenght_test = ''
 for x in range(0, 1100):
     lenght_test += str(x)
 
-def data_to_use(patient_name='Patient Name',patient_cns=928976954930007, patient_birthday=datetime.datetime.now(),patient_adress="Patient Adress",exams=lenght_test[:800],solicitation_reason="Solicitation Reason",prof_solicitor="Professional Solicitor",prof_authorized="Professional Authorized",solicitation_datetime=datetime.datetime.now(),autorization_datetime=datetime.datetime.now(), document_pacient_date=datetime.datetime.now(),document_pacient_name='Document pacient name'):
+datetime_to_use = datetime.datetime.now()
+
+def data_to_use(patient_name='Patient Name',patient_cns=928976954930007, patient_birthday=datetime_to_use,patient_adress="Patient Adress",exams=lenght_test[:800],solicitation_reason="Solicitation Reason",prof_solicitor="Professional Solicitor",prof_authorized="Professional Authorized",solicitation_datetime=datetime_to_use,autorization_datetime=datetime_to_use, document_pacient_date=datetime_to_use,document_pacient_name='Document pacient name'):
     return pdf_exam_request.fill_pdf_exam_request(patient_name, patient_cns, patient_birthday, patient_adress, solicitation_reason,
     exams, prof_solicitor, solicitation_datetime,prof_authorized, autorization_datetime, document_pacient_date, document_pacient_name)
 
@@ -22,10 +24,10 @@ def test_awnser_with_only_required_data():
     assert type(pdf_exam_request.fill_pdf_exam_request(
         patient_name='Patient Name', 
         patient_cns=928976954930007, 
-        patient_birthday=datetime.datetime.now(), 
+        patient_birthday=datetime_to_use, 
         patient_adress="Patient Adress", 
         exams=lenght_test[:800],
-        solicitation_datetime=datetime.datetime.now(),
+        solicitation_datetime=datetime_to_use,
         solicitation_reason="Solicitation Reason", 
         prof_solicitor="Professional Solicitor"
     )) != type(Response())
@@ -133,25 +135,25 @@ def test_wrongtype_patient_birthday():
     assert data_to_use(patient_birthday='bahabah').status == Response(status=400).status
 
 def test_valid_patient_birthday():
-    assert type(data_to_use(patient_birthday=datetime.datetime.now())) != type(Response())
+    assert type(data_to_use(patient_birthday=datetime_to_use)) != type(Response())
 
 def test_wrongtype_solicitation_datetime():
     assert data_to_use(solicitation_datetime='bahabah').status == Response(status=400).status
 
 def test_valid_solicitation_datetime():
-    assert type(data_to_use(solicitation_datetime=datetime.datetime.now())) != type(Response())
+    assert type(data_to_use(solicitation_datetime=datetime_to_use)) != type(Response())
 
 def test_wrongtype_autorization_datetime():
     assert data_to_use(autorization_datetime='bahabah').status == Response(status=400).status
 
 def test_valid_autorization_datetime():
-    assert type(data_to_use(autorization_datetime=datetime.datetime.now())) != type(Response())
+    assert type(data_to_use(autorization_datetime=datetime_to_use)) != type(Response())
 
 def test_wrongtype_document_pacient_date():
     assert data_to_use(document_pacient_date='bahabah').status == Response(status=400).status
 
 def test_valid_document_pacient_date():
-    assert type(data_to_use(document_pacient_date=datetime.datetime.now())) != type(Response())
+    assert type(data_to_use(document_pacient_date=datetime_to_use)) != type(Response())
 
 
 ####################################################################

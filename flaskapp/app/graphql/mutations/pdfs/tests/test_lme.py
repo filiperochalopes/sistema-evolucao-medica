@@ -7,6 +7,7 @@ lenght_test = ''
 for x in range(0, 1100):
     lenght_test += str(x)
 
+datetime_to_use = datetime.datetime.now()
 
 def data_to_use(establishment_solitc_name='Establishment Solicit Name',
 establishment_solitc_cnes=1234567,
@@ -17,7 +18,7 @@ patient_height=180,
 cid10='A123',
 anamnese="Anamnese",
 prof_solicitor_name="Professional Solicitor Name",
-solicitation_datetime=datetime.datetime.now(),
+solicitation_datetime=datetime_to_use,
 prof_solicitor_document={'CPF':28445400070},
 capacity_attest=['nao', 'Responsible Name'],
 filled_by=['MEDICO', 'Other name', {'CPF':28445400070}],
@@ -50,7 +51,7 @@ patient_height=180,
 cid10='A123',
 anamnese="Anamnese",
 prof_solicitor_name="Professional Solicitor Name",
-solicitation_datetime=datetime.datetime.now(),
+solicitation_datetime=datetime_to_use,
 prof_solicitor_document={'CPF':28445400070},
 capacity_attest=['nao', 'Responsible Name'],
 filled_by=['MEDICO', 'Other name', {'CPF':28445400070}],
@@ -175,7 +176,7 @@ def test_wrongtype_solicitation_datetime():
     assert data_to_use(solicitation_datetime='bahabah').status == Response(status=400).status
 
 def test_valid_solicitation_datetime():
-    assert type(data_to_use(solicitation_datetime=datetime.datetime.now())) != type(Response())
+    assert type(data_to_use(solicitation_datetime=datetime_to_use)) != type(Response())
 
 
 ##################################################################
