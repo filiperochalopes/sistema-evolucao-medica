@@ -620,6 +620,7 @@ def test_shortValue_cid10():
 # TEST INT VARIABLES CAN/CANNOT BE NULL
 # patient_weight
 # patient_height
+# contacts_phonenumbers
 # !!!!! TESTING
 # wrong type
 # test empty value
@@ -650,6 +651,23 @@ def test_empty_spaces_patient_height():
 
 def test_longValue_patient_height():
     assert data_to_use(patient_height=5487).status == Response(status=400).status
+
+def test_wrong_type_contacts_phonenumbers():
+    assert data_to_use(contacts_phonenumbers='131').status == Response(status=400).status
+
+def test_wrong_list_type_contacts_phonenumbers():
+    assert data_to_use(contacts_phonenumbers=['131',456]).status == Response(status=400).status
+
+def test_empty_value_contacts_phonenumbers():
+    assert data_to_use(contacts_phonenumbers='').status == Response(status=400).status
+
+def test_empty_spaces_contacts_phonenumbers():
+    assert data_to_use(contacts_phonenumbers='    ').status == Response(status=400).status
+
+def test_longValue_contacts_phonenumbers():
+    assert data_to_use(contacts_phonenumbers=[9854894846, 98641984195156]).status == Response(status=400).status
+
+
 
 
 #################################################################
