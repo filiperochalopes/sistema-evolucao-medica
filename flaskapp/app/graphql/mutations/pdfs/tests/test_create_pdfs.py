@@ -58,9 +58,7 @@ def test_create_aih_sus_pdf():
         company_cbor=123456, 
         pension_status='retired'
     )
-    result = pdfs.global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/aih_sus_teste.pdf")
-
-    assert result == None
+    assert type(output) == type(bytes())
 
 
 def test_create_apac_pdf():
