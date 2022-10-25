@@ -212,7 +212,9 @@ def test_create_solicit_mamografia_pdf():
         high_risk='NAOSABE',
         examinated_before='NAOSABE',
         mammogram_before=['NAOSABE', '2020'],
-        patient_age=23
+        patient_age=23,
+        health_unit_adressUF='SP',
+        health_unit_cnes=1234567
         
         )
     assert type(output) == type(bytes())

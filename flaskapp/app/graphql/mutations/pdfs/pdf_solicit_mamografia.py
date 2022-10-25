@@ -12,7 +12,7 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
 
-def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int) -> Union[PdfWriter, Response]:
+def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, health_unit_adressUF:str=None, health_unit_cnes:int=None) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -53,6 +53,21 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
                 return c
             else:
                 return Response('Some error happen when adding not null data to fields', status=500)
+
+        #Adding data that can be null
+        try:
+            c.setFont('Roboto-Mono', 12)
+            c = pdf_functions.add_UF(can=c, uf=health_unit_adressUF, pos=(50, 762), camp_name='Health Unit Adress UF', nullable=True, interval=' ')
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_intnumber(can=c, number=health_unit_cnes, pos=(178, 761), camp_name='Health Unit CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval=' ')
+            if type(c) == type(Response()): return c
+
+
+        except:
+            return Response('Critical error happen when adding data that can be null to fields', status=500)
+
+
+
         # create a new PDF with Reportlab
         c.save()
         ######c_2.save()
