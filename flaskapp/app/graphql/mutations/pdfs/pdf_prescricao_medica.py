@@ -8,7 +8,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
-from pdfs import global_functions
+from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY, WRITE_PRESCRICAO_MEDICA_DIRECTORY
 
 
@@ -29,9 +29,9 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
             initial_date_X_pos = 294
             initial_name_X_pos = 120
             for x in range(0, 2):
-                c = global_functions.add_datetime(can=c, date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
+                c = pdf_functions.add_datetime(can=c, date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
                 if type(c) == type(Response()): return c
-                c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
+                c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
                 if type(c) == type(Response()): return c
                 initial_date_X_pos += 450
                 initial_name_X_pos += 451
@@ -58,7 +58,7 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
         page = template_pdf.pages[0]
         page.merge_page(new_pdf.pages[0])
         output.add_page(page)
-        global_functions.write_newpdf(output, WRITE_PRESCRICAO_MEDICA_DIRECTORY)
+        pdf_functions.write_newpdf(output, WRITE_PRESCRICAO_MEDICA_DIRECTORY)
         
         with open(WRITE_PRESCRICAO_MEDICA_DIRECTORY, "rb") as pdf_file:
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
@@ -122,14 +122,14 @@ def add_prescription(canvas:canvas.Canvas, prescription:list) -> Union[canvas.Ca
         dot_quant = 61 - len(medicine_name + amount)
         str_title = medicine_name + '.' * dot_quant + amount
         #Add medicinename and amount
-        canvas = global_functions.add_data(can=canvas, data=str_title, pos=(22, yposition))
-        canvas = global_functions.add_data(can=canvas, data=str_title, pos=(472, yposition))
+        canvas = pdf_functions.add_data(can=canvas, data=str_title, pos=(22, yposition))
+        canvas = pdf_functions.add_data(can=canvas, data=str_title, pos=(472, yposition))
         yposition -= 10
         # Making the line break whem has 61 charater in a line
         while broke_lines_times >= 0:
             str_use_mode = use_mode[last_line:current_line]
-            canvas = global_functions.add_data(can=canvas, data=str_use_mode, pos=(22, yposition))
-            canvas = global_functions.add_data(can=canvas, data=str_use_mode, pos=(472, yposition))
+            canvas = pdf_functions.add_data(can=canvas, data=str_use_mode, pos=(22, yposition))
+            canvas = pdf_functions.add_data(can=canvas, data=str_use_mode, pos=(472, yposition))
             last_line = current_line
             current_line += CHAR_PER_LINES
             broke_lines_times -= 1

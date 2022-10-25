@@ -9,7 +9,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from math import ceil
 from typing import Union
-from pdfs import global_functions
+from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_EXAM_REQUEST_DIRECTORY, WRITE_EXAM_REQUEST_DIRECTORY
 
 
@@ -44,17 +44,17 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
             solicitation_reason_ypos = 690
             prof_solicitor_ypos = 595
             for x in range(pags_quant):
-                c = global_functions.add_oneline_text(can=c, text=patient_name, pos=(7, patient_name_ypos), camp_name='Patient Name', len_max=70, len_min=7)
+                c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(7, patient_name_ypos), camp_name='Patient Name', len_max=70, len_min=7)
                 if type(c) == type(Response()): return c
-                c = global_functions.add_cns(can=c, cns=patient_cns, pos=(450, patient_cns_ypos), camp_name='Patient CNS',formated=True)
+                c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(450, patient_cns_ypos), camp_name='Patient CNS',formated=True)
                 if type(c) == type(Response()): return c
-                c = global_functions.add_datetime(can=c, date=patient_birthday, pos=(441, patient_birthday_ypos), camp_name='Patient Birthday', hours=False, formated=True)
+                c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(441, patient_birthday_ypos), camp_name='Patient Birthday', hours=False, formated=True)
                 if type(c) == type(Response()): return c
-                c = global_functions.add_morelines_text(can=c, text=patient_adress, initial_pos=(7, patient_adress_ypos), decrease_ypos=10, camp_name='Patient Adress', len_max=216, len_min=7, char_per_lines=108)
+                c = pdf_functions.add_morelines_text(can=c, text=patient_adress, initial_pos=(7, patient_adress_ypos), decrease_ypos=10, camp_name='Patient Adress', len_max=216, len_min=7, char_per_lines=108)
                 if type(c) == type(Response()): return c
-                c = global_functions.add_morelines_text(can=c, text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, camp_name='Solicitation Reason', len_max=216, len_min=7, char_per_lines=108)
+                c = pdf_functions.add_morelines_text(can=c, text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, camp_name='Solicitation Reason', len_max=216, len_min=7, char_per_lines=108)
                 if type(c) == type(Response()): return c
-                c = global_functions.add_oneline_text(can=c, text=prof_solicitor, pos=(7, prof_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
+                c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor, pos=(7, prof_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
                 if type(c) == type(Response()): return c
 
                 #Decrese ypos in all lines to complete the page
@@ -81,15 +81,15 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
             autorization_datetime_ypos = 572
             document_pacient_date_ypos = 572
             for x in range(pags_quant):
-                c = global_functions.add_oneline_text(can=c, text=prof_authorized, pos=(174, prof_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
+                c = pdf_functions.add_oneline_text(can=c, text=prof_authorized, pos=(174, prof_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
                 if type(c) == type(Response()): return c
-                c = global_functions.add_oneline_text(can=c, text=document_pacient_name, pos=(340, document_pacient_name_ypos), camp_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
+                c = pdf_functions.add_oneline_text(can=c, text=document_pacient_name, pos=(340, document_pacient_name_ypos), camp_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
                 if type(c) == type(Response()): return c
-                c = global_functions.add_datetime(can=c, date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True, nullable=True)
+                c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True, nullable=True)
                 if type(c) == type(Response()): return c
-                c = global_functions.add_datetime(can=c, date=autorization_datetime, pos=(195, autorization_datetime_ypos), camp_name='Authorization Datetime', hours=False, formated=True, nullable=True)
+                c = pdf_functions.add_datetime(can=c, date=autorization_datetime, pos=(195, autorization_datetime_ypos), camp_name='Authorization Datetime', hours=False, formated=True, nullable=True)
                 if type(c) == type(Response()): return c
-                c = global_functions.add_datetime(can=c, date=document_pacient_date, pos=(362, document_pacient_date_ypos), camp_name='Document Pacient Datetime', hours=False, formated=True, nullable=True)
+                c = pdf_functions.add_datetime(can=c, date=document_pacient_date, pos=(362, document_pacient_date_ypos), camp_name='Document Pacient Datetime', hours=False, formated=True, nullable=True)
                 if type(c) == type(Response()): return c
 
                 prof_authorized_ypos -= decreaseYpos
@@ -115,7 +115,7 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
         page.merge_page(new_pdf.pages[0])
         output.add_page(page)
 
-        global_functions.write_newpdf(output, WRITE_EXAM_REQUEST_DIRECTORY)
+        pdf_functions.write_newpdf(output, WRITE_EXAM_REQUEST_DIRECTORY)
         
         with open(WRITE_EXAM_REQUEST_DIRECTORY, "rb") as pdf_file:
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
@@ -153,7 +153,7 @@ def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]
         for x in range(pags_quant):
             while broke_lines_times >= 0:
                 str_exams = exams[last_line:current_line]
-                canvas = global_functions.add_data(can=canvas, data=str_exams, pos=(7, y_position))
+                canvas = pdf_functions.add_data(can=canvas, data=str_exams, pos=(7, y_position))
                 last_line = current_line
                 current_line += CHAR_PER_LINES
                 broke_lines_times -= 1
