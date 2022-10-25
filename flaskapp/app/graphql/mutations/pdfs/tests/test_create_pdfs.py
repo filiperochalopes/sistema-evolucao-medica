@@ -236,7 +236,23 @@ def test_create_solicit_mamografia_pdf():
         patient_schooling='SUPCOMPL',
         patient_adressCEP=12345678,
         patient_phonenumber=1234567890,
-        radiotherapy_before=['SIMESQ', '2020']
+        radiotherapy_before=['SIMESQ', '2020'],
+        breast_surgery_before={
+    'did_not':True,
+    'biopsia_insinonal':((None), (2020)),
+    'biopsia_excisional':((2021), (None)),
+    'centraledomia':((None), (None)),
+    'segmentectomia':((None), (None)),
+    'dutectomia':((None), (None)),
+    'mastectomia':((None), (None)),
+    'mastectomia_poupadora_pele':((None), (None)),
+    'mastectomia_poupadora_pele_complexo_areolo':((None), (None)),
+    'linfadenectomia_axilar':((None), (None)),
+    'biopsia_linfonodo':((None), (None)),
+    'reconstrucao_mamaria':((None), (None)),
+    'mastoplastia_redutora':((None), (None)),
+    'indusao_implantes':((None), (None))
+}
         )
     assert type(output) == type(bytes())
 

@@ -12,7 +12,7 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
 
-def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_IBGEcode:int=None, patient_adress_city:str=None, patient_adressUF:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adressCEP:str=None, patient_phonenumber:int=None, radiotherapy_before:list=None) -> Union[PdfWriter, Response]:
+def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_IBGEcode:int=None, patient_adress_city:str=None, patient_adressUF:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adressCEP:str=None, patient_phonenumber:int=None, radiotherapy_before:list=None, breast_surgery_before:dict=None) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -83,6 +83,8 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             c = add_patient_phonenumber(can=c, number=patient_phonenumber)            
             if type(c) == type(Response()): return c
             c = add_radiotherapy_before(can=c, radiotherapy_before=radiotherapy_before)
+            if type(c) == type(Response()): return c
+            c = add_breast_surgery_before(can=c, breast_surgery_before=breast_surgery_before)
             if type(c) == type(Response()): return c
 
 
@@ -194,3 +196,36 @@ def add_radiotherapy_before(can:canvas.Canvas, radiotherapy_before:list):
     except:
         return Response(f'Unknow error while adding radiotherapy before', status=500)
 
+
+def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
+    try:
+        if breast_surgery_before == None:
+            return can
+        if type(breast_surgery_before) != type(dict()):
+            return Response("breast_surgery_before has to be a dict with tuples or bool, like {'surgery':((year_esq), (year_dir))} or {'did_not':True}, {'did_not':False,'biopsia_insinonal':((None), (2020)),'biopsia_excisional':((2021), (None)),'centraledomia':((None), (None)),'segmentectomia':(None),'dutectomia':((None), (None)),'mastectomia':((None), (None)),'mastectomia_poupadora_pele':((None), (None)),'mastectomia_poupadora_pele_complexo_areolo':((None), (None)),'linfadenectomia_axilar':((None), (None)),'biopsia_linfonodo':((None), (None)),'reconstrucao_mamaria':((None), (None)),'mastoplastia_redutora':((None), (None)),'indusao_implantes':((None), (None))}", status=400)
+        necessary_keys_positions = {"did_not":(334, 41), "biopsia_insinonal":((), ()), "biopsia_excisional":((), ()), "centraledomia":((), ()), "segmentectomia":((), ()), "dutectomia":((), ()), "mastectomia":((), ()), "mastectomia_poupadora_pele":((), ()), "mastectomia_poupadora_pele_complexo_areolo":((), ()), "linfadenectomia_axilar":((), ()), "biopsia_linfonodo":((), ()), "reconstrucao_mamaria":((), ()), "mastoplastia_redutora":((), ()), "indusao_implantes":((), ())}
+        if len(breast_surgery_before) > 14:
+            return Response('You cannot add more than 14 keys in dict', status=400)
+        #Pick all valid keys
+        valid_keys = [ x for x in breast_surgery_before.keys() if x in necessary_keys_positions.keys()]
+        #Start adding data
+        for surgery in valid_keys:
+            #Receive the current surgery
+            current_surgery = breast_surgery_before[surgery]
+            if type(current_surgery) == type(bool()):
+                # when is did_not key
+                if current_surgery:
+                    can = pdf_functions.add_square(can=can, pos=necessary_keys_positions[surgery], size=(15, 9))
+                    return can
+            elif current_surgery == None:
+                continue
+            elif type(current_surgery) != tuple():
+                return Response(f'{surgery} has to be a tuple with the years right and left or just a None, like: surgery: None or surgery:((None), (2020))')
+            
+
+            
+
+
+        return can
+    except:
+        return Response(f'{number} Unknow error while adding breast_surgery_before', status=500)
