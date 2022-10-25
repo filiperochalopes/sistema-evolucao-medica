@@ -208,6 +208,8 @@ def test_create_solicit_mamografia_pdf():
         patient_cns=928976954930007,
         patient_mother_name='Patient Mother Name',
         patient_birthday=datetime_to_use,
+        solicitation_datetime=datetime_to_use,
+        prof_solicitor_name='Professional Name',
         nodule_lump='NAO',
         high_risk='NAOSABE',
         examinated_before='NAOSABE',

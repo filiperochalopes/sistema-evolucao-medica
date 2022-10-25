@@ -12,20 +12,23 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
 
-def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_IBGEcode:int=None, patient_adress_city:str=None, patient_adressUF:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adressCEP:str=None, patient_phonenumber:int=None, radiotherapy_before:list=None, breast_surgery_before:dict=None) -> Union[PdfWriter, Response]:
+def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_IBGEcode:int=None, patient_adress_city:str=None, patient_adressUF:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adressCEP:str=None, patient_phonenumber:int=None, radiotherapy_before:list=None, breast_surgery_before:dict=None) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
-        c = canvas.Canvas(packet, pagesize=letter)
-        #####packet_2 = io.BytesIO()
+        #####c = canvas.Canvas(packet, pagesize=letter)
+        packet_2 = io.BytesIO()
         # Create canvas and add data
-        #####c_2 = canvas.Canvas(packet_2, pagesize=letter)
+        c_2 = canvas.Canvas(packet_2, pagesize=letter)
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
         pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
-        c.setFont('Roboto-Mono', 13)
+        #####c.setFont('Roboto-Mono', 13)
+        c_2.setFont('Roboto-Mono', 13)
         # Writing all data in respective fields
         # not null data
+
+        old = """
         try:
             c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(46, 676), camp_name='Patient CNS', interval=' ')
             if type(c) == type(Response()): return c
@@ -55,7 +58,7 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()):
                 return c
             else:
-                return Response('Some error happen when adding not null data to fields', status=500)
+                return Response('Some error happen when adding not null data to fields in page 1', status=500)
 
         #Adding data that can be null
         try:
@@ -120,27 +123,53 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             
         except:
-            return Response('Critical error happen when adding data that can be null to fields', status=500)
+            return Response('Critical error happen when adding data that can be null to fields in page 1', status=500)
+
+"""
+### Add Page 2
+        packet_2 = io.BytesIO()
+        # Create canvas and add data
+        c_2 = canvas.Canvas(packet_2, pagesize=letter)
+        # Change canvas font to mach with the document
+        # this is also changed in the document to some especific fields
+        pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
+        c_2.setFont('Roboto-Mono', 13)
+        try:
+            c_2 = pdf_functions.add_oneline_text(can=c_2, text=prof_solicitor_name, pos=(206, 346), camp_name='Professional Solicitor Name', len_max=23, len_min=7, interval=' ')
+            if type(c_2) == type(Response()): return c_2
 
 
+
+
+
+            c_2.setFont('Roboto-Mono', 12)
+            c_2 = pdf_functions.add_datetime(can=c_2, date=solicitation_datetime, pos=(48, 346), camp_name='Solicitation Datetime', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
+            if type(c_2) == type(Response()): return c_2
+            
+            if type(c_2) == type(Response()): return c_2
+        except:
+            if type(c_2) == type(Response()):
+                return 
+            else:
+                return Response('Some error happen when adding not null data to fields in page 2', status=500)
 
         # create a new PDF with Reportlab
-        c.save()
-        ######c_2.save()
-        packet.seek(0)
-        ######packet_2.seek(0)
-        new_pdf = PdfReader(packet)
-        #####new_pdf_2 = PdfReader(packet_2)
+        ######c.save()
+        c_2.save()
+        ######packet.seek(0)
+        packet_2.seek(0)
+        ######new_pdf = PdfReader(packet)
+        new_pdf_2 = PdfReader(packet_2)
         # read the template pdf 
         template_pdf = PdfReader(open(TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, "rb"))
         output = PdfWriter()
         # add the "watermark" (which is the new pdf) on the existing page
-        page = template_pdf.pages[0]
-        page.merge_page(new_pdf.pages[0])
-        ######page_2 = template_pdf.pages[1]
-        ######page_2.merge_page(new_pdf_2.pages[0])
-        output.add_page(page)
-        ######output.add_page(page_2)
+        ######page = template_pdf.pages[0]
+        ######page.merge_page(new_pdf.pages[0])
+        page_2 = template_pdf.pages[1]
+        page_2.merge_page(new_pdf_2.pages[0])
+        ######output.add_page(page)
+        output.add_page(page_2)
 
         pdf_functions.write_newpdf(output, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY)
         
