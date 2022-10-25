@@ -147,9 +147,7 @@ def test_create_ficha_internamento_pdf():
         patient_estimateWeight=123,
         has_additional_healthInsurance=False
         )
-    result = pdfs.global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/ficha_teste.pdf")
-
-    assert result == None
+    assert type(output) == type(bytes())
 
 
 def test_create_lme_pdf():
@@ -175,9 +173,7 @@ def test_create_lme_pdf():
         contacts_phonenumbers=[1254875652, 4578456598],
         medicines=[{"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}]
     )
-    result = pdfs.global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/lme_teste.pdf")
-
-    assert result == None
+    assert type(output) == type(bytes())
 
 def test_create_precricao_medica_pdf():
     output = pdfs.pdf_prescricao_medica.fill_pdf_prescricao_medica(
@@ -185,9 +181,7 @@ def test_create_precricao_medica_pdf():
         patient_name='Pacient Name',
         prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]
     )
-    result = pdfs.global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/prescricao_medica_teste.pdf")
-
-    assert result == None
+    assert type(output) == type(bytes())
 
 def test_create_relatorio_alta_pdf():
     output = pdfs.pdf_relatorio_de_alta.fill_pdf_relatorio_alta(
@@ -205,9 +199,7 @@ def test_create_relatorio_alta_pdf():
         doctor_crm='CRM/UF 123456',
         orientations='Do not jump'
         )
-    result = pdfs.global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/relatorio_alta_teste.pdf")
-
-    assert result == None
+    assert type(output) == type(bytes())
 
 
 

@@ -1,3 +1,4 @@
+import base64
 import datetime
 from PyPDF2  import PdfWriter, PdfReader
 import io
@@ -8,7 +9,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
 from pdfs import global_functions
-from pdfs.constants import FONT_DIRECTORY, TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY
+from pdfs.constants import FONT_DIRECTORY, TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY, WRITE_PRESCRICAO_MEDICA_DIRECTORY
 
 
 def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name:str, prescription:list) -> Union[PdfWriter, Response]:
@@ -57,7 +58,12 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
         page = template_pdf.pages[0]
         page.merge_page(new_pdf.pages[0])
         output.add_page(page)
-        return output
+        global_functions.write_newpdf(output, WRITE_PRESCRICAO_MEDICA_DIRECTORY)
+        
+        with open(WRITE_PRESCRICAO_MEDICA_DIRECTORY, "rb") as pdf_file:
+            pdf_base64_enconded = base64.b64encode(pdf_file.read())
+
+        return pdf_base64_enconded
     except:
         return Response('Unknow error while adding medical prescription', status=500)
 

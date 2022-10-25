@@ -1,3 +1,4 @@
+import base64
 import datetime
 from PyPDF2 import PdfWriter, PdfReader
 import io
@@ -8,7 +9,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
 from pdfs import global_functions
-from pdfs.constants import FONT_DIRECTORY, TEMPLATE_LME_DIRECTORY
+from pdfs.constants import FONT_DIRECTORY, TEMPLATE_LME_DIRECTORY, WRITE_LME_DIRECTORY
 
 
 def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[PdfWriter, Response]:
@@ -105,7 +106,12 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
         page.merge_page(new_pdf.pages[0])
         output.add_page(page)
 
-        return output
+        global_functions.write_newpdf(output, WRITE_LME_DIRECTORY)
+        
+        with open(WRITE_LME_DIRECTORY, "rb") as pdf_file:
+            pdf_base64_enconded = base64.b64encode(pdf_file.read())
+
+        return pdf_base64_enconded
     except:
         return Response("Error while filling aih sus", status=500)
 

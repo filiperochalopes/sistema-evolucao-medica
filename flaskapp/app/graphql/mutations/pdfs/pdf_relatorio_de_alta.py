@@ -1,3 +1,4 @@
+import base64
 import datetime
 from PyPDF2  import PdfWriter, PdfReader
 import io
@@ -8,7 +9,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
 from pdfs import global_functions
-from pdfs.constants import FONT_DIRECTORY, TEMPLATE_RELATORIO_ALTA_DIRECTORY
+from pdfs.constants import FONT_DIRECTORY, TEMPLATE_RELATORIO_ALTA_DIRECTORY, WRITE_RELATORIO_ALTA_DIRECTORY
 
 
 def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:int, doctor_crm:str, orientations:str=None) -> Union[PdfWriter, Response]:
@@ -80,6 +81,11 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
         page.merge_page(new_pdf.pages[0])
         output.add_page(page)
 
-        return output
+        global_functions.write_newpdf(output, WRITE_RELATORIO_ALTA_DIRECTORY)
+        
+        with open(WRITE_RELATORIO_ALTA_DIRECTORY, "rb") as pdf_file:
+            pdf_base64_enconded = base64.b64encode(pdf_file.read())
+
+        return pdf_base64_enconded
     except:
         return Response("Error while filling relatorio de alta", status=500)

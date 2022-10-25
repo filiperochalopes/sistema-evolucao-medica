@@ -121,8 +121,6 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
 
         return pdf_base64_enconded
-
-        return output
     except:
         return Response("Error while filling exam request", status=500)
 
