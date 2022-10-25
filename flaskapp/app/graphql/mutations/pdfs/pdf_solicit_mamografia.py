@@ -74,6 +74,9 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress, pos=(47, 529), camp_name='Patient Adress', len_max=42, len_min=7, interval=' ', nullable=True)
             if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_adjunct, pos=(168, 507), camp_name='Patient Adress Adjunct', len_max=25, len_min=7, interval=' ', nullable=True)
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_neighborhood, pos=(292, 484), camp_name='Patient Adress Neighborhood', len_max=14, len_min=7, interval=' ', nullable=True)
 
 
 
