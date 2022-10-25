@@ -12,7 +12,7 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
 
-def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int) -> Union[PdfWriter, Response]:
+def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -29,10 +29,14 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int) -> Union[PdfW
         try:
             c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(46, 676), camp_name='Patient CNS', interval=' ')
             if type(c) == type(Response()): return c
+            c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(48, 563), camp_name='Patient Birthday', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
+            if type(c) == type(Response()): return c
             
             
             c.setFont('Roboto-Mono', 10)
             c = pdf_functions.add_morelines_text(can=c, text=patient_name, initial_pos=(48, 653), decrease_ypos=18, camp_name='Patient Name', len_max=42, len_min=7, interval='  ', char_per_lines=87)
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(48, 612), camp_name='Patient Mother Name', len_max=42, len_min=7, interval='  ')
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):

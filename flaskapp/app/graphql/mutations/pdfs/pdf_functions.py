@@ -823,7 +823,7 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
         return Response(f'Unkown error while adding {camp_name}', status=500)
 
 
-def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='') -> Union[canvas.Canvas, Response]:
+def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='') -> Union[canvas.Canvas, Response]:
     """Add datetime to canvas
 
     Args:
@@ -835,6 +835,7 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name
         nullable (bool, optional): can be null. Defaults to False.
         formated (bool, optional): format (add '/' and ':'). Defaults to True.
         interval (str, optional): add interval between  day, month, year, hour, min, sec. Defaults to ''.
+        interval_between_numbers (str, optional): add interval between  every number. Defaults to ''.
     Returns:
         canvas(canvas.Canvas): canvas with all changes
         or
@@ -860,18 +861,21 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name
             return Response(f'formated has to be bool', status=500)
         elif type(interval) != type(str()):
             return Response(f'interval has to be str', status=500)
+        elif type(interval_between_numbers) != type(str()):
+            return Response(f'interval_between_numbers has to be str', status=500)
 
         #Add to respective fields
         str_date = str('%02d/%02d/%d %02d:%02d:%02d') % (date.day, date.month, date.year, date.hour, date.minute, date.second)
         if hours:  
             if not formated:
+                str_date = add_interval_to_data(data=str_date, interval=interval_between_numbers)
                 str_date = str_date.replace('/', interval)
                 str_date = str_date.replace(':', interval)
         else:
             str_date = str_date[0:10]
+            str_date = add_interval_to_data(data=str_date, interval=interval_between_numbers)
             if not formated:
                 str_date = str_date.replace('/', interval)
-
         can = add_data(can=can, data=str_date, pos=pos)
         return can
 
