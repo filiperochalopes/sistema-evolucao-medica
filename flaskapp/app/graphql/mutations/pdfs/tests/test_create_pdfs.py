@@ -235,7 +235,8 @@ def test_create_solicit_mamografia_pdf():
         patient_adress_reference='Adress Reference',
         patient_schooling='SUPCOMPL',
         patient_adressCEP=12345678,
-        patient_phonenumber=1234567890
+        patient_phonenumber=1234567890,
+        radiotherapy_before=['SIMESQ', '2020']
         )
     assert type(output) == type(bytes())
 
