@@ -34,13 +34,20 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=mammogram_before[0], valid_options=['SIM', 'NAO', 'NAOSABE'], text_options=['SIM'], options_positions=((51,64), (51,52), (51, 40)), camp_name='Has made mamogram before', square_size=(15,9), len_max=4, len_min=4, text=mammogram_before[1], text_pos=(200, 68), interval=' ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_age, pos=(217, 563), camp_name='Patient Birthday', len_max=2, len_min=1,value_min=1, value_max=99, interval=' ')
+
+
+            c.setFont('Roboto-Mono', 13)
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_morelines_text(can=c, text=patient_name, initial_pos=(47, 653), decrease_ypos=18, camp_name='Patient Name', len_max=42, len_min=7, interval=' ', char_per_lines=87)
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(47, 612), camp_name='Patient Mother Name', len_max=42, len_min=7, interval=' ')
             if type(c) == type(Response()): return c
             
             
             c.setFont('Roboto-Mono', 9)
-            c = pdf_functions.add_morelines_text(can=c, text=patient_name, initial_pos=(48, 653), decrease_ypos=18, camp_name='Patient Name', len_max=42, len_min=7, interval='  ', char_per_lines=87)
+            #c = pdf_functions.add_morelines_text(can=c, text=patient_name, initial_pos=(48, 653), decrease_ypos=18, camp_name='Patient Name', len_max=42, len_min=7, interval='  ', char_per_lines=87)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(48, 612), camp_name='Patient Mother Name', len_max=42, len_min=7, interval='  ')
+            #c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(48, 612), camp_name='Patient Mother Name', len_max=42, len_min=7, interval='  ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_markable_square(can=c, option=nodule_lump, valid_options=['SIMDIR', 'SIMESQ', 'NAO'], options_positions=((50,332), (50,320), (50, 310)), camp_name='Has nodule lump', square_size=(15,9))
             if type(c) == type(Response()): return c
@@ -56,8 +63,23 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
 
         #Adding data that can be null
         try:
+            c.setFont('Roboto-Mono', 13)
+            c = pdf_functions.add_UF(can=c, uf=health_unit_adressUF, pos=(47, 762), camp_name='Health Unit Adress UF', nullable=True, interval=' ')
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_text(can=c, text=health_unit_name, pos=(47, 741), camp_name='Health Unit Name', len_max=42, len_min=7, interval=' ', nullable=True)
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_text(can=c, text=health_unit_adress_city, pos=(168, 720), camp_name='Health Unit Adress City', len_max=14, len_min=4, interval=' ', nullable=True)
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_text(can=c, text=patient_surname, pos=(288, 635), camp_name='Patient Surname', len_max=18, len_min=4, interval=' ', nullable=True)
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress, pos=(47, 529), camp_name='Patient Adress', len_max=42, len_min=7, interval=' ', nullable=True)
+            if type(c) == type(Response()): return c
+
+
+
+
             c.setFont('Roboto-Mono', 12)
-            c = pdf_functions.add_UF(can=c, uf=health_unit_adressUF, pos=(50, 762), camp_name='Health Unit Adress UF', nullable=True, interval=' ')
+            #c = pdf_functions.add_UF(can=c, uf=health_unit_adressUF, pos=(50, 762), camp_name='Health Unit Adress UF', nullable=True, interval=' ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=health_unit_cnes, pos=(178, 761), camp_name='Health Unit CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval=' ', nullable=True)
             if type(c) == type(Response()): return c
@@ -72,9 +94,9 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
 
 
             c.setFont('Roboto-Mono', 9)
-            c = pdf_functions.add_oneline_text(can=c, text=health_unit_name, pos=(48, 743), camp_name='Health Unit Name', len_max=42, len_min=7, interval='  ', nullable=True)
+            #c = pdf_functions.add_oneline_text(can=c, text=health_unit_name, pos=(48, 743), camp_name='Health Unit Name', len_max=42, len_min=7, interval='  ', nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=health_unit_adress_city, pos=(170, 720), camp_name='Health Unit Adress City', len_max=14, len_min=4, interval='  ', nullable=True)
+            #c = pdf_functions.add_oneline_text(can=c, text=health_unit_adress_city, pos=(170, 720), camp_name='Health Unit Adress City', len_max=14, len_min=4, interval='  ', nullable=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=health_unit_city_IBGEcode, pos=(47, 720), camp_name='Health Unit City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True, interval='  ')
             if type(c) == type(Response()): return c
@@ -82,7 +104,7 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(291, 672), pos_fem=(338, 672), camp_name='Patient Sex', square_size=(11,9), nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_surname, pos=(290, 635), camp_name='Patient Surname', len_max=18, len_min=4, interval='  ', nullable=True)
+            #c = pdf_functions.add_oneline_text(can=c, text=patient_surname, pos=(290, 635), camp_name='Patient Surname', len_max=18, len_min=4, interval='  ', nullable=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=patient_nationality, pos=(278, 587), camp_name='Patient Nationality', len_max=32, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
