@@ -12,7 +12,7 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
 
-def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None) -> Union[PdfWriter, Response]:
+def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -63,6 +63,8 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=protocol_number, pos=(406, 768), camp_name='Protocol Number', len_max=23, len_min=1, nullable=True)
             if type(c) == type(Response()): return c
+            c = pdf_functions.add_document_cns_cpf_rg(can=c, document=patient_document_cpf, pos_cpf=(52, 589),camp_name='Patient Document CPF', interval=' ', nullable=True)
+            if type(c) == type(Response()): return c
 
 
             c.setFont('Roboto-Mono', 9)
@@ -75,6 +77,8 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             c = pdf_functions.add_oneline_intnumber(can=c, number=document_chart_number, pos=(410, 720), camp_name='Document Chart Number', len_max=10, len_min=1, value_min=0, value_max=99999999999999, nullable=True, interval='  ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(291, 672), pos_fem=(338, 672), camp_name='Patient Sex', square_size=(11,9))
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_text(can=c, text=patient_surname, pos=(290, 635), camp_name='Patient Surname', len_max=18, len_min=4, interval='  ', nullable=True)
             if type(c) == type(Response()): return c
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)

@@ -220,7 +220,9 @@ def test_create_solicit_mamografia_pdf():
         health_unit_city_IBGEcode=1234567,
         document_chart_number=1234567895,
         protocol_number='5478546135245165',
-        patient_sex='F'
+        patient_sex='F',
+        patient_surname='Patient Surname',
+        patient_document_cpf={'CPF':28445400070}
         
         )
     assert type(output) == type(bytes())
