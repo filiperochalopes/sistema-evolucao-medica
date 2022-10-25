@@ -202,5 +202,11 @@ def test_create_relatorio_alta_pdf():
     assert type(output) == type(bytes())
 
 
+def test_create_solicit_mamografia_pdf():
+    output = pdfs.pdf_solicit_mamografia.fill_pdf_solicit_mamografia(
+        patient_name='Patient Name'
+        
+        )
+    assert type(output) == type(bytes())
 
 
