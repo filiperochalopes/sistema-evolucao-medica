@@ -12,7 +12,7 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
 
-def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None) -> Union[PdfWriter, Response]:
+def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_IBGEcode:int=None, patient_adress_city:str=None, patient_adressUF:str=None) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -67,13 +67,14 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_number, pos=(52, 506), camp_name='Patient Adress Number', len_max=6, len_min=1, value_min=0, value_max=999999, interval=' ', nullable=True)
             if type(c) == type(Response()): return c
-
+            c = pdf_functions.add_UF(can=c, uf=patient_adressUF, pos=(535, 484), camp_name='Patient Adress UF', nullable=True, interval=' ')
+            if type(c) == type(Response()): return c
 
 
             c.setFont('Roboto-Mono', 9)
             c = pdf_functions.add_oneline_text(can=c, text=health_unit_name, pos=(48, 743), camp_name='Health Unit Name', len_max=42, len_min=7, interval='  ', nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=health_unit_adress_city, pos=(170, 720), camp_name='Health Unit Adress City', len_max=14, len_min=7, interval='  ', nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=health_unit_adress_city, pos=(170, 720), camp_name='Health Unit Adress City', len_max=14, len_min=4, interval='  ', nullable=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=health_unit_city_IBGEcode, pos=(47, 720), camp_name='Health Unit City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True, interval='  ')
             if type(c) == type(Response()): return c
@@ -89,8 +90,13 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_adjunct, pos=(172, 507), camp_name='Patient Adress Adjunct', len_max=25, len_min=7, interval='  ', nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_neighborhood, pos=(294, 486), camp_name='Patient Adress Neighborhood', len_max=14, len_min=7, interval='  ', nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_neighborhood, pos=(294, 484), camp_name='Patient Adress Neighborhood', len_max=14, len_min=7, interval='  ', nullable=True)
             if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_city_IBGEcode, pos=(47, 461), camp_name='Patient City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True, interval='  ')
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(170, 461), camp_name='Patient Adress City', len_max=14, len_min=4, interval='  ', nullable=True)
+            if type(c) == type(Response()): return c
+            
             
         except:
             return Response('Critical error happen when adding data that can be null to fields', status=500)

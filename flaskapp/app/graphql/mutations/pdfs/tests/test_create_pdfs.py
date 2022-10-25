@@ -227,7 +227,11 @@ def test_create_solicit_mamografia_pdf():
         patient_adress='Patient Adress',
         patient_adress_number=123456,
         patient_adress_adjunct='Patient Adress Adjunct',
-        patient_adress_neighborhood='Neighborhood'
+        patient_adress_neighborhood='Neighborhood',
+        patient_city_IBGEcode=1234567,
+        patient_adress_city='Patient City',
+        patient_adressUF='SP'
+        
         
         )
     assert type(output) == type(bytes())
