@@ -222,7 +222,12 @@ def test_create_solicit_mamografia_pdf():
         protocol_number='5478546135245165',
         patient_sex='F',
         patient_surname='Patient Surname',
-        patient_document_cpf={'CPF':28445400070}
+        patient_document_cpf={'CPF':28445400070},
+        patient_nationality='Patient Nationality',
+        patient_adress='Patient Adress',
+        patient_adress_number=123456,
+        patient_adress_adjunct='Patient Adress Adjunct',
+        patient_adress_neighborhood='Neighborhood'
         
         )
     assert type(output) == type(bytes())
