@@ -23,11 +23,11 @@ def fill_pdf_solicit_mamografia(patient_name:str) -> Union[PdfWriter, Response]:
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
         pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
-        c.setFont('Roboto-Mono', 9)
+        c.setFont('Roboto-Mono', 10)
         # Writing all data in respective fields
         # not null data
         try:
-            c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(50, 653), camp_name='Patient Name', len_max=33, len_min=7, interval='  ')
+            c = pdf_functions.add_morelines_text(can=c, text=patient_name, initial_pos=(48, 653), decrease_ypos=18, camp_name='Patient Name', len_max=42, len_min=7, interval='  ', char_per_lines=87)
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):

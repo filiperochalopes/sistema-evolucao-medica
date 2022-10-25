@@ -310,6 +310,7 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         # verify if text is in the need lenght
         text = text.strip()
         if len_min <= len(text) <= len_max:
+            text = add_interval_to_data(data=text, interval=interval)
             str_to_line = ''
             broke_lines_times = int(len(text)/char_per_lines)
             if max_lines_amount != None and broke_lines_times + 1 > max_lines_amount:
