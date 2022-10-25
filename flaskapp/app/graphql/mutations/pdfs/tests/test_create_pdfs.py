@@ -214,7 +214,8 @@ def test_create_solicit_mamografia_pdf():
         mammogram_before=['NAOSABE', '2020'],
         patient_age=23,
         health_unit_adressUF='SP',
-        health_unit_cnes=1234567
+        health_unit_cnes=1234567,
+        health_unit_name="Health Unit Name"
         
         )
     assert type(output) == type(bytes())
