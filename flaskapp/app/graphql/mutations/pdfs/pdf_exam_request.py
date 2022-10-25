@@ -1,3 +1,4 @@
+import base64
 import datetime
 from PyPDF2  import PdfWriter, PdfReader
 import io
@@ -9,7 +10,7 @@ from flask import Response
 from math import ceil
 from typing import Union
 from pdfs import global_functions
-from pdfs.constants import FONT_DIRECTORY, TEMPLATE_EXAM_REQUEST_DIRECTORY
+from pdfs.constants import FONT_DIRECTORY, TEMPLATE_EXAM_REQUEST_DIRECTORY, WRITE_EXAM_REQUEST_DIRECTORY
 
 
 
@@ -113,6 +114,13 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
         page = template_pdf.pages[0]
         page.merge_page(new_pdf.pages[0])
         output.add_page(page)
+
+        global_functions.write_newpdf(output, WRITE_EXAM_REQUEST_DIRECTORY)
+        
+        with open(WRITE_EXAM_REQUEST_DIRECTORY, "rb") as pdf_file:
+            pdf_base64_enconded = base64.b64encode(pdf_file.read())
+
+        return pdf_base64_enconded
 
         return output
     except:

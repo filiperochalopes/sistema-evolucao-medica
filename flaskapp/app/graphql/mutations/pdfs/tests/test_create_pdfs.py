@@ -100,9 +100,7 @@ def test_create_apac_pdf():
         autorizaton_datetime=datetime_to_use,
         secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]
     )
-    result = pdfs.global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/apac_teste.pdf")
-
-    assert result == None
+    assert type(output) == type(bytes())
 
 
 def test_create_exam_request_pdf():
@@ -119,9 +117,7 @@ def test_create_exam_request_pdf():
         autorization_datetime=datetime_to_use, document_pacient_date=datetime_to_use, 
         document_pacient_name='Document pacient name'
     )
-    result = pdfs.global_functions.write_newpdf(output, "./graphql/mutations/pdfs/tests/pdfs_created_files_test/exam_request.pdf")
-
-    assert result == None
+    assert type(output) == type(bytes())
 
 
 def test_create_ficha_internamento_pdf():
