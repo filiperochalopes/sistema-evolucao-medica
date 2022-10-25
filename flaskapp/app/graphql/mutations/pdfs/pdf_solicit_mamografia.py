@@ -45,10 +45,6 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             
             
             c.setFont('Roboto-Mono', 9)
-            #c = pdf_functions.add_morelines_text(can=c, text=patient_name, initial_pos=(48, 653), decrease_ypos=18, camp_name='Patient Name', len_max=42, len_min=7, interval='  ', char_per_lines=87)
-            if type(c) == type(Response()): return c
-            #c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(48, 612), camp_name='Patient Mother Name', len_max=42, len_min=7, interval='  ')
-            if type(c) == type(Response()): return c
             c = pdf_functions.add_markable_square(can=c, option=nodule_lump, valid_options=['SIMDIR', 'SIMESQ', 'NAO'], options_positions=((50,332), (50,320), (50, 310)), camp_name='Has nodule lump', square_size=(15,9))
             if type(c) == type(Response()): return c
             c = pdf_functions.add_markable_square(can=c, option=high_risk, valid_options=['SIM', 'NAO', 'NAOSABE'], options_positions=((51,278), (51,266), (51, 255)), camp_name='Has high risk', square_size=(15,9))
@@ -77,13 +73,14 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_adjunct, pos=(168, 507), camp_name='Patient Adress Adjunct', len_max=25, len_min=7, interval=' ', nullable=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_neighborhood, pos=(292, 484), camp_name='Patient Adress Neighborhood', len_max=14, len_min=7, interval=' ', nullable=True)
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_reference, pos=(47, 413), camp_name='Patient Adress Reference', len_max=33, len_min=4, interval=' ', nullable=True)
+            if type(c) == type(Response()): return c
 
 
 
 
             c.setFont('Roboto-Mono', 12)
-            #c = pdf_functions.add_UF(can=c, uf=health_unit_adressUF, pos=(50, 762), camp_name='Health Unit Adress UF', nullable=True, interval=' ')
-            if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=health_unit_cnes, pos=(178, 761), camp_name='Health Unit CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval=' ', nullable=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=protocol_number, pos=(406, 768), camp_name='Protocol Number', len_max=23, len_min=1, nullable=True)
@@ -97,9 +94,6 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
 
 
             c.setFont('Roboto-Mono', 9)
-            #c = pdf_functions.add_oneline_text(can=c, text=health_unit_name, pos=(48, 743), camp_name='Health Unit Name', len_max=42, len_min=7, interval='  ', nullable=True)
-            if type(c) == type(Response()): return c
-            #c = pdf_functions.add_oneline_text(can=c, text=health_unit_adress_city, pos=(170, 720), camp_name='Health Unit Adress City', len_max=14, len_min=4, interval='  ', nullable=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=health_unit_city_IBGEcode, pos=(47, 720), camp_name='Health Unit City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True, interval='  ')
             if type(c) == type(Response()): return c
@@ -107,22 +101,11 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(291, 672), pos_fem=(338, 672), camp_name='Patient Sex', square_size=(11,9), nullable=True)
             if type(c) == type(Response()): return c
-            #c = pdf_functions.add_oneline_text(can=c, text=patient_surname, pos=(290, 635), camp_name='Patient Surname', len_max=18, len_min=4, interval='  ', nullable=True)
-            if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=patient_nationality, pos=(278, 587), camp_name='Patient Nationality', len_max=32, len_min=3, nullable=True)
-            if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress, pos=(48, 529), camp_name='Patient Adress', len_max=42, len_min=7, interval='  ', nullable=True)
-            if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_adjunct, pos=(172, 507), camp_name='Patient Adress Adjunct', len_max=25, len_min=7, interval='  ', nullable=True)
-            if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_neighborhood, pos=(294, 484), camp_name='Patient Adress Neighborhood', len_max=14, len_min=7, interval='  ', nullable=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_city_IBGEcode, pos=(47, 461), camp_name='Patient City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True, interval='  ')
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(170, 461), camp_name='Patient Adress City', len_max=14, len_min=4, interval='  ', nullable=True)
-            if type(c) == type(Response()): return c
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'], text_options=['INDIGENA'], text_pos=(516, 563), options_positions=((278, 560), (323, 560),(363, 560),(401, 560), (450, 560)), camp_name='Patient Ethinicity', len_max=10, text=patient_ethnicity[1], len_min=4, square_size=(11, 9), nullable=True)
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_reference, pos=(47, 413), camp_name='Patient Adress Reference', len_max=33, len_min=4, interval='  ', nullable=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_markable_square(can=c, option=patient_schooling, valid_options=['ANALFABETO', 'FUNDINCOM', 'FUNDCOMPL', 'MEDIOCOMPL', 'SUPCOMPL'], options_positions=((55, 380), (115, 381), (223, 381), (325, 381), (408, 381)), camp_name='Patient Schooling', square_size=(10,9))
             if type(c) == type(Response()): return c
