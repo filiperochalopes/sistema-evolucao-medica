@@ -12,7 +12,7 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
 
-def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str) -> Union[PdfWriter, Response]:
+def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -31,6 +31,8 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(48, 563), camp_name='Patient Birthday', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
             if type(c) == type(Response()): return c
+            c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=mammogram_before[0], valid_options=['SIM', 'NAO', 'NAOSABE'], text_options=['SIM'], options_positions=((51,64), (51,52), (51, 40)), camp_name='Has made mamogram before', square_size=(15,9), len_max=4, len_min=4, text=mammogram_before[1], text_pos=(200, 68), interval=' ')
+            if type(c) == type(Response()): return c
             
             
             c.setFont('Roboto-Mono', 10)
@@ -41,6 +43,8 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             c = pdf_functions.add_markable_square(can=c, option=nodule_lump, valid_options=['SIMDIR', 'SIMESQ', 'NAO'], options_positions=((50,332), (50,320), (50, 310)), camp_name='Has nodule lump', square_size=(15,9))
             if type(c) == type(Response()): return c
             c = pdf_functions.add_markable_square(can=c, option=high_risk, valid_options=['SIM', 'NAO', 'NAOSABE'], options_positions=((51,278), (51,266), (51, 255)), camp_name='Has high risk', square_size=(15,9))
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_markable_square(can=c, option=examinated_before, valid_options=['SIM', 'NUNCA', 'NAOSABE'], options_positions=((51,120), (51,107), (51, 94)), camp_name='Has been examinated before', square_size=(15,9))
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):

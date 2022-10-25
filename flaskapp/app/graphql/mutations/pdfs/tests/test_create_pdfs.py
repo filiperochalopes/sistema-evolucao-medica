@@ -209,7 +209,9 @@ def test_create_solicit_mamografia_pdf():
         patient_mother_name='Patient Mother Name',
         patient_birthday=datetime_to_use,
         nodule_lump='NAO',
-        high_risk='NAOSABE'
+        high_risk='NAOSABE',
+        examinated_before='NAOSABE',
+        mammogram_before=['NAOSABE', '2020']
         
         )
     assert type(output) == type(bytes())
