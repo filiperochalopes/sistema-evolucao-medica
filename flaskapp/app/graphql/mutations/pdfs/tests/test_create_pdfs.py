@@ -230,7 +230,10 @@ def test_create_solicit_mamografia_pdf():
         patient_adress_neighborhood='Neighborhood',
         patient_city_IBGEcode=1234567,
         patient_adress_city='Patient City',
-        patient_adressUF='SP'
+        patient_adressUF='SP',
+        patient_ethnicity=['INDIGENA', 'Indigena'],
+        patient_adress_reference='Adress Reference',
+        patient_schooling='SUPCOMPL'
         
         
         )
