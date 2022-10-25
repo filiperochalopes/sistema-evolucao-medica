@@ -12,7 +12,7 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
 
-def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_IBGEcode:int=None, patient_adress_city:str=None, patient_adressUF:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None) -> Union[PdfWriter, Response]:
+def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_IBGEcode:int=None, patient_adress_city:str=None, patient_adressUF:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adressCEP:str=None, patient_phonenumber:int=None) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -76,7 +76,12 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_reference, pos=(47, 413), camp_name='Patient Adress Reference', len_max=33, len_min=4, interval=' ', nullable=True)
             if type(c) == type(Response()): return c
-
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(167, 461), camp_name='Patient Adress City', len_max=15, len_min=4, interval=' ', nullable=True)
+            if type(c) == type(Response()): return c
+            c = add_patient_adress_cep(can=c, number=patient_adressCEP)            
+            if type(c) == type(Response()): return c
+            c = add_patient_phonenumber(can=c, number=patient_phonenumber)            
+            if type(c) == type(Response()): return c
 
 
 
@@ -141,3 +146,37 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
         return pdf_base64_enconded
     except:
         return Response("Error while filling aih sus", status=500)
+
+
+def add_patient_adress_cep(can:canvas.Canvas, number:int):
+    try:
+        if type(number) != type(int()) and number != None:
+            return Response('Patient Adress CEP has to be int, if can be null, please add nullable option and None', status=400)
+        number = str(number)
+        if len(number) == 8:
+            can = pdf_functions.add_oneline_text(can=can, text=number[:5], pos=(47, 438), camp_name='Patient Adress CEP', len_max=5, len_min=5, interval=' ', nullable=True)
+            if type(can) == type(Response()): return can
+            can = pdf_functions.add_oneline_text(can=can, text=number[5:], pos=(138, 438), camp_name='Patient Adress CEP', len_max=3, len_min=3, interval=' ', nullable=True)
+            return can
+        else:
+            return Response("Unable to add Patient Adress CEP because is longer than 8 characters or smaller than 8", status=400)
+    except:
+        return Response(f'Unknow error while adding Patient Adress CEP', status=500)
+
+
+def add_patient_phonenumber(can:canvas.Canvas, number:int):
+    try:
+        if type(number) != type(int()) and number != None:
+            return Response('Patient Phonenumber has to be int, if can be null, please add nullable option and None', status=400)
+        number = str(number)
+        if len(number) == 10:
+            can = pdf_functions.add_oneline_text(can=can, text=number[:2], pos=(227, 438), camp_name='Patient Phonenumber', len_max=2, len_min=2, interval=' ', nullable=True)
+            if type(can) == type(Response()): return can
+            can = pdf_functions.add_oneline_text(can=can, text=number[2:6], pos=(288, 438), camp_name='Patient Phonenumber', len_max=4, len_min=4, interval=' ', nullable=True)
+            if type(can) == type(Response()): return can
+            can = pdf_functions.add_oneline_text(can=can, text=number[6:], pos=(365, 438), camp_name='Patient Phonenumber', len_max=4, len_min=4, interval=' ', nullable=True)
+            return can
+        else:
+            return Response("Unable to add Patient Phonenumber because is longer than 10 characters or smaller than 10", status=400)
+    except:
+        return Response(f'Unknow error while adding Patient Phonenumber', status=500)

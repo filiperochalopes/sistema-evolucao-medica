@@ -233,9 +233,9 @@ def test_create_solicit_mamografia_pdf():
         patient_adressUF='SP',
         patient_ethnicity=['INDIGENA', 'Indigena'],
         patient_adress_reference='Adress Reference',
-        patient_schooling='SUPCOMPL'
-        
-        
+        patient_schooling='SUPCOMPL',
+        patient_adressCEP=12345678,
+        patient_phonenumber=1234567890
         )
     assert type(output) == type(bytes())
 
