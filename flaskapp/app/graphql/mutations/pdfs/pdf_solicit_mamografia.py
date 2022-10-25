@@ -202,8 +202,9 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
         if breast_surgery_before == None:
             return can
         if type(breast_surgery_before) != type(dict()):
-            return Response("breast_surgery_before has to be a dict with tuples or bool, like {'surgery':((year_esq), (year_dir))} or {'did_not':True}, {'did_not':False,'biopsia_insinonal':((None), (2020)),'biopsia_excisional':((2021), (None)),'centraledomia':((None), (None)),'segmentectomia':(None),'dutectomia':((None), (None)),'mastectomia':((None), (None)),'mastectomia_poupadora_pele':((None), (None)),'mastectomia_poupadora_pele_complexo_areolo':((None), (None)),'linfadenectomia_axilar':((None), (None)),'biopsia_linfonodo':((None), (None)),'reconstrucao_mamaria':((None), (None)),'mastoplastia_redutora':((None), (None)),'indusao_implantes':((None), (None))}", status=400)
-        necessary_keys_positions = {"did_not":(334, 41), "biopsia_insinonal":((), ()), "biopsia_excisional":((), ()), "centraledomia":((), ()), "segmentectomia":((), ()), "dutectomia":((), ()), "mastectomia":((), ()), "mastectomia_poupadora_pele":((), ()), "mastectomia_poupadora_pele_complexo_areolo":((), ()), "linfadenectomia_axilar":((), ()), "biopsia_linfonodo":((), ()), "reconstrucao_mamaria":((), ()), "mastoplastia_redutora":((), ()), "indusao_implantes":((), ())}
+            return Response("breast_surgery_before has to be a dict with tuples or bool, like {'surgery':(year_esq, year_dir)} or {'did_not':True}, {'did_not':False,'biopsia_insinonal':(None, 2020),'biopsia_excisional':(2021, None),'centraledomia':(None, None),'segmentectomia':(None),'dutectomia':(None, None),'mastectomia':(None, None),'mastectomia_poupadora_pele':(None, None),'mastectomia_poupadora_pele_complexo_areolo':(None, None),'linfadenectomia_axilar':(None, None),'biopsia_linfonodo':(None, None),'reconstrucao_mamaria':(None, None),'mastoplastia_redutora':(None, None),'indusao_implantes':(None, None)}", status=400)
+        necessary_keys_positions = {"did_not":(334, 41), "biopsia_insinonal":((500, 251), (338, 251)), "biopsia_excisional":((500, 235), (338, 235)), "centraledomia":((500, 220), (338, 220)), "segmentectomia":((500, 251), (338, 251)), "dutectomia":((500, 251), (338, 251)), "mastectomia":((500, 251), (338, 251)), "mastectomia_poupadora_pele":((500, 251), (338, 251)), "mastectomia_poupadora_pele_complexo_areolo":((500, 251), (338, 251)), "linfadenectomia_axilar":((500, 251), (338, 251)), "biopsia_linfonodo":((500, 251), (338, 251)), "reconstrucao_mamaria":((500, 251), (338, 251)), "mastoplastia_redutora":((500, 251), (338, 251)), "indusao_implantes":((500, 251), (338, 251))}
+
         if len(breast_surgery_before) > 14:
             return Response('You cannot add more than 14 keys in dict', status=400)
         #Pick all valid keys
@@ -217,15 +218,27 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
                 if current_surgery:
                     can = pdf_functions.add_square(can=can, pos=necessary_keys_positions[surgery], size=(15, 9))
                     return can
+                else:
+                    continue
             elif current_surgery == None:
                 continue
-            elif type(current_surgery) != tuple():
-                return Response(f'{surgery} has to be a tuple with the years right and left or just a None, like: surgery: None or surgery:((None), (2020))')
+            elif type(current_surgery) != type(tuple()):
+                return Response(f'{surgery} has to be a tuple with the years right and left or just a None, like: surgery: None or surgery:(None, 2020)', status=400)
+            
+            if len(current_surgery) != 2:
+                return Response(f'{surgery} has to be a tuple with 2 values, like (leftyear, rightyear)')
+            
+            cont = 0 
+            for year in current_surgery:
+                # Add year in right position
+                can = pdf_functions.add_oneline_intnumber(can=can, number=year, pos=necessary_keys_positions[surgery][cont], camp_name=f'{surgery} year', len_max=4, len_min=4, value_min=1900, value_max=2100, nullable=True, interval=' ')
+                if type(can) == type(Response()): return can
+                cont = 1
+            
             
 
-            
 
 
         return can
     except:
-        return Response(f'{number} Unknow error while adding breast_surgery_before', status=500)
+        return Response(f'Unknow error while adding breast_surgery_before', status=500)
