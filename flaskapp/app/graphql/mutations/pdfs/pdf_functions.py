@@ -873,9 +873,9 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name
                 str_date = str_date.replace(':', interval)
         else:
             str_date = str_date[0:10]
-            str_date = add_interval_to_data(data=str_date, interval=interval_between_numbers)
             if not formated:
                 str_date = str_date.replace('/', interval)
+            str_date = add_interval_to_data(data=str_date, interval=interval_between_numbers)
         can = add_data(can=can, data=str_date, pos=pos)
         return can
 

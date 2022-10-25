@@ -12,7 +12,7 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
 
-def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime) -> Union[PdfWriter, Response]:
+def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -37,6 +37,10 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             c = pdf_functions.add_morelines_text(can=c, text=patient_name, initial_pos=(48, 653), decrease_ypos=18, camp_name='Patient Name', len_max=42, len_min=7, interval='  ', char_per_lines=87)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(48, 612), camp_name='Patient Mother Name', len_max=42, len_min=7, interval='  ')
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_markable_square(can=c, option=nodule_lump, valid_options=['SIMDIR', 'SIMESQ', 'NAO'], options_positions=((50,332), (50,320), (50, 310)), camp_name='Has nodule lump', square_size=(15,9))
+            if type(c) == type(Response()): return c
+            c = pdf_functions.add_markable_square(can=c, option=high_risk, valid_options=['SIM', 'NAO', 'NAOSABE'], options_positions=((51,278), (51,266), (51, 255)), camp_name='Has high risk', square_size=(15,9))
             if type(c) == type(Response()): return c
         except:
             if type(c) == type(Response()):
