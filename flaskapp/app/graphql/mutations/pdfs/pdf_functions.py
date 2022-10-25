@@ -1088,6 +1088,58 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
         return Response(f'Unkown error while adding {camp_name}', status=500)
 
 
+def add_multiple_markable_square(can:canvas.Canvas, options:list, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
+    """Verifiy option choose and add to canvas, the option is automatic upper cased
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        options (list): list of option selects, will be upperCased
+        valid_options (list): list of valid options, recommendend UPPER (str)
+        options_positions (tuple): tuple of tuples with positions to every option
+        square_size (tuple): square size. Defaults to (9,9).
+        camp_name (str): camp name
+        nullable (bool, optional): can be null. Defaults to False.
+
+    Returns:
+        canvas(canvas.Canvas): canvas with all changes
+        or
+        Response(flask.Response): with the error
+    """    
+    try:
+        if nullable:
+            if option == None or len(str(option).strip()) == 0:
+                return can
+        if type(option) != type(list()):
+            return Response(f'{camp_name} has to be list', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(valid_options) != type(list()):
+            return Response(f'valid_options has to be list', status=500)
+        elif type(options_positions) != type(tuple()):
+            return Response(f'options_positions has to be tuple', status=500)
+        elif type(square_size) != type(tuple()):
+            return Response(f'square_size has to be tuple', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif len(valid_options) != len(options_positions):
+            return Response(f'valid_options and options_positions has to be the same size', status=500)
+
+
+        option = option.upper()
+        exist = False
+        for opt in range(0, len(valid_options)):
+            if option == valid_options[opt]:
+                can = add_square(can=can, pos=options_positions[opt], size=square_size)
+                exist = True
+        if exist:
+            return can
+        return Response(f'Cannot add {camp_name} because the option choosed does not exists', status=400)
+    except:
+        return Response(f'Unkown error while adding {camp_name}', status=500)
+
+
 def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
     """Verifiy option choose and add to canvas, the option is automatic upper cased
 

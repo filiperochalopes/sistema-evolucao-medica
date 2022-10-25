@@ -151,6 +151,9 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             c_2.setFont('Roboto-Mono', 9)
             c_2 = pdf_functions.add_markable_square(can=c_2, option=tracking_mammogram, valid_options=['POPALVO', 'RISCOELEVADO', 'JATRATADO'], options_positions=((56, 374), (152, 374), (328, 374)), camp_name='Tracking Mammogram', square_size=(11,10))
             if type(c_2) == type(Response()): return c_2
+            c_2 = add_diagnostic_mammogram(can=c_2, diagnostic_mammogram=diagnostic_mammogram)
+            if type(c_2) == type(Response()): return c_2
+
         except:
             if type(c_2) == type(Response()):
                 return 
@@ -275,3 +278,50 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
         return can
     except:
         return Response(f'Unknow error while adding breast_surgery_before', status=500)
+
+
+def add_diagnostic_mammogram(can:canvas.Canvas, diagnostic_mammogram:dict):
+    try:
+        if diagnostic_mammogram == None:
+            return can
+        if type(diagnostic_mammogram) != type(dict()):
+            return Response("""
+diagnostic_mammogram has to be a dict with dicts in this extructure, see more in docstring in the function,  like: 'exameclinico':[
+    {'direita':[
+        'PAPILAR', 
+        {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA']},
+        {'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
+        {'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
+        {'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+        ]
+        }]""", status=400)
+
+
+
+
+
+        return can
+    except:
+        return Response(f'Unknow error while adding breast_surgery_before', status=500)
+
+
+dict_test = {
+    'exameclinico':[
+        {'direita':[
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA']},
+            {'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
+            {'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
+            {'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ]
+        },
+        {'esquerda':[
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA']},
+            {'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
+            {'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
+            {'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ]
+        }
+    ]
+}
