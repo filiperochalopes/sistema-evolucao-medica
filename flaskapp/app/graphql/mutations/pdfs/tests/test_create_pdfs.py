@@ -242,7 +242,7 @@ def test_create_solicit_mamografia_pdf():
     'biopsia_insinonal':(2021, 2020),
     'biopsia_excisional':(2021, 2020),
     'centraledomia':(2021, 2020),
-    'segmentectomia':(2021, 2020),
+    'segmentectomia':None,
     'dutectomia':(2021, 2020),
     'mastectomia':(2021, 2020),
     'mastectomia_poupadora_pele':(2021, 2020),
