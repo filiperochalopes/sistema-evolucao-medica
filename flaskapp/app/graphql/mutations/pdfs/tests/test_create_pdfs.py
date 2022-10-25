@@ -237,6 +237,8 @@ def test_create_solicit_mamografia_pdf():
         patient_adress_reference='Adress Reference',
         patient_schooling='SUPCOMPL',
         patient_adressCEP=12345678,
+        exam_number=int(lenght_test[:10]),
+        tracking_mammogram='JATRATADO',
         patient_phonenumber=1234567890,
         radiotherapy_before=['SIMESQ', '2020'],
         breast_surgery_before={
