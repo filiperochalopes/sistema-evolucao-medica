@@ -215,7 +215,12 @@ def test_create_solicit_mamografia_pdf():
         patient_age=23,
         health_unit_adressUF='SP',
         health_unit_cnes=1234567,
-        health_unit_name="Health Unit Name"
+        health_unit_name="Health Unit Name",
+        health_unit_adress_city='Unit City',
+        health_unit_city_IBGEcode=1234567,
+        document_chart_number=1234567895,
+        protocol_number='5478546135245165',
+        patient_sex='F'
         
         )
     assert type(output) == type(bytes())
