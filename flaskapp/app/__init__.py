@@ -1,3 +1,4 @@
+from app.env import InstitutionData
 from .graphql import query, type_defs, mutation
 from flask import Flask, request, jsonify, send_from_directory
 from flask_migrate import Migrate
@@ -74,12 +75,21 @@ Comandos flask cli
 @app.cli.command("seed")
 def seed():
     """Seed the database."""
+    import csv
+
+    # cadastrando lista de Cid10
+    with open("./assets/CID-10-DATASUS.csv", 'r') as file:
+        csvreader = csv.reader(file)
+        for row in csvreader:
+            print(row)
 
     # Adicionando configurações das instituições
     configs = [
-        Config(key='insitution_name',
-               value='Hospital Maternidade Luís Eduardo Magalhães'),
-        Config(key='insitution_cnes', value='2602202')
+        Config(key='institution_name',
+               value=InstitutionData.NAME),
+        Config(key='institution_cnes', value=InstitutionData.CNES),
+        Config(key='institution_director', value=InstitutionData.DIRECTOR),
+        Config(key='institution_cnpj', value=InstitutionData.CNPJ),
     ]
     db.session.bulk_save_objects(configs)
     
