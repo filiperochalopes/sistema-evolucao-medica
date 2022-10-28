@@ -243,9 +243,21 @@ def test_wrongtype_health_unit_name():
     assert data_to_use(health_unit_name=123124).status == Response(status=400).status
 
 
+####################################################################
+# TEST CNES 
+# health_unit_cnes
+# empty
+# wrong type
+# invalid cnes
 
+def test_empty_health_unit_cnes():
+    assert data_to_use(health_unit_cnes='').status == Response(status=400).status
 
+def test_wrongtype_health_unit_cnes():
+    assert data_to_use(health_unit_cnes='adsadad').status == Response(status=400).status
 
+def test_invalidcnes_health_unit_cnes():
+    assert data_to_use(health_unit_cnes=451236548).status == Response(status=400).status
 
 
 
