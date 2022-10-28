@@ -315,7 +315,7 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
         for section in sections_keys:
             if section in diagnostic_mammogram.keys():
                 # Mark sections options in mamografia diagnostica
-                can = pdf_functions.add_markable_square(can=can, option=section, valid_options=['EXAME_CLINICO', 'CONTROLE_RADIOLOGICO', 'LESAO_DIAGNOSTICO', 'AVALIACAO_RESPOSTA', 'REVISAO_MAMOGRAFIA_LESAO', 'CONTROLE_LESAO'], options_positions=((56, 762), (55, 590), (226, 590),(402, 589),(55, 487),(100, 802),), camp_name='Diagnostic Mammogram Section', square_size=(11,10))
+                can = pdf_functions.add_markable_square(can=can, option=section, valid_options=['EXAME_CLINICO', 'CONTROLE_RADIOLOGICO', 'LESAO_DIAGNOSTICO', 'AVALIACAO_RESPOSTA', 'REVISAO_MAMOGRAFIA_LESAO', 'CONTROLE_LESAO'], options_positions=((56, 762), (55, 590), (226, 590),(402, 589),(55, 487),(312, 489),), camp_name='Diagnostic Mammogram Section', square_size=(11,10))
                 if type(can) == type(Response()): return can
                 current_options = diagnostic_mammogram[section]
                 if section == 'exame_clinico':
@@ -402,8 +402,8 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
                                 if type(can) == type(Response()): return can
 
                             if breast == 'esquerda':
-                                #can = add_controle_lesao_esquerda(can=can, current_options=current_options['esquerda'])
-                                #if type(can) == type(Response()): return can
+                                can = add_controle_lesao_esquerda(can=can, current_options=current_options['esquerda'])
+                                if type(can) == type(Response()): return can
                                 pass
 
             else:
@@ -565,6 +565,15 @@ def add_controle_lesao_direita(can:canvas.Canvas, current_options:list):
         return Response('Unknow error when adding controle_lesao_direita', status=500)
 
 
+def add_controle_lesao_esquerda(can:canvas.Canvas, current_options:list):
+    try:
+        for option in current_options:    
+            can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((427, 469), (427, 458), (427, 448), (427, 437), (427, 426), (427, 415), (427, 404)), camp_name='controle_lesao_esquerda options in right breast', square_size=(10,5), nullable=True)
+            if type(can) == type(Response()): return can
+
+        return can
+    except:
+        return Response('Unknow error when adding controle_lesao_esquerda', status=500)
 
 
 
