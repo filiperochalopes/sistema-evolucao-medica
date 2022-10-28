@@ -213,7 +213,7 @@ def test_create_solicit_mamografia_pdf():
         nodule_lump='NAO',
         high_risk='NAOSABE',
         examinated_before='NAOSABE',
-        mammogram_before=['NAOSABE', '2020'],
+        mammogram_before=['SIM', '2020'],
         patient_age=23,
         health_unit_adressUF='SP',
         health_unit_cnes=1234567,

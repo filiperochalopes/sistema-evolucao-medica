@@ -12,7 +12,102 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
 
-def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_IBGEcode:int=None, patient_adress_city:str=None, patient_adressUF:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adressCEP:str=None, patient_phonenumber:int=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:int=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> Union[PdfWriter, Response]:
+def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_IBGEcode:int=None, patient_adress_city:str=None, patient_adressUF:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adressCEP:str=None, patient_phonenumber:int=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:int=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> Union[bytes, Response]:
+    """Fill solicitacion mamografia (Solicitacao de Mamografia) 
+    Args:
+        patient_name (str): Patient Name
+        patient_cns (int): patient_cns
+        patient_mother_name (str): patient_mother_name
+        patient_birthday (datetime.datetime): patient_birthday
+        nodule_lump (str): nodule_lump
+        high_risk (str): high_risk
+        examinated_before (str): examinated_before
+        mammogram_before (list): list with option and year, ['SIM', '2020']
+        patient_age (int): patient_age
+        solicitation_datetime (datetime.datetime): solicitation_datetime
+        prof_solicitor_name (str): prof_solicitor_name
+        health_unit_adressUF (str, optional): health_unit_adressUF. Defaults to None.
+        health_unit_cnes (int, optional): health_unit_cnes. Defaults to None.
+        health_unit_name (str, optional): health_unit_name. Defaults to None.
+        health_unit_adress_city (str, optional): health_unit_adress_city. Defaults to None.
+        health_unit_city_IBGEcode (int, optional): health_unit_city_IBGEcode. Defaults to None.
+        document_chart_number (int, optional): document_chart_number. Defaults to None.
+        protocol_number (str, optional): protocol_number. Defaults to None.
+        patient_sex (str, optional): patient_sex. Defaults to None.
+        patient_surname (str, optional): patient_surname. Defaults to None.
+        patient_document_cpf (dict, optional): CPF dict format patient_document_cpf, {'CPF':1111111111}. Defaults to None.
+        patient_nationality (str, optional): patient_nationality. Defaults to None.
+        patient_adress (str, optional): patient_adress. Defaults to None.
+        patient_adress_number (int, optional): patient_adress_number. Defaults to None.
+        patient_adress_adjunct (str, optional): patient_adress_adjunct. Defaults to None.
+        patient_adress_neighborhood (str, optional): patient_adress_neighborhood. Defaults to None.
+        patient_city_IBGEcode (int, optional): patient_city_IBGEcode. Defaults to None.
+        patient_adress_city (str, optional): patient_adress_city. Defaults to None.
+        patient_adressUF (str, optional): patient_adressUF. Defaults to None.
+        patient_ethnicity (list, optional): patient_ethnicity. Defaults to None.
+        patient_adress_reference (str, optional): patient_adress_reference. Defaults to None.
+        patient_schooling (str, optional): patient_schooling. Defaults to None.
+        patient_adressCEP (str, optional): patient_adressCEP. Defaults to None.
+        patient_phonenumber (int, optional): patient_phonenumber. Defaults to None.
+        radiotherapy_before (list, optional): Option and year, eg ['SIMESQ', '2020']. Defaults to None.
+        breast_surgery_before (dict, optional): dict with opions and years, eg:
+        {
+    'did_not':False,
+    'biopsia_insinonal':(2021, 2020),
+    'biopsia_excisional':(2021, 2020),
+    'centraledomia':(2021, 2020),
+    'segmentectomia':None,
+    'dutectomia':(2021, 2020),
+    'mastectomia':(2021, 2020),
+    'mastectomia_poupadora_pele':(2021, 2020),
+    'mastectomia_poupadora_pele_complexo_areolo':(2021, 2020),
+    'linfadenectomia_axilar':(2021, 2020),
+    'biopsia_linfonodo':(2021, 2020),
+    'reconstrucao_mamaria':(2021, 2020),
+    'mastoplastia_redutora':(2021, 2020),
+    'indusao_implantes':(2021, 2020)
+    }. Defaults to None.
+        exam_number (int, optional): exam_number. Defaults to None.
+        tracking_mammogram (str, optional): tracking_mammogram. Defaults to None.
+        diagnostic_mammogram (dict, optional): diagnostic mammogram option. eg:
+        'exame_clinico':
+        {'direita':[
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
+            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ],
+        'esquerda':[
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
+            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ]
+        },
+    'controle_radiologico':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        },
+    'lesao_diagnostico':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        },
+    'avaliacao_resposta':
+        ['direita', 'esquerda'],
+    'revisao_mamografia_lesao':
+        {'direita': ['0', '3', '4', '5'],
+        'esquerda': ['0', '3', '4', '5']
+        },
+    'controle_lesao':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        }. Defaults to None.
+
+    Returns:
+        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+    """    
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -188,6 +283,15 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
 
 
 def add_patient_adress_cep(can:canvas.Canvas, number:int):
+    """add patient addes cep to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        number (int): adress cep
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """    
     try:
         if type(number) != type(int()) and number != None:
             return Response('Patient Adress CEP has to be int, if can be null, please add nullable option and None', status=400)
@@ -204,6 +308,15 @@ def add_patient_adress_cep(can:canvas.Canvas, number:int):
 
 
 def add_patient_phonenumber(can:canvas.Canvas, number:int):
+    """add patient phonenumber to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        number (int): phone number
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         if type(number) != type(int()) and number != None:
             return Response('Patient Phonenumber has to be int, if can be null, please add nullable option and None', status=400)
@@ -222,6 +335,15 @@ def add_patient_phonenumber(can:canvas.Canvas, number:int):
 
 
 def add_radiotherapy_before(can:canvas.Canvas, radiotherapy_before:list):
+    """add radiotherapy option to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        radiotherapy_before (list): radiotherapy option
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         can = pdf_functions.add_markable_square_and_onelinetext(can=can, option=radiotherapy_before[0], valid_options=['SIMDIR', 'SIMESQ', 'NAO', 'NAOSABE'], text_options=['SIMDIR'], options_positions=((336,332), (336,319), (336, 307), (336, 294)), camp_name='Has made radiotherapy before', square_size=(15,9), len_max=4, len_min=4, text=radiotherapy_before[1], text_pos=(420, 334), interval=' ', nullable=True)
         if type(can) == type(Response()): return can
@@ -233,6 +355,15 @@ def add_radiotherapy_before(can:canvas.Canvas, radiotherapy_before:list):
 
 
 def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
+    """add breast_surgery_before to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        breast_surgery_before (dict): breast_surgery_before
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         if breast_surgery_before == None:
             return can
@@ -280,6 +411,15 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
 
 
 def add_diagnostic_mammogram(can:canvas.Canvas, diagnostic_mammogram:dict):
+    """add diagnostic_mammogram to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        diagnostic_mammogram (dict): diagnostic_mammogram
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         if diagnostic_mammogram == None:
             return can
@@ -417,6 +557,15 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
 
 
 def add_exame_clinico_direita(can:canvas.Canvas, current_options:dict):
+    """add exame_clinico_direita to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        current_options (dict): exame_clinico_direita
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         for item in current_options:    
             if item == 'PAPILAR':
@@ -453,6 +602,15 @@ def add_exame_clinico_direita(can:canvas.Canvas, current_options:dict):
 
 
 def add_exame_clinico_esquerda(can:canvas.Canvas, current_options:dict):
+    """add exame_clinico_esquerda to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        exame_clinico_esquerda (dict): current_options
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         for item in current_options:    
             if item == 'PAPILAR':
@@ -488,6 +646,15 @@ def add_exame_clinico_esquerda(can:canvas.Canvas, current_options:dict):
 
 
 def add_controle_radiologico_direita(can:canvas.Canvas, current_options:list):
+    """add controle_radiologico_direita to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        current_options (list): current_options
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((61, 571), (61, 560), (61, 550), (61, 539), (61, 528), (61, 517), (61, 506)), camp_name='controle_radiologico_direita options in right breast', square_size=(10,5), nullable=True)
@@ -499,6 +666,15 @@ def add_controle_radiologico_direita(can:canvas.Canvas, current_options:list):
 
 
 def add_controle_radiologico_esquerda(can:canvas.Canvas, current_options:list):
+    """add controle_radiologico_esquerda to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        current_options (list): current_options
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((161, 571), (161, 560), (161, 548), (161, 538), (161, 528), (161, 517), (161, 505)), camp_name='controle_radiologico_esquerda options in right breast', square_size=(10,5), nullable=True)
@@ -510,6 +686,15 @@ def add_controle_radiologico_esquerda(can:canvas.Canvas, current_options:list):
 
 
 def add_lesao_diagnostico_direita(can:canvas.Canvas, current_options:list):
+    """add lesao_diagnostico_direita to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        current_options (list): current_options
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((243, 571), (243, 560), (243, 549), (243, 539), (243, 528), (243, 517), (243, 506)), camp_name='lesao_diagnostico_direita options in right breast', square_size=(10,5), nullable=True)
@@ -521,6 +706,15 @@ def add_lesao_diagnostico_direita(can:canvas.Canvas, current_options:list):
 
 
 def add_lesao_diagnostico_esquerda(can:canvas.Canvas, current_options:list):
+    """add lesao_diagnostico_esquerda to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        current_options (list): current_options
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((341, 571), (341, 560), (341, 550), (341, 539), (341, 528), (341, 517), (341, 506)), camp_name='lesao_diagnostico_esquerda options in right breast', square_size=(10,5), nullable=True)
@@ -532,6 +726,15 @@ def add_lesao_diagnostico_esquerda(can:canvas.Canvas, current_options:list):
 
 
 def add_revisao_mamografia_lesao_direita(can:canvas.Canvas, current_options:list):
+    """add revisao_mamografia_lesao_direita to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        current_options (list): current_options
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['0', '3', '4', '5'], options_positions=((64, 469), (64, 458), (64, 448), (64, 437)), camp_name='mamografia_lesao_direita options in right breast', square_size=(10,5), nullable=True)
@@ -543,6 +746,15 @@ def add_revisao_mamografia_lesao_direita(can:canvas.Canvas, current_options:list
 
 
 def add_revisao_mamografia_lesao_esquerda(can:canvas.Canvas, current_options:list):
+    """add revisao_mamografia_lesao_esquerda to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        current_options (list): current_options
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['0', '3', '4', '5'], options_positions=((164, 469), (164, 458), (164, 446), (164, 436)), camp_name='mamografia_lesao_esquerda options in right breast', square_size=(10,5), nullable=True)
@@ -554,6 +766,15 @@ def add_revisao_mamografia_lesao_esquerda(can:canvas.Canvas, current_options:lis
 
 
 def add_controle_lesao_direita(can:canvas.Canvas, current_options:list):
+    """add controle_lesao_direita to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        current_options (list): current_options
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((329, 469), (329, 459), (329, 447), (329, 437), (329, 426), (329, 415), (329, 404)), camp_name='controle_lesao_direita options in right breast', square_size=(10,5), nullable=True)
@@ -565,6 +786,15 @@ def add_controle_lesao_direita(can:canvas.Canvas, current_options:list):
 
 
 def add_controle_lesao_esquerda(can:canvas.Canvas, current_options:list):
+    """add controle_lesao_esquerda to document
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        current_options (list): current_options
+
+    Returns:
+        canvas or Response: canvas updated or Response with error
+    """
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((427, 469), (427, 458), (427, 448), (427, 437), (427, 426), (427, 415), (427, 404)), camp_name='controle_lesao_esquerda options in right breast', square_size=(10,5), nullable=True)
