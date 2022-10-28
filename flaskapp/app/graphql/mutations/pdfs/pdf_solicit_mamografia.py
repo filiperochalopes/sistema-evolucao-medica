@@ -347,9 +347,9 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
                                 if type(can) == type(Response()): return can
 
                             if breast == 'esquerda':
-                                #can = add_controle_radiologico_esquerda(can=can, current_options=current_options['esquerda'])
-                                #if type(can) == type(Response()): return can
-                                pass
+                                can = add_controle_radiologico_esquerda(can=can, current_options=current_options['esquerda'])
+                                if type(can) == type(Response()): return can
+                                
             else:
                 continue
 
@@ -441,3 +441,32 @@ def add_controle_radiologico_direita(can:canvas.Canvas, current_options:list):
         return can
     except:
         return Response('Unknow error when adding exame_clinico_direita', status=500)
+
+
+def add_controle_radiologico_esquerda(can:canvas.Canvas, current_options:list):
+    try:
+        for option in current_options:    
+            can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((161, 571), (161, 560), (161, 548), (161, 538), (161, 528), (161, 517), (161, 505)), camp_name='controle_radiologico options in right breast', square_size=(10,5), nullable=True)
+            if type(can) == type(Response()): return can
+
+        return can
+    except:
+        return Response('Unknow error when adding exame_clinico_esquerda', status=500)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

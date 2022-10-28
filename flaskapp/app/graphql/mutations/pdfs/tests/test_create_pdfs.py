@@ -276,7 +276,7 @@ def test_create_solicit_mamografia_pdf():
         },
     'controle_radiologico':
         {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
-        'esquerda': []
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
         }
     }
 )
