@@ -292,11 +292,8 @@ def test_create_solicit_mamografia_pdf():
         {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
         'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
         }
-
-
     }
 )
-    assert output.response == type(bytes())
-    #assert type(output) == type(bytes())
+    assert type(output) == type(bytes())
 
 

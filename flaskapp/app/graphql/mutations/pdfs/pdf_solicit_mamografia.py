@@ -128,6 +128,7 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(48, 563), camp_name='Patient Birthday', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
             if type(c) == type(Response()): return c
+            
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=mammogram_before[0], valid_options=['SIM', 'NAO', 'NAOSABE'], text_options=['SIM'], options_positions=((51,64), (51,52), (51, 40)), camp_name='Has made mamogram before', square_size=(15,9), len_max=4, len_min=4, text=mammogram_before[1], text_pos=(200, 68), interval=' ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_age, pos=(217, 563), camp_name='Patient Birthday', len_max=2, len_min=1,value_min=1, value_max=99, interval=' ')
@@ -211,9 +212,11 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_city_IBGEcode, pos=(47, 461), camp_name='Patient City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True, interval='  ')
             if type(c) == type(Response()): return c
+            if patient_ethnicity == None:
+                patient_ethnicity = [None, None]
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'], text_options=['INDIGENA'], text_pos=(516, 563), options_positions=((278, 560), (323, 560),(363, 560),(401, 560), (450, 560)), camp_name='Patient Ethinicity', len_max=10, text=patient_ethnicity[1], len_min=4, square_size=(11, 9), nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_markable_square(can=c, option=patient_schooling, valid_options=['ANALFABETO', 'FUNDINCOM', 'FUNDCOMPL', 'MEDIOCOMPL', 'SUPCOMPL'], options_positions=((55, 380), (115, 381), (223, 381), (325, 381), (408, 381)), camp_name='Patient Schooling', square_size=(10,9))
+            c = pdf_functions.add_markable_square(can=c, option=patient_schooling, valid_options=['ANALFABETO', 'FUNDINCOM', 'FUNDCOMPL', 'MEDIOCOMPL', 'SUPCOMPL'], options_positions=((55, 380), (115, 381), (223, 381), (325, 381), (408, 381)), camp_name='Patient Schooling', square_size=(10,9), nullable=True)
             if type(c) == type(Response()): return c
             
         except:
@@ -243,7 +246,7 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c_2) == type(Response()): return c_2
             
             c_2.setFont('Roboto-Mono', 9)
-            c_2 = pdf_functions.add_markable_square(can=c_2, option=tracking_mammogram, valid_options=['POPALVO', 'RISCOELEVADO', 'JATRATADO'], options_positions=((56, 374), (152, 374), (328, 374)), camp_name='Tracking Mammogram', square_size=(11,10))
+            c_2 = pdf_functions.add_markable_square(can=c_2, option=tracking_mammogram, valid_options=['POPALVO', 'RISCOELEVADO', 'JATRATADO'], options_positions=((56, 374), (152, 374), (328, 374)), camp_name='Tracking Mammogram', square_size=(11,10), nullable=True)
             if type(c_2) == type(Response()): return c_2
             c_2 = add_diagnostic_mammogram(can=c_2, diagnostic_mammogram=diagnostic_mammogram)
             if type(c_2) == type(Response()): return c_2
@@ -293,6 +296,8 @@ def add_patient_adress_cep(can:canvas.Canvas, number:int):
         canvas or Response: canvas updated or Response with error
     """    
     try:
+        if number == None:
+            return can
         if type(number) != type(int()) and number != None:
             return Response('Patient Adress CEP has to be int, if can be null, please add nullable option and None', status=400)
         number = str(number)
@@ -318,6 +323,8 @@ def add_patient_phonenumber(can:canvas.Canvas, number:int):
         canvas or Response: canvas updated or Response with error
     """
     try:
+        if number == None:
+            return can
         if type(number) != type(int()) and number != None:
             return Response('Patient Phonenumber has to be int, if can be null, please add nullable option and None', status=400)
         number = str(number)
@@ -345,6 +352,8 @@ def add_radiotherapy_before(can:canvas.Canvas, radiotherapy_before:list):
         canvas or Response: canvas updated or Response with error
     """
     try:
+        if radiotherapy_before == None:
+            return can
         can = pdf_functions.add_markable_square_and_onelinetext(can=can, option=radiotherapy_before[0], valid_options=['SIMDIR', 'SIMESQ', 'NAO', 'NAOSABE'], text_options=['SIMDIR'], options_positions=((336,332), (336,319), (336, 307), (336, 294)), camp_name='Has made radiotherapy before', square_size=(15,9), len_max=4, len_min=4, text=radiotherapy_before[1], text_pos=(420, 334), interval=' ', nullable=True)
         if type(can) == type(Response()): return can
         if radiotherapy_before[0].upper() == 'SIMESQ':
