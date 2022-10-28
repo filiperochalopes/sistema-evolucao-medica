@@ -360,7 +360,7 @@ def add_exame_clinico_direita(can:canvas.Canvas, current_options:dict):
             item_keys = item.keys()
             if 'descarga_papilar' in item_keys:
                 for option in item['descarga_papilar']:
-                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((238, 737), (238, 725)), camp_name='descarga_capilar options in direita breast', square_size=(15,9), nullable=True)
+                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((496, 737), (496, 723)), camp_name='descarga_capilar options in direita breast', square_size=(15,9), nullable=True)
                     if type(can) == type(Response()): return can
             
             if 'nodulo' in item_keys:
