@@ -287,6 +287,10 @@ def test_create_solicit_mamografia_pdf():
     'revisao_mamografia_lesao':
         {'direita': ['0', '3', '4', '5'],
         'esquerda': ['0', '3', '4', '5']
+        },
+    'controle_lesao':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
         }
 
 

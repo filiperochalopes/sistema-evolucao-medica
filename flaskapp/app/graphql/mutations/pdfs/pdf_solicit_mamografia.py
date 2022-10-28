@@ -390,7 +390,21 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
                                 if type(can) == type(Response()): return can
                                 pass
 
+                if section == 'controle_lesao':
+                    if type(current_options) != type(dict()):
+                        return Response('controle_lesao has to be dict values, like "controle_lesao":{"direita": [], "esquerda": []}', status=400)
+                    # See all itens in dict
+                    breast_keys = ['direita', 'esquerda']
+                    for breast in breast_keys:
+                        if breast in current_options.keys():
+                            if breast == 'direita':
+                                can = add_controle_lesao_direita(can=can, current_options=current_options['direita'])
+                                if type(can) == type(Response()): return can
 
+                            if breast == 'esquerda':
+                                #can = add_controle_lesao_esquerda(can=can, current_options=current_options['esquerda'])
+                                #if type(can) == type(Response()): return can
+                                pass
 
             else:
                 continue
@@ -540,6 +554,15 @@ def add_revisao_mamografia_lesao_esquerda(can:canvas.Canvas, current_options:lis
         return Response('Unknow error when adding mamografia_lesao_esquerda', status=500)
 
 
+def add_controle_lesao_direita(can:canvas.Canvas, current_options:list):
+    try:
+        for option in current_options:    
+            can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((329, 469), (329, 459), (329, 447), (329, 437), (329, 426), (329, 415), (329, 404)), camp_name='controle_lesao_direita options in right breast', square_size=(10,5), nullable=True)
+            if type(can) == type(Response()): return can
+
+        return can
+    except:
+        return Response('Unknow error when adding controle_lesao_direita', status=500)
 
 
 
