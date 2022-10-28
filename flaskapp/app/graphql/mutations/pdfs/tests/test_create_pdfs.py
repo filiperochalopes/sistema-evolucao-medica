@@ -277,7 +277,15 @@ def test_create_solicit_mamografia_pdf():
     'controle_radiologico':
         {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
         'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
-        }
+        },
+    'lesao_diagnostico':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        },
+    'avaliacao_resposta':
+        ['direita', 'esquerda'],
+
+
     }
 )
     assert output.response == type(bytes())
