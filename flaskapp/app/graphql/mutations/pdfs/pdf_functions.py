@@ -381,7 +381,7 @@ def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, nul
 
 
 def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
-    """_summary_
+    """Add cep to canvas
 
     Args:
         can (canvas.Canvas):  canvas to use
