@@ -370,12 +370,12 @@ def add_exame_clinico_direita(can:canvas.Canvas, current_options:dict):
 
             if 'espessamento' in item_keys:
                 for option in item['espessamento']:
-                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((55, 650), (104, 650), (155, 650), (209, 650), (255, 650), (55, 637), (104, 637), (155, 637), (209, 637), (255, 637)), camp_name='espessamento options in direita breast', square_size=(15,9), nullable=True)
+                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((313, 650), (362, 650), (413, 650), (467, 650), (513, 650), (313, 637), (362, 637), (413, 637), (467, 637), (513, 637)), camp_name='espessamento options in direita breast', square_size=(15,9), nullable=True)
                     if type(can) == type(Response()): return can
 
             if 'linfonodo_palpavel' in item_keys:
                 for option in item['linfonodo_palpavel']:
-                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((121, 615), (162, 616)), camp_name='linfonodo_palpavel options in direita breast', square_size=(15,9), nullable=True)
+                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((380, 615), (420, 615)), camp_name='linfonodo_palpavel options in direita breast', square_size=(15,9), nullable=True)
                     if type(can) == type(Response()): return can
         return can
     except:
