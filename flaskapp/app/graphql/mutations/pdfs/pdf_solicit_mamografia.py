@@ -365,7 +365,7 @@ def add_exame_clinico_direita(can:canvas.Canvas, current_options:dict):
             
             if 'nodulo' in item_keys:
                 for option in item['nodulo']:
-                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((54, 696), (103, 696), (154, 696), (208, 696), (254, 696), (54, 683), (103, 683), (154, 683), (208, 683), (254, 683)), camp_name='nodulo options in direita breast', square_size=(15,9), nullable=True)
+                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((312, 696), (361, 696), (412, 696), (466, 696), (512, 696), (312, 683), (361, 683), (412, 683), (466, 683), (512, 683)), camp_name='nodulo options in direita breast', square_size=(15,9), nullable=True)
                     if type(can) == type(Response()): return can
 
             if 'espessamento' in item_keys:
