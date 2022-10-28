@@ -289,9 +289,24 @@ def test_invalidccpf_patient_document_cpf():
 def test_wrongoption_patient_document_cpf():
     assert data_to_use(patient_document_cpf={'CNS':284123312123}).status == Response(status=400).status
 
+#################################################################
+# TEST DATETIMES VARIABLES
+# patient_birthday
+# solicitation_datetime
+# test wrong type
+# test valid datetime
 
+def test_wrongtype_patient_birthday():
+    assert data_to_use(patient_birthday='bahabah').status == Response(status=400).status
 
+def test_valid_patient_birthday():
+    assert type(data_to_use(patient_birthday=datetime_to_use)) != type(Response())
 
+def test_wrongtype_solicitation_datetime():
+    assert data_to_use(solicitation_datetime='bahabah').status == Response(status=400).status
+
+def test_valid_solicitation_datetime():
+    assert type(data_to_use(solicitation_datetime=datetime_to_use)) != type(Response())
 
 
 
