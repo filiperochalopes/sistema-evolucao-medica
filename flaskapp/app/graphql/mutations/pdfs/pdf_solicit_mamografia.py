@@ -344,14 +344,18 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
                                     
                                     if 'nodulo' in item_keys:
                                         for option in item['nodulo']:
-                                            can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((54, 696), (103, 696), (154, 696), (208, 696), (254, 696), (54, 683), (103, 683), (154, 683), (208, 683), (254, 683)), camp_name='descarga_capilar options in direita breast', square_size=(15,9), nullable=True)
+                                            can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((54, 696), (103, 696), (154, 696), (208, 696), (254, 696), (54, 683), (103, 683), (154, 683), (208, 683), (254, 683)), camp_name='nodulo options in direita breast', square_size=(15,9), nullable=True)
                                             if type(can) == type(Response()): return can
 
                                     if 'espessamento' in item_keys:
                                         for option in item['espessamento']:
-                                            can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((55, 650), (104, 650), (155, 650), (209, 650), (255, 650), (55, 637), (104, 637), (155, 637), (209, 637), (255, 637)), camp_name='descarga_capilar options in direita breast', square_size=(15,9), nullable=True)
+                                            can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((55, 650), (104, 650), (155, 650), (209, 650), (255, 650), (55, 637), (104, 637), (155, 637), (209, 637), (255, 637)), camp_name='espessamento options in direita breast', square_size=(15,9), nullable=True)
                                             if type(can) == type(Response()): return can
 
+                                    if 'linfonodo_palpavel' in item_keys:
+                                        for option in item['linfonodo_palpavel']:
+                                            can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((121, 615), (162, 616)), camp_name='linfonodo_palpavel options in direita breast', square_size=(15,9), nullable=True)
+                                            if type(can) == type(Response()): return can
 
 
             else:
