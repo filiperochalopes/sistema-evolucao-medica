@@ -250,6 +250,9 @@ def test_wrongtype_health_unit_name():
 # wrong type
 # invalid cnes
 
+def test_none_empty_health_unit_cnes():
+    assert type(data_to_use(health_unit_cnes=None)) == type(Response())
+
 def test_empty_health_unit_cnes():
     assert data_to_use(health_unit_cnes='').status == Response(status=400).status
 
