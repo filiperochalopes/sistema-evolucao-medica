@@ -284,6 +284,10 @@ def test_create_solicit_mamografia_pdf():
         },
     'avaliacao_resposta':
         ['direita', 'esquerda'],
+    'revisao_mamografia_lesao':
+        {'direita': ['0', '3', '4', '5'],
+        'esquerda': ['0', '3', '4', '5']
+        }
 
 
     }
