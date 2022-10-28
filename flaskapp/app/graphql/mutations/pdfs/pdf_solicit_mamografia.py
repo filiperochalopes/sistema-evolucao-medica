@@ -315,7 +315,7 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
         for section in sections_keys:
             if section in diagnostic_mammogram.keys():
                 # Mark sections options in mamografia diagnostica
-                can = pdf_functions.add_markable_square(can=can, option=section, valid_options=['EXAME_CLINICO', 'CONTROLE_RADIOLOGICO', 'LESAO_DIAGNOSTICO', 'AVALIACAO_RESPOSTA', 'REVISAO_MAMOGRAFIA_LESAO', 'CONTROLE_LESAO'], options_positions=((56, 762), (100, 762), (100, 772),(100, 782),(100, 792),(100, 802),), camp_name='Diagnostic Mammogram Section', square_size=(11,10))
+                can = pdf_functions.add_markable_square(can=can, option=section, valid_options=['EXAME_CLINICO', 'CONTROLE_RADIOLOGICO', 'LESAO_DIAGNOSTICO', 'AVALIACAO_RESPOSTA', 'REVISAO_MAMOGRAFIA_LESAO', 'CONTROLE_LESAO'], options_positions=((56, 762), (55, 590), (100, 772),(100, 782),(100, 792),(100, 802),), camp_name='Diagnostic Mammogram Section', square_size=(11,10))
                 if type(can) == type(Response()): return can
                 current_options = diagnostic_mammogram[section]
                 if section == 'exame_clinico':
@@ -334,8 +334,22 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
                             if breast == 'esquerda':
                                 can = add_exame_clinico_esquerda(can=can, current_options=current_options['esquerda'])
                                 if type(can) == type(Response()): return can
-                                
+                
+                if section == 'controle_radiologico':
+                    if type(current_options) != type(dict()):
+                        return Response('controle_radiologico has to be dict values, like "controle_radiologico":{"direita": [],      "esquerda": []}', status=400)
+                    # See all itens in dict
+                    breast_keys = ['direita', 'esquerda']
+                    for breast in breast_keys:
+                        if breast in current_options.keys():
+                            if breast == 'direita':
+                                can = add_controle_radiologico_direita(can=can, current_options=current_options['direita'])
+                                if type(can) == type(Response()): return can
 
+                            if breast == 'esquerda':
+                                #can = add_controle_radiologico_esquerda(can=can, current_options=current_options['esquerda'])
+                                #if type(can) == type(Response()): return can
+                                pass
             else:
                 continue
 
@@ -413,6 +427,17 @@ def add_exame_clinico_esquerda(can:canvas.Canvas, current_options:dict):
                 for option in item['linfonodo_palpavel']:
                     can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((121, 615), (162, 616)), camp_name='linfonodo_palpavel options in esquerda breast', square_size=(15,9), nullable=True)
                     if type(can) == type(Response()): return can
+        return can
+    except:
+        return Response('Unknow error when adding exame_clinico_direita', status=500)
+
+
+def add_controle_radiologico_direita(can:canvas.Canvas, current_options:list):
+    try:
+        for option in current_options:    
+            can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((61, 571), (61, 560), (61, 550), (61, 539), (61, 528), (61, 517), (61, 506)), camp_name='controle_radiologico options in right breast', square_size=(10,5), nullable=True)
+            if type(can) == type(Response()): return can
+
         return can
     except:
         return Response('Unknow error when adding exame_clinico_direita', status=500)

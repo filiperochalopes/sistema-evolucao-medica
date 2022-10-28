@@ -273,6 +273,10 @@ def test_create_solicit_mamografia_pdf():
             'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
             'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
             ]
+        },
+    'controle_radiologico':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': []
         }
     }
 )
