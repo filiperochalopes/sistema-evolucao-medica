@@ -262,9 +262,32 @@ def test_wrongtype_health_unit_cnes():
 def test_invalidcnes_health_unit_cnes():
     assert data_to_use(health_unit_cnes=451236548).status == Response(status=400).status
 
+#################################################################
+# TEST DOCUMENTS CNS AND CPF
+# patient_cns
+# patient_document_cpf
+# wrong type
+# invalid cns
+# invalid cpf
+# wrong option
 
+def test_wrongtype_patient_cns():
+    assert data_to_use(patient_cns='451236548').status == Response(status=400).status
 
+def test_invalid_patient_cns():
+    assert data_to_use(patient_cns=451236548554).status == Response(status=400).status
 
+def test_wrongtype_patient_document_cpf():
+    assert data_to_use(patient_document_cpf='451236548554').status == Response(status=400).status
+
+def test_invalidcns_patient_document_cpf():
+    assert data_to_use(patient_document_cpf={'CNS':284123312123}).status == Response(status=400).status
+
+def test_invalidccpf_patient_document_cpf():
+    assert data_to_use(patient_document_cpf={'CPF':284123312123}).status == Response(status=400).status
+
+def test_wrongoption_patient_document_cpf():
+    assert data_to_use(patient_document_cpf={'CNS':284123312123}).status == Response(status=400).status
 
 
 
