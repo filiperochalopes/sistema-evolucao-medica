@@ -19,7 +19,7 @@ def data_to_use(
     nodule_lump='NAO',
     high_risk='NAOSABE',
     examinated_before='NAOSABE',
-    mammogram_before=['SIM', '2020'],
+    mammogram_before=['nao', "2020"],
     patient_age=23,
     health_unit_adressUF='SP',
     health_unit_cnes=1234567,
@@ -64,88 +64,88 @@ def data_to_use(
 'indusao_implantes':(2021, 2020)
 },
     diagnostic_mammogram={
-'exame_clinico':
-    {'direita':[
-        'PAPILAR', 
-        {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
-        'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
-        'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
-        'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
-        ],
-    'esquerda':[
-        'PAPILAR', 
-        {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
-        'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
-        'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
-        'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
-        ]
-    },
-'controle_radiologico':
-    {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
-    'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
-    },
-'lesao_diagnostico':
-    {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
-    'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
-    },
-'avaliacao_resposta':
-    ['direita', 'esquerda'],
-'revisao_mamografia_lesao':
-    {'direita': ['0', '3', '4', '5'],
-    'esquerda': ['0', '3', '4', '5']
-    },
-'controle_lesao':
-    {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
-    'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
-    }
-}):
+    'exame_clinico':
+        {'direita':[
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
+            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ],
+        'esquerda':[
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
+            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ]
+        },
+    'controle_radiologico':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        },
+    'lesao_diagnostico':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        },
+    'avaliacao_resposta':
+        ['direita', 'esquerda'],
+    'revisao_mamografia_lesao':
+        {'direita': ['0', '3', '4', '5'],
+        'esquerda': ['0', '3', '4', '5']
+        },
+    'controle_lesao':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        }}
+):
     return pdf_solicit_mamografia.fill_pdf_solicit_mamografia(
-        patient_name,
-        patient_cns,
-        patient_mother_name,
-        patient_birthday,
-        solicitation_datetime,
-        prof_solicitor_name,
-        nodule_lump,
-        high_risk,
-        examinated_before,
-        mammogram_before,
-        patient_age,
-        health_unit_adressUF,
-        health_unit_cnes,
-        health_unit_name,
-        health_unit_adress_city,
-        health_unit_city_IBGEcode,
-        document_chart_number,
-        protocol_number,
-        patient_sex,
-        patient_surname,
-        patient_document_cpf,
-        patient_nationality,
-        patient_adress,
-        patient_adress_number,
-        patient_adress_adjunct,
-        patient_adress_neighborhood,
-        patient_city_IBGEcode,
-        patient_adress_city,
-        patient_adressUF,
-        patient_ethnicity,
-        patient_adress_reference,
-        patient_schooling,
-        patient_adressCEP,
-        exam_number,
-        tracking_mammogram,
-        patient_phonenumber,
-        radiotherapy_before,
-        breast_surgery_before,
-        diagnostic_mammogram)
+        patient_name=patient_name,
+    patient_cns=patient_cns,
+    patient_mother_name=patient_mother_name,
+    patient_birthday=patient_birthday,
+    solicitation_datetime=solicitation_datetime,
+    prof_solicitor_name=prof_solicitor_name,
+    nodule_lump=nodule_lump,
+    high_risk=high_risk,
+    examinated_before=examinated_before,
+    patient_age=patient_age,
+    health_unit_adressUF=health_unit_adressUF,
+    health_unit_cnes=health_unit_cnes,
+    health_unit_name=health_unit_name,
+    health_unit_adress_city=health_unit_adress_city,
+    health_unit_city_IBGEcode=health_unit_city_IBGEcode,
+    document_chart_number=document_chart_number,
+    protocol_number=protocol_number,
+    patient_sex=patient_sex,
+    patient_surname=patient_surname,
+    patient_document_cpf=patient_document_cpf,
+    patient_nationality=patient_nationality,
+    patient_adress=patient_adress,
+    patient_adress_number=patient_adress_number,
+    patient_adress_adjunct=patient_adress_adjunct,
+    patient_adress_neighborhood=patient_adress_neighborhood,
+    patient_city_IBGEcode=patient_city_IBGEcode,
+    patient_adress_city=patient_adress_city,
+    patient_adressUF=patient_adressUF,
+    patient_ethnicity=patient_ethnicity,
+    patient_adress_reference=patient_adress_reference,
+    patient_schooling=patient_schooling,
+    patient_adressCEP=patient_adressCEP,
+    exam_number=exam_number,
+    tracking_mammogram=tracking_mammogram,
+    patient_phonenumber=patient_phonenumber,
+    radiotherapy_before=radiotherapy_before,
+    breast_surgery_before=breast_surgery_before,
+    diagnostic_mammogram=diagnostic_mammogram,
+    mammogram_before=mammogram_before)
 
 
 def test_with_data_in_function():
     assert type(data_to_use()) != type(Response())
 
 def test_answer_with_all_fields():
-    assert data_to_use().response == type(Response())
+    assert type(data_to_use()) == type(bytes())
     #assert type(data_to_use()) != type(Response())
 
 def test_awnser_with_only_required_data():
