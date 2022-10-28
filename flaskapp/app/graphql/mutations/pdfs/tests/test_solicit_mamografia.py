@@ -998,13 +998,66 @@ def test_TO_optionLower_health_unit_adressUF():
     assert type(data_to_use(health_unit_adressUF='to')) != type(Response())
 
 
+#############################################################################
+# TEST BIG TEXT WITH LINE BRAKES
+# patient_name
+# test wrong type
+# test empty value
+# test empty spaces 
+# test short text
+# test more than limit
 
+def test_wrong_type_patient_name():
+    assert data_to_use(patient_name=131).status == Response(status=400).status
 
+def test_empty_value_patient_name():
+    assert data_to_use(patient_name='').status == Response(status=400).status
 
+def test_empty_spaces_patient_name():
+    assert data_to_use(patient_name='    ').status == Response(status=400).status
 
+def test_shortText_patient_name():
+    assert data_to_use(patient_name='abla').status == Response(status=400).status
 
+def test_more_than_limit_patient_name():
+    assert data_to_use(patient_name=lenght_test[:45]).status == Response(status=400).status
 
+#############################################################################
+# NORMAL TEXT VARIABLES THAT CAN BE NULL
+# protocol_number
+# patient_nationality
+# test wrong type
+# test empty value
+# test empty spaces 
+# test short text
+# test more than limit
 
+def test_wrong_type_protocol_number():
+    assert data_to_use(protocol_number=131).status == Response(status=400).status
+
+def test_empty_value_protocol_number():
+    assert type(data_to_use(protocol_number='')) != type(Response())
+
+def test_empty_spaces_protocol_number():
+    assert type(data_to_use(protocol_number='    ')) != type(Response())
+
+def test_more_than_limit_protocol_number():
+    assert data_to_use(protocol_number=lenght_test[:30]).status == Response(status=400).status
+
+def test_wrong_type_patient_nationality():
+    assert data_to_use(patient_nationality=131).status == Response(status=400).status
+
+def test_empty_value_patient_nationality():
+    assert type(data_to_use(patient_nationality='')) != type(Response())
+
+def test_empty_spaces_patient_nationality():
+    assert type(data_to_use(patient_nationality='    ')) != type(Response())
+
+def test_shortText_patient_nationality():
+    assert data_to_use(patient_nationality='aa').status == Response(status=400).status
+
+def test_more_than_limit_patient_nationality():
+    assert data_to_use(patient_nationality=lenght_test[:35]).status == Response(status=400).status
 
 
 
