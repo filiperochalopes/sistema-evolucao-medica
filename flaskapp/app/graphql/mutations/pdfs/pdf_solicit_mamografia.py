@@ -214,6 +214,8 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             if patient_ethnicity == None:
                 patient_ethnicity = [None, None]
+            if type(patient_ethnicity) != type(list()):
+                return Response('Patient ethnicity has to be a list', status=400)
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'], text_options=['INDIGENA'], text_pos=(516, 563), options_positions=((278, 560), (323, 560),(363, 560),(401, 560), (450, 560)), camp_name='Patient Ethinicity', len_max=10, text=patient_ethnicity[1], len_min=4, square_size=(11, 9), nullable=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_markable_square(can=c, option=patient_schooling, valid_options=['ANALFABETO', 'FUNDINCOM', 'FUNDCOMPL', 'MEDIOCOMPL', 'SUPCOMPL'], options_positions=((55, 380), (115, 381), (223, 381), (325, 381), (408, 381)), camp_name='Patient Schooling', square_size=(10,9), nullable=True)

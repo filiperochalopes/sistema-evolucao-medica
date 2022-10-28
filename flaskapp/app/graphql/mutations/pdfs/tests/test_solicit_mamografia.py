@@ -308,24 +308,206 @@ def test_wrongtype_solicitation_datetime():
 def test_valid_solicitation_datetime():
     assert type(data_to_use(solicitation_datetime=datetime_to_use)) != type(Response())
 
+##################################################################
+# TEST MARKABLE OPTIONS
+# patient_sex
+# nodule_lump
+# high_risk
+# examinated_before
+# patient_ethnicity
+# patient_schooling
+# tracking_mammogram
+# test wrong type
+# test not exist option
+# test all options in Upper Case
+# test all options in lower Case
+
+def test_wrongtype_patient_sex():
+    assert data_to_use(patient_sex=1231).status == Response(status=400).status
+
+def test_notexistopiton_patient_sex():
+    assert data_to_use(patient_sex='G').status == Response(status=400).status
+
+def test_M_optionUpper_patient_sex():
+    assert type(data_to_use(patient_sex='M')) != type(Response())
+
+def test_M_optionLower_patient_sex():
+    assert type(data_to_use(patient_sex='m')) != type(Response())
+
+def test_F_optionUpper_patient_sex():
+    assert type(data_to_use(patient_sex='F')) != type(Response())
+
+def test_F_optionLower_patient_sex():
+    assert type(data_to_use(patient_sex='f')) != type(Response())
+
+def test_wrongtype_nodule_lump():
+    assert data_to_use(nodule_lump=1231).status == Response(status=400).status
+
+def test_notexistopiton_nodule_lump():
+    assert data_to_use(nodule_lump='Gaa').status == Response(status=400).status
+
+def test_SIMDIR_optionUpper_nodule_lump():
+    assert type(data_to_use(nodule_lump='SIMDIR')) != type(Response())
+
+def test_SIMDIR_optionLower_nodule_lump():
+    assert type(data_to_use(nodule_lump='simdir')) != type(Response())
+
+def test_SIMESQ_optionUpper_nodule_lump():
+    assert type(data_to_use(nodule_lump='SIMESQ')) != type(Response())
+
+def test_SIMESQ_optionLower_nodule_lump():
+    assert type(data_to_use(nodule_lump='simesq')) != type(Response())
+
+def test_NAO_optionUpper_nodule_lump():
+    assert type(data_to_use(nodule_lump='NAO')) != type(Response())
+
+def test_NAO_optionLower_nodule_lump():
+    assert type(data_to_use(nodule_lump='nao')) != type(Response())
+
+def test_wrongtype_high_risk():
+    assert data_to_use(high_risk=1231).status == Response(status=400).status
+
+def test_notexistopiton_high_risk():
+    assert data_to_use(high_risk='Gaa').status == Response(status=400).status
+
+def test_SIM_optionUpper_high_risk():
+    assert type(data_to_use(high_risk='SIM')) != type(Response())
+
+def test_SIM_optionLower_high_risk():
+    assert type(data_to_use(high_risk='sim')) != type(Response())
+
+def test_NAOSABE_optionUpper_high_risk():
+    assert type(data_to_use(high_risk='NAOSABE')) != type(Response())
+
+def test_NAOSABE_optionLower_high_risk():
+    assert type(data_to_use(high_risk='naosabe')) != type(Response())
+
+def test_NAO_optionUpper_high_risk():
+    assert type(data_to_use(high_risk='NAO')) != type(Response())
+
+def test_NAO_optionLower_high_risk():
+    assert type(data_to_use(high_risk='nao')) != type(Response())
+
+def test_wrongtype_examinated_before():
+    assert data_to_use(examinated_before=1231).status == Response(status=400).status
+
+def test_notexistopiton_examinated_before():
+    assert data_to_use(examinated_before='Gaa').status == Response(status=400).status
+
+def test_SIM_optionUpper_examinated_before():
+    assert type(data_to_use(examinated_before='SIM')) != type(Response())
+
+def test_SIM_optionLower_examinated_before():
+    assert type(data_to_use(examinated_before='sim')) != type(Response())
+
+def test_NUNCA_optionUpper_examinated_before():
+    assert type(data_to_use(examinated_before='NUNCA')) != type(Response())
+
+def test_NUNCA_optionLower_examinated_before():
+    assert type(data_to_use(examinated_before='nunca')) != type(Response())
+
+def test_NAOSABE_optionUpper_examinated_before():
+    assert type(data_to_use(examinated_before='NAOSABE')) != type(Response())
+
+def test_NAOSABE_optionLower_examinated_before():
+    assert type(data_to_use(examinated_before='naosabe')) != type(Response())
+
+def test_wrongtype_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=1231).status == Response(status=400).status
+
+def test_notexistopiton_patient_ethnicity():
+    assert data_to_use(patient_ethnicity='Gaa').status == Response(status=400).status
+
+def test_BRANCA_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['BRANCA', 'ehinith'])) != type(Response())
+
+def test_BRANCA_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['branca', 'ehinith'])) != type(Response())
+
+def test_PRETA_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['PRETA', 'ehinith'])) != type(Response())
+
+def test_PRETA_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['preta', 'ehinith'])) != type(Response())
+
+def test_PARDA_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['PARDA', 'ehinith'])) != type(Response())
+
+def test_PARDA_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['parda', 'ehinith'])) != type(Response())
+
+def test_AMARELA_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['AMARELA', 'ehinith'])) != type(Response())
+
+def test_AMARELA_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['amarela', 'ehinith'])) != type(Response())
+
+def test_INDIGENA_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['INDIGENA', 'ehinith'])) != type(Response())
+
+def test_INDIGENA_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['indigena', 'ehinith'])) != type(Response())
 
 
+def test_wrongtype_patient_schooling():
+    assert data_to_use(patient_schooling=1231).status == Response(status=400).status
 
+def test_notexistopiton_patient_schooling():
+    assert data_to_use(patient_schooling='Gaa').status == Response(status=400).status
 
+def test_ANALFABETO_optionUpper_patient_schooling():
+    assert type(data_to_use(patient_schooling='ANALFABETO')) != type(Response())
 
+def test_ANALFABETO_optionLower_patient_schooling():
+    assert type(data_to_use(patient_schooling='analfabeto')) != type(Response())
 
+def test_FUNDINCOM_optionUpper_patient_schooling():
+    assert type(data_to_use(patient_schooling='FUNDINCOM')) != type(Response())
 
+def test_FUNDINCOM_optionLower_patient_schooling():
+    assert type(data_to_use(patient_schooling='fundincom')) != type(Response())
 
+def test_FUNDCOMPL_optionUpper_patient_schooling():
+    assert type(data_to_use(patient_schooling='FUNDCOMPL')) != type(Response())
 
+def test_FUNDCOMPL_optionLower_patient_schooling():
+    assert type(data_to_use(patient_schooling='fundcompl')) != type(Response())
 
+def test_MEDIOCOMPL_optionUpper_patient_schooling():
+    assert type(data_to_use(patient_schooling='MEDIOCOMPL')) != type(Response())
 
+def test_MEDIOCOMPL_optionLower_patient_schooling():
+    assert type(data_to_use(patient_schooling='mediocompl')) != type(Response())
 
+def test_SUPCOMPL_optionUpper_patient_schooling():
+    assert type(data_to_use(patient_schooling='SUPCOMPL')) != type(Response())
 
+def test_SUPCOMPL_optionLower_patient_schooling():
+    assert type(data_to_use(patient_schooling='supcompl')) != type(Response())
 
+def test_wrongtype_tracking_mammogram():
+    assert data_to_use(tracking_mammogram=1231).status == Response(status=400).status
 
+def test_notexistopiton_tracking_mammogram():
+    assert data_to_use(tracking_mammogram='Gaa').status == Response(status=400).status
 
+def test_POPALVO_optionUpper_tracking_mammogram():
+    assert type(data_to_use(tracking_mammogram='POPALVO')) != type(Response())
 
+def test_POPALVO_optionLower_tracking_mammogram():
+    assert type(data_to_use(tracking_mammogram='popalvo')) != type(Response())
 
+def test_RISCOELEVADO_optionUpper_tracking_mammogram():
+    assert type(data_to_use(tracking_mammogram='RISCOELEVADO')) != type(Response())
+
+def test_RISCOELEVADO_optionLower_tracking_mammogram():
+    assert type(data_to_use(tracking_mammogram='riscoelevado')) != type(Response())
+
+def test_JATRATADO_optionUpper_tracking_mammogram():
+    assert type(data_to_use(tracking_mammogram='JATRATADO')) != type(Response())
+
+def test_JATRATADO_optionLower_tracking_mammogram():
+    assert type(data_to_use(tracking_mammogram='jatratado')) != type(Response())
 
 
 
