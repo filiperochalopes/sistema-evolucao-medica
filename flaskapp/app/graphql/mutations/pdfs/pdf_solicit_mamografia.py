@@ -330,7 +330,10 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
                             if breast == 'direita':
                                 for item in current_options['direita']:    
                                     if item == 'PAPILAR':
-                                        continue
+                                        can = pdf_functions.add_square(can=can, pos=(56, 732), size=(15, 9))
+                                        if type(can) == type(Response()): return can
+                                        else:
+                                            continue
                                     elif type(item) != type(dict()):
                                         return Response('direita values in exame_clinico has to be a list of dicts, like "exame_clinico":["direita":["PAPILAR", {"":[]}]]', status=400)
                                     item_keys = item.keys()
@@ -339,6 +342,10 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
                                             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((238, 737), (238, 725)), camp_name='descarga_capilar options in direita breast', square_size=(15,9), nullable=True)
                                             if type(can) == type(Response()): return can
                                     
+                                    if 'nodulo' in item_keys:
+                                        for option in item['nodulo']:
+                                            can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((54, 696), (103, 696), (154, 696), (208, 696), (254, 696), (54, 683), (103, 683), (154, 683), (208, 683), (254, 683)), camp_name='descarga_capilar options in direita breast', square_size=(15,9), nullable=True)
+                                            if type(can) == type(Response()): return can
 
 
 
