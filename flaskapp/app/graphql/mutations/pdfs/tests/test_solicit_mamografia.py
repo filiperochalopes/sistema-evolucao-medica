@@ -548,10 +548,10 @@ def test_wrongtype_patient_adress_city():
     assert data_to_use(patient_adress_city=1212312).status == Response(status=400).status
 
 def test_empty_value_patient_adress_city():
-    assert data_to_use(patient_adress_city='').status == Response(status=400).status
+    assert type(data_to_use(patient_adress_city='')) != type(Response())
 
 def test_empty_space_patient_adress_city():
-    assert data_to_use(patient_adress_city='  ').status == Response(status=400).status
+    assert type(data_to_use(patient_adress_city='  ')) != type(Response())
 
 def test_invalid_value_patient_adress_city():
     assert data_to_use(patient_adress_city='111').status == Response(status=400).status
@@ -563,25 +563,25 @@ def test_wrongtype_health_unit_adress_city():
     assert data_to_use(health_unit_adress_city=1212312).status == Response(status=400).status
 
 def test_empty_value_health_unit_adress_city():
-    assert data_to_use(health_unit_adress_city='').status == Response(status=400).status
+    assert type(data_to_use(health_unit_adress_city='')) != type(Response())
 
 def test_empty_space_health_unit_adress_city():
-    assert data_to_use(health_unit_adress_city='  ').status == Response(status=400).status
+    assert type(data_to_use(health_unit_adress_city='  ')) != type(Response())
 
 def test_invalid_value_health_unit_adress_city():
     assert data_to_use(health_unit_adress_city='111').status == Response(status=400).status
 
 def test_long_value_patient_adress_adjunct():
-    assert data_to_use(patient_adress_adjunct=lenght_test[:20]).status == Response(status=400).status
+    assert data_to_use(patient_adress_adjunct=lenght_test[:30]).status == Response(status=400).status
 
 def test_wrongtype_patient_adress_adjunct():
     assert data_to_use(patient_adress_adjunct=1212312).status == Response(status=400).status
 
 def test_empty_value_patient_adress_adjunct():
-    assert data_to_use(patient_adress_adjunct='').status == Response(status=400).status
+    assert type(data_to_use(patient_adress_adjunct='')) != type(Response())
 
 def test_empty_space_patient_adress_adjunct():
-    assert data_to_use(patient_adress_adjunct='  ').status == Response(status=400).status
+    assert type(data_to_use(patient_adress_adjunct='  ')) != type(Response())
 
 def test_invalid_value_patient_adress_adjunct():
     assert data_to_use(patient_adress_adjunct='111').status == Response(status=400).status
@@ -593,10 +593,10 @@ def test_wrongtype_patient_adress_neighborhood():
     assert data_to_use(patient_adress_neighborhood=1212312).status == Response(status=400).status
 
 def test_empty_value_patient_adress_neighborhood():
-    assert data_to_use(patient_adress_neighborhood='').status == Response(status=400).status
+    assert type(data_to_use(patient_adress_neighborhood='')) != type(Response())
 
 def test_empty_space_patient_adress_neighborhood():
-    assert data_to_use(patient_adress_neighborhood='  ').status == Response(status=400).status
+    assert type(data_to_use(patient_adress_neighborhood='  ')) != type(Response())
 
 def test_invalid_value_patient_adress_neighborhood():
     assert data_to_use(patient_adress_neighborhood='111').status == Response(status=400).status
@@ -608,10 +608,10 @@ def test_wrongtype_patient_adress_reference():
     assert data_to_use(patient_adress_reference=1212312).status == Response(status=400).status
 
 def test_empty_value_patient_adress_reference():
-    assert data_to_use(patient_adress_reference='').status == Response(status=400).status
+    assert type(data_to_use(patient_adress_reference='')) != type(Response())
 
 def test_empty_space_patient_adress_reference():
-    assert data_to_use(patient_adress_reference='  ').status == Response(status=400).status
+    assert type(data_to_use(patient_adress_reference='  ')) != type(Response())
 
 def test_invalid_value_patient_adress_reference():
     assert data_to_use(patient_adress_reference='111').status == Response(status=400).status
