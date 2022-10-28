@@ -12,7 +12,60 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_AIH_SUS_DIRECTORY, WRITE_AIH_SUS_DIRECTORY
 
 
-def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int, establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cid10:str=None, cid10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:int=None, insurance_company_ticket_number:int=None, insurance_company_series:str=None,company_cnpj:int=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> Union[PdfWriter, Response]:
+def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int, establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cid10:str=None, cid10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:int=None, insurance_company_ticket_number:int=None, insurance_company_series:str=None,company_cnpj:int=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> Union[bytes, Response]:
+    """fill pdf aih sus 
+
+    Args:
+        establishment_solitc_name (str): establishment_solitc_name
+        establishment_solitc_cnes (int): establishment_solitc_cnes
+        establishment_exec_name (str): establishment_exec_name
+        establishment_exec_cnes (int): establishment_exec_cnes
+        patient_name (str): patient_name
+        patient_cns (int): patient_cns
+        patient_birthday (datetime.datetime): patient_birthday
+        patient_sex (str): patient_sex
+        patient_mother_name (str): patient_mother_name
+        patient_adress (str): patient_adress
+        patient_adressCity (str): patient_adressCity
+        patient_adressCity_ibgeCode (int): patient_adressCity_ibgeCode
+        patient_adressUF (str): patient_adressUF
+        patient_adressCEP (int): patient_adressCEP
+        main_clinical_signs_symptoms (str): main_clinical_signs_symptoms
+        conditions_justify_hospitalization (str): conditions_justify_hospitalization
+        initial_diagnostic (str): initial_diagnostic
+        principalCid10 (str): principalCid10
+        procedure_solicited (str): procedure_solicited
+        procedure_code (str): procedure_code
+        clinic (str): clinic
+        internation_carater (str): internation_carater
+        prof_solicitor_document (dict): dict prof_solicitor_document
+        prof_solicitor_name (str): prof_solicitor_name
+        solicitation_datetime (datetime.datetime): solicitation_datetime
+        autorization_prof_name (str): autorization_prof_name
+        emission_org_code (str): emission_org_code
+        autorizaton_prof_document (dict): autorizaton_prof_document
+        autorizaton_datetime (datetime.datetime): autorizaton_datetime
+        hospitalization_autorization_number (int): hospitalization_autorization_number
+        exam_results (str, optional): exam_results. Defaults to None.
+        chart_number (int, optional): chart_number. Defaults to None.
+        patient_ethnicity (str, optional): patient_ethnicity. Defaults to None.
+        patient_responsible_name (str, optional): patient_responsible_name. Defaults to None.
+        patient_mother_phonenumber (int, optional): patient_mother_phonenumber. Defaults to None.
+        patient_responsible_phonenumber (int, optional): patient_responsible_phonenumber. Defaults to None.
+        secondary_cid10 (str, optional): secondary_cid10. Defaults to None.
+        cid10_associated_causes (str, optional): cid10_associated_causes. Defaults to None.
+        acident_type (str, optional): acident_type. Defaults to None.
+        insurance_company_cnpj (int, optional): insurance_company_cnpj. Defaults to None.
+        insurance_company_ticket_number (int, optional): insurance_company_ticket_number. Defaults to None.
+        insurance_company_series (str, optional): insurance_company_series. Defaults to None.
+        company_cnpj (int, optional): company_cnpj. Defaults to None.
+        company_cnae (int, optional): company_cnae. Defaults to None.
+        company_cbor (int, optional): company_cbor. Defaults to None.
+        pension_status (str, optional): pension_status. Defaults to None.
+
+    Returns:
+        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+    """    
     try:
         packet = io.BytesIO()
         # Create canvas and add data
