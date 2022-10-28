@@ -12,7 +12,27 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_RELATORIO_ALTA_DIRECTORY, WRITE_RELATORIO_ALTA_DIRECTORY
 
 
-def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:int, doctor_crm:str, orientations:str=None) -> Union[PdfWriter, Response]:
+def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:int, doctor_crm:str, orientations:str=None) -> Union[bytes, Response]:
+    """fill pdf relatorio alta
+
+    Args:
+        documentDatetime (datetime.datetime): documentDatetime
+        patient_name (str): patient_name
+        patient_cns (int): patient_cns
+        patient_birthday (datetime.datetime): patient_birthday
+        patient_sex (str): patient_sex
+        patient_motherName (str): patient_motherName
+        patient_document (dict): patient_document
+        patient_adress (str): patient_adress
+        evolution (str): evolution
+        doctor_name (str): doctor_name
+        doctor_cns (int): doctor_cns
+        doctor_crm (str): doctor_crm
+        orientations (str, optional): orientations. Defaults to None.
+
+    Returns:
+        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+    """    
     try:
         packet = io.BytesIO()
         # Create canvas and add data
