@@ -15,7 +15,26 @@ from pdfs.constants import FONT_DIRECTORY, TEMPLATE_EXAM_REQUEST_DIRECTORY, WRIT
 
 
 def fill_pdf_exam_request(patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_adress:str, solicitation_reason:str,
-exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_authorized:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> Union[PdfWriter, Response]:
+exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_authorized:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> Union[bytes, Response]:
+    """fill pdf exam request (Solicitacao de exames e procedimentos)
+
+    Args:
+        patient_name (str): patient_name
+        patient_cns (int): patient_cns
+        patient_birthday (datetime.datetime): patient_birthday
+        patient_adress (str): patient_adress
+        solicitation_reason (str): solicitation_reason
+        exams (str): text with exams, this is what extends pdf size to fill all exams
+        prof_solicitor (str): prof_solicitor
+        solicitation_datetime (datetime.datetime): solicitation_datetime
+        prof_authorized (str, optional): prof_authorized. Defaults to None.
+        autorization_datetime (datetime.datetime, optional): autorization_datetime. Defaults to None.
+        document_pacient_date (datetime.datetime, optional): document_pacient_date. Defaults to None.
+        document_pacient_name (str, optional): document_pacient_name. Defaults to None.
+
+    Returns:
+        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+    """
 
     try:
         packet = io.BytesIO()
