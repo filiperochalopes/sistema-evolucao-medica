@@ -12,7 +12,7 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
 
-def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_IBGEcode:int=None, patient_adress_city:str=None, patient_adressUF:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adressCEP:str=None, patient_phonenumber:int=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:int=None, tracking_mammogram:str=None) -> Union[PdfWriter, Response]:
+def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_IBGEcode:int=None, patient_adress_city:str=None, patient_adressUF:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adressCEP:str=None, patient_phonenumber:int=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:int=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> Union[PdfWriter, Response]:
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -286,16 +286,65 @@ def add_diagnostic_mammogram(can:canvas.Canvas, diagnostic_mammogram:dict):
             return can
         if type(diagnostic_mammogram) != type(dict()):
             return Response("""
-diagnostic_mammogram has to be a dict with dicts in this extructure, see more in docstring in the function,  like: 'exameclinico':[
-    {'direita':[
-        'PAPILAR', 
-        {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA']},
-        {'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
-        {'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
-        {'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
-        ]
-        }]""", status=400)
+diagnostic_mammogram has to be a dict with dicts in this extructure, see more in docstring in the function,  like: 'exame_clinico':
+        {'direita':[
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA']},
+            {'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
+            {'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
+            {'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ],
+        'esquerda':[
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA']},
+            {'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
+            {'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
+            {'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ]
+        }
+    """, status=400)
+        # secoes validas
+        sections_keys = ['exame_clinico', 'controle_radiologico', 'lesao_diagnostico', 'avaliacao_resposta', 'revisao_mamografia_lesao', 'controle_lesao']
+        
+        if len(diagnostic_mammogram) > 6:
+            return Response(f'You cannot add more than 6 keys in diagnostic_mammogram, use {sections_keys}', status=400)
+        
+        
+        
 
+        for section in sections_keys:
+            if section in diagnostic_mammogram.keys():
+                # Mark sections options in mamografia diagnostica
+                can = pdf_functions.add_markable_square(can=can, option=section, valid_options=['EXAME_CLINICO', 'CONTROLE_RADIOLOGICO', 'LESAO_DIAGNOSTICO', 'AVALIACAO_RESPOSTA', 'REVISAO_MAMOGRAFIA_LESAO', 'CONTROLE_LESAO'], options_positions=((56, 762), (100, 762), (100, 772),(100, 782),(100, 792),(100, 802),), camp_name='Diagnostic Mammogram Section', square_size=(11,10))
+                if type(can) == type(Response()): return can
+                current_options = diagnostic_mammogram[section]
+                if section == 'exame_clinico':
+                    if type(current_options) != type(dict()):
+                        return Response('exame_clinico has to be dict values, like "exame_clinico":["direita":["PAPILAR", {"":[]}]]', status=400)
+                    # See all itens in dict
+                    breast_keys = ['direita', 'esquerda']
+                    for breast in breast_keys:
+                        # Options in direita
+                        # ['descarga_papilar', 'nodulo', 'espessamento', 'linfonodo_palpavel']
+                        if breast in current_options.keys():
+                            if breast == 'direita':
+                                for item in current_options['direita']:    
+                                    if item == 'PAPILAR':
+                                        continue
+                                    elif type(item) != type(dict()):
+                                        return Response('direita values in exame_clinico has to be a list of dicts, like "exame_clinico":["direita":["PAPILAR", {"":[]}]]', status=400)
+                                    item_keys = item.keys()
+                                    if 'descarga_papilar' in item_keys:
+                                        for option in item['descarga_papilar']:
+                                            can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((238, 737), (238, 725)), camp_name='descarga_capilar options in direita breast', square_size=(15,9), nullable=True)
+                                            if type(can) == type(Response()): return can
+                                    
+
+
+
+
+            else:
+                continue
 
 
 
@@ -306,7 +355,7 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
 
 
 dict_test = {
-    'exameclinico':[
+    'exame_clinico':[
         {'direita':[
             'PAPILAR', 
             {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA']},

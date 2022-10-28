@@ -258,27 +258,25 @@ def test_create_solicit_mamografia_pdf():
     'indusao_implantes':(2021, 2020)
     },
         diagnostic_mammogram={
-    'exameclinico':[
+    'exame_clinico':
         {'direita':[
             'PAPILAR', 
-            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA']},
-            {'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
-            {'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
-            {'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
-            ]
-        },
-        {'esquerda':[
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
+            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ],
+        'esquerda':[
             'PAPILAR', 
-            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA']},
-            {'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
-            {'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA']},
-            {'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
+            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
             ]
         }
-    ]
     }
 )
-    #assert output.response == type(bytes())
-    assert type(output) == type(bytes())
+    assert output.response == type(bytes())
+    #assert type(output) == type(bytes())
 
 
