@@ -12,7 +12,38 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_FICHA_INTERN_DIRECTORY, WRITE_FICHA_INTERN_DIRECTORY
 
 
-def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:int, doctor_crm:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:int=None, has_additional_healthInsurance:bool=None) -> Union[PdfWriter, Response]:
+def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:int, doctor_crm:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:int=None, has_additional_healthInsurance:bool=None) -> Union[bytes, Response]:
+    """fill pdf ficha internamento
+
+    Args:
+        document_datetime (datetime.datetime): document_datetime
+        patient_name (str): patient_name
+        patient_cns (int): patient_cns
+        patient_birthday (datetime.datetime): patient_birthday
+        patient_sex (str): patient_sex
+        patient_motherName (str): patient_motherName
+        patient_document (dict): patient_document
+        patient_adress (str): patient_adress
+        patient_phonenumber (int): patient_phonenumber
+        patient_drug_allergies (str): patient_drug_allergies
+        patient_comorbidities (str): patient_comorbidities
+        current_illness_history (str): current_illness_history
+        initial_diagnostic_suspicion (str): initial_diagnostic_suspicion
+        doctor_name (str): doctor_name
+        doctor_cns (int): doctor_cns
+        doctor_crm (str): doctor_crm
+        patient_adressNumber (int, optional): patient_adressNumber. Defaults to None.
+        patient_adressNeigh (str, optional): patient_adressNeigh. Defaults to None.
+        patient_adressCity (str, optional): patient_adressCity. Defaults to None.
+        patient_adressUF (str, optional): patient_adressUF. Defaults to None.
+        patient_adressCEP (int, optional): patient_adressCEP. Defaults to None.
+        patient_nationality (str, optional): patient_nationality. Defaults to None.
+        patient_estimateWeight (int, optional): patient_estimateWeight. Defaults to None.
+        has_additional_healthInsurance (bool, optional): has_additional_healthInsurance. Defaults to None.
+
+    Returns:
+        Union[bytes, Response]: _description_
+    """    
 
     try:
         packet = io.BytesIO()
