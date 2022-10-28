@@ -12,7 +12,34 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_LME_DIRECTORY, WRITE_LME_DIRECTORY
 
 
-def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[PdfWriter, Response]:
+def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[bytes, Response]:
+    """fill pdf lme (laudo de solicitacao, avaliacao e autorizacao e documentos)
+
+    Args:
+        establishment_solitc_name (str): establishment_solitc_name
+        establishment_solitc_cnes (int): establishment_solitc_cnes
+        patient_name (str): patient_name
+        patient_mother_name (str): patient_mother_name
+        patient_weight (int): patient_weight
+        patient_height (int): patient_height
+        cid10 (str): cid10
+        anamnese (str): anamnese
+        prof_solicitor_name (str): prof_solicitor_name
+        solicitation_datetime (datetime.datetime): solicitation_datetime
+        prof_solicitor_document (dict): prof_solicitor_document
+        capacity_attest (list): list with option and text, eg: ['nao', 'Responsible Name']
+        filled_by (list): lits with option name and document, eg ['MEDICO', 'Other name', {'CPF':28445400070}],
+        patient_ethnicity (list): list with options and text (if others options is) eg ['SEMINFO', 'Patient Ethnicity']
+        previous_treatment (list): list with option and text if sim option eg ['SIM', 'Previout Theatment']
+        diagnostic (str, optional): diagnostic. Defaults to None.
+        patient_document (dict, optional): patient_document. Defaults to None.
+        patient_email (str, optional): patient_email. Defaults to None.
+        contacts_phonenumbers (list, optional): lsit with contacts_phonenumbers . Defaults to None.
+        medicines (list, optional): list with dicts eg: [{"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}] . Defaults to None.
+
+    Returns:
+        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+    """    
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -116,7 +143,19 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
         return Response("Error while filling aih sus", status=500)
 
 
-def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, interval:str):
+def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, interval:str) -> Union[canvas.Canvas, Response]:
+    """Add contact numbers
+
+    Args:
+        can (canvas.Canvas): canvas
+        phonenumbers (list): list with phone numbers
+        pos (tuple): position
+        interval (str): interval between data
+
+    Returns:
+        Union[canvas.Canvas, Response]: canvas updated or Response with error
+    """    
+        
     try:
         if phonenumbers == None:
             return can
@@ -146,7 +185,17 @@ def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, int
         return Response('Unknow erro when adding contact phone numbers', status=500)
 
 
-def add_medicines(can:canvas.Canvas, medicines:list):
+def add_medicines(can:canvas.Canvas, medicines:list) -> Union[canvas.Canvas, Response]:
+   """Add medicines to canvas
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        medicines (list): list with dict to with medicines, eg: [{"medicine_name":"Procedure Name", "quant_1month:"cod124235", "quant_2month":"123", "quant_3month":"quant"}]
+
+    Returns:
+        Union[canvas.Canvas, Response]: canvas updated or Response with error
+    """    
+        
     try:
         if medicines == None:
                 return can
@@ -195,7 +244,16 @@ def add_medicines(can:canvas.Canvas, medicines:list):
         return Response('Unkown error while adding Medicines', status=500)
 
 
-def add_filled_by(can:canvas.Canvas, filled_by:list):
+def add_filled_by(can:canvas.Canvas, filled_by:list) -> Union[canvas.Canvas, Response]:
+    """add filled by
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        filled_by (list): list with option, name and document if outro option is choosed
+
+    Returns:
+        Union[canvas.Canvas, Response]: canvas updated or response with error
+    """    
     can = pdf_functions.add_markable_square_and_onelinetext(can=can, option=filled_by[0], valid_options=['PACIENTE','MAE', 'RESPONSAVEL', 'MEDICO','OUTRO'], text_options=['OUTRO'], text_pos=(128, 152), options_positions=((227, 166), (277, 166), (354, 166), (486, 166), (40, 152)), camp_name='Filled By option and Name', len_max=42, text=filled_by[1], len_min=5, square_size=(5, 8))
     if type(can) == type(Response()): return can
     if filled_by[0].upper() == 'OUTRO':
