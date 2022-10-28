@@ -153,13 +153,94 @@ def test_awnser_with_only_required_data():
     assert type(pdf_solicit_mamografia.fill_pdf_solicit_mamografia(patient_name='Patient Name',patient_cns=928976954930007,patient_mother_name='Patient Mother Name',patient_birthday=datetime_to_use,solicitation_datetime=datetime_to_use,prof_solicitor_name='Professional Name',        nodule_lump='NAO',        high_risk='NAOSABE',        examinated_before='NAOSABE',        mammogram_before=['SIM', '2020'],        patient_age=23,)) != type(Response())
 
 
+##############################################################
+# ERRORS IN NAMES CAMPS
+# patient_name
+# patient_surname
+# patient_mother_name
+# prof_solicitor_name
+# health_unit_name
+# !!!!!!! TESTING !!!!!!!
+# Name empty
+# Name with space
+# long name
+# short name
+# wrong name type
 
+def test_empty_patient_name():    
+    assert data_to_use(patient_name='').status == Response(status=400).status
 
+def test_with_space_patient_name():    
+    assert data_to_use(patient_name='  ').status == Response(status=400).status
 
+def test_long_patient_name():    
+    assert data_to_use(patient_name=lenght_test[:45]).status == Response(status=400).status
 
+def test_short_patient_name():    
+    assert data_to_use(patient_name='bro').status == Response(status=400).status
 
+def test_wrongtype_patient_name():    
+    assert data_to_use(patient_name=123124).status == Response(status=400).status
 
+def test_empty_patient_surname():    
+    assert type(data_to_use(patient_surname='')) != type(Response())
 
+def test_with_space_patient_surname():    
+    assert type(data_to_use(patient_surname='')) != type(Response())
+
+def test_long_patient_surname():    
+    assert data_to_use(patient_surname=lenght_test[:21]).status == Response(status=400).status
+
+def test_short_patient_surname():    
+    assert data_to_use(patient_surname='bro').status == Response(status=400).status
+
+def test_wrongtype_patient_surname():    
+    assert data_to_use(patient_surname=123124).status == Response(status=400).status
+
+def test_empty_patient_mother_name():    
+    assert data_to_use(patient_mother_name='').status == Response(status=400).status
+
+def test_with_space_patient_mother_name():    
+    assert data_to_use(patient_mother_name='  ').status == Response(status=400).status
+
+def test_long_patient_mother_name():    
+    assert data_to_use(patient_mother_name=lenght_test[:45]).status == Response(status=400).status
+
+def test_short_patient_mother_name():    
+    assert data_to_use(patient_mother_name='bro').status == Response(status=400).status
+
+def test_wrongtype_patient_mother_name():    
+    assert data_to_use(patient_mother_name=123124).status == Response(status=400).status
+
+def test_empty_prof_solicitor_name():    
+    assert data_to_use(prof_solicitor_name='').status == Response(status=400).status
+
+def test_with_space_prof_solicitor_name():    
+    assert data_to_use(prof_solicitor_name='  ').status == Response(status=400).status
+
+def test_long_prof_solicitor_name():    
+    assert data_to_use(prof_solicitor_name=lenght_test[:25]).status == Response(status=400).status
+
+def test_short_prof_solicitor_name():    
+    assert data_to_use(prof_solicitor_name='bro').status == Response(status=400).status
+
+def test_wrongtype_prof_solicitor_name():    
+    assert data_to_use(prof_solicitor_name=123124).status == Response(status=400).status
+
+def test_empty_health_unit_name():    
+    assert type(data_to_use(health_unit_name='')) != type(Response())
+
+def test_with_space_health_unit_name():    
+    assert type(data_to_use(health_unit_name='')) != type(Response())
+
+def test_long_health_unit_name():    
+    assert data_to_use(health_unit_name=lenght_test[:45]).status == Response(status=400).status
+
+def test_short_health_unit_name():    
+    assert data_to_use(health_unit_name='bro').status == Response(status=400).status
+
+def test_wrongtype_health_unit_name():    
+    assert data_to_use(health_unit_name=123124).status == Response(status=400).status
 
 
 
