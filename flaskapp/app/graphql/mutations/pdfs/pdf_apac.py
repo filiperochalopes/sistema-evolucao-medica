@@ -12,7 +12,56 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_APAC_DIRECTORY, WRITE_APAC_DIRECTORY
 
 
-def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, document_chart_number:int=None, patient_adress_city_IBGEcode:int=None, procedure_justification_description:str=None, procedure_justification_main_cid10:str=None, procedure_justification_sec_cid10:str=None, procedure_justification_associated_cause_cid10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> Union[PdfWriter, Response]:
+def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, document_chart_number:int=None, patient_adress_city_IBGEcode:int=None, procedure_justification_description:str=None, procedure_justification_main_cid10:str=None, procedure_justification_sec_cid10:str=None, procedure_justification_associated_cause_cid10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> Union[bytes, Response]:
+    """fill pdf apac
+
+    Args:
+        establishment_solitc_name (str): establishment_solitc_name
+        establishment_solitc_cnes (int): establishment_solitc_cnes
+        patient_name (str): patient_name
+        patient_cns (int): patient_cns
+        patient_sex (str): patient_sex
+        patient_birthday (datetime.datetime): patient_birthday
+        patient_adress_city (str): patient_adress_city
+        main_procedure_name (str): main_procedure_name
+        main_procedure_code (str): main_procedure_code
+        main_procedure_quant (int): main_procedure_quant
+        patient_mother_name (str, optional): patient_mother_name. Defaults to None.
+        patient_mother_phonenumber (int, optional): patient_mother_phonenumber. Defaults to None.
+        patient_responsible_name (str, optional): patient_responsible_name. Defaults to None.
+        patient_responsible_phonenumber (int, optional): patient_responsible_phonenumber. Defaults to None.
+        patient_adress (str, optional): patient_adress. Defaults to None.
+        patient_ethnicity (str, optional): patient_ethnicity. Defaults to None.
+        patient_color (str, optional): patient_color. Defaults to None.
+        patient_adressUF (str, optional): patient_adressUF. Defaults to None.
+        patient_adressCEP (int, optional): patient_adressCEP. Defaults to None.
+        document_chart_number (int, optional): document_chart_number. Defaults to None.
+        patient_adress_city_IBGEcode (int, optional): patient_adress_city_IBGEcode. Defaults to None.
+        procedure_justification_description (str, optional): procedure_justification_description. Defaults to None.
+        procedure_justification_main_cid10 (str, optional): procedure_justification_main_cid10. Defaults to None.
+        procedure_justification_sec_cid10 (str, optional): procedure_justification_sec_cid10. Defaults to None.
+        procedure_justification_associated_cause_cid10 (str, optional): procedure_justification_associated_cause_cid10. Defaults to None.
+        procedure_justification_comments (str, optional): procedure_justification_comments. Defaults to None.
+        establishment_exec_name (str, optional): establishment_exec_name. Defaults to None.
+        establishment_exec_cnes (int, optional): establishment_exec_cnes. Defaults to None.
+        prof_solicitor_document (dict, optional): prof_solicitor_document. Defaults to None.
+        prof_solicitor_name (str, optional): prof_solicitor_name. Defaults to None.
+        solicitation_datetime (datetime.datetime, optional): solicitation_datetime. Defaults to None.
+        autorization_prof_name (str, optional): autorization_prof_name. Defaults to None.
+        emission_org_code (str, optional): emission_org_code. Defaults to None.
+        autorizaton_prof_document (dict, optional): autorizaton_prof_document. Defaults to None.
+        autorizaton_datetime (datetime.datetime, optional): autorizaton_datetime. Defaults to None.
+        signature_datetime (datetime.datetime, optional): signature_datetime. Defaults to None.
+        validity_period_start (datetime.datetime, optional): validity_period_start. Defaults to None.
+        validity_period_end (datetime.datetime, optional): validity_period_end. Defaults to None.
+        secondaries_procedures (list, optional): list with dict with procedure, eg: 
+        [{"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, 
+        {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]
+        . Defaults to None.
+
+    Returns:
+        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+    """    
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -142,6 +191,15 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
 
 
 def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas.Canvas, Response]:
+    """Add secondary procedures
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        procedures (list): list with dicts with procedures
+
+    Returns:
+        Union[canvas.Canvas, Response]: canvas updated or Response with error
+    """    
     #verify if the type is list
     try:
         if procedures == None:
