@@ -12,7 +12,18 @@ from pdfs import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY, WRITE_PRESCRICAO_MEDICA_DIRECTORY
 
 
-def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name:str, prescription:list) -> Union[PdfWriter, Response]:
+def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name:str, prescription:list) -> Union[bytes, Response]:
+    """fill pdf prescricao medica with 2 pages 
+
+    Args:
+        document_datetime (datetime.datetime): document_datetime
+        patient_name (str): patient_name
+        prescription (list): prescription
+
+    Returns:
+        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+    """    
+
 
     try:
         try:

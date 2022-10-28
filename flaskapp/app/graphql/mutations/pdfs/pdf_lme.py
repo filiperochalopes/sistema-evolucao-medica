@@ -186,7 +186,7 @@ def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, int
 
 
 def add_medicines(can:canvas.Canvas, medicines:list) -> Union[canvas.Canvas, Response]:
-   """Add medicines to canvas
+    """Add medicines to canvas
 
     Args:
         can (canvas.Canvas): canvas to use
