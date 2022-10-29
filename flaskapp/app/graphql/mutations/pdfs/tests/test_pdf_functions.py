@@ -10,7 +10,7 @@ def test_truevalidateCPF():
     assert pdf_functions.is_CPF_valid('434.234.123-99') == True
 
 def test_wrongCPFtype():
-    assert pdf_functions.is_CPF_valid(8167423414).status == Response(status=500).status
+    assert pdf_functions.is_CPF_valid(8167423414).status == Response(status=400).status
 
 
 def test_emptyCPF():
@@ -23,7 +23,7 @@ def test_truevalidateCNS():
     assert pdf_functions.is_CNS_valid(928976954930007) == True
 
 def test_wrongCNStype():
-    assert pdf_functions.is_CNS_valid('8167423414').status == Response(status=500).status
+    assert pdf_functions.is_CNS_valid('8167423414').status == Response(status=400).status
 
 
 def test_longnotvalidateRG():
@@ -36,7 +36,7 @@ def test_truevalidateRG():
     assert pdf_functions.is_RG_valid(928976954930007) == True
 
 def test_wrongRGtype():
-    assert pdf_functions.is_RG_valid('8167423414').status == Response(status=500).status
+    assert pdf_functions.is_RG_valid('8167423414').status == Response(status=400).status
 
 
 #test CNPJ
@@ -47,13 +47,13 @@ def test_truevalidateCNPJ():
     assert pdf_functions.is_CNPJ_valid('37549670000171') == True
 
 def test_wrongCNPJtype():
-    assert pdf_functions.is_CNPJ_valid(37549670000171).status == Response(status=500).status
+    assert pdf_functions.is_CNPJ_valid(37549670000171).status == Response(status=400).status
 
 
 #Test UF exists
 
 def test_wrongtype_patient_adressUF():
-    assert pdf_functions.uf_exists(1231).status == Response(status=500).status
+    assert pdf_functions.uf_exists(1231).status == Response(status=400).status
 
 def test_notexistopiton_patient_adressUF():
     assert pdf_functions.uf_exists('AUYD') == False

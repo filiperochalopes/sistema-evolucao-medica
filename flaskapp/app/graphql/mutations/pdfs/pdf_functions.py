@@ -5,6 +5,42 @@ from reportlab.pdfgen import canvas
 from PyPDF2  import PdfWriter
 import datetime
 from typing import Union
+from inspect import getfullargspec
+
+def validate_func_args(function_to_verify, variables_to_verify:dict) -> Union[None, Response]:
+    """validate all args with the type needed or default values
+
+    Args:
+        function_to_verify: function to verify, like function_to_verify
+        variables_to_verify (dict): dict with variable name and variable valuea
+
+    Returns:
+        [None, Response]: None if is all alright or Response with a error
+    """  
+    try:
+    #get args types and defaults types form function
+        args_types = getfullargspec(function_to_verify)[6]
+        defaults_types = getfullargspec(function_to_verify)[3]
+        if defaults_types == None:
+            defaults_types = (None, None)
+        #Verify every key
+        for variables_keys in args_types.keys():
+            if variables_keys == 'return':
+                continue
+
+            right_type = args_types[variables_keys]
+            arg_to_validate = type(variables_to_verify[variables_keys])
+            
+            if right_type == arg_to_validate or arg_to_validate in defaults_types:
+                continue
+            else:
+                return Response(f'{variables_keys} has wrong type, has to be {right_type}', status=400)
+        return None
+    except KeyError:
+        return Response(f'KeyError, some key in {function_to_verify} is missing, when validate types, keys needed {args_types.keys()}', status=500)
+    except:
+        return Response(f'unkown error while validate_func_args {variables_keys} in {function_to_verify} function', status=500)
+
 
 
 def is_CNS_valid(cns:int) -> bool:
@@ -14,8 +50,9 @@ def is_CNS_valid(cns:int) -> bool:
     Args:
         cns (int): cns number that will be validated
     """
-    if type(cns) != type(int()):
-        return Response('The api has to use CNS as intenger to validate, please check te function', status=500)
+    verify = validate_func_args(function_to_verify=is_CNS_valid, variables_to_verify={'cns':cns})
+    if type(verify) == type(Response()):
+        return verify
     cns = ''.join(filter(str.isdigit, str(cns)))
     if len(cns) != 15:
         return False
@@ -30,8 +67,9 @@ def is_RG_valid(rg:int) -> bool:
     # so theres a chance that a invalid RG has pass as Valid
     # just because RG is matematician valid dont mean that exists in government database
     #the only verification that can do is the maximum value
-    if type(rg) != type(int()):
-        return Response('The api has to use RG as intenger to validate, please check te function', status=500)
+    verify = validate_func_args(function_to_verify=is_RG_valid, variables_to_verify={'rg':rg})
+    if type(verify) == type(Response()):
+        return verify
     if 5 < len(str(rg)) < 17:
         return True
     return False
@@ -45,9 +83,10 @@ def is_CPF_valid(cpf: str) -> bool:
 
     Returns:
         bool: true or false
-    """    
-    if type(cpf) != type(str()):
-        return Response('The api has to use CPF as string to validate, please check te function', status=500)
+    """
+    verify = validate_func_args(function_to_verify=is_CPF_valid, variables_to_verify={'cpf':cpf})
+    if type(verify) == type(Response()):
+        return verify
     # Verify format
     if not re.match(r'\d{3}\.\d{3}\.\d{3}-\d{2}', cpf):
         return False
@@ -84,8 +123,9 @@ def uf_exists(uf:str) -> Union[bool, Response]:
         Bollean true or false
         Reponse if the receive worng type
     """    
-    if type(uf) != type(str()):
-        return Response('The api has to use UF as string to validate, please check te function', status=500)
+    verify = validate_func_args(function_to_verify=uf_exists, variables_to_verify={'uf':uf})
+    if type(verify) == type(Response()):
+        return verify
     return bool(re.match(r'^(\s*(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)?)$', uf, flags=re.I))
 
 
@@ -98,9 +138,11 @@ def is_CNPJ_valid(cnpj:str) -> Union[bool, Response]:
     Returns:
         Bollean true or false
         Reponse if the receive worng type
-    """    
-    if type(cnpj) != type(str()):
-        return Response('The api has to use cnpj as string to validate, please check te function', status=500)
+    """
+    verify = validate_func_args(function_to_verify=is_CNPJ_valid, variables_to_verify={'cnpj':cnpj})
+    if type(verify) == type(Response()):
+        return verify
+
     if len(cnpj) != 14:
         return False
 
