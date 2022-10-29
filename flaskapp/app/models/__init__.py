@@ -163,9 +163,10 @@ class Drug(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     usual_dosage = db.Column(db.String)
+    usual_route = db.Column(db.String)
     comment = db.Column(
         db.Text, comment="Aqui pode colocar alguma dica de uso em pediatria, ou melhor aplicação de antibioticoterapia, além de restrição de uso")
-    kind = db.Column(db.Enum(SexEnum), nullable=False)
+    kind = db.Column(db.Enum(DrugKindEnum), nullable=False)
 
 
 class DrugPrescription(db.Model):
@@ -174,22 +175,11 @@ class DrugPrescription(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     drug_id = db.Column(db.Integer, ForeignKey("drugs.id"))
     dosage = db.Column(db.String)
+    route = db.Column(db.String)
     initial_date = db.Column(db.Date)
     ending_date = db.Column(db.Date)
 
     prescription_id = db.Column(db.Integer, ForeignKey("prescriptions.id"))
-
-class PrescriptionCheck(db.Model):
-    '''
-    Armazena informações de checagem/feito de medicações por parte dos técnicos de enfermagem
-    '''
-    __tablename__ = 'prescription_checks'
-
-    id = db.Column(db.Integer, primary_key=True)
-    professional_id = db.Column(db.Integer, ForeignKey("users.id"))
-    drug_prescription_id = db.Column(db.Integer, ForeignKey("drug_prescriptions.id"))
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
 
 class Diet(db.Model):
     __tablename__ = 'diets'
@@ -245,7 +235,7 @@ class Internment(db.Model):
     cid10_code = db.Column(db.String, ForeignKey("cid10.code"))
     cid10 = relationship('Cid10')
 
-    vitals = relationship('Vital', back_populates='internment')
+    measures = relationship('Measure', back_populates='internment')
     evolutions = relationship('Evolution', back_populates='internment')
     pendings = relationship('Pending', back_populates='internment')
 
@@ -275,8 +265,8 @@ class Prescription(db.Model):
     drug_prescriptions = relationship('DrugPrescription')
 
 
-class Vital(db.Model):
-    __tablename__ = 'vitals'
+class Measure(db.Model):
+    __tablename__ = 'measures'
 
     id = db.Column(db.Integer, primary_key=True)
     spO2 = db.Column(db.Integer)
@@ -287,9 +277,13 @@ class Vital(db.Model):
     respiratory_freq = db.Column(db.Integer)
     celcius_axillary_temperature = db.Column(db.Integer)
     glucose = db.Column(db.Integer)
+    fetal_cardiac_freq = db.Column(db.Integer)
     
     internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
-    internment = relationship('Internment', back_populates='vitals')
+    internment = relationship('Internment', back_populates='measures')
+
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now())
 
     @validates('spO2')
     def validate_email(self, _, value):

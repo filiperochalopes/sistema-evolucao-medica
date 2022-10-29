@@ -5,7 +5,9 @@ type_defs = gql('''
     type Query {
        users: [User]
        cid10: [Cid10!]
-       patients: [Patient]
+       patients(queryNameCnsCpf:String): [Patient]
+       internments(active:Boolean): [Internment]
+       evolutions(patientId:ID!): Evolution
     }
 
     type Mutation {
@@ -129,6 +131,71 @@ type_defs = gql('''
         hpi: String
         justification: String
         cid10Code: String
+        createdAt: String
+        evolutions: [Evolution]
+        measures: [Measure]
+        prescription: [Prescription]
+    }
+
+
+    type Evolution{
+        id: ID!
+        text: String
+        professional: User
+        createdAt: String
+    }
+
+    type Measure{
+        id: ID!
+        spO2: Int
+        pain: Int
+        sistolicBloodPressure: Int
+        diastolicBloodPressure: Int
+        cardiacFrequency: Int
+        respiratoryFrequency: Int
+        celciusAxillaryTemperature: Int
+        glucose: Int
+        fetalCardiacFrequency: Int
+        professional: User
+        createdAt: String
+    }
+
+    type RestingActivity{
+        id: ID!
+        name: String
+    }
+
+    type NursingActivity{
+        id: ID!
+        name: String
+    }
+
+    type Diet{
+        id: ID!
+        name: String
+    }
+
+    type Drug{
+        id: ID!
+        name: String
+        usualDosage: String
+        comment: String
+        kind: String
+    }
+
+    type DrugPrescription{
+        id: ID!
+        drug: Drug
+        dosage: String
+        initialDate: String
+        endingDate: String
+    }
+
+    type Prescription{
+        resting: RestingActivity
+        diet: Diet
+        drugs: [DrugPrescription]
+        nursing: [NursingActivity]
         createdAt: String
     }
 
