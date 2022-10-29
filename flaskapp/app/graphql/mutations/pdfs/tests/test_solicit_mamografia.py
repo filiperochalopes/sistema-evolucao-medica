@@ -515,6 +515,7 @@ def test_JATRATADO_optionLower_tracking_mammogram():
 # health_unit_adressUF
 # health_unit_adress_city
 # health_unit_city_IBGEcode
+# patient_city_IBGEcode
 # patient_adress
 # patient_adress_number
 # patient_adress_adjunct
@@ -631,6 +632,20 @@ def test_invalid_value_health_unit_city_IBGEcode():
 def test_long_value_health_unit_city_IBGEcode():
     assert data_to_use(health_unit_city_IBGEcode=52352352352352352352352352352).status == Response(status=400).status
 
+def test_wrongtype_patient_city_IBGEcode():
+    assert data_to_use(patient_city_IBGEcode='1212312').status == Response(status=400).status
+
+def test_empty_value_patient_city_IBGEcode():
+    assert data_to_use(patient_city_IBGEcode='').status == Response(status=400).status
+
+def test_empty_space_patient_city_IBGEcode():
+    assert data_to_use(patient_city_IBGEcode='  ').status == Response(status=400).status
+
+def test_invalid_value_patient_city_IBGEcode():
+    assert data_to_use(patient_city_IBGEcode=2411).status == Response(status=400).status
+
+def test_long_value_patient_city_IBGEcode():
+    assert data_to_use(patient_city_IBGEcode=52352352352352352352352352352).status == Response(status=400).status
 def test_wrongtype_patient_adress_number():
     assert data_to_use(patient_adress_number='1212312').status == Response(status=400).status
 
@@ -1060,11 +1075,53 @@ def test_more_than_limit_patient_nationality():
     assert data_to_use(patient_nationality=lenght_test[:35]).status == Response(status=400).status
 
 
+#################################################################################
+# TEST INT VARIABLES CAN/CANNOT BE NULL
+# document_chart_number
+# exam_number
+# patient_phonenumber
+# !!!!! TESTING
+# wrong type
+# test empty value
+# test empty space
+# short value
+# long value  
 
+def test_wrong_type_document_chart_number():
+    assert data_to_use(document_chart_number='131').status == Response(status=400).status
 
+def test_empty_value_document_chart_number():
+    assert data_to_use(document_chart_number='').status == Response(status=400).status
 
+def test_empty_spaces_document_chart_number():
+    assert data_to_use(document_chart_number='    ').status == Response(status=400).status
 
+def test_longValue_document_chart_number():
+    assert data_to_use(document_chart_number=int(lenght_test[:15])).status == Response(status=400).status
 
+def test_wrong_type_exam_number():
+    assert data_to_use(exam_number='131').status == Response(status=400).status
+
+def test_empty_value_exam_number():
+    assert data_to_use(exam_number='').status == Response(status=400).status
+
+def test_empty_spaces_exam_number():
+    assert data_to_use(exam_number='    ').status == Response(status=400).status
+
+def test_longValue_exam_number():
+    assert data_to_use(exam_number=int(lenght_test[:20])).status == Response(status=400).status
+
+def test_wrong_type_patient_phonenumber():
+    assert data_to_use(patient_phonenumber='131').status == Response(status=400).status
+
+def test_empty_value_patient_phonenumber():
+    assert data_to_use(patient_phonenumber='').status == Response(status=400).status
+
+def test_empty_spaces_patient_phonenumber():
+    assert data_to_use(patient_phonenumber='    ').status == Response(status=400).status
+
+def test_longValue_patient_phonenumber():
+    assert data_to_use(patient_phonenumber=int(lenght_test[:14])).status == Response(status=400).status
 
 
 
