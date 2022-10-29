@@ -260,24 +260,11 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_
         if nullable:
             if text == None or len(str(text).strip()) == 0:
                 return can
-        if type(text) != type(str()):
-            return Response(f'{camp_name} has to be string, if can be null, please add nullable option', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos) != type(tuple()):
-            return Response(f'pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(len_max) != type(int()):
-            return Response(f'len_max has to be int', status=500)
-        elif type(len_min) != type(int()):
-            return Response(f'len_min has to be int', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
-        elif type(centralized) != type(bool()):
-            return Response(f'centralized has to be bool', status=500)
+
+        verify = validate_func_args(function_to_verify=add_oneline_text, variables_to_verify={'can':can, 'text':text, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized})
+        if type(verify) == type(Response()):
+            return verify
+        
 
         if not nullable:
             text = text.strip()
@@ -322,6 +309,10 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         if nullable:
             if text == None or len(str(text).strip()) == 0:
                 return can
+        verify = validate_func_args(function_to_verify=add_morelines_text, variables_to_verify={'can':can, 'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'camp_name':camp_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval})
+        if type(verify) == type(Response()):
+            return verify
+
         if type(text) != type(str()):
             return Response(f'{camp_name} has to be string, if can be null, please add nullable option', status=400)
         elif type(can) != type(canvas.Canvas(filename=None)):
