@@ -1301,12 +1301,81 @@ def test_notexistopiton_breast_surgery_before():
 # long value  
 # test not exist option
 
+def test_empty_spaces_diagnostic_mammogram():
+    assert data_to_use(diagnostic_mammogram='    ').status == Response(status=400).status
+
+def test_wrongtype_diagnostic_mammogram():
+    assert data_to_use(diagnostic_mammogram={
+    'exame_clinico':[
+        [
+            'PAPILAR', 
+            {'123': 12121221,
+            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ],
+        [
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
+            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ]
+        ]}).status == Response(status=400).status
 
 
+def test_right_diagnostic_mammogram_exame_clinico():
+    assert type(data_to_use(diagnostic_mammogram={
+    'exame_clinico':
+        {'direita':[
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
+            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ],
+        'esquerda':[
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
+            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ]
+        }})) != type(Response())
 
+def test_right_diagnostic_mammogram_controle_radiologico():
+    assert type(data_to_use(diagnostic_mammogram={
+        'controle_radiologico':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        }
+        })) != type(Response())
 
+def test_right_diagnostic_mammogram_lesao_diagnostico():
+    assert type(data_to_use(diagnostic_mammogram={
+        'lesao_diagnostico':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        }})) != type(Response())
 
+def test_right_diagnostic_mammogram_avaliacao_resposta():
+    assert type(data_to_use(diagnostic_mammogram={
+        'avaliacao_resposta':
+        ['direita', 'esquerda']})) != type(Response())
 
+def test_right_diagnostic_mammogram_revisao_mamografia_lesao():
+    assert type(data_to_use(diagnostic_mammogram={
+        'revisao_mamografia_lesao':
+        {'direita': ['0', '3', '4', '5'],
+        'esquerda': ['0', '3', '4', '5']
+        }})) != type(Response())
+
+def test_right_diagnostic_mammogram_revisao_controle_lesao():
+    assert type(data_to_use(diagnostic_mammogram={
+        'controle_lesao':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        }})) != type(Response())
 
 
 
