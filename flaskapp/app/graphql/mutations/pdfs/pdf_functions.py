@@ -319,28 +319,6 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         if type(verify) == type(Response()):
             return verify
 
-        if type(text) != type(str()):
-            return Response(f'{camp_name} has to be string, if can be null, please add nullable option', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(initial_pos) != type(tuple()):
-            return Response(f'initial_pos has to be tuple', status=500)
-        elif type(decrease_ypos) != type(int()):
-            return Response(f'decrease_ypos has to be int', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(len_max) != type(int()):
-            return Response(f'len_max has to be int', status=500)
-        elif type(char_per_lines) != type(int()):
-            return Response(f'char_per_lines has to be int', status=500)
-        elif type(max_lines_amount) != type(int()) and max_lines_amount != None:
-            return Response(f'max_lines_amount has to be int', status=500)
-        elif type(len_min) != type(int()):
-            return Response(f'len_min has to be int', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
 
         if not nullable:
             text = text.strip()
@@ -390,20 +368,10 @@ def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, nul
         if nullable:
             if number == None:
                 return can
-        if type(number) != type(int()):
-            return Response(f'{camp_name} has to be int, if can be null, please add nullable option', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos) != type(tuple()):
-            return Response(f'pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
-        elif type(formated) != type(bool()):
-            return Response(f'formated has to be bool', status=500)
+
+        verify = validate_func_args(function_to_verify=add_phonenumber, variables_to_verify={'can':can, 'number':number, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval, 'formated':formated})
+        if type(verify) == type(Response()):
+            return verify
         
         number = str(number)
         if 10 <= len(number) <= 11:
@@ -435,20 +403,11 @@ def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, camp_name:str, nullable:bool=
         if nullable:
             if cep == None:
                 return can
-        if type(cep) != type(int()):
-            return Response(f'{camp_name} has to be int, if can be null, please add nullable option', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos) != type(tuple()):
-            return Response(f'pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
-        elif type(formated) != type(bool()):
-            return Response(f'formated has to be bool', status=500)
+
+        verify = validate_func_args(function_to_verify=add_CEP, variables_to_verify={'can':can, 'cep':cep, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval, 'formated':formated})
+        if type(verify) == type(Response()):
+            return verify
+
         
         cep = str(cep)
         if len(cep) == 8:
@@ -489,28 +448,11 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:st
         if nullable:
             if number == None:
                 return can
-        if type(number) != type(int()):
-            return Response(f'{camp_name} has to be int, if can be null, please add nullable option', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos) != type(tuple()):
-            return Response(f'pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(len_max) != type(int()):
-            return Response(f'len_max has to be int', status=500)
-        elif type(len_min) != type(int()):
-            return Response(f'len_min has to be int', status=500)
-        elif type(value_max) != type(int()):
-            return Response(f'value_max has to be int', status=500)
-        elif type(value_min) != type(int()):
-            return Response(f'value_min has to be int', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
-        elif type(centralized) != type(bool()):
-            return Response(f'centralized has to be bool', status=500)
+
+        verify = validate_func_args(function_to_verify=add_oneline_intnumber, variables_to_verify={'can':can, 'number':number, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'value_min':value_min, 'value_max':value_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized})
+        if type(verify) == type(Response()):
+            return verify
+
 
         # verify if number is in the need lenght
         if value_min > number or value_max < number:
@@ -555,30 +497,11 @@ def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_nam
         if nullable:
             if number == None:
                 return can
-        if type(number) != type(float()) and type(number) != type(int()):
-            return Response(f'{camp_name} has to be float, if can be null, please add nullable option', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos) != type(tuple()):
-            return Response(f'pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(len_max) != type(int()):
-            return Response(f'len_max has to be int', status=500)
-        elif type(len_min) != type(int()):
-            return Response(f'len_min has to be int', status=500)
-        elif type(value_max) != type(float()) and type(number) != type(int()):
-            return Response(f'value_max has to be float', status=500)
-        elif type(value_min) != type(float()) and type(number) != type(int()):
-            return Response(f'value_min has to be float', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
-        elif type(centralized) != type(bool()):
-            return Response(f'centralized has to be bool', status=500)
-        elif type(ndigits) != type(int()):
-            return Response(f'ndigits has to be int', status=500)
+
+        verify = validate_func_args(function_to_verify=add_oneline_floatnumber, variables_to_verify={'can':can, 'number':number, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'value_min':value_min, 'value_max':value_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized, 'ndigits':ndigits})
+        if type(verify) == type(Response()):
+            return verify
+        
 
         # verify if number is in the need lenght
         if value_min > number or value_max < number:
@@ -639,20 +562,11 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, camp_name:str,nullable:bool=F
         if nullable:
             if cns == None:
                 return can
-        if type(cns) != type(int()):
-            return Response(f'{camp_name} has to be int', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos) != type(tuple()):
-            return Response(f'pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(formated) != type(bool()):
-            return Response(f'formated has to be bool', status=500)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
+
+        verify = validate_func_args(function_to_verify=add_cns, variables_to_verify={'can':can, 'cns':cns, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated, 'interval':interval})
+        if type(verify) == type(Response()):
+            return verify
+        
 
         # Verify if the cns is valid
         if is_CNS_valid(cns):
@@ -690,18 +604,11 @@ def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, camp_name:str,nullable:bool
         if nullable:
             if cnpj == None:
                 return can
-        if type(cnpj) != type(int()):
-            return Response(f'{camp_name} has to be int', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos) != type(tuple()):
-            return Response(f'pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
+
+        verify = validate_func_args(function_to_verify=add_cnpj, variables_to_verify={'can':can, 'cnpj':cnpj, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'interval':interval})
+        if type(verify) == type(Response()):
+            return verify
+
 
         # Verify if the cnpj is valid
         cnpj = str(cnpj)
@@ -738,18 +645,11 @@ def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:boo
         if nullable:
             if cnae == None:
                 return can
-        if type(cnae) != type(int()):
-            return Response(f'{camp_name} has to be int', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos) != type(tuple()):
-            return Response(f'pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(formated) != type(bool()):
-            return Response(f'formated has to be bool', status=500)
+
+        verify = validate_func_args(function_to_verify=add_cnae, variables_to_verify={'can':can, 'cnae':cnae, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated})
+        if type(verify) == type(Response()):
+            return verify
+
 
         cnae = str(cnae)
         if len(cnae) == 7:
@@ -784,18 +684,11 @@ def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:boo
         if nullable:
             if cbor == None:
                 return can
-        if type(cbor) != type(int()):
-            return Response(f'{camp_name} has to be int', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos) != type(tuple()):
-            return Response(f'pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(formated) != type(bool()):
-            return Response(f'formated has to be bool', status=500)
+
+        verify = validate_func_args(function_to_verify=add_cbor, variables_to_verify={'can':can, 'cbor':cbor, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated})
+        if type(verify) == type(Response()):
+            return verify
+
 
         cbor = str(cbor)
         if len(cbor) == 6:
@@ -831,20 +724,11 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
         if nullable:
             if sex == None or len(str(sex).strip()) == 0:
                 return can
-        if type(sex) != type(str()):
-            return Response(f'{camp_name} has to be str', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos_male) != type(tuple()):
-            return Response(f'pos_male has to be tuple', status=500)
-        elif type(pos_fem) != type(tuple()):
-            return Response(f'pos_fem has to be tuple', status=500)
-        elif type(square_size) != type(tuple()):
-            return Response(f'square_size has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
+
+        verify = validate_func_args(function_to_verify=add_sex_square, variables_to_verify={'can':can, 'sex':sex, 'pos_male':pos_male, 'pos_fem':pos_fem, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
+        if type(verify) == type(Response()):
+            return verify
+        
 
         sex = sex.upper()
         if len(sex) != 1:
