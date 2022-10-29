@@ -768,24 +768,11 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name
         if nullable:
             if date == None:
                 return can
-        if type(date) != type(datetime.datetime.now()):
-            return Response(f'{camp_name} has to be datetime object', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos) != type(tuple()):
-            return Response(f'pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(hours) != type(bool()):
-            return Response(f'hours has to be bool', status=500)
-        elif type(formated) != type(bool()):
-            return Response(f'formated has to be bool', status=500)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
-        elif type(interval_between_numbers) != type(str()):
-            return Response(f'interval_between_numbers has to be str', status=500)
+        
+        verify = validate_func_args(function_to_verify=add_datetime, variables_to_verify={'can':can, 'date':date, 'pos':pos, 'camp_name':camp_name, 'hours':hours, 'nullable':nullable, 'formated':formated, 'interval':interval, 'interval_between_numbers':interval_between_numbers})
+        if type(verify) == type(Response()):
+            return verify
+
 
         #Add to respective fields
         str_date = str('%02d/%02d/%d %02d:%02d:%02d') % (date.day, date.month, date.year, date.hour, date.minute, date.second)
@@ -826,18 +813,11 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=Fa
         if nullable:
             if uf == None or str(uf).strip() == '':
                 return can
-        if type(uf) != type(str()):
-            return Response(f'{camp_name} has to be string, if can be null, please add nullable option', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos) != type(tuple()):
-            return Response(f'pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
+
+        verify = validate_func_args(function_to_verify=add_UF, variables_to_verify={'can':can, 'uf':uf, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval})
+        if type(verify) == type(Response()):
+            return verify
+
         
         uf = uf.strip()
         if uf_exists(uf=uf):
@@ -878,32 +858,12 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
         if nullable:
             if document == None:
                 return can
-        if type(document) != type(dict()):
-            return Response(f'{camp_name} document has to be a dict ("document":"number")', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(square_size) != type(tuple()):
-            return Response(f'square_size has to be tuple', status=500)
-        elif type(pos_cpf) != type(tuple()) and pos_cpf != None:
-            return Response(f'pos_cpf has to be tuple', status=500)
-        elif type(pos_cns) != type(tuple()) and pos_cns != None:
-            return Response(f'pos_cns has to be tuple', status=500)
-        elif type(pos_rg) != type(tuple()) and pos_rg != None:
-            return Response(f'pos_rg has to be tuple', status=500)
-        elif type(pos_square_cpf) != type(tuple()) and pos_square_cpf != None:
-            return Response(f'pos_square_cpf has to be tuple', status=500)
-        elif type(pos_square_cns) != type(tuple()) and pos_square_cns != None:
-            return Response(f'pos_square_cns has to be tuple', status=500)
-        elif type(pos_square_rg) != type(tuple()) and pos_square_rg != None:
-            return Response(f'pos_square_rg has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
-        elif type(formated) != type(bool()):
-            return Response(f'formated has to be bool', status=500)
+
+        
+        verify = validate_func_args(function_to_verify=add_document_cns_cpf_rg, variables_to_verify={'can':can, 'document':document, 'camp_name':camp_name, 'square_size':square_size, 'pos_cpf':pos_cpf, 'pos_cns':pos_cns, 'pos_rg':pos_rg, 'pos_square_cpf':pos_square_cpf, 'pos_square_cns':pos_square_cns, 'pos_square_rg':pos_square_rg, 'nullable':nullable, 'interval':interval, 'formated':formated}, nullable_variables=['pos_cpf', 'pos_cns', 'pos_rg', 'pos_square_cpf', 'pos_square_cns', 'pos_square_rg'])
+        if type(verify) == type(Response()):
+            return verify
+
         
         # See id document is CPF, CNS or RG
         all_document_keys = document.keys()
@@ -983,22 +943,10 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
         if nullable:
             if option == None or len(str(option).strip()) == 0:
                 return can
-        if type(option) != type(str()):
-            return Response(f'{camp_name} has to be str', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(valid_options) != type(list()):
-            return Response(f'valid_options has to be list', status=500)
-        elif type(options_positions) != type(tuple()):
-            return Response(f'options_positions has to be tuple', status=500)
-        elif type(square_size) != type(tuple()):
-            return Response(f'square_size has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif len(valid_options) != len(options_positions):
-            return Response(f'valid_options and options_positions has to be the same size', status=500)
+
+        verify = validate_func_args(function_to_verify=add_markable_square, variables_to_verify={'can':can, 'option':option, 'valid_options':valid_options, 'options_positions':options_positions, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
+        if type(verify) == type(Response()):
+            return verify
 
 
         option = option.upper()
@@ -1032,22 +980,11 @@ def add_multiple_markable_square(can:canvas.Canvas, options:list, valid_options:
         if nullable:
             if option == None or len(str(option).strip()) == 0:
                 return can
-        if type(option) != type(list()):
-            return Response(f'{camp_name} has to be list', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(valid_options) != type(list()):
-            return Response(f'valid_options has to be list', status=500)
-        elif type(options_positions) != type(tuple()):
-            return Response(f'options_positions has to be tuple', status=500)
-        elif type(square_size) != type(tuple()):
-            return Response(f'square_size has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif len(valid_options) != len(options_positions):
-            return Response(f'valid_options and options_positions has to be the same size', status=500)
+        
+
+        verify = validate_func_args(function_to_verify=add_multiple_markable_square, variables_to_verify={'can':can, 'options':options, 'valid_options':valid_options, 'options_positions':options_positions, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
+        if type(verify) == type(Response()):
+            return verify
 
 
         option = option.upper()
@@ -1084,34 +1021,11 @@ def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_opt
         if nullable:
             if option == None or len(str(option).strip()) == 0:
                 return can
-        if type(option) != type(str()):
-            return Response(f'{camp_name} has to be str', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(text_options) != type(list()):
-            return Response(f'text_options has to be list', status=500)
-        elif type(valid_options) != type(list()):
-            return Response(f'valid_options has to be list', status=500)
-        elif type(options_positions) != type(tuple()):
-            return Response(f'options_positions has to be tuple', status=500)
-        elif type(square_size) != type(tuple()):
-            return Response(f'square_size has to be tuple', status=500)
-        elif type(text_pos) != type(tuple()):
-            return Response(f'text_pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(text) != type(str()) and text != None:
-            return Response(f'text has to be str or None', status=400)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(len_max) != type(int()):
-            return Response(f'len_max has to be int', status=500)
-        elif type(len_min) != type(int()):
-            return Response(f'len_min has to be int', status=500)
-        elif len(valid_options) != len(options_positions):
-            return Response(f'valid_options and options_positions has to be the same size', status=500)
+
+        
+        verify = validate_func_args(function_to_verify=add_markable_square_and_onelinetext, variables_to_verify={'can':can, 'option':option, 'valid_options':valid_options, 'text_options':text_options, 'text_pos':text_pos, 'options_positions':options_positions, 'camp_name':camp_name, 'len_max':len_max, 'text':text, 'len_min':len_min, 'interval':interval, 'square_size':square_size, 'nullable':nullable}, nullable_variables=['text'])
+        if type(verify) == type(Response()):
+            return verify
 
         #Verify if option exist
         option = option.upper()
@@ -1153,34 +1067,10 @@ def add_markable_square_and_morelinestext(can:canvas.Canvas, option:str, valid_o
         if nullable:
             if option == None or len(str(option).strip()) == 0:
                 return can
-        if type(option) != type(str()):
-            return Response(f'{camp_name} has to be str', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(text_options) != type(list()):
-            return Response(f'text_options has to be list', status=500)
-        elif type(valid_options) != type(list()):
-            return Response(f'valid_options has to be list', status=500)
-        elif type(options_positions) != type(tuple()):
-            return Response(f'options_positions has to be tuple', status=500)
-        elif type(square_size) != type(tuple()):
-            return Response(f'square_size has to be tuple', status=500)
-        elif type(text_pos) != type(tuple()):
-            return Response(f'text_pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(text) != type(str()) and text != None:
-            return Response(f'text has to be str', status=400)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(len_max) != type(int()):
-            return Response(f'len_max has to be int', status=500)
-        elif type(len_min) != type(int()):
-            return Response(f'len_min has to be int', status=500)
-        elif len(valid_options) != len(options_positions):
-            return Response(f'valid_options and options_positions has to be the same size', status=500)
+
+        verify = validate_func_args(function_to_verify=add_markable_square_and_morelinestext, variables_to_verify={'can':can, 'option':option, 'valid_options':valid_options, 'text_options':text_options, 'text_pos':text_pos, 'options_positions':options_positions, 'camp_name':camp_name, 'len_max':len_max, 'decrease_ypos':decrease_ypos, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'text':text, 'len_min':len_min, 'interval':interval, 'square_size':square_size, 'nullable':nullable}, nullable_variables=['text'])
+        if type(verify) == type(Response()):
+            return verify
 
         #Verify if option exist
         option = option.upper()
