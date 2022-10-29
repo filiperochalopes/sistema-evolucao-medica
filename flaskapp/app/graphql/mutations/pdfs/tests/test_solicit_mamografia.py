@@ -1124,6 +1124,193 @@ def test_longValue_patient_phonenumber():
     assert data_to_use(patient_phonenumber=int(lenght_test[:14])).status == Response(status=400).status
 
 
+#################################################################################
+# TEST markable square and oneline text
+# radiotherapy_before
+# patient_ethnicity
+# mammogram_before
+# test wrong type
+# short value
+# long value  
+# test not exist option
+# test all options in Upper Case
+# test all options in lower Case
+
+def test_empty_spaces_patient_ethnicity():
+    assert data_to_use(patient_ethnicity='    ').status == Response(status=400).status
+
+def test_longValue_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=['INDIGENA', lenght_test[:15]]).status == Response(status=400).status
+
+def test_wrongtype_patient_ethnicity():
+    assert data_to_use(patient_ethnicity=1231).status == Response(status=400).status
+
+def test_notexistopiton_patient_ethnicity():
+    assert data_to_use(patient_ethnicity='Gaa').status == Response(status=400).status
+
+def test_BRANCA_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['BRANCA', 'ehinith'])) != type(Response())
+
+def test_BRANCA_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['branca', 'ehinith'])) != type(Response())
+
+def test_PRETA_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['PRETA', 'ehinith'])) != type(Response())
+
+def test_PRETA_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['preta', 'ehinith'])) != type(Response())
+
+def test_PARDA_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['PARDA', 'ehinith'])) != type(Response())
+
+def test_PARDA_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['parda', 'ehinith'])) != type(Response())
+
+def test_AMARELA_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['AMARELA', 'ehinith'])) != type(Response())
+
+def test_AMARELA_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['amarela', 'ehinith'])) != type(Response())
+
+def test_INDIGENA_optionUpper_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['INDIGENA', 'ehinith'])) != type(Response())
+
+def test_INDIGENA_optionLower_patient_ethnicity():
+    assert type(data_to_use(patient_ethnicity=['indigena', 'ehinith'])) != type(Response())
+
+def test_empty_spaces_radiotherapy_before():
+    assert data_to_use(radiotherapy_before='    ').status == Response(status=400).status
+
+def test_longValue_radiotherapy_before():
+    assert data_to_use(radiotherapy_before=['SIMDIR', lenght_test[:6]]).status == Response(status=400).status
+
+def test_wrongtype_radiotherapy_before():
+    assert data_to_use(radiotherapy_before=1231).status == Response(status=400).status
+
+def test_notexistopiton_radiotherapy_before():
+    assert data_to_use(radiotherapy_before='Gaa').status == Response(status=400).status
+
+def test_SIMDIR_optionUpper_radiotherapy_before():
+    assert type(data_to_use(radiotherapy_before=['SIMDIR', '2020'])) != type(Response())
+
+def test_SIMDIR_optionLower_radiotherapy_before():
+    assert type(data_to_use(radiotherapy_before=['simdir', '2020'])) != type(Response())
+
+def test_SIMESQ_optionUpper_radiotherapy_before():
+    assert type(data_to_use(radiotherapy_before=['SIMESQ', '2020'])) != type(Response())
+
+def test_SIMESQ_optionLower_radiotherapy_before():
+    assert type(data_to_use(radiotherapy_before=['simesq', '2020'])) != type(Response())
+
+def test_NAO_optionUpper_radiotherapy_before():
+    assert type(data_to_use(radiotherapy_before=['NAO', '2020'])) != type(Response())
+
+def test_NAO_optionLower_radiotherapy_before():
+    assert type(data_to_use(radiotherapy_before=['nao', '2020'])) != type(Response())
+
+def test_NAOSABE_optionUpper_radiotherapy_before():
+    assert type(data_to_use(radiotherapy_before=['NAOSABE', '2020'])) != type(Response())
+
+def test_NAOSABE_optionLower_radiotherapy_before():
+    assert type(data_to_use(radiotherapy_before=['naosabe', '2020'])) != type(Response())
+
+
+#############################################################################
+# test breast_surgery_before
+# test wrong type
+# test wrong type in value
+# short value
+# long value  
+# test not exist option
+
+
+
+
+def test_empty_spaces_breast_surgery_before():
+    assert data_to_use(breast_surgery_before='    ').status == Response(status=400).status
+
+def test_longValue_breast_surgery_before():
+    assert data_to_use(breast_surgery_before={
+'did_not':False,
+"biopsia_insinonal":(654556, 216),
+'biopsia_excisional':(2021, 2020),
+'centraledomia':(2021, 2020),
+'segmentectomia':None,
+'dutectomia':(2021, 2020),
+'mastectomia':(2021, 2020),
+'mastectomia_poupadora_pele':(2021, 2020),
+'mastectomia_poupadora_pele_complexo_areolo':(2021, 2020),
+'linfadenectomia_axilar':(2021, 2020),
+'biopsia_linfonodo':(2021, 2020),
+'reconstrucao_mamaria':(2021, 2020),
+'mastoplastia_redutora':(2021, 2020),
+'indusao_implantes':(2021, 2020)
+}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_did_not():
+    assert data_to_use(breast_surgery_before={"did_not":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_biopsia_insinonal():
+    assert data_to_use(breast_surgery_before={"biopsia_insinonal":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_biopsia_excisional():
+    assert data_to_use(breast_surgery_before={"biopsia_excisional":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_centraledomia():
+    assert data_to_use(breast_surgery_before={"centraledomia":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_segmentectomia():
+    assert data_to_use(breast_surgery_before={"segmentectomia":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_dutectomia():
+    assert data_to_use(breast_surgery_before={"dutectomia":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_mastectomia():
+    assert data_to_use(breast_surgery_before={"mastectomia":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_mastectomia_poupadora_pele():
+    assert data_to_use(breast_surgery_before={"mastectomia_poupadora_pele":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_mastectomia_poupadora_pele_complexo_areolo():
+    assert data_to_use(breast_surgery_before={"mastectomia_poupadora_pele_complexo_areolo":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_linfadenectomia_axilar():
+    assert data_to_use(breast_surgery_before={"linfadenectomia_axilar":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_biopsia_linfonodo():
+    assert data_to_use(breast_surgery_before={"biopsia_linfonodo":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_reconstrucao_mamaria():
+    assert data_to_use(breast_surgery_before={"reconstrucao_mamaria":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_mastoplastia_redutora():
+    assert data_to_use(breast_surgery_before={"mastoplastia_redutora":'worntype'}).status == Response(status=400).status
+
+def test_wrongtype_breast_surgery_before_indusao_implantes():
+    assert data_to_use(breast_surgery_before={"indusao_implantes":'worntype'}).status == Response(status=400).status
+
+def test_notexistopiton_breast_surgery_before():
+    assert type(data_to_use(breast_surgery_before={"nonedxistas":(334, 41)})) != type(Response())
+
+
+#############################################################################
+# test diagnostic_mammogram
+# test wrong type
+# test wrong type in value
+# short value
+# long value  
+# test not exist option
+
+
+
+
+
+
+
+
+
+
+
 
 
 

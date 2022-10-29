@@ -356,6 +356,8 @@ def add_radiotherapy_before(can:canvas.Canvas, radiotherapy_before:list):
     try:
         if radiotherapy_before == None:
             return can
+        if type(radiotherapy_before) != type(list()):
+            return Response('radiotherapy_before has to be list', status=400)
         can = pdf_functions.add_markable_square_and_onelinetext(can=can, option=radiotherapy_before[0], valid_options=['SIMDIR', 'SIMESQ', 'NAO', 'NAOSABE'], text_options=['SIMDIR'], options_positions=((336,332), (336,319), (336, 307), (336, 294)), camp_name='Has made radiotherapy before', square_size=(15,9), len_max=4, len_min=4, text=radiotherapy_before[1], text_pos=(420, 334), interval=' ', nullable=True)
         if type(can) == type(Response()): return can
         if radiotherapy_before[0].upper() == 'SIMESQ':
