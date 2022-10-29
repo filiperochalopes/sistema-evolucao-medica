@@ -271,24 +271,6 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_
         if type(verify) == type(Response()):
             return verify
         
-        if type(text) != type(str()):
-            return Response(f'{camp_name} has to be string, if can be null, please add nullable option', status=400)
-        elif type(can) != type(canvas.Canvas(filename=None)):
-            return Response(f'can has to be canvas.Canvas object', status=500)
-        elif type(pos) != type(tuple()):
-            return Response(f'pos has to be tuple', status=500)
-        elif type(camp_name) != type(str()):
-            return Response(f'camp_name has to be str', status=500)
-        elif type(len_max) != type(int()):
-            return Response(f'len_max has to be int', status=500)
-        elif type(len_min) != type(int()):
-            return Response(f'len_min has to be int', status=500)
-        elif type(nullable) != type(bool()):
-            return Response(f'nullable has to be bool', status=500)
-        elif type(interval) != type(str()):
-            return Response(f'interval has to be str', status=500)
-        elif type(centralized) != type(bool()):
-            return Response(f'centralized has to be bool', status=500)
 
         if not nullable:
             text = text.strip()
