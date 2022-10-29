@@ -1,5 +1,6 @@
 __pycache__
 .env
+.idea
 sqlite3.db
 db.sqlite3
 flaskapp/app/assets/pdfs_templates/*
