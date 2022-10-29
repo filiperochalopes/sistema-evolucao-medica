@@ -78,6 +78,7 @@ def test_short_patient_name():
 
 def test_wrongtype_patient_name():    
     assert data_to_use(patient_name=123124).status == Response(status=400).status
+    #assert data_to_use(patient_name=123124).status == Response(status=400).status
 
 def test_empty_patient_mother_name():    
     assert type(data_to_use(patient_mother_name='')) != type(Response())

@@ -7,12 +7,13 @@ import datetime
 from typing import Union
 from inspect import getfullargspec
 
-def validate_func_args(function_to_verify, variables_to_verify:dict) -> Union[None, Response]:
+def validate_func_args(function_to_verify, variables_to_verify:dict, nullable_variables:list=[]) -> Union[None, Response]:
     """validate all args with the type needed or default values
 
     Args:
         function_to_verify: function to verify, like function_to_verify
         variables_to_verify (dict): dict with variable name and variable valuea
+        nullable_variables (list): list with variables that can be null
 
     Returns:
         [None, Response]: None if is all alright or Response with a error
@@ -23,6 +24,8 @@ def validate_func_args(function_to_verify, variables_to_verify:dict) -> Union[No
         defaults_types = getfullargspec(function_to_verify)[3]
         if defaults_types == None:
             defaults_types = (None, None)
+        
+        defaults_types = [type(x) for x in defaults_types]
         #Verify every key
         for variables_keys in args_types.keys():
             if variables_keys == 'return':
@@ -31,7 +34,9 @@ def validate_func_args(function_to_verify, variables_to_verify:dict) -> Union[No
             right_type = args_types[variables_keys]
             arg_to_validate = type(variables_to_verify[variables_keys])
             
-            if right_type == arg_to_validate or arg_to_validate in defaults_types:
+            if right_type == arg_to_validate:
+                continue
+            elif arg_to_validate in defaults_types and variables_keys in nullable_variables:
                 continue
             else:
                 return Response(f'{variables_keys} has wrong type, has to be {right_type}', status=400)
@@ -39,7 +44,8 @@ def validate_func_args(function_to_verify, variables_to_verify:dict) -> Union[No
     except KeyError:
         return Response(f'KeyError, some key in {function_to_verify} is missing, when validate types, keys needed {args_types.keys()}', status=500)
     except:
-        return Response(f'unkown error while validate_func_args {variables_keys} in {function_to_verify} function', status=500)
+        return Response(f'{arg_to_validate} type {right_type} unkown error while validate_func_args {variables_keys} in {function_to_verify} function', status=500)
+        #return Response(f'unkown error while validate_func_args {variables_keys} in {function_to_verify} function', status=500)
 
 
 
@@ -84,7 +90,7 @@ def is_CPF_valid(cpf: str) -> bool:
     Returns:
         bool: true or false
     """
-    verify = validate_func_args(function_to_verify=is_CPF_valid, variables_to_verify={'cpf':cpf})
+    verify = validate_func_args(function_to_verify=is_CPF_valid, variables_to_verify={'cpf':cpf}, nullable_variables=['cpf'])
     if type(verify) == type(Response()):
         return verify
     # Verify format
@@ -265,6 +271,24 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_
         if type(verify) == type(Response()):
             return verify
         
+        if type(text) != type(str()):
+            return Response(f'{camp_name} has to be string, if can be null, please add nullable option', status=400)
+        elif type(can) != type(canvas.Canvas(filename=None)):
+            return Response(f'can has to be canvas.Canvas object', status=500)
+        elif type(pos) != type(tuple()):
+            return Response(f'pos has to be tuple', status=500)
+        elif type(camp_name) != type(str()):
+            return Response(f'camp_name has to be str', status=500)
+        elif type(len_max) != type(int()):
+            return Response(f'len_max has to be int', status=500)
+        elif type(len_min) != type(int()):
+            return Response(f'len_min has to be int', status=500)
+        elif type(nullable) != type(bool()):
+            return Response(f'nullable has to be bool', status=500)
+        elif type(interval) != type(str()):
+            return Response(f'interval has to be str', status=500)
+        elif type(centralized) != type(bool()):
+            return Response(f'centralized has to be bool', status=500)
 
         if not nullable:
             text = text.strip()
@@ -309,7 +333,7 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         if nullable:
             if text == None or len(str(text).strip()) == 0:
                 return can
-        verify = validate_func_args(function_to_verify=add_morelines_text, variables_to_verify={'can':can, 'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'camp_name':camp_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval})
+        verify = validate_func_args(function_to_verify=add_morelines_text, variables_to_verify={'can':can, 'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'camp_name':camp_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval}, nullable_variables=['max_lines_amount'])
         if type(verify) == type(Response()):
             return verify
 
