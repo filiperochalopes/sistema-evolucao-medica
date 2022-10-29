@@ -322,16 +322,16 @@ def test_outro_with_longtext_filled_by():
     assert data_to_use(filled_by=['OUTRO', lenght_test[:45], {'CPF':28445400070}]).status == Response(status=400).status
 
 def test_medico_with_wrong_type_text_filled_by():
-    assert data_to_use(filled_by=['MEDICO', 123, {'CPF':28445400070}]).status == Response(status=400).status
+    assert type(data_to_use(filled_by=['MEDICO', 123, {'CPF':28445400070}])) != type(Response())
 
 def test_paciente_with_wrong_type_text_filled_by():
-    assert data_to_use(filled_by=['PACIENTE', 123, {'CPF':28445400070}]).status == Response(status=400).status
+    assert type(data_to_use(filled_by=['PACIENTE', 123, {'CPF':28445400070}])) != type(Response())
 
 def test_mae_with_wrong_type_text_filled_by():
-    assert data_to_use(filled_by=['MAE', 123, {'CPF':28445400070}]).status == Response(status=400).status
+    assert type(data_to_use(filled_by=['MAE', 123, {'CPF':28445400070}])) != type(Response())
 
 def test_responsavel_with_wrong_type_text_filled_by():
-    assert data_to_use(filled_by=['RESPONSAVEL', 123, {'CPF':28445400070}]).status == Response(status=400).status
+    assert type(data_to_use(filled_by=['RESPONSAVEL', 123, {'CPF':28445400070}])) != type(Response())
 
 def test_outro_with_wrong_type_text_filled_by():
     assert data_to_use(filled_by=['OUTRO', 123, {'CPF':28445400070}]).status == Response(status=400).status
