@@ -8,7 +8,9 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
-from pdfs import pdf_functions
+#from pdfs import pdf_funcitions
+from app.utils import pdf_functions
+#from utils import pdf_functions
 from pdfs.constants import FONT_DIRECTORY, TEMPLATE_AIH_SUS_DIRECTORY, WRITE_AIH_SUS_DIRECTORY
 
 
