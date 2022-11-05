@@ -187,6 +187,13 @@ class Diet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
+class State(db.Model):
+    __tablename__ = 'states'
+
+    ibge_code = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    uf = db.Column(db.String)
+
 class RestingActivity(db.Model):
     # Determinar qual o grau de atividade/repouso do paciente
     __tablename__ = 'auto_resting_activities'
@@ -208,7 +215,7 @@ class NursingActivity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     # Caso alguém crie alguma atividade inadequada ou errada
-    disabled = db.Column(db.String)
+    disabled = db.Column(db.Boolean, default=False)
     prescriptions = relationship('Prescription', secondary=NursingActivityPrescription, back_populates='nursing_activities')
 
 

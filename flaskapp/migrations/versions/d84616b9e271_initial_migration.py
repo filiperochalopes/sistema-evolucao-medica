@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 1e0f28cc805e
+Revision ID: d84616b9e271
 Revises: 
-Create Date: 2022-10-28 14:54:58.620880
+Create Date: 2022-11-05 02:12:15.636948
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1e0f28cc805e'
+revision = 'd84616b9e271'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -51,7 +51,7 @@ def upgrade():
     op.create_table('auto_nursing_activities',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
-    sa.Column('disabled', sa.String(), nullable=True),
+    sa.Column('disabled', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('auto_resting_activities',
@@ -88,6 +88,12 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('value', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('states',
+    sa.Column('ibge_code', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(), nullable=True),
+    sa.Column('uf', sa.String(), nullable=True),
+    sa.PrimaryKeyConstraint('ibge_code')
     )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -246,6 +252,7 @@ def downgrade():
     op.drop_table('patients')
     op.drop_table('fluid_balance')
     op.drop_table('users')
+    op.drop_table('states')
     op.drop_table('fluid_balance_description')
     op.drop_table('drugs')
     op.drop_table('diets')
