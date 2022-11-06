@@ -1,5 +1,5 @@
 from flask_marshmallow import Marshmallow
-from app.models import Internment, Patient, User, Cid10
+from app.models import Drug, Internment, Patient, User, Cid10
 from marshmallow import fields
 
 ma = Marshmallow()
@@ -27,9 +27,14 @@ class EnumToDictionary(fields.Field):
         return value.name
 
 
-class Cid10Schema(ma.SQLAlchemyAutoSchema):
+class Cid10Schema(CamelCaseSchema):
     class Meta:
         model = Cid10
+
+class DrugSchema(CamelCaseSchema):
+    kind = EnumToDictionary(attribute=('kind'))
+    class Meta:
+        model = Drug
 
 class UserSchema(CamelCaseSchema):
     professional_category = EnumToDictionary(

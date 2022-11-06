@@ -157,6 +157,12 @@ class Patient(db.Model):
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
 
+DrugDrugGroupPreset = Table('_drug_group_preset',
+    db.Model.metadata,
+    db.Column('drug_group_preset_id', db.Integer, ForeignKey('drug_group_presets.id'), primary_key=True),
+    db.Column('drug_id', db.Integer, ForeignKey('drugs.id'), primary_key=True))
+
+
 class Drug(db.Model):
     __tablename__ = 'drugs'
 
@@ -167,6 +173,7 @@ class Drug(db.Model):
     comment = db.Column(
         db.Text, comment="Aqui pode colocar alguma dica de uso em pediatria, ou melhor aplicação de antibioticoterapia, além de restrição de uso")
     kind = db.Column(db.Enum(DrugKindEnum), nullable=False)
+    drug_group_presets = relationship('DrugGroupPreset', secondary=DrugDrugGroupPreset, back_populates='drugs')
 
 
 class DrugPrescription(db.Model):
@@ -181,11 +188,13 @@ class DrugPrescription(db.Model):
 
     prescription_id = db.Column(db.Integer, ForeignKey("prescriptions.id"))
 
+
 class Diet(db.Model):
     __tablename__ = 'diets'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
+
 
 class State(db.Model):
     __tablename__ = 'states'
@@ -193,6 +202,7 @@ class State(db.Model):
     ibge_code = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     uf = db.Column(db.String)
+
 
 class RestingActivity(db.Model):
     # Determinar qual o grau de atividade/repouso do paciente
@@ -202,11 +212,13 @@ class RestingActivity(db.Model):
     name = db.Column(db.String)
     prescriptions = relationship('Prescription', back_populates='resting_activity')
 
+
 NursingActivityPrescription = Table('_nursing_activity_prescription',
     db.Model.metadata,
     db.Column('nursing_activity_id', db.Integer, ForeignKey('auto_nursing_activities.id'), primary_key=True),
     db.Column('prescription_id', db.Integer, ForeignKey('prescriptions.id'), primary_key=True),
     db.Column('created_at', db.DateTime(timezone=True), server_default=func.now()))
+
 
 class NursingActivity(db.Model):
     # Atividades de enfermagem como aferição de sinais vitais, checagem de FCF...
@@ -260,17 +272,30 @@ class Prescription(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    # Só temos uma dieta por prescrição
-    diet_id = db.Column(db.Integer, ForeignKey("diets.id"))
-    diet = relationship('Diet')
     # Só temos uma atividade de repouso por prescrição
     resting_activity_id = db.Column(db.Integer, ForeignKey("auto_resting_activities.id"))
     resting_activity = relationship('RestingActivity', back_populates='prescriptions')
     # Só temos uma dieta por prescrição
-    nursing_activities = relationship('NursingActivity', secondary=NursingActivityPrescription, back_populates='prescriptions')
+    diet_id = db.Column(db.Integer, ForeignKey("diets.id"))
+    diet = relationship('Diet')
     # Só podemos ter várias prescrições de medicamentos que são criadas especialmente para cada prescrição
     drug_prescriptions = relationship('DrugPrescription')
+    # Só temos uma dieta por prescrição
+    nursing_activities = relationship('NursingActivity', secondary=NursingActivityPrescription, back_populates='prescriptions')
 
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now())
+
+
+class DrugGroupPreset(db.Model):
+    __tablename__ = 'drug_group_presets'
+
+    id = db.Column(db.Integer, primary_key=True)
+    label = db.Column(db.String)
+    name = db.Column(db.String)
+    drugs = relationship('Drug', secondary=DrugDrugGroupPreset, back_populates='drug_group_presets')
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now())
 
 class Measure(db.Model):
     __tablename__ = 'measures'
