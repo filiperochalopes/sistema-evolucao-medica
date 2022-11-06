@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 from app.graphql import query
 from ariadne import convert_kwargs_to_snake_case
-from app.models import Diet, Drug, NursingActivity, RestingActivity, db
-from app.serializers import DrugSchema
+from app.models import Diet, Drug, DrugGroupPreset, NursingActivity, RestingActivity, db
+from app.serializers import DrugGroupPresetSchema, DrugSchema
 
 @query.field("prescription")
 @convert_kwargs_to_snake_case
@@ -20,12 +20,17 @@ def diet_list(*_):
 
 @query.field("drugs")
 def drug_list(*_):
-    schema = DrugSchema()
-    return [schema.dump(d) for d in db.session.query(Drug).all()]
+    schema = DrugSchema(many=True)
+    return schema.dump(db.session.query(Drug).all())
 
 @query.field("nursingActivities")
 def nursing_activity_list(*_):
     return db.session.query(NursingActivity).all()
+
+@query.field("drugPresets")
+def drug_group_preset_list(*_):
+    schema = DrugGroupPresetSchema(many=True)
+    return schema.dump(db.session.query(DrugGroupPreset).all())
 
 @query.field("prescriptionTypes")
 def prescription_type_list(*_):

@@ -1,6 +1,7 @@
 from flask_marshmallow import Marshmallow
-from app.models import Drug, Internment, Patient, User, Cid10
+from app.models import Drug, DrugGroupPreset, Internment, Patient, User, Cid10
 from marshmallow import fields
+from marshmallow_sqlalchemy import fields as sqa_fields
 
 ma = Marshmallow()
 
@@ -35,6 +36,14 @@ class DrugSchema(CamelCaseSchema):
     kind = EnumToDictionary(attribute=('kind'))
     class Meta:
         model = Drug
+
+class DrugGroupPresetSchema(CamelCaseSchema):
+    class Meta:
+        model = DrugGroupPreset
+        include_fk = True
+        include_relationships = True
+    
+    drugs = sqa_fields.RelatedList(sqa_fields.Nested(DrugSchema))
 
 class UserSchema(CamelCaseSchema):
     professional_category = EnumToDictionary(

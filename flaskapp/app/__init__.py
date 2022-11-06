@@ -128,6 +128,7 @@ def seed():
         RestingActivity(name='Repouso absoluto, cabeceira elevada 30°, atenção para lesões por pressão. Variar decúbito a cada 2h'),
         RestingActivity(name='Repouso relativo'),
     ]
+    db.session.bulk_save_objects(resting_activities)
     # Adicionndo alguns tipos de dieta
     diets = [
         Diet(name='Dieta livre'),
@@ -138,14 +139,15 @@ def seed():
         Diet(name='Dieta líquida'),
         Diet(name='Dieta zero')
     ]
+    db.session.bulk_save_objects(diets)
     # Adicionndo algumas descrições de Balanço hídrico
     fluid_balance_description = [
 
     ]
     # Adicionando alguns presets de grupo de medicamentos
-    drug_group_presets = [
-        DrugGroupPreset(label='Sintomáticos Padrão', name='sintomaticos', drugs=[Drug(name='Dipirona 500mg/mL 2ml', usual_dosage='1g, 6/6h se dor ou temp axilar > 37,8°C', usual_route='Endovenosa')])
-    ]
+    drug_group_preset_1 = DrugGroupPreset(label='Sintomáticos Padrão', name='sintomaticos')
+    db.session.add(drug_group_preset_1)
+    drug_group_preset_1.drugs.append(Drug(name='Dipirona 500mg/mL 2ml', usual_dosage='1g, 6/6h se dor ou temp axilar > 37,8°C', usual_route='Endovenosa', kind=DrugKindEnum.oth))
 
     
     # Enviando informações para o banco

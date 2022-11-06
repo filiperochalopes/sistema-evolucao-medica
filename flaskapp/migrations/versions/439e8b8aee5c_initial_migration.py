@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: c9a6736cd600
+Revision ID: 439e8b8aee5c
 Revises: 
-Create Date: 2022-11-05 11:24:17.094077
+Create Date: 2022-11-06 17:52:34.931134
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c9a6736cd600'
+revision = '439e8b8aee5c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -75,6 +75,13 @@ def upgrade():
     sa.Column('name', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('drug_group_presets',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('label', sa.String(), nullable=True),
+    sa.Column('name', sa.String(), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('drugs',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
@@ -115,6 +122,13 @@ def upgrade():
     sa.UniqueConstraint('cpf'),
     sa.UniqueConstraint('email')
     )
+    op.create_table('_drug_group_preset',
+    sa.Column('drug_group_preset_id', sa.Integer(), nullable=False),
+    sa.Column('drug_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['drug_group_preset_id'], ['drug_group_presets.id'], ),
+    sa.ForeignKeyConstraint(['drug_id'], ['drugs.id'], ),
+    sa.PrimaryKeyConstraint('drug_group_preset_id', 'drug_id')
+    )
     op.create_table('fluid_balance',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('value', sa.Integer(), nullable=True),
@@ -141,8 +155,9 @@ def upgrade():
     )
     op.create_table('prescriptions',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('diet_id', sa.Integer(), nullable=True),
     sa.Column('resting_activity_id', sa.Integer(), nullable=True),
+    sa.Column('diet_id', sa.Integer(), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.ForeignKeyConstraint(['diet_id'], ['diets.id'], ),
     sa.ForeignKeyConstraint(['resting_activity_id'], ['auto_resting_activities.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -251,10 +266,12 @@ def downgrade():
     op.drop_table('prescriptions')
     op.drop_table('patients')
     op.drop_table('fluid_balance')
+    op.drop_table('_drug_group_preset')
     op.drop_table('users')
     op.drop_table('states')
     op.drop_table('fluid_balance_description')
     op.drop_table('drugs')
+    op.drop_table('drug_group_presets')
     op.drop_table('diets')
     op.drop_table('config')
     op.drop_table('cid10')
