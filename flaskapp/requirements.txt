@@ -1,3 +1,6 @@
+Werkzeug==2.2.2
+flask==2.2.2
+requests==2.26.0
 alembic==1.8.1
 anyio==3.6.1
 ariadne==0.15.1
@@ -11,12 +14,14 @@ click==8.1.3
 colander==1.8.3
 Flask==2.0.1
 Flask-Alembic==2.0.1
+Flask-SQLAlchemy==3.0.2
 Flask-AutoCRUD==2.2.1
 Flask-CLI==0.4.0
 Flask-ErrorsHandler==4.0.2
 Flask-Logify==2.4.5
 Flask-Login==0.6.1
 flask-marshmallow==0.14.0
+Flask-Cors==3.0.10
 marshmallow-sqlalchemy==0.28.0
 Flask-Migrate==3.1.0
 Flask-ResponseBuilder==2.0.16
@@ -25,6 +30,11 @@ Flask-SQLAlchemy==2.5.1
 graphql-core==3.2.3
 greenlet==1.1.3.post0
 gunicorn==20.1.0
+WTForms
+pysqlite3==0.4.7
+pyjwt==2.5.0
+bcrypt==4.0.1
+validate-docbr==1.10.0
 idna==3.4
 importlib-metadata==5.0.0
 importlib-resources==5.10.0

@@ -1,7 +1,10 @@
 __pycache__
 .env
+
+*.db
 .idea
 sqlite3.db
 db.sqlite3
 flaskapp/app/assets/pdfs_templates/*
 flaskapp/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/*
+
