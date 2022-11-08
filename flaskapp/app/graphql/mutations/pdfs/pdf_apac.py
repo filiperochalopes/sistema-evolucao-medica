@@ -8,11 +8,14 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
-from pdfs import pdf_functions
-from pdfs.constants import FONT_DIRECTORY, TEMPLATE_APAC_DIRECTORY, WRITE_APAC_DIRECTORY
+from app.utils import pdf_functions
+from app.env import FONT_DIRECTORY, TEMPLATE_APAC_DIRECTORY, WRITE_APAC_DIRECTORY
+from app.graphql import mutation
+from ariadne import convert_kwargs_to_snake_case
 
 
-def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, document_chart_number:int=None, patient_adress_city_IBGEcode:int=None, procedure_justification_description:str=None, procedure_justification_main_cid10:str=None, procedure_justification_sec_cid10:str=None, procedure_justification_associated_cause_cid10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> Union[bytes, Response]:
+@convert_kwargs_to_snake_case
+def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adress_uf:str=None, patient_adress_cep:int=None, document_chart_number:int=None, patient_adress_city_ibge_code:int=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> Union[bytes, Response]:
     """fill pdf apac
 
     Args:
@@ -33,13 +36,13 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
         patient_adress (str, optional): patient_adress. Defaults to None.
         patient_ethnicity (str, optional): patient_ethnicity. Defaults to None.
         patient_color (str, optional): patient_color. Defaults to None.
-        patient_adressUF (str, optional): patient_adressUF. Defaults to None.
-        patient_adressCEP (int, optional): patient_adressCEP. Defaults to None.
+        patient_adress_uf (str, optional): patient_adress_uf. Defaults to None.
+        patient_adress_cep (int, optional): patient_adress_cep. Defaults to None.
         document_chart_number (int, optional): document_chart_number. Defaults to None.
-        patient_adress_city_IBGEcode (int, optional): patient_adress_city_IBGEcode. Defaults to None.
+        patient_adress_city_ibge_code (int, optional): patient_adress_city_ibge_code. Defaults to None.
         procedure_justification_description (str, optional): procedure_justification_description. Defaults to None.
-        procedure_justification_main_cid10 (str, optional): procedure_justification_main_cid10. Defaults to None.
-        procedure_justification_sec_cid10 (str, optional): procedure_justification_sec_cid10. Defaults to None.
+        procedure_justification_main_cid_10 (str, optional): procedure_justification_main_cid_10. Defaults to None.
+        procedure_justification_sec_cid_10 (str, optional): procedure_justification_sec_cid_10. Defaults to None.
         procedure_justification_associated_cause_cid10 (str, optional): procedure_justification_associated_cause_cid10. Defaults to None.
         procedure_justification_comments (str, optional): procedure_justification_comments. Defaults to None.
         establishment_exec_name (str, optional): establishment_exec_name. Defaults to None.
@@ -123,19 +126,19 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=patient_ethnicity, pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adressCEP, pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, value_min=0, value_max=99999999, nullable=True, interval=' ')
+            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_cep, pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, value_min=0, value_max=99999999, nullable=True, interval=' ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=document_chart_number, pos=(483, 702), camp_name='Document Chart Number', len_max=14, len_min=1, value_min=0, value_max=99999999999999, nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_city_IBGEcode, pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True)
+            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_city_ibge_code, pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_UF(can=c, uf=patient_adressUF, pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
+            c = pdf_functions.add_UF(can=c, uf=patient_adress_uf, pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_description, pos=(36, 344), camp_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_main_cid10, pos=(352, 344), camp_name='Procedure Justification main CID10', len_max=4, len_min=3, nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_main_cid_10, pos=(352, 344), camp_name='Procedure Justification main CID10', len_max=4, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_sec_cid10, pos=(420, 344), camp_name='Procedure Justification secondary CID10', len_max=4, len_min=3, nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_sec_cid_10, pos=(420, 344), camp_name='Procedure Justification secondary CID10', len_max=4, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_associated_cause_cid10, pos=(505, 344), camp_name='Procedure Justification Associated Causes CID10', len_max=4, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
