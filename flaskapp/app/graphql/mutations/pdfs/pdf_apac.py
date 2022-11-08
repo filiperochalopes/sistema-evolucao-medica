@@ -1,6 +1,6 @@
 import base64
 import datetime
-from PyPDF2  import PdfWriter, PdfReader
+from PyPDF2 import PdfWriter, PdfReader
 import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
@@ -14,8 +14,8 @@ from app.graphql import mutation
 from ariadne import convert_kwargs_to_snake_case
 
 
-@convert_kwargs_to_snake_case
-def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adress_uf:str=None, patient_adress_cep:int=None, document_chart_number:int=None, patient_adress_city_ibge_code:int=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> Union[bytes, Response]:
+
+def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adress_uf:str=None, patient_adress_cep:int=None, document_chart_number:int=None, patient_adress_city_ibge_code:int=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> Union[bytes, Response]:
     """fill pdf apac
 
     Args:
@@ -43,7 +43,7 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
         procedure_justification_description (str, optional): procedure_justification_description. Defaults to None.
         procedure_justification_main_cid_10 (str, optional): procedure_justification_main_cid_10. Defaults to None.
         procedure_justification_sec_cid_10 (str, optional): procedure_justification_sec_cid_10. Defaults to None.
-        procedure_justification_associated_cause_cid10 (str, optional): procedure_justification_associated_cause_cid10. Defaults to None.
+        procedure_justification_associated_cause_cid_10 (str, optional): procedure_justification_associated_cause_cid_10. Defaults to None.
         procedure_justification_comments (str, optional): procedure_justification_comments. Defaults to None.
         establishment_exec_name (str, optional): establishment_exec_name. Defaults to None.
         establishment_exec_cnes (int, optional): establishment_exec_cnes. Defaults to None.
@@ -140,7 +140,7 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_sec_cid_10, pos=(420, 344), camp_name='Procedure Justification secondary CID10', len_max=4, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_associated_cause_cid10, pos=(505, 344), camp_name='Procedure Justification Associated Causes CID10', len_max=4, len_min=3, nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_associated_cause_cid_10, pos=(505, 344), camp_name='Procedure Justification Associated Causes CID10', len_max=4, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=establishment_exec_name, pos=(36, 30), camp_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
             if type(c) == type(Response()): return c

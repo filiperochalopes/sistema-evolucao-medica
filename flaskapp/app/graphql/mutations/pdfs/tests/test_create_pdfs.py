@@ -1,4 +1,4 @@
-import app.graphql.mutations.pdfs as pdfs
+from app.graphql.mutations.pdfs import pdf_aih_sus, pdf_apac
 import datetime
 from flask import Response
 
@@ -10,7 +10,7 @@ for x in range(0, 1100):
 datetime_to_use = datetime.datetime.now()
 
 def test_create_aih_sus_pdf():
-    output = pdfs.pdf_aih_sus.fill_pdf_aih_sus(
+    output = pdf_aih_sus.fill_pdf_aih_sus(
         establishment_solitc_name='Establishment Solicit Name',
         establishment_solitc_cnes=1234567,
         establishment_exec_name='Establshment Exec Name',
@@ -21,14 +21,14 @@ def test_create_aih_sus_pdf():
         patient_sex='F',
         patient_mother_name='Patient Mother Name',
         patient_adress='Patient Adress street neighobourd',
-        patient_adressCity='Patient City',
-        patient_adressCity_ibgeCode=1234567,
-        patient_adressUF='SP',
-        patient_adressCEP=12345678,
+        patient_adress_city='Patient City',
+        patient_adress_city_ibge_code=1234567,
+        patient_adress_uf='SP',
+        patient_adress_cep=12345678,
         main_clinical_signs_symptoms="Patient main clinical signs sympthoms",
         conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',
         initial_diagnostic='Patient Initial Diagnostic',
-        principalCid10="A00",
+        principal_cid_10="A00",
         procedure_solicited='Procedure Solicited',
         procedure_code='1234567890', 
         clinic='Clinic Name', 
@@ -47,8 +47,8 @@ def test_create_aih_sus_pdf():
         patient_responsible_name='Patient Responsible Name', 
         patient_mother_phonenumber=5613248546, 
         patient_responsible_phonenumber=8564721598, 
-        secondary_cid10='A01',
-        cid10_associated_causes='A02',
+        secondary_cid_10='A01',
+        cid_10_associated_causes='A02',
         acident_type='traffic', 
         insurance_company_cnpj=37549670000171, 
         insurance_company_ticket_number=123450123456, 
@@ -62,7 +62,7 @@ def test_create_aih_sus_pdf():
 
 
 def test_create_apac_pdf():
-    output = pdfs.pdf_apac.fill_pdf_apac(
+    output = pdf_apac.fill_pdf_apac(
         establishment_solitc_name='Establishment Solicit Name',
         establishment_solitc_cnes=1234567,
         patient_name='Patient Name',
@@ -79,13 +79,13 @@ def test_create_apac_pdf():
         patient_adress='Patient Adress',
         patient_color='Branca',
         patient_ethnicity='Indigena',
-        patient_adressUF='BA',
-        patient_adressCEP=86425910, 
+        patient_adress_uf='BA',
+        patient_adress_cep=86425910, 
         document_chart_number=12345,
-        patient_adress_city_IBGEcode=4528765,
+        patient_adress_city_ibge_code=4528765,
         procedure_justification_description='Procedure Justification Description', 
-        procedure_justification_main_cid10='A98', 
-        procedure_justification_sec_cid10='A01', procedure_justification_associated_cause_cid10='A45',
+        procedure_justification_main_cid_10='A98', 
+        procedure_justification_sec_cid_10='A01', procedure_justification_associated_cause_cid_10='A45',
         procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', 
         establishment_exec_cnes=7654321,
         prof_solicitor_document={'CPF':28445400070}, 
@@ -104,7 +104,7 @@ def test_create_apac_pdf():
 
 
 def test_create_exam_request_pdf():
-    output = pdfs.pdf_exam_request.fill_pdf_exam_request(
+    output = pdf_exam_request.fill_pdf_exam_request(
         patient_name='Patient Name', 
         patient_cns=928976954930007, 
         patient_birthday=datetime_to_use, 
@@ -121,13 +121,13 @@ def test_create_exam_request_pdf():
 
 
 def test_create_ficha_internamento_pdf():
-    output = pdfs.pdf_ficha_internamento.fill_pdf_ficha_internamento(
+    output = pdf_ficha_internamento.fill_pdf_ficha_internamento(
         document_datetime=datetime_to_use, 
         patient_name="Patient Name",
         patient_cns=928976954930007,
         patient_birthday=datetime_to_use,
         patient_sex='F',
-        patient_motherName="Patient Mother Name",
+        patient_mother_name="Patient Mother Name",
         patient_document={'CPF':28445400070},
         patient_adress='pacient street, 43, paciten, USA',
         patient_phonenumber=44387694628,
@@ -138,27 +138,27 @@ def test_create_ficha_internamento_pdf():
         doctor_name='Doctor Name',
         doctor_cns=928976954930007,
         doctor_crm='CRM/UF 123456',
-        patient_adressNumber=123456,
-        patient_adressNeigh='Patient Neighborhood',
-        patient_adressCity='Patient city',
-        patient_adressUF='sp',
-        patient_adressCEP=12345678,
+        patient_adress_number=123456,
+        patient_adress_neigh='Patient Neighborhood',
+        patient_adress_city='Patient city',
+        patient_adress_uf='sp',
+        patient_adress_cep=12345678,
         patient_nationality='Brasileira',
-        patient_estimateWeight=123,
-        has_additional_healthInsurance=False
+        patient_estimate_weight=123,
+        has_additional_health_insurance=False
         )
     assert type(output) == type(bytes())
 
 
 def test_create_lme_pdf():
-    output = pdfs.pdf_lme.fill_pdf_lme(
+    output = pdf_lme.fill_pdf_lme(
         establishment_solitc_name='Establishment Solicit Name',
         establishment_solitc_cnes=1234567,
         patient_name='Patient Name',
         patient_mother_name='Patient Mother Name',
         patient_weight=142,
         patient_height=180,
-        cid10='A123',
+        cid_10='A123',
         anamnese="Anamnese",
         prof_solicitor_name="Professional Solicitor Name",
         solicitation_datetime=datetime_to_use,
@@ -176,7 +176,7 @@ def test_create_lme_pdf():
     assert type(output) == type(bytes())
 
 def test_create_precricao_medica_pdf():
-    output = pdfs.pdf_prescricao_medica.fill_pdf_prescricao_medica(
+    output = pdf_prescricao_medica.fill_pdf_prescricao_medica(
         document_datetime=datetime_to_use,
         patient_name='Pacient Name',
         prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]
@@ -184,13 +184,13 @@ def test_create_precricao_medica_pdf():
     assert type(output) == type(bytes())
 
 def test_create_relatorio_alta_pdf():
-    output = pdfs.pdf_relatorio_de_alta.fill_pdf_relatorio_alta(
-        documentDatetime=datetime_to_use, 
+    output = pdf_relatorio_de_alta.fill_pdf_relatorio_alta(
+        document_datetime=datetime_to_use, 
         patient_name="Patient Name",
         patient_cns=928976954930007,
         patient_birthday=datetime_to_use,
         patient_sex='F',
-        patient_motherName="Patient Mother Name",
+        patient_mother_name="Patient Mother Name",
         patient_document={'CPF':28445400070},
         patient_adress='pacient street, 43, paciten, USA',
         evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',
@@ -203,7 +203,7 @@ def test_create_relatorio_alta_pdf():
 
 
 def test_create_solicit_mamografia_pdf():
-    output = pdfs.pdf_solicit_mamografia.fill_pdf_solicit_mamografia(
+    output = pdf_solicit_mamografia.fill_pdf_solicit_mamografia(
         patient_name='Patient Name',
     patient_cns=928976954930007,
     patient_mother_name='Patient Mother Name',
@@ -215,11 +215,11 @@ def test_create_solicit_mamografia_pdf():
     examinated_before='NAOSABE',
     mammogram_before=['nao', "2020"],
     patient_age=23,
-    health_unit_adressUF='SP',
+    health_unit_adress_uf='SP',
     health_unit_cnes=1234567,
     health_unit_name="Health Unit Name",
     health_unit_adress_city='Unit City',
-    health_unit_city_IBGEcode=1234567,
+    health_unit_city_ibge_code=1234567,
     document_chart_number=1234567895,
     protocol_number='5478546135245165',
     patient_sex='F',
@@ -230,13 +230,13 @@ def test_create_solicit_mamografia_pdf():
     patient_adress_number=123456,
     patient_adress_adjunct='Patient Adress Adjunct',
     patient_adress_neighborhood='Neighborhood',
-    patient_city_IBGEcode=1234567,
+    patient_city_ibge_code=1234567,
     patient_adress_city='Patient City',
-    patient_adressUF='SP',
+    patient_adress_uf='SP',
     patient_ethnicity=['INDIGENA', 'Indigena'],
     patient_adress_reference='Adress Reference',
     patient_schooling='SUPCOMPL',
-    patient_adressCEP=12345678,
+    patient_adress_cep=12345678,
     exam_number=int(lenght_test[:10]),
     tracking_mammogram='JATRATADO',
     patient_phonenumber=1234567890,
