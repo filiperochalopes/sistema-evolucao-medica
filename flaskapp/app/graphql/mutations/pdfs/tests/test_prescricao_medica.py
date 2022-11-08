@@ -1,4 +1,4 @@
-from pdfs import pdf_prescricao_medica
+from app.graphql.mutations.pdfs import pdf_prescricao_medica
 import datetime
 from flask import Response
 

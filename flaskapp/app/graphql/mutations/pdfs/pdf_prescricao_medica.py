@@ -8,10 +8,13 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
-from pdfs import pdf_functions
-from pdfs.constants import FONT_DIRECTORY, TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY, WRITE_PRESCRICAO_MEDICA_DIRECTORY
+from app.utils import pdf_functions
+from app.env import FONT_DIRECTORY, TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY, WRITE_PRESCRICAO_MEDICA_DIRECTORY
 
+from app.graphql import mutation
+from ariadne import convert_kwargs_to_snake_case
 
+@convert_kwargs_to_snake_case
 def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name:str, prescription:list) -> Union[bytes, Response]:
     """fill pdf prescricao medica with 2 pages 
 
