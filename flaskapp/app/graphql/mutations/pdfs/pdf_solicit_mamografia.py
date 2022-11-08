@@ -8,11 +8,13 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
-from pdfs import pdf_functions
-from pdfs.constants import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
+from app.utils import pdf_functions
+from app.env import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
+from app.graphql import mutation
+from ariadne import convert_kwargs_to_snake_case
 
-def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adressUF:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_IBGEcode:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_IBGEcode:int=None, patient_adress_city:str=None, patient_adressUF:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adressCEP:str=None, patient_phonenumber:int=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:int=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> Union[bytes, Response]:
+def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_ibge_code:int=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adress_cep:str=None, patient_phonenumber:int=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:int=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> Union[bytes, Response]:
     """Fill solicitacion mamografia (Solicitacao de Mamografia) 
     Args:
         patient_name (str): Patient Name
@@ -26,11 +28,11 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
         patient_age (int): patient_age
         solicitation_datetime (datetime.datetime): solicitation_datetime
         prof_solicitor_name (str): prof_solicitor_name
-        health_unit_adressUF (str, optional): health_unit_adressUF. Defaults to None.
+        health_unit_adress_uf (str, optional): health_unit_adress_uf. Defaults to None.
         health_unit_cnes (int, optional): health_unit_cnes. Defaults to None.
         health_unit_name (str, optional): health_unit_name. Defaults to None.
         health_unit_adress_city (str, optional): health_unit_adress_city. Defaults to None.
-        health_unit_city_IBGEcode (int, optional): health_unit_city_IBGEcode. Defaults to None.
+        health_unit_city_ibge_code (int, optional): health_unit_city_ibge_code. Defaults to None.
         document_chart_number (int, optional): document_chart_number. Defaults to None.
         protocol_number (str, optional): protocol_number. Defaults to None.
         patient_sex (str, optional): patient_sex. Defaults to None.
@@ -41,13 +43,13 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
         patient_adress_number (int, optional): patient_adress_number. Defaults to None.
         patient_adress_adjunct (str, optional): patient_adress_adjunct. Defaults to None.
         patient_adress_neighborhood (str, optional): patient_adress_neighborhood. Defaults to None.
-        patient_city_IBGEcode (int, optional): patient_city_IBGEcode. Defaults to None.
+        patient_city_ibge_code (int, optional): patient_city_ibge_code. Defaults to None.
         patient_adress_city (str, optional): patient_adress_city. Defaults to None.
-        patient_adressUF (str, optional): patient_adressUF. Defaults to None.
+        patient_adress_uf (str, optional): patient_adress_uf. Defaults to None.
         patient_ethnicity (list, optional): patient_ethnicity. Defaults to None.
         patient_adress_reference (str, optional): patient_adress_reference. Defaults to None.
         patient_schooling (str, optional): patient_schooling. Defaults to None.
-        patient_adressCEP (str, optional): patient_adressCEP. Defaults to None.
+        patient_adress_cep (str, optional): patient_adress_cep. Defaults to None.
         patient_phonenumber (int, optional): patient_phonenumber. Defaults to None.
         radiotherapy_before (list, optional): Option and year, eg ['SIMESQ', '2020']. Defaults to None.
         breast_surgery_before (dict, optional): dict with opions and years, eg:
@@ -158,7 +160,7 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
         #Adding data that can be null
         try:
             c.setFont('Roboto-Mono', 13)
-            c = pdf_functions.add_UF(can=c, uf=health_unit_adressUF, pos=(47, 762), camp_name='Health Unit Adress UF', nullable=True, interval=' ')
+            c = pdf_functions.add_UF(can=c, uf=health_unit_adress_uf, pos=(47, 762), camp_name='Health Unit Adress UF', nullable=True, interval=' ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=health_unit_name, pos=(47, 741), camp_name='Health Unit Name', len_max=42, len_min=7, interval=' ', nullable=True)
             if type(c) == type(Response()): return c
@@ -176,7 +178,7 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(167, 461), camp_name='Patient Adress City', len_max=15, len_min=4, interval=' ', nullable=True)
             if type(c) == type(Response()): return c
-            c = add_patient_adress_cep(can=c, number=patient_adressCEP)            
+            c = add_patient_adress_cep(can=c, number=patient_adress_cep)            
             if type(c) == type(Response()): return c
             c = add_patient_phonenumber(can=c, number=patient_phonenumber)            
             if type(c) == type(Response()): return c
@@ -196,13 +198,13 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_number, pos=(52, 506), camp_name='Patient Adress Number', len_max=6, len_min=1, value_min=0, value_max=999999, interval=' ', nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_UF(can=c, uf=patient_adressUF, pos=(535, 484), camp_name='Patient Adress UF', nullable=True, interval=' ')
+            c = pdf_functions.add_UF(can=c, uf=patient_adress_uf, pos=(535, 484), camp_name='Patient Adress UF', nullable=True, interval=' ')
             if type(c) == type(Response()): return c
 
 
             c.setFont('Roboto-Mono', 9)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_intnumber(can=c, number=health_unit_city_IBGEcode, pos=(47, 720), camp_name='Health Unit City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True, interval='  ')
+            c = pdf_functions.add_oneline_intnumber(can=c, number=health_unit_city_ibge_code, pos=(47, 720), camp_name='Health Unit City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True, interval='  ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=document_chart_number, pos=(410, 720), camp_name='Document Chart Number', len_max=10, len_min=1, value_min=0, value_max=99999999999999, nullable=True, interval='  ')
             if type(c) == type(Response()): return c
@@ -210,7 +212,7 @@ def fill_pdf_solicit_mamografia(patient_name:str, patient_cns:int, patient_mothe
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=patient_nationality, pos=(278, 587), camp_name='Patient Nationality', len_max=32, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_city_IBGEcode, pos=(47, 461), camp_name='Patient City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True, interval='  ')
+            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_city_ibge_code, pos=(47, 461), camp_name='Patient City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True, interval='  ')
             if type(c) == type(Response()): return c
             if patient_ethnicity == None:
                 patient_ethnicity = [None, None]
