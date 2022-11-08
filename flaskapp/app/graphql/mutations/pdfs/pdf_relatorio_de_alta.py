@@ -8,20 +8,24 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
-from pdfs import pdf_functions
-from pdfs.constants import FONT_DIRECTORY, TEMPLATE_RELATORIO_ALTA_DIRECTORY, WRITE_RELATORIO_ALTA_DIRECTORY
+from app.utils import pdf_functions
+from app.env import FONT_DIRECTORY, TEMPLATE_RELATORIO_ALTA_DIRECTORY, WRITE_RELATORIO_ALTA_DIRECTORY
+
+from app.graphql import mutation
+from ariadne import convert_kwargs_to_snake_case
 
 
-def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:int, doctor_crm:str, orientations:str=None) -> Union[bytes, Response]:
+@convert_kwargs_to_snake_case
+def fill_pdf_relatorio_alta(document_datetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:int, doctor_crm:str, orientations:str=None) -> Union[bytes, Response]:
     """fill pdf relatorio alta
 
     Args:
-        documentDatetime (datetime.datetime): documentDatetime
+        document_datetime (datetime.datetime): document_datetime
         patient_name (str): patient_name
         patient_cns (int): patient_cns
         patient_birthday (datetime.datetime): patient_birthday
         patient_sex (str): patient_sex
-        patient_motherName (str): patient_motherName
+        patient_mother_name (str): patient_mother_name
         patient_document (dict): patient_document
         patient_adress (str): patient_adress
         evolution (str): evolution
@@ -45,7 +49,7 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
         # Writing all data in respective fields
         # not null data
         try:
-            c = pdf_functions.add_datetime(can=c, date=documentDatetime, pos=(410, 740), camp_name='Document Datetime', hours=True, formated=True)
+            c = pdf_functions.add_datetime(can=c, date=document_datetime, pos=(410, 740), camp_name='Document Datetime', hours=True, formated=True)
             if type(c) == type(Response()): return c          
             
             
@@ -60,7 +64,7 @@ def fill_pdf_relatorio_alta(documentDatetime:datetime.datetime, patient_name:str
             if type(c) == type(Response()): return c
             c = pdf_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(117, 640), pos_fem=(147, 640), camp_name='Patient Sex', square_size=(9,9))
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_motherName, pos=(194, 642), camp_name='Patient Mother Name', len_max=69, len_min=7)
+            c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(194, 642), camp_name='Patient Mother Name', len_max=69, len_min=7)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_document_cns_cpf_rg(can=c, document=patient_document, pos_square_cpf=(24, 608), pos_square_rg=(58,608), pos_rg=(92, 610), pos_cpf=(92, 610),camp_name='Pacient Document', formated=True)
             if type(c) == type(Response()): return c

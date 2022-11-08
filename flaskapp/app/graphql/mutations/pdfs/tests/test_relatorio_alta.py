@@ -1,4 +1,4 @@
-from pdfs import pdf_relatorio_de_alta
+from app.graphql.mutations.pdfs import pdf_relatorio_de_alta
 import datetime
 from flask import Response
 
@@ -9,8 +9,8 @@ for x in range(0, 2200):
 
 datetime_to_use = datetime.datetime.now()
 
-def data_to_use(documentDatetime=datetime_to_use, patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_motherName="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456',orientations='Do not jump'):
-    return pdf_relatorio_de_alta.fill_pdf_relatorio_alta(documentDatetime,  patient_name, patient_cns, patient_birthday, patient_sex, patient_motherName, patient_document,  patient_adress, evolution, doctor_name, doctor_cns, doctor_crm, orientations)
+def data_to_use(document_datetime=datetime_to_use, patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456',orientations='Do not jump'):
+    return pdf_relatorio_de_alta.fill_pdf_relatorio_alta(document_datetime,  patient_name, patient_cns, patient_birthday, patient_sex, patient_mother_name, patient_document,  patient_adress, evolution, doctor_name, doctor_cns, doctor_crm, orientations)
 
 #Testing telatorio alta
 def test_answer_with_all_fields():
@@ -18,13 +18,13 @@ def test_answer_with_all_fields():
     assert data_to_use() != type(Response())
 
 def test_awnser_with_only_required_data():
-    assert type(pdf_relatorio_de_alta.fill_pdf_relatorio_alta(documentDatetime=datetime_to_use, patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_motherName="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456') != type(Response()))
+    assert type(pdf_relatorio_de_alta.fill_pdf_relatorio_alta(document_datetime=datetime_to_use, patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456') != type(Response()))
 
 
 ##############################################################
 # ERRORS IN NAMES CAMPS
 # patient_name
-# patient_motherName
+# patient_mother_name
 # doctor_name
 # !!!!!!! TESTING !!!!!!!
 # Name empty
@@ -34,20 +34,20 @@ def test_awnser_with_only_required_data():
 # wrong name type
 
 
-def test_wrongtype_patient_motherName():    
-    assert data_to_use(patient_motherName=123124).status == Response(status=400).status
+def test_wrongtype_patient_mother_name():    
+    assert data_to_use(patient_mother_name=123124).status == Response(status=400).status
 
-def test_empty_patient_motherName():    
-    assert data_to_use(patient_motherName='').status == Response(status=400).status
+def test_empty_patient_mother_name():    
+    assert data_to_use(patient_mother_name='').status == Response(status=400).status
 
-def test_with_space_patient_motherName():    
-    assert data_to_use(patient_motherName='  ').status == Response(status=400).status
+def test_with_space_patient_mother_name():    
+    assert data_to_use(patient_mother_name='  ').status == Response(status=400).status
 
-def test_long_patient_motherName():    
-    assert data_to_use(patient_motherName=str(lenght_test[:71])).status == Response(status=400).status
+def test_long_patient_mother_name():    
+    assert data_to_use(patient_mother_name=str(lenght_test[:71])).status == Response(status=400).status
 
-def test_short_patient_motherName():    
-    assert data_to_use(patient_motherName='11113').status == Response(status=400).status
+def test_short_patient_mother_name():    
+    assert data_to_use(patient_mother_name='11113').status == Response(status=400).status
 
 def test_wrongtype_doctor_name():    
     assert data_to_use(doctor_name=123124).status == Response(status=400).status
@@ -95,16 +95,16 @@ def test_wrongoption_patient_document():
 
 #################################################################
 # TEST DATETIMES VARIABLES
-# documentDatetime
+# document_datetime
 # patient_birthday
 # autorizaton_datetime
 # test wrong type
 
-def test_wrongtype_documentDatetime():
-    assert data_to_use(documentDatetime='bahabah').status == Response(status=400).status
+def test_wrongtype_document_datetime():
+    assert data_to_use(document_datetime='bahabah').status == Response(status=400).status
 
-def test_valid_documentDatetime():
-    assert type(data_to_use(documentDatetime=datetime_to_use)) != type(Response())
+def test_valid_document_datetime():
+    assert type(data_to_use(document_datetime=datetime_to_use)) != type(Response())
 
 
 def test_wrongtype_patient_birthday():
