@@ -1,4 +1,4 @@
-from pdfs import pdf_exam_request
+from app.graphql.mutations.pdfs import pdf_exam_request
 import datetime
 from flask import Response
 
