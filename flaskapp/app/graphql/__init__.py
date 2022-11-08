@@ -1,23 +1,15 @@
 from ariadne import gql, QueryType, MutationType
 
 # Define type definitions (schema) using SDL
-type_defs = gql('''
+type_defs = gql(
+    '''
     type Query {
        users: [User]
        cid10: [Cid10!]
-       state: [State!]
-       restingActivities: [RestingActivity!]
-       diets: [Diet!]
-       drugs: [Drug!]
-       drugPresets: [DrugPreset!]
-       nursingActivities: [NursingActivity!]
-       drugRoutes: [String]
-       prescriptionTypes: [Option]
-       prescription: [Prescription!]
        patients(queryNameCnsCpf:String): [Patient]
        internments(active:Boolean): [Internment]
        evolutions(patientId:ID!): Evolution
-    }
+    }  
 
     type Mutation {
         """
@@ -60,6 +52,61 @@ type_defs = gql('''
             "Diagnóstico inicial de internamento"
             cid10Code: String
         ): Internment
+
+        "Criação de documento de AIH"
+        generatePdf_AihSus(
+            establishmentSolitcName: String, 
+            establishmentSolitcCnes: Int, 
+            establishmentExecName: String, 
+            establishmentExecCnes: Int, 
+            "Nome do paciente"
+            patientName: String!, 
+            "Número do Cartão do SUS do paciente, não seria string? Se começar com zero pode dar problema se for Int"
+            patientCns: Int, 
+            patientBirthday: String, 
+            "Quais as opções?"
+            patientSex: String,             
+            patientMotherName: String, 
+            patientAdress: String, 
+            patientAdressCity: String, 
+            patientAdressCityIbgeCode: Int, 
+            patientAdressUF: String, 
+            patientAdressCEP: Int, 
+            mainClinicalSignsSymptoms: String, conditionsJustifyHospitalization: String, 
+            initialDiagnostic: String, 
+            principalCid10: String, 
+            "Não seria solicited procedure?"
+            procedureSolicited: String, 
+            procedureCode: String, 
+            clinic: String, 
+            internationCarater: String, 
+            "Em graphql não tem entrada dict, como seria?"
+            profSolicitorDocument: String, 
+            profSolicitorName: String, 
+            solicitationDatetime: String, 
+            autorizationProfName: String, 
+            emissionOrgCode: String, 
+            "Em graphql não tem entrada dict, como seria?"
+            autorizatonProfDocument: String, 
+            autorizatonDatetime: String, hospitalizationAutorizationNumber: Int,
+            examResults: String, 
+            chartNumber: Int, 
+            patientEthnicity: String, 
+            patientResponsibleName: String, 
+            "Não seria melhor o telefone ser tipo string?"
+            patientMotherPhonenumber: Int, 
+            patientResponsiblePhonenumber: Int, 
+            secondaryCid10: String, 
+            cid10AssociatedCauses: String, 
+            acidentType: String, 
+            insuranceCompanyCnpj: Int, 
+            insuranceCompanyTicketNumber: Int, 
+            insuranceCompanySeries: String,
+            companyCnpj: Int, 
+            companyCnae: Int, 
+            company_cbor: Int, 
+            pension_status: Int
+        ): GeneratedPdf
     }
 
     input AddressInput{
@@ -127,16 +174,14 @@ type_defs = gql('''
         token: String
     }
 
+    type GeneratedPdf {
+        base64Pdf: String
+    }
+
     type Patient {
         id: ID!
         name: String
         cns: String
-    }
-
-    type State {
-        ibge_code: ID!
-        name: String
-        uf: String!
     }
 
     type Internment{
@@ -198,18 +243,6 @@ type_defs = gql('''
         kind: String
     }
 
-    type DrugPreset{
-        name: String
-        label: String
-        drugs: [Drug]
-        createdAt: String
-    }
-
-    type Option{
-        name: String,
-        label: String
-    }
-
     type DrugPrescription{
         id: ID!
         drug: Drug
@@ -219,18 +252,11 @@ type_defs = gql('''
     }
 
     type Prescription{
-        "Note que a atividade de repouso é única"
         resting: RestingActivity
-        "Note que a dieta é única"
         diet: Diet
         drugs: [DrugPrescription]
         nursing: [NursingActivity]
         createdAt: String
-    }
-
-    type PrescriptionUnit{
-        type: String,
-        name: String
     }
 
     type Cid10 {

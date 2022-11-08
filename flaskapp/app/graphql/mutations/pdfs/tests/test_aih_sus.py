@@ -1,4 +1,4 @@
-from pdfs import pdf_aih_sus
+from app.graphql.mutations.pdfs import pdf_aih_sus
 import datetime
 from flask import Response
 
