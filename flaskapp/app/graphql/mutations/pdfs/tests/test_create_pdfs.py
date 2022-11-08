@@ -1,4 +1,4 @@
-from app.graphql.mutations.pdfs import pdf_aih_sus, pdf_apac
+from app.graphql.mutations.pdfs import pdf_aih_sus, pdf_apac, pdf_exam_request, pdf_ficha_internamento, pdf_lme, pdf_prescricao_medica, pdf_relatorio_de_alta, pdf_solicit_mamografia
 import datetime
 from flask import Response
 
@@ -200,6 +200,7 @@ def test_create_relatorio_alta_pdf():
         orientations='Do not jump'
         )
     assert type(output) == type(bytes())
+
 
 
 def test_create_solicit_mamografia_pdf():

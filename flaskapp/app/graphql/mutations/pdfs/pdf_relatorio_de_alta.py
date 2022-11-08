@@ -15,7 +15,6 @@ from app.graphql import mutation
 from ariadne import convert_kwargs_to_snake_case
 
 
-@convert_kwargs_to_snake_case
 def fill_pdf_relatorio_alta(document_datetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:int, doctor_crm:str, orientations:str=None) -> Union[bytes, Response]:
     """fill pdf relatorio alta
 
