@@ -5,6 +5,15 @@ type_defs = gql('''
     type Query {
        users: [User]
        cid10: [Cid10!]
+       state: [State!]
+       restingActivities: [RestingActivity!]
+       diets: [Diet!]
+       drugs: [Drug!]
+       drugPresets: [DrugPreset!]
+       nursingActivities: [NursingActivity!]
+       drugRoutes: [String]
+       prescriptionTypes: [Option]
+       prescription: [Prescription!]
        patients(queryNameCnsCpf:String): [Patient]
        internments(active:Boolean): [Internment]
        evolutions(patientId:ID!): Evolution
@@ -124,6 +133,12 @@ type_defs = gql('''
         cns: String
     }
 
+    type State {
+        ibge_code: ID!
+        name: String
+        uf: String!
+    }
+
     type Internment{
         id: ID!
         admissionDatetime: String
@@ -183,6 +198,18 @@ type_defs = gql('''
         kind: String
     }
 
+    type DrugPreset{
+        name: String
+        label: String
+        drugs: [Drug]
+        createdAt: String
+    }
+
+    type Option{
+        name: String,
+        label: String
+    }
+
     type DrugPrescription{
         id: ID!
         drug: Drug
@@ -192,11 +219,18 @@ type_defs = gql('''
     }
 
     type Prescription{
+        "Note que a atividade de repouso é única"
         resting: RestingActivity
+        "Note que a dieta é única"
         diet: Diet
         drugs: [DrugPrescription]
         nursing: [NursingActivity]
         createdAt: String
+    }
+
+    type PrescriptionUnit{
+        type: String,
+        name: String
     }
 
     type Cid10 {
