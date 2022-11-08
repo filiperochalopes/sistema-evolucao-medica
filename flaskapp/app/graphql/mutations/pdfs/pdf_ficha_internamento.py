@@ -8,20 +8,23 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
-from pdfs import pdf_functions
-from pdfs.constants import FONT_DIRECTORY, TEMPLATE_FICHA_INTERN_DIRECTORY, WRITE_FICHA_INTERN_DIRECTORY
+from app.utils import pdf_functions
+from app.env import FONT_DIRECTORY, TEMPLATE_FICHA_INTERN_DIRECTORY, WRITE_FICHA_INTERN_DIRECTORY
 
+from app.graphql import mutation
+from ariadne import convert_kwargs_to_snake_case
 
-def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_motherName:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:int, doctor_crm:str, patient_adressNumber:int=None, patient_adressNeigh:str=None, patient_adressCity:str=None, patient_adressUF:str=None, patient_adressCEP:int=None, patient_nationality:str=None, patient_estimateWeight:int=None, has_additional_healthInsurance:bool=None) -> Union[bytes, Response]:
+#@convert_kwargs_to_snake_case
+def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, patient_phonenumber:int, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:int, doctor_crm:str, patient_adress_number:int=None, patient_adress_neigh:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_adress_cep:int=None, patient_nationality:str=None, patient_estimate_weight:int=None, has_additional_health_insurance:bool=None) -> Union[bytes, Response]:
     """fill pdf ficha internamento
 
     Args:
         document_datetime (datetime.datetime): document_datetime
         patient_name (str): patient_name
-        patient_cns (int): patient_cns
+        patient_cns (int):fill_pdf_ficha_internamento patient_cns
         patient_birthday (datetime.datetime): patient_birthday
         patient_sex (str): patient_sex
-        patient_motherName (str): patient_motherName
+        patient_mother_name (str): patient_mother_name
         patient_document (dict): patient_document
         patient_adress (str): patient_adress
         patient_phonenumber (int): patient_phonenumber
@@ -32,14 +35,14 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
         doctor_name (str): doctor_name
         doctor_cns (int): doctor_cns
         doctor_crm (str): doctor_crm
-        patient_adressNumber (int, optional): patient_adressNumber. Defaults to None.
-        patient_adressNeigh (str, optional): patient_adressNeigh. Defaults to None.
-        patient_adressCity (str, optional): patient_adressCity. Defaults to None.
-        patient_adressUF (str, optional): patient_adressUF. Defaults to None.
-        patient_adressCEP (int, optional): patient_adressCEP. Defaults to None.
+        patient_adress_number (int, optional): patient_adress_number. Defaults to None.
+        patient_adress_neigh (str, optional): patient_adress_neigh. Defaults to None.
+        patient_adress_city (str, optional): patient_adress_city. Defaults to None.
+        patient_adress_uf (str, optional): patient_adress_uf. Defaults to None.
+        patient_adress_cep (int, optional): patient_adress_cep. Defaults to None.
         patient_nationality (str, optional): patient_nationality. Defaults to None.
-        patient_estimateWeight (int, optional): patient_estimateWeight. Defaults to None.
-        has_additional_healthInsurance (bool, optional): has_additional_healthInsurance. Defaults to None.
+        patient_estimate_weight (int, optional): patient_estimate_weight. Defaults to None.
+        has_additional_health_insurance (bool, optional): has_additional_health_insurance. Defaults to None.
 
     Returns:
         Union[bytes, Response]: _description_
@@ -73,7 +76,7 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
             if type(c) == type(Response()): return c
             c = pdf_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(117, 640), pos_fem=(147, 640), camp_name='Patient Sex', square_size=(9,9))
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_motherName, pos=(194, 642), camp_name='Patient Mother Name', len_max=69, len_min=7)
+            c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(194, 642), camp_name='Patient Mother Name', len_max=69, len_min=7)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_document_cns_cpf_rg(can=c, document=patient_document, pos_square_cpf=(24, 608), pos_square_rg=(58,608), pos_rg=(92, 610), pos_cpf=(92, 610),camp_name='Pacient Document', formated=True)
             if type(c) == type(Response()): return c
@@ -104,22 +107,22 @@ def fill_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_nam
 
         #Adding data that can be null
         try:
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adressNumber, pos=(24, 580), camp_name='Patient Adress Number', len_max=6, len_min=1, value_min=0, value_max=999999, nullable=True)
+            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_number, pos=(24, 580), camp_name='Patient Adress Number', len_max=6, len_min=1, value_min=0, value_max=999999, nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adressNeigh, pos=(66, 580), camp_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_neigh, pos=(66, 580), camp_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adressCity, pos=(243, 580), camp_name='Patient Adress City', len_max=34, len_min=4, nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(243, 580), camp_name='Patient Adress City', len_max=34, len_min=4, nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_UF(can=c, uf=patient_adressUF, pos=(444, 580), camp_name='Patient Adress UF', nullable=True)
+            c = pdf_functions.add_UF(can=c, uf=patient_adress_uf, pos=(444, 580), camp_name='Patient Adress UF', nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_CEP(can=c, cep=patient_adressCEP, pos=(483, 580), camp_name='Patient Adress CEP', nullable=True, formated=True)
+            c = pdf_functions.add_CEP(can=c, cep=patient_adress_cep, pos=(483, 580), camp_name='Patient Adress CEP', nullable=True, formated=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=patient_nationality, pos=(27, 547), camp_name='Patient nationality', len_max=25, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_estimateWeight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, value_min=1, value_max=500, nullable=True)
+            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_estimate_weight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, value_min=1, value_max=500, nullable=True)
             if type(c) == type(Response()): return c
-            if has_additional_healthInsurance != None:
-                c = pdf_functions.add_markable_square(can=c, option=str(has_additional_healthInsurance), valid_options=['TRUE','FALSE'], options_positions=((419, 544), (380, 544)), camp_name='Has additional Healt insurance', nullable=False)
+            if has_additional_health_insurance != None:
+                c = pdf_functions.add_markable_square(can=c, option=str(has_additional_health_insurance), valid_options=['TRUE','FALSE'], options_positions=((419, 544), (380, 544)), camp_name='Has additional Healt insurance', nullable=False)
             if type(c) == type(Response()): return c
 
         except:

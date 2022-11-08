@@ -917,7 +917,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
             else:
                 return Response(f'{camp_name} RG is not valid', status=400)
         else:
-            return Response('The document was not CPF, CNS or RG', status=400)
+            return Response(f'{camp_name} was not CPF, CNS or RG', status=400)
     except:
         return Response(f'Unknow error while adding {camp_name} Document', status=500)
 
