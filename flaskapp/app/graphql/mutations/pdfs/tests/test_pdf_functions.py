@@ -1,4 +1,4 @@
-from app.graphql.mutations.pdfs import pdf_functions
+from app.utils import pdf_functions
 from flask import Response
 
 
