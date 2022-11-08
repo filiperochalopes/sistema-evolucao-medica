@@ -8,11 +8,14 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from flask import Response
 from typing import Union
-from pdfs import pdf_functions
-from pdfs.constants import FONT_DIRECTORY, TEMPLATE_LME_DIRECTORY, WRITE_LME_DIRECTORY
+from app.utils import pdf_functions
+from app.env import FONT_DIRECTORY, TEMPLATE_LME_DIRECTORY, WRITE_LME_DIRECTORY
 
+from app.graphql import mutation
+from ariadne import convert_kwargs_to_snake_case
 
-def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[bytes, Response]:
+#@convert_kwargs_to_snake_case
+def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid_10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[bytes, Response]:
     """fill pdf lme (laudo de solicitacao, avaliacao e autorizacao e documentos)
 
     Args:
@@ -22,7 +25,7 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
         patient_mother_name (str): patient_mother_name
         patient_weight (int): patient_weight
         patient_height (int): patient_height
-        cid10 (str): cid10
+        cid_10 (str): cid_10
         anamnese (str): anamnese
         prof_solicitor_name (str): prof_solicitor_name
         solicitation_datetime (datetime.datetime): solicitation_datetime
@@ -58,7 +61,7 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_height, pos=(485, 602), camp_name='Patient Height', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=cid10, pos=(34, 455), camp_name='Cid10', len_max=4, len_min=3, interval='  ')
+            c = pdf_functions.add_oneline_text(can=c, text=cid_10, pos=(34, 455), camp_name='cid_10', len_max=4, len_min=3, interval='  ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(292, 222), camp_name='Solicitation Datetime', hours=False, interval='   ', formated=False)
             if type(c) == type(Response()): return c

@@ -1,4 +1,4 @@
-from pdfs import pdf_lme
+from app.graphql.mutations.pdfs import pdf_lme
 import datetime
 from flask import Response
 
@@ -15,7 +15,7 @@ patient_name='Patient Name',
 patient_mother_name='Patient Mother Name',
 patient_weight=142,
 patient_height=180,
-cid10='A123',
+cid_10='A123',
 anamnese="Anamnese",
 prof_solicitor_name="Professional Solicitor Name",
 solicitation_datetime=datetime_to_use,
@@ -30,7 +30,7 @@ patient_email='patietemail@gmail.com',
 contacts_phonenumbers=[1254875652, 4578456598],
 medicines=[{"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}]
     ):
-    return pdf_lme.fill_pdf_lme(establishment_solitc_name,establishment_solitc_cnes,patient_name,patient_mother_name,patient_weight,patient_height,cid10,anamnese,prof_solicitor_name,solicitation_datetime,prof_solicitor_document,capacity_attest,filled_by,patient_ethnicity,previous_treatment,diagnostic,patient_document,patient_email,contacts_phonenumbers,medicines)
+    return pdf_lme.fill_pdf_lme(establishment_solitc_name,establishment_solitc_cnes,patient_name,patient_mother_name,patient_weight,patient_height,cid_10,anamnese,prof_solicitor_name,solicitation_datetime,prof_solicitor_document,capacity_attest,filled_by,patient_ethnicity,previous_treatment,diagnostic,patient_document,patient_email,contacts_phonenumbers,medicines)
 
 
 #Testing APAC
@@ -48,7 +48,7 @@ patient_name='Patient Name',
 patient_mother_name='Patient Mother Name',
 patient_weight=142,
 patient_height=180,
-cid10='A123',
+cid_10='A123',
 anamnese="Anamnese",
 prof_solicitor_name="Professional Solicitor Name",
 solicitation_datetime=datetime_to_use,
@@ -565,7 +565,7 @@ def test_more_than_limit_anamnese():
 # TEST STRING THAT CAN/CANNOT BE NULL
 # diagnostic
 # patient_email
-# cid10
+# cid_10
 # test wrong type
 # test empty value
 # test empty spaces 
@@ -602,20 +602,20 @@ def test_longValue_patient_email():
 def test_shortValue_patient_email():
     assert data_to_use(patient_email='aaa').status == Response(status=400).status
 
-def test_wrong_type_cid10():
-    assert data_to_use(cid10=123).status == Response(status=400).status
+def test_wrong_type_cid_10():
+    assert data_to_use(cid_10=123).status == Response(status=400).status
 
-def test_empty_value_cid10():
-    assert data_to_use(cid10=None).status == Response(status=400).status
+def test_empty_value_cid_10():
+    assert data_to_use(cid_10=None).status == Response(status=400).status
 
-def test_empty_spaces_cid10():
-    assert data_to_use(cid10='    ').status == Response(status=400).status
+def test_empty_spaces_cid_10():
+    assert data_to_use(cid_10='    ').status == Response(status=400).status
 
-def test_longValue_cid10():
-    assert data_to_use(cid10=lenght_test[:6]).status == Response(status=400).status
+def test_longValue_cid_10():
+    assert data_to_use(cid_10=lenght_test[:6]).status == Response(status=400).status
 
-def test_shortValue_cid10():
-    assert data_to_use(cid10='aa').status == Response(status=400).status
+def test_shortValue_cid_10():
+    assert data_to_use(cid_10='aa').status == Response(status=400).status
 
 #################################################################################
 # TEST INT VARIABLES CAN/CANNOT BE NULL
