@@ -55,12 +55,13 @@ type_defs = gql(
 
         "Criação de documento de AIH"
         generatePdf_AihSus(
-            establishmentSolitcName: String, 
+            "Nome do Estabelecimento Solicitante"
+            establishment_solitc_name: String, 
             establishmentSolitcCnes: Int, 
             establishmentExecName: String, 
             establishmentExecCnes: Int, 
             "Nome do paciente"
-            patientName: String!, 
+            patient_name: String!, 
             "Número do Cartão do SUS do paciente, não seria string? Se começar com zero pode dar problema se for Int"
             patientCns: Int, 
             patientBirthday: String, 
