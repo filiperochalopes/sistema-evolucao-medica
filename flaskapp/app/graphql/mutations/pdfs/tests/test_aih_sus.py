@@ -9,8 +9,8 @@ for x in range(0, 1100):
 
 datetime_to_use = datetime.datetime.now()
 
-def data_to_use(establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,establishment_exec_name='Establshment Exec Name',establishment_exec_cnes=7654321,patient_name='Patient Name',patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name='Patient Mother Name',patient_adress='Patient Adress street neighobourd',patient_adressCity='Patient City',patient_adressCity_ibgeCode=1234567,patient_adressUF='SP',patient_adressCEP=12345678,main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnostic='Patient Initial Diagnostic',principalCid10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', prof_solicitor_document={'CNS':928976954930007},prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=datetime_to_use, autorization_prof_name='Autorization professional name', emission_org_code='OrgCode2022', autorizaton_prof_document={'CPF':28445400070}, autorizaton_datetime=datetime_to_use,hospitalization_autorization_number=1234567890,exam_results='Xray tibia broken',chart_number=1234,patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber=5613248546, patient_responsible_phonenumber=8564721598, secondary_cid10='A01',cid10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj=37549670000171, insurance_company_ticket_number=123450123456, insurance_company_series='Insurn',company_cnpj=37549670000171, company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
-    return pdf_aih_sus.fill_pdf_aih_sus(establishment_solitc_name,establishment_solitc_cnes,establishment_exec_name,establishment_exec_cnes,patient_name,patient_cns,patient_birthday,patient_sex,patient_mother_name,patient_adress,patient_adressCity,patient_adressCity_ibgeCode,patient_adressUF,patient_adressCEP,main_clinical_signs_symptoms,conditions_justify_hospitalization,initial_diagnostic,principalCid10,procedure_solicited,procedure_code, clinic, internation_carater, prof_solicitor_document,prof_solicitor_name, solicitation_datetime, autorization_prof_name, emission_org_code, autorizaton_prof_document, autorizaton_datetime,hospitalization_autorization_number, exam_results,chart_number,patient_ethnicity, patient_responsible_name, patient_mother_phonenumber, patient_responsible_phonenumber,secondary_cid10,cid10_associated_causes,acident_type, insurance_company_cnpj, insurance_company_ticket_number, insurance_company_series,company_cnpj, company_cnae, company_cbor,pension_status)
+def data_to_use(establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,establishment_exec_name='Establshment Exec Name',establishment_exec_cnes=7654321,patient_name='Patient Name',patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name='Patient Mother Name',patient_adress='Patient Adress street neighobourd',patient_adress_city='Patient City',patient_adress_city_ibge_code=1234567, patient_adress_uf='SP',patient_adress_cep=12345678,main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnostic='Patient Initial Diagnostic',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', prof_solicitor_document={'CNS':928976954930007},prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=datetime_to_use, autorization_prof_name='Autorization professional name', emission_org_code='OrgCode2022', autorizaton_prof_document={'CPF':28445400070}, autorizaton_datetime=datetime_to_use,hospitalization_autorization_number=1234567890,exam_results='Xray tibia broken',chart_number=1234,patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber=5613248546, patient_responsible_phonenumber=8564721598, secondary_cid_10='A01',cid_10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj=37549670000171, insurance_company_ticket_number=123450123456, insurance_company_series='Insurn',company_cnpj=37549670000171, company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
+    return pdf_aih_sus.fill_pdf_aih_sus(establishment_solitc_name,establishment_solitc_cnes,establishment_exec_name,establishment_exec_cnes,patient_name,patient_cns,patient_birthday,patient_sex,patient_mother_name,patient_adress,patient_adress_city,patient_adress_city_ibge_code,patient_adress_uf,patient_adress_cep,main_clinical_signs_symptoms,conditions_justify_hospitalization,initial_diagnostic,principal_cid_10,procedure_solicited,procedure_code, clinic, internation_carater, prof_solicitor_document,prof_solicitor_name, solicitation_datetime, autorization_prof_name, emission_org_code, autorizaton_prof_document, autorizaton_datetime,hospitalization_autorization_number, exam_results,chart_number,patient_ethnicity, patient_responsible_name, patient_mother_phonenumber, patient_responsible_phonenumber,secondary_cid_10,cid_10_associated_causes,acident_type, insurance_company_cnpj, insurance_company_ticket_number, insurance_company_series,company_cnpj, company_cnae, company_cbor,pension_status)
 
 #Testing Aih SUs
 def test_with_data_in_function():
@@ -31,14 +31,14 @@ def test_awnser_with_only_required_data():
         patient_sex='F',
         patient_mother_name='Patient Mother Name',
         patient_adress='Patient Adress street neighobourd',
-        patient_adressCity='Patient City',
-        patient_adressCity_ibgeCode=1234567,
-        patient_adressUF='SP',
-        patient_adressCEP=12345678,
+        patient_adress_city='Patient City',
+        patient_adress_city_ibge_code=1234567,
+        patient_adress_uf='SP',
+        patient_adress_cep=12345678,
         main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",
         conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',
         initial_diagnostic='Patient Initial Diagnostic',
-        principalCid10="A00",
+        principal_cid_10="A00",
         procedure_solicited='Procedure Solicited',
         procedure_code='1234567890', 
         clinic='Clinic Name', 
@@ -275,7 +275,7 @@ def test_valid_autorizaton_datetime():
 # patient_sex
 # acident_type
 # pension_status
-# patient_adressUF
+# patient_adress_uf
 # test wrong type
 # test not exist option
 # test all options in Upper Case
@@ -392,183 +392,183 @@ def test_not_insured_optionUpper_pension_status():
 def test_not_insured_optionLower_pension_status():
     assert type(data_to_use(pension_status='not_insured')) != type(Response())
 
-def test_wrongtype_patient_adressUF():
-    assert data_to_use(patient_adressUF=1231).status == Response(status=400).status
+def test_wrongtype_patient_adress_uf():
+    assert data_to_use(patient_adress_uf=1231).status == Response(status=400).status
 
-def test_notexistopiton_patient_adressUF():
-    assert data_to_use(patient_adressUF='AUYD').status == Response(status=400).status
+def test_notexistopiton_patient_adress_uf():
+    assert data_to_use(patient_adress_uf='AUYD').status == Response(status=400).status
 
-def test_AC_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='AC')) != type(Response())
+def test_AC_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='AC')) != type(Response())
 
-def test_AC_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='ac')) != type(Response())
+def test_AC_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='ac')) != type(Response())
 
-def test_AL_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='AL')) != type(Response())
+def test_AL_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='AL')) != type(Response())
 
-def test_AL_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='al')) != type(Response())
+def test_AL_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='al')) != type(Response())
 
-def test_AP_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='AP')) != type(Response())
+def test_AP_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='AP')) != type(Response())
 
-def test_AP_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='ap')) != type(Response())
+def test_AP_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='ap')) != type(Response())
 
-def test_AM_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='AM')) != type(Response())
+def test_AM_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='AM')) != type(Response())
 
-def test_AM_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='am')) != type(Response())
+def test_AM_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='am')) != type(Response())
 
-def test_BA_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='BA')) != type(Response())
+def test_BA_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='BA')) != type(Response())
 
-def test_BA_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='ba')) != type(Response())
+def test_BA_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='ba')) != type(Response())
 
-def test_CE_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='CE')) != type(Response())
+def test_CE_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='CE')) != type(Response())
 
-def test_CE_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='ce')) != type(Response())
+def test_CE_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='ce')) != type(Response())
 
-def test_DF_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='DF')) != type(Response())
+def test_DF_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='DF')) != type(Response())
 
-def test_DF_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='df')) != type(Response())
+def test_DF_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='df')) != type(Response())
 
-def test_ES_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='ES')) != type(Response())
+def test_ES_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='ES')) != type(Response())
 
-def test_ES_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='es')) != type(Response())
+def test_ES_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='es')) != type(Response())
 
-def test_GO_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='GO')) != type(Response())
+def test_GO_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='GO')) != type(Response())
 
-def test_GO_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='go')) != type(Response())
+def test_GO_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='go')) != type(Response())
 
-def test_MA_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='MA')) != type(Response())
+def test_MA_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='MA')) != type(Response())
 
-def test_MA_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='ma')) != type(Response())
+def test_MA_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='ma')) != type(Response())
 
-def test_MS_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='MS')) != type(Response())
+def test_MS_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='MS')) != type(Response())
 
-def test_MS_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='ms')) != type(Response())
+def test_MS_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='ms')) != type(Response())
 
-def test_MT_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='MT')) != type(Response())
+def test_MT_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='MT')) != type(Response())
 
-def test_MT_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='mt')) != type(Response())
+def test_MT_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='mt')) != type(Response())
 
-def test_MG_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='MG')) != type(Response())
+def test_MG_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='MG')) != type(Response())
 
-def test_MG_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='mg')) != type(Response())
+def test_MG_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='mg')) != type(Response())
 
-def test_PA_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='PA')) != type(Response())
+def test_PA_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='PA')) != type(Response())
 
-def test_PA_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='pa')) != type(Response())
+def test_PA_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='pa')) != type(Response())
 
-def test_PB_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='PB')) != type(Response())
+def test_PB_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='PB')) != type(Response())
 
-def test_PB_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='pb')) != type(Response())
+def test_PB_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='pb')) != type(Response())
 
-def test_PR_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='PR')) != type(Response())
+def test_PR_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='PR')) != type(Response())
 
-def test_PR_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='pr')) != type(Response())
+def test_PR_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='pr')) != type(Response())
 
-def test_PE_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='PE')) != type(Response())
+def test_PE_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='PE')) != type(Response())
 
-def test_PE_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='pe')) != type(Response())
+def test_PE_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='pe')) != type(Response())
 
-def test_PI_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='PI')) != type(Response())
+def test_PI_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='PI')) != type(Response())
 
-def test_PI_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='pi')) != type(Response())
+def test_PI_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='pi')) != type(Response())
 
-def test_RJ_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='RJ')) != type(Response())
+def test_RJ_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='RJ')) != type(Response())
 
-def test_RJ_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='rj')) != type(Response())
+def test_RJ_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='rj')) != type(Response())
 
-def test_RN_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='RN')) != type(Response())
+def test_RN_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='RN')) != type(Response())
 
-def test_RN_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='rn')) != type(Response())
+def test_RN_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='rn')) != type(Response())
 
-def test_RS_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='RS')) != type(Response())
+def test_RS_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='RS')) != type(Response())
 
-def test_RS_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='rs')) != type(Response())
+def test_RS_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='rs')) != type(Response())
 
-def test_RO_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='RO')) != type(Response())
+def test_RO_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='RO')) != type(Response())
 
-def test_RO_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='ro')) != type(Response())
+def test_RO_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='ro')) != type(Response())
 
-def test_RR_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='RR')) != type(Response())
+def test_RR_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='RR')) != type(Response())
 
-def test_RR_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='rr')) != type(Response())
+def test_RR_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='rr')) != type(Response())
 
-def test_SC_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='SC')) != type(Response())
+def test_SC_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='SC')) != type(Response())
 
-def test_SC_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='sc')) != type(Response())
+def test_SC_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='sc')) != type(Response())
 
-def test_SP_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='SP')) != type(Response())
+def test_SP_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='SP')) != type(Response())
 
-def test_SP_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='sp')) != type(Response())
+def test_SP_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='sp')) != type(Response())
 
-def test_SE_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='SE')) != type(Response())
+def test_SE_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='SE')) != type(Response())
 
-def test_SE_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='se')) != type(Response())
+def test_SE_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='se')) != type(Response())
 
-def test_TO_optionUpper_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='TO')) != type(Response())
+def test_TO_optionUpper_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='TO')) != type(Response())
 
-def test_TO_optionLower_patient_adressUF():
-    assert type(data_to_use(patient_adressUF='to')) != type(Response())
+def test_TO_optionLower_patient_adress_uf():
+    assert type(data_to_use(patient_adress_uf='to')) != type(Response())
 
 
 
 ####################################################################
 # TEST ADRESS VARIABLES
 # patient_adress
-# patient_adressCity
-# patient_adressCity_ibgeCode
-# patient_adressUF (already tested in option tests)
-# patient_adressCEP
+# patient_adress_city
+# patient_adress_city_ibge_code
+# patient_adress_uf (already tested in option tests)
+# patient_adress_cep
 # test wrong type
 # test empty value
 # test empty space value
@@ -590,50 +590,50 @@ def test_invalid_value_patient_adress():
 def test_long_value_patient_adress():
     assert data_to_use(patient_adress=lenght_test[:103]).status == Response(status=400).status
 
-def test_wrongtype_patient_adressCity():
-    assert data_to_use(patient_adressCity=1212312).status == Response(status=400).status
+def test_wrongtype_patient_adress_city():
+    assert data_to_use(patient_adress_city=1212312).status == Response(status=400).status
 
-def test_empty_value_patient_adressCity():
-    assert data_to_use(patient_adressCity='').status == Response(status=400).status
+def test_empty_value_patient_adress_city():
+    assert data_to_use(patient_adress_city='').status == Response(status=400).status
 
-def test_empty_space_patient_adressCity():
-    assert data_to_use(patient_adressCity='  ').status == Response(status=400).status
+def test_empty_space_patient_adress_city():
+    assert data_to_use(patient_adress_city='  ').status == Response(status=400).status
 
-def test_invalid_value_patient_adressCity():
-    assert data_to_use(patient_adressCity='111').status == Response(status=400).status
+def test_invalid_value_patient_adress_city():
+    assert data_to_use(patient_adress_city='111').status == Response(status=400).status
 
-def test_long_value_patient_adressCity():
-    assert data_to_use(patient_adressCity=lenght_test[:73]).status == Response(status=400).status
+def test_long_value_patient_adress_city():
+    assert data_to_use(patient_adress_city=lenght_test[:73]).status == Response(status=400).status
 
-def test_wrongtype_patient_adressCity_ibgeCode():
-    assert data_to_use(patient_adressCity_ibgeCode='1212312').status == Response(status=400).status
+def test_wrongtype_patient_adress_city_ibge_code():
+    assert data_to_use(patient_adress_city_ibge_code='1212312').status == Response(status=400).status
 
-def test_empty_value_patient_adressCity_ibgeCode():
-    assert data_to_use(patient_adressCity_ibgeCode='').status == Response(status=400).status
+def test_empty_value_patient_adress_city_ibge_code():
+    assert data_to_use(patient_adress_city_ibge_code='').status == Response(status=400).status
 
-def test_empty_space_patient_adressCity_ibgeCode():
-    assert data_to_use(patient_adressCity_ibgeCode='  ').status == Response(status=400).status
+def test_empty_space_patient_adress_city_ibge_code():
+    assert data_to_use(patient_adress_city_ibge_code='  ').status == Response(status=400).status
 
-def test_invalid_value_patient_adressCity_ibgeCode():
-    assert data_to_use(patient_adressCity_ibgeCode=2411).status == Response(status=400).status
+def test_invalid_value_patient_adress_city_ibge_code():
+    assert data_to_use(patient_adress_city_ibge_code=2411).status == Response(status=400).status
 
-def test_long_value_patient_adressCity_ibgeCode():
-    assert data_to_use(patient_adressCity_ibgeCode=52352352352352352352352352352).status == Response(status=400).status
+def test_long_value_patient_adress_city_ibge_code():
+    assert data_to_use(patient_adress_city_ibge_code=52352352352352352352352352352).status == Response(status=400).status
 
-def test_wrongtype_patient_adressCEP():
-    assert data_to_use(patient_adressCEP='1212312').status == Response(status=400).status
+def test_wrongtype_patient_adress_cep():
+    assert data_to_use(patient_adress_cep='1212312').status == Response(status=400).status
 
-def test_empty_value_patient_adressCEP():
-    assert data_to_use(patient_adressCEP='').status == Response(status=400).status
+def test_empty_value_patient_adress_cep():
+    assert data_to_use(patient_adress_cep='').status == Response(status=400).status
 
-def test_empty_space_patient_adressCEP():
-    assert data_to_use(patient_adressCEP='  ').status == Response(status=400).status
+def test_empty_space_patient_adress_cep():
+    assert data_to_use(patient_adress_cep='  ').status == Response(status=400).status
 
-def test_invalid_value_patient_adressCEP():
-    assert data_to_use(patient_adressCEP=2411).status == Response(status=400).status
+def test_invalid_value_patient_adress_cep():
+    assert data_to_use(patient_adress_cep=2411).status == Response(status=400).status
 
-def test_long_value_patient_adressCEP():
-    assert data_to_use(patient_adressCEP=52352352352352352352352352352).status == Response(status=400).status
+def test_long_value_patient_adress_cep():
+    assert data_to_use(patient_adress_cep=52352352352352352352352352352).status == Response(status=400).status
 
 #############################################################################
 # TEST BIG TEXT WITH LINE BRAKES
@@ -696,7 +696,7 @@ def test_more_than_limit_exam_results():
 #############################################################################
 # NORMAL TEXT VARIABLES THAT CANNOT BE NULL
 # initial_diagnostic
-# principalCid10
+# principal_cid_10
 # procedure_solicited
 # procedure_code
 # clinic
@@ -723,20 +723,20 @@ def test_shortText_initial_diagnostic():
 def test_more_than_limit_initial_diagnostic():
     assert data_to_use(initial_diagnostic=lenght_test[:46]).status == Response(status=400).status
 
-def test_wrong_type_principalCid10():
-    assert data_to_use(principalCid10=131).status == Response(status=400).status
+def test_wrong_type_principal_cid_10():
+    assert data_to_use(principal_cid_10=131).status == Response(status=400).status
 
-def test_empty_value_principalCid10():
-    assert data_to_use(principalCid10='').status == Response(status=400).status
+def test_empty_value_principal_cid_10():
+    assert data_to_use(principal_cid_10='').status == Response(status=400).status
 
-def test_empty_spaces_principalCid10():
-    assert data_to_use(principalCid10='    ').status == Response(status=400).status
+def test_empty_spaces_principal_cid_10():
+    assert data_to_use(principal_cid_10='    ').status == Response(status=400).status
 
-def test_shortText_principalCid10():
-    assert data_to_use(principalCid10='ab').status == Response(status=400).status
+def test_shortText_principal_cid_10():
+    assert data_to_use(principal_cid_10='ab').status == Response(status=400).status
 
-def test_more_than_limit_principalCid10():
-    assert data_to_use(principalCid10=lenght_test[:6]).status == Response(status=400).status
+def test_more_than_limit_principal_cid_10():
+    assert data_to_use(principal_cid_10=lenght_test[:6]).status == Response(status=400).status
 
 def test_wrong_type_procedure_solicited():
     assert data_to_use(procedure_solicited=131).status == Response(status=400).status
@@ -966,8 +966,8 @@ def test_validCNPJ_company_cnpj():
 # TEST STRING THAT CAN BE NULL
 # patient_ethnicity
 # patient_responsible_name
-# secondary_cid10
-# cid10_associated_causes
+# secondary_cid_10
+# cid_10_associated_causes
 # insurance_company_series
 # test wront type
 # test empty value
@@ -1005,35 +1005,35 @@ def test_longValue_patient_responsible_name():
 def test_shortValue_patient_responsible_name():
     assert data_to_use(patient_responsible_name='aaa').status == Response(status=400).status
 
-def test_wrong_type_secondary_cid10():
-    assert data_to_use(secondary_cid10=123).status == Response(status=400).status
+def test_wrong_type_secondary_cid_10():
+    assert data_to_use(secondary_cid_10=123).status == Response(status=400).status
 
-def test_empty_value_secondary_cid10():
-    assert type(data_to_use(secondary_cid10=None)) != type(Response())
+def test_empty_value_secondary_cid_10():
+    assert type(data_to_use(secondary_cid_10=None)) != type(Response())
 
-def test_empty_spaces_secondary_cid10():
-    assert type(data_to_use(secondary_cid10='    ')) != type(Response())
+def test_empty_spaces_secondary_cid_10():
+    assert type(data_to_use(secondary_cid_10='    ')) != type(Response())
 
-def test_longValue_secondary_cid10():
-    assert data_to_use(secondary_cid10=lenght_test[:6]).status == Response(status=400).status
+def test_longValue_secondary_cid_10():
+    assert data_to_use(secondary_cid_10=lenght_test[:6]).status == Response(status=400).status
 
-def test_shortValue_secondary_cid10():
-    assert data_to_use(secondary_cid10='aa').status == Response(status=400).status
+def test_shortValue_secondary_cid_10():
+    assert data_to_use(secondary_cid_10='aa').status == Response(status=400).status
 
-def test_wrong_type_secondary_cid10():
-    assert data_to_use(secondary_cid10=123).status == Response(status=400).status
+def test_wrong_type_secondary_cid_10():
+    assert data_to_use(secondary_cid_10=123).status == Response(status=400).status
 
-def test_empty_value_cid10_associated_causes():
-    assert type(data_to_use(cid10_associated_causes=None)) != type(Response())
+def test_empty_value_cid_10_associated_causes():
+    assert type(data_to_use(cid_10_associated_causes=None)) != type(Response())
 
-def test_empty_spaces_cid10_associated_causes():
-    assert type(data_to_use(cid10_associated_causes='    ')) != type(Response())
+def test_empty_spaces_cid_10_associated_causes():
+    assert type(data_to_use(cid_10_associated_causes='    ')) != type(Response())
 
-def test_longValue_cid10_associated_causes():
-    assert data_to_use(cid10_associated_causes=lenght_test[:6]).status == Response(status=400).status
+def test_longValue_cid_10_associated_causes():
+    assert data_to_use(cid_10_associated_causes=lenght_test[:6]).status == Response(status=400).status
 
-def test_shortValue_cid10_associated_causes():
-    assert data_to_use(cid10_associated_causes='aa').status == Response(status=400).status
+def test_shortValue_cid_10_associated_causes():
+    assert data_to_use(cid_10_associated_causes='aa').status == Response(status=400).status
 
 def test_wrong_type_insurance_company_series():
     assert data_to_use(insurance_company_series=123).status == Response(status=400).status

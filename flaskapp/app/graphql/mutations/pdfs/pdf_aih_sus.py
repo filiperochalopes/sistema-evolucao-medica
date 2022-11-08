@@ -15,8 +15,8 @@ from app.graphql import mutation
 from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_AihSus')
-@convert_kwargs_to_snake_case
-def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int, establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adressCity:str, patient_adressCity_ibgeCode:int, patient_adressUF:str, patient_adressCEP:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principalCid10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cid10:str=None, cid10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:int=None, insurance_company_ticket_number:int=None, insurance_company_series:str=None,company_cnpj:int=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> Union[bytes, Response]:
+#@convert_kwargs_to_snake_case
+def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int, establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adress_city:str, patient_adress_city_ibge_code:int, patient_adress_uf:str, patient_adress_cep:int, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_phonenumber:int=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:int=None, insurance_company_ticket_number:int=None, insurance_company_series:str=None,company_cnpj:int=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> Union[bytes, Response]:
     """fill pdf aih sus 
 
     Args:
@@ -30,14 +30,14 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
         patient_sex (str): patient_sex
         patient_mother_name (str): patient_mother_name
         patient_adress (str): patient_adress
-        patient_adressCity (str): patient_adressCity
-        patient_adressCity_ibgeCode (int): patient_adressCity_ibgeCode
-        patient_adressUF (str): patient_adressUF
-        patient_adressCEP (int): patient_adressCEP
+        patient_adress_city (str): patient_adress_city
+        patient_adress_city_ibge_code (int): patient_adress_city_ibge_code
+        patient_adress_uf (str): patient_adress_uf
+        patient_adress_cep (int): patient_adress_cep
         main_clinical_signs_symptoms (str): main_clinical_signs_symptoms
         conditions_justify_hospitalization (str): conditions_justify_hospitalization
         initial_diagnostic (str): initial_diagnostic
-        principalCid10 (str): principalCid10
+        principal_cid_10 (str): principal_cid_10
         procedure_solicited (str): procedure_solicited
         procedure_code (str): procedure_code
         clinic (str): clinic
@@ -56,8 +56,8 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
         patient_responsible_name (str, optional): patient_responsible_name. Defaults to None.
         patient_mother_phonenumber (int, optional): patient_mother_phonenumber. Defaults to None.
         patient_responsible_phonenumber (int, optional): patient_responsible_phonenumber. Defaults to None.
-        secondary_cid10 (str, optional): secondary_cid10. Defaults to None.
-        cid10_associated_causes (str, optional): cid10_associated_causes. Defaults to None.
+        secondary_cid_10 (str, optional): secondary_cid_10. Defaults to None.
+        cid_10_associated_causes (str, optional): cid_10_associated_causes. Defaults to None.
         acident_type (str, optional): acident_type. Defaults to None.
         insurance_company_cnpj (int, optional): insurance_company_cnpj. Defaults to None.
         insurance_company_ticket_number (int, optional): insurance_company_ticket_number. Defaults to None.
@@ -97,7 +97,7 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             c.setFont('Roboto-Mono', 10)
             c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(28, 658), camp_name='Patient CNS', interval='  ')
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adressCEP, pos=(482, 566), camp_name='Patient Adress CEP', len_max=8, len_min=8, value_min=0, value_max=99999999, nullable=True, interval=' ')
+            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_cep, pos=(482, 566), camp_name='Patient Adress CEP', len_max=8, len_min=8, value_min=0, value_max=99999999, nullable=True, interval=' ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=procedure_code, pos=(404, 269), camp_name='Procedure Code', len_max=10, len_min=10, interval='  ')
             if type(c) == type(Response()): return c
@@ -111,11 +111,11 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress, pos=(25, 593), camp_name='Patient Adress', len_max=101, len_min=7)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adressCity, pos=(25, 566), camp_name='Patient Adress City', len_max=58, len_min=7)
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(25, 566), camp_name='Patient Adress City', len_max=58, len_min=7)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adressCity_ibgeCode, pos=(388, 566), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999)
+            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_city_ibge_code, pos=(388, 566), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_UF(can=c, uf=patient_adressUF, pos=(450, 566), camp_name='Patient Adress UF', interval='  ')
+            c = pdf_functions.add_UF(can=c, uf=patient_adress_uf, pos=(450, 566), camp_name='Patient Adress UF', interval='  ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_morelines_text(can=c, text=main_clinical_signs_symptoms, initial_pos=(25, 530), decrease_ypos= 10, camp_name='Main Clinical Signs Symptoms', len_max=1009, char_per_lines=101, len_min=5)
             if type(c) == type(Response()): return c
@@ -123,7 +123,7 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=initial_diagnostic, pos=(25, 314), camp_name='Initial Diagnostic', len_max=44, len_min=5)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=principalCid10, pos=(306, 314), camp_name='Principal Cid10', len_max=4, len_min=3)
+            c = pdf_functions.add_oneline_text(can=c, text=principal_cid_10, pos=(306, 314), camp_name='Principal Cid10', len_max=4, len_min=3)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=procedure_solicited, pos=(25, 269), camp_name='Procedure Solicited', len_max=65, len_min=6)
             if type(c) == type(Response()): return c
@@ -171,9 +171,9 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             if type(c) == type(Response()): return c
             c = pdf_functions.add_phonenumber(can=c, number=patient_responsible_phonenumber, pos=(415, 608), camp_name='Patient responsible phone number', nullable=True, interval='  ')
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=secondary_cid10, pos=(406, 314), camp_name='Secondary Cid10', len_max=4, len_min=3, nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=secondary_cid_10, pos=(406, 314), camp_name='Secondary Cid10', len_max=4, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=cid10_associated_causes, pos=(512, 314), camp_name='Associated causes Cid10', len_max=4, len_min=3, nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=cid_10_associated_causes, pos=(512, 314), camp_name='Associated causes Cid10', len_max=4, len_min=3, nullable=True)
             if type(c) == type(Response()): return c
             c = pdf_functions.add_markable_square(can=c, option=acident_type, valid_options=['TRAFFIC', 'WORK', 'WORK_PATH'], options_positions=((38,184),(38,170), (38,156)), square_size=(9,9), camp_name='Acident Type', nullable=True)
             if type(c) == type(Response()): return c
