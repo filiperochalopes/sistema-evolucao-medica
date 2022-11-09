@@ -136,9 +136,9 @@ type_defs = gql(
 
         "Criação de documento de Precricao medica"
         generatePdf_PrecricaoMedica(
-            document_datetime: String
-            patient_name: String,
-            prescription: String
+            documentDatetime: String,
+            patientName: String,
+            prescription: [String]
         ): GeneratedPdf
     }
 
