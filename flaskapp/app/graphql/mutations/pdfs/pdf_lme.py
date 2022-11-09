@@ -38,7 +38,7 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
         patient_document (dict, optional): patient_document. Defaults to None.
         patient_email (str, optional): patient_email. Defaults to None.
         contacts_phonenumbers (list, optional): lsit with contacts_phonenumbers . Defaults to None.
-        medicines (list, optional): list with dicts eg: [{"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}] . Defaults to None.
+        medicines (list, optional): list with dicts eg: [{"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}] . Defaults to None.
 
     Returns:
         Union[bytes, Response]: base64 pdf enconded or a Response with a error
@@ -193,7 +193,7 @@ def add_medicines(can:canvas.Canvas, medicines:list) -> Union[canvas.Canvas, Res
 
     Args:
         can (canvas.Canvas): canvas to use
-        medicines (list): list with dict to with medicines, eg: [{"medicine_name":"Procedure Name", "quant_1month:"cod124235", "quant_2month":"123", "quant_3month":"quant"}]
+        medicines (list): list with dict to with medicines, eg: [{"medicine_name":"Procedure Name", "quant_1_month:"cod124235", "quant_2_month":"123", "quant_3_month":"quant"}]
 
     Returns:
         Union[canvas.Canvas, Response]: canvas updated or Response with error
@@ -203,8 +203,8 @@ def add_medicines(can:canvas.Canvas, medicines:list) -> Union[canvas.Canvas, Res
         if medicines == None:
                 return can
         if type(medicines) != type(list()):
-            return Response('medicines has to be a list of dicts, like: [{"medicine_name":"Procedure Name", "quant_1month:"cod124235", "quant_2month":"123", "quant_3month":"quant"}]', status=400)
-        necessaryKeys = ["medicine_name", "quant_1month", "quant_2month", "quant_3month"]
+            return Response('medicines has to be a list of dicts, like: [{"medicine_name":"Procedure Name", "quant_1_month:"cod124235", "quant_2_month":"123", "quant_3_month":"quant"}]', status=400)
+        necessaryKeys = ["medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"]
         if len(medicines) > 5:
                 return Response('You cannot add more than 5 secondary medicines', status=400)
         for med in medicines:
@@ -212,15 +212,15 @@ def add_medicines(can:canvas.Canvas, medicines:list) -> Union[canvas.Canvas, Res
             if type(med) != type(dict()):
                 return Response('All itens in list has to be a dict', status=400)
             #Verify if the necessary keys are in the dict
-            if 'medicine_name' not in med.keys() or 'quant_1month' not in med.keys() or "quant_2month" not in med.keys() or "quant_3month" not in med.keys():
-                return Response('Some keys in dict is missing, dict has to have "medicine_name", "quant_1month", "quant_2month", "quant_3month"', status=400)
+            if 'medicine_name' not in med.keys() or 'quant_1_month' not in med.keys() or "quant_2_month" not in med.keys() or "quant_3_month" not in med.keys():
+                return Response('Some keys in dict is missing, dict has to have "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"', status=400)
             #Verify if the value in the dics is the needed
-            elif type(med['medicine_name']) != type(str()) or type(med['quant_1month']) != type(str()) or type(med['quant_2month']) != type(str()) or type(med['quant_3month']) != type(str()):
-                return Response('The values in the keys "medicine_name", "quant_1month", "quant_2month", "quant_3month" has to be string', status=400)
+            elif type(med['medicine_name']) != type(str()) or type(med['quant_1_month']) != type(str()) or type(med['quant_2_month']) != type(str()) or type(med['quant_3_month']) != type(str()):
+                return Response('The values in the keys "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month" has to be string', status=400)
             #Verify if the dict has more keys than the needed
             for key in med.keys():
                 if key not in necessaryKeys:
-                    return Response('The dict can only have 4 keys "medicine_name", "quant_1month", "quant_2month", "quant_3month"', status=400)
+                    return Response('The dict can only have 4 keys "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"', status=400)
 
             #Add to cnavas
             cont = 1
@@ -234,11 +234,11 @@ def add_medicines(can:canvas.Canvas, medicines:list) -> Union[canvas.Canvas, Res
             for med in medicines:
                 can = pdf_functions.add_oneline_text(can=can, text=med['medicine_name'], pos=(NAME_X_POS, ypos), camp_name=f'{cont} Medicine name', len_max=65, len_min=4)
                 if type(can) == type(Response()): return can
-                can = pdf_functions.add_oneline_text(can=can, text=med['quant_1month'], pos=(MONTH1_X_POS, ypos), camp_name=f'{cont} Medicine month1 quant', len_max=9, len_min=1)
+                can = pdf_functions.add_oneline_text(can=can, text=med['quant_1_month'], pos=(MONTH1_X_POS, ypos), camp_name=f'{cont} Medicine month1 quant', len_max=9, len_min=1)
                 if type(can) == type(Response()): return can
-                can = pdf_functions.add_oneline_text(can=can, text=med['quant_2month'], pos=(MONTH2_X_POS, ypos), camp_name=f'{cont} Medicine month2 quant', len_max=9, len_min=1)
+                can = pdf_functions.add_oneline_text(can=can, text=med['quant_2_month'], pos=(MONTH2_X_POS, ypos), camp_name=f'{cont} Medicine month2 quant', len_max=9, len_min=1)
                 if type(can) == type(Response()): return can
-                can = pdf_functions.add_oneline_text(can=can, text=med['quant_3month'], pos=(MONTH3_X_POS, ypos), camp_name=f'{cont} Medicine month3 quant', len_max=8, len_min=1)
+                can = pdf_functions.add_oneline_text(can=can, text=med['quant_3_month'], pos=(MONTH3_X_POS, ypos), camp_name=f'{cont} Medicine month3 quant', len_max=8, len_min=1)
                 if type(can) == type(Response()): return can
 
                 ypos -= REDUCE_Y

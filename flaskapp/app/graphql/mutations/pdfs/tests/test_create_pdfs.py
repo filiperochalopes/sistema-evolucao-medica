@@ -28,7 +28,7 @@ def test_create_aih_sus_pdf():
         main_clinical_signs_symptoms="Patient main clinical signs sympthoms",
         conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',
         initial_diagnostic='Patient Initial Diagnostic',
-        principal_cid_10="A00",
+        principal_cid10="A00",
         procedure_solicited='Procedure Solicited',
         procedure_code='1234567890', 
         clinic='Clinic Name', 
@@ -47,8 +47,8 @@ def test_create_aih_sus_pdf():
         patient_responsible_name='Patient Responsible Name', 
         patient_mother_phonenumber=5613248546, 
         patient_responsible_phonenumber=8564721598, 
-        secondary_cid_10='A01',
-        cid_10_associated_causes='A02',
+        secondary_cid10='A01',
+        cid10associated_causes='A02',
         acident_type='traffic', 
         insurance_company_cnpj=37549670000171, 
         insurance_company_ticket_number=123450123456, 
@@ -84,8 +84,8 @@ def test_create_apac_pdf():
         document_chart_number=12345,
         patient_adress_city_ibge_code=4528765,
         procedure_justification_description='Procedure Justification Description', 
-        procedure_justification_main_cid_10='A98', 
-        procedure_justification_sec_cid_10='A01', procedure_justification_associated_cause_cid_10='A45',
+        procedure_justification_main_cid10='A98', 
+        procedure_justification_sec_cid10='A01', procedure_justification_associated_cause_cid10='A45',
         procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', 
         establishment_exec_cnes=7654321,
         prof_solicitor_document={'CPF':28445400070}, 
@@ -158,7 +158,7 @@ def test_create_lme_pdf():
         patient_mother_name='Patient Mother Name',
         patient_weight=142,
         patient_height=180,
-        cid_10='A123',
+        cid10='A123',
         anamnese="Anamnese",
         prof_solicitor_name="Professional Solicitor Name",
         solicitation_datetime=datetime_to_use,
@@ -171,9 +171,10 @@ def test_create_lme_pdf():
         patient_document={'CNS':928976954930007},
         patient_email='patietemail@gmail.com',
         contacts_phonenumbers=[1254875652, 4578456598],
-        medicines=[{"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}]
+        medicines=[{"medicineName":lenght_test[:60], "quant1month":"20 comp", "quant2month":"15 comp", "quant3month":"5 comp"}]
     )
-    assert type(output) == type(bytes())
+    #assert type(output) == type(bytes())
+    assert output.response == 'lepolepo'
 
 def test_create_precricao_medica_pdf():
     output = pdf_prescricao_medica.fill_pdf_prescricao_medica(
