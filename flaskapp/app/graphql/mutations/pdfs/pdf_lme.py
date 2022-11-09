@@ -14,7 +14,7 @@ from app.env import FONT_DIRECTORY, TEMPLATE_LME_DIRECTORY, WRITE_LME_DIRECTORY
 from app.graphql import mutation
 from ariadne import convert_kwargs_to_snake_case
 
-#@convert_kwargs_to_snake_case
+@convert_kwargs_to_snake_case
 def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid_10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[bytes, Response]:
     """fill pdf lme (laudo de solicitacao, avaliacao e autorizacao e documentos)
 
