@@ -99,15 +99,22 @@ type_defs = gql(
             clinic: String, 
             "Carater da internacao, max:19 min:6 caracteres"
             internationCarater: String, 
-            "Em graphql não tem entrada dict, como seria?"
+            "Documento do profissional solicitante, cns ou cpf, a api python o trata como dicionario, entao envie como uma string no formato '{'CNS':928976954930007}', a primeira e o nome do documento, e o seguinte e o numero do documento como inteiro"
             profSolicitorDocument: String, 
-            profSolicitorName: String, 
-            solicitationDatetime: String, 
-            autorizationProfName: String, 
+            "Nome do profissional solicitante, max:48 min:8 caracteres"
+            profSolicitorName: String,
+            "Data e hora da solicitacao, somente dia/mes/ano, envie como timestamp SEM fusohorario (Padrao UTC)"
+            solicitationDatetime: String,
+            "Nome do profissional autorizador, max:48 min:8 caracteres" 
+            autorizationProfName: String,
+            "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:17 min:2 caracteres"
             emissionOrgCode: String, 
-            "Em graphql não tem entrada dict, como seria?"
-            autorizatonProfDocument: String, 
-            autorizatonDatetime: String, hospitalizationAutorizationNumber: Int,
+            "Documento do profissional autorizador, cns ou cpf, a api python o trata como dicionario, entao envie como uma string no formato '{'CNS':928976954930007}', a primeira e o nome do documento, e o seguinte e o numero do documento como inteiro"
+            autorizatonProfDocument: String,
+            "Data e hora da autorizacao, somente dia/mes/ano, envie como timestamp SEM fusohorario (Padrao UTC)"
+            autorizatonDatetime: String,
+            "Numero da autorizacao de internacao hospitalar, no maximo 18 digitos"
+            hospitalizationAutorizationNumber: Int,
             examResults: String, 
             chartNumber: Int, 
             patientEthnicity: String, 
