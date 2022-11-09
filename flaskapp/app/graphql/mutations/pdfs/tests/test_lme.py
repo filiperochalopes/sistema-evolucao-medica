@@ -28,7 +28,7 @@ diagnostic='Diagnostic',
 patient_document={'CNS':928976954930007},
 patient_email='patietemail@gmail.com',
 contacts_phonenumbers=[1254875652, 4578456598],
-medicines=[{"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}]
+medicines=[{"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}]
     ):
     return pdf_lme.fill_pdf_lme(establishment_solitc_name,establishment_solitc_cnes,patient_name,patient_mother_name,patient_weight,patient_height,cid_10,anamnese,prof_solicitor_name,solicitation_datetime,prof_solicitor_document,capacity_attest,filled_by,patient_ethnicity,previous_treatment,diagnostic,patient_document,patient_email,contacts_phonenumbers,medicines)
 
@@ -720,28 +720,28 @@ def test_wrongoption_filled_by():
 # TEST medicines
 # test wront type
 # test wront type medicine_name
-# test wront type quant_1month
-# test wront type quant_2month
-# test wront type quant_3month
+# test wront type quant_1_month
+# test wront type quant_2_month
+# test wront type quant_3_month
 # test empty value in keys
 # test empty spaces in keys
 # test empty value in medicine_name
-# test empty value in quant_1month
-# test empty value in quant_2month
-# test empty value in quant_3month
+# test empty value in quant_1_month
+# test empty value in quant_2_month
+# test empty value in quant_3_month
 # test empty spaces in medicine_name
-# test empty spaces in quant_1month
-# test empty spaces in quant_2month
-# test empty spaces in quant_3month
+# test empty spaces in quant_1_month
+# test empty spaces in quant_2_month
+# test empty spaces in quant_3_month
 # test more than limit dicts
 # test long values in medicine_name
-# test long values in quant_1month
-# test long values in quant_2month
-# test long values in quant_3month
+# test long values in quant_1_month
+# test long values in quant_2_month
+# test long values in quant_3_month
 # test short values in medicine_name
-# test short values in quant_1month
-# test short values in quant_2month
-# test short values in quant_3month
+# test short values in quant_1_month
+# test short values in quant_2_month
+# test short values in quant_3_month
 
 def test_wrong_type_medicines():
     assert data_to_use(medicines=123).status == Response(status=400).status
@@ -750,72 +750,72 @@ def test_wrong_type_medicines():
     assert data_to_use(medicines=123).status == Response(status=400).status
 
 def test_wrong_type_medicine_name():
-    assert data_to_use(medicines=[{"medicine_name":234234, "quant_1month":"20 comp", "quant_2month":"15 comp", "quant_3month":"5 comp"}]).status == Response(status=400).status
+    assert data_to_use(medicines=[{"medicine_name":234234, "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}]).status == Response(status=400).status
 
-def test_wrong_type_quant_1month():
-    assert data_to_use(medicines=[{"medicine_name":'234234', "quant_1month":541, "quant_2month":"15 comp", "quant_3month":"5 comp"}]).status == Response(status=400).status
+def test_wrong_type_quant_1_month():
+    assert data_to_use(medicines=[{"medicine_name":'234234', "quant_1_month":541, "quant_2_month":"15 comp", "quant_3_month":"5 comp"}]).status == Response(status=400).status
 
-def test_wrong_type_quant_2month():
-    assert data_to_use(medicines=[{"medicine_name":'234234', "quant_1month":'541', "quant_2month":649781, "quant_3month":"5 comp"}]).status == Response(status=400).status
+def test_wrong_type_quant_2_month():
+    assert data_to_use(medicines=[{"medicine_name":'234234', "quant_1_month":'541', "quant_2_month":649781, "quant_3_month":"5 comp"}]).status == Response(status=400).status
 
-def test_wrong_type_quant_3month():
-    assert data_to_use(medicines=[{"medicine_name":'234234', "quant_1month":'541', "quant_2month":'64981', "quant_3month":234234}]).status == Response(status=400).status
+def test_wrong_type_quant_3_month():
+    assert data_to_use(medicines=[{"medicine_name":'234234', "quant_1_month":'541', "quant_2_month":'64981', "quant_3_month":234234}]).status == Response(status=400).status
 
 def test_empty_value_keys_medicines():
-    assert data_to_use(medicines=[{"":'234234', "":'541', "quant_2month":'64981', "":234234}]).status == Response(status=400).status
+    assert data_to_use(medicines=[{"":'234234', "":'541', "quant_2_month":'64981', "":234234}]).status == Response(status=400).status
 
 def test_empty_spaces_keys_medicines():
-    assert data_to_use(medicines=[{" ":'234234', " ":'541', "quant_2month":'64981', " ":234234}]).status == Response(status=400).status
+    assert data_to_use(medicines=[{" ":'234234', " ":'541', "quant_2_month":'64981', " ":234234}]).status == Response(status=400).status
 
 def test_empty_value_medicine_name():
-    assert data_to_use(medicines=[{"medicine_name":'', "quant_1month":'541', "quant_2month":'64981', "quant_3month":'234234'}]).status == Response(status=400).status
+    assert data_to_use(medicines=[{"medicine_name":'', "quant_1_month":'541', "quant_2_month":'64981', "quant_3_month":'234234'}]).status == Response(status=400).status
 
-def test_empty_value_quant_1month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'', "quant_2month":'64981', "quant_3month":'234234'}]).status == Response(status=400).status
+def test_empty_value_quant_1_month():
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'', "quant_2_month":'64981', "quant_3_month":'234234'}]).status == Response(status=400).status
 
-def test_empty_value_quant_2month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'', "quant_3month":'234234'}]).status == Response(status=400).status
+def test_empty_value_quant_2_month():
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'', "quant_3_month":'234234'}]).status == Response(status=400).status
 
-def test_empty_value_quant_3month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'adasdasda', "quant_3month":''}]).status == Response(status=400).status
+def test_empty_value_quant_3_month():
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":''}]).status == Response(status=400).status
 
 def test_empty_spaces_medicine_name():
-    assert data_to_use(medicines=[{"medicine_name":'   ', "quant_1month":'541', "quant_2month":'64981', "quant_3month":'234234'}]).status == Response(status=400).status
+    assert data_to_use(medicines=[{"medicine_name":'   ', "quant_1_month":'541', "quant_2_month":'64981', "quant_3_month":'234234'}]).status == Response(status=400).status
 
-def test_empty_spaces_quant_1month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'      ', "quant_2month":'64981', "quant_3month":'234234'}]).status == Response(status=400).status
+def test_empty_spaces_quant_1_month():
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'      ', "quant_2_month":'64981', "quant_3_month":'234234'}]).status == Response(status=400).status
 
-def test_empty_spaces_quant_2month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'     ', "quant_3month":'234234'}]).status == Response(status=400).status
+def test_empty_spaces_quant_2_month():
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'     ', "quant_3_month":'234234'}]).status == Response(status=400).status
 
-def test_empty_spaces_quant_3month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'adasdasda', "quant_3month":'      '}]).status == Response(status=400).status
+def test_empty_spaces_quant_3_month():
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'      '}]).status == Response(status=400).status
 
 def test_more_than_limit_dicts():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'adasdasda', "quant_3month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'adasdasda', "quant_3month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'adasdasda', "quant_3month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'adasdasda', "quant_3month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'adasdasda', "quant_3month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'adasdasda', "quant_3month":'asdadasd'}]).status == Response(status=400).status
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'asdadasd'}]).status == Response(status=400).status
 
 
 def test_short_value_medicine_name():
-    assert data_to_use(medicines=[{"medicine_name":'asd', "quant_1month":'541', "quant_2month":'64981', "quant_3month":'234234'}]).status == Response(status=400).status
+    assert data_to_use(medicines=[{"medicine_name":'asd', "quant_1_month":'541', "quant_2_month":'64981', "quant_3_month":'234234'}]).status == Response(status=400).status
 
-def test_short_value_quant_1month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'', "quant_2month":'64981', "quant_3month":'234234'}]).status == Response(status=400).status
+def test_short_value_quant_1_month():
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'', "quant_2_month":'64981', "quant_3_month":'234234'}]).status == Response(status=400).status
 
-def test_short_value_quant_2month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'', "quant_3month":'234234'}]).status == Response(status=400).status
+def test_short_value_quant_2_month():
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'', "quant_3_month":'234234'}]).status == Response(status=400).status
 
-def test_short_value_quant_3month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'adasdasda', "quant_3month":''}]).status == Response(status=400).status
+def test_short_value_quant_3_month():
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":''}]).status == Response(status=400).status
 
 def test_long_value_medicine_name():
-    assert data_to_use(medicines=[{"medicine_name":lenght_test[:70], "quant_1month":'541', "quant_2month":'64981', "quant_3month":'234234'}]).status == Response(status=400).status
+    assert data_to_use(medicines=[{"medicine_name":lenght_test[:70], "quant_1_month":'541', "quant_2_month":'64981', "quant_3_month":'234234'}]).status == Response(status=400).status
 
-def test_long_value_quant_1month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":lenght_test[:11], "quant_2month":'64981', "quant_3month":'234234'}]).status == Response(status=400).status
+def test_long_value_quant_1_month():
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":lenght_test[:11], "quant_2_month":'64981', "quant_3_month":'234234'}]).status == Response(status=400).status
 
-def test_long_value_quant_2month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":lenght_test[:11], "quant_3month":'234234'}]).status == Response(status=400).status
+def test_long_value_quant_2_month():
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":lenght_test[:11], "quant_3_month":'234234'}]).status == Response(status=400).status
 
-def test_long_value_quant_3month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1month":'123123', "quant_2month":'adasdasda', "quant_3month":lenght_test[:11]}]).status == Response(status=400).status
+def test_long_value_quant_3_month():
+    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":lenght_test[:11]}]).status == Response(status=400).status
 
