@@ -173,8 +173,7 @@ def test_create_lme_pdf():
         contacts_phonenumbers=[1254875652, 4578456598],
         medicines=[{"medicineName":lenght_test[:60], "quant1month":"20 comp", "quant2month":"15 comp", "quant3month":"5 comp"}]
     )
-    #assert type(output) == type(bytes())
-    assert output.response == 'lepolepo'
+    assert type(output) == type(bytes())
 
 def test_create_precricao_medica_pdf():
     output = pdf_prescricao_medica.fill_pdf_prescricao_medica(
