@@ -61,7 +61,7 @@ type_defs = gql(
             establishmentExecName: String, 
             establishmentExecCnes: Int, 
             "Nome do paciente"
-            patientName: String!, 
+            patientName: String, 
             "Número do Cartão do SUS do paciente, não seria string? Se começar com zero pode dar problema se for Int"
             patientCns: Int, 
             patientBirthday: String, 

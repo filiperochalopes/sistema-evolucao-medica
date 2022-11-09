@@ -20,7 +20,39 @@ def test_answer_with_all_fields():
     assert type(data_to_use()) != type(Response())
 
 def test_awnser_with_only_required_data():
-    assert type(pdf_aih_sus.fill_pdf_aih_sus(
+    # assert type(pdf_aih_sus.fill_pdf_aih_sus(
+    #     establishment_solitc_name='Establishment Solicit Name',
+    #     establishment_solitc_cnes=1234567,
+    #     establishment_exec_name='Establshment Exec Name',
+    #     establishment_exec_cnes=7654321,
+    #     patient_name='Patient Name',
+    #     patient_cns=928976954930007,
+    #     patient_birthday=datetime_to_use,
+    #     patient_sex='F',
+    #     patient_mother_name='Patient Mother Name',
+    #     patient_adress='Patient Adress street neighobourd',
+    #     patient_adress_city='Patient City',
+    #     patient_adress_city_ibge_code=1234567,
+    #     patient_adress_uf='SP',
+    #     patient_adress_cep=12345678,
+    #     main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",
+    #     conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',
+    #     initial_diagnostic='Patient Initial Diagnostic',
+    #     principalCid10="A00",
+    #     procedure_solicited='Procedure Solicited',
+    #     procedure_code='1234567890', 
+    #     clinic='Clinic Name', 
+    #     internation_carater='Internation Carater', 
+    #     prof_solicitor_document={'CNS':928976954930007},
+    #     prof_solicitor_name='Profissional Solicit Name', 
+    #     solicitation_datetime=datetime_to_use, 
+    #     autorization_prof_name='Autorization professional name', 
+    #     emission_org_code='OrgCode2022', 
+    #     autorizaton_prof_document={'CPF':28445400070}, 
+    #     autorizaton_datetime=datetime_to_use,
+    #     hospitalization_autorization_number=1234567890
+    #     )) != type(Response())
+    assert pdf_aih_sus.fill_pdf_aih_sus(
         establishment_solitc_name='Establishment Solicit Name',
         establishment_solitc_cnes=1234567,
         establishment_exec_name='Establshment Exec Name',
@@ -38,12 +70,12 @@ def test_awnser_with_only_required_data():
         main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",
         conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',
         initial_diagnostic='Patient Initial Diagnostic',
-        principal_cid_10="A00",
+        principalCid10="A00",
         procedure_solicited='Procedure Solicited',
         procedure_code='1234567890', 
         clinic='Clinic Name', 
         internation_carater='Internation Carater', 
-        prof_solicitor_document={'CNS':928976954930007},
+        profSolicitorDocument={'CNS':928976954930007},
         prof_solicitor_name='Profissional Solicit Name', 
         solicitation_datetime=datetime_to_use, 
         autorization_prof_name='Autorization professional name', 
@@ -51,8 +83,7 @@ def test_awnser_with_only_required_data():
         autorizaton_prof_document={'CPF':28445400070}, 
         autorizaton_datetime=datetime_to_use,
         hospitalization_autorization_number=1234567890
-        )) != type(Response())
-
+        ).response == '213'
 
 ##############################################################
 # ERRORS IN NAMES CAMPS

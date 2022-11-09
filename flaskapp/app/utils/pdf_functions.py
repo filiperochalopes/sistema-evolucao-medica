@@ -866,6 +866,13 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
 
         
         # See id document is CPF, CNS or RG
+        all_document_keys = list(document.keys())
+        #return Response(f'{document}')
+        #Make all keys bein upper
+        for key in all_document_keys:
+            document[f'{str(key).upper()}'] = document.pop(key)
+            
+        # updating all document keys
         all_document_keys = document.keys()
         if 'CNS' in all_document_keys:
             if type(document['CNS']) != type(int()):
