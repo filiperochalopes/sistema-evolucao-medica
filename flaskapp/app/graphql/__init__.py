@@ -55,9 +55,10 @@ type_defs = gql(
 
         "Criação de documento de AIH"
         generatePdf_AihSus(
-            "Nome do Estabelecimento Solicitante"
-            establishmentSolitcName: String, 
+            "Nome do Estabelecimento Solicitante, max:82 min:7"
+            establishmentSolitcName: String!, 
             establishmentSolitcCnes: Int, 
+            "Nome do Estabelecimento Executante, max:82 min:8"
             establishmentExecName: String, 
             establishmentExecCnes: Int, 
             "Nome do paciente"
@@ -73,7 +74,8 @@ type_defs = gql(
             patientAdressCityIbgeCode: Int, 
             patientAdressUF: String, 
             patientAdressCEP: Int, 
-            mainClinicalSignsSymptoms: String, conditionsJustifyHospitalization: String, 
+            mainClinicalSignsSymptoms: String, 
+            conditionsJustifyHospitalization: String, 
             initialDiagnostic: String, 
             principalCid10: String, 
             "Não seria solicited procedure?"
