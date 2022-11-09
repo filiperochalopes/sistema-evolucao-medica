@@ -55,33 +55,49 @@ type_defs = gql(
 
         "Criação de documento de AIH"
         generatePdf_AihSus(
-            "Nome do Estabelecimento Solicitante, max:82 min:7"
-            establishmentSolitcName: String!, 
+            "Nome do Estabelecimento Solicitante, max:82 min:7 caracteres"
+            establishmentSolitcName: String,
+            "CNES do Estabelecimento Solicitante"
             establishmentSolitcCnes: Int, 
-            "Nome do Estabelecimento Executante, max:82 min:8"
+            "Nome do Estabelecimento Executante, max:82 min:8 caracteres"
             establishmentExecName: String, 
+            "CNES do Estabelecimento Executante"
             establishmentExecCnes: Int, 
-            "Nome do paciente"
+            "Nome do paciente, max:79 min:7 caracteres"
             patientName: String, 
-            "Número do Cartão do SUS do paciente, não seria string? Se começar com zero pode dar problema se for Int"
-            patientCns: Int, 
-            patientBirthday: String, 
-            "Quais as opções?"
-            patientSex: String,             
+            "Número do Cartão do SUS do paciente"
+            patientCns: Int,
+            "Data de nascimento do paciente, em timestamp SEM fusohorario (utilizando o padrao UTC)"
+            patientBirthday: String,
+            "Sexo do Paciente, opcao M ou F."
+            patientSex: String,
+            "Nome da Mae do paciente, max:70 min:7 caracteres"
             patientMotherName: String, 
+            "Endereco do paciente, somente 'rua, numero, bairro', max: 101 min:7 caracteres"
             patientAdress: String, 
+            "Cidade do paciente, max:58 min:7 caracteres"
             patientAdressCity: String, 
-            patientAdressCityIbgeCode: Int, 
-            patientAdressUF: String, 
-            patientAdressCEP: Int, 
-            mainClinicalSignsSymptoms: String, 
-            conditionsJustifyHospitalization: String, 
-            initialDiagnostic: String, 
+            "Codigo IBGE do municipio do paciente"
+            patientAdressCityIbgeCode: Int,
+            "Sigla do estado, UF, da cidade do paciente, somente estados do Brasil"
+            patientAdressUF: String,
+            "CEP do endereço do paciente"
+            patientAdressCEP: Int,
+            "Principais sintomas e sintomas clinicos, max:1009 min:5 caracteres"
+            mainClinicalSignsSymptoms: String,
+            "Condicoes que justificam a internacao, max:403 min:5 caracteres"
+            conditionsJustifyHospitalization: String,
+            "Diagnostico inicial, max:44 min:5 caracteres"
+            initialDiagnostic: String,
+            "Cid 10 princical, usando o formato padrao de CID, max:4 min:3 caracteres"
             principalCid10: String, 
-            "Não seria solicited procedure?"
-            procedureSolicited: String, 
-            procedureCode: String, 
+            "Procedimento solicitado, max:65 min:6 caracteres"
+            procedureSolicited: String,
+            "Codigo do procedimento solcitado, deve ter exatamente 10 caracteres"
+            procedureCode: String,
+            "Nome da clinica, max:18 min:6 caracteres"
             clinic: String, 
+            "Carater da internacao, max:19 min:6 caracteres"
             internationCarater: String, 
             "Em graphql não tem entrada dict, como seria?"
             profSolicitorDocument: String, 
