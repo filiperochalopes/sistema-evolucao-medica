@@ -133,6 +133,13 @@ type_defs = gql(
             company_cbor: Int, 
             pension_status: Int
         ): GeneratedPdf
+
+        "Criação de documento de Precricao medica"
+        generatePdf_PrecricaoMedica(
+            document_datetime: String
+            patient_name: String,
+            prescription: String
+        ): GeneratedPdf
     }
 
     input AddressInput{
