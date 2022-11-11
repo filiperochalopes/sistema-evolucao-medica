@@ -33,7 +33,6 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:datetime.datetime, pat
     
     try:
         try:
-            print('teste', file=sys.stderr)
             packet = io.BytesIO()
             # Create canvas and add data
             page_size_points = (841.92, 595.2)
@@ -51,16 +50,15 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:datetime.datetime, pat
                 if type(c) == type(Response()): 
                     print('teste', file=sys.stderr)
                     raise Exception(c.response)
-                    return c
                 c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): raise Exception(c.response)
                 initial_date_X_pos += 450
                 initial_name_X_pos += 451
 
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c.setFont('Roboto-Mono', 10)
             c = add_prescription(canvas=c, prescription=prescription)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
 
         except Exception as error:
             print('teste', file=sys.stderr)
@@ -90,7 +88,7 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:datetime.datetime, pat
         }
         
     except:
-        return Response('Unknow error while adding medical prescription', status=500)
+        return Exception('Unknow error while adding medical prescription')
 
 
 def add_prescription(canvas:canvas.Canvas, prescription:list) -> Union[canvas.Canvas, Response]:
