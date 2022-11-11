@@ -140,6 +140,13 @@ type_defs = gql(
             patientName: String,
             prescription: [String]
         ): GeneratedPdf
+    
+        "testeRequest"
+        testeRequest(
+            nome: String
+        ): GeneratedPdf
+
+
     }
 
     input AddressInput{

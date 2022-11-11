@@ -2,6 +2,7 @@ import base64
 import datetime
 from PyPDF2  import PdfWriter, PdfReader
 import io
+import sys
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
@@ -13,6 +14,17 @@ from app.env import FONT_DIRECTORY, TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY, WRITE_
 
 from app.graphql import mutation
 from ariadne import convert_kwargs_to_snake_case
+
+@mutation.field('testeRequest')
+@convert_kwargs_to_snake_case
+def teste_request(_, info, nome):
+    print('ue', file=sys.stderr)
+    GeneratedPdf = nome
+    return {
+        "base64Pdf":nome
+    }
+    
+
 
 @mutation.field('generatePdf_PrecricaoMedica')
 @convert_kwargs_to_snake_case
@@ -28,7 +40,8 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
         Union[bytes, Response]: base64 pdf enconded or a Response with a error
     """    
 
-
+    
+    raise Exception("testando")
     try:
         try:
             packet = io.BytesIO()
@@ -57,10 +70,10 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
             if type(c) == type(Response()): return c
 
         except:
-                if type(c) == type(Response()):
-                    return c
-                else:
-                    return Response('Some error happen when adding not null data to fields', status=500)
+            if type(c) == type(Response()):
+                return c
+            else:
+                return Response('Some error happen when adding not null data to fields', status=500)
     
         # create a new PDF with Reportlab
         c.save()
