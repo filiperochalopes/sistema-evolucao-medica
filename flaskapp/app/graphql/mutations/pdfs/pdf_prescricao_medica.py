@@ -18,11 +18,11 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_PrecricaoMedica')
 @convert_kwargs_to_snake_case
-def fill_pdf_prescricao_medica(_, info, document_datetime:datetime.datetime, patient_name:str, prescription:list) -> Union[bytes, Response]:
+def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str, prescription:list) -> Union[bytes, Response]:
     """fill pdf prescricao medica with 2 pages 
 
     Args:
-        document_datetime (datetime.datetime): document_datetime
+        document_datetime (str): document_datetime in %d/%m/%Y %H:%M format
         patient_name (str): patient_name
         prescription (list): prescription
 
@@ -46,6 +46,7 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:datetime.datetime, pat
             initial_date_X_pos = 294
             initial_name_X_pos = 120
             for x in range(0, 2):
+
                 c = pdf_functions.add_datetime(can=c, date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
                 if type(c) == type(Response()): 
                     print('teste', file=sys.stderr)
@@ -63,7 +64,7 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:datetime.datetime, pat
         except Exception as error:
             print('teste', file=sys.stderr)
             return error
-
+        
         except:
             return Exception('Some error happen when adding not null data to fields')
     
@@ -87,7 +88,10 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:datetime.datetime, pat
         "base64Pdf":pdf_base64_enconded
         }
         
-    except:
+    except Exception as error :
+        return error
+    
+    except :
         return Exception('Unknow error while adding medical prescription')
 
 

@@ -1,13 +1,14 @@
 from app.graphql.mutations.pdfs import pdf_prescricao_medica
 import datetime
-from flask import Response
 
 global lenght_test
 lenght_test = ''
 for x in range(0, 2000):
     lenght_test += str(x)
 
-datetime_to_use = datetime.datetime.now()
+datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
+
+
 
 def data_to_use(_=None, info=None, document_datetime=datetime_to_use,
         patient_name='Pacient Name',

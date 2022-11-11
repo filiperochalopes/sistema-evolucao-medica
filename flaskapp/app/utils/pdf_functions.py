@@ -746,12 +746,12 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
         return Response(f'Unkown error while adding {camp_name}', status=500)
 
 
-def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='') -> Union[canvas.Canvas, Response]:
+def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='') -> Union[canvas.Canvas, Response]:
     """Add datetime to canvas
 
     Args:
         can (canvas.Canvas): canvas to use
-        date (datetime.datetime): date to use
+        date (str): date to use
         pos (tuple): position
         camp_name (str): camp name
         hours (bool): add hours. Defaults to True
@@ -775,7 +775,12 @@ def add_datetime(can:canvas.Canvas, date:datetime.datetime, pos:tuple, camp_name
 
 
         #Add to respective fields
-        str_date = str('%02d/%02d/%d %02d:%02d:%02d') % (date.day, date.month, date.year, date.hour, date.minute, date.second)
+        try:
+            #Create a datetimeobject just to makesure the date is valid
+            date_object = datetime.datetime.strptime(date, '%d/%m/%Y %H:%M')
+        except:
+            return Response(f'Date doenst match dd/mm/yyyy HH:MM format', status=400)
+        str_date = str('%02d/%02d/%d %02d:%02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute, date_object.second)
         if hours:  
             if not formated:
                 str_date = add_interval_to_data(data=str_date, interval=interval_between_numbers)
