@@ -141,11 +141,6 @@ type_defs = gql(
             prescription: [String]
         ): GeneratedPdf
     
-        "testeRequest"
-        testeRequest(
-            nome: String
-        ): GeneratedPdf
-
 
     }
 

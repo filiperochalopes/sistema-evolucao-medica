@@ -15,20 +15,10 @@ from app.env import FONT_DIRECTORY, TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY, WRITE_
 from app.graphql import mutation
 from ariadne import convert_kwargs_to_snake_case
 
-@mutation.field('testeRequest')
-@convert_kwargs_to_snake_case
-def teste_request(_, info, nome):
-    print('ue', file=sys.stderr)
-    GeneratedPdf = nome
-    return {
-        "base64Pdf":nome
-    }
-    
-
 
 @mutation.field('generatePdf_PrecricaoMedica')
 @convert_kwargs_to_snake_case
-def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name:str, prescription:list) -> Union[bytes, Response]:
+def fill_pdf_prescricao_medica(_, info, document_datetime:datetime.datetime, patient_name:str, prescription:list) -> Union[bytes, Response]:
     """fill pdf prescricao medica with 2 pages 
 
     Args:
@@ -41,9 +31,9 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
     """    
 
     
-    raise Exception("testando")
     try:
         try:
+            print('teste', file=sys.stderr)
             packet = io.BytesIO()
             # Create canvas and add data
             page_size_points = (841.92, 595.2)
@@ -58,7 +48,10 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
             initial_name_X_pos = 120
             for x in range(0, 2):
                 c = pdf_functions.add_datetime(can=c, date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): 
+                    print('teste', file=sys.stderr)
+                    raise Exception(c.response)
+                    return c
                 c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
                 if type(c) == type(Response()): return c
                 initial_date_X_pos += 450
@@ -69,11 +62,12 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
             c = add_prescription(canvas=c, prescription=prescription)
             if type(c) == type(Response()): return c
 
+        except Exception as error:
+            print('teste', file=sys.stderr)
+            return error
+
         except:
-            if type(c) == type(Response()):
-                return c
-            else:
-                return Response('Some error happen when adding not null data to fields', status=500)
+            return Exception('Some error happen when adding not null data to fields')
     
         # create a new PDF with Reportlab
         c.save()
@@ -91,7 +85,10 @@ def fill_pdf_prescricao_medica(document_datetime:datetime.datetime, patient_name
         with open(WRITE_PRESCRICAO_MEDICA_DIRECTORY, "rb") as pdf_file:
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
 
-        return pdf_base64_enconded
+        return {
+        "base64Pdf":pdf_base64_enconded
+        }
+        
     except:
         return Response('Unknow error while adding medical prescription', status=500)
 
