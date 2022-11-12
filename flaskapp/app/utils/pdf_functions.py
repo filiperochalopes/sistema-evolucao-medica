@@ -777,9 +777,14 @@ def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bo
         #Add to respective fields
         try:
             #Create a datetimeobject just to makesure the date is valid
-            date_object = datetime.datetime.strptime(date, '%d/%m/%Y %H:%M')
+            if hours:
+                date_object = datetime.datetime.strptime(date, '%d/%m/%Y %H:%M')
+            else:
+                date_object = datetime.datetime.strptime(date, '%d/%m/%Y')
         except:
-            return Response(f'Date doenst match dd/mm/yyyy HH:MM format', status=400)
+            if hours:
+                return Response(f'Date doenst match dd/mm/yyyy HH:MM format', status=400)
+            return Response(f'Date doenst match dd/mm/yyyy format', status=400)
         str_date = str('%02d/%02d/%d %02d:%02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute, date_object.second)
         if hours:  
             if not formated:

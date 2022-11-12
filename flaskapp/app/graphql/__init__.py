@@ -138,7 +138,11 @@ type_defs = gql(
         generatePdf_PrecricaoMedica(
             documentDatetime: String,
             patientName: String,
-            prescription: [String]
+            """
+            Precicao enviada pelo medico, utilize uma String com dicionarios no formato python com as chaves medicine_name, amount, use_mode. Fique atento as aspas simples em cada campo elas sao para diferenciar das aspas normais. 
+            Exemplo de mutation: "{'medicine_name':'Dipirona 500mg', 'amount':'4 comprimidos', 'use_mode':'1 comprimido, via oral, de 6/6h por 3 dias'}, {'medicine_name':...}"
+            """
+            prescription: String
         ): GeneratedPdf
     
 
