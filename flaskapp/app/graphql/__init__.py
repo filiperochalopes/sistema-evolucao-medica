@@ -202,10 +202,10 @@ type_defs = gql(
     input PrescriptionInput{
         "Nome do medicamento, ele e o amount nao podem ser maiores que 61 caracteres juntos. Exemplo: Dipirona 500mg"
         medicineName: String
-        "quantidade do medicament, isso e medicineName nao podem ser maiores que 61 caracteres juntos. Exemplo: 4 comprimidos"
+        "quantidade do medicamento, isso e medicineName nao podem ser maiores que 61 caracteres juntos. Exemplo: 4 comprimidos"
         amount: String
         "Modo de uso, max: 244 caracteres"
-        userMode: String
+        useMode: String
     }
 
     type User {
