@@ -141,7 +141,7 @@ type_defs = gql(
             "Nome do paciente, max:34 min:7 caracteres"
             patientName: String,
             """
-            Precicao enviada pelo medico, veja as docs do input PrescriptionInput para mais informações"
+            List de precicoes enviadas pelo medico, voce pode adicionar mais de uma utilizando uma lista de PrescriptionInput, veja as docs do input PrescriptionInput para mais informações"
             """
             prescription: [PrescriptionInput]
         ): GeneratedPdf
