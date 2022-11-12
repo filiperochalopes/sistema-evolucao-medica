@@ -6,7 +6,7 @@ lenght_test = ''
 for x in range(0, 2000):
     lenght_test += str(x)
 
-datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
+datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
 
 
 
@@ -64,7 +64,7 @@ def test_valid_document_datetime():
 # test use_mode longer
 
 def test_wrongtype_prescriptions():
-    assert type(data_to_use(prescription='bahabah')) == type(Exception())
+    assert type(data_to_use(prescription=131231)) == type(Exception())
 
 def test_list_with_other_types():
     assert type(data_to_use(prescription=['bahabah', 12313])) == type(Exception())
@@ -73,29 +73,29 @@ def test_list_with_other_types():
     assert type(data_to_use(prescription=['bahabah', 12313])) == type(Exception())
 
 def test_dicts_without_necessary_keys():
-    assert type(data_to_use(prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos"}])) == type(Exception())
+    assert type(data_to_use(prescription="{'medicine_name':'Dipirona 500mg', 'amount':'4 comprimidos'}")) == type(Exception())
 
 def test_dicts_with_more_than_necessary_keys():
-    assert type(data_to_use(prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias", "dontExiste":"aidsuad"}])) == type(Exception())
+    assert type(data_to_use(prescription="{'medicine_name':'Dipirona 500mg', 'amount':'4 comprimidos', 'use_mode':'1 comprimido, via oral, de 6/6h por 3 dias', 'dontExiste':'aidsuad'}")) == type(Exception())
 
 def test_message_name_with_wrongtype():
-    assert type(data_to_use(prescription=[{"medicine_name":123123123, "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}])) == type(Exception())
+    assert type(data_to_use(prescription="{'medicine_name':123123123, 'amount':'4 comprimidos', 'use_mode':'1 comprimido, via oral, de 6/6h por 3 dias'}")) == type(Exception())
 
 def test_message_name_longer():
-    assert type(data_to_use(prescription=[{"medicine_name":lenght_test[:70], "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}])) == type(Exception())
+    assert type(data_to_use(prescription="{'medicine_name':'lenght_test', 'amount':'4 comprimidos', 'use_mode':'1 comprimido, via oral, de 6/6h por 3 dias'}".replace('lenght_test', lenght_test[:70]))) == type(Exception())
 
 def test_amount_with_wrongtype():
-    assert type(data_to_use(prescription=[{"medicine_name":'123123123', "amount":1213, "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}])) == type(Exception())
+    assert type(data_to_use(prescription="{'medicine_name':'123123123', 'amount':1213, 'use_mode':'1 comprimido, via oral, de 6/6h por 3 dias'}")) == type(Exception())
 
 def test_amount_longer():
-    assert type(data_to_use(prescription=[{"medicine_name":"sadfasdf", "amount":lenght_test[:70], "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}])) == type(Exception())
+    assert type(data_to_use(prescription="{'medicine_name':'sadfasdf', 'amount':'lenght_test', 'use_mode':'1 comprimido, via oral, de 6/6h por 3 dias'}".replace('lenght_test', lenght_test[:70]))) == type(Exception())
 
 def test_use_mode_with_wrongtype():
-    assert type(data_to_use(prescription=[{"medicine_name":'123123123', "amount":"4 comprimidos", "use_mode":12312313}])) == type(Exception())
+    assert type(data_to_use(prescription="{'medicine_name':'123123123', 'amount':'4 comprimidos', 'use_mode':12312313}")) == type(Exception())
 
 def test_use_mode_longer():
-    assert type(data_to_use(prescription=[{"medicine_name":lenght_test[:70], "amount":"4 comprimidos", "use_mode":lenght_test[:250]}])) == type(Exception())
-
+    assert type(data_to_use(prescription="{'medicine_name':'sadfasdf', 'amount':'4 comprimidos', 'use_mode':'lenght_test'}".replace('lenght_test', lenght_test[:260]))) == type(Exception())
+    
 
 
 

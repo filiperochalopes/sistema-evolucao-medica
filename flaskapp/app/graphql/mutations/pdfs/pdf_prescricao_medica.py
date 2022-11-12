@@ -110,6 +110,8 @@ def add_prescription(canvas:canvas.Canvas, prescription:str) -> Union[canvas.Can
         return Response('prescription has to be a str with a list of dicts, like: [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]', status=400)
     NECESSARY_KEYS = ["medicine_name", "amount", "use_mode"]
     totalChar = 0
+    #Add , in the end to evade errors
+    prescription = prescription + ',' 
     prescription = literal_eval(prescription)
     for presc in prescription:
         #verify if the item in list is a dict
