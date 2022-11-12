@@ -86,7 +86,7 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str,
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
 
         return {
-        "base64Pdf":pdf_base64_enconded
+        "base64Pdf":str(pdf_base64_enconded)
         }
         
     except Exception as error :
