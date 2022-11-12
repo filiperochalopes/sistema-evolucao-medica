@@ -34,6 +34,8 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str,
     
     try:
         try:
+            print('lerolero', file=sys.stderr)
+            print(prescription, file=sys.stderr)
             packet = io.BytesIO()
             # Create canvas and add data
             page_size_points = (841.92, 595.2)

@@ -141,10 +141,9 @@ type_defs = gql(
             "Nome do paciente, max:34 min:7 caracteres"
             patientName: String,
             """
-            Precicao enviada pelo medico, utilize uma String com dicionarios no formato python com as chaves medicine_name, amount, use_mode. Fique atento as aspas simples em cada campo elas sao para diferenciar das aspas normais. 
-            Exemplo de mutation: "{'medicine_name':'Dipirona 500mg', 'amount':'4 comprimidos', 'use_mode':'1 comprimido, via oral, de 6/6h por 3 dias'}, {'medicine_name':...}"
+            Precicao enviada pelo medico, veja as docs do input PrescriptionInput para mais informações"
             """
-            prescription: String
+            prescription: PrescriptionInput
         ): GeneratedPdf
     
 
@@ -198,6 +197,15 @@ type_defs = gql(
         "Alergias"
         allergies: [String]
         address: AddressInput
+    }
+
+    input PrescriptionInput{
+        "Nome do medicamento, ele e o amount nao podem ser maiores que 61 caracteres juntos. Exemplo: Dipirona 500mg"
+        medicineName: String
+        "quantidade do medicament, isso e medicineName nao podem ser maiores que 61 caracteres juntos. Exemplo: 4 comprimidos"
+        amount: String
+        "Modo de uso, max: 244 caracteres"
+        userMode: String
     }
 
     type User {
