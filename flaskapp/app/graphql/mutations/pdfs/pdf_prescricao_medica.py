@@ -19,13 +19,13 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_PrecricaoMedica')
 @convert_kwargs_to_snake_case
-def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str, prescription:str) -> Union[bytes, Response]:
+def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str, prescription:list) -> Union[bytes, Response]:
     """fill pdf prescricao medica with 2 pages 
 
     Args:
         document_datetime (str): document_datetime in %d/%m/%Y %H:%M format
         patient_name (str): patient_name
-        prescription (str): string with a list of dicts precriptions, like [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]
+        prescription (list): list of dicts precriptions, like [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]
 
     Returns:
         Union[bytes, Response]: base64 pdf enconded or a Response with a error
@@ -98,23 +98,21 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str,
         return Exception('Unknow error while adding medical prescription')
 
 
-def add_prescription(canvas:canvas.Canvas, prescription:str) -> Union[canvas.Canvas, Response]:
+def add_prescription(canvas:canvas.Canvas, prescription:list) -> Union[canvas.Canvas, Response]:
     """add prescription to database
 
     Args:
         canvas (canvas.Canvas): canvas to use
-        precription (str): str with a list of dicts
+        precription (list): list of dicts
     Returns:
         canvas or Response:canvas if everthing is allright or Response if hapens some error
     """    
-    #verify if the type is str
-    if type(prescription) != type(str()):
-        return Response('prescription has to be a str with a list of dicts, like: [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]', status=400)
+    #verify if the type is list
+    if type(prescription) != type(list()):
+        return Response('prescription has to be a list of dicts, like: [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]', status=400)
     NECESSARY_KEYS = ["medicine_name", "amount", "use_mode"]
     totalChar = 0
     #Add , in the end to evade errors
-    prescription = prescription + ',' 
-    prescription = literal_eval(prescription)
     for presc in prescription:
         #verify if the item in list is a dict
         if type(presc) != type(dict()):

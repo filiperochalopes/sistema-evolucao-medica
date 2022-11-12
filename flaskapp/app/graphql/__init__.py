@@ -143,7 +143,7 @@ type_defs = gql(
             """
             Precicao enviada pelo medico, veja as docs do input PrescriptionInput para mais informações"
             """
-            prescription: PrescriptionInput
+            prescription: [PrescriptionInput]
         ): GeneratedPdf
     
 
