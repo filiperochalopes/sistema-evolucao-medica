@@ -12,7 +12,7 @@ datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
 
 def data_to_use(_=None, info=None, document_datetime=datetime_to_use,
         patient_name='Pacient Name',
-        prescription="{'medicine_name':'Dipirona 500mg', 'amount':'4 comprimidos', 'use_mode':'1 comprimido, via oral, de 6/6h por 3 dias'}, {'medicine_name':'Metocoplamina 10mg', 'amount':'6 comprimidos', 'use_mode':'1 comprimido, via oral, de 8/8h por 2 dias'}"):
+        prescription=[{'medicine_name':'Dipirona 500mg', 'amount':'4 comprimidos', 'use_mode':'1 comprimido, via oral, de 6/6h por 3 dias'}, {'medicine_name':'Metocoplamina 10mg', 'amount':'6 comprimidos', 'use_mode':'1 comprimido, via oral, de 8/8h por 2 dias'}]):
         return pdf_prescricao_medica.fill_pdf_prescricao_medica(_, info, document_datetime, patient_name, prescription)
 
 #Testing Ficha Internamento
@@ -94,7 +94,7 @@ def test_use_mode_with_wrongtype():
     assert type(data_to_use(prescription="{'medicine_name':'123123123', 'amount':'4 comprimidos', 'use_mode':12312313}")) == type(Exception())
 
 def test_use_mode_longer():
-    assert type(data_to_use(prescription="{'medicine_name':'sadfasdf', 'amount':'4 comprimidos', 'use_mode':'lenght_test'}".replace('lenght_test', lenght_test[:260]))) == type(Exception())
+    assert type(data_to_use(prescription=[{'medicine_name':'sadfasdf', 'amount':'4 comprimidos', 'use_mode':lenght_test[:265]}])) == type(Exception())
     
 
 
