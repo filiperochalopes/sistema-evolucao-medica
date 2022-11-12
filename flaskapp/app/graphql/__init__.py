@@ -136,7 +136,9 @@ type_defs = gql(
 
         "Criação de documento de Precricao medica"
         generatePdf_PrecricaoMedica(
+            "Data do documento no formato DD/MM/YYYY"
             documentDatetime: String,
+            "Nome do paciente, max:34 min:7 caracteres"
             patientName: String,
             """
             Precicao enviada pelo medico, utilize uma String com dicionarios no formato python com as chaves medicine_name, amount, use_mode. Fique atento as aspas simples em cada campo elas sao para diferenciar das aspas normais. 
