@@ -12,7 +12,7 @@ datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
 
 def data_to_use(_=None, info=None, document_datetime=datetime_to_use,
         patient_name='Pacient Name',
-        prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]):
+        prescription='[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]'):
         return pdf_prescricao_medica.fill_pdf_prescricao_medica(_, info, document_datetime, patient_name, prescription)
 
 #Testing Ficha Internamento
