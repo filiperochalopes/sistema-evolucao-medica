@@ -84,8 +84,8 @@ def test_valid_document_datetime():
 # test list with other type
 # test dicts wihtout necessary keys
 # test dicts with more than necessary keys
-# test message_name with wrong type
-# test message_name longer
+# test medicine_name with wrong type
+# test medicine_name longer
 # test amount with wrong type
 # test amount longer
 # test use_mode with wrong type
@@ -95,31 +95,65 @@ def test_wrongtype_prescriptions():
     assert data_to_use(prescription=131231) == False
 
 def test_list_with_other_types():
-    assert data_to_use(prescription=['bahabah', 12313]) == False
+    assert data_to_use(prescription=154287) == False
 
-def test_list_with_other_types():
-    assert data_to_use(prescription=['bahabah', 12313]) == False
 
 def test_dicts_without_necessary_keys():
-    assert data_to_use(prescription="{'medicineName':'Dipirona 500mg', 'amount':'4 comprimidos'}") == False
+    query_to_test = f"""
+    medicineName:"Dipirona", 
+    amount: "8 comprimidos"
+    """
+    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
 
 def test_dicts_with_more_than_necessary_keys():
-    assert data_to_use(prescription="{'medicineName':'Dipirona 500mg', 'amount':'4 comprimidos', 'use_mode':'1 comprimido, via oral, de 6/6h por 3 dias', 'dontExiste':'aidsuad'}") == False
+    query_to_test = f"""
+    medicineName:"Dipirona", 
+    amount: "8 comprimidos", 
+    useMode:"8/8 comprimidos",
+    dontExiste: "uai"
+    """
+    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
 
-def test_message_name_with_wrongtype():
-    assert data_to_use(prescription="{'medicineName':123123123, 'amount':'4 comprimidos', 'use_mode':'1 comprimido, via oral, de 6/6h por 3 dias'}") == False
+def test_medicine_name_with_wrongtype():
+    query_to_test = f"""
+    medicineName:65452, 
+    amount: "8 comprimidos", 
+    useMode:"8/8 comprimidos"
+    """
+    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
 
-def test_message_name_longer():
-    assert data_to_use(prescription=[{"medicineName":lenght_test[:70], "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]) ==  False
+def test_medicine_name_longer():
+    query_to_test = f"""
+    medicineName:"{lenght_test[:70]}", 
+    amount: "8 comprimidos", 
+    useMode:"8/8 comprimidos"
+    """
+    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
 
 def test_amount_with_wrongtype():
-    assert data_to_use(prescription=[{"medicineName":'123123123', "amount":1213, "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]) ==  False
+    query_to_test = f"""
+    medicineName:"sadfasdf", 
+    amount:875452, 
+    useMode:"8/8 comprimidos"
+    """
+    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
 
 def test_amount_longer():
-    assert data_to_use(prescription=[{"medicineName":"sadfasdf", "amount":lenght_test[:70], "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]) ==  False
+    query_to_test = f"""
+    medicineName:"sadfasdf", 
+    amount:"{lenght_test[:265]}", 
+    useMode:"8/8 comprimidos"
+    """
+    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
+    
 
 def test_use_mode_with_wrongtype():
-    assert data_to_use(prescription=[{"medicineName":'123123123', "amount":"4 comprimidos", "use_mode":12312313}]) ==  False
+    query_to_test = f"""
+    medicineName:"sadfasdf", 
+    amount:"4 comprimidos", 
+    useMode: 112313
+    """
+    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
 
 def test_use_mode_longer():
     query_to_test = f"""
