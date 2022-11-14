@@ -39,7 +39,6 @@ def fill_pdf_relatorio_alta(_, info, document_datetime:str, patient_name:str, pa
         Union[bytes, Exception]: base64 pdf enconded or a Exception with a error
     """    
     try:
-        print(patient_document, file=sys.stderr)
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)

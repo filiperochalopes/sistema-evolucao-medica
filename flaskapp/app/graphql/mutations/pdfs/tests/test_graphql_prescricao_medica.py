@@ -1,6 +1,7 @@
 from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
 import datetime
+from app.env import GRAPHQL_MUTATION_QUERY_URL
 
 global lenght_test
 lenght_test = ''
@@ -10,7 +11,7 @@ for x in range(0, 2000):
 datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
 
 # Select your transport with ag graphql url endpoint
-transport = AIOHTTPTransport(url="http://localhost:5000/api/v1/graphql")
+transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
 
 # Create a GraphQL client using the defined transport
 client = Client(transport=transport, fetch_schema_from_transport=True)

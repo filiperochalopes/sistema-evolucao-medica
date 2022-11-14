@@ -9,6 +9,7 @@ TOKEN_HOUR_EXPIRATION = os.getenv('TOKEN_HOUR_EXPIRATION', 6)
 # TODO o trecho "/app/app/" se repete muito ele deve ser criado com base em alguma variável base_url usando o pacote path do python ou algo semelhante
 
 FONT_DIRECTORY = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
+GRAPHQL_MUTATION_QUERY_URL = "http://localhost:5000/api/v1/graphql"
 
 # Templates Directorys
 TEMPLATE_AIH_SUS_DIRECTORY = "/app/app/assets/pdfs_templates/aih_sus.pdf"
