@@ -86,3 +86,142 @@ FLASK_APP=app/__init__.py
 FLASK_DEBUG=false
 gunicorn --bind 0.0.0.0:5000 wsgi:app --daemon
 ```
+
+### Testes
+
+Para facilitar o teste estou mantendo no README algumas requisições para preencher o banco de dados com informações iniciais e úteis para o teste
+
+```graphql
+mutation {
+  createUser(
+    masterKey: "passw@rd"
+    user: {
+      name: "Filipe Rocha Lopes"
+      email: "contato@filipelopes.med.br"
+      phone: "71992518950"
+      password: "passw@rd"
+      cpf: "01817013599"
+      cns: "856077573000002"
+      birthday: "1995-12-01"
+      professionalCategory: "doc"
+      professionalDocumentUf: "BA"
+      professionalDocumentNumber: "37825"
+    }
+  ) {
+    id
+    email
+    name
+    professionalCategory
+    professionalDocumentUf
+  }
+}
+```
+
+```graphql
+mutation {
+  signin(email: "contato@filipelopes.med.br", password: "passw@rd") {
+    user {
+      id
+      name
+      birthday
+    }
+    token
+  }
+}
+```
+
+```graphql
+mutation {
+  createInternment(
+    patient: {
+      name: "Orlando Flórida"
+      sex: "male"
+      birthday: "1995-12-01"
+      cns: "105118227480000"
+      cpf: "33131763990"
+      comorbidities: [
+        "Hipertensão Arterial Sistêmica (HAS)"
+        "Diabetes Mellitus (DM)"
+      ]
+      allergies: ["Dipirona", "Amoxicilina", "latex"]
+      address: {
+        street: "Rua Orlando Flórida"
+        zipCode: "40440360"
+        complement: ""
+        city: "Água Fria"
+        uf: "BA"
+      }
+    }
+    hpi: "lorem ipsum"
+    justification: "lorem ipsum"
+    cid10Code: "I11"
+  ) {
+    id
+    hpi
+    patient {
+      id
+      name
+      cns
+    }
+  }
+}
+```
+
+```graphql
+mutation {
+  createEvolution(
+    internmentId: 1
+    text: "Lorem ipsum"
+    prescription: {
+      restingActivity: "Repouso relativo"
+      diet: "Dieta Zero"
+      drugs: [
+        {
+          drugName: "Nome da medicação"
+          drugKind: "oth"
+          dosage: "1 comprimido 6/6h"
+          route: "Via Oral"
+        }
+        {
+          drugName: "Antibiótico"
+          drugKind: "atb"
+          dosage: "1 ampola 12/12h"
+          route: "Via Venosa"
+          initialDate: "2022-11-13 22:10:20"
+          endingDate: "2022-11-20 22:10:20"
+        }
+      ]
+      nursingActivities: ["Sinais vitais 6/6h"]
+    }
+    pendings: "Aqui vão as pendências"
+    cid10Code: "I20"
+  ) {
+    evolution {
+      id
+      text
+      createdAt
+    }
+    prescription {
+      restingActivity {
+        name
+      }
+      diet {
+        name
+      }
+      drugPrescriptions {
+        drug {
+          name
+        }
+        dosage
+      }
+      nursingActivities {
+        name
+      }
+      createdAt
+    }
+    pendings {
+      text
+    }
+  }
+}
+```

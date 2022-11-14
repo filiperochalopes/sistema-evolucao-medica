@@ -181,10 +181,11 @@ class DrugPrescription(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     drug_id = db.Column(db.Integer, ForeignKey("drugs.id"))
+    drug = relationship('Drug')
     dosage = db.Column(db.String)
     route = db.Column(db.String)
-    initial_date = db.Column(db.Date)
-    ending_date = db.Column(db.Date)
+    initial_date = db.Column(db.DateTime)
+    ending_date = db.Column(db.DateTime)
 
     prescription_id = db.Column(db.Integer, ForeignKey("prescriptions.id"))
 
@@ -211,6 +212,7 @@ class RestingActivity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     prescriptions = relationship('Prescription', back_populates='resting_activity')
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
 
 NursingActivityPrescription = Table('_nursing_activity_prescription',
@@ -255,6 +257,7 @@ class Internment(db.Model):
     cid10 = relationship('Cid10')
 
     measures = relationship('Measure', back_populates='internment')
+    fluid_balance = relationship('FluidBalance', back_populates='internment')
     evolutions = relationship('Evolution', back_populates='internment')
     pendings = relationship('Pending', back_populates='internment')
 
@@ -283,8 +286,7 @@ class Prescription(db.Model):
     # Só temos uma dieta por prescrição
     nursing_activities = relationship('NursingActivity', secondary=NursingActivityPrescription, back_populates='prescriptions')
 
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
 
 class DrugGroupPreset(db.Model):
@@ -294,8 +296,7 @@ class DrugGroupPreset(db.Model):
     label = db.Column(db.String)
     name = db.Column(db.String)
     drugs = relationship('Drug', secondary=DrugDrugGroupPreset, back_populates='drug_group_presets')
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
 class Measure(db.Model):
     __tablename__ = 'measures'
@@ -310,12 +311,10 @@ class Measure(db.Model):
     celcius_axillary_temperature = db.Column(db.Integer)
     glucose = db.Column(db.Integer)
     fetal_cardiac_freq = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     
     internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
     internment = relationship('Internment', back_populates='measures')
-
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
 
     @validates('spO2')
     def validate_email(self, _, value):
@@ -337,6 +336,10 @@ class FluidBalance(db.Model):
     value = db.Column(db.Integer)
     description_id = db.Column(db.Integer, ForeignKey('fluid_balance_description.id'))
     description = relationship('FluidBalanceDescription')
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+
+    internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
+    internment = relationship('Internment', back_populates='fluid_balance')
 
 
 class Evolution(db.Model):
@@ -345,7 +348,9 @@ class Evolution(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(
         db.Text, comment="Evolução do paciente com exame físico e sinais vitais")
-    professional = db.Column(db.Integer, nullable=False)
+
+    professional_id = db.Column(db.Integer, ForeignKey("users.id"))
+    professional = relationship('User')
 
     internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
     internment = relationship('Internment', back_populates='evolutions')
@@ -353,8 +358,7 @@ class Evolution(db.Model):
     cid10_code = db.Column(db.String, ForeignKey("cid10.code"))
     cid10 = relationship('Cid10')
 
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
 
 class Pending(db.Model):
@@ -363,10 +367,9 @@ class Pending(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(
         db.Text, comment="Evolução do paciente com exame físico e sinais vitais")
-    professional = db.Column(db.Integer, nullable=False)
+        
+    professional_id = db.Column(db.Integer, ForeignKey("users.id"))
+    professional = relationship('User')
 
     internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
     internment = relationship('Internment', back_populates='pendings')
-
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())

@@ -80,14 +80,14 @@ def create_internment(_, info, hpi: str, justification: str, patient: dict, cid_
     else:
         # Cria novo paciente
         comorbidities, allergies = create_comobidities_and_allergies(input_patient=patient).values()
-        patient_model.comorbidities.extend(comorbidities)
-        patient_model.allergies.extend(allergies)
         del patient['comorbidities']
         del patient['allergies']
         new_address = Address(**patient['address'])
         db.session.add(new_address)
         del patient['address']
         patient_model = Patient(**patient)
+        patient_model.comorbidities.extend(comorbidities)
+        patient_model.allergies.extend(allergies)
         db.session.add(patient_model)
     
     db.session.commit()
