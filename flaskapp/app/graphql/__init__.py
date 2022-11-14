@@ -258,158 +258,150 @@ type_defs = gql(
             medicines: [MedicineInput]
         ): GeneratedPdf
 
-    "Criação de documento de Solicitacao de Exames"
-    generatePdf_SolicitExames(
-        "Nome do paciente, max:70 min:7 caracteres"
-        patientName: String!,
-        "CNS do paciente"
-        patientCns: String!,
-        "Data de nascimento do paciente no formato DD/MM/YYYY"
-        patientBirthday: String!,
-        "Endereco do paciente, max: 216 min:7 caracteres"
-        patientAdress: String!,
-        "Motivo da Solicitacao, max: 216 min:7 caracteres"
-        solicitationReason: String!,
-        "Nome do profissional Solicitante, max:29 min:7 caracteres"
-        profSolicitor: String!,
-        "Data da Solicitacao no formato DD/MM/YYYY"
-        solicitationDatetime: String!,
-        "Exames solicitados"
-        exams: String!,
-        "Nome do profissional autorizador, max:29 min:7 caracteres"
-        profAuthorized: String,
-        "Nome do paciente no final do documento, esse campo fica no fim do documento e tem um tamanho maximo diferente. max:46 min:7 caracteres"
-        documentPacientName: String,
-        "Data da Autorizacao no formato DD/MM/YYYY"
-        autorizationDatetime: String,
-        "Data do paciente, tambem no campo inferior no formato DD/MM/YYYY"
-        documentPacientDate: String,
-    ): GeneratedPdf
+        "Criação de documento de Solicitacao de Exames"
+        generatePdf_SolicitExames(
+            "Nome do paciente, max:70 min:7 caracteres"
+            patientName: String!,
+            "CNS do paciente"
+            patientCns: String!,
+            "Data de nascimento do paciente no formato DD/MM/YYYY"
+            patientBirthday: String!,
+            "Endereco do paciente, max: 216 min:7 caracteres"
+            patientAdress: String!,
+            "Motivo da Solicitacao, max: 216 min:7 caracteres"
+            solicitationReason: String!,
+            "Nome do profissional Solicitante, max:29 min:7 caracteres"
+            profSolicitor: String!,
+            "Data da Solicitacao no formato DD/MM/YYYY"
+            solicitationDatetime: String!,
+            "Exames solicitados"
+            exams: String!,
+            "Nome do profissional autorizador, max:29 min:7 caracteres"
+            profAuthorized: String,
+            "Nome do paciente no final do documento, esse campo fica no fim do documento e tem um tamanho maximo diferente. max:46 min:7 caracteres"
+            documentPacientName: String,
+            "Data da Autorizacao no formato DD/MM/YYYY"
+            autorizationDatetime: String,
+            "Data do paciente, tambem no campo inferior no formato DD/MM/YYYY"
+            documentPacientDate: String,
+        ): GeneratedPdf
 
-    "Criação de documento de Solicitacao de Mamografia"
-    generatePdf_SolicitMamografia(
-        "CNS do paciente"
-        patientCns: String!,
-        "Data de nascimento do paciente no formato DD/MM/YYYY"
-        patientBirthday: String!,
-        """
-        Fez mamograma antes, envie uma lista com o primeiro valor ['SIM'/'NAO', 'Ano do mamograga']
-        Exemplo: 
-            ['SIM', '2020']
-            ['NAO', null]
-        """
-        mammogramBefore: [String]!,
-        "Idade do paciente"
-        patientAge: Int!,
-        "Nome do Paciente, max:42 min:7 caracteres"
-        patientName: String!,
-        "Nome da mae do paciente, max:42 min:7 car"
-        patientMotherName: String!,
-        """
-        Possui nodulo. Opcoes:
-            - "SIMDIR" -> Sim direita
-            - "SIMESQ" -> Sim esquerda
-            - "NAO"    -> Nao possui
-        """
-        noduleLump: String!,
-        """
-        Tem risco elevado. Opcoes:
-            - "SIM"
-            - "NAO"
-            - "NAOSABE"
-        """
-        highRisk: String!,
-        """
-        Ja foi examinada antes. Opcoes:
-            - "SIM"
-            - "NUNCA"
-            - "NAOSABE"
-        """
-        examinatedBefore: String!,
-        "Nome da Unidade de Saudes, max: 42 min:7"
-        healthUnitName: String,
-        "UF em que a Unidade de Saude esta, somente a sigla 2 caracteres"
-        healthUnitAdressUf: String,
-        "Nome da cidade aonde esta a unidade de saude, max:14 min:4"
-        healthUnitAdressCity: String,
-        "Apelido do paciente, max:18 min:4 caracteres" 
-        patientSurname: String,
-        "Endereco do Paciente, max:42 min:7 caracteres"
-        patientAdress: String,
-        "Complemento do endereco do paciente, max:25 min:7 caracteres"
-        patientAdressAdjunct: String,
-        "Bairro do endereco do paciente, max:14 min:7 caracteres"
-        patientAdressNeighborhood: String
-        "Referencia do endereco do paciente, max:33 min:4 caracteres"
-        patientAdressReference: String,
-        "Cidade do endereco do paciente, max:15 min:4 caracteres"
-        patientAdressCity: String,
-        "CEP do endereco do paciente, envie somente numeros sem formatacao, Exemplo: XXXXXXXX"
-        patientAdressCep: String,
-        "Numero de telefone do paciente, envie somente textos sem formatacao. Deve ter 10 digitos somente."
-        patientPhonenumber: String,
-        """
-        Ja fez radioterapia antes, lista com opcoes e ano caso seja sim.
-        Opcoes:
-            -'SIMDIR' -> Sim mama direita, deve inserir o ano, ex: ["SIMDIR", "2019"] 
-            -'SIMESQ' -> Sim mama esquerda, deve inserir o ano, ex: ["SIMESQ", "2019"] 
-            -'NAO' -> Nao, nao precisa enviar o ano, ex: ["NAO", null]
-            -'NAOSABE' -> Nao sabe, nao precisa enviar o ano, ex: ["NAO", null]
-        """
-        radiotherapyBefore: [String],
-        "Ja fez cirurgia nas mamas antes, utilize o SurgeryBeforeInput"
-        breastSurgeryBefore: SurgeryBeforeInput,
-        "CNES da unidade de saude"
-        healthUnitCnes: Int,
-        "Numero do protocolo, max:23 min:1 caracteres"        
-        protocolNumber: String,
-        "CPF do paciente, envie com o input DocumentInput"
-        patientDocumentCpf: DocumentInput,
-        "Numero do endereco do paciente, max: 6 digitos"
-        patientAdressNumber: Int,
-        "UF do endereco do paciente, envie somente a sigla"
-        patientAdressUf: String,
-        "Codigo do IBGE do Município da Unidade de Saude"
-        healthUnitCityIbgeCode: String,
-        "Numero do protocolo, max: 10 caracteres"
-        documentChartNumber: Int,
-        "Sexo do paciente, envie M ou F"
-        patientSex: String,
-        "Nacionalidade do paciente"
-        patientNationality: String,
-        "Codigo do IBGE do Município do paciente"
-        pacientCityIbgeCode: String,
-        """
-        Etinia do paciente, envie uma lista com algumas das opcoes, e caso seja indigena especificar o nome com no max: 10 caracteres. Opcoes:
-        'BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'.
-        Exemplos:
-            ["BRANCA", null]
-            ["INDIGENA", "Guarani"]
-        """
-        patientEthnicity: [String],
-        "Nome do Profissional Solicitante, max: 23 min:7 caracteres"
-        profSolicitorName: String!,
-        "Data da Solicitacao no formato DD/MM/YYYY"
-        solicitationDatetime: String!,
-        "Numero do exame, max: 16 caracteres"
-        examNumber: Int,
-        """
-        Mamografia de rasteramento. Opcoes:
-            "POPALVO"       -> Populacao alvo
-            "RISCOELEVADO"  -> Populacao de risco elevado
-            "JATRATADO"     ->Paciente ja tratado de cancer de mama
-        """
-        trackingMammogram: String,
+        "Criação de documento de Solicitacao de Mamografia"
+        generatePdf_SolicitMamografia(
+            "CNS do paciente"
+            patientCns: String!,
+            "Data de nascimento do paciente no formato DD/MM/YYYY"
+            patientBirthday: String!,
+            """
+            Fez mamograma antes, envie uma lista com o primeiro valor ['SIM'/'NAO', 'Ano do mamograga']
+            Exemplo: 
+                ['SIM', '2020']
+                ['NAO', null]
+            """
+            mammogramBefore: [String]!,
+            "Idade do paciente"
+            patientAge: Int!,
+            "Nome do Paciente, max:42 min:7 caracteres"
+            patientName: String!,
+            "Nome da mae do paciente, max:42 min:7 car"
+            patientMotherName: String!,
+            """
+            Possui nodulo. Opcoes:
+                - "SIMDIR" -> Sim direita
+                - "SIMESQ" -> Sim esquerda
+                - "NAO"    -> Nao possui
+            """
+            noduleLump: String!,
+            """
+            Tem risco elevado. Opcoes:
+                - "SIM"
+                - "NAO"
+                - "NAOSABE"
+            """
+            highRisk: String!,
+            """
+            Ja foi examinada antes. Opcoes:
+                - "SIM"
+                - "NUNCA"
+                - "NAOSABE"
+            """
+            examinatedBefore: String!,
+            "Nome da Unidade de Saudes, max: 42 min:7"
+            healthUnitName: String,
+            "UF em que a Unidade de Saude esta, somente a sigla 2 caracteres"
+            healthUnitAdressUf: String,
+            "Nome da cidade aonde esta a unidade de saude, max:14 min:4"
+            healthUnitAdressCity: String,
+            "Apelido do paciente, max:18 min:4 caracteres" 
+            patientSurname: String,
+            "Endereco do Paciente, max:42 min:7 caracteres"
+            patientAdress: String,
+            "Complemento do endereco do paciente, max:25 min:7 caracteres"
+            patientAdressAdjunct: String,
+            "Bairro do endereco do paciente, max:14 min:7 caracteres"
+            patientAdressNeighborhood: String,
+            "Referencia do endereco do paciente, max:33 min:4 caracteres"
+            patientAdressReference: String,
+            "Cidade do endereco do paciente, max:15 min:4 caracteres"
+            patientAdressCity: String,
+            "CEP do endereco do paciente, envie somente numeros sem formatacao, Exemplo: XXXXXXXX"
+            patientAdressCep: String,
+            "Numero de telefone do paciente, envie somente textos sem formatacao. Deve ter 10 digitos somente."
+            patientPhonenumber: String,
+            """
+            Ja fez radioterapia antes, lista com opcoes e ano caso seja sim.
+            Opcoes:
+                -'SIMDIR' -> Sim mama direita, deve inserir o ano, ex: ["SIMDIR", "2019"] 
+                -'SIMESQ' -> Sim mama esquerda, deve inserir o ano, ex: ["SIMESQ", "2019"] 
+                -'NAO' -> Nao, nao precisa enviar o ano, ex: ["NAO", null]
+                -'NAOSABE' -> Nao sabe, nao precisa enviar o ano, ex: ["NAO", null]
+            """
+            radiotherapyBefore: [String],
+            "Ja fez cirurgia nas mamas antes, utilize o SurgeryBeforeInput"
+            breastSurgeryBefore: SurgeryBeforeInput,
+            "CNES da unidade de saude"
+            healthUnitCnes: Int,
+            "Numero do protocolo, max:23 min:1 caracteres"        
+            protocolNumber: String,
+            "CPF do paciente, envie com o input DocumentInput"
+            patientDocumentCpf: DocumentInput,
+            "Numero do endereco do paciente, max: 6 digitos"
+            patientAdressNumber: Int,
+            "UF do endereco do paciente, envie somente a sigla"
+            patientAdressUf: String,
+            "Codigo do IBGE do Município da Unidade de Saude"
+            healthUnitCityIbgeCode: String,
+            "Numero do protocolo, max: 10 caracteres"
+            documentChartNumber: Int,
+            "Sexo do paciente, envie M ou F"
+            patientSex: String,
+            "Nacionalidade do paciente"
+            patientNationality: String,
+            "Codigo do IBGE do Município do paciente"
+            pacientCityIbgeCode: String,
+            """
+            Etinia do paciente, envie uma lista com algumas das opcoes, e caso seja indigena especificar o nome com no max: 10 caracteres. Opcoes:
+            'BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'.
+            Exemplos:
+                ["BRANCA", null]
+                ["INDIGENA", "Guarani"]
+            """
+            patientEthnicity: [String],
+            "Nome do Profissional Solicitante, max: 23 min:7 caracteres"
+            profSolicitorName: String!,
+            "Data da Solicitacao no formato DD/MM/YYYY"
+            solicitationDatetime: String!,
+            "Numero do exame, max: 16 caracteres"
+            examNumber: Int,
+            """
+            Mamografia de rasteramento. Opcoes:
+                "POPALVO"       -> Populacao alvo
+                "RISCOELEVADO"  -> Populacao de risco elevado
+                "JATRATADO"     -> Paciente ja tratado de cancer de mama
+            """
+            trackingMammogram: String,
+        ): GeneratedPdf
 
-
-
-
-
-
-
-
-
-    ): GeneratedPdf
     }
 
     input AddressInput{
@@ -423,7 +415,7 @@ type_defs = gql(
 
     input SurgeryBeforeInput{
         "Nao fez nenhuma Cirurgia nas mamas, marque TRUE caso ela nunca tenha feito nenhuma cirugia, isso faz todos os outros serem descartados. Caso contario marque FALSE"
-        didNot: Boolean!,
+        didNot: String,
         """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
         biopsiaInsinonal: [String]!,
         """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
@@ -486,7 +478,7 @@ type_defs = gql(
         "Apenas dígitos, para fins de testes, pode gerar [nesse link](https://geradornv.com.br/gerador-cns/)"
         cns:String!, 
         rg: String
-        """Lista de doenças do paciente"
+        "Lista de doenças do paciente"
         comorbidities: [String]
         "Alergias"
         allergies: [String]
