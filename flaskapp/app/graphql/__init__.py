@@ -152,16 +152,28 @@ type_defs = gql(
             documentDatetime: String,
             "Nome do paciente, max:64 min:7 caracteres"
             patientName: String,
+            "CNS do paciente, envie sem formatacao, apenas numeros. Exemplo XXXXXXXXXXXXXXX"
+            patientCns: String,
             "Data de Nascimento do paciente no formato DD/MM/YYYY"
             patientBirthday: String,
             "Sexo do Paciente, opcao M ou F."
             patientSex: String,
             "Nome da Mae do paciente, max:69 min 7 caracteres"
-            patientMotherName: String
+            patientMotherName: String,
             "Documento do paciente, utilize o input DocumentInput"
-            patientDocument: DocumentInput
-
-            
+            patientDocument: DocumentInput,
+            "Endereco do paciente, max:63 min:7 caracteres"
+            patientAdress: String,
+            "Nome do Medico, max:49 min:7 caracteres"
+            doctorName: String,
+            "CNS do medico, envie sem formatacao, apenas numeros. Exemplo XXXXXXXXXXXXXXX"
+            doctorCns: String,
+            "CRM do medico, max:13 min:11"
+            doctorCrm: String,
+            "Evolucao do paciente, max: 2100 min:10 caracteres"
+            evolution: String,
+            "Orientacoes para o paciente, max:800 min:10 caracteres"
+            orientations: String!
         ): GeneratedPdf
 
     }
@@ -226,11 +238,11 @@ type_defs = gql(
     }
 
     input DocumentInput{
-        "CPF do Paciente no formato xxx.xxx.xxx-xx"
+        "CPF do Paciente sem formatacao, apenas numeros. Exemplo: xxxxxxxxxxx"
         CPF: String!
         "RG do Paciente sem formatacao, apenas os numeros XXXXXXXXXXXX"
         RG: String!
-        "CNS do Paciente no formato xxx xxxx xxxx xxxx"
+        "CNS do Paciente sem formatacao, apenas numeros. Exemplo: xxxxxxxxxxxxxxx"
         CNS: String!
     }
 
