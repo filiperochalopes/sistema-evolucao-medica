@@ -146,6 +146,23 @@ type_defs = gql(
             prescription: [PrescriptionInput]
         ): GeneratedPdf
     
+        "Criação de documento de Relatorio de Alta"
+        generatePdf_RelatorioAlta(
+            "Data do documento no formato DD/MM/YYYY HH:mm"
+            documentDatetime: String,
+            "Nome do paciente, max:64 min:7 caracteres"
+            patientName: String,
+            "Data de Nascimento do paciente no formato DD/MM/YYYY"
+            patientBirthday: String,
+            "Sexo do Paciente, opcao M ou F."
+            patientSex: String,
+            "Nome da Mae do paciente, max:69 min 7 caracteres"
+            patientMotherName: String
+            "Documento do paciente, utilize o input DocumentInput"
+            patientDocument: DocumentInput
+
+            
+        ): GeneratedPdf
 
     }
 
@@ -206,6 +223,15 @@ type_defs = gql(
         amount: String
         "Modo de uso, max: 244 caracteres"
         useMode: String
+    }
+
+    input DocumentInput{
+        "CPF do Paciente no formato xxx.xxx.xxx-xx"
+        CPF: String!
+        "RG do Paciente sem formatacao, apenas os numeros XXXXXXXXXXXX"
+        RG: String!
+        "CNS do Paciente no formato xxx xxxx xxxx xxxx"
+        CNS: String!
     }
 
     type User {
