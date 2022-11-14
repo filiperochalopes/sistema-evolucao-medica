@@ -286,6 +286,40 @@ type_defs = gql(
         documentPacientDate: String,
     ): GeneratedPdf
 
+    "Criação de documento de Solicitacao de Mamografia"
+    generatePdf_SolicitMamografia(
+        "CNS do paciente"
+        patientCns: String!,
+        "Data de nascimento do paciente no formato DD/MM/YYYY"
+        patientBirthday: String!,
+        """
+        Fez mamograma antes, envie uma lista com o primeiro valor ['SIM'/'NAO', 'Ano do mamograga']
+        Exemplo: 
+            ['SIM', '2020']
+            ['NAO', null]
+        """
+        mammogramBefore: [String]!
+        "Idade do paciente"
+        patientAge: Int!
+        "Nome do Paciente, max:42 min:7 caracteres"
+        patientName: String!,
+        "Nome da mae do paciente, max:42 min:7 car"
+        patientMotherName: String!,
+        """
+        Possui nodulo. Opcoes:
+            - "SIMDIR" -> Sim direita
+            - "SIMESQ" -> Sim esquerda
+            - "NAO"    -> Nao possui
+        """
+        noduleLump: String!,
+        """
+        Tem risco elevado. Opcoes:
+            - "SIM"
+            - "NAO"
+            - "NAOSABE"
+        """
+        highRisk: String!,
+    ): GeneratedPdf
     }
 
     input AddressInput{

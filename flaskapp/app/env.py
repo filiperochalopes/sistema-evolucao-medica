@@ -24,7 +24,7 @@ TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY = "/app/app/assets/pdfs_templates/solicita
 # Write directories when creating pdf that will be enconded to base64 
 WRITE_AIH_SUS_DIRECTORY = "/app/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/aih_sus_teste.pdf"
 WRITE_APAC_DIRECTORY = "/app/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/apac_teste.pdf"
-WRITE_EXAM_REQUEST_DIRECTORY = "/app/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/apac_teste.pdf"
+WRITE_EXAM_REQUEST_DIRECTORY = "/app/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/exam_request_teste.pdf"
 WRITE_FICHA_INTERN_DIRECTORY = "/app/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/ficha_teste.pdf"
 WRITE_LME_DIRECTORY = "/app/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/lme_teste.pdf"
 WRITE_PRESCRICAO_MEDICA_DIRECTORY = "/app/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/prescricao_medica_teste.pdf"
