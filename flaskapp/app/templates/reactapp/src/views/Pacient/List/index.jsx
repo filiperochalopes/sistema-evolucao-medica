@@ -8,8 +8,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useModalContext } from "services/ModalContext";
 import EvolutionButton from "./components/EvolutionButton";
+import { useQuery } from "@apollo/client";
+import { PATIENTS } from "graphql/queries";
 
 const List = () => {
+  const { data } = useQuery(PATIENTS);
   const { addModal } = useModalContext();
   return (
     <Container>
@@ -20,32 +23,36 @@ const List = () => {
       <div className="pacients-container">
         <h2>Pacientes Internados</h2>
         <div className="pacients">
-          <Pacient>
-            <PacientContent>
-              <p>Nome Completo, masculino, 80 anos</p>
-              <div className="container_buttons">
-                <Link to="/prontuario">
-                  <Button
-                    type="button"
-                    className="add_new_pacient"
-                    customType="gray"
-                  >
-                    Visualizar
-                  </Button>
-                </Link>
-                <EvolutionButton />
-                <Button
-                  onClick={() => {
-                    addModal(printScreen);
-                  }}
-                  className="add_new_pacient"
-                  customType="gray"
-                >
-                  Imprimir
-                </Button>
-              </div>
-            </PacientContent>
-          </Pacient>
+          {data &&
+            data?.pacients &&
+            data?.pacients.map((pacient) => (
+              <Pacient key={pacient.id}>
+                <PacientContent>
+                  <p>Nome Completo, masculino, 80 anos</p>
+                  <div className="container_buttons">
+                    <Link to="/prontuario">
+                      <Button
+                        type="button"
+                        className="add_new_pacient"
+                        customType="gray"
+                      >
+                        Visualizar
+                      </Button>
+                    </Link>
+                    <EvolutionButton />
+                    <Button
+                      onClick={() => {
+                        addModal(printScreen);
+                      }}
+                      className="add_new_pacient"
+                      customType="gray"
+                    >
+                      Imprimir
+                    </Button>
+                  </div>
+                </PacientContent>
+              </Pacient>
+            ))}
         </div>
       </div>
       <Button className="config">Configurações</Button>
