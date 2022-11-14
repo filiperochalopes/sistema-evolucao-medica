@@ -72,7 +72,7 @@ def is_CNS_valid(cns:int) -> bool:
     ) % 11 == 0
 
 
-def is_RG_valid(rg:int) -> bool:
+def is_RG_valid(rg:str) -> bool:
     # Notice that RG changes a lot in every brazillian state
     # so theres a chance that a invalid RG has pass as Valid
     # just because RG is matematician valid dont mean that exists in government database
@@ -894,7 +894,9 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
             if document['cns'] != None:
                 if type(document['cns']) != type(str()):
                     return Response(f'{camp_name} value CNS has to be str', status=400)
-                if is_CNS_valid(document['cns']):
+                
+                cns_validator = CNS()
+                if cns_validator.validate(document['cns']):
                     if pos_square_cns != None:
                         can = add_square(can=can, pos=pos_square_cns, size=square_size)
                     # Add empty spaces interval between every character
@@ -913,17 +915,17 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
                 if type(document['cpf']) != type(str()):
                     return Response(f'{camp_name} value CPF has to be str', status=400)
                 #Format cpf to validate
-                cpf = str(document['cpf'])
-                numbers_cpf = str(cpf)
-                formated_cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
-                if is_CPF_valid(formated_cpf):
+                cpf_validator = CPF()
+                cpf = document['cpf']
+                if cpf_validator.validate(cpf):
                     if pos_square_cpf != None:
                         can = add_square(can=can, pos=pos_square_cpf, size=square_size)
                     # Add empty spaces interval between averu character
                     if formated:
+                        formated_cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
                         cpf = add_interval_to_data(data=formated_cpf, interval=interval)
                     else:
-                        cpf = add_interval_to_data(data=numbers_cpf, interval=interval)
+                        cpf = add_interval_to_data(data=cpf, interval=interval)
 
                     can = add_data(can=can, data=cpf, pos=pos_cpf)
                     return can

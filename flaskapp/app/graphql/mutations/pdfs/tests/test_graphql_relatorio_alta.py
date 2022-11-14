@@ -57,11 +57,47 @@ def data_to_use(document_datetime=document_datetime_to_use, patient_name="Patien
 #Testing telatorio alta
 def test_answer_with_all_fields():
     """Test relatorio alta with all data correct"""
-    #assert type(data_to_use()) != type(Exception())
     assert data_to_use() == True
 
 def test_awnser_with_only_required_data():
-    assert type(pdf_relatorio_de_alta.fill_pdf_relatorio_alta(document_datetime=datetime_to_use, patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456') != type(Response()))
+    result = False
+    document_test = '{cpf: "28445400070", rg: null, cns: null}'
+    
+    request_string = """
+        mutation{
+            generatePdf_RelatorioAlta("""
+
+
+    campos_string = f"""
+        documentDatetime: "{document_datetime_to_use}",
+        patientName: "Patient Name",
+        patientCns: "928976954930007",
+        patientBirthday: "{datetime_to_use}",            
+        patient_sex:"F",
+        patient_mother_name:"Patient Mother Name",
+        patient_document:{document_test},
+        patient_adress:"pacient street, 43, paciten, USA",
+        evolution:"Current illnes hsitoryaaaaaaaaaaaedqeqa",
+        doctor_name:"Doctor Name",
+        doctor_cns:"928976954930007",
+        doctor_crm:"CRM/UF 123456",
+        orientations:null
+    """
+
+    final_string = """
+    ){base64Pdf}
+    }
+    """
+
+    all_string = request_string + campos_string + final_string
+    query = gql(all_string)
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    assert result == False
 
 
 ##############################################################
@@ -78,34 +114,34 @@ def test_awnser_with_only_required_data():
 
 
 def test_wrongtype_patient_mother_name():    
-    assert data_to_use(patient_mother_name=123124).status == Response(status=400).status
+    assert data_to_use(patient_mother_name=123124) == False
 
 def test_empty_patient_mother_name():    
-    assert data_to_use(patient_mother_name='').status == Response(status=400).status
+    assert data_to_use(patient_mother_name='') == False
 
 def test_with_space_patient_mother_name():    
-    assert data_to_use(patient_mother_name='  ').status == Response(status=400).status
+    assert data_to_use(patient_mother_name='  ') == False
 
 def test_long_patient_mother_name():    
-    assert data_to_use(patient_mother_name=str(lenght_test[:71])).status == Response(status=400).status
+    assert data_to_use(patient_mother_name=str(lenght_test[:71])) == False
 
 def test_short_patient_mother_name():    
-    assert data_to_use(patient_mother_name='11113').status == Response(status=400).status
+    assert data_to_use(patient_mother_name='11113') == False
 
 def test_wrongtype_doctor_name():    
-    assert data_to_use(doctor_name=123124).status == Response(status=400).status
+    assert data_to_use(doctor_name=123124) == False
 
 def test_empty_doctor_name():    
-    assert data_to_use(doctor_name='').status == Response(status=400).status
+    assert data_to_use(doctor_name='') == False
 
 def test_with_space_doctor_name():    
-    assert data_to_use(doctor_name='  ').status == Response(status=400).status
+    assert data_to_use(doctor_name='  ') == False
 
 def test_long_doctor_name():    
-    assert data_to_use(doctor_name=str(lenght_test[:52])).status == Response(status=400).status
+    assert data_to_use(doctor_name=str(lenght_test[:52])) == False
 
 def test_short_doctor_name():    
-    assert data_to_use(doctor_name='11113').status == Response(status=400).status
+    assert data_to_use(doctor_name='11113') == False
 
 
 #################################################################
@@ -119,22 +155,22 @@ def test_short_doctor_name():
 # wrong option
 
 def test_wrongtype_patient_document():
-    assert data_to_use(patient_document='451236548554').status == Response(status=400).status
+    assert data_to_use(patient_document='451236548554') == False
 
 def test_invalidrg_patient_document():
-    assert data_to_use(patient_document={'RG':28123}).status == Response(status=400).status
+    assert data_to_use(patient_document='{cpf: null, rg: "28123", cns: null}') == False
 
 def test_validrg_patient_document():
-    assert data_to_use(patient_document={'RG':928976954930007}) != type(Response())
+    assert data_to_use(patient_document='{cpf: null, rg: "928976954930007", cns: null}') == True
 
 def test_invalidccpf_patient_document():
-    assert data_to_use(patient_document={'CPF':284123312123}).status == Response(status=400).status
+    assert data_to_use(patient_document='{cpf: "284123312123", rg: null, cns: null}') == False
 
 def test_validcpf_patient_document():
-    assert data_to_use(patient_document={'CPF':43423412399}) != type(Response())
+    assert data_to_use(patient_document='{cpf: "43423412399", rg: null, cns: null}') == True
 
 def test_wrongoption_patient_document():
-    assert data_to_use(patient_document={'BBB':284123312123}).status == Response(status=400).status
+    assert data_to_use(patient_document='{BBB: "284123312123", rg: null, cns: null}') == False
 
 #################################################################
 # TEST DATETIMES VARIABLES
@@ -144,17 +180,16 @@ def test_wrongoption_patient_document():
 # test wrong type
 
 def test_wrongtype_document_datetime():
-    assert data_to_use(document_datetime='bahabah').status == Response(status=400).status
+    assert data_to_use(document_datetime='bahabah') == False
 
 def test_valid_document_datetime():
-    assert type(data_to_use(document_datetime=datetime_to_use)) != type(Response())
-
+    assert data_to_use(document_datetime=document_datetime_to_use) == True
 
 def test_wrongtype_patient_birthday():
-    assert data_to_use(patient_birthday='bahabah').status == Response(status=400).status
+    assert data_to_use(patient_birthday='bahabah') == False
 
 def test_valid_patient_birthday():
-    assert type(data_to_use(patient_birthday=datetime_to_use)) != type(Response())
+    assert data_to_use(patient_birthday=datetime_to_use) == True
 
 
 ##################################################################
@@ -162,22 +197,22 @@ def test_valid_patient_birthday():
 # patient_sex
 
 def test_wrongtype_patient_sex():
-    assert data_to_use(patient_sex=1231).status == Response(status=400).status
+    assert data_to_use(patient_sex=1231) == False
 
 def test_notexistopiton_patient_sex():
-    assert data_to_use(patient_sex='G').status == Response(status=400).status
+    assert data_to_use(patient_sex='G') == False
 
 def test_M_optionUpper_patient_sex():
-    assert type(data_to_use(patient_sex='M')) != type(Response())
+    assert data_to_use(patient_sex='M') == True
 
 def test_M_optionLower_patient_sex():
-    assert type(data_to_use(patient_sex='m')) != type(Response())
+    assert data_to_use(patient_sex='m') == True
 
 def test_F_optionUpper_patient_sex():
-    assert type(data_to_use(patient_sex='F')) != type(Response())
+    assert data_to_use(patient_sex='F') == True
 
 def test_F_optionLower_patient_sex():
-    assert type(data_to_use(patient_sex='f')) != type(Response())
+    assert data_to_use(patient_sex='f') == True
 
 
 
@@ -185,20 +220,17 @@ def test_F_optionLower_patient_sex():
 # TEST ADRESS VARIABLES
 # patient_adress
 
-def test_wrongtype_patient_adress():
-    assert data_to_use(patient_adress=1212312).status == Response(status=400).status
-
 def test_empty_value_patient_adress():
-    assert data_to_use(patient_adress='').status == Response(status=400).status
+    assert data_to_use(patient_adress='') == False
 
 def test_empty_space_patient_adress():
-    assert data_to_use(patient_adress='   ').status == Response(status=400).status
+    assert data_to_use(patient_adress='   ') == False
 
 def test_invalid_value_patient_adress():
-    assert data_to_use(patient_adress='111').status == Response(status=400).status
+    assert data_to_use(patient_adress='111') == False
 
 def test_long_value_patient_adress():
-    assert data_to_use(patient_adress=str(lenght_test[:65])).status == Response(status=400).status
+    assert data_to_use(patient_adress=str(lenght_test[:65])) == False
 
 #############################################################################
 # TEST BIG TEXT WITH LINE BRAKES
@@ -206,34 +238,34 @@ def test_long_value_patient_adress():
 # orientations
 
 def test_wrong_type_evolution():
-    assert data_to_use(evolution=131).status == Response(status=400).status
+    assert data_to_use(evolution=131) == False
 
 def test_empty_value_evolution():
-    assert data_to_use(evolution='').status == Response(status=400).status
+    assert data_to_use(evolution='') == False
 
 def test_empty_spaces_evolution():
-    assert data_to_use(evolution='    ').status == Response(status=400).status
+    assert data_to_use(evolution='    ') == False
 
 def test_shortText_evolution():
-    assert data_to_use(evolution='ablas').status == Response(status=400).status
+    assert data_to_use(evolution='ablas') == False
 
 def test_more_than_limit_evolution():
-    assert data_to_use(evolution=lenght_test[:2150]).status == Response(status=400).status
+    assert data_to_use(evolution=lenght_test[:2150]) == False
 
 def test_wrong_type_orientations():
-    assert data_to_use(orientations=131).status == Response(status=400).status
+    assert data_to_use(orientations=131) == False
 
 def test_empty_value_orientations():
-    assert type(data_to_use(orientations='')) != type(Response())
+    assert data_to_use(orientations='') == True
 
 def test_empty_spaces_orientations():
-    assert type(data_to_use(orientations='    ')) != type(Response())
+    assert data_to_use(orientations='    ') == True
 
 def test_shortText_orientations():
-    assert data_to_use(orientations='ablas').status == Response(status=400).status
+    assert data_to_use(orientations='ablas') == False
 
 def test_more_than_limit_orientations():
-    assert data_to_use(orientations=lenght_test[:850]).status == Response(status=400).status
+    assert data_to_use(orientations=lenght_test[:850]) == False
 
 
 #################################################################################
@@ -246,28 +278,28 @@ def test_more_than_limit_orientations():
 # empty send
 
 def test_wrongtype_patient_cns():
-    assert data_to_use(patient_cns='13123').status == Response(status=400).status
+    assert data_to_use(patient_cns='13123') == False
 
 def test_valid_patient_cns():
-    assert type(data_to_use(patient_cns=928976954930007)) != type(Response())
+    assert data_to_use(patient_cns="928976954930007") == True
 
 def test_invalid_patient_cns():
-    assert data_to_use(patient_cns=928976546250007).status == Response(status=400).status
+    assert data_to_use(patient_cns="928976546250007") == False
 
 def test_empty_patient_cns():
-    assert data_to_use(patient_cns=None).status == Response(status=400).status
+    assert data_to_use(patient_cns='null') == False
 
 def test_wrongtype_doctor_cns():
-    assert data_to_use(doctor_cns='13123').status == Response(status=400).status
+    assert data_to_use(doctor_cns='13123') == False
 
 def test_valid_doctor_cns():
-    assert type(data_to_use(doctor_cns=928976954930007)) != type(Response())
+    assert data_to_use(doctor_cns="928976954930007") == True
 
 def test_invalid_doctor_cns():
-    assert data_to_use(doctor_cns=928976546250007).status == Response(status=400).status
+    assert data_to_use(doctor_cns="928976546250007") == False
 
 def test_empty_doctor_cns():
-    assert data_to_use(doctor_cns=None).status == Response(status=400).status
+    assert data_to_use(doctor_cns='null') == False
 
 
 
