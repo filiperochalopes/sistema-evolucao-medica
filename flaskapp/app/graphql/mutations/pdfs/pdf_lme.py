@@ -3,6 +3,7 @@ import datetime
 from PyPDF2 import PdfWriter, PdfReader
 import io
 import sys
+from ast import literal_eval
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
@@ -267,6 +268,7 @@ def add_filled_by(can:canvas.Canvas, filled_by:list) -> Union[canvas.Canvas, Res
     can = pdf_functions.add_markable_square_and_onelinetext(can=can, option=filled_by[0], valid_options=['PACIENTE','MAE', 'RESPONSAVEL', 'MEDICO','OUTRO'], text_options=['OUTRO'], text_pos=(128, 152), options_positions=((227, 166), (277, 166), (354, 166), (486, 166), (40, 152)), camp_name='Filled By option and Name', len_max=42, text=filled_by[1], len_min=5, square_size=(5, 8))
     if type(can) == type(Response()): return can
     if filled_by[0].upper() == 'OUTRO':
-        can = pdf_functions.add_document_cns_cpf_rg(can=can, document=filled_by[2], pos_cpf=(388, 152),camp_name='Filled by CPF', interval='  ')
+        filled_by_document = literal_eval(filled_by[2])
+        can = pdf_functions.add_document_cns_cpf_rg(can=can, document=filled_by_document, pos_cpf=(388, 152),camp_name='Filled by', interval='  ')
     return can
 
