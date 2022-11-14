@@ -28,14 +28,14 @@ anamnese="Anamnese",
 prof_solicitor_name="Professional Solicitor Name",
 solicitation_datetime=datetime_to_use,
 prof_solicitor_document='{cpf:"28445400070"}',
-capacity_attest=["nao", "Responsible Name"],
-filled_by=["MEDICO", "Other name", "{'cpf':'28445400070'}"],
-patient_ethnicity=['SEMINFO', 'Patient Ethnicity'],
-previous_treatment=['SIM', 'Previout Theatment'],
+capacity_attest='["nao", "Responsible Name"]',
+filled_by='''["MEDICO", "Other name", "{'cpf':'28445400070'}"]''',
+patient_ethnicity='["SEMINFO", "Patient Ethnicity"]',
+previous_treatment='["SIM", "Previout Theatment"]',
 diagnostic='Diagnostic',
 patient_document='{cns: "928976954930007", rg: null, cpf: null}',
 patient_email="patietemail@gmail.com",
-contacts_phonenumbers=["1254875652", "4578456598"],
+contacts_phonenumbers='["1254875652", "4578456598"]',
 medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        quant2month: "15 comp", quant3month: "5 comp"},{medicineName: "nome do Medicamneto", quant1month:"20 comp", quant2month: "15 comp", quant3month: "5 comp"}]'
     ):
     request_string = """
@@ -58,7 +58,7 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
         filledBy: {filled_by},
         patientEthnicity: {patient_ethnicity},
         previousTreatment: {previous_treatment},
-        diagnostic: {diagnostic},
+        diagnostic: "{diagnostic}",
         patientDocument: {patient_document},
         patientEmail: "{patient_email}",
         contactsPhonenumbers: {contacts_phonenumbers},
@@ -76,8 +76,11 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
         #When some exception is created in grphql he return a error
         client.execute(query)
         return True
+    except Exception as error:
+        return error
+        #return False
     except:
-        return False 
+        return False
 
 
 #Testing APAC
