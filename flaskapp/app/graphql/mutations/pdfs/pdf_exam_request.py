@@ -2,6 +2,7 @@ import base64
 import datetime
 from PyPDF2 import PdfWriter, PdfReader
 import io
+import sys
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
@@ -16,14 +17,15 @@ from app.env import FONT_DIRECTORY, TEMPLATE_EXAM_REQUEST_DIRECTORY, WRITE_EXAM_
 from app.graphql import mutation
 from ariadne import convert_kwargs_to_snake_case
 
+@mutation.field('generatePdf_SolicitExames')
 @convert_kwargs_to_snake_case
-def fill_pdf_exam_request(patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_adress:str, solicitation_reason:str,
-exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_authorized:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> Union[bytes, Response]:
+def fill_pdf_exam_request(_, info, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_adress:str, solicitation_reason:str,
+exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_authorized:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> Union[bytes, Exception]:
     """fill pdf exam request (Solicitacao de exames e procedimentos)
 
     Args:
         patient_name (str): patient_name
-        patient_cns (int): patient_cns
+        patient_cns (str): patient_cns
         patient_birthday (datetime.datetime): patient_birthday
         patient_adress (str): patient_adress
         solicitation_reason (str): solicitation_reason
@@ -40,6 +42,7 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
     """
 
     try:
+        print('Lero', file=sys.stderr)
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -78,6 +81,8 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
                 if type(c) == type(Response()): return c
                 c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor, pos=(7, prof_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
                 if type(c) == type(Response()): return c
+                c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True)
+                if type(c) == type(Response()): return c
 
                 #Decrese ypos in all lines to complete the page
                 patient_name_ypos -= decreaseYpos
@@ -106,8 +111,6 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
                 c = pdf_functions.add_oneline_text(can=c, text=prof_authorized, pos=(174, prof_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
                 if type(c) == type(Response()): return c
                 c = pdf_functions.add_oneline_text(can=c, text=document_pacient_name, pos=(340, document_pacient_name_ypos), camp_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
-                if type(c) == type(Response()): return c
-                c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True, nullable=True)
                 if type(c) == type(Response()): return c
                 c = pdf_functions.add_datetime(can=c, date=autorization_datetime, pos=(195, autorization_datetime_ypos), camp_name='Authorization Datetime', hours=False, formated=True, nullable=True)
                 if type(c) == type(Response()): return c

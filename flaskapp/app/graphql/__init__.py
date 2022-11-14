@@ -260,6 +260,35 @@ type_defs = gql(
 
     }
 
+    "Criação de documento de Solicitacao de Exames"
+    generatePdf_SolicitExames(
+        "Nome do paciente, max:70 min:7 caracteres"
+        patientName: String!,
+        "CNS do paciente"
+        patientCns: String!,
+        "Data de nascimento do paciente no formato DD/MM/YYYY"
+        patientBirthday: String!,
+        "Endereco do paciente, max: 216 min:7 caracteres"
+        patientAdress: String!,
+        "Motivo da Solicitacao, max: 216 min:7 caracteres"
+        solicitationReason: String!,
+        "Nome do profissional Solicitante, max:29 min:7 caracteres"
+        profSolicitor: String!,
+        "Data da Solicitacao no formato DD/MM/YYYY"
+        solicitationDatetime: String!,
+        "Exames solicitados"
+        exams: String!,
+        "Nome do profissional autorizador, max:29 min:7 caracteres"
+        profAuthorized: String,
+        "Nome do paciente no final do documento, esse campo fica no fim do documento e tem um tamanho maximo diferente. max:46 min:7 caracteres"
+        documentPacientName: String,
+        "Data da Autorizacao no formato DD/MM/YYYY"
+        autorizationDatetime: String,
+        "Data do paciente, tambem no campo inferior no formato DD/MM/YYYY"
+        documentPacientDate: String,
+    ): GeneratedPdf
+
+
     input AddressInput{
         zipCode: String
         street:String
