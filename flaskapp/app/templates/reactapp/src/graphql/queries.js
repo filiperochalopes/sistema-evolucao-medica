@@ -18,3 +18,21 @@ export const CID10 = gql`
     }
   }
 `;
+
+export const ALLERGIES = gql`
+  query getAllergies {
+    allergies {
+      id
+      value
+    }
+  }
+`;
+
+export const COMORBIDITIES = gql`
+  query getComorbidities {
+    comorbidities {
+      id
+      value
+    }
+  }
+`;
