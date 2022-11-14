@@ -47,7 +47,6 @@ def fill_pdf_lme(_, info, establishment_solitc_name:str, establishment_solitc_cn
         Union[bytes, Response]: base64 pdf enconded or a Response with a error
     """    
     try:
-        print('Lerolero', file=sys.stderr)
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
