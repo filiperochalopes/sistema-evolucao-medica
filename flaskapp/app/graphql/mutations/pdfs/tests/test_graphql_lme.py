@@ -76,9 +76,6 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
         #When some exception is created in grphql he return a error
         client.execute(query)
         return True
-    except Exception as error:
-        return error
-        #return False
     except:
         return False
 
@@ -88,25 +85,47 @@ def test_with_data_in_function():
     assert data_to_use() == True
 
 def test_answer_with_all_fields():
-    assert type(data_to_use()) != type(Response())
+    assert data_to_use() == True
 
 def test_awnser_with_only_required_data():
-    assert type(pdf_lme.fill_pdf_lme(
-        establishment_solitc_name='Establishment Solicit Name',
-establishment_solitc_cnes=1234567,
-patient_name='Patient Name',
-patient_mother_name='Patient Mother Name',
-patient_weight=142,
-patient_height=180,
-cid10='A123',
-anamnese="Anamnese",
-prof_solicitor_name="Professional Solicitor Name",
-solicitation_datetime=datetime_to_use,
-prof_solicitor_document={'CPF':28445400070},
-capacity_attest=['nao', 'Responsible Name'],
-filled_by=['MEDICO', 'Other name', {'CPF':28445400070}],
-patient_ethnicity=['SEMINFO', 'Patient Ethnicity'],
-previous_treatment=['SIM', 'Previout Theatment'])) != type(Response())
+    result = False
+    request_string = """
+        mutation{
+            generatePdf_Lme("""
+
+    campos_string = """
+        establishmentSolitcName: "Establishment",
+        establishmentSolitcCnes: 1234567,
+        patientName: "Patient Name",
+        patientMotherName: "Patient Mother Name",
+        patientWeight: 180,
+        patientHeight: 140,
+        cid10: "A123",
+        anamnese: "Anamnese",
+        profSolicitorName: "Professional Solic Name",
+        solicitationDatetime: "12/10/2022",
+        profSolicitorDocument: {cpf:"28445400070"},
+        capacityAttest: ["nao", "Responsible Name"],
+        filledBy: ["MEDICO", "Other name", "{'cpf':'28445400070'}"],
+        patientEthnicity: ["SEMINFO", "Patient Ethnicity"],
+        previousTreatment: ["SIM", "Previout Theatment"]
+    """
+
+    final_string = """
+    ){base64Pdf}
+    }
+    """
+
+    all_string = request_string + campos_string + final_string
+    query = gql(all_string)
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    assert result == True
+    
 
 
 ##############################################################

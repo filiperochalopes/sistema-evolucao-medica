@@ -72,16 +72,15 @@ def test_awnser_with_only_required_data():
         documentDatetime: "{document_datetime_to_use}",
         patientName: "Patient Name",
         patientCns: "928976954930007",
-        patientBirthday: "{datetime_to_use}",            
-        patient_sex:"F",
-        patient_mother_name:"Patient Mother Name",
-        patient_document:{document_test},
-        patient_adress:"pacient street, 43, paciten, USA",
-        evolution:"Current illnes hsitoryaaaaaaaaaaaedqeqa",
-        doctor_name:"Doctor Name",
-        doctor_cns:"928976954930007",
-        doctor_crm:"CRM/UF 123456",
-        orientations:null
+        patientBirthday: "{datetime_to_use}",
+        patientSex: "F",
+        patientMotherName: "Patient Mother Name",
+        patientDocument: {document_test},
+        patientAdress: "pacient street, 43, paciten, USA",
+        evolution: "Current illnes hsitoryaaaaaaaaaaaedqeqa",
+        doctorName: "Doctor Name",
+        doctorCns: "928976954930007",
+        doctorCrm: "CRM/UF 123456"
     """
 
     final_string = """
@@ -97,7 +96,7 @@ def test_awnser_with_only_required_data():
         result = True
     except:
         result = False 
-    assert result == False
+    assert result == True
 
 
 ##############################################################

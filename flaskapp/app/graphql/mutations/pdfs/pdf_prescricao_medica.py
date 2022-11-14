@@ -62,7 +62,6 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str,
             if type(c) == type(Response()): raise Exception(c.response)
 
         except Exception as error:
-            print('teste', file=sys.stderr)
             return error
         
         except:
