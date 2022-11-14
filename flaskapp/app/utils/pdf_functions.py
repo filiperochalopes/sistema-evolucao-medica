@@ -52,26 +52,6 @@ def validate_func_args(function_to_verify, variables_to_verify:dict, nullable_va
         #return Response(f'unkown error while validate_func_args {variables_keys} in {function_to_verify} function', status=500)
 
 
-
-def is_CNS_valid(cns:int) -> bool:
-    """verify if the CNS is valid
-    code by: philippeoz
-
-    Args:
-        cns (int): cns number that will be validated
-    """
-    verify = validate_func_args(function_to_verify=is_CNS_valid, variables_to_verify={'cns':cns})
-    if type(verify) == type(Response()):
-        return verify
-    cns = ''.join(filter(str.isdigit, str(cns)))
-    if len(cns) != 15:
-        return False
-    
-    return sum(
-        [int(cns[i]) * (15 - i) for i in range(15)]
-    ) % 11 == 0
-
-
 def is_RG_valid(rg:str) -> bool:
     # Notice that RG changes a lot in every brazillian state
     # so theres a chance that a invalid RG has pass as Valid
