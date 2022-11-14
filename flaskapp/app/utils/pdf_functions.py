@@ -7,6 +7,7 @@ import datetime
 from typing import Union
 from inspect import getfullargspec
 from validate_docbr import CNS, CPF
+import sys
 
 
 
@@ -883,63 +884,68 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
         # See id document is CPF, CNS or RG
         all_document_keys = list(document.keys())
         #return Response(f'{document}')
-        #Make all keys bein upper
+        #Make all keys bein lower
         for key in all_document_keys:
-            document[f'{str(key).upper()}'] = document.pop(key)
+            document[f'{str(key).lower()}'] = document.pop(key)
             
         # updating all document keys
         all_document_keys = document.keys()
-        if 'CNS' in all_document_keys:
-            if type(document['CNS']) != type(int()):
-                return Response(f'{camp_name} value CNS has to be int', status=400)
-            if is_CNS_valid(document['CNS']):
-                if pos_square_cns != None:
-                    can = add_square(can=can, pos=pos_square_cns, size=square_size)
-                # Add empty spaces interval between every character
+        if 'cns' in all_document_keys:
+            if document['cns'] != None:
+                if type(document['cns']) != type(str()):
+                    return Response(f'{camp_name} value CNS has to be str', status=400)
+                if is_CNS_valid(document['cns']):
+                    if pos_square_cns != None:
+                        can = add_square(can=can, pos=pos_square_cns, size=square_size)
+                    # Add empty spaces interval between every character
 
-                cns = str(document['CNS'])
-                cns = add_interval_to_data(data=cns, interval=interval)
-                if formated:
-                    cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
-                can = add_data(can=can, data=cns, pos=pos_cns)
-                return can
-            else:
-                return Response(f'{camp_name} CNS is not valid', status=400)
-        elif 'CPF' in all_document_keys:
-            if type(document['CPF']) != type(int()):
-                return Response(f'{camp_name} value CPF has to be int', status=400)
-            #Format cpf to validate
-            cpf = str(document['CPF'])
-            numbers_cpf = str(cpf)
-            formated_cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
-            if is_CPF_valid(formated_cpf):
-                if pos_square_cpf != None:
-                    can = add_square(can=can, pos=pos_square_cpf, size=square_size)
-                # Add empty spaces interval between averu character
-                if formated:
-                    cpf = add_interval_to_data(data=formated_cpf, interval=interval)
+                    cns = str(document['cns'])
+                    cns = add_interval_to_data(data=cns, interval=interval)
+                    if formated:
+                        cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
+                    can = add_data(can=can, data=cns, pos=pos_cns)
+                    return can
                 else:
-                    cpf = add_interval_to_data(data=numbers_cpf, interval=interval)
+                    return Response(f'{camp_name} CNS is not valid', status=400)
+        
+        if 'cpf' in all_document_keys:
+            if document['cpf'] != None:
+                if type(document['cpf']) != type(str()):
+                    return Response(f'{camp_name} value CPF has to be str', status=400)
+                #Format cpf to validate
+                cpf = str(document['cpf'])
+                numbers_cpf = str(cpf)
+                formated_cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
+                if is_CPF_valid(formated_cpf):
+                    if pos_square_cpf != None:
+                        can = add_square(can=can, pos=pos_square_cpf, size=square_size)
+                    # Add empty spaces interval between averu character
+                    if formated:
+                        cpf = add_interval_to_data(data=formated_cpf, interval=interval)
+                    else:
+                        cpf = add_interval_to_data(data=numbers_cpf, interval=interval)
 
-                can = add_data(can=can, data=cpf, pos=pos_cpf)
-                return can
-            else:
-                return Response(f'{camp_name} CPF is not valid', status=400)
-        elif 'RG' in all_document_keys:
-            rg = document['RG']
-            if type(rg) != type(int()):
-                return Response(f'{camp_name} value RG has to be int', status=400)
-            #The only verificatinon is that rg is not greater than 16 characteres
-            if is_RG_valid(rg):
-                rg = str(document['RG'])
-                if pos_square_rg != None:
-                    can = add_square(can=can, pos=pos_square_rg, size=square_size)
-                can = add_data(can=can, data=rg, pos=pos_rg)
-                return can
-            else:
-                return Response(f'{camp_name} RG is not valid', status=400)
-        else:
-            return Response(f'{camp_name} was not CPF, CNS or RG', status=400)
+                    can = add_data(can=can, data=cpf, pos=pos_cpf)
+                    return can
+                else:
+                    return Response(f'{camp_name} CPF is not valid', status=400)
+        
+        if 'rg' in all_document_keys:
+            if document['rg'] != None:
+                rg = document['rg']
+                if type(rg) != type(str()):
+                    return Response(f'{camp_name} value RG has to be str', status=400)
+                #The only verificatinon is that rg is not greater than 16 characteres
+                if is_RG_valid(rg):
+                    rg = str(document['rg'])
+                    if pos_square_rg != None:
+                        can = add_square(can=can, pos=pos_square_rg, size=square_size)
+                    can = add_data(can=can, data=rg, pos=pos_rg)
+                    return can
+                else:
+                    return Response(f'{camp_name} RG is not valid', status=400)
+        
+        return Response(f'{camp_name} was not CPF, CNS or RG', status=400)
     except:
         return Response(f'Unknow error while adding {camp_name} Document', status=500)
 

@@ -149,31 +149,31 @@ type_defs = gql(
         "Criação de documento de Relatorio de Alta"
         generatePdf_RelatorioAlta(
             "Data do documento no formato DD/MM/YYYY HH:mm"
-            documentDatetime: String,
+            documentDatetime: String!,
             "Nome do paciente, max:64 min:7 caracteres"
-            patientName: String,
+            patientName: String!,
             "CNS do paciente, envie sem formatacao, apenas numeros. Exemplo XXXXXXXXXXXXXXX"
-            patientCns: String,
+            patientCns: String!,
             "Data de Nascimento do paciente no formato DD/MM/YYYY"
-            patientBirthday: String,
+            patientBirthday: String!,
             "Sexo do Paciente, opcao M ou F."
-            patientSex: String,
+            patientSex: String!,
             "Nome da Mae do paciente, max:69 min 7 caracteres"
-            patientMotherName: String,
-            "Documento do paciente, utilize o input DocumentInput"
+            patientMotherName: String!,
+            "Documento do paciente, CPF ou RG, utilize o input DocumentInput"
             patientDocument: DocumentInput,
             "Endereco do paciente, max:63 min:7 caracteres"
-            patientAdress: String,
+            patientAdress: String!,
             "Nome do Medico, max:49 min:7 caracteres"
-            doctorName: String,
+            doctorName: String!,
             "CNS do medico, envie sem formatacao, apenas numeros. Exemplo XXXXXXXXXXXXXXX"
-            doctorCns: String,
+            doctorCns: String!,
             "CRM do medico, max:13 min:11"
-            doctorCrm: String,
+            doctorCrm: String!,
             "Evolucao do paciente, max: 2100 min:10 caracteres"
-            evolution: String,
+            evolution: String!,
             "Orientacoes para o paciente, max:800 min:10 caracteres"
-            orientations: String!
+            orientations: String
         ): GeneratedPdf
 
     }
@@ -239,11 +239,11 @@ type_defs = gql(
 
     input DocumentInput{
         "CPF do Paciente sem formatacao, apenas numeros. Exemplo: xxxxxxxxxxx"
-        CPF: String!
+        cpf: String
         "RG do Paciente sem formatacao, apenas os numeros XXXXXXXXXXXX"
-        RG: String!
+        rg: String
         "CNS do Paciente sem formatacao, apenas numeros. Exemplo: xxxxxxxxxxxxxxx"
-        CNS: String!
+        cns: String
     }
 
     type User {

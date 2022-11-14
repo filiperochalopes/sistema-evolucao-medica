@@ -2,6 +2,7 @@ import base64
 import datetime
 from PyPDF2  import PdfWriter, PdfReader
 import io
+import sys
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
@@ -16,7 +17,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_RelatorioAlta')
 @convert_kwargs_to_snake_case
-def fill_pdf_relatorio_alta(_, info, document_datetime:str, patient_name:str, patient_cns:str, patient_birthday:str, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:str, doctor_crm:str, orientations:str=None) -> Union[bytes, Response]:
+def fill_pdf_relatorio_alta(_, info, document_datetime:str, patient_name:str, patient_cns:str, patient_birthday:str, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:str, doctor_crm:str, orientations:str=None) -> Union[bytes, Exception]:
     """fill pdf relatorio alta
     
     Args:
@@ -35,9 +36,10 @@ def fill_pdf_relatorio_alta(_, info, document_datetime:str, patient_name:str, pa
         orientations (str, optional): orientations. Defaults to None.
 
     Returns:
-        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+        Union[bytes, Exception]: base64 pdf enconded or a Exception with a error
     """    
     try:
+        print(patient_document, file=sys.stderr)
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -50,48 +52,52 @@ def fill_pdf_relatorio_alta(_, info, document_datetime:str, patient_name:str, pa
         # not null data
         try:
             c = pdf_functions.add_datetime(can=c, date=document_datetime, pos=(410, 740), camp_name='Document Datetime', hours=True, formated=True)
-            if type(c) == type(Response()): return c          
+            if type(c) == type(Response()): raise Exception(c.response)          
             
             
             # change font size to normal            
             c.setFont('Roboto-Mono', 9)            
             c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(27, 674), camp_name='Patient Name', len_max=64, len_min=7)
             # verify if c is a error at some point
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(393, 674), camp_name='Patient CNS', formated=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(27, 642), camp_name='Patient Birthday', hours=False, formated=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(117, 640), pos_fem=(147, 640), camp_name='Patient Sex', square_size=(9,9))
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(194, 642), camp_name='Patient Mother Name', len_max=69, len_min=7)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_document_cns_cpf_rg(can=c, document=patient_document, pos_square_cpf=(24, 608), pos_square_rg=(58,608), pos_rg=(92, 610), pos_cpf=(92, 610),camp_name='Pacient Document', formated=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress, pos=(230, 610), camp_name='Patient Adress', len_max=63, len_min=7)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=doctor_name, pos=(304, 195), camp_name='Doctor Name', len_max=49, len_min=7)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_cns(can=c, cns=doctor_cns, pos=(304, 163), camp_name='Doctor CNS', formated=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=doctor_crm, pos=(304, 131), camp_name='Doctor CRM', len_max=13, len_min=11)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_morelines_text(can=c, text=evolution, initial_pos=(26, 540), decrease_ypos=10, camp_name='Evolution Resume', len_max=2100, len_min=10, char_per_lines=100)
 
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
+        
+        except Exception as error:
+            return error
         
         except:
-            if type(c) == type(Response()):
-                return c
-            else:
-                return Response('Some error happen when adding not null data to fields', status=500)
+            return Exception('Some error happen when adding not null data to fields')
             
         #Adding data that can be null
         try:
             c = pdf_functions.add_morelines_text(can=c, text=orientations, initial_pos=(26, 312), decrease_ypos=10, camp_name='Orientations', len_max=800, len_min=10, char_per_lines=100, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
+        
+        except Exception as error:
+            return error
+
         except:
-            return Response('Critical error happen when adding data that can be null to fields', status=500)
+            return Exception('Critical error happen when adding data that can be null to fields')
         
         # create a new PDF with Reportlab
         c.save()
@@ -110,6 +116,8 @@ def fill_pdf_relatorio_alta(_, info, document_datetime:str, patient_name:str, pa
         with open(WRITE_RELATORIO_ALTA_DIRECTORY, "rb") as pdf_file:
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
 
-        return pdf_base64_enconded
+        return {
+        "base64Pdf":str(pdf_base64_enconded)
+        }
     except:
-        return Response("Error while filling relatorio de alta", status=500)
+        return Exception("Error while filling relatorio de alta")
