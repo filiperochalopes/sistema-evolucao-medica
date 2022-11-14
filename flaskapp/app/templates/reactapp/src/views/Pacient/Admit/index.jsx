@@ -9,9 +9,7 @@ import { CREATE_INTERNMENT } from "graphql/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import Select from "components/Select";
 import { ALLERGIES, COMORBIDITIES } from "graphql/queries";
-import { useState } from "react";
 import { useEffect } from "react";
-import cepApi from "config/cepApi";
 import getCepApiAdapter from "services/getCepApiAdapter";
 
 const Admit = () => {
