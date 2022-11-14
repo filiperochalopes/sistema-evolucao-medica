@@ -56,65 +56,65 @@ type_defs = gql(
         "Criação de documento de AIH"
         generatePdf_AihSus(
             "Nome do Estabelecimento Solicitante, max:82 min:7 caracteres"
-            establishmentSolitcName: String,
+            establishmentSolitcName: String!,
             "CNES do Estabelecimento Solicitante"
-            establishmentSolitcCnes: Int, 
+            establishmentSolitcCnes: Int!, 
             "Nome do Estabelecimento Executante, max:82 min:8 caracteres"
-            establishmentExecName: String, 
+            establishmentExecName: String!, 
             "CNES do Estabelecimento Executante"
-            establishmentExecCnes: Int, 
+            establishmentExecCnes: Int!, 
             "Nome do paciente, max:79 min:7 caracteres"
-            patientName: String, 
+            patientName: String!, 
             "Número do Cartão do SUS do paciente"
-            patientCns: Int,
+            patientCns: Int!,
             "Data de nascimento do paciente, em timestamp SEM fusohorario (utilizando o padrao UTC)"
-            patientBirthday: String,
+            patientBirthday: String!,
             "Sexo do Paciente, opcao M ou F."
-            patientSex: String,
+            patientSex: String!,
             "Nome da Mae do paciente, max:70 min:7 caracteres"
-            patientMotherName: String, 
+            patientMotherName: String!, 
             "Endereco do paciente, somente 'rua, numero, bairro', max: 101 min:7 caracteres"
-            patientAdress: String, 
+            patientAdress: String!, 
             "Cidade do paciente, max:58 min:7 caracteres"
-            patientAdressCity: String, 
+            patientAdressCity: String!, 
             "Codigo IBGE do municipio do paciente"
-            patientAdressCityIbgeCode: Int,
+            patientAdressCityIbgeCode: Int!,
             "Sigla do estado, UF, da cidade do paciente, somente estados do Brasil"
-            patientAdressUF: String,
+            patientAdressUF: String!,
             "CEP do endereço do paciente"
-            patientAdressCEP: Int,
+            patientAdressCEP: Int!,
             "Principais sintomas e sintomas clinicos, max:1009 min:5 caracteres"
-            mainClinicalSignsSymptoms: String,
+            mainClinicalSignsSymptoms: String!,
             "Condicoes que justificam a internacao, max:403 min:5 caracteres"
-            conditionsJustifyHospitalization: String,
+            conditionsJustifyHospitalization: String!,
             "Diagnostico inicial, max:44 min:5 caracteres"
-            initialDiagnostic: String,
+            initialDiagnostic: String!,
             "Cid 10 princical, usando o formato padrao de CID, max:4 min:3 caracteres"
-            principalCid10: String, 
+            principalCid10: String!, 
             "Procedimento solicitado, max:65 min:6 caracteres"
-            procedureSolicited: String,
+            procedureSolicited: String!,
             "Codigo do procedimento solcitado, deve ter exatamente 10 caracteres"
-            procedureCode: String,
+            procedureCode: String!,
             "Nome da clinica, max:18 min:6 caracteres"
-            clinic: String, 
+            clinic: String!, 
             "Carater da internacao, max:19 min:6 caracteres"
-            internationCarater: String, 
+            internationCarater: String!, 
             "Documento do profissional solicitante, cns ou cpf, a api python o trata como dicionario, entao envie como uma string no formato '{'CNS':928976954930007}', a primeira e o nome do documento, e o seguinte e o numero do documento como inteiro"
-            profSolicitorDocument: String, 
+            profSolicitorDocument: String!, 
             "Nome do profissional solicitante, max:48 min:8 caracteres"
-            profSolicitorName: String,
-            "Data e hora da solicitacao, somente dia/mes/ano, envie como timestamp SEM fusohorario (Padrao UTC)"
-            solicitationDatetime: String,
+            profSolicitorName: String!,
+            "Data e hora da solicitacao, somente dia/mes/ano"
+            solicitationDatetime: String!,
             "Nome do profissional autorizador, max:48 min:8 caracteres" 
-            autorizationProfName: String,
+            autorizationProfName: String!,
             "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:17 min:2 caracteres"
-            emissionOrgCode: String, 
+            emissionOrgCode: String!, 
             "Documento do profissional autorizador, cns ou cpf, a api python o trata como dicionario, entao envie como uma string no formato '{'CNS':928976954930007}', a primeira e o nome do documento, e o seguinte e o numero do documento como inteiro"
-            autorizatonProfDocument: String,
-            "Data e hora da autorizacao, somente dia/mes/ano, envie como timestamp SEM fusohorario (Padrao UTC)"
-            autorizatonDatetime: String,
+            autorizatonProfDocument: String!,
+            "Data e hora da autorizacao, somente dia/mes/ano"
+            autorizatonDatetime: String!,
             "Numero da autorizacao de internacao hospitalar, no maximo 18 digitos"
-            hospitalizationAutorizationNumber: Int,
+            hospitalizationAutorizationNumber: Int!,
             examResults: String, 
             chartNumber: Int, 
             patientEthnicity: String, 
@@ -137,13 +137,13 @@ type_defs = gql(
         "Criação de documento de Precricao medica"
         generatePdf_PrecricaoMedica(
             "Data do documento no formato DD/MM/YYYY"
-            documentDatetime: String,
+            documentDatetime: String!,
             "Nome do paciente, max:34 min:7 caracteres"
-            patientName: String,
+            patientName: String!,
             """
             List de precicoes enviadas pelo medico, voce pode adicionar mais de uma utilizando uma lista de PrescriptionInput, veja as docs do input PrescriptionInput para mais informações"
             """
-            prescription: [PrescriptionInput]
+            prescription: [PrescriptionInput]!
         ): GeneratedPdf
     
         "Criação de documento de Relatorio de Alta"
