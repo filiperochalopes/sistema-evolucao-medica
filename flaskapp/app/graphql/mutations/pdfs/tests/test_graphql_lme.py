@@ -222,12 +222,9 @@ def test_wrongtype_capacity_attest_responsible_name():
 ####################################################################
 # TEST CNES 
 # establishment_solitc_cnes
-# empty
 # wrong type
 # invalid cnes
 
-def test_empty_establishment_solitc_cnes():
-    assert data_to_use(establishment_solitc_cnes=' ') == False
 
 def test_wrongtype_establishment_solitc_cnes():
     assert data_to_use(establishment_solitc_cnes='adsadad') == False
@@ -319,22 +316,22 @@ def test_outro_with_text_filled_by():
     assert data_to_use(filled_by='''["OUTRO", "Other name", "{'cpf':'28445400070'}"]''') == True
 
 def test_medico_without_text_filled_by():
-    assert data_to_use(filled_by='''["MEDICO", None, "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by='''["MEDICO", null, "{'cpf':'28445400070'}"]''') == True
 
 def test_paciente_without_text_filled_by():
-    assert data_to_use(filled_by='''["PACIENTE", None, "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by='''["PACIENTE", null, "{'cpf':'28445400070'}"]''') == True
 
 def test_mae_without_text_filled_by():
-    assert data_to_use(filled_by='''["MAE", None, "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by='''["MAE", null, "{'cpf':'28445400070'}"]''') == True
 
 def test_responsavel_without_text_filled_by():
-    assert data_to_use(filled_by='''["RESPONSAVEL", None, "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by='''["RESPONSAVEL", null, "{'cpf':'28445400070'}"]''') == True
 
 def test_outro_without_text_filled_by():
-    assert data_to_use(filled_by='''["OUTRO", None, "{'cpf':'28445400070'}"]''') == False
+    assert data_to_use(filled_by='''["OUTRO", null, "{'cpf':'28445400070'}"]''') == False
 
 def test_medico_with_empty_text_filled_by():
-    assert data_to_use(filled_by='''["MEDICO", "", "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by='''["MEDICO", "  ", "{'cpf':'28445400070'}"]''') == True
 
 def test_paciente_with_empty_text_filled_by():
     assert data_to_use(filled_by='''["PACIENTE", "", "{'cpf':'28445400070'}"]''') == True
@@ -364,43 +361,34 @@ def test_outro_with_space_text_filled_by():
     assert data_to_use(filled_by='''["OUTRO", " ", "{'cpf':'28445400070'}"]''') == False
 
 def test_medico_with_shorttext_filled_by():
-    assert data_to_use(filled_by=f'''["MEDICO", "{lenght_test[:3]}", "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by=f'''["MEDICO", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''') == True
 
 def test_paciente_with_shorttext_filled_by():
-    assert data_to_use(filled_by=f'''["PACIENTE", "{lenght_test[:3]}", "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by=f'''["PACIENTE", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''') == True
 
 def test_mae_with_shorttext_filled_by():
-    assert data_to_use(filled_by=f'''["MAE", "{lenght_test[:3]}", "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by=f'''["MAE", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''') == True
 
 def test_responsavel_with_shorttext_filled_by():
-    assert data_to_use(filled_by=f'''["RESPONSAVEL", "{lenght_test[:3]}", "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by=f'''["RESPONSAVEL", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''') == True
 
 def test_outro_with_shorttext_filled_by():
-    assert data_to_use(filled_by=f'''["OUTRO", "{lenght_test[:3]}", "{'cpf':'28445400070'}"]''') == False
+    assert data_to_use(filled_by=f'''["OUTRO", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''') == False
 
 def test_medico_with_longtext_filled_by():
-    assert data_to_use(filled_by=f'''["MEDICO", "{lenght_test[:45]}", "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by=f'''["MEDICO", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''') == True
 
 def test_paciente_with_longtext_filled_by():
-    assert data_to_use(filled_by=f'''["PACIENTE", "{lenght_test[:45]}", "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by=f'''["PACIENTE", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''') == True
 
 def test_mae_with_longtext_filled_by():
-    assert data_to_use(filled_by=f'''["MAE", "{lenght_test[:45]}", "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by=f'''["MAE", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''') == True
 
 def test_responsavel_with_longtext_filled_by():
-    assert data_to_use(filled_by=f'''["RESPONSAVEL", "{lenght_test[:45]}", "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by=f'''["RESPONSAVEL", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''') == True
 
 def test_outro_with_longtext_filled_by():
-    assert data_to_use(filled_by=f'''["OUTRO", "{lenght_test[:45]}", "{'cpf':'28445400070'}"]''') == False
-
-def test_medico_with_wrong_type_text_filled_by():
-    assert data_to_use(filled_by='''["MEDICO", 123, "{'cpf':'28445400070'}"]''') == True
-
-def test_paciente_with_wrong_type_text_filled_by():
-    assert data_to_use(filled_by='''["PACIENTE", 123, "{'cpf':'28445400070'}"]''') == True
-
-def test_mae_with_wrong_type_text_filled_by():
-    assert data_to_use(filled_by='''["MAE", 123, "{'cpf':'28445400070'}"]''') == True
+    assert data_to_use(filled_by=f'''["OUTRO", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''') == False
 
 def test_responsavel_with_wrong_type_text_filled_by():
     assert data_to_use(filled_by='''["RESPONSAVEL", 123, "{'cpf':'28445400070'}"]''') == True
@@ -469,22 +457,22 @@ def test_seminfo_with_text_patient_ethnicity():
     assert data_to_use(patient_ethnicity='["SEMINFO", "Patient Ethnicity"]') == True
 
 def test_branca_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["BRANCA", None]') == False
+    assert data_to_use(patient_ethnicity='["BRANCA", null]') == False
 
 def test_preta_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PRETA", None]') == False
+    assert data_to_use(patient_ethnicity='["PRETA", null]') == False
 
 def test_parda_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PARDA", None]') == False
+    assert data_to_use(patient_ethnicity='["PARDA", null]') == False
 
 def test_amarela_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["AMARELA", None]') == False
+    assert data_to_use(patient_ethnicity='["AMARELA", null]') == False
 
 def test_indigena_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INDIGENA", None]') == False
+    assert data_to_use(patient_ethnicity='["INDIGENA", null]') == False
 
 def test_seminfo_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["SEMINFO", None]') == True
+    assert data_to_use(patient_ethnicity='["SEMINFO", null]') == True
 
 def test_branca_with_empty_text_patient_ethnicity():
     assert data_to_use(patient_ethnicity='["BRANCA", ""]') == False
@@ -505,22 +493,22 @@ def test_seminfo_with_empty_text_patient_ethnicity():
     assert data_to_use(patient_ethnicity='["SEMINFO", ""]') == True
 
 def test_branca_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["BRANCA", " "]') == False
+    assert data_to_use(patient_ethnicity='["BRANCA", " "]') == True
 
 def test_preta_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PRETA", " "]') == False
+    assert data_to_use(patient_ethnicity='["PRETA", "  "]') == True
 
 def test_parda_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PARDA", " "]') == False
+    assert data_to_use(patient_ethnicity='["PARDA", "  "]') == True
 
 def test_amarela_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["AMARELA", " "]') == False
+    assert data_to_use(patient_ethnicity='["AMARELA", "  "]') == True
 
 def test_indigena_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INDIGENA", " "]') == False
+    assert data_to_use(patient_ethnicity='["INDIGENA", "  "]') == True
 
 def test_seminfo_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["SEMINFO", " "]') == True
+    assert data_to_use(patient_ethnicity='["SEMINFO", "  "]') == True
 
 def test_branca_with_shorttext_patient_ethnicity():
     assert data_to_use(patient_ethnicity=f'["BRANCA", "{lenght_test[:3]}"]') == False
@@ -578,16 +566,16 @@ def test_nao_with_text_previous_treatment():
     assert data_to_use(previous_treatment='["NAO", "Patient Ethnicity"]') == True
 
 def test_sim_without_text_previous_treatment():
-    assert data_to_use(previous_treatment='["SIM", None]') == False
+    assert data_to_use(previous_treatment='["SIM", null]') == False
 
 def test_nao_without_text_previous_treatment():
-    assert data_to_use(previous_treatment='["NAO", None]') == True
+    assert data_to_use(previous_treatment='["NAO", null]') == True
 
 def test_sim_with_empty_previous_treatment():
-    assert data_to_use(previous_treatment='["SIM", None]') == False
+    assert data_to_use(previous_treatment='["SIM", null]') == False
 
 def test_nao_with_empty_previous_treatment():
-    assert data_to_use(previous_treatment='["NAO", None]') == True
+    assert data_to_use(previous_treatment='["NAO", null]') == True
 
 def test_sim_with_space_text_previous_treatment():
     assert data_to_use(previous_treatment='["SIM", " "]') == False
@@ -648,7 +636,7 @@ def test_wrong_type_diagnostic():
     assert data_to_use(diagnostic=123) == False
 
 def test_empty_value_diagnostic():
-    assert data_to_use(diagnostic=None) == True
+    assert data_to_use(diagnostic='null') == True
 
 def test_empty_spaces_diagnostic():
     assert data_to_use(diagnostic='    ') == True
@@ -663,7 +651,7 @@ def test_wrong_type_patient_email():
     assert data_to_use(patient_email=123) == False
 
 def test_empty_value_patient_email():
-    assert data_to_use(patient_email=None) == True
+    assert data_to_use(patient_email=' ') == True
 
 def test_empty_spaces_patient_email():
     assert data_to_use(patient_email='    ') == True
@@ -674,11 +662,8 @@ def test_longValue_patient_email():
 def test_shortValue_patient_email():
     assert data_to_use(patient_email='aaa') == False
 
-def test_wrong_type_cid_10():
-    assert data_to_use(cid_10=123) == False
-
 def test_empty_value_cid_10():
-    assert data_to_use(cid_10=None) == False
+    assert data_to_use(cid_10=' ') == False
 
 def test_empty_spaces_cid_10():
     assert data_to_use(cid_10='    ') == False
@@ -713,8 +698,6 @@ def test_empty_spaces_patient_weight():
 def test_longValue_patient_weight():
     assert data_to_use(patient_weight=5487) == False
 
-def test_wrong_type_patient_height():
-    assert data_to_use(patient_height='131') == False
 
 def test_empty_value_patient_height():
     assert data_to_use(patient_height='') == False
@@ -724,12 +707,6 @@ def test_empty_spaces_patient_height():
 
 def test_longValue_patient_height():
     assert data_to_use(patient_height=5487) == False
-
-def test_wrong_type_contacts_phonenumbers():
-    assert data_to_use(contacts_phonenumbers='131') == False
-
-def test_wrong_list_type_contacts_phonenumbers():
-    assert data_to_use(contacts_phonenumbers=['131',456]) == False
 
 def test_empty_value_contacts_phonenumbers():
     assert data_to_use(contacts_phonenumbers='') == False
@@ -747,7 +724,6 @@ def test_longValue_contacts_phonenumbers():
 # TEST DOCUMENTS CNS AND CPF
 # prof_solicitor_document
 # patient_document
-# filled_by
 # wrong type
 # invalid cns
 # invalid cpf
@@ -769,51 +745,36 @@ def test_wrongtype_patient_document():
     assert data_to_use(patient_document='451236548554') == False
 
 def test_invalidcns_patient_document():
-    assert data_to_use(patient_document={'CNS':"284123312123"}) == False
+    assert data_to_use(patient_document='{cns:"284123312123", rg: null, cpf: null}') == False
 
 def test_invalidccpf_patient_document():
-    assert data_to_use(patient_document={'CPF':"284123312123"}) == False
-
-def test_wrongoption_patient_document():
-    assert data_to_use(patient_document={'BBB':"284123312123"}) == False
-
-def test_wrongtype_filled_by():
-    assert data_to_use(filled_by='451236548554') == False
-
-def test_invalidcns_filled_by():
-    assert data_to_use(filled_by='''["OUTRO", "Other name", {"CNS":"284123312123"}]''') == False
-
-def test_invalidccpf_filled_by():
-    assert data_to_use(filled_by='''["OUTRO", "Other name", {"cpf":"284123312123"}]''') == False
-
-def test_wrongoption_filled_by():
-    assert data_to_use(filled_by='''["OUTRO", "Other name", {"BBB":"284123312123"}]''') == False
+    assert data_to_use(patient_document='{cpf:"284123312123", rg: null, cns: null}') == False
 
 # TEST medicines
 # test wront type
 # test wront type medicine_name
-# test wront type quant_1_month
-# test wront type quant_2_month
-# test wront type quant_3_month
+# test wront type quant1month
+# test wront type quant2month
+# test wront type quant3month
 # test empty value in keys
 # test empty spaces in keys
-# test empty value in medicine_name
-# test empty value in quant_1_month
-# test empty value in quant_2_month
-# test empty value in quant_3_month
-# test empty spaces in medicine_name
-# test empty spaces in quant_1_month
-# test empty spaces in quant_2_month
-# test empty spaces in quant_3_month
+# test empty value in medicineName
+# test empty value in quant1month
+# test empty value in quant2month
+# test empty value in quant3month
+# test empty spaces in medicineName
+# test empty spaces in quant1month
+# test empty spaces in quant2month
+# test empty spaces in quant3month
 # test more than limit dicts
-# test long values in medicine_name
-# test long values in quant_1_month
-# test long values in quant_2_month
-# test long values in quant_3_month
-# test short values in medicine_name
-# test short values in quant_1_month
-# test short values in quant_2_month
-# test short values in quant_3_month
+# test long values in medicineName
+# test long values in quant1month
+# test long values in quant2month
+# test long values in quant3month
+# test short values in medicineName
+# test short values in quant1month
+# test short values in quant2month
+# test short values in quant3month
 
 def test_wrong_type_medicines():
     assert data_to_use(medicines=123) == False
@@ -822,72 +783,72 @@ def test_wrong_type_medicines():
     assert data_to_use(medicines=123) == False
 
 def test_wrong_type_medicine_name():
-    assert data_to_use(medicines=[{"medicine_name":234234, "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}]) == False
+    assert data_to_use(medicines=[{"medicineName":234234, "quant1month":"20 comp", "quant2month":"15 comp", "quant3month":"5 comp"}]) == False
 
 def test_wrong_type_quant_1_month():
-    assert data_to_use(medicines=[{"medicine_name":'234234', "quant_1_month":541, "quant_2_month":"15 comp", "quant_3_month":"5 comp"}]) == False
+    assert data_to_use(medicines=[{"medicineName":'234234', "quant1month":541, "quant2month":"15 comp", "quant3month":"5 comp"}]) == False
 
 def test_wrong_type_quant_2_month():
-    assert data_to_use(medicines=[{"medicine_name":'234234', "quant_1_month":'541', "quant_2_month":649781, "quant_3_month":"5 comp"}]) == False
+    assert data_to_use(medicines=[{"medicineName":'234234', "quant1month":'541', "quant2month":649781, "quant3month":"5 comp"}]) == False
 
 def test_wrong_type_quant_3_month():
-    assert data_to_use(medicines=[{"medicine_name":'234234', "quant_1_month":'541', "quant_2_month":'64981', "quant_3_month":234234}]) == False
+    assert data_to_use(medicines=[{"medicineName":'234234', "quant1month":'541', "quant2month":'64981', "quant3month":234234}]) == False
 
 def test_empty_value_keys_medicines():
-    assert data_to_use(medicines=[{"":'234234', "":'541', "quant_2_month":'64981', "":234234}]) == False
+    assert data_to_use(medicines=[{"":'234234', "":'541', "quant2month":'64981', "":234234}]) == False
 
 def test_empty_spaces_keys_medicines():
-    assert data_to_use(medicines=[{" ":'234234', " ":'541', "quant_2_month":'64981', " ":234234}]) == False
+    assert data_to_use(medicines=[{" ":'234234', " ":'541', "quant2month":'64981', " ":234234}]) == False
 
 def test_empty_value_medicine_name():
-    assert data_to_use(medicines=[{"medicine_name":'', "quant_1_month":'541', "quant_2_month":'64981', "quant_3_month":'234234'}]) == False
+    assert data_to_use(medicines=[{"medicineName":'', "quant1month":'541', "quant2month":'64981', "quant3month":'234234'}]) == False
 
 def test_empty_value_quant_1_month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'', "quant_2_month":'64981', "quant_3_month":'234234'}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":'', "quant2month":'64981', "quant3month":'234234'}]) == False
 
 def test_empty_value_quant_2_month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'', "quant_3_month":'234234'}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'', "quant3month":'234234'}]) == False
 
 def test_empty_value_quant_3_month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":''}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'adasdasda', "quant3month":''}]) == False
 
 def test_empty_spaces_medicine_name():
-    assert data_to_use(medicines=[{"medicine_name":'   ', "quant_1_month":'541', "quant_2_month":'64981', "quant_3_month":'234234'}]) == False
+    assert data_to_use(medicines=[{"medicineName":'   ', "quant1month":'541', "quant2month":'64981', "quant3month":'234234'}]) == False
 
 def test_empty_spaces_quant_1_month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'      ', "quant_2_month":'64981', "quant_3_month":'234234'}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":'      ', "quant2month":'64981', "quant3month":'234234'}]) == False
 
 def test_empty_spaces_quant_2_month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'     ', "quant_3_month":'234234'}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'     ', "quant3month":'234234'}]) == False
 
 def test_empty_spaces_quant_3_month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'      '}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'adasdasda', "quant3month":'      '}]) == False
 
 def test_more_than_limit_dicts():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'asdadasd'}, {"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":'asdadasd'}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'adasdasda', "quant3month":'asdadasd'}, {"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'adasdasda', "quant3month":'asdadasd'}, {"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'adasdasda', "quant3month":'asdadasd'}, {"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'adasdasda', "quant3month":'asdadasd'}, {"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'adasdasda', "quant3month":'asdadasd'}, {"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'adasdasda', "quant3month":'asdadasd'}]) == False
 
 
 def test_short_value_medicine_name():
-    assert data_to_use(medicines=[{"medicine_name":'asd', "quant_1_month":'541', "quant_2_month":'64981', "quant_3_month":'234234'}]) == False
+    assert data_to_use(medicines=[{"medicineName":'asd', "quant1month":'541', "quant2month":'64981', "quant3month":'234234'}]) == False
 
 def test_short_value_quant_1_month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'', "quant_2_month":'64981', "quant_3_month":'234234'}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":'', "quant2month":'64981', "quant3month":'234234'}]) == False
 
 def test_short_value_quant_2_month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'', "quant_3_month":'234234'}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'', "quant3month":'234234'}]) == False
 
 def test_short_value_quant_3_month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":''}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'adasdasda', "quant3month":''}]) == False
 
 def test_long_value_medicine_name():
-    assert data_to_use(medicines=[{"medicine_name":lenght_test[:70], "quant_1_month":'541', "quant_2_month":'64981', "quant_3_month":'234234'}]) == False
+    assert data_to_use(medicines=[{"medicineName":lenght_test[:70], "quant1month":'541', "quant2month":'64981', "quant3month":'234234'}]) == False
 
 def test_long_value_quant_1_month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":lenght_test[:11], "quant_2_month":'64981', "quant_3_month":'234234'}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":lenght_test[:11], "quant2month":'64981', "quant3month":'234234'}]) == False
 
 def test_long_value_quant_2_month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":lenght_test[:11], "quant_3_month":'234234'}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":lenght_test[:11], "quant3month":'234234'}]) == False
 
 def test_long_value_quant_3_month():
-    assert data_to_use(medicines=[{"medicine_name":'1asdasdasd', "quant_1_month":'123123', "quant_2_month":'adasdasda', "quant_3_month":lenght_test[:11]}]) == False
+    assert data_to_use(medicines=[{"medicineName":'1asdasdasd', "quant1month":'123123', "quant2month":'adasdasda', "quant3month":lenght_test[:11]}]) == False
 
