@@ -18,14 +18,47 @@ transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
 # Create a GraphQL client using the defined transport
 client = Client(transport=transport, fetch_schema_from_transport=True)
 
-def data_to_use(document_datetime=document_datetime_to_use, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',orientations='Do not jump'):
-    return pdf_relatorio_de_alta.fill_pdf_relatorio_alta('', '', document_datetime,  patient_name, patient_cns, patient_birthday, patient_sex, patient_mother_name, patient_document,  patient_adress, evolution, doctor_name, doctor_cns, doctor_crm, orientations)
+def data_to_use(document_datetime=document_datetime_to_use, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document='{cpf: "28445400070", rg: null, cns: null}',patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',orientations='Do not jump'):
+
+    request_string = """
+        mutation{
+            generatePdf_RelatorioAlta("""
+
+    campos_string = f"""
+        documentDatetime: "{document_datetime}",
+        patientName: "{patient_name}",
+        patientCns: "{patient_cns}",
+        patientBirthday: "{patient_birthday}",            
+        patientSex: "{patient_sex}",            
+        patientMotherName: "{patient_mother_name}",            
+        patientDocument: {patient_document},  
+        patientAdress: "{patient_adress}",
+        doctorName: "{doctor_name}",
+        doctorCns: "{doctor_cns}",
+        doctorCrm: "{doctor_crm}",
+        evolution: "{evolution}",
+        orientations: "{orientations}",
+    """
+
+    final_string = """
+    ){base64Pdf}
+    }
+    """
+
+    all_string = request_string + campos_string + final_string
+    query = gql(all_string)
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        return True
+    except:
+        return False 
 
 #Testing telatorio alta
 def test_answer_with_all_fields():
     """Test relatorio alta with all data correct"""
     #assert type(data_to_use()) != type(Exception())
-    assert data_to_use().response == 'lero'
+    assert data_to_use() == True
 
 def test_awnser_with_only_required_data():
     assert type(pdf_relatorio_de_alta.fill_pdf_relatorio_alta(document_datetime=datetime_to_use, patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456') != type(Response()))
