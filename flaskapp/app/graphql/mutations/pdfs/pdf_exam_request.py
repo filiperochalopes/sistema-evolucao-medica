@@ -42,7 +42,6 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
     """
 
     try:
-        print('Lero', file=sys.stderr)
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -144,7 +143,6 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
         
         with open(WRITE_EXAM_REQUEST_DIRECTORY, "rb") as pdf_file:
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
-        print('Uai', file=sys.stderr)
         return {
             "base64Pdf": str(pdf_base64_enconded)
         }

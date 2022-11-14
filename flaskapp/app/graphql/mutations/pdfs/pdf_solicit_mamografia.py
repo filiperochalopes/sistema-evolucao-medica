@@ -16,7 +16,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_SolicitMamografia')
 @convert_kwargs_to_snake_case
-def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:int=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_ibge_code:int=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adress_cep:str=None, patient_phonenumber:int=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:int=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> Union[bytes, Exception]:
+def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_ibge_code:int=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adress_cep:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:int=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> Union[bytes, Exception]:
     """Fill solicitacion mamografia (Solicitacao de Mamografia) 
     Args:
         patient_name (str): Patient Name
@@ -34,7 +34,7 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
         health_unit_cnes (int, optional): health_unit_cnes. Defaults to None.
         health_unit_name (str, optional): health_unit_name. Defaults to None.
         health_unit_adress_city (str, optional): health_unit_adress_city. Defaults to None.
-        health_unit_city_ibge_code (int, optional): health_unit_city_ibge_code. Defaults to None.
+        health_unit_city_ibge_code (str, optional): health_unit_city_ibge_code. Defaults to None.
         document_chart_number (int, optional): document_chart_number. Defaults to None.
         protocol_number (str, optional): protocol_number. Defaults to None.
         patient_sex (str, optional): patient_sex. Defaults to None.
@@ -56,20 +56,20 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
         radiotherapy_before (list, optional): Option and year, eg ['SIMESQ', '2020']. Defaults to None.
         breast_surgery_before (dict, optional): dict with opions and years, eg:
         {
-    'did_not':False,
-    'biopsia_insinonal':(2021, 2020),
-    'biopsia_excisional':(2021, 2020),
+    'didNot':False,
+    'biopsiaInsinonal':(2021, 2020),
+    'biopsiaExcisional':(2021, 2020),
     'centraledomia':(2021, 2020),
     'segmentectomia':None,
     'dutectomia':(2021, 2020),
     'mastectomia':(2021, 2020),
-    'mastectomia_poupadora_pele':(2021, 2020),
-    'mastectomia_poupadora_pele_complexo_areolo':(2021, 2020),
-    'linfadenectomia_axilar':(2021, 2020),
-    'biopsia_linfonodo':(2021, 2020),
-    'reconstrucao_mamaria':(2021, 2020),
-    'mastoplastia_redutora':(2021, 2020),
-    'indusao_implantes':(2021, 2020)
+    'mastectomiaPoupadoraPele':(2021, 2020),
+    'mastectomiaPoupadoraPeleComplexoAreolo':(2021, 2020),
+    'linfadenectomiaAxilar':(2021, 2020),
+    'biopsiaLinfonodo':(2021, 2020),
+    'reconstrucaoMamaria':(2021, 2020),
+    'mastoplastiaRedutora':(2021, 2020),
+    'indusaoImplantes':(2021, 2020)
     }. Defaults to None.
         exam_number (int, optional): exam_number. Defaults to None.
         tracking_mammogram (str, optional): tracking_mammogram. Defaults to None.
@@ -207,7 +207,7 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
 
             c.setFont('Roboto-Mono', 9)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_intnumber(can=c, number=health_unit_city_ibge_code, pos=(47, 720), camp_name='Health Unit City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True, interval='  ')
+            c = pdf_functions.add_oneline_text(can=c, number=health_unit_city_ibge_code, pos=(47, 720), camp_name='Health Unit City IBGE code', len_max=7, len_min=7, nullable=True, interval='  ')
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_intnumber(can=c, number=document_chart_number, pos=(410, 720), camp_name='Document Chart Number', len_max=10, len_min=1, value_min=0, value_max=99999999999999, nullable=True, interval='  ')
             if type(c) == type(Response()): return c
@@ -294,12 +294,12 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
         return Response("Error while filling aih sus", status=500)
 
 
-def add_patient_adress_cep(can:canvas.Canvas, number:int):
+def add_patient_adress_cep(can:canvas.Canvas, number:str):
     """add patient addes cep to document
 
     Args:
         can (canvas.Canvas): canvas to use
-        number (int): adress cep
+        number (str): adress cep
 
     Returns:
         canvas or Response: canvas updated or Response with error
@@ -307,9 +307,9 @@ def add_patient_adress_cep(can:canvas.Canvas, number:int):
     try:
         if number == None:
             return can
-        if type(number) != type(int()) and number != None:
-            return Response('Patient Adress CEP has to be int, if can be null, please add nullable option and None', status=400)
-        number = str(number)
+        if type(number) != type(str()) and number != None:
+            return Response('Patient Adress CEP has to be str, if can be null, please add nullable option and None', status=400)
+        number = str(number).strip()
         if len(number) == 8:
             can = pdf_functions.add_oneline_text(can=can, text=number[:5], pos=(47, 438), camp_name='Patient Adress CEP', len_max=5, len_min=5, interval=' ', nullable=True)
             if type(can) == type(Response()): return can
@@ -321,12 +321,12 @@ def add_patient_adress_cep(can:canvas.Canvas, number:int):
         return Response(f'Unknow error while adding Patient Adress CEP', status=500)
 
 
-def add_patient_phonenumber(can:canvas.Canvas, number:int):
+def add_patient_phonenumber(can:canvas.Canvas, number:str):
     """add patient phonenumber to document
 
     Args:
         can (canvas.Canvas): canvas to use
-        number (int): phone number
+        number (str): phone number
 
     Returns:
         canvas or Response: canvas updated or Response with error
@@ -334,9 +334,9 @@ def add_patient_phonenumber(can:canvas.Canvas, number:int):
     try:
         if number == None:
             return can
-        if type(number) != type(int()) and number != None:
-            return Response('Patient Phonenumber has to be int, if can be null, please add nullable option and None', status=400)
-        number = str(number)
+        if type(number) != type(str()) and number != None:
+            return Response('Patient Phonenumber has to be str, if can be null, please add nullable option and None', status=400)
+        number = str(number).strip()
         if len(number) == 10:
             can = pdf_functions.add_oneline_text(can=can, text=number[:2], pos=(227, 438), camp_name='Patient Phonenumber', len_max=2, len_min=2, interval=' ', nullable=True)
             if type(can) == type(Response()): return can
@@ -388,8 +388,8 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
         if breast_surgery_before == None:
             return can
         if type(breast_surgery_before) != type(dict()):
-            return Response("breast_surgery_before has to be a dict with tuples or bool, like {'surgery':(year_esq, year_dir)} or {'did_not':True}, {'did_not':False,'biopsia_insinonal':(None, 2020),'biopsia_excisional':(2021, None),'centraledomia':(None, None),'segmentectomia':(None),'dutectomia':(None, None),'mastectomia':(None, None),'mastectomia_poupadora_pele':(None, None),'mastectomia_poupadora_pele_complexo_areolo':(None, None),'linfadenectomia_axilar':(None, None),'biopsia_linfonodo':(None, None),'reconstrucao_mamaria':(None, None),'mastoplastia_redutora':(None, None),'indusao_implantes':(None, None)}", status=400)
-        necessary_keys_positions = {"did_not":(334, 41), "biopsia_insinonal":((500, 251), (338, 251)), "biopsia_excisional":((500, 235), (338, 235)), "centraledomia":((500, 220), (338, 220)), "segmentectomia":((500, 204), (338, 204)), "dutectomia":((500, 190), (338, 190)), "mastectomia":((500, 176), (338, 176)), "mastectomia_poupadora_pele":((500, 159), (338, 159)), "mastectomia_poupadora_pele_complexo_areolo":((500, 143), (338, 143)), "linfadenectomia_axilar":((500, 121), (338, 121)), "biopsia_linfonodo":((500, 105), (338, 105)), "reconstrucao_mamaria":((500, 90), (338, 90)), "mastoplastia_redutora":((500, 75), (338, 75)), "indusao_implantes":((500, 60), (338, 60))}
+            return Response("breast_surgery_before has to be a dict with lists or bool, like {'surgery':(year_esq, year_dir)} or {'didNot':True}, {'didNot':False,'biopsiaInsinonal':(None, 2020),'biopsiaExcisional':(2021, None),'centraledomia':(None, None),'segmentectomia':(None),'dutectomia':(None, None),'mastectomia':(None, None),'mastectomiaPoupadoraPele':(None, None),'mastectomiaPoupadoraPeleComplexoAreolo':(None, None),'linfadenectomiaAxilar':(None, None),'biopsiaLinfonodo':(None, None),'reconstrucaoMamaria':(None, None),'mastoplastiaRedutora':(None, None),'indusaoImplantes':(None, None)}", status=400)
+        necessary_keys_positions = {"didNot":(334, 41), "biopsiaInsinonal":((500, 251), (338, 251)), "biopsiaExcisional":((500, 235), (338, 235)), "centraledomia":((500, 220), (338, 220)), "segmentectomia":((500, 204), (338, 204)), "dutectomia":((500, 190), (338, 190)), "mastectomia":((500, 176), (338, 176)), "mastectomiaPoupadoraPele":((500, 159), (338, 159)), "mastectomiaPoupadoraPeleComplexoAreolo":((500, 143), (338, 143)), "linfadenectomiaAxilar":((500, 121), (338, 121)), "biopsiaLinfonodo":((500, 105), (338, 105)), "reconstrucaoMamaria":((500, 90), (338, 90)), "mastoplastiaRedutora":((500, 75), (338, 75)), "indusaoImplantes":((500, 60), (338, 60))}
 
         if len(breast_surgery_before) > 14:
             return Response('You cannot add more than 14 keys in dict', status=400)
@@ -400,7 +400,7 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
             #Receive the current surgery
             current_surgery = breast_surgery_before[surgery]
             if type(current_surgery) == type(bool()):
-                # when is did_not key
+                # when is didNot key
                 if current_surgery:
                     can = pdf_functions.add_square(can=can, pos=necessary_keys_positions[surgery], size=(15, 9))
                     return can
@@ -408,11 +408,11 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
                     continue
             elif current_surgery == None:
                 continue
-            elif type(current_surgery) != type(tuple()):
-                return Response(f'{surgery} has to be a tuple with the years right and left or just a None, like: surgery: None or surgery:(None, 2020)', status=400)
+            elif type(current_surgery) != type(list()):
+                return Response(f'{surgery} has to be a list with the years right and left or just a None, like: surgery: None or surgery:(None, 2020)', status=400)
             
             if len(current_surgery) != 2:
-                return Response(f'{surgery} has to be a tuple with 2 values, like (leftyear, rightyear)')
+                return Response(f'{surgery} has to be a list with 2 values, like (leftyear, rightyear)')
             
             cont = 0 
             for year in current_surgery:
