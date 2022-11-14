@@ -6,11 +6,18 @@ import TextArea from "components/TextArea";
 import React from "react";
 import { useFormik } from "formik";
 import { CREATE_INTERNMENT } from "graphql/mutations";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import Select from "components/Select";
+import { ALLERGIES, COMORBIDITIES } from "graphql/queries";
+import { useState } from "react";
+import { useEffect } from "react";
+import cepApi from "config/cepApi";
+import getCepApiAdapter from "services/getCepApiAdapter";
 
 const Admit = () => {
   const [createInternment] = useMutation(CREATE_INTERNMENT);
+  const { data: allergiesData } = useQuery(ALLERGIES);
+  const { data: comorbiditiesData } = useQuery(COMORBIDITIES);
   const formik = useFormik({
     initialValues: {
       addPacient: false,
@@ -42,6 +49,27 @@ const Admit = () => {
       console.log(values);
     },
   });
+
+  useEffect(() => {
+    async function getCep() {
+      try {
+        const response = await getCepApiAdapter(
+          formik.values.patient.address.zipcode
+        );
+        formik.setValues({
+          ...formik.values,
+          patient: {
+            ...formik.values.patient,
+            address: response.data,
+          },
+        });
+        // eslint-disable-next-line no-empty
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+    getCep();
+  }, [formik.values.patient.address.zipcode]);
 
   return (
     <Container onSubmit={formik.handleSubmit}>
@@ -132,6 +160,13 @@ const Admit = () => {
             <Input
               onChange={formik.handleChange}
               className="small"
+              value={formik.values.patient.address.street}
+              name="patient.address.street"
+              placeholder="Rua"
+            />
+            <Input
+              onChange={formik.handleChange}
+              className="small"
               name="patient.address.number"
               value={formik.values.patient.address.number}
               placeholder="Nº"
@@ -157,12 +192,11 @@ const Admit = () => {
             onChange={(e) => {
               formik.setFieldValue("patient.allergies", e);
             }}
+            getOptionLabel={(option) => option.value}
+            getOptionValue={(option) => option.id}
             value={formik.values.patient.allergies}
             placeholder="ALERGIAS"
-            options={[
-              { label: "Masculino", value: "male" },
-              { label: "Feminino", value: "female" },
-            ]}
+            options={allergiesData?.allergies || []}
             isMulti
           />
           <Select
@@ -171,10 +205,9 @@ const Admit = () => {
             }}
             value={formik.values.patient.commorbidities}
             placeholder="COMORBIDADES"
-            options={[
-              { label: "Masculino", value: "male" },
-              { label: "Feminino", value: "female" },
-            ]}
+            getOptionLabel={(option) => option.value}
+            getOptionValue={(option) => option.id}
+            options={comorbiditiesData?.comorbidities || []}
             isMulti
           />
         </ContainerAddPacient>
