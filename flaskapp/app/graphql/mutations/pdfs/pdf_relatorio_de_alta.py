@@ -16,7 +16,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_RelatorioAlta')
 @convert_kwargs_to_snake_case
-def fill_pdf_relatorio_alta(_, info, document_datetime:datetime.datetime, patient_name:str, patient_cns:int, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:int, doctor_crm:str, orientations:str=None) -> Union[bytes, Response]:
+def fill_pdf_relatorio_alta(_, info, document_datetime:str, patient_name:str, patient_cns:str, patient_birthday:str, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:str, doctor_crm:str, orientations:str=None) -> Union[bytes, Response]:
     """fill pdf relatorio alta
     
     Args:

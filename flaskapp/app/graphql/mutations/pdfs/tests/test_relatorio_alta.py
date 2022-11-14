@@ -7,15 +7,17 @@ lenght_test = ''
 for x in range(0, 2200):
     lenght_test += str(x)
 
-datetime_to_use = datetime.datetime.now()
+datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
+document_datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
 
-def data_to_use(document_datetime=datetime_to_use, patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456',orientations='Do not jump'):
-    return pdf_relatorio_de_alta.fill_pdf_relatorio_alta(document_datetime,  patient_name, patient_cns, patient_birthday, patient_sex, patient_mother_name, patient_document,  patient_adress, evolution, doctor_name, doctor_cns, doctor_crm, orientations)
+def data_to_use(document_datetime=document_datetime_to_use, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',orientations='Do not jump'):
+    return pdf_relatorio_de_alta.fill_pdf_relatorio_alta('', '', document_datetime,  patient_name, patient_cns, patient_birthday, patient_sex, patient_mother_name, patient_document,  patient_adress, evolution, doctor_name, doctor_cns, doctor_crm, orientations)
 
 #Testing telatorio alta
 def test_answer_with_all_fields():
     """Test relatorio alta with all data correct"""
-    assert data_to_use() != type(Response())
+    #assert type(data_to_use()) != type(Exception())
+    assert data_to_use().response == 'lero'
 
 def test_awnser_with_only_required_data():
     assert type(pdf_relatorio_de_alta.fill_pdf_relatorio_alta(document_datetime=datetime_to_use, patient_name="Patient Name",patient_cns=928976954930007,patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document={'CPF':28445400070},patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns=928976954930007,doctor_crm='CRM/UF 123456') != type(Response()))

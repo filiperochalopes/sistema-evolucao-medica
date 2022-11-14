@@ -6,6 +6,9 @@ from PyPDF2  import PdfWriter
 import datetime
 from typing import Union
 from inspect import getfullargspec
+from validate_docbr import CNS, CPF
+
+
 
 def validate_func_args(function_to_verify, variables_to_verify:dict, nullable_variables:list=[]) -> Union[None, Response]:
     """validate all args with the type needed or default values
@@ -541,12 +544,12 @@ def add_interval_to_data(data:str, interval:str) -> Union[str, Response]:
     return interval.join(data)
 
 
-def add_cns(can:canvas.Canvas, cns:int, pos:tuple, camp_name:str,nullable:bool=False, formated:bool=False, interval:str='') -> Union[canvas.Canvas, Response]:
+def add_cns(can:canvas.Canvas, cns:str, pos:tuple, camp_name:str,nullable:bool=False, formated:bool=False, interval:str='') -> Union[canvas.Canvas, Response]:
     """Add cns to canvas
 
     Args:
         can (canvas.Canvas): canvas to add
-        cns (int): cns to add
+        cns (str): cns to add
         pos (tuple): position in canvas
         camp_name (str): camp nam
         nullable (bool, optional): can be null. Defaults to False.
@@ -563,13 +566,15 @@ def add_cns(can:canvas.Canvas, cns:int, pos:tuple, camp_name:str,nullable:bool=F
             if cns == None:
                 return can
 
+        cns_validator = CNS()
+
         verify = validate_func_args(function_to_verify=add_cns, variables_to_verify={'can':can, 'cns':cns, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated, 'interval':interval})
         if type(verify) == type(Response()):
             return verify
         
 
         # Verify if the cns is valid
-        if is_CNS_valid(cns):
+        if cns_validator.validate(cns):
             cns = str(cns)
             # Add interval selected
             cns = add_interval_to_data(data=cns, interval=interval)
