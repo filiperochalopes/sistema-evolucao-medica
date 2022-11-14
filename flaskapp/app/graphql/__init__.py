@@ -161,7 +161,7 @@ type_defs = gql(
             "Nome da Mae do paciente, max:69 min 7 caracteres"
             patientMotherName: String!,
             "Documento do paciente, CPF ou RG, utilize o input DocumentInput"
-            patientDocument: DocumentInput,
+            patientDocument: DocumentInput!,
             "Endereco do paciente, max:63 min:7 caracteres"
             patientAdress: String!,
             "Nome do Medico, max:49 min:7 caracteres"
@@ -174,6 +174,88 @@ type_defs = gql(
             evolution: String!,
             "Orientacoes para o paciente, max:800 min:10 caracteres"
             orientations: String
+        ): GeneratedPdf
+
+        "Criação de documento de LME"
+        generatePdf_Lme(
+            "Nome do estabelecimento Solicitante, max:65 min:8 caracteres"
+            establishmentSolitcName: String!,
+            "CNES do estabelecimento Solicitante"
+            establishmentSolitcCnes: Int!
+            "Nome do paciente, max:79 min:7 caracteres"
+            patientName: String!,
+            "Nome da Mae do paciente, max:79 min:7 caracteres"
+            patientMotherName: String!,
+            """
+            Peso do paciente, numero inteiro no maximo 3 digitos, sera entendido como um valor total.
+            Exemplo:
+                patientWeight: 54  // sera entedido como 54kg
+            """
+            patientWeight: Int!,
+            """
+            Altura do paciente, numero inteiro no maximo 3 digitos (e inteiro pois sera formatado com espacos e virgula depois no pdf)
+            Exemplo: 
+                patientHeight: 180 // sera entendido como 1.80 metros
+            """
+            patientHeight: Int!,
+            "Cid 10 do diagnostico"
+            cid10: String!,
+            "Anamnese, max:485 min: 5 caracteres"
+            anamnese: String!,
+            "Nome do profissional solicitante, max:45 min:8 caracteres"
+            profSolicitorName: String!,
+            "Data da solicitacao no formato DD/MM/YYYY"
+            solicitationDatetime: String!,
+            "Documento do profissional solicitante, CNS ou CPF, utilize o DocumentInput"
+            profSolicitorDocument: DocumentInput!,
+            """
+            Atestado de capacidade, envie como uma list com 2 opcoes. ['Sim'/'Nao', 'Nome do responsavel]. 
+            Nome do responsavel deve ter no max:46 min:5(caso a opcao seja Sim) caracteres
+            """
+            capacityAttest: [String]!,
+            """
+            Informacoes de quem preencheu, envie um lista com as seguintes opcoes:
+            [ 
+                'PACIENTE'/'MAE'/'RESPONSAVEL'/'MEDICO'/'OUTRO',
+                'Nome do outro', somente se for selecionado max: 42 min:5 caracteres
+                '{'cpf':'12345678900'}, documento do outro, envie nesse formato o cpf'
+            ]
+            Exemplos:
+                filledBy: ['PACIENTE', null, null]
+                filledBy: ['OUTRO', 'Nome do Outro', "{'cpf':'12345678900'}"]
+            """
+            filledBy: [String]!,
+            """
+            Etinia do paciente, envie alguma dessas opcoes: 'BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA', 'SEMINFO', 'INFORMAR'.
+            Caso a opcaos escolhida for INFORMAR deve ser passar o texto, com no max: 31 e min: 4 caracteres.
+            Exemplo:
+                patientEthnicity: ['Parda', null]
+                patientEthnicity: ['Informar', 'Etinia']
+
+            """
+            patientEthnicity: [String]!,
+            """
+            Informacoes do tramento anterior ou do tratamento atual, envie uma list com as opcoes ['SIM'/'NAO', 'Tratamento anterior'], Envie um texto com o tratamento anterior ou  caso a opcao SIM for escolhida, max: 170 min:4 caracteres. 
+            Exemplo:
+                previousTreatment: ['Nao', null]
+                previousTreatment: ['Sim', 'tratamento anterior']
+            """
+            previousTreatment: [String]!,
+            "Diagnostico, max: 84 min:4 caracteres"
+            diagnostic: String,
+            "Documento do Paciente, CPF, envie um DocumentInput"
+            patientDocument: DocumentInput,
+            "Email do paciente, max:62 min: 8 caracteres"
+            patientEmail: String,
+            """
+            Numero de telegone para contato, envie no maximo 2 numeros, envie 10 digitos (contanto com o DDD)
+            Exemplo: [1034567654, 111234567890]
+            """
+            contactsPhonenumbers: [Int],
+            """
+            Lista com os medicamentos Solicitados, envie uma lista com no maximo 5 MedicineInput. 
+            """  
+            medicines: [MedicineInput]
         ): GeneratedPdf
 
     }
@@ -235,6 +317,17 @@ type_defs = gql(
         amount: String
         "Modo de uso, max: 244 caracteres"
         useMode: String
+    }
+
+    input MedicineInput{
+        "Nome do medicamento, max: 65 min:4 caracteres"
+        medicineName: String
+        "quantidade do medicamento no primeiro mes, max: 9 carateres, min:1"
+        quant1month: String
+        "quantidade do medicamento no segundo mes, max: 9 carateres, min:1"
+        quant2month: String
+        "quantidade do medicamento no terceiro mes, max: 8 carateres, min:1"
+        quant3month: String
     }
 
     input DocumentInput{

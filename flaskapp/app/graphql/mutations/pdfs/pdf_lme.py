@@ -2,6 +2,7 @@ import base64
 import datetime
 from PyPDF2 import PdfWriter, PdfReader
 import io
+import sys
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
@@ -14,8 +15,9 @@ from app.env import FONT_DIRECTORY, TEMPLATE_LME_DIRECTORY, WRITE_LME_DIRECTORY
 from app.graphql import mutation
 from ariadne import convert_kwargs_to_snake_case
 
+@mutation.field('generatePdf_Lme')
 @convert_kwargs_to_snake_case
-def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid_10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[bytes, Response]:
+def fill_pdf_lme(_, info, establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid_10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[bytes, Exception]:
     """fill pdf lme (laudo de solicitacao, avaliacao e autorizacao e documentos)
 
     Args:
@@ -44,6 +46,7 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
         Union[bytes, Response]: base64 pdf enconded or a Response with a error
     """    
     try:
+        print('Lerolero', file=sys.stderr)
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -93,7 +96,7 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
             if type(patient_ethnicity) != type(list()) or len(patient_ethnicity) > 2:
                 c = Response('patient_ethnicity has to be a list with 2 itens', status=400)
             if type(c) == type(Response()): return c
-            c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA', 'SEMINFO'], text_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'], text_pos=(192, 108), options_positions=((40, 121), (40, 108),(40, 93),(94, 118), (94, 106),(94, 93)), camp_name='Patietn Ethinicity', len_max=31, text=patient_ethnicity[1], len_min=4, square_size=(5, 8))
+            c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA', 'SEMINFO', 'INFORMAR'], text_options=['INFORMAR'], text_pos=(192, 108), options_positions=((40, 121), (40, 108),(40, 93),(94, 118), (94, 106),(94, 93), (94, 93)),camp_name='Patietn Ethinicity', len_max=31, text=patient_ethnicity[1], len_min=4, square_size=(5, 8))
             if type(c) == type(Response()): return c
             if type(previous_treatment) != type(list()) or len(previous_treatment) > 2:
                 c = Response('previous_treatment has to be a list with 2 itens', status=400)
@@ -141,7 +144,9 @@ def fill_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, p
         with open(WRITE_LME_DIRECTORY, "rb") as pdf_file:
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
 
-        return pdf_base64_enconded
+        return {
+            "base64Pdf": str(pdf_base64_enconded)
+        }
     except:
         return Response("Error while filling aih sus", status=500)
 
