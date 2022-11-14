@@ -172,16 +172,15 @@ def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, int
         elif len(phonenumbers) > 2:
             return Response('Contats phonenumbers list cannot has more than 2 phonenumbers', status=400)
 
-        #Verify if all numbers are int and has 10 digits
+        #Verify if all numbers are str and has 10 digits
         for number in phonenumbers:
-            if type(number) != type(int()):
-                return Response('Contats phonenumbers has to be a int', status=400)
-            elif len(str(number)) != 10:
+            if type(number) != type(str()):
+                return Response('Contats phonenumbers has to be a str', status=400)
+            elif len(number) != 10:
                 return Response('Contats phonenumbers must have 10 digits', status=400)
 
         cont = 1
         for number in phonenumbers:
-            number = str(number)
             formated_number = number[:2] + ' ' + number[2:]
             can = pdf_functions.add_oneline_text(can=can, text=formated_number, pos=(pos[0], pos[1]), camp_name=f'Phone Number {cont}', len_max=11, len_min=11, nullable=True, interval=interval)
             if type(can) == type(Response()): return can

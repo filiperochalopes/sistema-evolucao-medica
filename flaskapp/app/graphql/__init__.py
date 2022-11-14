@@ -249,9 +249,9 @@ type_defs = gql(
             patientEmail: String,
             """
             Numero de telegone para contato, envie no maximo 2 numeros, envie 10 digitos (contanto com o DDD)
-            Exemplo: [1034567654, 111234567890]
+            Exemplo: ["1034567654", "111234567890"]
             """
-            contactsPhonenumbers: [Int],
+            contactsPhonenumbers: [String],
             """
             Lista com os medicamentos Solicitados, envie uma lista com no maximo 5 MedicineInput. 
             """  
