@@ -19,7 +19,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_PrecricaoMedica')
 @convert_kwargs_to_snake_case
-def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str, prescription:list) -> Union[bytes, Response]:
+def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str, prescription:list) -> Union[bytes, Exception]:
     """fill pdf prescricao medica with 2 pages 
 
     Args:
@@ -28,14 +28,12 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str,
         prescription (list): list of dicts precriptions, like [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]
 
     Returns:
-        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+        Union[bytes, Exception]: base64 pdf enconded or a Exception with a error
     """    
 
     
     try:
         try:
-            print('lerolero', file=sys.stderr)
-            print(prescription, file=sys.stderr)
             packet = io.BytesIO()
             # Create canvas and add data
             page_size_points = (841.92, 595.2)
@@ -52,7 +50,6 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str,
 
                 c = pdf_functions.add_datetime(can=c, date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
                 if type(c) == type(Response()): 
-                    print('teste', file=sys.stderr)
                     raise Exception(c.response)
                 c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
                 if type(c) == type(Response()): raise Exception(c.response)
