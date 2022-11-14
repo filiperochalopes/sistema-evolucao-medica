@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from ariadne import graphql_sync, make_executable_schema
 from flask_scss import Scss
 from ariadne.constants import PLAYGROUND_HTML
-from app.models import DrugGroupPreset, db, Cid10, Config, Diet, Drug, DrugKindEnum, FluidBalance, NursingActivity, RestingActivity, State
+from app.models import DrugGroupPreset, db, Cid10, Config, Diet, Drug, DrugKindEnum, FluidBalanceDescription, NursingActivity, RestingActivity, State, Allergy, Comorbidity
 from flask_cors import CORS
 from app.serializers import ma
 from flask import Blueprint, render_template
@@ -141,14 +141,37 @@ def seed():
     ]
     db.session.bulk_save_objects(diets)
     # Adicionndo algumas descrições de Balanço hídrico
-    fluid_balance_description = [
-
+    fluid_balance_descriptions = [
+        FluidBalanceDescription(value='Medicação'),
+        FluidBalanceDescription(value='Hidratação Venosa (Soro)'),
+        FluidBalanceDescription(value='Ingesta oral (Diversos)'),
+        FluidBalanceDescription(value='Diurese'),
+        FluidBalanceDescription(value='Fezes'),
     ]
+    db.session.bulk_save_objects(fluid_balance_descriptions)
     # Adicionando alguns presets de grupo de medicamentos
     drug_group_preset_1 = DrugGroupPreset(label='Sintomáticos Padrão', name='sintomaticos')
     db.session.add(drug_group_preset_1)
     drug_group_preset_1.drugs.append(Drug(name='Dipirona 500mg/mL 2ml', usual_dosage='1g, 6/6h se dor ou temp axilar > 37,8°C', usual_route='Endovenosa', kind=DrugKindEnum.oth))
 
+    # Adicionando alergias
+    allergies = [
+        Allergy(value='Dipirona'),
+        Allergy(value='Penicilina'),
+        Allergy(value='Ibuprofeno (AINES)')
+    ]
+    db.session.bulk_save_objects(allergies)
+
+    # Adicionando comorbidades
+    comorbidities = [
+        Comorbidity(value='Hipertensão Arterial Sistêmica (HAS)'),
+        Comorbidity(value='Diabetes Mellitus tipo 2 (DM2)'),
+        Comorbidity(value='Diabetes Mellitus tipo 1 (DM1)'),
+        Comorbidity(value='Tabagismo'),
+        Comorbidity(value='Etilismo'),
+        Comorbidity(value='Asma')
+    ]
+    db.session.bulk_save_objects(comorbidities)
     
     # Enviando informações para o banco
     db.session.commit()

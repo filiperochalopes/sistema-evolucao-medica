@@ -6,17 +6,19 @@ type_defs = gql('''
        users: [User]
        cid10: [Cid10!]
        state: [State!]
-       restingActivities: [RestingActivity!]
-       diets: [Diet!]
-       drugs: [Drug!]
+       restingActivities: [NamedObject!]
+       diets: [NamedObject!]
+       drugs: [NamedObject!]
        drugPresets: [DrugPreset!]
-       nursingActivities: [NursingActivity!]
+       nursingActivities: [NamedObject!]
        drugRoutes: [String]
        prescriptionTypes: [Option]
        prescription: [Prescription!]
        patients(queryNameCnsCpf:String): [Patient]
        internments(active:Boolean): [Internment]
        evolutions(patientId:ID!): Evolution
+       allergies: [ValueObject]
+       comorbidities: [ValueObject]
     }
 
     type Mutation {
@@ -60,6 +62,58 @@ type_defs = gql('''
             "Diagnóstico inicial de internamento"
             cid10Code: String
         ): Internment
+
+        createEvolution(
+            "Id do internamento do paciente para o qual a evolução está sendo inserida"
+            internmentId: Int!, 
+            "Texto da evolução médica ou de enfermagem"
+            text:String,
+            "Dados clínicos e de exames que justificam o internamento"
+            prescription: PrescriptionInput,
+            "Diagnóstico inicial de internamento"
+            pendings: String
+            "Diagnóstico caso tenha alterado durante o internamento"
+            cid10Code: String
+        ): FullEvolution
+        """
+        É responsável por salvar os sinais vitais de um paciente, relacionado a um internamento
+        """
+        createMeasure: Boolean
+        """
+        É responsável por salvar um registro único de balanço hídrico, relacionado a um internamento
+        """
+        createFluidBalance: Boolean
+    }
+
+    input PrescriptionInput{
+        restingActivity: String
+        diet: String
+        drugs: [DrugPrescriptionInput]
+        nursingActivities: [String]
+    }
+
+    input DrugPrescriptionInput{
+        drugName: String
+        "No momento só existem 2 tipos: `atb`  para antibióticos, pois com esse o campo de data inicial de uso dedve ser obrigatória e `oth` para outros"
+        drugKind: String
+        dosage: String
+        route: String
+        "No formato %Y-%m-%d %H:%M:%S"
+        initialDate: String
+        "No formato %Y-%m-%d %H:%M:%S"
+        endingDate: String
+    }
+
+    input MeasureInput{
+        spO2: Int
+        pain: Int
+        sistolicBloodPressure: Int
+        diastolicBloodPressure: Int
+        cardiacFrequency: Int
+        respiratoryFrequency: Int
+        celciusAxillaryTemperature: Int
+        glucose: Int
+        fetalCardiacFrequency: Int
     }
 
     input AddressInput{
@@ -160,6 +214,16 @@ type_defs = gql('''
         createdAt: String
     }
 
+    type FullEvolution{
+        evolution: Evolution
+        prescription: Prescription
+        pendings: Pending
+    }
+
+    type Pending{
+        text: String
+    }
+
     type Measure{
         id: ID!
         spO2: Int
@@ -175,19 +239,14 @@ type_defs = gql('''
         createdAt: String
     }
 
-    type RestingActivity{
+    type NamedObject{
         id: ID!
         name: String
     }
 
-    type NursingActivity{
+    type ValueObject{
         id: ID!
-        name: String
-    }
-
-    type Diet{
-        id: ID!
-        name: String
+        value: String
     }
 
     type Drug{
@@ -220,11 +279,11 @@ type_defs = gql('''
 
     type Prescription{
         "Note que a atividade de repouso é única"
-        resting: RestingActivity
+        restingActivity: NamedObject
         "Note que a dieta é única"
-        diet: Diet
-        drugs: [DrugPrescription]
-        nursing: [NursingActivity]
+        diet: NamedObject
+        drugPrescriptions: [DrugPrescription]
+        nursingActivities: [NamedObject]
         createdAt: String
     }
 
