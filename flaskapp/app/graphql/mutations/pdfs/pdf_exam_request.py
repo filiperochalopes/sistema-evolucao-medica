@@ -58,31 +58,32 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
             pags_quant = 0
             c, pags_quant = add_exams(canvas=c, exams=exams)
             # verify if c is a error at some point
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
 
             #Add to multiple pages
             decreaseYpos = 280
             patient_name_ypos = 775
             patient_cns_ypos = 765
             patient_birthday_ypos = 784
+            solicitation_datetime_ypos = 572
             patient_adress_ypos = 734
             solicitation_reason_ypos = 690
             prof_solicitor_ypos = 595
             for x in range(pags_quant):
                 c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(7, patient_name_ypos), camp_name='Patient Name', len_max=70, len_min=7)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(450, patient_cns_ypos), camp_name='Patient CNS',formated=True)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(441, patient_birthday_ypos), camp_name='Patient Birthday', hours=False, formated=True)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_morelines_text(can=c, text=patient_adress, initial_pos=(7, patient_adress_ypos), decrease_ypos=10, camp_name='Patient Adress', len_max=216, len_min=7, char_per_lines=108)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_morelines_text(can=c, text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, camp_name='Solicitation Reason', len_max=216, len_min=7, char_per_lines=108)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor, pos=(7, prof_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): raise Exception(c.response)
 
                 #Decrese ypos in all lines to complete the page
                 patient_name_ypos -= decreaseYpos
@@ -91,35 +92,34 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
                 patient_adress_ypos -= decreaseYpos
                 solicitation_reason_ypos -= decreaseYpos
                 prof_solicitor_ypos -= decreaseYpos
+                solicitation_datetime_ypos -= decreaseYpos
 
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
 
+        except Exception as error:
+            return error
+        
         except:
-            if type(c) == type(Response()):
-                return c
-            else:
-                return Response('Some error happen when adding not null data to fields', status=500)
+            return Exception('Some error happen when adding not null data to fields')
 
         #Adding data that can be null
         try:
             prof_authorized_ypos = 595
             document_pacient_name_ypos = 605
-            solicitation_datetime_ypos = 572
             autorization_datetime_ypos = 572
             document_pacient_date_ypos = 572
             for x in range(pags_quant):
                 c = pdf_functions.add_oneline_text(can=c, text=prof_authorized, pos=(174, prof_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_oneline_text(can=c, text=document_pacient_name, pos=(340, document_pacient_name_ypos), camp_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_datetime(can=c, date=autorization_datetime, pos=(195, autorization_datetime_ypos), camp_name='Authorization Datetime', hours=False, formated=True, nullable=True)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_datetime(can=c, date=document_pacient_date, pos=(362, document_pacient_date_ypos), camp_name='Document Pacient Datetime', hours=False, formated=True, nullable=True)
-                if type(c) == type(Response()): return c
+                if type(c) == type(Response()): raise Exception(c.response)
 
                 prof_authorized_ypos -= decreaseYpos
                 document_pacient_name_ypos -= decreaseYpos
-                solicitation_datetime_ypos -= decreaseYpos
                 autorization_datetime_ypos -= decreaseYpos
                 document_pacient_date_ypos -= decreaseYpos
 
@@ -144,10 +144,12 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
         
         with open(WRITE_EXAM_REQUEST_DIRECTORY, "rb") as pdf_file:
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
-
-        return pdf_base64_enconded
+        print('Uai', file=sys.stderr)
+        return {
+            "base64Pdf": str(pdf_base64_enconded)
+        }
     except:
-        return Response("Error while filling exam request", status=500)
+        return Exception("Error while filling exam request")
 
 def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]:
     """add solicited exams
@@ -196,5 +198,4 @@ def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]
         return canvas, pags_quant
     except:
         return Response('Unknow error while adding Solicited Exams', status=500), 0
-
 

@@ -151,7 +151,7 @@ def fill_pdf_lme(_, info, establishment_solitc_name:str, establishment_solitc_cn
             "base64Pdf": str(pdf_base64_enconded)
         }
     except:
-        return Response("Error while filling aih sus", status=500)
+        return Exception("Error while filling aih sus")
 
 
 def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, interval:str) -> Union[canvas.Canvas, Response]:

@@ -258,8 +258,6 @@ type_defs = gql(
             medicines: [MedicineInput]
         ): GeneratedPdf
 
-    }
-
     "Criação de documento de Solicitacao de Exames"
     generatePdf_SolicitExames(
         "Nome do paciente, max:70 min:7 caracteres"
@@ -288,6 +286,7 @@ type_defs = gql(
         documentPacientDate: String,
     ): GeneratedPdf
 
+    }
 
     input AddressInput{
         zipCode: String
