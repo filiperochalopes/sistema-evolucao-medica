@@ -7,18 +7,27 @@ import { useFormik } from "formik";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import loginSchema from "schemas/loginSchema";
+import { useMutation } from "@apollo/client";
+import { SIGNING } from "graphql/mutations";
 
 function Login() {
   const navigate = useNavigate();
+  const [signing] = useMutation(SIGNING);
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
-      console.log(values);
-      navigate("/pacientes");
+    onSubmit: async (values) => {
+      try {
+        const response = await signing({ variables: values });
+        localStorage.setItem("token", response.data.token);
+        navigate("/pacientes");
+      } catch {
+        alert("error,tente novamente");
+      }
     },
   });
   return (
