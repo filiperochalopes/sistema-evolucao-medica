@@ -1,13 +1,21 @@
-from app.graphql.mutations.pdfs import pdf_lme
+from gql import gql, Client
+from gql.transport.aiohttp import AIOHTTPTransport
 import datetime
 from flask import Response
+from app.env import GRAPHQL_MUTATION_QUERY_URL
 
 global lenght_test
 lenght_test = ''
 for x in range(0, 1100):
     lenght_test += str(x)
 
-datetime_to_use = datetime.datetime.now()
+datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
+
+# Select your transport with ag graphql url endpoint
+transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+
+# Create a GraphQL client using the defined transport
+client = Client(transport=transport, fetch_schema_from_transport=True)
 
 def data_to_use(establishment_solitc_name='Establishment Solicit Name',
 establishment_solitc_cnes=1234567,
@@ -19,23 +27,62 @@ cid_10='A123',
 anamnese="Anamnese",
 prof_solicitor_name="Professional Solicitor Name",
 solicitation_datetime=datetime_to_use,
-prof_solicitor_document={'CPF':28445400070},
-capacity_attest=['nao', 'Responsible Name'],
-filled_by=['MEDICO', 'Other name', {'CPF':28445400070}],
+prof_solicitor_document='{cpf:"28445400070"}',
+capacity_attest=["nao", "Responsible Name"],
+filled_by=["MEDICO", "Other name", "{'cpf':'28445400070'}"],
 patient_ethnicity=['SEMINFO', 'Patient Ethnicity'],
 previous_treatment=['SIM', 'Previout Theatment'],
 diagnostic='Diagnostic',
-patient_document={'CNS':928976954930007},
-patient_email='patietemail@gmail.com',
-contacts_phonenumbers=[1254875652, 4578456598],
-medicines=[{"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}, {"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}]
+patient_document='{cns: "928976954930007", rg: null, cpf: null}',
+patient_email="patietemail@gmail.com",
+contacts_phonenumbers=["1254875652", "4578456598"],
+medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        quant2month: "15 comp", quant3month: "5 comp"},{medicineName: "nome do Medicamneto", quant1month:"20 comp", quant2month: "15 comp", quant3month: "5 comp"}]'
     ):
-    return pdf_lme.fill_pdf_lme(establishment_solitc_name,establishment_solitc_cnes,patient_name,patient_mother_name,patient_weight,patient_height,cid_10,anamnese,prof_solicitor_name,solicitation_datetime,prof_solicitor_document,capacity_attest,filled_by,patient_ethnicity,previous_treatment,diagnostic,patient_document,patient_email,contacts_phonenumbers,medicines)
+    request_string = """
+        mutation{
+            generatePdf_Lme("""
+
+    campos_string = f"""
+        establishmentSolitcName: "{establishment_solitc_name}",
+        establishmentSolitcCnes: {establishment_solitc_cnes},
+        patientName: "{patient_name}",
+        patientMotherName: "{patient_mother_name}",
+        patientWeight: {patient_weight},
+        patientHeight: {patient_height},
+        cid10: "{cid_10}",
+        anamnese: "{anamnese}",
+        profSolicitorName: "{prof_solicitor_name}",
+        solicitationDatetime: "{solicitation_datetime}",
+        profSolicitorDocument: {prof_solicitor_document},
+        capacityAttest: {capacity_attest},
+        filledBy: {filled_by},
+        patientEthnicity: {patient_ethnicity},
+        previousTreatment: {previous_treatment},
+        diagnostic: {diagnostic},
+        patientDocument: {patient_document},
+        patientEmail: "{patient_email}",
+        contactsPhonenumbers: {contacts_phonenumbers},
+        medicines: {medicines}
+    """
+
+    final_string = """
+    ){base64Pdf}
+    }
+    """
+
+    all_string = request_string + campos_string + final_string
+    query = gql(all_string)
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        return True
+    except:
+        return False 
 
 
 #Testing APAC
 def test_with_data_in_function():
-    assert type(data_to_use()) != type(Response())
+    assert data_to_use() == True
 
 def test_answer_with_all_fields():
     assert type(data_to_use()) != type(Response())
