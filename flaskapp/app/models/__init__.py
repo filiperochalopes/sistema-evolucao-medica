@@ -304,7 +304,7 @@ class Measure(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     spO2 = db.Column(db.Integer)
     pain = db.Column(db.Integer)
-    sistolic_bp = db.Column(db.Integer)
+    systolic_bp = db.Column(db.Integer)
     diastolic_bp = db.Column(db.Integer)
     cardiac_freq = db.Column(db.Integer)
     respiratory_freq = db.Column(db.Integer)
@@ -313,6 +313,9 @@ class Measure(db.Model):
     fetal_cardiac_freq = db.Column(db.Integer)
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     
+    professional_id = db.Column(db.Integer, ForeignKey("users.id"))
+    professional = relationship('User')
+
     internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
     internment = relationship('Internment', back_populates='measures')
 
@@ -337,6 +340,9 @@ class FluidBalance(db.Model):
     description_id = db.Column(db.Integer, ForeignKey('fluid_balance_description.id'))
     description = relationship('FluidBalanceDescription')
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+
+    professional_id = db.Column(db.Integer, ForeignKey("users.id"))
+    professional = relationship('User')
 
     internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
     internment = relationship('Internment', back_populates='fluid_balance')
