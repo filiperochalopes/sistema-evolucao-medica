@@ -16,7 +16,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_AihSus')
 @convert_kwargs_to_snake_case
-def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int, establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adress_city:str, patient_adress_city_ibge_code:int, patient_adress_uf:str, patient_adress_cep:str, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:int=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> Union[bytes, Response]:
+def fill_pdf_aih_sus(_, info, establishment_solitc_name:str, establishment_solitc_cnes:int, establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adress_city:str, patient_adress_city_ibge_code:int, patient_adress_uf:str, patient_adress_cep:str, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, autorization_prof_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> Union[bytes, Response]:
     """fill pdf aih sus 
 
     Args:
@@ -60,7 +60,7 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
         cid_10_associated_causes (str, optional): cid_10_associated_causes. Defaults to None.
         acident_type (str, optional): acident_type. Defaults to None.
         insurance_company_cnpj (int, optional): insurance_company_cnpj. Defaults to None.
-        insurance_company_ticket_number (int, optional): insurance_company_ticket_number. Defaults to None.
+        insurance_company_ticket_number (str, optional): insurance_company_ticket_number. Defaults to None.
         insurance_company_series (str, optional): insurance_company_series. Defaults to None.
         company_cnpj (int, optional): company_cnpj. Defaults to None.
         company_cnae (int, optional): company_cnae. Defaults to None.
@@ -187,7 +187,7 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
             
 
             c.setFont('Roboto-Mono', 9)
-            c = pdf_functions.add_oneline_intnumber(can=c, number=insurance_company_ticket_number, pos=(465, 183), camp_name='Insurance company ticket number', len_max=16, len_min=1, value_min=0, value_max=9999999999999999, nullable=True, centralized=True)           
+            c = pdf_functions.add_oneline_text(can=c, number=insurance_company_ticket_number, pos=(465, 183), camp_name='Insurance company ticket number', len_max=16, len_min=1,nullable=True, centralized=True)           
             if type(c) == type(Response()): return c
             c = pdf_functions.add_oneline_text(can=c, text=insurance_company_series, pos=(543, 183), camp_name='Insurance Company Series', len_max=10, len_min=1, nullable=True, centralized=True)           
             if type(c) == type(Response()): return c
@@ -219,7 +219,9 @@ def fill_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:in
         with open(WRITE_AIH_SUS_DIRECTORY, "rb") as pdf_file:
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
 
-        return pdf_base64_enconded
+        return {
+            "base64Pdf": str(pdf_base64_enconded)
+        }
     except:
         return Response("Error while filling aih sus", status=500)
 

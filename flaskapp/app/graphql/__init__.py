@@ -140,8 +140,8 @@ type_defs = gql(
             acidentType: String,
             "CNPJ da Seguradora, envie somente numeros"
             insuranceCompanyCnpj: String,
-            "Codigo do procedimento, somente numero max 10 digitos"
-            insuranceCompanyTicketNumber: Int, 
+            "Codigo do bilhete da seguradora, somente numero max 16 digitos"
+            insuranceCompanyTicketNumber: String, 
             "Serie da seguradora, max:10 min:1 caracteres"
             insuranceCompanySeries: String,
             "CNPJ da Empresa, somente numeros"
@@ -149,7 +149,7 @@ type_defs = gql(
             "CNAE da empresa, somente numeros"
             companyCnae: Int,
             "CBOR da empresa, somente numeros"
-            company_cbor: Int,
+            companyCbor: Int,
             """
             Vinculo com a previdencia, Opcoes:
                 'WORKER'      -> Empregado
@@ -159,7 +159,7 @@ type_defs = gql(
                 'RETIRED'     -> Aposentado
                 'NOT_INSURED' -> Nao Segurado
             """
-            pension_status: String
+            pensionStatus: String
         ): GeneratedPdf
 
         "Criação de documento de Precricao medica"
