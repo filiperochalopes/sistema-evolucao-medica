@@ -92,31 +92,6 @@ gunicorn --bind 0.0.0.0:5000 wsgi:app --daemon
 Para facilitar o teste estou mantendo no README algumas requisições para preencher o banco de dados com informações iniciais e úteis para o teste
 
 ```graphql
-mutation {
-  createUser(
-    masterKey: "passw@rd"
-    user:{
-    name: "Filipe Rocha Lopes"
-    email: "contato@filipelopes.med.br"
-    phone: "71992518950"
-    password: "passw@rd"
-    cpf: "01817013599"
-    cns: "856077573000002"
-    birthday: "1995-12-01"
-    professionalCategory: "doc"
-    professionalDocumentUf: "BA"
-    professionalDocumentNumber: "37825"
-  }){
-    id
-    email
-    name
-    professionalCategory
-    professionalDocumentUf
-  }
-}
-```
-
-```graphql
 mutation{
   signin(email:"contato@filipelopes.med.br", password:"passw@rd"){
     user{
