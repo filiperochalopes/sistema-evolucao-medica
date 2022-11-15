@@ -298,12 +298,12 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
+def add_phonenumber(can:canvas.Canvas, number:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
     """_summary_
 
     Args:
         can (canvas.Canvas):  canvas to use
-        number (int): number to add
+        number (str): number to add
         pos (tuple): position in canvas
         camp_name (str): camp name to Responses
         nullable (bool, optional):  Data can me None. Defaults to False.
@@ -319,7 +319,7 @@ def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, nul
         if type(verify) == type(Response()):
             return verify
         
-        number = str(number)
+        number = str(number).strip()
         if 10 <= len(number) <= 11:
             if formated:
                 number = '(' + number[:2] + ') ' + number[2:7] + '-' + number[7:]
@@ -333,12 +333,12 @@ def add_phonenumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, nul
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
+def add_CEP(can:canvas.Canvas, cep:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
     """Add cep to canvas
 
     Args:
         can (canvas.Canvas):  canvas to use
-        cep (int): cep to add
+        cep (str): cep to add
         pos (tuple): position in canvas
         camp_name (str): camp name to Responses
         nullable (bool, optional):  Data can me None. Defaults to False.
@@ -355,7 +355,7 @@ def add_CEP(can:canvas.Canvas, cep:int, pos:tuple, camp_name:str, nullable:bool=
             return verify
 
         
-        cep = str(cep)
+        cep = str(cep).strip()
         if len(cep) == 8:
             if formated:
                 cep = cep[:5] + '-' + cep[5:]

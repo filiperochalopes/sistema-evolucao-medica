@@ -402,6 +402,61 @@ type_defs = gql(
             trackingMammogram: String,
         ): GeneratedPdf
 
+        "Criação de documento de Solicitacao de Mamografia"
+        generatePdf_FichaInternamento(
+            "Data Hora do documento no formato DD/MM/YYYY HH:mm"
+            documentDatetime: String!,
+            "Nome do paciente, max: 64 min:7 caracteres"
+            patientName: String!,
+            "CNS do paciente"
+            patientCns: String!,
+            "Data de nascimento do paciente no formato DD/MM/YYYY"
+            patientBirthday: String!,
+            "Sexo do paciente, Escolha a opcao M ou F"
+            patientSex: String!,
+            "Nome da Mae do paciente, max: 69 min:7 caracteres"
+            patientMotherName: String!,
+            "Documento do paciente, CPF ou RG, utilize o DocumentInput"
+            patientDocument: DocumentInput!,
+            "Endereco do paciente, max: 63 min:7 caracteres"
+            patientAdress: String!,
+            "Numero de telefone do paciente, envie somente os numeros sem formatacao, ex: XXXXXXXXXX, 10 ou 11 caracteres"
+            patientPhonenumber: String!,
+            "Alergias Medicamentosas, max:100 min:5 caracteres"
+            patientDrugAllergies: String!,
+            "Comorbidades/doencas previas do paciente, max:100 min:5 caracteres"
+            patientComorbidities: String!,
+            "Historia da doenca atual/Exame fisico, max: 1600 min:10 caracteres"
+            currentIllnessHistory: String!,
+            "Possui convenio suplementar, opcoes: 'SIM','NAO'"
+            hasAdditionalHealthInsurance: String!,
+            "Supeita diagnostica Inicial (CID), max:100 min:5 caracteres"
+            initialDiagnosticSuspicion: String!,
+            "Nome do Medico, max: 49 min:7 caracteres"
+            doctorName: String!,
+            "CNS do Medico, envie somente numeros"
+            doctorCns: String!,
+            "CRM do medico, max:13 min:11"
+            doctorCrm: String!,
+            "Numero do endereco do paciente, max:6 digitos"
+            patientAdressNumber: Int,
+            "Bairro do endereco do paciente, max: 31 min: 4 caracters"
+            patientAdressNeigh: String,
+            "Cidade do endereco do paciente, max:34 min:4 caracteres"
+            patientAdressCity: String,
+            "UF do endereco do paciente, envie somente a sigla"
+            patientAdressUf: String,
+            "CEP do endereco do paciente, envie somente numeros"
+            patientAdressCep: String,
+            "Nacionalidade do paciente, max:25 min:3 caracteres"
+            patientNationality: String,
+            """
+            Peso estimado do paciente, numero inteiro no maximo 3 digitos, sera entendido como um valor total.
+            Exemplo:
+                patientEstimateWeight: 54  // sera entedido como 54kg
+            """
+            patientEstimateWeight: Int
+        ): GeneratedPdf
     }
 
     input AddressInput{
