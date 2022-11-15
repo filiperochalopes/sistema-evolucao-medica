@@ -6,7 +6,7 @@ from PyPDF2  import PdfWriter
 import datetime
 from typing import Union
 from inspect import getfullargspec
-from validate_docbr import CNS, CPF
+from validate_docbr import CNS, CPF, CNPJ
 import sys
 
 
@@ -532,12 +532,12 @@ def add_cns(can:canvas.Canvas, cns:str, pos:tuple, camp_name:str,nullable:bool=F
         return Response(f'Unknow error while adding {camp_name}', status=500)
 
 
-def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, camp_name:str,nullable:bool=False, interval:str='') -> Union[canvas.Canvas, Response]:
+def add_cnpj(can:canvas.Canvas, cnpj:str, pos:tuple, camp_name:str,nullable:bool=False, interval:str='') -> Union[canvas.Canvas, Response]:
     """Add cnpj to canvas
 
     Args:
         can (canvas.Canvas): canvas to add
-        cnpj (int): cnpj to add
+        cnpj (str): cnpj to add
         pos (tuple): position in canvas
         camp_name (str): camp nam
         nullable (bool, optional): can be null. Defaults to False.
@@ -557,10 +557,10 @@ def add_cnpj(can:canvas.Canvas, cnpj:int, pos:tuple, camp_name:str,nullable:bool
         if type(verify) == type(Response()):
             return verify
 
-
+        cnpj_validator = CNPJ()
         # Verify if the cnpj is valid
-        cnpj = str(cnpj)
-        if is_CNPJ_valid(cnpj):
+        cnpj = cnpj.strip()
+        if cnpj_validator.validate(cnpj):
             # Add interval selected
             cnpj = add_interval_to_data(data=cnpj, interval=interval)
             if type(cnpj) == type(Response()): return cnpj

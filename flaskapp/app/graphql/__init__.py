@@ -66,8 +66,8 @@ type_defs = gql(
             "Nome do paciente, max:79 min:7 caracteres"
             patientName: String!, 
             "Número do Cartão do SUS do paciente"
-            patientCns: Int!,
-            "Data de nascimento do paciente, em timestamp SEM fusohorario (utilizando o padrao UTC)"
+            patientCns: String!,
+            "Data de nascimento do paciente, no formato DD/MM/YYYY"
             patientBirthday: String!,
             "Sexo do Paciente, opcao M ou F."
             patientSex: String!,
@@ -78,11 +78,11 @@ type_defs = gql(
             "Cidade do paciente, max:58 min:7 caracteres"
             patientAdressCity: String!, 
             "Codigo IBGE do municipio do paciente"
-            patientAdressCityIbgeCode: Int!,
-            "Sigla do estado, UF, da cidade do paciente, somente estados do Brasil"
+            patientAdressCityIbgeCode: String!,
+            "Sigla do estado, UF, da cidade do paciente, somente a sigla"
             patientAdressUF: String!,
             "CEP do endereço do paciente"
-            patientAdressCEP: Int!,
+            patientAdressCEP: String!,
             "Principais sintomas e sintomas clinicos, max:1009 min:5 caracteres"
             mainClinicalSignsSymptoms: String!,
             "Condicoes que justificam a internacao, max:403 min:5 caracteres"
@@ -93,14 +93,14 @@ type_defs = gql(
             principalCid10: String!, 
             "Procedimento solicitado, max:65 min:6 caracteres"
             procedureSolicited: String!,
-            "Codigo do procedimento solcitado, deve ter exatamente 10 caracteres"
+            "Codigo do procedimento solicitado, deve ter exatamente 10 caracteres"
             procedureCode: String!,
             "Nome da clinica, max:18 min:6 caracteres"
             clinic: String!, 
             "Carater da internacao, max:19 min:6 caracteres"
             internationCarater: String!, 
-            "Documento do profissional solicitante, cns ou cpf, a api python o trata como dicionario, entao envie como uma string no formato '{'CNS':928976954930007}', a primeira e o nome do documento, e o seguinte e o numero do documento como inteiro"
-            profSolicitorDocument: String!, 
+            "Documento do profissional solicitante, cns ou cpf, utilize o input DocumentInput"
+            profSolicitorDocument: DocumentInput!, 
             "Nome do profissional solicitante, max:48 min:8 caracteres"
             profSolicitorName: String!,
             "Data e hora da solicitacao, somente dia/mes/ano"
@@ -109,29 +109,57 @@ type_defs = gql(
             autorizationProfName: String!,
             "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:17 min:2 caracteres"
             emissionOrgCode: String!, 
-            "Documento do profissional autorizador, cns ou cpf, a api python o trata como dicionario, entao envie como uma string no formato '{'CNS':928976954930007}', a primeira e o nome do documento, e o seguinte e o numero do documento como inteiro"
-            autorizatonProfDocument: String!,
+            "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
+            autorizatonProfDocument: DocumentInput!,
             "Data e hora da autorizacao, somente dia/mes/ano"
             autorizatonDatetime: String!,
             "Numero da autorizacao de internacao hospitalar, no maximo 18 digitos"
             hospitalizationAutorizationNumber: Int!,
-            examResults: String, 
+            "Resultados de exames, max: 403 min:5 caracteres"
+            examResults: String,
+            "Numero do Prontuario, max:20 min:5 caracteres"
             chartNumber: Int, 
+            "Etinia do Paciente, max:11 min:4 caracteres"
             patientEthnicity: String, 
+            "Nome do responsavel do paciente, max:70 min:7 caracteres"
             patientResponsibleName: String, 
-            "Não seria melhor o telefone ser tipo string?"
-            patientMotherPhonenumber: Int, 
-            patientResponsiblePhonenumber: Int, 
-            secondaryCid10: String, 
-            cid10AssociatedCauses: String, 
-            acidentType: String, 
-            insuranceCompanyCnpj: Int, 
+            "Numero de telefone da mae do paciente, envie somente numeros, 10 ou 11 digitos"
+            patientMotherPhonenumber: String, 
+            "Numero de telefone do Responsavel do paciente, envie somente numeros, 10 ou 11 digitos"
+            patientResponsiblePhonenumber: String,
+            "CID10 secundario"
+            secondaryCid10: String,
+            "CID10 causas associadas"
+            cid10AssociatedCauses: String,
+            """
+            Tipo do acidente, opcoes:
+                'TRAFFIC'   -> Acidente de Transito
+                'WORK'      -> Acidente de Trabalho tipico
+                'WORK_PATH' -> Acidente de Trabalho trajeto
+            """
+            acidentType: String,
+            "CNPJ da Seguradora, envie somente numeros"
+            insuranceCompanyCnpj: String,
+            "Codigo do procedimento, somente numero max 10 digitos"
             insuranceCompanyTicketNumber: Int, 
+            "Serie da seguradora, max:10 min:1 caracteres"
             insuranceCompanySeries: String,
-            companyCnpj: Int, 
-            companyCnae: Int, 
-            company_cbor: Int, 
-            pension_status: Int
+            "CNPJ da Empresa, somente numeros"
+            companyCnpj: String,
+            "CNAE da empresa, somente numeros"
+            companyCnae: Int,
+            "CBOR da empresa, somente numeros"
+            company_cbor: Int,
+            """
+            Vinculo com a previdencia, Opcoes:
+                'WORKER'      -> Empregado
+                'EMPLOYER'    -> Empregador
+                'AUTONOMOUS'  -> Autonomo
+                'UNEMPLOYED'  -> Desempregado
+                'RETIRED'     -> Aposentado
+                'NOT_INSURED' -> Nao Segurado
+            """
+            pension_status: String
         ): GeneratedPdf
 
         "Criação de documento de Precricao medica"
