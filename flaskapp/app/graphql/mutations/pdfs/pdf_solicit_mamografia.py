@@ -2,6 +2,7 @@ import base64
 import datetime
 from PyPDF2 import PdfWriter, PdfReader
 import io
+import sys
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
@@ -16,7 +17,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_SolicitMamografia')
 @convert_kwargs_to_snake_case
-def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_ibge_code:int=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adress_cep:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:int=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> Union[bytes, Exception]:
+def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_ibge_code:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adress_cep:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:str=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> Union[bytes, Exception]:
     """Fill solicitacion mamografia (Solicitacao de Mamografia) 
     Args:
         patient_name (str): Patient Name
@@ -45,7 +46,7 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
         patient_adress_number (int, optional): patient_adress_number. Defaults to None.
         patient_adress_adjunct (str, optional): patient_adress_adjunct. Defaults to None.
         patient_adress_neighborhood (str, optional): patient_adress_neighborhood. Defaults to None.
-        patient_city_ibge_code (int, optional): patient_city_ibge_code. Defaults to None.
+        patient_city_ibge_code (str, optional): patient_city_ibge_code. Defaults to None.
         patient_adress_city (str, optional): patient_adress_city. Defaults to None.
         patient_adress_uf (str, optional): patient_adress_uf. Defaults to None.
         patient_ethnicity (list, optional): patient_ethnicity. Defaults to None.
@@ -130,33 +131,33 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
 
         try:
             c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(46, 676), camp_name='Patient CNS', interval=' ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(48, 563), camp_name='Patient Birthday', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=mammogram_before[0], valid_options=['SIM', 'NAO', 'NAOSABE'], text_options=['SIM'], options_positions=((51,64), (51,52), (51, 40)), camp_name='Has made mamogram before', square_size=(15,9), len_max=4, len_min=4, text=mammogram_before[1], text_pos=(200, 68), interval=' ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_age, pos=(217, 563), camp_name='Patient Birthday', len_max=2, len_min=1,value_min=1, value_max=99, interval=' ')
 
 
             c.setFont('Roboto-Mono', 13)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_morelines_text(can=c, text=patient_name, initial_pos=(47, 653), decrease_ypos=18, camp_name='Patient Name', len_max=42, len_min=7, interval=' ', char_per_lines=87)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(47, 612), camp_name='Patient Mother Name', len_max=42, len_min=7, interval=' ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             
             
             c.setFont('Roboto-Mono', 9)
             c = pdf_functions.add_markable_square(can=c, option=nodule_lump, valid_options=['SIMDIR', 'SIMESQ', 'NAO'], options_positions=((50,332), (50,320), (50, 310)), camp_name='Has nodule lump', square_size=(15,9))
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_markable_square(can=c, option=high_risk, valid_options=['SIM', 'NAO', 'NAOSABE'], options_positions=((51,278), (51,266), (51, 255)), camp_name='Has high risk', square_size=(15,9))
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_markable_square(can=c, option=examinated_before, valid_options=['SIM', 'NUNCA', 'NAOSABE'], options_positions=((51,120), (51,107), (51, 94)), camp_name='Has been examinated before', square_size=(15,9))
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
         except:
             if type(c) == type(Response()):
-                return c
+                raise Exception(c.response)
             else:
                 return Response('Some error happen when adding not null data to fields in page 1', status=500)
 
@@ -164,70 +165,73 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
         try:
             c.setFont('Roboto-Mono', 13)
             c = pdf_functions.add_UF(can=c, uf=health_unit_adress_uf, pos=(47, 762), camp_name='Health Unit Adress UF', nullable=True, interval=' ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=health_unit_name, pos=(47, 741), camp_name='Health Unit Name', len_max=42, len_min=7, interval=' ', nullable=True)
-            if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=health_unit_adress_city, pos=(168, 720), camp_name='Health Unit Adress City', len_max=14, len_min=4, interval=' ', nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
+            c = pdf_functions.add_oneline_text(can=c, text=health_unit_adress_city, pos=(168, 720), camp_name='Health Unit Adress City', len_max=14, len_min=3, interval=' ', nullable=True)
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_surname, pos=(288, 635), camp_name='Patient Surname', len_max=18, len_min=4, interval=' ', nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress, pos=(47, 529), camp_name='Patient Adress', len_max=42, len_min=7, interval=' ', nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_adjunct, pos=(168, 507), camp_name='Patient Adress Adjunct', len_max=25, len_min=7, interval=' ', nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_neighborhood, pos=(292, 484), camp_name='Patient Adress Neighborhood', len_max=14, len_min=7, interval=' ', nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_reference, pos=(47, 413), camp_name='Patient Adress Reference', len_max=33, len_min=4, interval=' ', nullable=True)
-            if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(167, 461), camp_name='Patient Adress City', len_max=15, len_min=4, interval=' ', nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(167, 461), camp_name='Patient Adress City', len_max=15, len_min=3, interval=' ', nullable=True)
+            if type(c) == type(Response()): raise Exception(c.response)
             c = add_patient_adress_cep(can=c, number=patient_adress_cep)            
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = add_patient_phonenumber(can=c, number=patient_phonenumber)            
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = add_radiotherapy_before(can=c, radiotherapy_before=radiotherapy_before)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = add_breast_surgery_before(can=c, breast_surgery_before=breast_surgery_before)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
 
 
 
             c.setFont('Roboto-Mono', 12)
             c = pdf_functions.add_oneline_intnumber(can=c, number=health_unit_cnes, pos=(178, 761), camp_name='Health Unit CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval=' ', nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=protocol_number, pos=(406, 768), camp_name='Protocol Number', len_max=23, len_min=1, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_document_cns_cpf_rg(can=c, document=patient_document_cpf, pos_cpf=(52, 589),camp_name='Patient Document CPF', interval=' ', nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_number, pos=(52, 506), camp_name='Patient Adress Number', len_max=6, len_min=1, value_min=0, value_max=999999, interval=' ', nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_UF(can=c, uf=patient_adress_uf, pos=(535, 484), camp_name='Patient Adress UF', nullable=True, interval=' ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
 
 
             c.setFont('Roboto-Mono', 9)
-            if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, number=health_unit_city_ibge_code, pos=(47, 720), camp_name='Health Unit City IBGE code', len_max=7, len_min=7, nullable=True, interval='  ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
+            c = pdf_functions.add_oneline_text(can=c, text=health_unit_city_ibge_code, pos=(47, 720), camp_name='Health Unit City IBGE code', len_max=7, len_min=7, nullable=True, interval='  ')
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_intnumber(can=c, number=document_chart_number, pos=(410, 720), camp_name='Document Chart Number', len_max=10, len_min=1, value_min=0, value_max=99999999999999, nullable=True, interval='  ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(291, 672), pos_fem=(338, 672), camp_name='Patient Sex', square_size=(11,9), nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_nationality, pos=(278, 587), camp_name='Patient Nationality', len_max=32, len_min=3, nullable=True)
-            if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_city_ibge_code, pos=(47, 461), camp_name='Patient City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True, interval='  ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
+            c = pdf_functions.add_oneline_text(can=c, text=patient_city_ibge_code, pos=(47, 461), camp_name='Patient City IBGE code', len_max=7, len_min=7, nullable=True, interval='  ')
+            if type(c) == type(Response()): raise Exception(c.response)
             if patient_ethnicity == None:
                 patient_ethnicity = [None, None]
             if type(patient_ethnicity) != type(list()):
                 return Response('Patient ethnicity has to be a list', status=400)
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'], text_options=['INDIGENA'], text_pos=(516, 563), options_positions=((278, 560), (323, 560),(363, 560),(401, 560), (450, 560)), camp_name='Patient Ethinicity', len_max=10, text=patient_ethnicity[1], len_min=4, square_size=(11, 9), nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_markable_square(can=c, option=patient_schooling, valid_options=['ANALFABETO', 'FUNDINCOM', 'FUNDCOMPL', 'MEDIOCOMPL', 'SUPCOMPL'], options_positions=((55, 380), (115, 381), (223, 381), (325, 381), (408, 381)), camp_name='Patient Schooling', square_size=(10,9), nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             
+        except Exception as error:
+            return error
+        
         except:
-            return Response('Critical error happen when adding data that can be null to fields in page 1', status=500)
+            return Exception('Critical error happen when adding data that can be null to fields in page 1')
 
 
 ### Add Page 2
@@ -240,29 +244,24 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
         c_2.setFont('Roboto-Mono', 13)
         try:
             c_2 = pdf_functions.add_oneline_text(can=c_2, text=prof_solicitor_name, pos=(206, 346), camp_name='Professional Solicitor Name', len_max=23, len_min=7, interval=' ')
-            if type(c_2) == type(Response()): return c_2
-
-
-
-
+            if type(c_2) == type(Response()): raise Exception(c_2.response)
 
             c_2.setFont('Roboto-Mono', 12)
             c_2 = pdf_functions.add_datetime(can=c_2, date=solicitation_datetime, pos=(48, 346), camp_name='Solicitation Datetime', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
-            if type(c_2) == type(Response()): return c_2
-            c_2 = pdf_functions.add_oneline_intnumber(can=c_2, number=exam_number, pos=(114, 324), camp_name='Exam number', len_max=16, len_min=1, value_min=0, value_max=9999999999999999, nullable=True, interval=' ')
-            if type(c_2) == type(Response()): return c_2
-            
+            if type(c_2) == type(Response()): raise Exception(c_2.response)
+            c_2 = pdf_functions.add_oneline_text(can=c_2, text=exam_number, pos=(114, 324), camp_name='Exam number', len_max=16, len_min=1, nullable=True, interval=' ')
+            if type(c_2) == type(Response()): raise Exception(c_2.response)
             c_2.setFont('Roboto-Mono', 9)
             c_2 = pdf_functions.add_markable_square(can=c_2, option=tracking_mammogram, valid_options=['POPALVO', 'RISCOELEVADO', 'JATRATADO'], options_positions=((56, 374), (152, 374), (328, 374)), camp_name='Tracking Mammogram', square_size=(11,10), nullable=True)
-            if type(c_2) == type(Response()): return c_2
+            if type(c_2) == type(Response()): raise Exception(c_2.response)
             c_2 = add_diagnostic_mammogram(can=c_2, diagnostic_mammogram=diagnostic_mammogram)
-            if type(c_2) == type(Response()): return c_2
+            if type(c_2) == type(Response()): raise Exception(c_2.response)
 
+        except Exception as error:
+            return error
+        
         except:
-            if type(c_2) == type(Response()):
-                return 
-            else:
-                return Response('Some error happen when adding not null data to fields in page 2', status=500)
+            return Exception('Some error happen when adding not null data to fields in page 2')
 
         # create a new PDF with Reportlab
         c.save()
@@ -291,7 +290,7 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
             "base64Pdf": str(pdf_base64_enconded)
         }
     except:
-        return Response("Error while filling aih sus", status=500)
+        return Exception("Error while filling aih sus")
 
 
 def add_patient_adress_cep(can:canvas.Canvas, number:str):
@@ -406,7 +405,7 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
                     return can
                 else:
                     continue
-            elif current_surgery == None:
+            elif current_surgery[0] == None:
                 continue
             elif type(current_surgery) != type(list()):
                 return Response(f'{surgery} has to be a list with the years right and left or just a None, like: surgery: None or surgery:(None, 2020)', status=400)
@@ -422,9 +421,6 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
                 cont = 1
             
             
-
-
-
         return can
     except:
         return Response(f'Unknow error while adding breast_surgery_before', status=500)

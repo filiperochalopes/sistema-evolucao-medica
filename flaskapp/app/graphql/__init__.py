@@ -436,7 +436,7 @@ type_defs = gql(
             healthUnitName: String,
             "UF em que a Unidade de Saude esta, somente a sigla 2 caracteres"
             healthUnitAdressUf: String,
-            "Nome da cidade aonde esta a unidade de saude, max:14 min:4"
+            "Nome da cidade aonde esta a unidade de saude, max:14 min:3"
             healthUnitAdressCity: String,
             "Apelido do paciente, max:18 min:4 caracteres" 
             patientSurname: String,
@@ -448,7 +448,7 @@ type_defs = gql(
             patientAdressNeighborhood: String,
             "Referencia do endereco do paciente, max:33 min:4 caracteres"
             patientAdressReference: String,
-            "Cidade do endereco do paciente, max:15 min:4 caracteres"
+            "Cidade do endereco do paciente, max:15 min:3 caracteres"
             patientAdressCity: String,
             "CEP do endereco do paciente, envie somente numeros sem formatacao, Exemplo: XXXXXXXX"
             patientAdressCep: String,
@@ -484,7 +484,7 @@ type_defs = gql(
             "Nacionalidade do paciente"
             patientNationality: String,
             "Codigo do IBGE do Município do paciente"
-            pacientCityIbgeCode: String,
+            patientCityIbgeCode: String,
             """
             Etinia do paciente, envie uma lista com algumas das opcoes, e caso seja indigena especificar o nome com no max: 10 caracteres. Opcoes:
             'BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'.
@@ -498,7 +498,7 @@ type_defs = gql(
             "Data da Solicitacao no formato DD/MM/YYYY"
             solicitationDatetime: String!,
             "Numero do exame, max: 16 caracteres"
-            examNumber: Int,
+            examNumber: String,
             """
             Mamografia de rasteramento. Opcoes:
                 "POPALVO"       -> Populacao alvo
@@ -585,32 +585,32 @@ type_defs = gql(
 
     input SurgeryBeforeInput{
         "Nao fez nenhuma Cirurgia nas mamas, marque TRUE caso ela nunca tenha feito nenhuma cirugia, isso faz todos os outros serem descartados. Caso contario marque FALSE"
-        didNot: String,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        didNot: String!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         biopsiaInsinonal: [String]!,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         biopsiaExcisional: [String]!,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         centraledomia: [String]!,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         segmentectomia: [String]!,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         dutectomia: [String]!,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         mastectomia: [String]!,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         mastectomiaPoupadoraPele: [String]!,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         mastectomiaPoupadoraPeleComplexoAreolo: [String]!,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         linfadenectomiaAxilar: [String]!,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         biopsiaLinfonodo: [String]!,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         reconstrucaoMamaria: [String]!,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         mastoplastiaRedutora: [String]!,
-        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null]"""
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
         indusaoImplantes: [String]!
     }
 
