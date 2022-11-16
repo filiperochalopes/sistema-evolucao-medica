@@ -114,7 +114,6 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
         Union[bytes, Response]: base64 pdf enconded or a Response with a error
     """    
     try:
-        print('Lero', file=sys.stderr)
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -563,9 +562,6 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
 
             else:
                 continue
-
-
-
 
         return can
     except:

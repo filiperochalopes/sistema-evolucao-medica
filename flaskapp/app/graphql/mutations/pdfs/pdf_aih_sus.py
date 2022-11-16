@@ -72,7 +72,6 @@ def fill_pdf_aih_sus(_, info, establishment_solitc_name:str, establishment_solit
         Union[bytes, Response]: base64 pdf enconded or a Response with a error
     """    
     try:
-        print('Lero', file=sys.stderr)
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -221,7 +220,6 @@ def fill_pdf_aih_sus(_, info, establishment_solitc_name:str, establishment_solit
         
         with open(WRITE_AIH_SUS_DIRECTORY, "rb") as pdf_file:
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
-        print('uai', file=sys.stderr)
         return {
             "base64Pdf": str(pdf_base64_enconded)
         }

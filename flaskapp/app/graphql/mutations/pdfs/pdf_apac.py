@@ -77,9 +77,7 @@ def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_c
         try:
             c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(36, 678), camp_name='Patient CNS', interval='  ')
             if type(c) == type(Response()): raise Exception(c.response)
-            print(main_procedure, file=sys.stderr)
             c = add_procedure(can=c, procedure=main_procedure, code_pos=(36,542), name_pos=(220, 542), quant_pos=(508, 542), camp_name='Main Procedure')
-            print(main_procedure, file=sys.stderr)
 
             if type(c) == type(Response()): raise Exception(c.response)
             c.setFont('Roboto-Mono', 9)

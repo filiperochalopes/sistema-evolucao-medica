@@ -51,7 +51,6 @@ def fill_pdf_ficha_internamento(_, info, document_datetime:datetime.datetime, pa
     """    
 
     try:
-        print('Lepo', file=sys.stderr)
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -151,7 +150,6 @@ def fill_pdf_ficha_internamento(_, info, document_datetime:datetime.datetime, pa
         with open(WRITE_FICHA_INTERN_DIRECTORY, "rb") as pdf_file:
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
 
-        print('aaaaa', file=sys.stderr)
         return {
             "base64Pdf": str(pdf_base64_enconded)
         }
