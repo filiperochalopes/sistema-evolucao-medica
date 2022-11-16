@@ -16,7 +16,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_Apac')
 @convert_kwargs_to_snake_case
-def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:str, patient_sex:str, patient_birthday:str, patient_adress_city:str, main_procedure:dict, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adress_uf:str=None, patient_adress_cep:int=None, document_chart_number:int=None, patient_adress_city_ibge_code:int=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> Union[bytes, Exception]:
+def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:str, patient_sex:str, patient_birthday:str, patient_adress_city:str, main_procedure:dict, patient_mother_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adress_uf:str=None, patient_adress_cep:str=None, document_chart_number:str=None, patient_adress_city_ibge_code:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, prof_autorization_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> Union[bytes, Exception]:
     """fill pdf apac
 
     Args:
@@ -37,8 +37,8 @@ def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_c
         patient_color (str, optional): patient_color. Defaults to None.
         patient_adress_uf (str, optional): patient_adress_uf. Defaults to None.
         patient_adress_cep (int, optional): patient_adress_cep. Defaults to None.
-        document_chart_number (int, optional): document_chart_number. Defaults to None.
-        patient_adress_city_ibge_code (int, optional): patient_adress_city_ibge_code. Defaults to None.
+        document_chart_number (str, optional): document_chart_number. Defaults to None.
+        patient_adress_city_ibge_code (str, optional): patient_adress_city_ibge_code. Defaults to None.
         procedure_justification_description (str, optional): procedure_justification_description. Defaults to None.
         procedure_justification_main_cid_10 (str, optional): procedure_justification_main_cid_10. Defaults to None.
         procedure_justification_sec_cid_10 (str, optional): procedure_justification_sec_cid_10. Defaults to None.
@@ -49,7 +49,7 @@ def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_c
         prof_solicitor_document (dict, optional): prof_solicitor_document. Defaults to None.
         prof_solicitor_name (str, optional): prof_solicitor_name. Defaults to None.
         solicitation_datetime (datetime.datetime, optional): solicitation_datetime. Defaults to None.
-        autorization_prof_name (str, optional): autorization_prof_name. Defaults to None.
+        prof_autorization_name (str, optional): prof_autorization_name. Defaults to None.
         emission_org_code (str, optional): emission_org_code. Defaults to None.
         autorizaton_prof_document (dict, optional): autorizaton_prof_document. Defaults to None.
         autorizaton_datetime (datetime.datetime, optional): autorizaton_datetime. Defaults to None.
@@ -122,11 +122,11 @@ def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_c
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_ethnicity, pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_cep, pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, value_min=0, value_max=99999999, nullable=True, interval=' ')
+            c = pdf_functions.add_oneline_intnumber(can=c, text=patient_adress_cep, pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, nullable=True, interval=' ')
             if type(c) == type(Response()): raise Exception(c.response)
-            c = pdf_functions.add_oneline_intnumber(can=c, number=document_chart_number, pos=(483, 702), camp_name='Document Chart Number', len_max=14, len_min=1, value_min=0, value_max=99999999999999, nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=document_chart_number, pos=(483, 702), camp_name='Document Chart Number', len_max=14, len_min=1, nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_city_ibge_code, pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city_ibge_code, pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_UF(can=c, uf=patient_adress_uf, pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
             if type(c) == type(Response()): raise Exception(c.response)
@@ -142,7 +142,7 @@ def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_c
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 204), camp_name='Profissional Solicitor Name', len_max=48, len_min=5, nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)
-            c = pdf_functions.add_oneline_text(can=c, text=autorization_prof_name, pos=(36, 136), camp_name='Profissional Authorizator Name', len_max=46, len_min=5, nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=prof_autorization_name, pos=(36, 136), camp_name='Profissional Authorizator Name', len_max=46, len_min=5, nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=emission_org_code, pos=(290, 136), camp_name='Emission Org Code', len_max=16, len_min=2, nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)

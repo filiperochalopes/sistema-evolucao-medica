@@ -106,7 +106,7 @@ type_defs = gql(
             "Data e hora da solicitacao, somente dia/mes/ano"
             solicitationDatetime: String!,
             "Nome do profissional autorizador, max:48 min:8 caracteres" 
-            autorizationProfName: String!,
+            profAutorizationName: String!,
             "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:17 min:2 caracteres"
             emissionOrgCode: String!, 
             "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
@@ -182,6 +182,52 @@ type_defs = gql(
             mainProcedure: ProcedimentoInput!,
             "Procedimentos Secundarios, no maximo 5, envie uma lista de ProcedimentoInput"
             secondariesProcedures: [ProcedimentoInput],
+            "Nome da Mae do paciente, max:65 min:7 caracteres"
+            patientMotherName: String,
+            "Numero de telefone da mae do paciente, envie somente numeros, 10 ou 11 digitos"
+            patientMotherPhonenumber: String, 
+            "Nome do responsavel do paciente, max:67 min:7 caracteres"
+            patientResponsibleName: String, 
+            "Numero de telefone do Responsavel do paciente, envie somente numeros, 10 ou 11 digitos"
+            patientResponsiblePhonenumber: String,
+            "Endereco do paciente, somente 'rua, numero, bairro', max: 97 min:7 caracteres"
+            patientAdress: String,
+            "Etinia do Paciente, max:17 min:4 caracteres"
+            patientEthnicity: String, 
+            "Cor do Paciente, max:10 min:4 caracteres"
+            patientColor: String, 
+            "Sigla do estado, UF, da cidade do paciente, somente a sigla"
+            patientAdressUF: String,
+            "CEP do endereço do paciente"
+            patientAdressCEP: String,
+            "Numero do Prontuario, max:14 min:1 caracteres"
+            documentChartNumber: String,
+            "Codigo IBGE do municipio do paciente"
+            patientAdressCityIbgeCode: String,
+            "Descricao do diagnostico do procedimento solicitado. max: 55 min: 4 caracteres"
+            procedureJustificationDescription: String,
+            "Cid 10 principal do diagnostico"
+            procedureJustificationMainCid10: String,
+            "Cid 10 secundario do diagnostico"
+            procedureJustificationSecCid10: String,
+            "Cid 10 de causas associadas do diagnostico"
+            procedureJustificationAssociatedCauseCid10: String,
+            "Observacoes do diagnostico, max: 776 min: 5 caracteres"  
+            procedureJustificationComments: String,
+            "Nome do Estabelecimento Executante, max:71 min:8 caracteres"
+            establishmentExecName: String,
+            "CNES do Estabelecimento Executante"
+            establishmentExecCnes: Int,
+            "Documento do profissional solicitante, cns ou cpf, utilize o input DocumentInput"
+            profSolicitorDocument: DocumentInput, 
+            "Nome do profissional solicitante, max:48 min:8 caracteres"
+            profSolicitorName: String,
+            "Data e hora da solicitacao, somente dia/mes/ano"
+            solicitationDatetime: String,
+            profAutorizationName:str=None, 
+            emission_org_code:str=None, 
+            autorizaton_prof_document:dict=None, 
+            autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None
 
         ): GeneratedPdf
 
