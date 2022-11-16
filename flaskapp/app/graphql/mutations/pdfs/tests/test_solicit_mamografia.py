@@ -73,8 +73,8 @@ def data_to_use(
             'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
             ],
         'esquerda':[
-            'PAPILAR', 
-            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
+            {'papilar': True, 
+            'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
             'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
             'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
             'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}

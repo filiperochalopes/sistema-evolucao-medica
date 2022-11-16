@@ -583,34 +583,35 @@ def add_exame_clinico_direita(can:canvas.Canvas, current_options:dict):
         canvas or Response: canvas updated or Response with error
     """
     try:
-        for item in current_options:    
-            if item == 'PAPILAR':
+        
+        if type(current_options) != type(dict()):
+            return Response('direita values in exame_clinico has to be a list of dicts, like "exame_clinico":["direita":[{"":[]}]]', status=400)
+        
+        item_keys = current_options.keys()
+        if 'papilar' in item_keys:
+            if current_options['papilar']:
                 can = pdf_functions.add_square(can=can, pos=(56, 732), size=(15, 9))
+            if type(can) == type(Response()): return can
+
+        if 'descarga_papilar' in item_keys:
+            for option in current_options['descarga_papilar']:
+                can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((496, 737), (496, 723)), camp_name='descarga_capilar options in direita breast', square_size=(15,9), nullable=True)
                 if type(can) == type(Response()): return can
-                else:
-                    continue
-            elif type(item) != type(dict()):
-                return Response('direita values in exame_clinico has to be a list of dicts, like "exame_clinico":["direita":["PAPILAR", {"":[]}]]', status=400)
-            item_keys = item.keys()
-            if 'descarga_papilar' in item_keys:
-                for option in item['descarga_papilar']:
-                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((496, 737), (496, 723)), camp_name='descarga_capilar options in direita breast', square_size=(15,9), nullable=True)
-                    if type(can) == type(Response()): return can
-            
-            if 'nodulo' in item_keys:
-                for option in item['nodulo']:
-                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((312, 696), (361, 696), (412, 696), (466, 696), (512, 696), (312, 683), (361, 683), (412, 683), (466, 683), (512, 683)), camp_name='nodulo options in direita breast', square_size=(15,9), nullable=True)
-                    if type(can) == type(Response()): return can
+        
+        if 'nodulo' in item_keys:
+            for option in current_options['nodulo']:
+                can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((312, 696), (361, 696), (412, 696), (466, 696), (512, 696), (312, 683), (361, 683), (412, 683), (466, 683), (512, 683)), camp_name='nodulo options in direita breast', square_size=(15,9), nullable=True)
+                if type(can) == type(Response()): return can
 
-            if 'espessamento' in item_keys:
-                for option in item['espessamento']:
-                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((313, 650), (362, 650), (413, 650), (467, 650), (513, 650), (313, 637), (362, 637), (413, 637), (467, 637), (513, 637)), camp_name='espessamento options in direita breast', square_size=(15,9), nullable=True)
-                    if type(can) == type(Response()): return can
+        if 'espessamento' in item_keys:
+            for option in current_options['espessamento']:
+                can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((313, 650), (362, 650), (413, 650), (467, 650), (513, 650), (313, 637), (362, 637), (413, 637), (467, 637), (513, 637)), camp_name='espessamento options in direita breast', square_size=(15,9), nullable=True)
+                if type(can) == type(Response()): return can
 
-            if 'linfonodo_palpavel' in item_keys:
-                for option in item['linfonodo_palpavel']:
-                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((380, 615), (420, 615)), camp_name='linfonodo_palpavel options in direita breast', square_size=(15,9), nullable=True)
-                    if type(can) == type(Response()): return can
+        if 'linfonodo_palpavel' in item_keys:
+            for option in current_options['linfonodo_palpavel']:
+                can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((380, 615), (420, 615)), camp_name='linfonodo_palpavel options in direita breast', square_size=(15,9), nullable=True)
+                if type(can) == type(Response()): return can
         return can
     except:
         return Response('Unknow error when adding exame_clinico_direita', status=500)
@@ -628,34 +629,33 @@ def add_exame_clinico_esquerda(can:canvas.Canvas, current_options:dict):
         canvas or Response: canvas updated or Response with error
     """
     try:
-        for item in current_options:    
-            if item == 'PAPILAR':
+
+        if type(current_options) != type(dict()):
+            return Response('esquerda values in exame_clinico has to be a dict, like "exame_clinico":["esquerda":[{"":[]}]]', status=400)
+        item_keys = current_options.keys()
+        if 'papilar' in item_keys:
+            if current_options['papilar']:
                 can = pdf_functions.add_square(can=can, pos=(314, 732), size=(15, 9))
+            if type(can) == type(Response()): return can
+        if 'descarga_papilar' in item_keys:
+            for option in current_options['descarga_papilar']:
+                can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((238, 737), (238, 725)), camp_name='descarga_capilar options in esquerda breast', square_size=(15,9), nullable=True)
                 if type(can) == type(Response()): return can
-                else:
-                    continue
-            elif type(item) != type(dict()):
-                return Response('esquerda values in exame_clinico has to be a list of dicts, like "exame_clinico":["esquerda":["PAPILAR", {"":[]}]]', status=400)
-            item_keys = item.keys()
-            if 'descarga_papilar' in item_keys:
-                for option in item['descarga_papilar']:
-                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((238, 737), (238, 725)), camp_name='descarga_capilar options in esquerda breast', square_size=(15,9), nullable=True)
-                    if type(can) == type(Response()): return can
-            
-            if 'nodulo' in item_keys:
-                for option in item['nodulo']:
-                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((54, 696), (103, 696), (154, 696), (208, 696), (254, 696), (54, 683), (103, 683), (154, 683), (208, 683), (254, 683)), camp_name='nodulo options in esquerda breast', square_size=(15,9), nullable=True)
-                    if type(can) == type(Response()): return can
+        
+        if 'nodulo' in item_keys:
+            for option in current_options['nodulo']:
+                can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((54, 696), (103, 696), (154, 696), (208, 696), (254, 696), (54, 683), (103, 683), (154, 683), (208, 683), (254, 683)), camp_name='nodulo options in esquerda breast', square_size=(15,9), nullable=True)
+                if type(can) == type(Response()): return can
 
-            if 'espessamento' in item_keys:
-                for option in item['espessamento']:
-                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((55, 650), (104, 650), (155, 650), (209, 650), (255, 650), (55, 637), (104, 637), (155, 637), (209, 637), (255, 637)), camp_name='espessamento options in esquerda breast', square_size=(15,9), nullable=True)
-                    if type(can) == type(Response()): return can
+        if 'espessamento' in item_keys:
+            for option in current_options['espessamento']:
+                can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((55, 650), (104, 650), (155, 650), (209, 650), (255, 650), (55, 637), (104, 637), (155, 637), (209, 637), (255, 637)), camp_name='espessamento options in esquerda breast', square_size=(15,9), nullable=True)
+                if type(can) == type(Response()): return can
 
-            if 'linfonodo_palpavel' in item_keys:
-                for option in item['linfonodo_palpavel']:
-                    can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((121, 615), (162, 616)), camp_name='linfonodo_palpavel options in esquerda breast', square_size=(15,9), nullable=True)
-                    if type(can) == type(Response()): return can
+        if 'linfonodo_palpavel' in item_keys:
+            for option in current_options['linfonodo_palpavel']:
+                can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((121, 615), (162, 616)), camp_name='linfonodo_palpavel options in esquerda breast', square_size=(15,9), nullable=True)
+                if type(can) == type(Response()): return can
         return can
     except:
         return Response('Unknow error when adding exame_clinico_direita', status=500)

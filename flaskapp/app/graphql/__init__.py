@@ -506,6 +506,8 @@ type_defs = gql(
                 "JATRATADO"     -> Paciente ja tratado de cancer de mama
             """
             trackingMammogram: String,
+            "Adiconar Mamografia Diagnostica, utilize o input DiagnosticMamogramInput"
+            diagnosticMammogram: DiagnosticMamogramInput
         ): GeneratedPdf
 
         "Criação de documento de Solicitacao de Mamografia"
@@ -675,6 +677,55 @@ type_defs = gql(
         quant3month: String
     }
 
+    input DiagnosticMamogramInput{
+        "Exame clinico, utilize o input ExameClinicoOpcoesMamasInput"
+        exameClinico: ExameClinicoOpcoesMamasInput,
+        """
+        Controle Radiologico, utilize o input OpcoesMamasInput, as opcoes sao
+        'nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'
+        """
+        controleRadiologico: OpcoesMamasInput,
+        """
+        Lesao Diagnostico, utilize o input OpcoesMamasInput, as opcoes sao:
+        'nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'
+        """
+        lesaoDiagnostico: OpcoesMamasInput,
+        "Avaliacao da Resposta de QT, envie uma lista de String com Direito e Esquerda, Exemplos: ['direita', 'esquerda']  / [null, 'esquerda'] / [null, null]"
+        avaliacaoResposta: [String],
+        "Revisao de mamogramafia com lesao, opcoes: '0', '3', '4', '5'"
+        revisaoMamografiaLesao: OpcoesMamasInput,
+        "Controle de lesao apos biopsia de fragmento, opcoes: 'nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'"
+        controleLesao: OpcoesMamasInput
+
+    }
+
+    input OpcoesMamasInput{
+        "Lista com as opcoes da mama direita"
+        direta: [String]!,
+        "Lista com as opcoes da mama esquerda"
+        esquerda: [String]!
+    }
+
+    input ExameClinicoOpcoesMamasInput{
+        "Lista com as opcoes da mama direita"
+        direta: ExameClinicoInput!,
+        "Lista com as opcoes da mama esquerda"
+        esquerda: ExameClinicoInput!
+    }
+
+    input ExameClinicoInput{
+        "Lesao Papilar"
+        papilar: Boolean,
+        "Descarga papilar, as opcoes: 'CRISTALINA', 'HEMORRAGICA'"
+        descargaPapilar: [String],
+        "Nodulo localizacao opcoes: 'QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'"
+        nodulo: [String],
+        "Espessamento localizacao, opcoes: 'QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'"
+        espessamento: [String],
+        "Linfonodo palpavel, opcoes: 'AXILAR', 'SUPRACLAVICULAR'"
+        linfonodoPalpavel: [String]
+    }
+    
     input DocumentInput{
         "CPF do Paciente sem formatacao, apenas numeros. Exemplo: xxxxxxxxxxx"
         cpf: String
