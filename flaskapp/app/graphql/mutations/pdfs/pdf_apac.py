@@ -196,7 +196,7 @@ def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_c
 
 
 def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tuple, quant_pos:tuple) -> Union[canvas.Canvas, Response]:
-    """Add proceure
+    """Add proceure to canvas
 
     Args:
         can (canvas.Canvas): canvas to use
@@ -256,27 +256,8 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas
         if procedures == None:
             return can
         if type(procedures) != type(list()):
-            return Response('procedures has to be a list of dicts, like: [{"procedure_name":"Procedure Name", "procedure_code":"cod124235", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"another12", "quant":1}]', status=400)
-        necessaryKeys = ["procedure_name", "procedure_code", "quant"]
-        if len(procedures) > 5:
-            return Response('You cannot add more than 5 secondary procedures', status=400)
-        for proc in procedures:
-            #verify if the item in list is a dict
-            if type(proc) != type(dict()):
-                return Response('All itens in list has to be a dict', status=400)
-            #Verify if the necessary keys are in the dict
-            if 'procedure_name' not in proc.keys() or 'procedure_code' not in proc.keys() or "quant" not in proc.keys():
-                return Response('Some keys in dict is missing, dict has to have "procedure_name", "procedure_code", "quant"', status=400)
-            #Verify if the value in the dics is the needed
-            elif type(proc['procedure_name']) != type(str()) or type(proc['procedure_code']) != type(str()) or type(proc["quant"]) != type(int()):
-                return Response('The values in the keys "procedure_name", "procedure_code" has to be string and "quant" has to be int', status=400)
+            return Response('procedures has to be a list of dicts, like: [{"name":"Procedure Name", "code":"cod124235", "quant":5}, {"name":"Another Procedure", "code":"another12", "quant":1}]', status=400)
 
-        
-            #Verify if the dict has more keys than the needed
-            for key in proc.keys():
-                if key not in necessaryKeys:
-                    return Response('The dict can only have 3 keys "procedure_name", "procedure_code", "quant"', status=400)
-            
         #Add to cnavas
         cont = 1
         NAME_X_POS = 220
@@ -286,19 +267,12 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas
         REDUCE_Y = 26
         #Add code fist with upper font
         can.setFont('Roboto-Mono', 10)
+        # Add all procedures
         for proc in procedures:
-            can = pdf_functions.add_oneline_text(can=can, text=proc['procedure_code'], pos=(CODE_X_POS, ypos), camp_name=f'{cont} Secondary Procedure Code', len_max=10, len_min=10, interval='  ')
+            can = add_procedure(can=can, procedure=proc, code_pos=(CODE_X_POS, ypos), name_pos=(NAME_X_POS, ypos), quant_pos=(QUANT_X_POS, ypos))
             if type(can) == type(Response()): return can
             ypos -= REDUCE_Y
 
-        can.setFont('Roboto-Mono', 9)
-        ypos = 495
-        for proc in procedures:
-            can = pdf_functions.add_oneline_text(can=can, text=proc['procedure_name'], pos=(NAME_X_POS, ypos), camp_name=f'{cont} Secondary procedure name', len_max=54, len_min=7)
-            if type(can) == type(Response()): return can
-            can = pdf_functions.add_oneline_intnumber(can=can, number=proc['quant'], pos=(QUANT_X_POS, ypos), camp_name=f'{cont} Secondary Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
-            if type(can) == type(Response()): return can
-            ypos -= REDUCE_Y
         return can
     except: 
         return Response('Unkown error while adding Secondaries Procedures', status=500)

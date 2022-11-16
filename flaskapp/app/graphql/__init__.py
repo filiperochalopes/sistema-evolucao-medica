@@ -179,7 +179,9 @@ type_defs = gql(
             "Cidade do paciente, max:58 min:3 caracteres"
             patientAdressCity: String!,
             "Procedimento Solicitado, utilize o input ProcedimentoInput"
-            mainProcedure: ProcedimentoInput
+            mainProcedure: ProcedimentoInput!,
+            "Procedimentos Secundarios, envie uma lista de ProcedimentoInput"
+            secondariesProcedures: [ProcedimentoInput]
         ): GeneratedPdf
 
         "Criação de documento de Precricao medica"
