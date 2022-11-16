@@ -78,7 +78,7 @@ def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_c
             c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(36, 678), camp_name='Patient CNS', interval='  ')
             if type(c) == type(Response()): raise Exception(c.response)
             print(main_procedure, file=sys.stderr)
-            c = add_procedure(can=c, procedure=main_procedure, code_pos=(36,542), name_pos=(220, 542), quant_pos=(508, 542))
+            c = add_procedure(can=c, procedure=main_procedure, code_pos=(36,542), name_pos=(220, 542), quant_pos=(508, 542), camp_name='Main Procedure')
             print(main_procedure, file=sys.stderr)
 
             if type(c) == type(Response()): raise Exception(c.response)
@@ -195,7 +195,7 @@ def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_c
         return Response("Error while filling apac", status=500)
 
 
-def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tuple, quant_pos:tuple) -> Union[canvas.Canvas, Response]:
+def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tuple, quant_pos:tuple, camp_name:str) -> Union[canvas.Canvas, Response]:
     """Add proceure to canvas
 
     Args:
@@ -204,6 +204,7 @@ def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tu
         code_pos (tuple): position of code
         name_pos (tuple): position of name
         quant_pos (tuple): position of quant
+        camp_name (str): camp name
 
     Returns:
         Union[canvas.Canvas, Response]: canvas updated or Response with error
@@ -228,13 +229,13 @@ def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tu
         ## Add to canvas
         # Change size to add Code
         can.setFont('Roboto-Mono', 10)
-        can = pdf_functions.add_oneline_text(can=can, text=procedure['code'], pos=code_pos, camp_name='Procedure Code', len_max=10, len_min=10, interval='  ')
+        can = pdf_functions.add_oneline_text(can=can, text=procedure['code'], pos=code_pos, camp_name=f'{camp_name} Procedure Code', len_max=10, len_min=10, interval='  ')
         if type(can) == type(Response()): return can
         #Change size to add Code and Name
         can.setFont('Roboto-Mono', 9)
-        can = pdf_functions.add_oneline_text(can=can, text=procedure['name'], pos=name_pos, camp_name='Procedure Name', len_max=50, len_min=7)
+        can = pdf_functions.add_oneline_text(can=can, text=procedure['name'], pos=name_pos, camp_name=f'{camp_name} Procedure Name', len_max=50, len_min=7)
         if type(can) == type(Response()): return can
-        can = pdf_functions.add_oneline_intnumber(can=can, number=procedure['quant'], pos=quant_pos, camp_name='Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
+        can = pdf_functions.add_oneline_intnumber(can=can, number=procedure['quant'], pos=quant_pos, camp_name=f'{camp_name} Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
         if type(can) == type(Response()): return can
 
         return can
@@ -257,7 +258,9 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas
             return can
         if type(procedures) != type(list()):
             return Response('procedures has to be a list of dicts, like: [{"name":"Procedure Name", "code":"cod124235", "quant":5}, {"name":"Another Procedure", "code":"another12", "quant":1}]', status=400)
-
+        if len(procedures) > 5:
+            return Response('You cannot add more than 5 secondary procedures', status=400)
+        
         #Add to cnavas
         cont = 1
         NAME_X_POS = 220
@@ -269,7 +272,7 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas
         can.setFont('Roboto-Mono', 10)
         # Add all procedures
         for proc in procedures:
-            can = add_procedure(can=can, procedure=proc, code_pos=(CODE_X_POS, ypos), name_pos=(NAME_X_POS, ypos), quant_pos=(QUANT_X_POS, ypos))
+            can = add_procedure(can=can, procedure=proc, code_pos=(CODE_X_POS, ypos), name_pos=(NAME_X_POS, ypos), quant_pos=(QUANT_X_POS, ypos), camp_name=f'({cont}) second procedures')
             if type(can) == type(Response()): return can
             ypos -= REDUCE_Y
 
