@@ -87,7 +87,7 @@ prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=datetime_
     except:
         return False 
 
-#Testing Aih SU
+#Testing Aih SUS
 def test_with_data_in_function():
     assert data_to_use() == True
 
