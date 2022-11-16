@@ -81,36 +81,6 @@ def uf_exists(uf:str) -> Union[bool, Response]:
     return bool(re.match(r'^(\s*(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)?)$', uf, flags=re.I))
 
 
-def is_CNPJ_valid(cnpj:str) -> Union[bool, Response]:
-    """Verify if a cnpj is valid
-
-    Args:
-        cnpj (str): cnpj without symbols
-
-    Returns:
-        Bollean true or false
-        Reponse if the receive worng type
-    """
-    verify = validate_func_args(function_to_verify=is_CNPJ_valid, variables_to_verify={'cnpj':cnpj})
-    if type(verify) == type(Response()):
-        return verify
-
-    if len(cnpj) != 14:
-        return False
-
-    if cnpj in (c * 14 for c in "1234567890"):
-        return False
-
-    cnpj_r = cnpj[::-1]
-    for i in range(2, 0, -1):
-        cnpj_enum = zip(cycle(range(2, 10)), cnpj_r[i:])
-        dv = sum(map(lambda x: int(x[1]) * x[0], cnpj_enum)) * 10 % 11
-        if cnpj_r[i - 1:i] != str(dv % 10):
-            return False
-
-    return True
-
-
 def add_data(can:canvas.Canvas, data:str, pos:tuple) -> Union[canvas.Canvas, Response]:
     """Add data in pdf using canvas object
 

@@ -2,52 +2,18 @@ from app.utils import pdf_functions
 from flask import Response
 
 
-#Testing globals functions
-def test_notvalidateCPF():
-    assert pdf_functions.is_CPF_valid('434.123.123-99') == False
-
-def test_truevalidateCPF():
-    assert pdf_functions.is_CPF_valid('434.234.123-99') == True
-
-def test_wrongCPFtype():
-    assert pdf_functions.is_CPF_valid(8167423414).status == Response(status=400).status
-
-
-def test_emptyCPF():
-    assert pdf_functions.is_CPF_valid('            ') == False
-
-def test_notvalidateCNS():
-    assert pdf_functions.is_CNS_valid(914874125754123) == False
-
-def test_truevalidateCNS():
-    assert pdf_functions.is_CNS_valid(928976954930007) == True
-
-def test_wrongCNStype():
-    assert pdf_functions.is_CNS_valid('8167423414').status == Response(status=400).status
-
 
 def test_longnotvalidateRG():
-    assert pdf_functions.is_RG_valid(9197841521982457189247195271597495195714) == False
+    assert pdf_functions.is_RG_valid("9197841521982457189247195271597495195714") == False
     
 def test_notvalidateRG():
-    assert pdf_functions.is_RG_valid(91454) == False
+    assert pdf_functions.is_RG_valid("91454") == False
 
 def test_truevalidateRG():
-    assert pdf_functions.is_RG_valid(928976954930007) == True
+    assert pdf_functions.is_RG_valid("928976954930007") == True
 
 def test_wrongRGtype():
-    assert pdf_functions.is_RG_valid('8167423414').status == Response(status=400).status
-
-
-#test CNPJ
-def test_notvalidateCNPJ():
-    assert pdf_functions.is_CNPJ_valid('375496712311271') == False
-
-def test_truevalidateCNPJ():
-    assert pdf_functions.is_CNPJ_valid('37549670000171') == True
-
-def test_wrongCNPJtype():
-    assert pdf_functions.is_CNPJ_valid(37549670000171).status == Response(status=400).status
+    assert pdf_functions.is_RG_valid(8167423414).status == Response(status=400).status
 
 
 #Test UF exists
