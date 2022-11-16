@@ -127,7 +127,7 @@ def fill_pdf_lme(_, info, establishment_solitc_name:str, establishment_solitc_cn
             return error
         
         except:
-            return Exception('Some error happen when adding data that can be null to fields')
+            return Exception('Critical error happen when adding data that can be null to fields')
         
         # create a new PDF with Reportlab
         c.save()

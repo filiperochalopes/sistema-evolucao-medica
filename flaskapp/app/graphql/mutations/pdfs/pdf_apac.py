@@ -2,6 +2,7 @@ import base64
 import datetime
 from PyPDF2 import PdfWriter, PdfReader
 import io
+import sys
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
@@ -13,22 +14,20 @@ from app.env import FONT_DIRECTORY, TEMPLATE_APAC_DIRECTORY, WRITE_APAC_DIRECTOR
 from app.graphql import mutation
 from ariadne import convert_kwargs_to_snake_case
 
-
+@mutation.field('generatePdf_Apac')
 @convert_kwargs_to_snake_case
-def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:int, patient_sex:str, patient_birthday:datetime.datetime, patient_adress_city:str, main_procedure_name:str, main_procedure_code:str, main_procedure_quant:int, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adress_uf:str=None, patient_adress_cep:int=None, document_chart_number:int=None, patient_adress_city_ibge_code:int=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> Union[bytes, Response]:
+def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:str, patient_sex:str, patient_birthday:str, patient_adress_city:str, main_procedure:dict, patient_mother_name:str=None, patient_mother_phonenumber:int=None, patient_responsible_name:str=None, patient_responsible_phonenumber:int=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adress_uf:str=None, patient_adress_cep:int=None, document_chart_number:int=None, patient_adress_city_ibge_code:int=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, autorization_prof_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> Union[bytes, Exception]:
     """fill pdf apac
 
     Args:
         establishment_solitc_name (str): establishment_solitc_name
         establishment_solitc_cnes (int): establishment_solitc_cnes
         patient_name (str): patient_name
-        patient_cns (int): patient_cns
+        patient_cns (str): patient_cns
         patient_sex (str): patient_sex
-        patient_birthday (datetime.datetime): patient_birthday
+        patient_birthday (str): patient_birthday
         patient_adress_city (str): patient_adress_city
-        main_procedure_name (str): main_procedure_name
-        main_procedure_code (str): main_procedure_code
-        main_procedure_quant (int): main_procedure_quant
+        main_procedure (dict): dict with name, code and quat of main procedure
         patient_mother_name (str, optional): patient_mother_name. Defaults to None.
         patient_mother_phonenumber (int, optional): patient_mother_phonenumber. Defaults to None.
         patient_responsible_name (str, optional): patient_responsible_name. Defaults to None.
@@ -77,100 +76,101 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
         # not null data
         try:
             c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(36, 678), camp_name='Patient CNS', interval='  ')
-            if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=main_procedure_code, pos=(36, 542), camp_name='Main Procedure Code', len_max=10, len_min=10, interval='  ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
+            print(main_procedure, file=sys.stderr)
+            c = add_procedure(can=c, procedure=main_procedure, code_pos=(36,542), name_pos=(220, 542), quant_pos=(508, 542))
+            print(main_procedure, file=sys.stderr)
 
+            if type(c) == type(Response()): raise Exception(c.response)
             c.setFont('Roboto-Mono', 9)
             c = pdf_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(36, 742), camp_name='Establishment Solict Name', len_max=77, len_min=7)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(36, 702), camp_name='Patient Name', len_max=67, len_min=7)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(423, 699), pos_fem=(456, 699), camp_name='Patient Sex', square_size=(9,9))
-            if type(c) == type(Response()): return c
-
-            
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(315, 678), camp_name='Patient Birthday', hours=False, interval='  ', formated=False)
-            if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(36, 584), camp_name='Patient Adress City', len_max=58, len_min=7)
-            if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_text(can=c, text=main_procedure_name, pos=(220, 542), camp_name='Main Procedure Name', len_max=50, len_min=7)
-            if type(c) == type(Response()): return c
-            c = pdf_functions.add_oneline_intnumber(can=c, number=main_procedure_quant, pos=(508, 542), camp_name='Main Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(36, 584), camp_name='Patient Adress City', len_max=58, len_min=3)
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(468, 742), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
+        
+        except Exception as error:
+            return error
+        
         except:
-            if type(c) == type(Response()):
-                return c
-            else:
-                return Response('Some error happen when adding not null data to fields', status=500)
+            return Exception('Critical error happen when adding not null data to fields')
 
         #Adding data that can be null
         try:
             c.setFont('Roboto-Mono', 11)
             c = pdf_functions.add_oneline_intnumber(can=c, number=establishment_exec_cnes, pos=(450, 28), camp_name='Establishment Exec CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval=' ', nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c.setFont('Roboto-Mono', 9)
             c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 654), camp_name='Patient Mother Name', len_max=67, len_min=7, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_phonenumber(can=c, number=patient_mother_phonenumber, pos=(409, 650), camp_name='Patient Mother Phone Number', nullable=True, interval='  ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_responsible_name, pos=(36, 630), camp_name='Patient Responsible Name', len_max=67, len_min=7, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_phonenumber(can=c, number=patient_responsible_phonenumber, pos=(409, 626), camp_name='Patient Responsible Phone Number', nullable=True, interval='  ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress, pos=(36, 608), camp_name='Patient Adress', len_max=97, len_min=7, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_color, pos=(404, 678), camp_name='Patient Color', len_max=10, len_min=4, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_ethnicity, pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_cep, pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, value_min=0, value_max=99999999, nullable=True, interval=' ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_intnumber(can=c, number=document_chart_number, pos=(483, 702), camp_name='Document Chart Number', len_max=14, len_min=1, value_min=0, value_max=99999999999999, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_city_ibge_code, pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, value_min=0, value_max=9999999, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_UF(can=c, uf=patient_adress_uf, pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_description, pos=(36, 344), camp_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_main_cid_10, pos=(352, 344), camp_name='Procedure Justification main CID10', len_max=4, len_min=3, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_sec_cid_10, pos=(420, 344), camp_name='Procedure Justification secondary CID10', len_max=4, len_min=3, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=procedure_justification_associated_cause_cid_10, pos=(505, 344), camp_name='Procedure Justification Associated Causes CID10', len_max=4, len_min=3, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=establishment_exec_name, pos=(36, 30), camp_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 204), camp_name='Profissional Solicitor Name', len_max=48, len_min=5, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=autorization_prof_name, pos=(36, 136), camp_name='Profissional Authorizator Name', len_max=46, len_min=5, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=emission_org_code, pos=(290, 136), camp_name='Emission Org Code', len_max=16, len_min=2, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(310, 204), camp_name='Solicitation Datetime', hours=False, interval='  ', formated=False, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_datetime(can=c, date=autorizaton_datetime, pos=(36, 68), camp_name='Authorization Datetime', hours=False,formated=True, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_datetime(can=c, date=signature_datetime, pos=(154, 68), camp_name='Signature Datetime', hours=False, interval='  ', formated=False, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_datetime(can=c, date=validity_period_start, pos=(402, 66), camp_name='Validity Period Start', hours=False, interval='  ', formated=False, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_datetime(can=c, date=validity_period_end, pos=(492, 66), camp_name='Validity Period End', hours=False, interval='  ', formated=False, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = add_secondary_procedures(can=c, procedures=secondaries_procedures)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_morelines_text(can=c, text=procedure_justification_comments, initial_pos=(36, 318), decrease_ypos= 10, camp_name='Procedura justification Comments', len_max=776, char_per_lines=97, len_min=5, nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_document_cns_cpf_rg(can=c, document=prof_solicitor_document, pos_square_cpf=(103, 180), pos_square_cns=(51,180), pos_cns=(151, 181), pos_cpf=(151, 181),camp_name='Professional Solicitor Document', interval='  ',nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_document_cns_cpf_rg(can=c, document=autorizaton_prof_document, pos_square_cpf=(103, 104), pos_square_cns=(51,104), pos_cns=(149, 105), pos_cpf=(151, 105),camp_name='Professional Authorizator Document', interval='  ',nullable=True)
-            if type(c) == type(Response()): return c
+            if type(c) == type(Response()): raise Exception(c.response)
+        
+        except Exception as error:
+            return error
         
         except:
-            return Response('Critical error happen when adding data that can be null to fields', status=500)
+            return Exception('Critical error happen when adding data that can be null to fields')
+
         # create a new PDF with Reportlab
         c.save()
         packet.seek(0)
@@ -188,10 +188,58 @@ def fill_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, 
         with open(WRITE_APAC_DIRECTORY, "rb") as pdf_file:
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
 
-        return pdf_base64_enconded
+        return {
+            "base64Pdf": str(pdf_base64_enconded)
+        }
     except:
         return Response("Error while filling apac", status=500)
 
+
+def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tuple, quant_pos:tuple) -> Union[canvas.Canvas, Response]:
+    """Add proceure
+
+    Args:
+        can (canvas.Canvas): canvas to use
+        procedure (dict): dict with procedure info
+        code_pos (tuple): position of code
+        name_pos (tuple): position of name
+        quant_pos (tuple): position of quant
+
+    Returns:
+        Union[canvas.Canvas, Response]: canvas updated or Response with error
+    """
+    try:
+        if procedure == None:
+            return can
+        if type(procedure) != type(dict()):
+            return Response('procedure has to be a dict, like: {"name":"Procedure Name", "code":"cod124235", "quant":5}', status=400)
+        necessaryKeys = ["name", "code", "quant"]
+        #Verify if the necessary keys are in the dict
+        if 'name' not in procedure.keys() or 'code' not in procedure.keys() or "quant" not in procedure.keys():
+            return Response('Some keys in dict is missing, dict has to have "name", "code", "quant"', status=400)
+        #Verify if the value in the dics is the needed
+        elif type(procedure['name']) != type(str()) or type(procedure['code']) != type(str()) or type(procedure["quant"]) != type(int()):
+            return Response('The values in the keys "name", "code" has to be string and "quant" has to be int', status=400)
+        #Verify if the dict has more keys than the needed
+        for key in procedure.keys():
+            if key not in necessaryKeys:
+                return Response('The dict can only have 3 keys "name", "code", "quant"', status=400)
+        
+        ## Add to canvas
+        # Change size to add Code
+        can.setFont('Roboto-Mono', 10)
+        can = pdf_functions.add_oneline_text(can=can, text=procedure['code'], pos=code_pos, camp_name='Procedure Code', len_max=10, len_min=10, interval='  ')
+        if type(can) == type(Response()): return can
+        #Change size to add Code and Name
+        can.setFont('Roboto-Mono', 9)
+        can = pdf_functions.add_oneline_text(can=can, text=procedure['name'], pos=name_pos, camp_name='Procedure Name', len_max=50, len_min=7)
+        if type(can) == type(Response()): return can
+        can = pdf_functions.add_oneline_intnumber(can=can, number=procedure['quant'], pos=quant_pos, camp_name='Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
+        if type(can) == type(Response()): return can
+
+        return can
+    except: 
+        return Response('Unkown error while adding procedures', status=500)
 
 def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas.Canvas, Response]:
     """Add secondary procedures

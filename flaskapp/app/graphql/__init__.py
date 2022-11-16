@@ -162,6 +162,26 @@ type_defs = gql(
             pensionStatus: String
         ): GeneratedPdf
 
+        "Criação de documento de APAC"
+        generatePdf_Apac(
+            "Nome do Estabelecimento Solicitante, max:77 min:7 caracteres"
+            establishmentSolitcName: String!,
+            "CNES do Estabelecimento Solicitante"
+            establishmentSolitcCnes: Int!,
+            "Nome do paciente, max:67 min:7 caracteres"
+            patientName: String!, 
+            "Número do Cartão do SUS do paciente"
+            patientCns: String!,
+            "Sexo do Paciente, opcao M ou F."
+            patientSex: String!,
+            "Data de nascimento do paciente, no formato DD/MM/YYYY"
+            patientBirthday: String!,
+            "Cidade do paciente, max:58 min:3 caracteres"
+            patientAdressCity: String!,
+            "Procedimento Solicitado, utilize o input ProcedimentoInput"
+            mainProcedure: ProcedimentoInput
+        ): GeneratedPdf
+
         "Criação de documento de Precricao medica"
         generatePdf_PrecricaoMedica(
             "Data do documento no formato DD/MM/YYYY"
@@ -494,6 +514,15 @@ type_defs = gql(
         number:String
         city: String!
         uf: String!
+    }
+
+    input ProcedimentoInput{
+        "Nome do procedimento, max:50 min: 7 caracteres"
+        name: String!
+        "Codigo do procedimento, deve ter 10 caracteres"
+        code: String!,
+        "Quantidade do procedimento, max: 8 digitos"
+        quant: Int!
     }
 
     input SurgeryBeforeInput{
