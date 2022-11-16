@@ -220,15 +220,24 @@ type_defs = gql(
             establishmentExecCnes: Int,
             "Documento do profissional solicitante, cns ou cpf, utilize o input DocumentInput"
             profSolicitorDocument: DocumentInput, 
-            "Nome do profissional solicitante, max:48 min:8 caracteres"
+            "Nome do profissional solicitante, max:48 min:5 caracteres"
             profSolicitorName: String,
-            "Data e hora da solicitacao, somente dia/mes/ano"
+            "Data da solicitacao, somente dia/mes/ano"
             solicitationDatetime: String,
-            profAutorizationName:str=None, 
-            emission_org_code:str=None, 
-            autorizaton_prof_document:dict=None, 
-            autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None
-
+            "Nome do profissional autorizador, max:46 min:5 caracteres" 
+            profAutorizationName:String,
+            "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:16 min:2 caracteres"
+            emissionOrgCode: String, 
+            "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
+            autorizatonProfDocument: DocumentInput,
+            "Data da autorizacao, somente dia/mes/ano"
+            autorizatonDatetime: String,
+            "Data da Assinatura, somente DD/MM/YYYY"
+            signatureDatetime: String,
+            "Data do inicio do periodo de Validade da APAC, utilize a data no formato DD/MM/YYYY"
+            validityPeriodStart: String,
+            "Data do fim do periodo de Validade da APAC, utilize a data no formato DD/MM/YYYY"
+            validityPeriodEnd: String
         ): GeneratedPdf
 
         "Criação de documento de Precricao medica"

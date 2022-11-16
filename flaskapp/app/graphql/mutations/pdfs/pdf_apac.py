@@ -122,7 +122,7 @@ def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_c
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_ethnicity, pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)
-            c = pdf_functions.add_oneline_intnumber(can=c, text=patient_adress_cep, pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, nullable=True, interval=' ')
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_cep, pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, nullable=True, interval=' ')
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=document_chart_number, pos=(483, 702), camp_name='Document Chart Number', len_max=14, len_min=1, nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)
