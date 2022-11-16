@@ -75,7 +75,7 @@ type_defs = gql(
             patientMotherName: String!, 
             "Endereco do paciente, somente 'rua, numero, bairro', max: 101 min:7 caracteres"
             patientAdress: String!, 
-            "Cidade do paciente, max:58 min:7 caracteres"
+            "Cidade do paciente, max:58 min:3 caracteres"
             patientAdressCity: String!, 
             "Codigo IBGE do municipio do paciente"
             patientAdressCityIbgeCode: String!,
@@ -114,11 +114,11 @@ type_defs = gql(
             "Data e hora da autorizacao, somente dia/mes/ano"
             autorizatonDatetime: String!,
             "Numero da autorizacao de internacao hospitalar, no maximo 18 digitos"
-            hospitalizationAutorizationNumber: Int!,
+            hospitalizationAutorizationNumber: String!,
             "Resultados de exames, max: 403 min:5 caracteres"
             examResults: String,
-            "Numero do Prontuario, max:20 min:5 caracteres"
-            chartNumber: Int, 
+            "Numero do Prontuario, max:20 min:1 caracteres"
+            chartNumber: String, 
             "Etinia do Paciente, max:11 min:4 caracteres"
             patientEthnicity: String, 
             "Nome do responsavel do paciente, max:70 min:7 caracteres"

@@ -17,7 +17,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_AihSus')
 @convert_kwargs_to_snake_case
-def fill_pdf_aih_sus(_, info, establishment_solitc_name:str, establishment_solitc_cnes:int, establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adress_city:str, patient_adress_city_ibge_code:int, patient_adress_uf:str, patient_adress_cep:str, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_autorization_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:int ,exam_results:str=None, chart_number:int=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> Union[bytes, Exception]:
+def fill_pdf_aih_sus(_, info, establishment_solitc_name:str, establishment_solitc_cnes:int, establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adress_city:str, patient_adress_city_ibge_code:int, patient_adress_uf:str, patient_adress_cep:str, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_autorization_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:str ,exam_results:str=None, chart_number:str=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> Union[bytes, Exception]:
     """fill pdf aih sus 
 
     Args:
@@ -50,9 +50,9 @@ def fill_pdf_aih_sus(_, info, establishment_solitc_name:str, establishment_solit
         emission_org_code (str): emission_org_code
         autorizaton_prof_document (dict): autorizaton_prof_document
         autorizaton_datetime (datetime.datetime): autorizaton_datetime
-        hospitalization_autorization_number (int): hospitalization_autorization_number
+        hospitalization_autorization_number (str): hospitalization_autorization_number
         exam_results (str, optional): exam_results. Defaults to None.
-        chart_number (int, optional): chart_number. Defaults to None.
+        chart_number (str, optional): chart_number. Defaults to None.
         patient_ethnicity (str, optional): patient_ethnicity. Defaults to None.
         patient_responsible_name (str, optional): patient_responsible_name. Defaults to None.
         patient_mother_phonenumber (int, optional): patient_mother_phonenumber. Defaults to None.
@@ -111,7 +111,7 @@ def fill_pdf_aih_sus(_, info, establishment_solitc_name:str, establishment_solit
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress, pos=(25, 593), camp_name='Patient Adress', len_max=101, len_min=7)
             if type(c) == type(Response()): raise Exception(c.response)
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(25, 566), camp_name='Patient Adress City', len_max=58, len_min=7)
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(25, 566), camp_name='Patient Adress City', len_max=58, len_min=3)
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city_ibge_code, pos=(388, 566), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7)
             if type(c) == type(Response()): raise Exception(c.response)
@@ -146,7 +146,7 @@ def fill_pdf_aih_sus(_, info, establishment_solitc_name:str, establishment_solit
             c = pdf_functions.add_datetime(can=c, date=autorizaton_datetime, pos=(30, 30), camp_name='Authorization Datetime', hours=False, interval='  ', formated=False)
             if type(c) == type(Response()): raise Exception(c.response)
             c.setFont('Roboto-Mono', 16)       
-            c = pdf_functions.add_oneline_intnumber(can=c, number=hospitalization_autorization_number, pos=(480, 66), camp_name='Hospitalization autorization Number', len_max=18, len_min=1, value_min=0, value_max=999999999999999999, centralized=True)
+            c = pdf_functions.add_oneline_text(can=c, text=hospitalization_autorization_number, pos=(480, 66), camp_name='Hospitalization autorization Number', len_max=18, len_min=1, centralized=True)
             if type(c) == type(Response()): raise Exception(c.response)
             c.setFont('Roboto-Mono', 9)       
 
@@ -161,7 +161,7 @@ def fill_pdf_aih_sus(_, info, establishment_solitc_name:str, establishment_solit
         try:
             c = pdf_functions.add_morelines_text(can=c, text=exam_results, initial_pos=(25, 362), decrease_ypos= 10, camp_name='Exam Results', len_max=403, char_per_lines=101, len_min=5, nullable=True)            
             if type(c) == type(Response()): raise Exception(c.response)
-            c = pdf_functions.add_oneline_intnumber(can=c, number=chart_number, pos=(466, 683), camp_name='Chart Number', len_max=20, len_min=1, value_min=0, value_max=99999999999999999999, nullable=True)            
+            c = pdf_functions.add_oneline_text(can=c, text=chart_number, pos=(466, 683), camp_name='Chart Number', len_max=20, len_min=1,nullable=True)            
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_ethnicity, pos=(510, 658), camp_name='Patient Ehinicity', len_max=11, len_min=4, nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)
