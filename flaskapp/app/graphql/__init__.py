@@ -452,6 +452,15 @@ type_defs = gql(
             patientAdressCity: String,
             "CEP do endereco do paciente, envie somente numeros sem formatacao, Exemplo: XXXXXXXX"
             patientAdressCep: String,
+            """
+            Escolaridade do paciente, opcoes:
+            "ANALFABETO"  -> Analfabeto
+            "FUNDINCOM"   -> Ensino Fundamental Incompleto
+            "FUNDCOMPL"   -> Ensino Fundamental Completo
+            "MEDIOCOMPL"  -> Ensino Medio Completo
+            "SUPCOMPL"    -> Ensino Superior Completo
+            """
+            patientSchooling: String,
             "Numero de telefone do paciente, envie somente textos sem formatacao. Deve ter 10 digitos somente."
             patientPhonenumber: String,
             """
@@ -478,7 +487,7 @@ type_defs = gql(
             "Codigo do IBGE do Município da Unidade de Saude"
             healthUnitCityIbgeCode: String,
             "Numero do protocolo, max: 10 caracteres"
-            documentChartNumber: Int,
+            documentChartNumber: String,
             "Sexo do paciente, envie M ou F"
             patientSex: String,
             "Nacionalidade do paciente"

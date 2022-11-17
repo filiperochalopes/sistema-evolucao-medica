@@ -17,7 +17,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_SolicitMamografia')
 @convert_kwargs_to_snake_case
-def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:int=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_ibge_code:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adress_cep:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:str=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> Union[bytes, Exception]:
+def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:str=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_ibge_code:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adress_cep:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:str=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> Union[bytes, Exception]:
     """Fill solicitacion mamografia (Solicitacao de Mamografia) 
     Args:
         patient_name (str): Patient Name
@@ -36,7 +36,7 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
         health_unit_name (str, optional): health_unit_name. Defaults to None.
         health_unit_adress_city (str, optional): health_unit_adress_city. Defaults to None.
         health_unit_city_ibge_code (str, optional): health_unit_city_ibge_code. Defaults to None.
-        document_chart_number (int, optional): document_chart_number. Defaults to None.
+        document_chart_number (str, optional): document_chart_number. Defaults to None.
         protocol_number (str, optional): protocol_number. Defaults to None.
         patient_sex (str, optional): patient_sex. Defaults to None.
         patient_surname (str, optional): patient_surname. Defaults to None.
@@ -209,7 +209,7 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=health_unit_city_ibge_code, pos=(47, 720), camp_name='Health Unit City IBGE code', len_max=7, len_min=7, nullable=True, interval='  ')
             if type(c) == type(Response()): raise Exception(c.response)
-            c = pdf_functions.add_oneline_intnumber(can=c, number=document_chart_number, pos=(410, 720), camp_name='Document Chart Number', len_max=10, len_min=1, value_min=0, value_max=99999999999999, nullable=True, interval='  ')
+            c = pdf_functions.add_oneline_text(can=c, text=document_chart_number, pos=(410, 720), camp_name='Document Chart Number', len_max=10, len_min=1, nullable=True, interval='  ')
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(291, 672), pos_fem=(338, 672), camp_name='Patient Sex', square_size=(11,9), nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)
