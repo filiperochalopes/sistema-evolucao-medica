@@ -37,7 +37,7 @@ def data_to_use(document_datetime=document_datetime_to_use, patient_name="Patien
         doctorCns: "{doctor_cns}",
         doctorCrm: "{doctor_crm}",
         evolution: "{evolution}",
-        orientations: "{orientations}",
+        orientations: "{orientations}"
     """
 
     final_string = """

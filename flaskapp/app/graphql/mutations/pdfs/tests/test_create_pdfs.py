@@ -1,299 +1,480 @@
-from app.graphql.mutations.pdfs import pdf_aih_sus, pdf_apac, pdf_exam_request, pdf_ficha_internamento, pdf_lme, pdf_prescricao_medica, pdf_relatorio_de_alta, pdf_solicit_mamografia
+from gql import gql, Client
+from gql.transport.aiohttp import AIOHTTPTransport
 import datetime
 from flask import Response
+from app.env import GRAPHQL_MUTATION_QUERY_URL
 
-global lenght_test
-lenght_test = ''
-for x in range(0, 1100):
-    lenght_test += str(x)
+# Select your transport with ag graphql url endpoint
+transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
 
-datetime_to_use = datetime.datetime.now()
+# Create a GraphQL client using the defined transport
+client = Client(transport=transport, fetch_schema_from_transport=True)
 
 def test_create_aih_sus_pdf():
-    output = pdf_aih_sus.fill_pdf_aih_sus(
-        establishment_solitc_name='Establishment Solicit Name',
-        establishment_solitc_cnes=1234567,
-        establishment_exec_name='Establshment Exec Name',
-        establishment_exec_cnes=7654321,
-        patient_name='Patient Name',
-        patient_cns=928976954930007,
-        patient_birthday=datetime_to_use,
-        patient_sex='F',
-        patient_mother_name='Patient Mother Name',
-        patient_adress='Patient Adress street neighobourd',
-        patient_adress_city='Patient City',
-        patient_adress_city_ibge_code=1234567,
-        patient_adress_uf='SP',
-        patient_adress_cep=12345678,
-        main_clinical_signs_symptoms="Patient main clinical signs sympthoms",
-        conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',
-        initial_diagnostic='Patient Initial Diagnostic',
-        principal_cid10="A00",
-        procedure_solicited='Procedure Solicited',
-        procedure_code='1234567890', 
-        clinic='Clinic Name', 
-        internation_carater='Internation Carater', 
-        prof_solicitor_document={'CPF':28445400070},
-        prof_solicitor_name='Profissional Solicit Name', 
-        solicitation_datetime=datetime_to_use, 
-        autorization_prof_name='Autorization professional name', 
-        emission_org_code='OrgCode2022', 
-        autorizaton_prof_document={'CNS':928976954930007}, 
-        autorizaton_datetime=datetime_to_use,
-        hospitalization_autorization_number=1234567890,
-        exam_results='Xray tibia broken',
-        chart_number=1234,
-        patient_ethnicity='Preta', 
-        patient_responsible_name='Patient Responsible Name', 
-        patient_mother_phonenumber=5613248546, 
-        patient_responsible_phonenumber=8564721598, 
-        secondary_cid10='A01',
-        cid10associated_causes='A02',
-        acident_type='traffic', 
-        insurance_company_cnpj=37549670000171, 
-        insurance_company_ticket_number=123450123456, 
-        insurance_company_series='Insurn',
-        company_cnpj=37549670000171, 
-        company_cnae=5310501, 
-        company_cbor=123456, 
-        pension_status='retired'
-    )
-    assert type(output) == type(bytes())
+    request_string = """
+# Write your query or mutation here
+mutation{
+	generatePdf_AihSus(
+            establishmentSolitcName: "Establishmente Solict Name",
+            establishmentSolitcCnes: 1234567,
+            establishmentExecName: "Establishment exec Name",
+            establishmentExecCnes: 1234567,
+            patientName: "Patient Name",
+            patientCns: "928976954930007",
+            patientBirthday: "10/10/2022",
+            patientSex: "M",
+            patientMotherName: "Patient Mother Name",
+            patientAdress: "Patient Adress",
+            patientAdressCity: "Jau",
+            patientAdressCityIbgeCode: "1234567",
+            patientAdressUF: "SP",
+            patientAdressCEP: "12345678"
+            mainClinicalSignsSymptoms: "Patient main clinical signs sysmpthoms",
+            conditionsJustifyHospitalization: "Patient Conditions justify hiospitalizaiton",
+            initialDiagnostic: "initial Siagnostic",
+            principalCid10: "A12",
+            procedureSolicited: "Procedurew Solicited",
+            procedureCode: "1234567890",
+            clinic: "Clinic Name",
+            internationCarater: "TYriste",
+            profSolicitorDocument: {
+            cns: "928976954930007",
+            cpf: null,
+            rg: null
+            },
+            profSolicitorName: "Professional Solicitor Name",
+            solicitationDatetime: "10/02/2021",
+            profAutorizationName: "Professional Autorizator Name",
+            emissionOrgCode: "12aass",
+            autorizatonProfDocument: {
+            cpf: "28445400070",
+            cns: null,
+            rg: null
+            }
+            autorizatonDatetime: "21/10/2022",
+            hospitalizationAutorizationNumber: "1212",
+            examResults: "Exam Results",
+            chartNumber: "124",
+            patientEthnicity: "Etnia",
+            patientResponsibleName: "Responsible NAme",
+            patientMotherPhonenumber: "4212344321",
+            patientResponsiblePhonenumber: "1245875421",
+            secondaryCid10: "S32",
+            cid10AssociatedCauses: "A213",
+            acidentType: "WORK",
+            insuranceCompanyCnpj: "37549670000171",
+            insuranceCompanyTicketNumber: "12354",
+            insuranceCompanySeries: "1233",
+            companyCnpj: "37549670000171",
+            companyCnae: 5310501,
+            companyCbor: 123456,
+            pensionStatus: "WORKER"
+    ){base64Pdf}
+}
+    """
+
+    query = gql(request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+    assert result == True
 
 
 def test_create_apac_pdf():
-    output = pdf_apac.fill_pdf_apac(
-        establishment_solitc_name='Establishment Solicit Name',
-        establishment_solitc_cnes=1234567,
-        patient_name='Patient Name',
-        patient_cns=928976954930007,
-        patient_sex='M',
-        patient_birthday=datetime_to_use,
-        patient_adress_city='Patient Adress City',
-        main_procedure_name='Main procedure Name',
-        main_procedure_code='1234567890',
-        main_procedure_quant=4,
-        patient_mother_name='Patient Mother Name',
-        patient_mother_phonenumber=5286758957, 
-        patient_responsible_name='Patient Responsible Name', patient_responsible_phonenumber=5465981345, 
-        patient_adress='Patient Adress',
-        patient_color='Branca',
-        patient_ethnicity='Indigena',
-        patient_adress_uf='BA',
-        patient_adress_cep=86425910, 
-        document_chart_number=12345,
-        patient_adress_city_ibge_code=4528765,
-        procedure_justification_description='Procedure Justification Description', 
-        procedure_justification_main_cid10='A98', 
-        procedure_justification_sec_cid10='A01', procedure_justification_associated_cause_cid10='A45',
-        procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', 
-        establishment_exec_cnes=7654321,
-        prof_solicitor_document={'CPF':28445400070}, 
-        prof_solicitor_name='Profissional Solicit Name', 
-        solicitation_datetime=datetime_to_use,
-        signature_datetime=datetime_to_use,
-        validity_period_start=datetime_to_use,
-        validity_period_end=datetime_to_use,
-        autorization_prof_name='Autorization Professional Name', 
-        emission_org_code='Cod121234', 
-        autorizaton_prof_document={'CPF':28445400070}, 
-        autorizaton_datetime=datetime_to_use,
-        secondaries_procedures=[{"procedure_name":"Procedure Name", "procedure_code":"cod4521578", "quant":5}, {"procedure_name":"Another Procedure", "procedure_code":"123Another", "quant":1}]
-    )
-    assert type(output) == type(bytes())
+    request_string = """
+# Write your query or mutation here
+mutation{
+	generatePdf_Apac(
+		establishmentSolitcName: "Establihsment Name",
+		establishmentSolitcCnes: 1234567,
+		patientName: "Patient Name",
+		patientCns: "928976954930007",
+		patientSex: "M",
+		patientBirthday: "22/10/2022",
+		patientAdressCity: "Patient",
+		mainProcedure: {
+		name: "teste procedimento",
+		code: "hkmaug347s",
+		quant: 1
+		},
+		secondariesProcedures:[
+		{
+		name: "teste procedimento",
+		code: "hkmaug347s",
+		quant: 1
+		},
+		{
+		name: "segundo procedimento",
+		code: "hkmhsa3s23",
+		quant: 4
+		}
+		],
+		patientMotherName: "Patient Mother Name",
+		patientMotherPhonenumber: "3412344321",
+		patientResponsibleName: "Patient Responsible Name",
+		patientResponsiblePhonenumber: "5425415864",
+		patientAdress: "Patient Adress ",
+		patientEthnicity: "Etinia",
+		patientColor: "BRANCA",
+		patientAdressUF: "SP",
+		patientAdressCEP: "12345678",
+		documentChartNumber: "12345",
+		patientAdressCityIbgeCode: "4528765",
+		procedureJustificationDescription: "Procedure Justification Description",
+		procedureJustificationMainCid10: "A123",
+		procedureJustificationSecCid10: "A31",
+		procedureJustificationAssociatedCauseCid10: "B435",
+		procedureJustificationComments: "Procedure Justification Comments",
+		establishmentExecName: "Etablishment Exec Name",
+		establishmentExecCnes: 7654321,
+		profSolicitorDocument: {
+		cns: "928976954930007",
+		cpf: null,
+		rg: null
+		},
+		profSolicitorName: "Professional Solicitator",
+		solicitationDatetime: "10/11/2021",
+		profAutorizationName: "Professional Autorizaton",
+		emissionOrgCode: "Cod121234",
+		autorizatonProfDocument: {
+		cns: "928976954930007",
+		cpf: null,
+		rg: null
+		},
+		autorizatonDatetime: "10/10/2022",
+		signatureDatetime: "15/10/2022",
+		validityPeriodStart: "15/10/2022",
+		validityPeriodEnd: "15/11/2022"
+		)
+{base64Pdf}
+}
+"""
+
+    query = gql(request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+    assert result == True
 
 
 def test_create_exam_request_pdf():
-    output = pdf_exam_request.fill_pdf_exam_request(
-        patient_name='Patient Name', 
-        patient_cns=928976954930007, 
-        patient_birthday=datetime_to_use, 
-        patient_adress="Patient Adress", 
-        exams=lenght_test[:800],
-        solicitation_reason="Solicitation Reason", 
-        prof_solicitor="Professional Solicitor", 
-        prof_authorized="Professional Authorized", 
-        solicitation_datetime=datetime_to_use, 
-        autorization_datetime=datetime_to_use, document_pacient_date=datetime_to_use, 
-        document_pacient_name='Document pacient name'
-    )
-    assert type(output) == type(bytes())
+    request_string = """
+# Write your query or mutation here
+mutation{
+	generatePdf_SolicitExames(
+            patientName: "Patient NAme",
+            patientCns: "928976954930007",
+            patientBirthday: "10/10/2021",
+            patientAdress: "Patient Adress",
+            solicitationReason: "Solicitation reason",
+            profSolicitorName: "Professional solicitor Name",
+            solicitationDatetime: "10/10/2014",
+            exams: "Exames Solicitados",
+            profAuthorizedName: "Prof Autorization Name", 
+            documentPacientName: "Document Pacient NAme",
+            autorizationDatetime: "10/10/2021",
+            documentPacientDate: "10/08/2021"
+		){base64Pdf}
+}
+"""
+
+    query = gql(request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+    assert result == True
 
 
 def test_create_ficha_internamento_pdf():
-    output = pdf_ficha_internamento.fill_pdf_ficha_internamento(
-        document_datetime=datetime_to_use, 
-        patient_name="Patient Name",
-        patient_cns=928976954930007,
-        patient_birthday=datetime_to_use,
-        patient_sex='F',
-        patient_mother_name="Patient Mother Name",
-        patient_document={'CPF':28445400070},
-        patient_adress='pacient street, 43, paciten, USA',
-        patient_phonenumber=44387694628,
-        patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.',
-        patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',
-        current_illness_history='Current illnes hsitoryaaaaaaaaaaaedqeqa',
-        initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral.',
-        doctor_name='Doctor Name',
-        doctor_cns=928976954930007,
-        doctor_crm='CRM/UF 123456',
-        patient_adress_number=123456,
-        patient_adress_neigh='Patient Neighborhood',
-        patient_adress_city='Patient city',
-        patient_adress_uf='sp',
-        patient_adress_cep=12345678,
-        patient_nationality='Brasileira',
-        patient_estimate_weight=123,
-        has_additional_health_insurance=False
-        )
-    assert type(output) == type(bytes())
+    request_string = """
+# Write your query or mutation here
+mutation{
+	generatePdf_FichaInternamento(
+            documentDatetime: "10/10/2014 10:12",
+            patientName: "Patient Name",
+            patientCns: "928976954930007",
+            patientBirthday: "10/10/2021",
+            patientSex: "M",
+            patientMotherName: "Patient Mother Name",
+            patientDocument: {
+            cpf: "28445400070",
+            cns: null,
+            rg: null
+            },
+            patientAdress: "Patient Adress",
+            patientPhonenumber: "10123456789",
+            patientDrugAllergies: "Patient Drug Allergies",
+            patientComorbidities: "Patient Commorbidites",
+            currentIllnessHistory: "Current Illness History",
+            hasAdditionalHealthInsurance: "SIM",
+            initialDiagnosticSuspicion: "Initial Suspiction",
+            doctorName: "Doctor Name",
+            doctorCns: "928976954930007",
+            doctorCrm: "CRM/UF 123456",
+            patientAdressNumber: 124,
+            patientAdressNeigh: "Patient Neighbourhood",
+            patientAdressCity: "Patient City",
+            patientAdressUf: "SP",
+            patientAdressCep: "12345678",
+            patientNationality: "Brasileira",
+            patientEstimateWeight: 140
+		){base64Pdf}
+}
+"""
+
+    query = gql(request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+    assert result == True
 
 
 def test_create_lme_pdf():
-    output = pdf_lme.fill_pdf_lme(
-        establishment_solitc_name='Establishment Solicit Name',
-        establishment_solitc_cnes=1234567,
-        patient_name='Patient Name',
-        patient_mother_name='Patient Mother Name',
-        patient_weight=142,
-        patient_height=180,
-        cid10='A123',
-        anamnese="Anamnese",
-        prof_solicitor_name="Professional Solicitor Name",
-        solicitation_datetime=datetime_to_use,
-        prof_solicitor_document={'CPF':28445400070},
-        capacity_attest=['nao', 'Responsible Name'],
-        filled_by=['MEDICO', 'Other name', {'CPF':28445400070}],
-        patient_ethnicity=['SEMINFO', 'Patient Ethnicity'],
-        previous_treatment=['SIM', 'Previout Theatment'],
-        diagnostic='Diagnostic',
-        patient_document={'CNS':928976954930007},
-        patient_email='patietemail@gmail.com',
-        contacts_phonenumbers=[1254875652, 4578456598],
-        medicines=[{"medicineName":lenght_test[:60], "quant1month":"20 comp", "quant2month":"15 comp", "quant3month":"5 comp"}]
-    )
-    assert type(output) == type(bytes())
+    request_string = """
+# Write your query or mutation here
+mutation{
+	generatePdf_Lme(
+    establishmentSolitcName: "Establishment Solicit Name",
+        establishmentSolitcCnes: 1234567,
+        patientName: "Patient Name",
+        patientMotherName: "Patient Mother Name",
+        patientWeight: 142,
+        patientHeight: 180,
+        cid10: "A123",
+        anamnese: "Anamnese",
+        profSolicitorName: "Professional Solicitor Name",
+        solicitationDatetime: "17/11/2022",
+        profSolicitorDocument: {cpf:"28445400070"},
+        capacityAttest: ["nao", "Responsible Name"],
+        filledBy: ["MEDICO", "Other name", "{'cpf':'28445400070'}"],
+        patientEthnicity: ["SEMINFO", "Patient Ethnicity"],
+        previousTreatment: ["SIM", "Previout Theatment"],
+        diagnostic: "Diagnostic",
+        patientDocument: {cns: "928976954930007", rg: null, cpf: null},
+        patientEmail: "patietemail@gmail.com",
+        contactsPhonenumbers: ["1254875652", "4578456598"],
+        medicines: [{medicineName: "nome do Medicamneto", quant1month:"20 comp",        quant2month: "15 comp", quant3month: "5 comp"},{medicineName: "nome do Medicamneto", quant1month:"20 comp", quant2month: "15 comp", quant3month: "5 comp"}]
+){base64Pdf}
+}
+"""
+
+    query = gql(request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+    assert result == True
 
 def test_create_precricao_medica_pdf():
-    output = pdf_prescricao_medica.fill_pdf_prescricao_medica(
-        document_datetime=datetime_to_use,
-        patient_name='Pacient Name',
-        prescription=[{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]
-    )
-    assert type(output) == type(bytes())
+    request_string = """
+# Write your query or mutation here
+mutation{
+	generatePdf_PrecricaoMedica(
+    documentDatetime: "17/11/2022",
+    patientName: "Pacient Name",
+    prescription: [{medicineName:"Dipirona 500mg", amount:"4 comprimidos", useMode:"1 comprimido, via oral, de 6/6h por 3 dias"}]
+
+){base64Pdf}
+}
+"""
+
+    query = gql(request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+    assert result == True
 
 def test_create_relatorio_alta_pdf():
-    output = pdf_relatorio_de_alta.fill_pdf_relatorio_alta(
-        document_datetime=datetime_to_use, 
-        patient_name="Patient Name",
-        patient_cns=928976954930007,
-        patient_birthday=datetime_to_use,
-        patient_sex='F',
-        patient_mother_name="Patient Mother Name",
-        patient_document={'CPF':28445400070},
-        patient_adress='pacient street, 43, paciten, USA',
-        evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',
-        doctor_name='Doctor Name',
-        doctor_cns=928976954930007,
-        doctor_crm='CRM/UF 123456',
-        orientations='Do not jump'
-        )
-    assert type(output) == type(bytes())
+    request_string = """
+# Write your query or mutation here
+mutation{
+	generatePdf_RelatorioAlta(
+    documentDatetime: "17/11/2022 03:23",
+    patientName: "Patient Name",
+    patientCns: "928976954930007",
+    patientBirthday: "17/11/2022",
+    patientSex: "F",
+    patientMotherName: "Patient Mother Name",
+    patientDocument: {cpf: "28445400070", rg: null, cns: null},
+    patientAdress: "pacient street, 43, paciten, USA",
+    doctorName: "Doctor Name",
+    doctorCns: "928976954930007",
+    doctorCrm: "CRM/UF 123456",
+    evolution: "Current illnes hsitoryaaaaaaaaaaaedqeqa",
+    orientations: "Do not jump"
+){base64Pdf}
+}
+"""
+
+    query = gql(request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+    assert result == True
 
 
 
 def test_create_solicit_mamografia_pdf():
-    output = pdf_solicit_mamografia.fill_pdf_solicit_mamografia(
-        patient_name='Patient Name',
-    patient_cns=928976954930007,
-    patient_mother_name='Patient Mother Name',
-    patient_birthday=datetime_to_use,
-    solicitation_datetime=datetime_to_use,
-    prof_solicitor_name='Professional Name',
-    nodule_lump='NAO',
-    high_risk='NAOSABE',
-    examinated_before='NAOSABE',
-    mammogram_before=['nao', "2020"],
-    patient_age=23,
-    health_unit_adress_uf='SP',
-    health_unit_cnes=1234567,
-    health_unit_name="Health Unit Name",
-    health_unit_adress_city='Unit City',
-    health_unit_city_ibge_code=1234567,
-    document_chart_number=1234567895,
-    protocol_number='5478546135245165',
-    patient_sex='F',
-    patient_surname='Patient Surname',
-    patient_document_cpf={'CPF':28445400070},
-    patient_nationality='Patient Nationality',
-    patient_adress='Patient Adress',
-    patient_adress_number=123456,
-    patient_adress_adjunct='Patient Adress Adjunct',
-    patient_adress_neighborhood='Neighborhood',
-    patient_city_ibge_code=1234567,
-    patient_adress_city='Patient City',
-    patient_adress_uf='SP',
-    patient_ethnicity=['INDIGENA', 'Indigena'],
-    patient_adress_reference='Adress Reference',
-    patient_schooling='SUPCOMPL',
-    patient_adress_cep=12345678,
-    exam_number=int(lenght_test[:10]),
-    tracking_mammogram='JATRATADO',
-    patient_phonenumber=1234567890,
-    radiotherapy_before=['SIMESQ', '2020'],
-    breast_surgery_before={
-'did_not':False,
-'biopsia_insinonal':(2021, 2020),
-'biopsia_excisional':(2021, 2020),
-'centraledomia':(2021, 2020),
-'segmentectomia':None,
-'dutectomia':(2021, 2020),
-'mastectomia':(2021, 2020),
-'mastectomia_poupadora_pele':(2021, 2020),
-'mastectomia_poupadora_pele_complexo_areolo':(2021, 2020),
-'linfadenectomia_axilar':(2021, 2020),
-'biopsia_linfonodo':(2021, 2020),
-'reconstrucao_mamaria':(2021, 2020),
-'mastoplastia_redutora':(2021, 2020),
-'indusao_implantes':(2021, 2020)
-},
-    diagnostic_mammogram={
-    'exame_clinico':
-        {'direita':[
-            'PAPILAR', 
-            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
-            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
-            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
-            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
-            ],
-        'esquerda':[
-            'PAPILAR', 
-            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
-            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
-            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
-            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
-            ]
-        },
-    'controle_radiologico':
-        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
-        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
-        },
-    'lesao_diagnostico':
-        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
-        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
-        },
-    'avaliacao_resposta':
-        ['direita', 'esquerda'],
-    'revisao_mamografia_lesao':
-        {'direita': ['0', '3', '4', '5'],
-        'esquerda': ['0', '3', '4', '5']
-        },
-    'controle_lesao':
-        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
-        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
-        }}
-)
-    assert type(output) == type(bytes())
+    request_string = """
+# Write your query or mutation here
+mutation{
+	generatePdf_SolicitMamografia(
+            patientCns: "928976954930007",
+            patientBirthday: "10/10/2021",
+            mammogramBefore: ["SIM", "2020"],
+            patientAge: 24,
+            patientName: "'Pacient Name",
+            patientMotherName: "Paciente Mother Name",
+            noduleLump: "SIMDIR",
+            highRisk: "SIM",
+            examinatedBefore: "NUNCA",
+            healthUnitName: "heath Unit Name",
+            healthUnitAdressUf: "SP",
+            healthUnitAdressCity: "Jau",
+            patientSurname: "Lero",
+            patientAdress: "Patient Adress",
+            patientAdressAdjunct: "Patient Adjunct",
+            patientAdressNeighborhood: "Adress Neubr",
+            patientAdressReference: "Reference",
+            patientAdressCity: "CAi",
+            patientAdressCep: "12345678",
+            patientPhonenumber: "4212345678",
+            radiotherapyBefore: ["NAO", null],
+            breastSurgeryBefore: {
+            didNot: "TRUE",
+            biopsiaInsinonal: [null],
+            biopsiaLinfonodo: [null],
+            biopsiaExcisional: [null],
+            centraledomia: [null], 
+            segmentectomia: [null],
+            dutectomia: [null],
+            mastectomia: [null],
+            mastectomiaPoupadoraPele: [null],
+            mastectomiaPoupadoraPeleComplexoAreolo: [null],
+            linfadenectomiaAxilar: [null],
+            reconstrucaoMamaria: [null],
+            mastoplastiaRedutora: [null],
+            indusaoImplantes: [null]
+            },
+            healthUnitCnes: 1234567,
+            protocolNumber: "1233",
+            patientDocumentCpf: {
+            cns: null,
+            rg: null,
+            cpf: "28445400070"
+            },
+            patientAdressNumber: 12,
+            patientAdressUf: "SP",
+            healthUnitCityIbgeCode: "1234567",
+            documentChartNumber: "142",
+            patientSex: "M",
+            patientNationality: "Brasileiro",
+            patientCityIbgeCode: "1234567",
+            patientEthnicity: ["BRANCA", null],
+            profSolicitorName: "Professional Soliciame",
+            solicitationDatetime: "10/10/2012",
+            examNumber: "4124",
+            trackingMammogram: "POPALVO",
+            diagnosticMammogram: {
+            exameClinico:{
+                direta: {
+                papilar: true,
+                descargaPapilar: ["CRISTALINA", "HEMORRAGICA"],
+                nodulo: ["QSL", "QIL", "QSM", "QIM"],
+                espessamento: ["QSL", "QIL", "QSM", "QIM"],
+                linfonodoPalpavel: ["AXILAR", "SUPRACLAVICULAR"]
+                },
+                esquerda:{
+                papilar: true,
+                descargaPapilar: ["CRISTALINA", "HEMORRAGICA"],
+                nodulo: ["QSL", "QIL", "QSM", "QIM"],
+                espessamento: ["QSL", "QIL", "QSM", "QIM"],
+                linfonodoPalpavel: ["AXILAR", "SUPRACLAVICULAR"]
+                }
+            },
+            controleRadiologico:{
+                direta: ["nodulo", "microca", "assimetria_focal"],
+                esquerda: ["nodulo", "microca", "assimetria_focal"]
+            },
+            lesaoDiagnostico: {
+                direta: ["nodulo", "microca", "assimetria_focal"],
+                esquerda: ["nodulo", "microca", "assimetria_focal"] 
+            },
+            avaliacaoResposta: ["direita", "esquerda"],
+            revisaoMamografiaLesao: {
+                direta: ["0", "3", "4", "5"],
+                esquerda: ["0", "3", "4", "5"]
+            },
+            controleLesao: {
+                direta: ["nodulo", "microca", "assimetria_focal"],
+                esquerda: ["nodulo", "microca", "assimetria_focal"]
+            }
+            
+            }
+	){base64Pdf}
+}
+"""
+
+    query = gql(request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+    assert result == True
+
 
 
