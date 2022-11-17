@@ -20,7 +20,7 @@ from ariadne import convert_kwargs_to_snake_case
 @mutation.field('generatePdf_SolicitExames')
 @convert_kwargs_to_snake_case
 def fill_pdf_exam_request(_, info, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_adress:str, solicitation_reason:str,
-exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_authorized:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> Union[bytes, Exception]:
+exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof_authorized_name:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> Union[bytes, Exception]:
     """fill pdf exam request (Solicitacao de exames e procedimentos)
 
     Args:
@@ -30,9 +30,9 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
         patient_adress (str): patient_adress
         solicitation_reason (str): solicitation_reason
         exams (str): text with exams, this is what extends pdf size to fill all exams
-        prof_solicitor (str): prof_solicitor
+        prof_solicitor_name (str): prof_solicitor_name
         solicitation_datetime (datetime.datetime): solicitation_datetime
-        prof_authorized (str, optional): prof_authorized. Defaults to None.
+        prof_authorized_name (str, optional): prof_authorized_name. Defaults to None.
         autorization_datetime (datetime.datetime, optional): autorization_datetime. Defaults to None.
         document_pacient_date (datetime.datetime, optional): document_pacient_date. Defaults to None.
         document_pacient_name (str, optional): document_pacient_name. Defaults to None.
@@ -79,7 +79,7 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
                 if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_morelines_text(can=c, text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, camp_name='Solicitation Reason', len_max=216, len_min=7, char_per_lines=108)
                 if type(c) == type(Response()): raise Exception(c.response)
-                c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor, pos=(7, prof_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
+                c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(7, prof_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
                 if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True)
                 if type(c) == type(Response()): raise Exception(c.response)
@@ -108,7 +108,7 @@ exams:str, prof_solicitor:str, solicitation_datetime:datetime.datetime,prof_auth
             autorization_datetime_ypos = 572
             document_pacient_date_ypos = 572
             for x in range(pags_quant):
-                c = pdf_functions.add_oneline_text(can=c, text=prof_authorized, pos=(174, prof_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
+                c = pdf_functions.add_oneline_text(can=c, text=prof_authorized_name, pos=(174, prof_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
                 if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_oneline_text(can=c, text=document_pacient_name, pos=(340, document_pacient_name_ypos), camp_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
                 if type(c) == type(Response()): raise Exception(c.response)

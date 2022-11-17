@@ -377,13 +377,13 @@ type_defs = gql(
             "Motivo da Solicitacao, max: 216 min:7 caracteres"
             solicitationReason: String!,
             "Nome do profissional Solicitante, max:29 min:7 caracteres"
-            profSolicitor: String!,
+            profSolicitorName: String!,
             "Data da Solicitacao no formato DD/MM/YYYY"
             solicitationDatetime: String!,
             "Exames solicitados"
             exams: String!,
             "Nome do profissional autorizador, max:29 min:7 caracteres"
-            profAuthorized: String,
+            profAuthorizedName: String,
             "Nome do paciente no final do documento, esse campo fica no fim do documento e tem um tamanho maximo diferente. max:46 min:7 caracteres"
             documentPacientName: String,
             "Data da Autorizacao no formato DD/MM/YYYY"
