@@ -1,4 +1,4 @@
-# Como rodas os testes
+# Como rodar os testes
 ## Entre no diretorio /app/app
 ```cd /app/app```
 ## Agora rode os teste utilizando esse comando
