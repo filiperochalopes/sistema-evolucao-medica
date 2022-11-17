@@ -1,7 +1,6 @@
 from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
 import datetime
-from flask import Response
 from app.env import GRAPHQL_MUTATION_QUERY_URL
 
 global lenght_test

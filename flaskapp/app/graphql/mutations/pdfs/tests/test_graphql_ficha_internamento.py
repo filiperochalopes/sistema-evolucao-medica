@@ -112,10 +112,10 @@ def test_awnser_with_only_required_data():
     assert result == True
 
 def test_validrg_patient_document():
-    assert data_to_use(patient_document='{cpf: null,cns: null,rg: "928976954930007"}') != type(Response())
+    assert data_to_use(patient_document='{cpf: null,cns: null,rg: "928976954930007"}') == True
 
 def test_validcpf_patient_document():
-    assert data_to_use(patient_document='{cpf: "28445400070",cns: null,rg: null}') != type(Response())
+    assert data_to_use(patient_document='{cpf: "28445400070",cns: null,rg: null}') == True
 
 
 #################################################################
