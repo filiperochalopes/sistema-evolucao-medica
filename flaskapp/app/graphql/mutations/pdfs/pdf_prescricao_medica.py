@@ -17,7 +17,7 @@ from app.graphql import mutation
 from ariadne import convert_kwargs_to_snake_case
 
 
-@mutation.field('generatePdf_PrecricaoMedica')
+@mutation.field('generatePdf_PrescricaoMedica')
 @convert_kwargs_to_snake_case
 def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str, prescription:list) -> Union[bytes, Exception]:
     """fill pdf prescricao medica with 2 pages 

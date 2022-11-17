@@ -22,7 +22,7 @@ def data_to_use(_=None, info=None, document_datetime=datetime_to_use,
         
         request_string = """
         mutation{
-            generatePdf_PrecricaoMedica("""
+            generatePdf_PrescricaoMedica("""
 
         campos_string = f"""
             documentDatetime: "{document_datetime}",

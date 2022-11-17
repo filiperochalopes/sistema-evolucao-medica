@@ -326,7 +326,7 @@ mutation{
 ```graphql
 # Write your query or mutation here
 mutation{
-	generatePdf_PrecricaoMedica(
+	generatePdf_PrescricaoMedica(
     documentDatetime: "17/11/2022",
     patientName: "Pacient Name",
     prescription: [{medicineName:"Dipirona 500mg", amount:"4 comprimidos", useMode:"1 comprimido, via oral, de 6/6h por 3 dias"}]

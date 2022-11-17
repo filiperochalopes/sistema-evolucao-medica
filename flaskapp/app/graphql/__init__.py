@@ -241,7 +241,7 @@ type_defs = gql(
         ): GeneratedPdf
 
         "Criação de documento de Precricao medica"
-        generatePdf_PrecricaoMedica(
+        generatePdf_PrescricaoMedica(
             "Data do documento no formato DD/MM/YYYY"
             documentDatetime: String!,
             "Nome do paciente, max:34 min:7 caracteres"
