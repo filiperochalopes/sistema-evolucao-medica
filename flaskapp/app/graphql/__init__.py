@@ -536,8 +536,6 @@ type_defs = gql(
             patientComorbidities: String!,
             "Historia da doenca atual/Exame fisico, max: 1600 min:10 caracteres"
             currentIllnessHistory: String!,
-            "Possui convenio suplementar, opcoes: 'SIM','NAO'"
-            hasAdditionalHealthInsurance: String!,
             "Supeita diagnostica Inicial (CID), max:100 min:5 caracteres"
             initialDiagnosticSuspicion: String!,
             "Nome do Medico, max: 49 min:7 caracteres"
@@ -558,6 +556,8 @@ type_defs = gql(
             patientAdressCep: String,
             "Nacionalidade do paciente, max:25 min:3 caracteres"
             patientNationality: String,
+            "Possui convenio suplementar, opcoes: 'SIM','NAO'"
+            hasAdditionalHealthInsurance: String,
             """
             Peso estimado do paciente, numero inteiro no maximo 3 digitos, sera entendido como um valor total.
             Exemplo:

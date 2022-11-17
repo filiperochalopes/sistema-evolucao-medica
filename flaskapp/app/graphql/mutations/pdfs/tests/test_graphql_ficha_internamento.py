@@ -72,24 +72,44 @@ def test_answer_with_all_fields():
 
 
 def test_awnser_with_only_required_data():
-    assert type(pdf_ficha_internamento.fill_pdf_ficha_internamento(
-        document_datetime=datetime_to_use, 
-        patient_name="Patient Name",
-        patient_cns=928976954930007,
-        patient_birthday=datetime_to_use,
-        patient_sex='F',
-        patient_mother_name="Patient Mother Name",
-        patient_document={'CPF':28445400070},
-        patient_adress='pacient street, 43, paciten, USA',
-        patient_phonenumber=44387694628,
-        patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.',
-        patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',
-        current_illness_history='Current illnes hsitoryaaaaaaaaaaa',
-        initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral',
-        doctor_name='Doctor Name',
-        doctor_cns=928976954930007,
-        doctor_crm='CRM/UF 123456'
-        )) != type(Response())
+    request_string = """
+        mutation{
+            generatePdf_FichaInternamento("""
+
+    campos_string = """
+    documentDatetime: "10/10/2014 10:12",
+    patientName: "Patient Name",
+    patientCns: "928976954930007",
+    patientBirthday: "10/10/2021",
+    patientSex: "M",
+    patientMotherName: "Patient Mother Name",
+    patientDocument: {cpf: "28445400070",cns: null,rg: null},
+    patientAdress: "Patient Adress",
+    patientPhonenumber: "10123456789",
+    patientDrugAllergies: "Patient Drug Allergies",
+    patientComorbidities: "Patient Commorbidites",
+    currentIllnessHistory: "Current Illness History",
+    initialDiagnosticSuspicion: "Initial Suspiction",
+    doctorName: "Doctor Name",
+    doctorCns: "928976954930007",
+    doctorCrm: "CRM/UF 123456",
+    """
+
+    final_string = """
+    ){base64Pdf}
+    }
+    """
+    all_string = request_string + campos_string + final_string
+    query = gql(all_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
 
 ##############################################################
 # ERRORS IN NAMES CAMPS
