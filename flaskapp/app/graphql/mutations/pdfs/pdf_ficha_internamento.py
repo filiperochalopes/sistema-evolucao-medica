@@ -113,7 +113,7 @@ def fill_pdf_ficha_internamento(_, info, document_datetime:datetime.datetime, pa
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_neigh, pos=(66, 580), camp_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(243, 580), camp_name='Patient Adress City', len_max=34, len_min=4, nullable=True)
+            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(243, 580), camp_name='Patient Adress City', len_max=34, len_min=3, nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_UF(can=c, uf=patient_adress_uf, pos=(444, 580), camp_name='Patient Adress UF', nullable=True)
             if type(c) == type(Response()): raise Exception(c.response)

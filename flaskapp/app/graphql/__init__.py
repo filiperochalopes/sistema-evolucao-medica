@@ -550,7 +550,7 @@ type_defs = gql(
             patientAdressNumber: Int,
             "Bairro do endereco do paciente, max: 31 min: 4 caracters"
             patientAdressNeigh: String,
-            "Cidade do endereco do paciente, max:34 min:4 caracteres"
+            "Cidade do endereco do paciente, max:34 min:3 caracteres"
             patientAdressCity: String,
             "UF do endereco do paciente, envie somente a sigla"
             patientAdressUf: String,
