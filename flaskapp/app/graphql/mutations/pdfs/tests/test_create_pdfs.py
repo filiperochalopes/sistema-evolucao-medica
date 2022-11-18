@@ -301,7 +301,7 @@ def test_create_precricao_medica_pdf():
     request_string = """
 # Write your query or mutation here
 mutation{
-	generatePdf_PrecricaoMedica(
+	generatePdf_PrescricaoMedica(
     documentDatetime: "17/11/2022",
     patientName: "Pacient Name",
     prescription: [{medicineName:"Dipirona 500mg", amount:"4 comprimidos", useMode:"1 comprimido, via oral, de 6/6h por 3 dias"}]
@@ -319,8 +319,6 @@ mutation{
     except:
         result = False 
     
-    assert result == True
-
     assert result == True
 
 def test_create_relatorio_alta_pdf():
