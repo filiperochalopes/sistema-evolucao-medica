@@ -25,10 +25,10 @@ const ModalContextProvider = ({ children }) => {
     setModais([]);
   }, [navigate]);
 
-  function templateRemoveModal({ hook, id }) {
+  function templateRemoveModal({ hook, id, params = {} }) {
     const newModais = modais.filter((modal) => modal.id !== id);
     setModais(newModais);
-    hook();
+    hook(params);
   }
 
   function addModal({
@@ -36,6 +36,7 @@ const ModalContextProvider = ({ children }) => {
     content,
     returnButtonAction = () => {},
     title,
+    customBackgroundHeader,
   }) {
     const id = uuidv4();
     setModais([
@@ -46,10 +47,12 @@ const ModalContextProvider = ({ children }) => {
           <Modal
             key={id}
             headerTitle={title}
-            confirmButton={() =>
+            customBackgroundHeader={customBackgroundHeader}
+            confirmButton={(params) =>
               templateRemoveModal({
                 hook: confirmButtonAction,
                 id,
+                params,
               })
             }
             goBack={() =>
