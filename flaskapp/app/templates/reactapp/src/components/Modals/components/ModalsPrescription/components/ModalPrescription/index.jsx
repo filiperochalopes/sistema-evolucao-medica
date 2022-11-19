@@ -16,6 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import Container from "./styles";
 import { v4 as uuidv4 } from "uuid";
+import schema from "./schema";
 
 const prescriptionTypesStrategies = {
   drug: ({ formik }) => {
@@ -110,6 +111,7 @@ const ModalAddPrescription = ({ confirmButton }) => {
     onSubmit: (values) => {
       confirmButton({ id: uuidv4(), ...values });
     },
+    validationSchema: schema,
   });
 
   useEffect(() => {
