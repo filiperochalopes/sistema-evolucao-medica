@@ -82,8 +82,6 @@ mutation{
     
     assert result == True
 
-    assert result == True
-
 
 def test_create_apac_pdf():
     request_string = """
@@ -166,8 +164,6 @@ mutation{
     
     assert result == True
 
-    assert result == True
-
 
 def test_create_exam_request_pdf():
     request_string = """
@@ -199,8 +195,6 @@ mutation{
     except:
         result = False 
     
-    assert result == True
-
     assert result == True
 
 
@@ -252,8 +246,6 @@ mutation{
     
     assert result == True
 
-    assert result == True
-
 
 def test_create_lme_pdf():
     request_string = """
@@ -295,7 +287,6 @@ mutation{
     
     assert result == True
 
-    assert result == True
 
 def test_create_precricao_medica_pdf():
     request_string = """
@@ -354,7 +345,6 @@ mutation{
     
     assert result == True
 
-    assert result == True
 
 
 
@@ -470,7 +460,6 @@ mutation{
     
     assert result == True
 
-    assert result == True
 
 
 
