@@ -11,6 +11,7 @@ import Select from "components/Select";
 import { ALLERGIES, CID10, COMORBIDITIES } from "graphql/queries";
 import { useEffect } from "react";
 import getCepApiAdapter from "services/getCepApiAdapter";
+import schema from "./schema";
 
 const Admit = () => {
   const [createInternment] = useMutation(CREATE_INTERNMENT);
@@ -61,6 +62,7 @@ const Admit = () => {
       });
       console.log(values);
     },
+    validationSchema: schema,
   });
 
   useEffect(() => {
