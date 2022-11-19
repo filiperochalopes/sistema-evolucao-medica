@@ -13,6 +13,8 @@ migrate:
 	docker exec -it evolucao_hospitalar_flaskapp bash -c "flask db upgrade"
 makemigrations:
 	docker exec -it evolucao_hospitalar_flaskapp bash -c 'flask db migrate -m "$(m)"'
+test:
+	docker exec -it evolucao_hospitalar_flaskapp bash -c 'pytest -s'
 reset_db:
 	docker exec -it evolucao_hospitalar_flaskapp bash -c ' \
 		rm -rf migrations && \

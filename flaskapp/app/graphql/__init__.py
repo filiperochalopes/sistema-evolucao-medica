@@ -62,34 +62,75 @@ type_defs = gql('''
             "Diagnóstico inicial de internamento"
             cid10Code: String
         ): Internment
-
+        """
+        Cria uma evolução textual de enfermagem ou médica
+        """    
         createEvolution(
             "Id do internamento do paciente para o qual a evolução está sendo inserida"
             internmentId: Int!, 
             "Texto da evolução médica ou de enfermagem"
             text:String,
-            "Dados clínicos e de exames que justificam o internamento"
-            prescription: PrescriptionInput,
-            "Diagnóstico inicial de internamento"
-            pendings: String
             "Diagnóstico caso tenha alterado durante o internamento"
             cid10Code: String
-        ): FullEvolution
+            ): Evolution
+        """
+        Cria um registro de prescrição que pode ser atualizado no mesmo dia.
+        """    
+        createPrescription(
+            "Id do internamento do paciente para o qual a evolução está sendo inserida"
+            internmentId: Int!, 
+            restingActivity: String
+            diet: String
+            drugs: [DrugPrescriptionInput]
+            nursingActivities: [String]
+            ): Prescription
+        """
+        Cria um registro de pendências, útil para passagem de plantão, quando o colega necessita saber 
+        """    
+        createPending(
+            "Id do internamento do paciente para o qual a evolução está sendo inserida"
+            internmentId: Int!, 
+            restingActivity: String
+            diet: String
+            drugs: [DrugPrescriptionInput]
+            nursingActivities: [String]
+            ): Prescription
         """
         É responsável por salvar os sinais vitais de um paciente, relacionado a um internamento
         """
-        createMeasure: Boolean
+        createMeasure(
+            "Id do internamento do paciente para o qual a evolução está sendo inserida"
+            internmentId: Int!, 
+            "Saturação de Oxigênio"
+            spO2: Int
+            "Escala de dor de 0 a 10"
+            pain: Int
+            "Pressão arterial sistólica, número de 1 a 3 dígitos"
+            systolicBloodPressure: Int
+            "Pressão arterial diastólica, número de 1 a 3 dígitos"
+            diastolicBloodPressure: Int
+            "Frequencia cardíaca, de dois a 3 dígitos"
+            cardiacFrequency: Int
+            "Frequencia respiratória, dois dígitos"
+            respiratoryFrequency: Int
+            "Temperatura axilar em graus celcius, dois dígitos"
+            celciusAxillaryTemperature: Int
+            "Medida de glicemia no padrão mg/dL, chamada também de HGT ou glicemia periférica"
+            glucose: Int
+            "Batimentos cardíacos fetais, para uso em gestantes. De dois a três dígitos"
+            fetalCardiacFrequency: Int
+            ): Measure
         """
         É responsável por salvar um registro único de balanço hídrico, relacionado a um internamento
         """
-        createFluidBalance: Boolean
-    }
-
-    input PrescriptionInput{
-        restingActivity: String
-        diet: String
-        drugs: [DrugPrescriptionInput]
-        nursingActivities: [String]
+        createFluidBalance(
+            "Id do internamento do paciente para o qual a evolução está sendo inserida"
+            internmentId: Int!, 
+            "Volume que foi recebido ou desprezado no momento"
+            volumeMl: Int
+            "Essa string deve ser, de preferência, uma das disponibilizadas para FluidBalanceDescription"
+            description: String
+        ): Boolean
     }
 
     input DrugPrescriptionInput{
@@ -104,23 +145,12 @@ type_defs = gql('''
         endingDate: String
     }
 
-    input MeasureInput{
-        spO2: Int
-        pain: Int
-        sistolicBloodPressure: Int
-        diastolicBloodPressure: Int
-        cardiacFrequency: Int
-        respiratoryFrequency: Int
-        celciusAxillaryTemperature: Int
-        glucose: Int
-        fetalCardiacFrequency: Int
-    }
-
     input AddressInput{
         zipCode: String
         street:String
-        complement:String
         number:String
+        neighborhood:String
+        complement:String
         city: String!
         uf: String!
     }
@@ -152,6 +182,8 @@ type_defs = gql('''
         name:String,
         "Sexo biológico binário `male` ou `female`"
         sex:String,
+        "Dado muito relevante para cáculos, peso em quilos"
+        weightKg: Float!
         "Data de aniversário no formato `yyyy-mm-dd`"
         birthday: String
         "Apenas dígitos, para fins de testes pode gerar [nesse link](https://geradornv.com.br/gerador-cpf/)"
@@ -214,12 +246,6 @@ type_defs = gql('''
         createdAt: String
     }
 
-    type FullEvolution{
-        evolution: Evolution
-        prescription: Prescription
-        pendings: Pending
-    }
-
     type Pending{
         text: String
     }
@@ -228,7 +254,7 @@ type_defs = gql('''
         id: ID!
         spO2: Int
         pain: Int
-        sistolicBloodPressure: Int
+        systolicBloodPressure: Int
         diastolicBloodPressure: Int
         cardiacFrequency: Int
         respiratoryFrequency: Int
