@@ -23,7 +23,7 @@ function Login() {
     onSubmit: async (values) => {
       try {
         const response = await signing({ variables: values });
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.signin.token);
         navigate("/pacientes");
       } catch {
         alert("error,tente novamente");

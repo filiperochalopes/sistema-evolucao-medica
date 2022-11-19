@@ -8,7 +8,7 @@ import { useFormik } from "formik";
 import { CREATE_INTERNMENT } from "graphql/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import Select from "components/Select";
-import { ALLERGIES, COMORBIDITIES } from "graphql/queries";
+import { ALLERGIES, CID10, COMORBIDITIES } from "graphql/queries";
 import { useEffect } from "react";
 import getCepApiAdapter from "services/getCepApiAdapter";
 
@@ -16,6 +16,7 @@ const Admit = () => {
   const [createInternment] = useMutation(CREATE_INTERNMENT);
   const { data: allergiesData } = useQuery(ALLERGIES);
   const { data: comorbiditiesData } = useQuery(COMORBIDITIES);
+  const { data: cid10Data } = useQuery(CID10);
   const formik = useFormik({
     initialValues: {
       addPacient: false,
@@ -245,9 +246,14 @@ const Admit = () => {
           value={formik.values.justification}
           placeholder="DADOS CLÍNICOS QUE DEMONSTRAM NECESSIDADE DE INTERNAMENTO"
         />
-        <Input
-          onChange={formik.handleChange}
+        <Select
+          onChange={(e) => {
+            formik.setFieldValue("patient.cid10Code", e);
+          }}
+          getOptionLabel={(option) => option.description}
+          getOptionValue={(option) => option.code}
           name="cid10Code"
+          options={cid10Data?.cid10 || []}
           value={formik.values.cid10Code}
           placeholder="CID - SUSPEITA INICIAL"
         />
