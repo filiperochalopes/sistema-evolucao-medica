@@ -1,4 +1,4 @@
-import Container from "./styles";
+import Container, { ContainerListOption } from "./styles";
 
 import Button from "components/Button";
 import Input from "components/Input";
@@ -7,9 +7,15 @@ import TextArea from "components/TextArea";
 import Select from "components/Select";
 import { useModalContext } from "services/ModalContext";
 import updatePacientData from "helpers/updatePacientData";
+import addPrescription from "helpers/addPrescription";
+import { MdModeEdit } from "react-icons/md";
+import trash from "assets/trash.svg";
+import deletePrescription from "helpers/deletePrescription";
+import { useTheme } from "styled-components";
 
 const Evolution = () => {
   const { addModal } = useModalContext();
+  const theme = useTheme();
 
   return (
     <Container>
@@ -48,7 +54,28 @@ const Evolution = () => {
         <h2>Prescrição</h2>
         <ol>
           <li>
-            <ListOption>REPOUSO RELATIVO NO LEITO À 30°</ListOption>
+            <ListOption>
+              <ContainerListOption>
+                <p>REPOUSO RELATIVO NO LEITO À 30°</p>{" "}
+                <div>
+                  <button type="button">
+                    <MdModeEdit size={18} color={theme.colors.blue} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      addModal(
+                        deletePrescription({
+                          confirmButtonAction: () => console.log("oi"),
+                        })
+                      )
+                    }
+                  >
+                    <img src={trash} alt="remover" />
+                  </button>
+                </div>
+              </ContainerListOption>
+            </ListOption>
           </li>
           <li>
             <ListOption>REPOUSO RELATIVO NO LEITO À 30°</ListOption>
@@ -68,7 +95,13 @@ const Evolution = () => {
           <Button className="button_add_prescription">
             Adicionar medicações sintomáticas
           </Button>
-          <Button className="button_normal">Adicionar nova linha</Button>
+          <Button
+            className="button_normal"
+            type="button"
+            onClick={() => addModal(addPrescription)}
+          >
+            Adicionar nova linha
+          </Button>
         </div>
         <Button className="button_normal button-update_prescription">
           Atualizar prescrição

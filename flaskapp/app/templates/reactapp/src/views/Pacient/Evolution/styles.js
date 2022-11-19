@@ -123,3 +123,20 @@ export default styled.div`
     }
   }
 `;
+
+export const ContainerListOption = styled.div`
+  width: 100%;
+  justify-content: space-between;
+  display: flex;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  > div {
+    display: flex;
+    column-gap: 0.5rem;
+  }
+`;
