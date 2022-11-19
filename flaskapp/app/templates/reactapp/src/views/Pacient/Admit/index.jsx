@@ -30,20 +30,34 @@ const Admit = () => {
         cpf: "",
         cns: "",
         rg: "",
-        commorbidities: [],
+        comorbidities: [],
         allergies: [],
+        weightKg: "",
         address: {
-          zipcode: "",
+          zipCode: "",
           street: "dd",
           complement: "",
           number: "32",
           city: "",
           uf: "",
+          neighborhood: "",
         },
       },
     },
     onSubmit: (values) => {
-      createInternment({ variables: values });
+      const { addPacient, ...rest } = values;
+      const patient = {
+        ...values.patient,
+        sex: values.patient.sex.value,
+        comorbidities: values.patient.comorbidities.map(
+          (commorbiditie) => commorbiditie.id
+        ),
+        allergies: values.patient.allergies.map((allergie) => allergie.id),
+        weightKg: Number(values.patient.weightKg),
+      };
+      createInternment({
+        variables: { ...rest, patient, admissionDatetime: new Date() },
+      });
       console.log(values);
     },
   });
@@ -52,7 +66,7 @@ const Admit = () => {
     async function getCep() {
       try {
         const response = await getCepApiAdapter(
-          formik.values.patient.address.zipcode
+          formik.values.patient.address.zipCode
         );
         formik.setValues({
           ...formik.values,
@@ -67,7 +81,7 @@ const Admit = () => {
       }
     }
     getCep();
-  }, [formik.values.patient.address.zipcode]);
+  }, [formik.values.patient.address.zipCode]);
 
   return (
     <Container onSubmit={formik.handleSubmit}>
@@ -120,6 +134,13 @@ const Admit = () => {
             <Input
               onChange={formik.handleChange}
               className="small"
+              name="patient.weightKg"
+              value={formik.values.patient.weightKg}
+              placeholder="Peso"
+            />
+            <Input
+              onChange={formik.handleChange}
+              className="small"
               name="patient.address.complement"
               value={formik.values.patient.address.complement}
               placeholder="Endereço"
@@ -142,8 +163,8 @@ const Admit = () => {
             <Input
               onChange={formik.handleChange}
               className="small"
-              name="patient.address.zipcode"
-              value={formik.values.patient.address.zipcode}
+              name="patient.address.zipCode"
+              value={formik.values.patient.address.zipCode}
               placeholder="CEP"
             />
           </div>
@@ -151,9 +172,9 @@ const Admit = () => {
             <Input
               onChange={formik.handleChange}
               className="small"
-              value={formik.values.patient.address.street}
-              name="patient.address.street"
-              placeholder="Rua"
+              value={formik.values.patient.address.neighborhood}
+              name="patient.address.neighborhood"
+              placeholder="Bairro"
             />
             <Input
               onChange={formik.handleChange}
@@ -199,9 +220,9 @@ const Admit = () => {
           />
           <Select
             onChange={(e) => {
-              formik.setFieldValue("patient.commorbidities", e);
+              formik.setFieldValue("patient.comorbidities", e);
             }}
-            value={formik.values.patient.commorbidities}
+            value={formik.values.patient.comorbidities}
             placeholder="COMORBIDADES"
             getOptionLabel={(option) => option.value}
             getOptionValue={(option) => option.id}

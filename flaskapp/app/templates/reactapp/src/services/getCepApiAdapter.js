@@ -4,7 +4,7 @@ const zipCodeLengthIsEight = (zipcode) =>
   zipcode.match(/\d+/gi)?.join("").length === 8;
 
 const trasnsformRequestData = (data) => ({
-  zipcode: data.cep.match(/\d+/gi)?.join(""),
+  zipCode: data.cep.match(/\d+/gi)?.join(""),
   complement: data.complemento,
   number: "",
   city: data.localidade,
