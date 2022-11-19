@@ -39,8 +39,8 @@ const prescriptionTypesStrategies = {
           onChange={(e) => formik.setFieldValue("drugs", e)}
         />
         <div className="container_checkbox">
-          <CheckBox />
-          <p>É antibiótico.</p>
+          <CheckBox id="checkbox" onClick={() => console.log("a")} />
+          <label htmlFor="checkbox">É antibiótico.</label>
         </div>
         <div className="row">
           <Input type="date" className="medium_size" />
