@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export default styled.div`
   width: 100vw;
@@ -48,7 +48,7 @@ export const Header = styled.div`
   display: flex;
   color: ${({ theme }) => theme.colors.white};
   align-items: center;
-  margin-left: 2rem;
+  padding-left: 2rem;
   justify-content: space-between;
 
   p {
@@ -65,4 +65,13 @@ export const Header = styled.div`
     cursor: pointer;
     justify-content: center;
   }
+
+  ${({ customBackgroundHeader, theme }) => {
+    switch (customBackgroundHeader) {
+      case "red":
+        return css`
+          background-color: ${theme.colors.red700};
+        `;
+    }
+  }}
 `;

@@ -5,7 +5,13 @@ import React, { cloneElement } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useTheme } from "styled-components";
 
-const Modal = ({ children, confirmButton, goBack, headerTitle }) => {
+const Modal = ({
+  children,
+  confirmButton,
+  goBack,
+  headerTitle,
+  customBackgroundHeader,
+}) => {
   const theme = useTheme();
   console.log(confirmButton);
 
@@ -24,7 +30,7 @@ const Modal = ({ children, confirmButton, goBack, headerTitle }) => {
         <ContainerContentModal>
           <PageTemplate
             headerComponent={
-              <Header>
+              <Header customBackgroundHeader={customBackgroundHeader}>
                 <p>{headerTitle}</p>
                 <button
                   type="button"
@@ -39,7 +45,7 @@ const Modal = ({ children, confirmButton, goBack, headerTitle }) => {
               </Header>
             }
           >
-            {cloneElement(children, { confirmButton })}
+            {cloneElement(children, { confirmButton, goBack })}
           </PageTemplate>
         </ContainerContentModal>
       </div>
