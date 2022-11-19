@@ -15,6 +15,7 @@ import {
 } from "graphql/queries";
 import { useEffect, useState } from "react";
 import Container from "./styles";
+import { v4 as uuidv4 } from "uuid";
 
 const prescriptionTypesStrategies = {
   drug: ({ formik }) => {
@@ -31,21 +32,52 @@ const prescriptionTypesStrategies = {
     }, [drugRoutesData]);
     return (
       <>
-        <Input placeholder="Modo de uso" />
+        <Input
+          value={formik.values.drug.useMode}
+          name="drug.useMode"
+          onChange={formik.handleChange}
+          placeholder="Modo de uso"
+        />
         <Select
           options={dataDrugsRoutesInObject}
           className="medium_size"
+          value={formik.values.drug.routeAdministration}
           placeholder="Via de Administração"
-          onChange={(e) => formik.setFieldValue("drugs", e)}
+          onChange={(e) => formik.setFieldValue("drug.routeAdministration", e)}
         />
         <div className="container_checkbox">
-          <CheckBox id="checkbox" onClick={() => console.log("a")} />
+          <CheckBox
+            checked={formik.values.drug.isAntibiotic}
+            id="checkbox"
+            onClick={() =>
+              formik.setFieldValue(
+                "drug.isAntibiotic",
+                !formik.values.drug.isAntibiotic
+              )
+            }
+          />
           <label htmlFor="checkbox">É antibiótico.</label>
         </div>
-        <div className="row">
-          <Input type="date" className="medium_size" />
-          <Input type="date" className="medium_size" />
-        </div>
+        {formik.values.drug.isAntibiotic && (
+          <div className="row">
+            <Input
+              onChange={formik.handleChange}
+              value={formik.values.drug.initialDate}
+              name="drug.initialDate"
+              type="date"
+              className="medium_size"
+              placeholder="Data de início"
+            />
+            <Input
+              value={formik.values.drug.finalDate}
+              name="drug.finalDate"
+              onChange={formik.handleChange}
+              type="date"
+              className="medium_size"
+              placeholder="Data de fim"
+            />
+          </div>
+        )}
       </>
     );
   },
@@ -54,26 +86,37 @@ const prescriptionTypesStrategies = {
   },
 };
 
-const ModalAddPrescription = ({ internmentId }) => {
+const ModalAddPrescription = ({ confirmButton }) => {
   const { data: prescriptionTypesData } = useQuery(PRESCRIPTION_TYPES);
   const [getDrugs] = useLazyQuery(DRUGS);
   const [getRestingActivities] = useLazyQuery(RESTING_ACTIVITIES);
   const [getDiets] = useLazyQuery(DIETS);
   const [getNusingActivities] = useLazyQuery(NURSING_ACTIVITIES);
 
-  const [prescriptionType, setPrescriptionType] = useState({});
+  const [prescriptionType, setPrescriptionType] = useState(undefined);
   const [medicaments, setMedicaments] = useState([]);
   const formik = useFormik({
     initialValues: {
-      restingActivity: "",
-      diet: "",
-      drugs: [],
-      nursingActivities: [],
+      type: "",
+      medicament: "",
+      drug: {
+        useMode: "",
+        routeAdministration: "",
+        isAntibiotic: false,
+        initialDate: "",
+        finalDate: "",
+      },
+    },
+    onSubmit: (values) => {
+      confirmButton({ id: uuidv4(), ...values });
     },
   });
 
   useEffect(() => {
     let request = null;
+    if (!prescriptionType?.name) {
+      return;
+    }
     if (prescriptionType.name === "drug") {
       request = getDrugs;
     } else if (prescriptionType.name === "diet") {
@@ -97,17 +140,18 @@ const ModalAddPrescription = ({ internmentId }) => {
   ]);
 
   const PrescriptionComponent =
-    prescriptionTypesStrategies[prescriptionType.name || ""] ||
+    prescriptionTypesStrategies[prescriptionType?.name || ""] ||
     prescriptionTypesStrategies.default;
 
   return (
-    <Container>
+    <Container onSubmit={formik.handleSubmit}>
       <Select
         getOptionLabel={(option) => option.label}
         getOptionValue={(option) => option.name}
         options={prescriptionTypesData?.prescriptionTypes || []}
         className="medium_size"
         placeholder="Tipo de Prescrição"
+        value={prescriptionType}
         onChange={(e) => setPrescriptionType(e)}
       />
       <div className="container_medicaments">
@@ -115,13 +159,13 @@ const ModalAddPrescription = ({ internmentId }) => {
           getOptionLabel={(option) => option.name}
           getOptionValue={(option) => option.id}
           options={medicaments}
+          onChange={(e) => formik.setFieldValue("medicament", e)}
           placeholder="Campo que seleciona um ou adiciona novo"
+          values={formik.values.medicament}
         />
         <PrescriptionComponent formik={formik} />
       </div>
-      <Button className="medium_size" type="button">
-        Adicionar Linha
-      </Button>
+      <Button className="medium_size">Adicionar Linha</Button>
     </Container>
   );
 };

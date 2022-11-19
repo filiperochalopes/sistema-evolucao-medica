@@ -12,10 +12,19 @@ import { MdModeEdit } from "react-icons/md";
 import trash from "assets/trash.svg";
 import deletePrescription from "helpers/deletePrescription";
 import { useTheme } from "styled-components";
+import { useFormik } from "formik";
 
 const Evolution = () => {
   const { addModal } = useModalContext();
   const theme = useTheme();
+  const formik = useFormik({
+    initialValues: {
+      restingActivity: "",
+      diet: "",
+      drugs: [],
+      nursingActivities: [],
+    },
+  });
 
   return (
     <Container>
@@ -55,26 +64,72 @@ const Evolution = () => {
         <ol>
           <li>
             <ListOption>
-              <ContainerListOption>
-                <p>REPOUSO RELATIVO NO LEITO À 30°</p>{" "}
-                <div>
-                  <button type="button">
-                    <MdModeEdit size={18} color={theme.colors.blue} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      addModal(
-                        deletePrescription({
-                          confirmButtonAction: () => console.log("oi"),
-                        })
-                      )
-                    }
-                  >
-                    <img src={trash} alt="remover" />
-                  </button>
-                </div>
-              </ContainerListOption>
+              {formik.values.diet && (
+                <ContainerListOption>
+                  <p>{formik.values.diet}</p>{" "}
+                  <div>
+                    <button type="button">
+                      <MdModeEdit size={18} color={theme.colors.blue} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        addModal(
+                          deletePrescription({
+                            confirmButtonAction: () => console.log("oi"),
+                          })
+                        )
+                      }
+                    >
+                      <img src={trash} alt="remover" />
+                    </button>
+                  </div>
+                </ContainerListOption>
+              )}
+              {formik.values.restingActivity && (
+                <ContainerListOption>
+                  <p>{formik.values.restingActivity}</p>{" "}
+                  <div>
+                    <button type="button">
+                      <MdModeEdit size={18} color={theme.colors.blue} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        addModal(
+                          deletePrescription({
+                            confirmButtonAction: () => console.log("oi"),
+                          })
+                        )
+                      }
+                    >
+                      <img src={trash} alt="remover" />
+                    </button>
+                  </div>
+                </ContainerListOption>
+              )}
+              {formik.values.drugs.map((drug) => (
+                <ContainerListOption key={drug.id}>
+                  <p>{drug.medicament}</p>{" "}
+                  <div>
+                    <button type="button">
+                      <MdModeEdit size={18} color={theme.colors.blue} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        addModal(
+                          deletePrescription({
+                            confirmButtonAction: () => console.log("oi"),
+                          })
+                        )
+                      }
+                    >
+                      <img src={trash} alt="remover" />
+                    </button>
+                  </div>
+                </ContainerListOption>
+              ))}
             </ListOption>
           </li>
           <li>
@@ -98,7 +153,14 @@ const Evolution = () => {
           <Button
             className="button_normal"
             type="button"
-            onClick={() => addModal(addPrescription)}
+            onClick={() =>
+              addModal(
+                addPrescription({
+                  confirmButtonAction: (values) =>
+                    console.log("values", values),
+                })
+              )
+            }
           >
             Adicionar nova linha
           </Button>
