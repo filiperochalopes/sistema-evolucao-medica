@@ -36,3 +36,53 @@ export const COMORBIDITIES = gql`
     }
   }
 `;
+
+export const PRESCRIPTION_TYPES = gql`
+  query getPrescriptionTypes {
+    prescriptionTypes {
+      name
+      label
+    }
+  }
+`;
+
+export const DRUGS = gql`
+  query getDrugs {
+    drugs {
+      name
+      id
+    }
+  }
+`;
+
+export const DIETS = gql`
+  query getDiets {
+    diets {
+      name
+      id
+    }
+  }
+`;
+export const NURSING_ACTIVITIES = gql`
+  query getNursingActivities {
+    nursingActivities {
+      name
+      id
+    }
+  }
+`;
+
+export const RESTING_ACTIVITIES = gql`
+  query getRestingActivities {
+    restingActivities {
+      name
+      id
+    }
+  }
+`;
+
+export const DRUG_ROUTES = gql`
+  query getDrugRoutes {
+    drugRoutes
+  }
+`;
