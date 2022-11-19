@@ -26,6 +26,11 @@ export default styled.button`
             background-color: #e9e9e9;
           }
         `;
+      case "red":
+        return css`
+          background-color: ${({ theme }) => theme.colors.red700};
+          color: ${({ theme }) => theme.colors.white};
+        `;
       default:
         return css`
           background-color: ${({ theme }) => theme.colors.blue};
