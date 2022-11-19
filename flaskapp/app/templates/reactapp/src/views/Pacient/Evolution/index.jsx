@@ -13,6 +13,7 @@ import trash from "assets/trash.svg";
 import deletePrescription from "helpers/deletePrescription";
 import { useTheme } from "styled-components";
 import { useFormik } from "formik";
+import schema from "./schema";
 
 const Evolution = () => {
   const { addModal } = useModalContext();
@@ -24,6 +25,7 @@ const Evolution = () => {
       drugs: [],
       nursingActivities: [],
     },
+    validationSchema: schema,
   });
 
   return (
