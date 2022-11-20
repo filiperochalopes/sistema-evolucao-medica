@@ -134,10 +134,13 @@ type_defs = gql('''
     }
 
     input DrugPrescriptionInput{
+        "Nome da medicação"
         drugName: String
         "No momento só existem 2 tipos: `atb`  para antibióticos, pois com esse o campo de data inicial de uso dedve ser obrigatória e `oth` para outros"
         drugKind: String
+        "Modo de uso"
         dosage: String
+        "Via de administração"
         route: String
         "No formato %Y-%m-%d %H:%M:%S"
         initialDate: String
@@ -291,8 +294,12 @@ type_defs = gql('''
     }
 
     type Option{
+        "Identificador único da option"
         name: String,
+        "Identificador Human readable"
         label: String
+        "Seed que preenche o campo de options"
+        querySeed: String
     }
 
     type DrugPrescription{
