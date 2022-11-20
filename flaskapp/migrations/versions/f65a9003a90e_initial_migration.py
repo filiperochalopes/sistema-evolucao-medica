@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: cdb4a33f1ebb
+Revision ID: f65a9003a90e
 Revises: 
-Create Date: 2022-11-14 12:35:35.689707
+Create Date: 2022-11-19 13:10:56.107564
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'cdb4a33f1ebb'
+revision = 'f65a9003a90e'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -225,16 +225,18 @@ def upgrade():
     sa.Column('value', sa.Integer(), nullable=True),
     sa.Column('description_id', sa.Integer(), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('professional_id', sa.Integer(), nullable=True),
     sa.Column('internment_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['description_id'], ['fluid_balance_description.id'], ),
     sa.ForeignKeyConstraint(['internment_id'], ['internments.id'], ),
+    sa.ForeignKeyConstraint(['professional_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('measures',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('spO2', sa.Integer(), nullable=True),
     sa.Column('pain', sa.Integer(), nullable=True),
-    sa.Column('sistolic_bp', sa.Integer(), nullable=True),
+    sa.Column('systolic_bp', sa.Integer(), nullable=True),
     sa.Column('diastolic_bp', sa.Integer(), nullable=True),
     sa.Column('cardiac_freq', sa.Integer(), nullable=True),
     sa.Column('respiratory_freq', sa.Integer(), nullable=True),
@@ -242,8 +244,10 @@ def upgrade():
     sa.Column('glucose', sa.Integer(), nullable=True),
     sa.Column('fetal_cardiac_freq', sa.Integer(), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('professional_id', sa.Integer(), nullable=True),
     sa.Column('internment_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['internment_id'], ['internments.id'], ),
+    sa.ForeignKeyConstraint(['professional_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('pendings',
