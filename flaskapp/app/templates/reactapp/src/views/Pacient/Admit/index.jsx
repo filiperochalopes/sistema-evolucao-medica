@@ -1,4 +1,5 @@
 import Container, { ContainerSearchInput, ContainerAddPacient } from "./styles";
+import { createFilter, components } from "react-select";
 
 import Button from "components/Button";
 import Input from "components/Input";
@@ -24,7 +25,7 @@ const Admit = () => {
       admissionDatetime: "",
       hpi: "",
       justification: "",
-      cid10Code: "",
+      cid10Code: null,
       patient: {
         name: "",
         sex: "",
@@ -250,11 +251,20 @@ const Admit = () => {
         />
         <Select
           onChange={(e) => {
-            formik.setFieldValue("patient.cid10Code", e);
+            formik.setFieldValue("cid10Code", e);
           }}
+          components={{
+            Option: ({ children, ...props }) => {
+              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+              const newProps = Object.assign(props, { innerProps: rest });
+              return (
+                <components.Option {...newProps}>{children}</components.Option>
+              );
+            },
+          }}
+          filterOption={createFilter({ ignoreAccents: false })}
           getOptionLabel={(option) => option.description}
           getOptionValue={(option) => option.code}
-          name="cid10Code"
           options={cid10Data?.cid10 || []}
           value={formik.values.cid10Code}
           placeholder="CID - SUSPEITA INICIAL"

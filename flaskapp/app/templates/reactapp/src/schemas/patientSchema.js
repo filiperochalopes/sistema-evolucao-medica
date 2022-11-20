@@ -7,10 +7,10 @@ export default Yup.object().shape({
   cpf: Yup.string().required(),
   cns: Yup.string().required(),
   rg: Yup.string().required(),
-  comorbidities: Yup.array().of(Yup.mixed().required()),
-  allergies: Yup.array().of(Yup.mixed().required()),
+  comorbidities: Yup.array().of(Yup.mixed()),
+  allergies: Yup.array().of(Yup.mixed()),
   weightKg: Yup.string().required(),
-  address: {
+  address: Yup.object().shape({
     zipCode: Yup.string().required(),
     street: Yup.string().required(),
     complement: Yup.string().required(),
@@ -18,5 +18,5 @@ export default Yup.object().shape({
     city: Yup.string().required(),
     uf: Yup.string().required(),
     neighborhood: Yup.string().required(),
-  },
+  }),
 });
