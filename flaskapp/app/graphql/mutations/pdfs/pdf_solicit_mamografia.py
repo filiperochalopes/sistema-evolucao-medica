@@ -286,7 +286,7 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
 
         return {
-            "base64Pdf": str(pdf_base64_enconded)
+            "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
     except:
         return Exception("Error while filling aih sus")

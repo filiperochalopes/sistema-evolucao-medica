@@ -144,7 +144,7 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
         with open(WRITE_EXAM_REQUEST_DIRECTORY, "rb") as pdf_file:
             pdf_base64_enconded = base64.b64encode(pdf_file.read())
         return {
-            "base64Pdf": str(pdf_base64_enconded)
+            "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
     except:
         return Exception("Error while filling exam request")
