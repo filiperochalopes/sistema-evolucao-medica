@@ -106,13 +106,15 @@ mutation{
 
 ```graphql
 mutation {
-  createInternment(patient: {
+  createInternment(
+    admissionDatetime: "2022-11-21 15:22"
+    patient: {
     name:"Orlando Flórida"
     sex:"male"
     birthday:"1995-12-01"
     cns: "105118227480000"
     cpf: "33131763990"
-    weightKg: 65
+    weightKg: 65.5
     comorbidities: ["Hipertensão Arterial Sistêmica (HAS)", "Diabetes Mellitus (DM)"]
     allergies: ["Dipirona", "Amoxicilina", "latex"]
     address: {
