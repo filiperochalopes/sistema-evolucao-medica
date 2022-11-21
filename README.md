@@ -112,6 +112,7 @@ mutation {
     birthday:"1995-12-01"
     cns: "105118227480000"
     cpf: "33131763990"
+    weightKg: 65
     comorbidities: ["Hipertensão Arterial Sistêmica (HAS)", "Diabetes Mellitus (DM)"]
     allergies: ["Dipirona", "Amoxicilina", "latex"]
     address: {
