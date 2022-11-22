@@ -99,7 +99,7 @@ def add_data(can:canvas.Canvas, data:str, pos:tuple) -> Union[canvas.Canvas, Res
         can.drawString(pos[0], pos[1], data)
         return can
     except:
-        return Response("Error when adding data to document with canvas", status=500)
+        raise Exception("Error when adding data to document with canvas")
 
 
 def add_square(can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)) -> Union[canvas.Canvas, Response]:
@@ -114,12 +114,12 @@ def add_square(can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)) -> Union[canvas.
         canvas(canvas.Canvas): canvas with all changes
         or
         Response(flask.Response): with the error
-    """    
+    """
     try:
         can.rect(x=pos[0], y=pos[1], width=size[0], height=size[1], fill=1)
         return can
     except:
-        return Response("Error when adding square to document with canvas", status=500)
+        raise Exception("Error when adding square to document with canvas")
 
 
 def add_centralized_data(can:canvas.Canvas, data:str, pos:tuple) -> Union[canvas.Canvas, Response]:
@@ -184,7 +184,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_
             if text == None or len(str(text).strip()) == 0:
                 return can
 
-        verify = validate_func_args(function_to_verify=add_oneline_text, variables_to_verify={'can':can, 'text':text, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized})
+        validate_func_args(function_to_verify=add_oneline_text, variables_to_verify={'can':can, 'text':text, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized})
 
         if not nullable:
             text = text.strip()
@@ -204,7 +204,6 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_
     
     except Exception as error:
         raise error
-
     except:
         raise Exception(f'Unknow error while adding {camp_name}')
 
@@ -235,15 +234,13 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         if nullable:
             if text == None or len(str(text).strip()) == 0:
                 return can
-        verify = validate_func_args(function_to_verify=add_morelines_text, variables_to_verify={'can':can, 'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'camp_name':camp_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval}, nullable_variables=['max_lines_amount'])
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_morelines_text, variables_to_verify={'can':can, 'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'camp_name':camp_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval}, nullable_variables=['max_lines_amount'])
 
 
         if not nullable:
             text = text.strip()
             if len(text) == 0:
-                return Response(f'{camp_name} cannot be empty', status=400)
+                raise Exception(f'{camp_name} cannot be empty')
         # verify if text is in the need lenght
         text = text.strip()
         if len_min <= len(text) <= len_max:
@@ -251,7 +248,7 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
             str_to_line = ''
             broke_lines_times = int(len(text)/char_per_lines)
             if max_lines_amount != None and broke_lines_times + 1 > max_lines_amount:
-                return Response(f'Unable to add {camp_name} because lines amount needed is more than {max_lines_amount}', status=500)
+                raise Exception(f'Unable to add {camp_name} because lines amount needed is more than {max_lines_amount}')
             current_line = char_per_lines
             last_line = 0
             xpos = initial_pos[0]
@@ -267,9 +264,12 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
 
             return can
         else:
-            return Response(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}", status=400)
+            raise Exception(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}")
+
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_phonenumber(can:canvas.Canvas, number:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
@@ -289,9 +289,7 @@ def add_phonenumber(can:canvas.Canvas, number:str, pos:tuple, camp_name:str, nul
             if number == None:
                 return can
 
-        verify = validate_func_args(function_to_verify=add_phonenumber, variables_to_verify={'can':can, 'number':number, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval, 'formated':formated})
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_phonenumber, variables_to_verify={'can':can, 'number':number, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval, 'formated':formated})
         
         number = str(number).strip()
         if 10 <= len(number) <= 11:
@@ -302,9 +300,12 @@ def add_phonenumber(can:canvas.Canvas, number:str, pos:tuple, camp_name:str, nul
             can = add_data(can=can, data=number, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {camp_name} because is longer than {10} characters or smaller than {11}", status=400)
+            raise Exception(f"Unable to add {camp_name} because is longer than {10} characters or smaller than {11}",)
+    
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_CEP(can:canvas.Canvas, cep:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
@@ -370,13 +371,10 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:st
                 return can
 
         verify = validate_func_args(function_to_verify=add_oneline_intnumber, variables_to_verify={'can':can, 'number':number, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'value_min':value_min, 'value_max':value_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized})
-        if type(verify) == type(Response()):
-            return verify
-
 
         # verify if number is in the need lenght
         if value_min > number or value_max < number:
-            return Response(f"Unable to add {camp_name} because is bigger than {value_max} and smaller than {value_min}", status=400)
+            raise Exception(f"Unable to add {camp_name} because is bigger than {value_max} and smaller than {value_min}")
         number = str(number)
         if len_min <= len(number) <= len_max:
             number = add_interval_to_data(data=number, interval=interval)
@@ -386,9 +384,12 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:st
                 can = add_data(can=can, data=number, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}", status=400)
+            raise Exception(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}")
+
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_name:str, len_max:int, value_min:float, value_max:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2) -> Union[canvas.Canvas, Response]:
@@ -454,9 +455,9 @@ def add_interval_to_data(data:str, interval:str) -> Union[str, Response]:
         Response(flask.Response): with the error
     """    
     if type(data) != type(str()):
-        return Response('The api has to use data in add interval as string, please check te function', status=500)
+        return Exception('The api has to use data in add interval as string, please check te function')
     elif type(interval) != type(str()):
-        return Response('The api has to use interval in add interval as string, please check te function', status=500)
+        return Exception('The api has to use interval in add interval as string, please check te function')
     # Add nterval between data
     return interval.join(data)
 
@@ -485,9 +486,7 @@ def add_cns(can:canvas.Canvas, cns:str, pos:tuple, camp_name:str,nullable:bool=F
 
         cns_validator = CNS()
 
-        verify = validate_func_args(function_to_verify=add_cns, variables_to_verify={'can':can, 'cns':cns, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated, 'interval':interval})
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_cns, variables_to_verify={'can':can, 'cns':cns, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated, 'interval':interval})
         
 
         # Verify if the cns is valid
@@ -495,15 +494,17 @@ def add_cns(can:canvas.Canvas, cns:str, pos:tuple, camp_name:str,nullable:bool=F
             cns = str(cns)
             # Add interval selected
             cns = add_interval_to_data(data=cns, interval=interval)
-            if type(cns) == type(Response()): return cns
             if formated: 
                 cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
             can = add_data(can=can, data=cns, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {camp_name} because is a invalid CNS", status=400)
+            raise Exception(f"Unable to add {camp_name} because is a invalid CNS")
+    
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_cnpj(can:canvas.Canvas, cnpj:str, pos:tuple, camp_name:str,nullable:bool=False, interval:str='') -> Union[canvas.Canvas, Response]:
@@ -527,9 +528,8 @@ def add_cnpj(can:canvas.Canvas, cnpj:str, pos:tuple, camp_name:str,nullable:bool
             if cnpj == None:
                 return can
 
-        verify = validate_func_args(function_to_verify=add_cnpj, variables_to_verify={'can':can, 'cnpj':cnpj, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'interval':interval})
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_cnpj, variables_to_verify={'can':can, 'cnpj':cnpj, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'interval':interval})
+
 
         cnpj_validator = CNPJ()
         # Verify if the cnpj is valid
@@ -537,13 +537,15 @@ def add_cnpj(can:canvas.Canvas, cnpj:str, pos:tuple, camp_name:str,nullable:bool
         if cnpj_validator.validate(cnpj):
             # Add interval selected
             cnpj = add_interval_to_data(data=cnpj, interval=interval)
-            if type(cnpj) == type(Response()): return cnpj
             can = add_data(can=can, data=cnpj, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {camp_name} because is a invalid cnpj", status=400)
+            raise Exception(f"Unable to add {camp_name} because is a invalid cnpj")
+
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> Union[canvas.Canvas, Response]:
@@ -568,9 +570,7 @@ def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:boo
             if cnae == None:
                 return can
 
-        verify = validate_func_args(function_to_verify=add_cnae, variables_to_verify={'can':can, 'cnae':cnae, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated})
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_cnae, variables_to_verify={'can':can, 'cnae':cnae, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated})
 
 
         cnae = str(cnae)
@@ -581,9 +581,12 @@ def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:boo
             can = add_data(can=can, data=cnae, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {camp_name} because is a invalid cnae", status=400)
+            raise Exception(f"Unable to add {camp_name} because is a invalid cnae")
+
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> Union[canvas.Canvas, Response]:
@@ -607,9 +610,7 @@ def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:boo
             if cbor == None:
                 return can
 
-        verify = validate_func_args(function_to_verify=add_cbor, variables_to_verify={'can':can, 'cbor':cbor, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated})
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_cbor, variables_to_verify={'can':can, 'cbor':cbor, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated})
 
 
         cbor = str(cbor)
@@ -620,9 +621,12 @@ def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:boo
             can = add_data(can=can, data=cbor, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {camp_name} because is a invalid cbor", status=400)
+            raise Exception(f"Unable to add {camp_name} because is a invalid cbor")
+    
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
@@ -647,16 +651,13 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
             if sex == None or len(str(sex).strip()) == 0:
                 return can
 
-        verify = validate_func_args(function_to_verify=add_sex_square, variables_to_verify={'can':can, 'sex':sex, 'pos_male':pos_male, 'pos_fem':pos_fem, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
-        if type(verify) == type(Response()):
-            return verify
-        
+        validate_func_args(function_to_verify=add_sex_square, variables_to_verify={'can':can, 'sex':sex, 'pos_male':pos_male, 'pos_fem':pos_fem, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
 
         sex = sex.upper()
         if len(sex) != 1:
-            return Response(f'{camp_name} has to be only one character F or M', status=400)
+            raise Exception(f'{camp_name} has to be only one character F or M')
         if sex not in ['M', 'F']:
-            return Response(f'{camp_name} is not valid, use F or M', status=400)
+            raise Exception(f'{camp_name} is not valid, use F or M')
         else:
             if sex == 'M':
                 can = add_square(can=can, pos=pos_male, size=square_size)
@@ -664,8 +665,11 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
             else:
                 can = add_square(can=can, pos=pos_fem, size=square_size)
                 return can
+    
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unkown error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='') -> Union[canvas.Canvas, Response]:
@@ -691,9 +695,7 @@ def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bo
             if date == None:
                 return can
         
-        verify = validate_func_args(function_to_verify=add_datetime, variables_to_verify={'can':can, 'date':date, 'pos':pos, 'camp_name':camp_name, 'hours':hours, 'nullable':nullable, 'formated':formated, 'interval':interval, 'interval_between_numbers':interval_between_numbers})
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_datetime, variables_to_verify={'can':can, 'date':date, 'pos':pos, 'camp_name':camp_name, 'hours':hours, 'nullable':nullable, 'formated':formated, 'interval':interval, 'interval_between_numbers':interval_between_numbers})
 
 
         #Add to respective fields
@@ -705,8 +707,8 @@ def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bo
                 date_object = datetime.datetime.strptime(date, '%d/%m/%Y')
         except:
             if hours:
-                return Response(f'Date doenst match dd/mm/yyyy HH:MM format', status=400)
-            return Response(f'Date doenst match dd/mm/yyyy format', status=400)
+                raise Exception(f'Date doenst match dd/mm/yyyy HH:MM format')
+            raise Exception(f'Date doenst match dd/mm/yyyy format')
         str_date = str('%02d/%02d/%d %02d:%02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute, date_object.second)
         if hours:  
             if not formated:
@@ -721,8 +723,10 @@ def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bo
         can = add_data(can=can, data=str_date, pos=pos)
         return can
 
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unkown error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='') -> Union[canvas.Canvas, Response]:
@@ -746,9 +750,7 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=Fa
             if uf == None or str(uf).strip() == '':
                 return can
 
-        verify = validate_func_args(function_to_verify=add_UF, variables_to_verify={'can':can, 'uf':uf, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval})
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_UF, variables_to_verify={'can':can, 'uf':uf, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval})
 
         
         uf = uf.strip()
@@ -758,9 +760,12 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=Fa
             can = add_data(can=can, data=uf, pos=pos)
             return can
         else:
-            return Response(f'{camp_name} not exists in Brazil', status=400) 
+            raise Exception(f'{camp_name} not exists in Brazil') 
+    
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
@@ -792,14 +797,11 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
                 return can
 
         
-        verify = validate_func_args(function_to_verify=add_document_cns_cpf_rg, variables_to_verify={'can':can, 'document':document, 'camp_name':camp_name, 'square_size':square_size, 'pos_cpf':pos_cpf, 'pos_cns':pos_cns, 'pos_rg':pos_rg, 'pos_square_cpf':pos_square_cpf, 'pos_square_cns':pos_square_cns, 'pos_square_rg':pos_square_rg, 'nullable':nullable, 'interval':interval, 'formated':formated}, nullable_variables=['pos_cpf', 'pos_cns', 'pos_rg', 'pos_square_cpf', 'pos_square_cns', 'pos_square_rg'])
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_document_cns_cpf_rg, variables_to_verify={'can':can, 'document':document, 'camp_name':camp_name, 'square_size':square_size, 'pos_cpf':pos_cpf, 'pos_cns':pos_cns, 'pos_rg':pos_rg, 'pos_square_cpf':pos_square_cpf, 'pos_square_cns':pos_square_cns, 'pos_square_rg':pos_square_rg, 'nullable':nullable, 'interval':interval, 'formated':formated}, nullable_variables=['pos_cpf', 'pos_cns', 'pos_rg', 'pos_square_cpf', 'pos_square_cns', 'pos_square_rg'])
 
         
         # See id document is CPF, CNS or RG
         all_document_keys = list(document.keys())
-        #return Response(f'{document}')
         #Make all keys bein lower
         for key in all_document_keys:
             document[f'{str(key).lower()}'] = document.pop(key)
@@ -809,7 +811,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
         if 'cns' in all_document_keys:
             if document['cns'] != None:
                 if type(document['cns']) != type(str()):
-                    return Response(f'{camp_name} value CNS has to be str', status=400)
+                    raise Exception(f'{camp_name} value CNS has to be str')
                 
                 cns_validator = CNS()
                 if cns_validator.validate(document['cns']):
@@ -824,12 +826,12 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
                     can = add_data(can=can, data=cns, pos=pos_cns)
                     return can
                 else:
-                    return Response(f'{camp_name} CNS is not valid', status=400)
+                    raise Exception(f'{camp_name} CNS is not valid')
         
         if 'cpf' in all_document_keys:
             if document['cpf'] != None:
                 if type(document['cpf']) != type(str()):
-                    return Response(f'{camp_name} value CPF has to be str', status=400)
+                    raise Exception(f'{camp_name} value CPF has to be str')
                 #Format cpf to validate
                 cpf_validator = CPF()
                 cpf = document['cpf']
@@ -846,13 +848,13 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
                     can = add_data(can=can, data=cpf, pos=pos_cpf)
                     return can
                 else:
-                    return Response(f'{camp_name} CPF is not valid', status=400)
+                    raise Exception(f'{camp_name} CPF is not valid')
         
         if 'rg' in all_document_keys:
             if document['rg'] != None:
                 rg = document['rg']
                 if type(rg) != type(str()):
-                    return Response(f'{camp_name} value RG has to be str', status=400)
+                    raise Exception(f'{camp_name} value RG has to be str')
                 #The only verificatinon is that rg is not greater than 16 characteres
                 if is_RG_valid(rg):
                     rg = str(document['rg'])
@@ -861,11 +863,14 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
                     can = add_data(can=can, data=rg, pos=pos_rg)
                     return can
                 else:
-                    return Response(f'{camp_name} RG is not valid', status=400)
+                    raise Exception(f'{camp_name} RG is not valid')
         
-        return Response(f'{camp_name} was not CPF, CNS or RG', status=400)
+        raise Exception(f'{camp_name} was not CPF, CNS or RG')
+    
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding {camp_name} Document', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
@@ -890,19 +895,19 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
             if option == None or len(str(option).strip()) == 0:
                 return can
 
-        verify = validate_func_args(function_to_verify=add_markable_square, variables_to_verify={'can':can, 'option':option, 'valid_options':valid_options, 'options_positions':options_positions, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
-        if type(verify) == type(Response()):
-            return verify
-
+        validate_func_args(function_to_verify=add_markable_square, variables_to_verify={'can':can, 'option':option, 'valid_options':valid_options, 'options_positions':options_positions, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
 
         option = option.upper()
         for opt in range(0, len(valid_options)):
             if option == valid_options[opt]:
                 can = add_square(can=can, pos=options_positions[opt], size=square_size)
                 return can
-        return Response(f'Cannot add {camp_name} because the option choosed does not exists', status=400)
+        raise Exception(f'Cannot add {camp_name} because the option choosed does not exists')
+
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unkown error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_multiple_markable_square(can:canvas.Canvas, options:list, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
