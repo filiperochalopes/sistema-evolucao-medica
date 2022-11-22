@@ -7,8 +7,6 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from flask import Response
-from typing import Union
 from app.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_APAC_DIRECTORY, WRITE_APAC_DIRECTORY
 from app.graphql import mutation
@@ -16,7 +14,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_Apac')
 @convert_kwargs_to_snake_case
-def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:str, patient_sex:str, patient_birthday:str, patient_adress_city:str, main_procedure:dict, patient_mother_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adress_uf:str=None, patient_adress_cep:str=None, document_chart_number:str=None, patient_adress_city_ibge_code:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, prof_autorization_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> Union[bytes, Exception]:
+def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:str, patient_sex:str, patient_birthday:str, patient_adress_city:str, main_procedure:dict, patient_mother_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adress_uf:str=None, patient_adress_cep:str=None, document_chart_number:str=None, patient_adress_city_ibge_code:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, prof_autorization_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
     """fill pdf apac
 
     Args:
@@ -62,7 +60,7 @@ def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_c
         . Defaults to None.
 
     Returns:
-        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+        str: Request with pdf in base64
     """    
     try:
         packet = io.BytesIO()
@@ -154,7 +152,7 @@ def fill_pdf_apac(_, info, establishment_solitc_name:str, establishment_solitc_c
         return Exception("Error while filling apac")
 
 
-def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tuple, quant_pos:tuple, camp_name:str) -> Union[canvas.Canvas, Response]:
+def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tuple, quant_pos:tuple, camp_name:str) -> canvas.Canvas:
     """Add proceure to canvas
 
     Args:
@@ -166,7 +164,7 @@ def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tu
         camp_name (str): camp name
 
     Returns:
-        Union[canvas.Canvas, Response]: canvas updated or Response with error
+        canvas.Canvas: canvas updated
     """
     try:
         if procedure == None:
@@ -199,10 +197,10 @@ def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tu
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Unknow error while adding procedure')
 
 
-def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas.Canvas, Response]:
+def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> canvas.Canvas:
     """Add secondary procedures
 
     Args:
@@ -210,7 +208,7 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas
         procedures (list): list with dicts with procedures
 
     Returns:
-        Union[canvas.Canvas, Response]: canvas updated or Response with error
+        canvas.Canvas: canvas updated 
     """    
     #verify if the type is list
     try:
@@ -240,4 +238,4 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> Union[canvas
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Unknow error while adding secondary procedures')
