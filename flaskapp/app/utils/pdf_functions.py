@@ -43,13 +43,14 @@ def validate_func_args(function_to_verify, variables_to_verify:dict, nullable_va
             elif arg_to_validate in defaults_types and variables_keys in nullable_variables:
                 continue
             else:
-                return Response(f'{variables_keys} has wrong type, has to be {right_type}', status=400)
+                raise Exception(f'{variables_keys} has wrong type, has to be {right_type}')
         return None
+    except Exception as error:
+        raise error
     except KeyError:
-        return Response(f'KeyError, some key in {function_to_verify} is missing, when validate types, keys needed {args_types.keys()}', status=500)
+        raise Exception(f'KeyError, some key in {function_to_verify} is missing, when validate types, keys needed {args_types.keys()}')
     except:
-        return Response(f'{arg_to_validate} type {right_type} unkown error while validate_func_args {variables_keys} in {function_to_verify} function', status=500)
-        #return Response(f'unkown error while validate_func_args {variables_keys} in {function_to_verify} function', status=500)
+        raise Exception(f'{arg_to_validate} type {right_type} unkown error while validate_func_args {variables_keys} in {function_to_verify} function')
 
 
 def is_RG_valid(rg:str) -> bool:
@@ -184,14 +185,11 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_
                 return can
 
         verify = validate_func_args(function_to_verify=add_oneline_text, variables_to_verify={'can':can, 'text':text, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized})
-        if type(verify) == type(Response()):
-            return verify
-        
 
         if not nullable:
             text = text.strip()
             if len(text) == 0:
-                return Response(f'{camp_name} cannot be empty', status=400)
+                raise Exception(f"{camp_name} cannot be empty")
         # verify if text is in the need lenght
         text = text.strip()
         if len_min <= len(text) <= len_max:
@@ -202,9 +200,15 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_
                 can = add_data(can=can, data=text, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}", status=400)
+            raise Exception(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}")
+    
+    except Exception as error:
+        raise error
+
     except:
-        return Response(f'Unknow error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
+
+
 
 
 def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='') -> Union[canvas.Canvas, Response]:

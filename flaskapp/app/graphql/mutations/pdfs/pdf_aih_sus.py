@@ -70,7 +70,7 @@ def fill_pdf_aih_sus(_, info, establishment_solitc_name:str, establishment_solit
 
     Returns:
         Union[bytes, Response]: base64 pdf enconded or a Response with a error
-    """    
+    """
     try:
         packet = io.BytesIO()
         # Create canvas and add data
@@ -83,7 +83,7 @@ def fill_pdf_aih_sus(_, info, establishment_solitc_name:str, establishment_solit
         # not null data
         try:
             c = pdf_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(25, 750), camp_name='Establishment Solicit Name', len_max=82, len_min=8)
-            if type(c) == type(Response()): raise Exception(c.response)
+            #if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(470, 750), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='  ')
             if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=establishment_exec_name, pos=(25, 726), camp_name='Establishment Exec Name', len_max=82, len_min=8)
