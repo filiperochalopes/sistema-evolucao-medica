@@ -12,14 +12,10 @@ def test_notvalidateRG():
 def test_truevalidateRG():
     assert pdf_functions.is_RG_valid("928976954930007") == True
 
-def test_wrongRGtype():
-    assert pdf_functions.is_RG_valid(8167423414).status == Response(status=400).status
 
 
 #Test UF exists
 
-def test_wrongtype_patient_adressUF():
-    assert pdf_functions.uf_exists(1231).status == Response(status=400).status
 
 def test_notexistopiton_patient_adressUF():
     assert pdf_functions.uf_exists('AUYD') == False

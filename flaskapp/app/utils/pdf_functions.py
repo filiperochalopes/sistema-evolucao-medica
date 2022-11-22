@@ -287,7 +287,7 @@ def add_phonenumber(can:canvas.Canvas, number:str, pos:tuple, camp_name:str, nul
             can = add_data(can=can, data=number, pos=pos)
             return can
         else:
-            raise Exception(f"Unable to add {camp_name} because is longer than {10} characters or smaller than {11}",)
+            raise Exception(f"Unable to add {camp_name} because is longer than {10} characters or smaller than {11}")
     
     except Exception as error:
         raise error
