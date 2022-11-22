@@ -42,7 +42,7 @@ def fill_pdf_lme(_, info, establishment_solitc_name:str, establishment_solitc_cn
         medicines (list, optional): list with dicts eg: [{"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}] . Defaults to None.
 
     Returns:
-        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+        str: Request with pdf in base64
     """    
     try:
         packet = io.BytesIO()

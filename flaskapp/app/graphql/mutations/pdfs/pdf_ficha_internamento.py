@@ -16,7 +16,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_FichaInternamento')
 @convert_kwargs_to_snake_case
-def fill_pdf_ficha_internamento(_, info, document_datetime:datetime.datetime, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, patient_phonenumber:str, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:str, doctor_crm:str, patient_adress_number:int=None, patient_adress_neigh:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_adress_cep:str=None, patient_nationality:str=None, patient_estimate_weight:int=None, has_additional_health_insurance:bool=None) -> Union[bytes, Exception]:
+def fill_pdf_ficha_internamento(_, info, document_datetime:datetime.datetime, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, patient_phonenumber:str, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:str, doctor_crm:str, patient_adress_number:int=None, patient_adress_neigh:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_adress_cep:str=None, patient_nationality:str=None, patient_estimate_weight:int=None, has_additional_health_insurance:bool=None) -> str:
     """fill pdf ficha internamento
 
     Args:
@@ -46,7 +46,7 @@ def fill_pdf_ficha_internamento(_, info, document_datetime:datetime.datetime, pa
         has_additional_health_insurance (bool, optional): has_additional_health_insurance. Defaults to None.
 
     Returns:
-        Union[bytes, Response]: _description_
+        str: Request with pdf in base64
     """    
 
     try:

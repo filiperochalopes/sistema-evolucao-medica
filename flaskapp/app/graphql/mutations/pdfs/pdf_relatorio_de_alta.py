@@ -34,7 +34,7 @@ def fill_pdf_relatorio_alta(_, info, document_datetime:str, patient_name:str, pa
         orientations (str, optional): orientations. Defaults to None.
 
     Returns:
-        Union[bytes, Exception]: base64 pdf enconded or a Exception with a error
+        str: Request with pdf in base64
     """    
     try:
         packet = io.BytesIO()

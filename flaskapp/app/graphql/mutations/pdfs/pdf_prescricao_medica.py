@@ -27,7 +27,7 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str,
         prescription (list): list of dicts precriptions, like [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]
 
     Returns:
-        Union[bytes, Exception]: base64 pdf enconded or a Exception with a error
+        str: Request with pdf in base64
     """    
 
     

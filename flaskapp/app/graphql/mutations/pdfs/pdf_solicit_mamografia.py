@@ -108,7 +108,7 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
         }. Defaults to None.
 
     Returns:
-        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+        str: Request with pdf in base64
     """    
     try:
         packet = io.BytesIO()

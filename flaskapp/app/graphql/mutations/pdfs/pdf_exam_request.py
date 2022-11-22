@@ -19,7 +19,7 @@ from ariadne import convert_kwargs_to_snake_case
 @mutation.field('generatePdf_SolicitExames')
 @convert_kwargs_to_snake_case
 def fill_pdf_exam_request(_, info, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_adress:str, solicitation_reason:str,
-exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof_authorized_name:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> Union[bytes, Exception]:
+exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof_authorized_name:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> str:
     """fill pdf exam request (Solicitacao de exames e procedimentos)
 
     Args:
@@ -37,7 +37,7 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
         document_pacient_name (str, optional): document_pacient_name. Defaults to None.
 
     Returns:
-        Union[bytes, Response]: base64 pdf enconded or a Response with a error
+        str: Request with pdf in base64
     """
 
     try:
