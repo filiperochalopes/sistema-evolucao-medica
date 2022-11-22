@@ -7,7 +7,6 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from flask import Response
 from math import ceil
 from typing import Union
 from app.utils import pdf_functions
@@ -57,7 +56,6 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
             pags_quant = 0
             c, pags_quant = add_exams(canvas=c, exams=exams)
             # verify if c is a error at some point
-            if type(c) == type(Response()): raise Exception(c.response)
 
             #Add to multiple pages
             decreaseYpos = 280
@@ -70,19 +68,12 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
             prof_solicitor_ypos = 595
             for x in range(pags_quant):
                 c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(7, patient_name_ypos), camp_name='Patient Name', len_max=70, len_min=7)
-                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(450, patient_cns_ypos), camp_name='Patient CNS',formated=True)
-                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(441, patient_birthday_ypos), camp_name='Patient Birthday', hours=False, formated=True)
-                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_morelines_text(can=c, text=patient_adress, initial_pos=(7, patient_adress_ypos), decrease_ypos=10, camp_name='Patient Adress', len_max=216, len_min=7, char_per_lines=108)
-                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_morelines_text(can=c, text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, camp_name='Solicitation Reason', len_max=216, len_min=7, char_per_lines=108)
-                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(7, prof_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
-                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True)
-                if type(c) == type(Response()): raise Exception(c.response)
 
                 #Decrese ypos in all lines to complete the page
                 patient_name_ypos -= decreaseYpos
@@ -93,11 +84,8 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
                 prof_solicitor_ypos -= decreaseYpos
                 solicitation_datetime_ypos -= decreaseYpos
 
-            if type(c) == type(Response()): raise Exception(c.response)
-
         except Exception as error:
             return error
-        
         except:
             return Exception('Some error happen when adding not null data to fields')
 
@@ -109,23 +97,20 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
             document_pacient_date_ypos = 572
             for x in range(pags_quant):
                 c = pdf_functions.add_oneline_text(can=c, text=prof_authorized_name, pos=(174, prof_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
-                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_oneline_text(can=c, text=document_pacient_name, pos=(340, document_pacient_name_ypos), camp_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
-                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_datetime(can=c, date=autorization_datetime, pos=(195, autorization_datetime_ypos), camp_name='Authorization Datetime', hours=False, formated=True, nullable=True)
-                if type(c) == type(Response()): raise Exception(c.response)
                 c = pdf_functions.add_datetime(can=c, date=document_pacient_date, pos=(362, document_pacient_date_ypos), camp_name='Document Pacient Datetime', hours=False, formated=True, nullable=True)
-                if type(c) == type(Response()): raise Exception(c.response)
 
                 prof_authorized_ypos -= decreaseYpos
                 document_pacient_name_ypos -= decreaseYpos
                 autorization_datetime_ypos -= decreaseYpos
                 document_pacient_date_ypos -= decreaseYpos
 
-            if type(c) == type(Response()): return 
-
+        except Exception as error:
+            return error
         except:
-            return Response('Critical error happen when adding data that can be null to fields', status=500)
+            return Exception('Critical error happen when adding data that can be null to fields')
+        
 
         # create a new PDF with Reportlab
         c.save()
@@ -149,7 +134,7 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
     except:
         return Exception("Error while filling exam request")
 
-def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]:
+def add_exams(canvas:canvas.Canvas, exams:str) -> canvas.Canvas:
     """add solicited exams
 
     Args:
@@ -157,14 +142,14 @@ def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]
         exams (str): exams
 
     Returns:
-        canvas or Response:canvas if everthing is allright or Response if hapens some error 
+        canvas :canvas if everthing is allright
     """    
     try:
         if type(exams) != type(str()):
-            return Response('Exams has to be a string', status=400), 0
+            raise Exception('Exams has to be a string')
         exams = exams.strip()
         if len(exams.strip()) > 972 or len(exams.strip()) < 5:
-            return Response('Exams has to be at least 5 characters and no more than 972 characters', status=400), 0
+            raise Exception('Exams has to be at least 5 characters and no more than 972 characters')
         # Making the line break whem has 105 charater in a line
         str_exams = ''
         #Calculate how many pags will have, ceil function round to upper int
@@ -194,6 +179,10 @@ def add_exams(canvas:canvas.Canvas, exams:str) -> Union[canvas.Canvas, Response]
         del(last_line)
         del(y_position)
         return canvas, pags_quant
+
+    except Exception as error:
+        raise error
     except:
-        return Response('Unknow error while adding Solicited Exams', status=500), 0
+        raise Exception(f'Unknow error while adding Solicited Exams')
+
 
