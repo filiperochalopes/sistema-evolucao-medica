@@ -2,12 +2,10 @@ import base64
 import datetime
 from PyPDF2 import PdfWriter, PdfReader
 import io
-import sys
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from typing import Union
 from app.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_AIH_SUS_DIRECTORY, WRITE_AIH_SUS_DIRECTORY
 

@@ -6,7 +6,6 @@ from inspect import getfullargspec
 from validate_docbr import CNS, CPF, CNPJ
 
 
-
 def validate_func_args(function_to_verify, variables_to_verify:dict, nullable_variables:list=[]) -> None:
     """validate all args with the type needed or default values
 

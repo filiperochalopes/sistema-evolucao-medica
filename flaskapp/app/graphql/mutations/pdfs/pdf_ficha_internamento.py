@@ -2,7 +2,6 @@ import base64
 import datetime
 from PyPDF2  import PdfWriter, PdfReader
 import io
-import sys
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
