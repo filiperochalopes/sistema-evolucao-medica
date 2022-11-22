@@ -58,54 +58,34 @@ def fill_pdf_lme(_, info, establishment_solitc_name:str, establishment_solitc_cn
 
         try:
             c = pdf_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(38, 658), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='   ')
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_weight, pos=(485, 628), camp_name='Patient Weight', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_height, pos=(485, 602), camp_name='Patient Height', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=cid_10, pos=(34, 455), camp_name='cid_10', len_max=4, len_min=3, interval='  ')
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(292, 222), camp_name='Solicitation Datetime', hours=False, interval='   ', formated=False)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_document_cns_cpf_rg(can=c, document=prof_solicitor_document, pos_square_cpf=(41, 195), pos_square_cns=(84,194), pos_cns=(129, 195), pos_cpf=(129, 195),camp_name='Professional Solicitor Document', interval='  ', square_size=(5, 8))
-            if type(c) == type(Response()): raise Exception(c.response)
 
 
             c.setFont('Roboto-Mono', 9)
             c = pdf_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(206, 658), camp_name='Establishment Solicit Name', len_max=65, len_min=8)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(36, 628), camp_name='Patient Name', len_max=79, len_min=7)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 602), camp_name='Patient Mother Name', len_max=79, len_min=7)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_morelines_text(can=c, text=anamnese, initial_pos=(36, 430), decrease_ypos= 10, camp_name='Anamnese', len_max=485, char_per_lines=97, len_min=5)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 224), camp_name='Professional Solicitor Name', len_max=45, len_min=8)
-            if type(c) == type(Response()): raise Exception(c.response)
             if type(capacity_attest) != type(list()) or len(capacity_attest) > 2:
-                c = Response('Cappacity Attest has to be a list with 2 itens', status=400)
-            if type(c) == type(Response()): raise Exception(c.response)
+                raise Exception('Cappacity Attest has to be a list with 2 itens')
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=capacity_attest[0], valid_options=['SIM','NAO'], text_options=['SIM'], text_pos=(308, 268), options_positions=((79, 271), (42,270)), camp_name='Capacity Attest', len_max=46, text=capacity_attest[1], len_min=5, square_size=(5, 8))
-            if type(c) == type(Response()): raise Exception(c.response)
             if type(filled_by) != type(list()) or len(filled_by) > 3:
-                c = Response('filled_by has to be a list with 3 itens', status=400)
-            if type(c) == type(Response()): raise Exception(c.response)
+                raise Exception('filled_by has to be a list with 3 itens')
             c = add_filled_by(can=c, filled_by=filled_by)
-            if type(c) == type(Response()): raise Exception(c.response)
             if type(patient_ethnicity) != type(list()) or len(patient_ethnicity) > 2:
-                c = Response('patient_ethnicity has to be a list with 2 itens', status=400)
-            if type(c) == type(Response()): raise Exception(c.response)
+                raise Exception('patient_ethnicity has to be a list with 2 itens')
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA', 'SEMINFO', 'INFORMAR'], text_options=['INFORMAR'], text_pos=(192, 108), options_positions=((40, 121), (40, 108),(40, 93),(94, 118), (94, 106),(94, 93), (94, 93)),camp_name='Patietn Ethinicity', len_max=31, text=patient_ethnicity[1], len_min=4, square_size=(5, 8))
-            if type(c) == type(Response()): raise Exception(c.response)
             if type(previous_treatment) != type(list()) or len(previous_treatment) > 2:
-                c = Response('previous_treatment has to be a list with 2 itens', status=400)
-            if type(c) == type(Response()): raise Exception(c.response)
+                raise Exception('previous_treatment has to be a list with 2 itens')
             c = pdf_functions.add_markable_square_and_morelinestext(can=c, option=previous_treatment[0], valid_options=['SIM','NAO'],text_options=['SIM'], text_pos=(100, 355), options_positions=((40, 355), (40, 337)), camp_name='Previous Treatment', len_max=170, text=previous_treatment[1], len_min=4, square_size=(5, 8),char_per_lines=85, decrease_ypos=15)
-            if type(c) == type(Response()): raise Exception(c.response)
 
         except Exception as error:
             return error
-        
         except:
             return Exception('Some error happen when adding not null data to fields')
 
@@ -113,19 +93,13 @@ def fill_pdf_lme(_, info, establishment_solitc_name:str, establishment_solitc_cn
         try:
             c.setFont('Roboto-Mono', 9)
             c = pdf_functions.add_document_cns_cpf_rg(can=c, document=patient_document, pos_square_cpf=(40, 66), pos_square_cns=(84,66), pos_cns=(129, 66), pos_cpf=(129, 66),camp_name='Patient Document', interval='  ', nullable=True, square_size=(5, 8))
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=diagnostic, pos=(105, 455), camp_name='Diagnostic', len_max=84, len_min=4, nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_email, pos=(36, 42), camp_name='Patient Email', len_max=62, len_min=8, nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = add_contat_phonenumbers(can=c, phonenumbers=contacts_phonenumbers, pos=(384, 116), interval='  ')
-            if type(c) == type(Response()): raise Exception(c.response)
             c = add_medicines(can=c, medicines=medicines)
-            if type(c) == type(Response()): raise Exception(c.response)
 
         except Exception as error:
             return error
-        
         except:
             return Exception('Critical error happen when adding data that can be null to fields')
         
@@ -153,7 +127,7 @@ def fill_pdf_lme(_, info, establishment_solitc_name:str, establishment_solitc_cn
         return Exception("Error while filling aih sus")
 
 
-def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, interval:str) -> Union[canvas.Canvas, Response]:
+def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, interval:str) -> canvas.Canvas:
     """Add contact numbers
 
     Args:
@@ -170,31 +144,34 @@ def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, int
         if phonenumbers == None:
             return can
         elif type(phonenumbers) != type(list()):
-            return Response('contacts phonenumbers has to be list', status=400)
+            raise Exception('contacts phonenumbers has to be list')
         elif len(phonenumbers) > 2:
-            return Response('Contats phonenumbers list cannot has more than 2 phonenumbers', status=400)
+            raise Exception('Contats phonenumbers list cannot has more than 2 phonenumbers')
 
         #Verify if all numbers are str and has 10 digits
         for number in phonenumbers:
             if type(number) != type(str()):
-                return Response('Contats phonenumbers has to be a str', status=400)
+                raise Exception('Contats phonenumbers has to be a str')
             elif len(number) != 10:
-                return Response('Contats phonenumbers must have 10 digits', status=400)
+                raise Exception('Contats phonenumbers must have 10 digits')
 
         cont = 1
         for number in phonenumbers:
             formated_number = number[:2] + ' ' + number[2:]
             can = pdf_functions.add_oneline_text(can=can, text=formated_number, pos=(pos[0], pos[1]), camp_name=f'Phone Number {cont}', len_max=11, len_min=11, nullable=True, interval=interval)
-            if type(can) == type(Response()): return can
             cont += 1
             pos = (pos[0], pos[1]-20)
 
         return can
+
+    except Exception as error:
+        raise error
     except:
-        return Response('Unknow erro when adding contact phone numbers', status=500)
+        raise Exception(f'Unknow error while adding contact phone numbers')
+    
 
 
-def add_medicines(can:canvas.Canvas, medicines:list) -> Union[canvas.Canvas, Response]:
+def add_medicines(can:canvas.Canvas, medicines:list) -> canvas.Canvas:
     """Add medicines to canvas
 
     Args:
@@ -209,24 +186,24 @@ def add_medicines(can:canvas.Canvas, medicines:list) -> Union[canvas.Canvas, Res
         if medicines == None:
                 return can
         if type(medicines) != type(list()):
-            return Response('medicines has to be a list of dicts, like: [{"medicine_name":"Procedure Name", "quant_1_month:"cod124235", "quant_2_month":"123", "quant_3_month":"quant"}]', status=400)
+            raise Exception('medicines has to be a list of dicts, like: [{"medicine_name":"Procedure Name", "quant_1_month:"cod124235", "quant_2_month":"123", "quant_3_month":"quant"}]')
         necessaryKeys = ["medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"]
         if len(medicines) > 5:
-                return Response('You cannot add more than 5 secondary medicines', status=400)
+                raise Exception('You cannot add more than 5 secondary medicines')
         for med in medicines:
             #verify if the item in list is a dict
             if type(med) != type(dict()):
-                return Response('All itens in list has to be a dict', status=400)
+                raise Exception('All itens in list has to be a dict')
             #Verify if the necessary keys are in the dict
             if 'medicine_name' not in med.keys() or 'quant_1_month' not in med.keys() or "quant_2_month" not in med.keys() or "quant_3_month" not in med.keys():
-                return Response('Some keys in dict is missing, dict has to have "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"', status=400)
+                raise Exception('Some keys in dict is missing, dict has to have "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"')
             #Verify if the value in the dics is the needed
             elif type(med['medicine_name']) != type(str()) or type(med['quant_1_month']) != type(str()) or type(med['quant_2_month']) != type(str()) or type(med['quant_3_month']) != type(str()):
-                return Response('The values in the keys "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month" has to be string', status=400)
+                raise Exception('The values in the keys "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month" has to be string')
             #Verify if the dict has more keys than the needed
             for key in med.keys():
                 if key not in necessaryKeys:
-                    return Response('The dict can only have 4 keys "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"', status=400)
+                    raise Exception('The dict can only have 4 keys "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"')
 
             #Add to cnavas
             cont = 1
@@ -249,8 +226,12 @@ def add_medicines(can:canvas.Canvas, medicines:list) -> Union[canvas.Canvas, Res
 
                 ypos -= REDUCE_Y
             return can
-    except: 
-        return Response('Unkown error while adding Medicines', status=500)
+    
+    except Exception as error:
+        raise error
+    except:
+        raise Exception(f'Unknow error while adding Medicines')
+
 
 
 def add_filled_by(can:canvas.Canvas, filled_by:list) -> Union[canvas.Canvas, Response]:
@@ -264,7 +245,6 @@ def add_filled_by(can:canvas.Canvas, filled_by:list) -> Union[canvas.Canvas, Res
         Union[canvas.Canvas, Response]: canvas updated or response with error
     """    
     can = pdf_functions.add_markable_square_and_onelinetext(can=can, option=filled_by[0], valid_options=['PACIENTE','MAE', 'RESPONSAVEL', 'MEDICO','OUTRO'], text_options=['OUTRO'], text_pos=(128, 152), options_positions=((227, 166), (277, 166), (354, 166), (486, 166), (40, 152)), camp_name='Filled By option and Name', len_max=42, text=filled_by[1], len_min=5, square_size=(5, 8))
-    if type(can) == type(Response()): return can
     if filled_by[0].upper() == 'OUTRO':
         filled_by_document = literal_eval(filled_by[2])
         can = pdf_functions.add_document_cns_cpf_rg(can=can, document=filled_by_document, pos_cpf=(388, 152),camp_name='Filled by', interval='  ')

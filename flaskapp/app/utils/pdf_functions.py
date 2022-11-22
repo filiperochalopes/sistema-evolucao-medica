@@ -339,7 +339,7 @@ def add_CEP(can:canvas.Canvas, cep:str, pos:tuple, camp_name:str, nullable:bool=
             return can
         else:
             raise Exception(f"Unable to add {camp_name} because cpf dont have 8 digits")
-            
+
     except Exception as error:
         raise error
     except:
@@ -976,9 +976,7 @@ def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_opt
                 return can
 
         
-        verify = validate_func_args(function_to_verify=add_markable_square_and_onelinetext, variables_to_verify={'can':can, 'option':option, 'valid_options':valid_options, 'text_options':text_options, 'text_pos':text_pos, 'options_positions':options_positions, 'camp_name':camp_name, 'len_max':len_max, 'text':text, 'len_min':len_min, 'interval':interval, 'square_size':square_size, 'nullable':nullable}, nullable_variables=['text'])
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_markable_square_and_onelinetext, variables_to_verify={'can':can, 'option':option, 'valid_options':valid_options, 'text_options':text_options, 'text_pos':text_pos, 'options_positions':options_positions, 'camp_name':camp_name, 'len_max':len_max, 'text':text, 'len_min':len_min, 'interval':interval, 'square_size':square_size, 'nullable':nullable}, nullable_variables=['text'])
 
         #Verify if option exist
         option = option.upper()
@@ -987,16 +985,19 @@ def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_opt
                 #Verify if option requer a text
                 if option in text_options:
                     if text == None or str(text).strip() == '':
-                        return Response(f'Cannot add {camp_name} because a text is required for {option} option', status=400)
+                        raise Exception(f'Cannot add {camp_name} because a text is required for {option} option')
                     else:
                         #Add text line
                         can = add_oneline_text(can=can, text=text, pos=text_pos, camp_name=camp_name, len_max=len_max, len_min=len_min, interval=interval)
                 if type(can) == type(Response()): return can
                 can = add_square(can=can, pos=options_positions[opt], size=square_size)
                 return can
-        return Response(f'Cannot add {camp_name} because the option choosed does not exists in {valid_options}', status=400)
+        raise Exception(f'Cannot add {camp_name} because the option choosed does not exists in {valid_options}')
+        
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unkown error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_markable_square_and_morelinestext(can:canvas.Canvas, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, decrease_ypos:int, char_per_lines:int, max_lines_amount:int=None, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
