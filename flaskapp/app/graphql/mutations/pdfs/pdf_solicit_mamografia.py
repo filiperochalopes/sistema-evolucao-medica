@@ -2,13 +2,10 @@ import base64
 import datetime
 from PyPDF2 import PdfWriter, PdfReader
 import io
-import sys
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from flask import Response
-from typing import Union
 from app.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 
@@ -17,7 +14,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_SolicitMamografia')
 @convert_kwargs_to_snake_case
-def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:str=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_ibge_code:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adress_cep:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:str=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> Union[bytes, Exception]:
+def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:str=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_ibge_code:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adress_cep:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:str=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> str:
     """Fill solicitacion mamografia (Solicitacao de Mamografia) 
     Args:
         patient_name (str): Patient Name
@@ -130,105 +127,69 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
 
         try:
             c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(46, 676), camp_name='Patient CNS', interval=' ')
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(48, 563), camp_name='Patient Birthday', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
-            if type(c) == type(Response()): raise Exception(c.response)
             
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=mammogram_before[0], valid_options=['SIM', 'NAO', 'NAOSABE'], text_options=['SIM'], options_positions=((51,64), (51,52), (51, 40)), camp_name='Has made mamogram before', square_size=(15,9), len_max=4, len_min=4, text=mammogram_before[1], text_pos=(200, 68), interval=' ')
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_age, pos=(217, 563), camp_name='Patient Birthday', len_max=2, len_min=1,value_min=1, value_max=99, interval=' ')
 
 
             c.setFont('Roboto-Mono', 13)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_morelines_text(can=c, text=patient_name, initial_pos=(47, 653), decrease_ypos=18, camp_name='Patient Name', len_max=42, len_min=7, interval=' ', char_per_lines=87)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(47, 612), camp_name='Patient Mother Name', len_max=42, len_min=7, interval=' ')
-            if type(c) == type(Response()): raise Exception(c.response)
             
             
             c.setFont('Roboto-Mono', 9)
             c = pdf_functions.add_markable_square(can=c, option=nodule_lump, valid_options=['SIMDIR', 'SIMESQ', 'NAO'], options_positions=((50,332), (50,320), (50, 310)), camp_name='Has nodule lump', square_size=(15,9))
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_markable_square(can=c, option=high_risk, valid_options=['SIM', 'NAO', 'NAOSABE'], options_positions=((51,278), (51,266), (51, 255)), camp_name='Has high risk', square_size=(15,9))
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_markable_square(can=c, option=examinated_before, valid_options=['SIM', 'NUNCA', 'NAOSABE'], options_positions=((51,120), (51,107), (51, 94)), camp_name='Has been examinated before', square_size=(15,9))
-            if type(c) == type(Response()): raise Exception(c.response)
+        
+        except Exception as error:
+            raise error
         except:
-            if type(c) == type(Response()):
-                raise Exception(c.response)
-            else:
-                return Response('Some error happen when adding not null data to fields in page 1', status=500)
+            raise Exception('Some error happen when adding not null data to fields in page 1')
 
         #Adding data that can be null
         try:
             c.setFont('Roboto-Mono', 13)
             c = pdf_functions.add_UF(can=c, uf=health_unit_adress_uf, pos=(47, 762), camp_name='Health Unit Adress UF', nullable=True, interval=' ')
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=health_unit_name, pos=(47, 741), camp_name='Health Unit Name', len_max=42, len_min=7, interval=' ', nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=health_unit_adress_city, pos=(168, 720), camp_name='Health Unit Adress City', len_max=14, len_min=3, interval=' ', nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_surname, pos=(288, 635), camp_name='Patient Surname', len_max=18, len_min=4, interval=' ', nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress, pos=(47, 529), camp_name='Patient Adress', len_max=42, len_min=7, interval=' ', nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_adjunct, pos=(168, 507), camp_name='Patient Adress Adjunct', len_max=25, len_min=7, interval=' ', nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_neighborhood, pos=(292, 484), camp_name='Patient Adress Neighborhood', len_max=14, len_min=7, interval=' ', nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_reference, pos=(47, 413), camp_name='Patient Adress Reference', len_max=33, len_min=4, interval=' ', nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(167, 461), camp_name='Patient Adress City', len_max=15, len_min=3, interval=' ', nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = add_patient_adress_cep(can=c, number=patient_adress_cep)            
-            if type(c) == type(Response()): raise Exception(c.response)
             c = add_patient_phonenumber(can=c, number=patient_phonenumber)            
-            if type(c) == type(Response()): raise Exception(c.response)
             c = add_radiotherapy_before(can=c, radiotherapy_before=radiotherapy_before)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = add_breast_surgery_before(can=c, breast_surgery_before=breast_surgery_before)
-            if type(c) == type(Response()): raise Exception(c.response)
 
 
 
             c.setFont('Roboto-Mono', 12)
             c = pdf_functions.add_oneline_intnumber(can=c, number=health_unit_cnes, pos=(178, 761), camp_name='Health Unit CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval=' ', nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=protocol_number, pos=(406, 768), camp_name='Protocol Number', len_max=23, len_min=1, nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_document_cns_cpf_rg(can=c, document=patient_document_cpf, pos_cpf=(52, 589),camp_name='Patient Document CPF', interval=' ', nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_number, pos=(52, 506), camp_name='Patient Adress Number', len_max=6, len_min=1, value_min=0, value_max=999999, interval=' ', nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_UF(can=c, uf=patient_adress_uf, pos=(535, 484), camp_name='Patient Adress UF', nullable=True, interval=' ')
-            if type(c) == type(Response()): raise Exception(c.response)
 
 
             c.setFont('Roboto-Mono', 9)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=health_unit_city_ibge_code, pos=(47, 720), camp_name='Health Unit City IBGE code', len_max=7, len_min=7, nullable=True, interval='  ')
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=document_chart_number, pos=(410, 720), camp_name='Document Chart Number', len_max=10, len_min=1, nullable=True, interval='  ')
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(291, 672), pos_fem=(338, 672), camp_name='Patient Sex', square_size=(11,9), nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_nationality, pos=(278, 587), camp_name='Patient Nationality', len_max=32, len_min=3, nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_oneline_text(can=c, text=patient_city_ibge_code, pos=(47, 461), camp_name='Patient City IBGE code', len_max=7, len_min=7, nullable=True, interval='  ')
-            if type(c) == type(Response()): raise Exception(c.response)
             if patient_ethnicity == None:
                 patient_ethnicity = [None, None]
             if type(patient_ethnicity) != type(list()):
-                return Response('Patient ethnicity has to be a list', status=400)
+                raise Exception('Patient ethnicity has to be a list')
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'], text_options=['INDIGENA'], text_pos=(516, 563), options_positions=((278, 560), (323, 560),(363, 560),(401, 560), (450, 560)), camp_name='Patient Ethinicity', len_max=10, text=patient_ethnicity[1], len_min=4, square_size=(11, 9), nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             c = pdf_functions.add_markable_square(can=c, option=patient_schooling, valid_options=['ANALFABETO', 'FUNDINCOM', 'FUNDCOMPL', 'MEDIOCOMPL', 'SUPCOMPL'], options_positions=((55, 380), (115, 381), (223, 381), (325, 381), (408, 381)), camp_name='Patient Schooling', square_size=(10,9), nullable=True)
-            if type(c) == type(Response()): raise Exception(c.response)
             
         except Exception as error:
             return error
-        
         except:
             return Exception('Critical error happen when adding data that can be null to fields in page 1')
 
@@ -243,22 +204,16 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
         c_2.setFont('Roboto-Mono', 13)
         try:
             c_2 = pdf_functions.add_oneline_text(can=c_2, text=prof_solicitor_name, pos=(206, 346), camp_name='Professional Solicitor Name', len_max=23, len_min=7, interval=' ')
-            if type(c_2) == type(Response()): raise Exception(c_2.response)
 
             c_2.setFont('Roboto-Mono', 12)
             c_2 = pdf_functions.add_datetime(can=c_2, date=solicitation_datetime, pos=(48, 346), camp_name='Solicitation Datetime', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
-            if type(c_2) == type(Response()): raise Exception(c_2.response)
             c_2 = pdf_functions.add_oneline_text(can=c_2, text=exam_number, pos=(114, 324), camp_name='Exam number', len_max=16, len_min=1, nullable=True, interval=' ')
-            if type(c_2) == type(Response()): raise Exception(c_2.response)
             c_2.setFont('Roboto-Mono', 9)
             c_2 = pdf_functions.add_markable_square(can=c_2, option=tracking_mammogram, valid_options=['POPALVO', 'RISCOELEVADO', 'JATRATADO'], options_positions=((56, 374), (152, 374), (328, 374)), camp_name='Tracking Mammogram', square_size=(11,10), nullable=True)
-            if type(c_2) == type(Response()): raise Exception(c_2.response)
             c_2 = add_diagnostic_mammogram(can=c_2, diagnostic_mammogram=diagnostic_mammogram)
-            if type(c_2) == type(Response()): raise Exception(c_2.response)
 
         except Exception as error:
             return error
-        
         except:
             return Exception('Some error happen when adding not null data to fields in page 2')
 
@@ -289,7 +244,7 @@ def fill_pdf_solicit_mamografia(_, info, patient_name:str, patient_cns:str, pati
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
     except:
-        return Exception("Error while filling aih sus")
+        return Exception("Error while filling solcit mamografia")
 
 
 def add_patient_adress_cep(can:canvas.Canvas, number:str):
@@ -306,17 +261,18 @@ def add_patient_adress_cep(can:canvas.Canvas, number:str):
         if number == None:
             return can
         if type(number) != type(str()) and number != None:
-            return Response('Patient Adress CEP has to be str, if can be null, please add nullable option and None', status=400)
+            raise Exception('Patient Adress CEP has to be str, if can be null, please add nullable option and None')
         number = str(number).strip()
         if len(number) == 8:
             can = pdf_functions.add_oneline_text(can=can, text=number[:5], pos=(47, 438), camp_name='Patient Adress CEP', len_max=5, len_min=5, interval=' ', nullable=True)
-            if type(can) == type(Response()): return can
             can = pdf_functions.add_oneline_text(can=can, text=number[5:], pos=(138, 438), camp_name='Patient Adress CEP', len_max=3, len_min=3, interval=' ', nullable=True)
             return can
         else:
-            return Response("Unable to add Patient Adress CEP because is longer than 8 characters or smaller than 8", status=400)
+            raise Exception("Unable to add Patient Adress CEP because is longer than 8 characters or smaller than 8")
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding Patient Adress CEP', status=500)
+        raise Exception('Unknow error while adding Patient Adress CEP')
 
 
 def add_patient_phonenumber(can:canvas.Canvas, number:str):
@@ -333,19 +289,20 @@ def add_patient_phonenumber(can:canvas.Canvas, number:str):
         if number == None:
             return can
         if type(number) != type(str()) and number != None:
-            return Response('Patient Phonenumber has to be str, if can be null, please add nullable option and None', status=400)
+            raise Exception('Patient Phonenumber has to be str, if can be null, please add nullable option and None')
         number = str(number).strip()
         if len(number) == 10:
             can = pdf_functions.add_oneline_text(can=can, text=number[:2], pos=(227, 438), camp_name='Patient Phonenumber', len_max=2, len_min=2, interval=' ', nullable=True)
-            if type(can) == type(Response()): return can
             can = pdf_functions.add_oneline_text(can=can, text=number[2:6], pos=(288, 438), camp_name='Patient Phonenumber', len_max=4, len_min=4, interval=' ', nullable=True)
-            if type(can) == type(Response()): return can
             can = pdf_functions.add_oneline_text(can=can, text=number[6:], pos=(365, 438), camp_name='Patient Phonenumber', len_max=4, len_min=4, interval=' ', nullable=True)
             return can
         else:
-            return Response("Unable to add Patient Phonenumber because is longer than 10 characters or smaller than 10", status=400)
+            raise Exception("Unable to add Patient Phonenumber because is longer than 10 characters or smaller than 10")
+
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding Patient Phonenumber', status=500)
+        raise Exception(f'Unknow error while adding Patient Phonenumber')
 
 
 def add_radiotherapy_before(can:canvas.Canvas, radiotherapy_before:list):
@@ -362,14 +319,16 @@ def add_radiotherapy_before(can:canvas.Canvas, radiotherapy_before:list):
         if radiotherapy_before == None:
             return can
         if type(radiotherapy_before) != type(list()):
-            return Response('radiotherapy_before has to be list', status=400)
+            raise Exception('radiotherapy_before has to be list')
         can = pdf_functions.add_markable_square_and_onelinetext(can=can, option=radiotherapy_before[0], valid_options=['SIMDIR', 'SIMESQ', 'NAO', 'NAOSABE'], text_options=['SIMDIR'], options_positions=((336,332), (336,319), (336, 307), (336, 294)), camp_name='Has made radiotherapy before', square_size=(15,9), len_max=4, len_min=4, text=radiotherapy_before[1], text_pos=(420, 334), interval=' ', nullable=True)
-        if type(can) == type(Response()): return can
         if radiotherapy_before[0].upper() == 'SIMESQ':
             can = pdf_functions.add_oneline_text(can=can, text=radiotherapy_before[1], pos=(420, 321), camp_name='Has made radiotherapy before', len_max=4, len_min=4, interval=' ', nullable=True)
         return can
+
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding radiotherapy before', status=500)
+        raise Exception(f'Unknow error while adding radiotherapy before')
 
 
 def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
@@ -386,11 +345,11 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
         if breast_surgery_before == None:
             return can
         if type(breast_surgery_before) != type(dict()):
-            return Response("breast_surgery_before has to be a dict with lists or bool, like {'surgery':(year_esq, year_dir)} or {'didNot':True}, {'didNot':False,'biopsiaInsinonal':(None, 2020),'biopsiaExcisional':(2021, None),'centraledomia':(None, None),'segmentectomia':(None),'dutectomia':(None, None),'mastectomia':(None, None),'mastectomiaPoupadoraPele':(None, None),'mastectomiaPoupadoraPeleComplexoAreolo':(None, None),'linfadenectomiaAxilar':(None, None),'biopsiaLinfonodo':(None, None),'reconstrucaoMamaria':(None, None),'mastoplastiaRedutora':(None, None),'indusaoImplantes':(None, None)}", status=400)
+            raise Exception("breast_surgery_before has to be a dict with lists or bool, like {'surgery':(year_esq, year_dir)} or {'didNot':True}, {'didNot':False,'biopsiaInsinonal':(None, 2020),'biopsiaExcisional':(2021, None),'centraledomia':(None, None),'segmentectomia':(None),'dutectomia':(None, None),'mastectomia':(None, None),'mastectomiaPoupadoraPele':(None, None),'mastectomiaPoupadoraPeleComplexoAreolo':(None, None),'linfadenectomiaAxilar':(None, None),'biopsiaLinfonodo':(None, None),'reconstrucaoMamaria':(None, None),'mastoplastiaRedutora':(None, None),'indusaoImplantes':(None, None)}")
         necessary_keys_positions = {"didNot":(334, 41), "biopsiaInsinonal":((500, 251), (338, 251)), "biopsiaExcisional":((500, 235), (338, 235)), "centraledomia":((500, 220), (338, 220)), "segmentectomia":((500, 204), (338, 204)), "dutectomia":((500, 190), (338, 190)), "mastectomia":((500, 176), (338, 176)), "mastectomiaPoupadoraPele":((500, 159), (338, 159)), "mastectomiaPoupadoraPeleComplexoAreolo":((500, 143), (338, 143)), "linfadenectomiaAxilar":((500, 121), (338, 121)), "biopsiaLinfonodo":((500, 105), (338, 105)), "reconstrucaoMamaria":((500, 90), (338, 90)), "mastoplastiaRedutora":((500, 75), (338, 75)), "indusaoImplantes":((500, 60), (338, 60))}
 
         if len(breast_surgery_before) > 14:
-            return Response('You cannot add more than 14 keys in dict', status=400)
+            raise Exception('You cannot add more than 14 keys in dict')
         #Pick all valid keys
         valid_keys = [ x for x in breast_surgery_before.keys() if x in necessary_keys_positions.keys()]
         #Start adding data
@@ -407,22 +366,24 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
             elif current_surgery[0] == None:
                 continue
             elif type(current_surgery) != type(list()):
-                return Response(f'{surgery} has to be a list with the years right and left or just a None, like: surgery: None or surgery:(None, 2020)', status=400)
+                raise Exception(f'{surgery} has to be a list with the years right and left or just a None, like: surgery: None or surgery:(None, 2020)')
             
             if len(current_surgery) != 2:
-                return Response(f'{surgery} has to be a list with 2 values, like (leftyear, rightyear)')
+                raise Exception(f'{surgery} has to be a list with 2 values, like (leftyear, rightyear)')
             
             cont = 0 
             for year in current_surgery:
                 # Add year in right position
                 can = pdf_functions.add_oneline_intnumber(can=can, number=year, pos=necessary_keys_positions[surgery][cont], camp_name=f'{surgery} year', len_max=4, len_min=4, value_min=1900, value_max=2100, nullable=True, interval=' ')
-                if type(can) == type(Response()): return can
                 cont = 1
             
             
         return can
+    
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding breast_surgery_before', status=500)
+        raise Exception(f'Unknow error while adding breast_surgery_before')
 
 
 def add_diagnostic_mammogram(can:canvas.Canvas, diagnostic_mammogram:dict):
@@ -439,7 +400,7 @@ def add_diagnostic_mammogram(can:canvas.Canvas, diagnostic_mammogram:dict):
         if diagnostic_mammogram == None:
             return can
         if type(diagnostic_mammogram) != type(dict()):
-            return Response("""
+            raise Exception("""
 diagnostic_mammogram has to be a dict with dicts in this extructure, see more in docstring in the function,  like: 'exame_clinico':
         {'direita':[
             'PAPILAR', 
@@ -456,12 +417,12 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
             {'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
             ]
         }
-    """, status=400)
+    """)
         # secoes validas
         sections_keys = ['exame_clinico', 'controle_radiologico', 'lesao_diagnostico', 'avaliacao_resposta', 'revisao_mamografia_lesao', 'controle_lesao']
         
         if len(diagnostic_mammogram) > 6:
-            return Response(f'You cannot add more than 6 keys in diagnostic_mammogram, use {sections_keys}', status=400)
+            raise Exception(f'You cannot add more than 6 keys in diagnostic_mammogram, use {sections_keys}')
         
         
         
@@ -470,11 +431,10 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
             if section in diagnostic_mammogram.keys():
                 # Mark sections options in mamografia diagnostica
                 can = pdf_functions.add_markable_square(can=can, option=section, valid_options=['EXAME_CLINICO', 'CONTROLE_RADIOLOGICO', 'LESAO_DIAGNOSTICO', 'AVALIACAO_RESPOSTA', 'REVISAO_MAMOGRAFIA_LESAO', 'CONTROLE_LESAO'], options_positions=((56, 762), (55, 590), (226, 590),(402, 589),(55, 487),(312, 489),), camp_name='Diagnostic Mammogram Section', square_size=(11,10))
-                if type(can) == type(Response()): return can
                 current_options = diagnostic_mammogram[section]
                 if section == 'exame_clinico':
                     if type(current_options) != type(dict()):
-                        return Response('exame_clinico has to be dict values, like "exame_clinico":["direita":["PAPILAR", {"":[]}]]', status=400)
+                        raise Exception('exame_clinico has to be dict values, like "exame_clinico":["direita":["PAPILAR", {"":[]}]]')
                     # See all itens in dict
                     breast_keys = ['direita', 'esquerda']
                     for breast in breast_keys:
@@ -483,89 +443,81 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
                         if breast in current_options.keys():
                             if breast == 'direita':
                                 can = add_exame_clinico_direita(can=can, current_options=current_options['direita'])
-                                if type(can) == type(Response()): return can
 
                             if breast == 'esquerda':
                                 can = add_exame_clinico_esquerda(can=can, current_options=current_options['esquerda'])
-                                if type(can) == type(Response()): return can
                 
                 if section == 'controle_radiologico':
                     if type(current_options) != type(dict()):
-                        return Response('controle_radiologico has to be dict values, like "controle_radiologico":{"direita": [],      "esquerda": []}', status=400)
+                        raise Exception('controle_radiologico has to be dict values, like "controle_radiologico":{"direita": [],      "esquerda": []}')
                     # See all itens in dict
                     breast_keys = ['direita', 'esquerda']
                     for breast in breast_keys:
                         if breast in current_options.keys():
                             if breast == 'direita':
                                 can = add_controle_radiologico_direita(can=can, current_options=current_options['direita'])
-                                if type(can) == type(Response()): return can
 
                             if breast == 'esquerda':
                                 can = add_controle_radiologico_esquerda(can=can, current_options=current_options['esquerda'])
-                                if type(can) == type(Response()): return can
                                 
                 if section == 'lesao_diagnostico':
                     if type(current_options) != type(dict()):
-                        return Response('lesao_diagnostico has to be dict values, like "lesao_diagnostico":{"direita": [], "esquerda": []}', status=400)
+                        raise Exception('lesao_diagnostico has to be dict values, like "lesao_diagnostico":{"direita": [], "esquerda": []}')
                     # See all itens in dict
                     breast_keys = ['direita', 'esquerda']
                     for breast in breast_keys:
                         if breast in current_options.keys():
                             if breast == 'direita':
                                 can = add_lesao_diagnostico_direita(can=can, current_options=current_options['direita'])
-                                if type(can) == type(Response()): return can
 
                             if breast == 'esquerda':
                                 can = add_lesao_diagnostico_esquerda(can=can, current_options=current_options['esquerda'])
-                                if type(can) == type(Response()): return can
 
                 if section == 'avaliacao_resposta':
                     if type(current_options) != type(list()):
-                        return Response('avaliacao_resposta has to be list, like "avaliacao_resposta":["direita", "esquerda"]', status=400)
+                        raise Exception('avaliacao_resposta has to be list, like "avaliacao_resposta":["direita", "esquerda"]')
                     # See all itens in list
                     for breast in current_options:
                         can = pdf_functions.add_markable_square(can=can, option=breast, valid_options=['DIREITA', 'ESQUERDA'], options_positions=((401, 562), (401, 547)), camp_name='avaliacao_resposta breastS', square_size=(11,10), nullable=True)
-                        if type(can) == type(Response()): return can
                         
 
                 if section == 'revisao_mamografia_lesao':
                     if type(current_options) != type(dict()):
-                        return Response('revisao_mamografia_lesao has to be dict values, like "revisao_mamografia_lesao":{"direita": [], "esquerda": []}', status=400)
+                        raise Exception('revisao_mamografia_lesao has to be dict values, like "revisao_mamografia_lesao":{"direita": [], "esquerda": []}')
                     # See all itens in dict
                     breast_keys = ['direita', 'esquerda']
                     for breast in breast_keys:
                         if breast in current_options.keys():
                             if breast == 'direita':
                                 can = add_revisao_mamografia_lesao_direita(can=can, current_options=current_options['direita'])
-                                if type(can) == type(Response()): return can
 
                             if breast == 'esquerda':
                                 can = add_revisao_mamografia_lesao_esquerda(can=can, current_options=current_options['esquerda'])
-                                if type(can) == type(Response()): return can
                                 pass
 
                 if section == 'controle_lesao':
                     if type(current_options) != type(dict()):
-                        return Response('controle_lesao has to be dict values, like "controle_lesao":{"direita": [], "esquerda": []}', status=400)
+                        raise Exception('controle_lesao has to be dict values, like "controle_lesao":{"direita": [], "esquerda": []}')
                     # See all itens in dict
                     breast_keys = ['direita', 'esquerda']
                     for breast in breast_keys:
                         if breast in current_options.keys():
                             if breast == 'direita':
                                 can = add_controle_lesao_direita(can=can, current_options=current_options['direita'])
-                                if type(can) == type(Response()): return can
 
                             if breast == 'esquerda':
                                 can = add_controle_lesao_esquerda(can=can, current_options=current_options['esquerda'])
-                                if type(can) == type(Response()): return can
                                 pass
 
             else:
                 continue
 
         return can
+
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding breast_surgery_before', status=500)
+        raise Exception(f'Unknow error while adding breast_surgery_before')
 
 
 def add_exame_clinico_direita(can:canvas.Canvas, current_options:dict):
@@ -581,36 +533,34 @@ def add_exame_clinico_direita(can:canvas.Canvas, current_options:dict):
     try:
         
         if type(current_options) != type(dict()):
-            return Response('direita values in exame_clinico has to be a list of dicts, like "exame_clinico":["direita":[{"":[]}]]', status=400)
+            raise Exception('direita values in exame_clinico has to be a list of dicts, like "exame_clinico":["direita":[{"":[]}]]')
         
         item_keys = current_options.keys()
         if 'papilar' in item_keys:
             if current_options['papilar']:
                 can = pdf_functions.add_square(can=can, pos=(56, 732), size=(15, 9))
-            if type(can) == type(Response()): return can
 
         if 'descarga_papilar' in item_keys:
             for option in current_options['descarga_papilar']:
                 can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((496, 737), (496, 723)), camp_name='descarga_capilar options in direita breast', square_size=(15,9), nullable=True)
-                if type(can) == type(Response()): return can
         
         if 'nodulo' in item_keys:
             for option in current_options['nodulo']:
                 can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((312, 696), (361, 696), (412, 696), (466, 696), (512, 696), (312, 683), (361, 683), (412, 683), (466, 683), (512, 683)), camp_name='nodulo options in direita breast', square_size=(15,9), nullable=True)
-                if type(can) == type(Response()): return can
 
         if 'espessamento' in item_keys:
             for option in current_options['espessamento']:
                 can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((313, 650), (362, 650), (413, 650), (467, 650), (513, 650), (313, 637), (362, 637), (413, 637), (467, 637), (513, 637)), camp_name='espessamento options in direita breast', square_size=(15,9), nullable=True)
-                if type(can) == type(Response()): return can
 
         if 'linfonodo_palpavel' in item_keys:
             for option in current_options['linfonodo_palpavel']:
                 can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((380, 615), (420, 615)), camp_name='linfonodo_palpavel options in direita breast', square_size=(15,9), nullable=True)
-                if type(can) == type(Response()): return can
         return can
+
+    except Exception as error:
+        raise error
     except:
-        return Response('Unknow error when adding exame_clinico_direita', status=500)
+        raise Exception(f'Unknow error while adding exame_clinico_direita')
 
 
 
@@ -627,34 +577,32 @@ def add_exame_clinico_esquerda(can:canvas.Canvas, current_options:dict):
     try:
 
         if type(current_options) != type(dict()):
-            return Response('esquerda values in exame_clinico has to be a dict, like "exame_clinico":["esquerda":[{"":[]}]]', status=400)
+            raise Exception('esquerda values in exame_clinico has to be a dict, like "exame_clinico":["esquerda":[{"":[]}]]')
         item_keys = current_options.keys()
         if 'papilar' in item_keys:
             if current_options['papilar']:
                 can = pdf_functions.add_square(can=can, pos=(314, 732), size=(15, 9))
-            if type(can) == type(Response()): return can
         if 'descarga_papilar' in item_keys:
             for option in current_options['descarga_papilar']:
                 can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((238, 737), (238, 725)), camp_name='descarga_capilar options in esquerda breast', square_size=(15,9), nullable=True)
-                if type(can) == type(Response()): return can
         
         if 'nodulo' in item_keys:
             for option in current_options['nodulo']:
                 can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((54, 696), (103, 696), (154, 696), (208, 696), (254, 696), (54, 683), (103, 683), (154, 683), (208, 683), (254, 683)), camp_name='nodulo options in esquerda breast', square_size=(15,9), nullable=True)
-                if type(can) == type(Response()): return can
 
         if 'espessamento' in item_keys:
             for option in current_options['espessamento']:
                 can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((55, 650), (104, 650), (155, 650), (209, 650), (255, 650), (55, 637), (104, 637), (155, 637), (209, 637), (255, 637)), camp_name='espessamento options in esquerda breast', square_size=(15,9), nullable=True)
-                if type(can) == type(Response()): return can
 
         if 'linfonodo_palpavel' in item_keys:
             for option in current_options['linfonodo_palpavel']:
                 can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((121, 615), (162, 616)), camp_name='linfonodo_palpavel options in esquerda breast', square_size=(15,9), nullable=True)
-                if type(can) == type(Response()): return can
         return can
+    
+    except Exception as error:
+        raise error
     except:
-        return Response('Unknow error when adding exame_clinico_direita', status=500)
+        raise Exception(f'Unknow error while adding exame_clinico_direita')
 
 
 def add_controle_radiologico_direita(can:canvas.Canvas, current_options:list):
@@ -670,11 +618,10 @@ def add_controle_radiologico_direita(can:canvas.Canvas, current_options:list):
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((61, 571), (61, 560), (61, 550), (61, 539), (61, 528), (61, 517), (61, 506)), camp_name='controle_radiologico_direita options in right breast', square_size=(10,5), nullable=True)
-            if type(can) == type(Response()): return can
 
         return can
     except:
-        return Response('Unknow error when adding controle_radiologico_direita', status=500)
+        raise Exception('Unknow error when adding controle_radiologico_direita')
 
 
 def add_controle_radiologico_esquerda(can:canvas.Canvas, current_options:list):
@@ -690,11 +637,10 @@ def add_controle_radiologico_esquerda(can:canvas.Canvas, current_options:list):
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((161, 571), (161, 560), (161, 548), (161, 538), (161, 528), (161, 517), (161, 505)), camp_name='controle_radiologico_esquerda options in right breast', square_size=(10,5), nullable=True)
-            if type(can) == type(Response()): return can
 
         return can
     except:
-        return Response('Unknow error when adding controle_radiologico_esquerda', status=500)
+        raise Exception('Unknow error when adding controle_radiologico_esquerda')
 
 
 def add_lesao_diagnostico_direita(can:canvas.Canvas, current_options:list):
@@ -710,11 +656,10 @@ def add_lesao_diagnostico_direita(can:canvas.Canvas, current_options:list):
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((243, 571), (243, 560), (243, 549), (243, 539), (243, 528), (243, 517), (243, 506)), camp_name='lesao_diagnostico_direita options in right breast', square_size=(10,5), nullable=True)
-            if type(can) == type(Response()): return can
 
         return can
     except:
-        return Response('Unknow error when adding lesao_diagnostico_direita', status=500)
+        raise Exception('Unknow error when adding lesao_diagnostico_direita')
 
 
 def add_lesao_diagnostico_esquerda(can:canvas.Canvas, current_options:list):
@@ -730,11 +675,10 @@ def add_lesao_diagnostico_esquerda(can:canvas.Canvas, current_options:list):
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((341, 571), (341, 560), (341, 550), (341, 539), (341, 528), (341, 517), (341, 506)), camp_name='lesao_diagnostico_esquerda options in right breast', square_size=(10,5), nullable=True)
-            if type(can) == type(Response()): return can
 
         return can
     except:
-        return Response('Unknow error when adding lesao_diagnostico_esquerda', status=500)
+        raise Exception('Unknow error when adding lesao_diagnostico_esquerda')
 
 
 def add_revisao_mamografia_lesao_direita(can:canvas.Canvas, current_options:list):
@@ -750,11 +694,10 @@ def add_revisao_mamografia_lesao_direita(can:canvas.Canvas, current_options:list
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['0', '3', '4', '5'], options_positions=((64, 469), (64, 458), (64, 448), (64, 437)), camp_name='mamografia_lesao_direita options in right breast', square_size=(10,5), nullable=True)
-            if type(can) == type(Response()): return can
 
         return can
     except:
-        return Response('Unknow error when adding mamografia_lesao_direita', status=500)
+        raise Exception('Unknow error when adding mamografia_lesao_direita')
 
 
 def add_revisao_mamografia_lesao_esquerda(can:canvas.Canvas, current_options:list):
@@ -770,11 +713,9 @@ def add_revisao_mamografia_lesao_esquerda(can:canvas.Canvas, current_options:lis
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['0', '3', '4', '5'], options_positions=((164, 469), (164, 458), (164, 446), (164, 436)), camp_name='mamografia_lesao_esquerda options in right breast', square_size=(10,5), nullable=True)
-            if type(can) == type(Response()): return can
-
         return can
     except:
-        return Response('Unknow error when adding mamografia_lesao_esquerda', status=500)
+        raise Exception('Unknow error when adding mamografia_lesao_esquerda')
 
 
 def add_controle_lesao_direita(can:canvas.Canvas, current_options:list):
@@ -790,11 +731,10 @@ def add_controle_lesao_direita(can:canvas.Canvas, current_options:list):
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((329, 469), (329, 459), (329, 447), (329, 437), (329, 426), (329, 415), (329, 404)), camp_name='controle_lesao_direita options in right breast', square_size=(10,5), nullable=True)
-            if type(can) == type(Response()): return can
 
         return can
     except:
-        return Response('Unknow error when adding controle_lesao_direita', status=500)
+        raise Exception('Unknow error when adding controle_lesao_direita')
 
 
 def add_controle_lesao_esquerda(can:canvas.Canvas, current_options:list):
@@ -810,11 +750,10 @@ def add_controle_lesao_esquerda(can:canvas.Canvas, current_options:list):
     try:
         for option in current_options:    
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((427, 469), (427, 458), (427, 448), (427, 437), (427, 426), (427, 415), (427, 404)), camp_name='controle_lesao_esquerda options in right breast', square_size=(10,5), nullable=True)
-            if type(can) == type(Response()): return can
 
         return can
     except:
-        return Response('Unknow error when adding controle_lesao_esquerda', status=500)
+        raise Exception('Unknow error when adding controle_lesao_esquerda')
 
 
 
