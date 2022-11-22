@@ -325,9 +325,8 @@ def add_CEP(can:canvas.Canvas, cep:str, pos:tuple, camp_name:str, nullable:bool=
             if cep == None:
                 return can
 
-        verify = validate_func_args(function_to_verify=add_CEP, variables_to_verify={'can':can, 'cep':cep, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval, 'formated':formated})
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_CEP, variables_to_verify={'can':can, 'cep':cep, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval, 'formated':formated})
+
 
         
         cep = str(cep).strip()
@@ -339,9 +338,12 @@ def add_CEP(can:canvas.Canvas, cep:str, pos:tuple, camp_name:str, nullable:bool=
             can = add_data(can=can, data=cep, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {camp_name} because cpf dont have 8 digits", status=400)
+            raise Exception(f"Unable to add {camp_name} because cpf dont have 8 digits")
+            
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
 def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, len_max:int, value_min:int, value_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> Union[canvas.Canvas, Response]:
