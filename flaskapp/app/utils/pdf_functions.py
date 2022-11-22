@@ -1,17 +1,13 @@
 import re
-from flask import Response
-from itertools import cycle
 from reportlab.pdfgen import canvas
 from PyPDF2  import PdfWriter
 import datetime
-from typing import Union
 from inspect import getfullargspec
 from validate_docbr import CNS, CPF, CNPJ
-import sys
 
 
 
-def validate_func_args(function_to_verify, variables_to_verify:dict, nullable_variables:list=[]) -> Union[None, Response]:
+def validate_func_args(function_to_verify, variables_to_verify:dict, nullable_variables:list=[]) -> None:
     """validate all args with the type needed or default values
 
     Args:
@@ -58,15 +54,14 @@ def is_RG_valid(rg:str) -> bool:
     # so theres a chance that a invalid RG has pass as Valid
     # just because RG is matematician valid dont mean that exists in government database
     #the only verification that can do is the maximum value
-    verify = validate_func_args(function_to_verify=is_RG_valid, variables_to_verify={'rg':rg})
-    if type(verify) == type(Response()):
-        return verify
+    validate_func_args(function_to_verify=is_RG_valid, variables_to_verify={'rg':rg})
+
     if 5 < len(str(rg)) < 17:
         return True
     return False
 
 
-def uf_exists(uf:str) -> Union[bool, Response]:
+def uf_exists(uf:str) -> bool:
     """Verify if a uf exists in Brazil
 
     Args:
@@ -76,13 +71,12 @@ def uf_exists(uf:str) -> Union[bool, Response]:
         Bollean true or false
         Reponse if the receive worng type
     """    
-    verify = validate_func_args(function_to_verify=uf_exists, variables_to_verify={'uf':uf})
-    if type(verify) == type(Response()):
-        return verify
+    validate_func_args(function_to_verify=uf_exists, variables_to_verify={'uf':uf})
+
     return bool(re.match(r'^(\s*(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)?)$', uf, flags=re.I))
 
 
-def add_data(can:canvas.Canvas, data:str, pos:tuple) -> Union[canvas.Canvas, Response]:
+def add_data(can:canvas.Canvas, data:str, pos:tuple) -> canvas.Canvas:
     """Add data in pdf using canvas object
 
     Args:
@@ -92,8 +86,7 @@ def add_data(can:canvas.Canvas, data:str, pos:tuple) -> Union[canvas.Canvas, Res
 
     Returns:
         can(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """
     try:
         can.drawString(pos[0], pos[1], data)
@@ -102,7 +95,7 @@ def add_data(can:canvas.Canvas, data:str, pos:tuple) -> Union[canvas.Canvas, Res
         raise Exception("Error when adding data to document with canvas")
 
 
-def add_square(can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)) -> Union[canvas.Canvas, Response]:
+def add_square(can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)) -> canvas.Canvas:
     """Add square in document using canvas object
 
     Args:
@@ -112,8 +105,7 @@ def add_square(can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)) -> Union[canvas.
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """
     try:
         can.rect(x=pos[0], y=pos[1], width=size[0], height=size[1], fill=1)
@@ -122,7 +114,7 @@ def add_square(can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)) -> Union[canvas.
         raise Exception("Error when adding square to document with canvas")
 
 
-def add_centralized_data(can:canvas.Canvas, data:str, pos:tuple) -> Union[canvas.Canvas, Response]:
+def add_centralized_data(can:canvas.Canvas, data:str, pos:tuple) -> canvas.Canvas:
     """Add centralized_data in pdf using canvas object
 
     Args:
@@ -132,17 +124,16 @@ def add_centralized_data(can:canvas.Canvas, data:str, pos:tuple) -> Union[canvas
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """
     try:
         can.drawCentredString(pos[0], pos[1], data)
         return can
     except:
-        return Response("Error when adding centralized data to document with canvas", status=500)
+        raise Exception("Error when adding centralized data to document with canvas")
 
         
-def write_newpdf(newpdf:PdfWriter, new_directory:str) -> Union[None, Response]:
+def write_newpdf(newpdf:PdfWriter, new_directory:str) -> None:
     """Write new pdf in a file
 
     Args:
@@ -150,18 +141,17 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str) -> Union[None, Response]:
         new_directory (str): directory to save the new pdf
     Returns:
         None
-        or
-        Response(flask.Response): with the error
+        
     """ 
     try:
         output_file = open(new_directory, 'wb')
         newpdf.write(output_file)
         output_file.close()
     except:
-        return Response("Error when writing new pdf", status=500)
+        raise Exception("Error when writing new pdf")
 
 
-def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> Union[canvas.Canvas, Response]:
+def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> canvas.Canvas:
     """Add text that is fill in one line
 
     Args:
@@ -176,8 +166,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_
         centralized (bool, optional): Data has to be centralized. Defaults to False.
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """
     try:
         if nullable:
@@ -210,7 +199,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_
 
 
 
-def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='') -> Union[canvas.Canvas, Response]:
+def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='') -> canvas.Canvas:
     """Add text that is fill in one line
 
     Args:
@@ -227,8 +216,7 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         interval (str): interval to add between every char
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error_summary_
+        _summary_
     """    
     try:
         if nullable:
@@ -272,7 +260,7 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_phonenumber(can:canvas.Canvas, number:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
+def add_phonenumber(can:canvas.Canvas, number:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
     """_summary_
 
     Args:
@@ -308,7 +296,7 @@ def add_phonenumber(can:canvas.Canvas, number:str, pos:tuple, camp_name:str, nul
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_CEP(can:canvas.Canvas, cep:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
+def add_CEP(can:canvas.Canvas, cep:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
     """Add cep to canvas
 
     Args:
@@ -327,8 +315,6 @@ def add_CEP(can:canvas.Canvas, cep:str, pos:tuple, camp_name:str, nullable:bool=
 
         validate_func_args(function_to_verify=add_CEP, variables_to_verify={'can':can, 'cep':cep, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval, 'formated':formated})
 
-
-        
         cep = str(cep).strip()
         if len(cep) == 8:
             if formated:
@@ -346,7 +332,7 @@ def add_CEP(can:canvas.Canvas, cep:str, pos:tuple, camp_name:str, nullable:bool=
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, len_max:int, value_min:int, value_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> Union[canvas.Canvas, Response]:
+def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, len_max:int, value_min:int, value_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> canvas.Canvas:
     """Add one line number to canvas
 
     Args:
@@ -364,8 +350,7 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:st
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
@@ -394,7 +379,7 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:st
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_name:str, len_max:int, value_min:float, value_max:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2) -> Union[canvas.Canvas, Response]:
+def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_name:str, len_max:int, value_min:float, value_max:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2) -> canvas.Canvas:
     """Add one line number to canvas
 
     Args:
@@ -413,22 +398,19 @@ def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_nam
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
             if number == None:
                 return can
 
-        verify = validate_func_args(function_to_verify=add_oneline_floatnumber, variables_to_verify={'can':can, 'number':number, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'value_min':value_min, 'value_max':value_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized, 'ndigits':ndigits})
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_oneline_floatnumber, variables_to_verify={'can':can, 'number':number, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'value_min':value_min, 'value_max':value_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized, 'ndigits':ndigits})
         
 
         # verify if number is in the need lenght
         if value_min > number or value_max < number:
-            return Response(f"Unable to add {camp_name} because is bigger than {value_max} and smaller than {value_min}", status=400)
+            raise Exception(f"Unable to add {camp_name} because is bigger than {value_max} and smaller than {value_min}")
         number = round(number, ndigits)
         number = str(number)
         if len_min <= len(number) <= len_max:
@@ -439,12 +421,16 @@ def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_nam
                 can = add_data(can=can, data=number, pos=pos)
             return can
         else:
-            return Response(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}", status=400)
+            raise Exception(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}")
+    
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unknow error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_interval_to_data(data:str, interval:str) -> Union[str, Response]:
+
+def add_interval_to_data(data:str, interval:str) -> str:
     """add interval to data
 
     Args:
@@ -453,8 +439,7 @@ def add_interval_to_data(data:str, interval:str) -> Union[str, Response]:
 
     Returns:
         interval(str): data with the intervals add
-        or
-        Response(flask.Response): with the error
+        
     """    
     if type(data) != type(str()):
         return Exception('The api has to use data in add interval as string, please check te function')
@@ -464,7 +449,7 @@ def add_interval_to_data(data:str, interval:str) -> Union[str, Response]:
     return interval.join(data)
 
 
-def add_cns(can:canvas.Canvas, cns:str, pos:tuple, camp_name:str,nullable:bool=False, formated:bool=False, interval:str='') -> Union[canvas.Canvas, Response]:
+def add_cns(can:canvas.Canvas, cns:str, pos:tuple, camp_name:str,nullable:bool=False, formated:bool=False, interval:str='') -> canvas.Canvas:
     """Add cns to canvas
 
     Args:
@@ -478,8 +463,7 @@ def add_cns(can:canvas.Canvas, cns:str, pos:tuple, camp_name:str,nullable:bool=F
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
@@ -509,7 +493,7 @@ def add_cns(can:canvas.Canvas, cns:str, pos:tuple, camp_name:str,nullable:bool=F
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_cnpj(can:canvas.Canvas, cnpj:str, pos:tuple, camp_name:str,nullable:bool=False, interval:str='') -> Union[canvas.Canvas, Response]:
+def add_cnpj(can:canvas.Canvas, cnpj:str, pos:tuple, camp_name:str,nullable:bool=False, interval:str='') -> canvas.Canvas:
     """Add cnpj to canvas
 
     Args:
@@ -522,8 +506,7 @@ def add_cnpj(can:canvas.Canvas, cnpj:str, pos:tuple, camp_name:str,nullable:bool
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
@@ -550,7 +533,7 @@ def add_cnpj(can:canvas.Canvas, cnpj:str, pos:tuple, camp_name:str,nullable:bool
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> Union[canvas.Canvas, Response]:
+def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> canvas.Canvas:
     """Add cnae to canvas
 
     Args:
@@ -564,8 +547,7 @@ def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:boo
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
@@ -591,7 +573,7 @@ def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:boo
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> Union[canvas.Canvas, Response]:
+def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> canvas.Canvas:
     """Add cbor to canvas
 
     Args:
@@ -604,8 +586,7 @@ def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:boo
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
@@ -631,7 +612,7 @@ def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:boo
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
+def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
     """Add sex square to canvas
 
     Args:
@@ -645,8 +626,7 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
@@ -674,7 +654,7 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='') -> Union[canvas.Canvas, Response]:
+def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='') -> canvas.Canvas:
     """Add datetime to canvas
 
     Args:
@@ -689,8 +669,7 @@ def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bo
         interval_between_numbers (str, optional): add interval between  every number. Defaults to ''.
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
@@ -731,7 +710,7 @@ def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bo
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='') -> Union[canvas.Canvas, Response]:
+def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='') -> canvas.Canvas:
     """Verify uf and add to document
 
     Args:
@@ -744,8 +723,7 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=Fa
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
@@ -770,7 +748,7 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=Fa
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False) -> Union[canvas.Canvas, Response]:
+def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
     """Validate and add document to canvas, can be CPF, RG or CNS
 
     Args:
@@ -790,8 +768,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
@@ -875,7 +852,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
+def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
     """Verifiy option choose and add to canvas, the option is automatic upper cased
 
     Args:
@@ -889,8 +866,7 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
@@ -912,7 +888,7 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_multiple_markable_square(can:canvas.Canvas, options:list, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
+def add_multiple_markable_square(can:canvas.Canvas, options:list, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
     """Verifiy option choose and add to canvas, the option is automatic upper cased
 
     Args:
@@ -926,8 +902,7 @@ def add_multiple_markable_square(can:canvas.Canvas, options:list, valid_options:
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
@@ -935,9 +910,7 @@ def add_multiple_markable_square(can:canvas.Canvas, options:list, valid_options:
                 return can
         
 
-        verify = validate_func_args(function_to_verify=add_multiple_markable_square, variables_to_verify={'can':can, 'options':options, 'valid_options':valid_options, 'options_positions':options_positions, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_multiple_markable_square, variables_to_verify={'can':can, 'options':options, 'valid_options':valid_options, 'options_positions':options_positions, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
 
 
         option = option.upper()
@@ -948,12 +921,16 @@ def add_multiple_markable_square(can:canvas.Canvas, options:list, valid_options:
                 exist = True
         if exist:
             return can
-        return Response(f'Cannot add {camp_name} because the option choosed does not exists', status=400)
+        raise Exception(f'Cannot add {camp_name} because the option choosed does not exists')
+    
+    except Exception as error:
+        raise error
     except:
-        return Response(f'Unkown error while adding {camp_name}', status=500)
+        raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
+
+def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
     """Verifiy option choose and add to canvas, the option is automatic upper cased
 
     Args:
@@ -967,8 +944,7 @@ def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_opt
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
+        
     """    
     try:
         if nullable:
@@ -989,18 +965,17 @@ def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_opt
                     else:
                         #Add text line
                         can = add_oneline_text(can=can, text=text, pos=text_pos, camp_name=camp_name, len_max=len_max, len_min=len_min, interval=interval)
-                if type(can) == type(Response()): return can
                 can = add_square(can=can, pos=options_positions[opt], size=square_size)
                 return can
         raise Exception(f'Cannot add {camp_name} because the option choosed does not exists in {valid_options}')
-        
+
     except Exception as error:
         raise error
     except:
         raise Exception(f'Unknow error while adding {camp_name}')
 
 
-def add_markable_square_and_morelinestext(can:canvas.Canvas, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, decrease_ypos:int, char_per_lines:int, max_lines_amount:int=None, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> Union[canvas.Canvas, Response]:
+def add_markable_square_and_morelinestext(can:canvas.Canvas, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, decrease_ypos:int, char_per_lines:int, max_lines_amount:int=None, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
     """Verifiy option choose and add to canvas, the option is automatic upper cased
 
     Args:
@@ -1014,17 +989,14 @@ def add_markable_square_and_morelinestext(can:canvas.Canvas, option:str, valid_o
 
     Returns:
         canvas(canvas.Canvas): canvas with all changes
-        or
-        Response(flask.Response): with the error
     """    
     try:
         if nullable:
             if option == None or len(str(option).strip()) == 0:
                 return can
 
-        verify = validate_func_args(function_to_verify=add_markable_square_and_morelinestext, variables_to_verify={'can':can, 'option':option, 'valid_options':valid_options, 'text_options':text_options, 'text_pos':text_pos, 'options_positions':options_positions, 'camp_name':camp_name, 'len_max':len_max, 'decrease_ypos':decrease_ypos, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'text':text, 'len_min':len_min, 'interval':interval, 'square_size':square_size, 'nullable':nullable}, nullable_variables=['text', 'max_lines_amount'])
-        if type(verify) == type(Response()):
-            return verify
+        validate_func_args(function_to_verify=add_markable_square_and_morelinestext, variables_to_verify={'can':can, 'option':option, 'valid_options':valid_options, 'text_options':text_options, 'text_pos':text_pos, 'options_positions':options_positions, 'camp_name':camp_name, 'len_max':len_max, 'decrease_ypos':decrease_ypos, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'text':text, 'len_min':len_min, 'interval':interval, 'square_size':square_size, 'nullable':nullable}, nullable_variables=['text', 'max_lines_amount'])
+
 
         #Verify if option exist
         option = option.upper()
@@ -1033,18 +1005,16 @@ def add_markable_square_and_morelinestext(can:canvas.Canvas, option:str, valid_o
                 #Verify if option requer a text
                 if option in text_options:
                     if text == None or str(text).strip() == '':
-                        return Response(f'Cannot add {camp_name} because a text is required for {option} option', status=400)
+                        raise Exception(f'Cannot add {camp_name} because a text is required for {option} option')
                     else:
                         #Add text line
                         can = add_morelines_text(can=can, text=text, initial_pos=text_pos, camp_name=camp_name, len_max=len_max, len_min=len_min, decrease_ypos=decrease_ypos, interval=interval, char_per_lines=char_per_lines, max_lines_amount=max_lines_amount)
-                if type(can) == type(Response()): return can
                 can = add_square(can=can, pos=options_positions[opt], size=square_size)
                 return can
-        return Response(f'Cannot add {camp_name} because the option choosed does not exists in {valid_options}', status=400)
-    except:
-        return Response(f'Unkown error while adding {camp_name}', status=500)
-
-
-
-
+        raise Exception(f'Cannot add {camp_name} because the option choosed does not exists in {valid_options}')
     
+    except Exception as error:
+        raise error
+    except:
+        raise Exception(f'Unknow error while adding {camp_name}')
+
