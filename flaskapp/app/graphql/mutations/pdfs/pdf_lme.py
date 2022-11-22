@@ -7,7 +7,6 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from flask import Response
 from typing import Union
 from app.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_LME_DIRECTORY, WRITE_LME_DIRECTORY
@@ -17,7 +16,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_Lme')
 @convert_kwargs_to_snake_case
-def fill_pdf_lme(_, info, establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid_10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> Union[bytes, Exception]:
+def fill_pdf_lme(_, info, establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid_10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> str:
     """fill pdf lme (laudo de solicitacao, avaliacao e autorizacao e documentos)
 
     Args:
@@ -216,13 +215,9 @@ def add_medicines(can:canvas.Canvas, medicines:list) -> canvas.Canvas:
 
             for med in medicines:
                 can = pdf_functions.add_oneline_text(can=can, text=med['medicine_name'], pos=(NAME_X_POS, ypos), camp_name=f'{cont} Medicine name', len_max=65, len_min=4)
-                if type(can) == type(Response()): return can
                 can = pdf_functions.add_oneline_text(can=can, text=med['quant_1_month'], pos=(MONTH1_X_POS, ypos), camp_name=f'{cont} Medicine month1 quant', len_max=9, len_min=1)
-                if type(can) == type(Response()): return can
                 can = pdf_functions.add_oneline_text(can=can, text=med['quant_2_month'], pos=(MONTH2_X_POS, ypos), camp_name=f'{cont} Medicine month2 quant', len_max=9, len_min=1)
-                if type(can) == type(Response()): return can
                 can = pdf_functions.add_oneline_text(can=can, text=med['quant_3_month'], pos=(MONTH3_X_POS, ypos), camp_name=f'{cont} Medicine month3 quant', len_max=8, len_min=1)
-                if type(can) == type(Response()): return can
 
                 ypos -= REDUCE_Y
             return can
@@ -234,7 +229,7 @@ def add_medicines(can:canvas.Canvas, medicines:list) -> canvas.Canvas:
 
 
 
-def add_filled_by(can:canvas.Canvas, filled_by:list) -> Union[canvas.Canvas, Response]:
+def add_filled_by(can:canvas.Canvas, filled_by:list) -> canvas.Canvas:
     """add filled by
 
     Args:
