@@ -13,7 +13,7 @@ export default Yup.object().shape({
   address: Yup.object().shape({
     zipCode: Yup.string().required(),
     street: Yup.string().required(),
-    complement: Yup.string().required(),
+    complement: Yup.string(),
     number: Yup.string().required(),
     city: Yup.string().required(),
     uf: Yup.string().required(),

@@ -48,7 +48,7 @@ const Admit = () => {
       },
     },
     onSubmit: (values) => {
-      const { addPacient, ...rest } = values;
+      const { addPacient, cid10Code, ...rest } = values;
       const patient = {
         ...values.patient,
         sex: values.patient.sex.value,
@@ -56,15 +56,22 @@ const Admit = () => {
           (commorbiditie) => commorbiditie.id
         ),
         allergies: values.patient.allergies.map((allergie) => allergie.id),
-        weightKg: Number(values.patient.weightKg),
+        weightKg: parseFloat(values.patient.weightKg),
       };
+      console.log("cid10Code", cid10Code);
       createInternment({
-        variables: { ...rest, patient, admissionDatetime: new Date() },
+        variables: {
+          ...rest,
+          patient,
+          admissionDatetime: new Date(),
+          cid10Code: cid10Code.code,
+        },
       });
       console.log(values);
     },
     validationSchema: schema,
   });
+  console.log(formik);
 
   useEffect(() => {
     async function getCep() {
@@ -209,6 +216,13 @@ const Admit = () => {
               name="patient.cpf"
               value={formik.values.patient.cpf}
               placeholder="CPF"
+            />
+            <Input
+              onChange={formik.handleChange}
+              className="normal"
+              name="patient.rg"
+              value={formik.values.patient.rg}
+              placeholder="RG"
             />
           </div>
           <Select
