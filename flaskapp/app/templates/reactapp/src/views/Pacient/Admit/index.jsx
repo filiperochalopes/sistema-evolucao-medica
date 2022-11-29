@@ -22,7 +22,6 @@ const Admit = () => {
   const formik = useFormik({
     initialValues: {
       addPacient: false,
-      admissionDatetime: "",
       hpi: "",
       justification: "",
       cid10Code: null,
@@ -58,21 +57,29 @@ const Admit = () => {
         allergies: values.patient.allergies.map((allergie) => allergie.id),
         weightKg: parseFloat(values.patient.weightKg),
       };
-      console.log("cid10Code", cid10Code);
+      const dateBirthDay = new Date(patient.birthday);
+      const birthday = `${dateBirthDay.getFullYear()}-${
+        dateBirthDay.getMonth() + 1
+      }-${dateBirthDay.getDate()}`;
+      patient.birthday = birthday;
+
+      const date = new Date();
+      const admissionDatetime = `${date.getFullYear()}-${
+        date.getMonth() + 1
+      }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+
       createInternment({
         variables: {
           ...rest,
           patient,
-          admissionDatetime: new Date(),
+          admissionDatetime,
           cid10Code: cid10Code.code,
         },
       });
-      console.log(values);
     },
     validationSchema: schema,
   });
   console.log(formik);
-
   useEffect(() => {
     async function getCep() {
       try {
@@ -137,7 +144,7 @@ const Admit = () => {
               className="small"
               options={[
                 { label: "Masculino", value: "male" },
-                { label: "Feminino", value: "female" },
+                { label: "Feminino", value: "fema" },
               ]}
             />
           </div>
