@@ -10,9 +10,13 @@ terminal:
 shell:
 	docker exec -it evolucao_hospitalar_flaskapp bash -c "flask shell"
 migrate:
-	docker exec -it evolucao_hospitalar_flaskapp bash -c "flask db upgrade"
+	docker exec -it evolucao_hospitalar_flaskapp bash -c ' \
+		chmod -R 755 /app/migrations/versions && \
+		flask db upgrade'
 makemigrations:
-	docker exec -it evolucao_hospitalar_flaskapp bash -c 'flask db migrate -m "$(m)"'
+	docker exec -it evolucao_hospitalar_flaskapp bash -c ' \
+		chmod -R 755 /app/migrations/versions && \
+		flask db migrate -m "$(m)"'
 test:
 	docker exec -it evolucao_hospitalar_flaskapp bash -c 'pytest -s'
 reset_db:
