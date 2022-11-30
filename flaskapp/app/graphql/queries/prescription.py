@@ -37,19 +37,23 @@ def prescription_type_list(*_):
     return [
         {
             'label': 'Atividades de descanso',
-            'name': 'restingActivity'
+            'name': 'restingActivity',
+            'querySeed': 'restingActivities'
         },
         {
             'label': 'Dieta',
-            'name': 'diet'
+            'name': 'diet',
+            'querySeed': 'diets'
         },
         {
             'label': 'Medicação',
-            'name': 'drug'
+            'name': 'drug',
+            'querySeed': 'drugs'
         },
         {
-            'name': 'Atividades de enfermagem',
-            'name': 'nursingActivity'
+            'label': 'Atividades de enfermagem',
+            'name': 'nursingActivity',
+            'querySeed': 'nursingActivities'
         },
     ]
 

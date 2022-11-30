@@ -21,4 +21,5 @@ reset_db:
 		rm -rf instance && \
 		flask db init && \
 		flask db migrate -m "Initial migration" && \
+		chmod -R 755 /app/migrations/versions && \
 		flask db upgrade'
