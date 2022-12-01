@@ -9,7 +9,7 @@ import { useFormik } from "formik";
 import { CREATE_INTERNMENT } from "graphql/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import Select from "components/Select";
-import { ALLERGIES, CID10, COMORBIDITIES } from "graphql/queries";
+import { ALLERGIES, CID10, COMORBIDITIES, STATES } from "graphql/queries";
 import { useEffect } from "react";
 import getCepApiAdapter from "services/getCepApiAdapter";
 import schema from "./schema";
@@ -18,6 +18,7 @@ const Admit = () => {
   const [createInternment] = useMutation(CREATE_INTERNMENT);
   const { data: allergiesData } = useQuery(ALLERGIES);
   const { data: comorbiditiesData } = useQuery(COMORBIDITIES);
+  const { data: statesData } = useQuery(STATES);
   const { data: cid10Data } = useQuery(CID10);
   const formik = useFormik({
     initialValues: {
@@ -56,6 +57,10 @@ const Admit = () => {
         ),
         allergies: values.patient.allergies.map((allergie) => allergie.id),
         weightKg: parseFloat(values.patient.weightKg),
+        address: {
+          ...values.patient.address,
+          uf: values.patient.address.uf,
+        },
       };
       const dateBirthDay = new Date(patient.birthday);
       const birthday = `${dateBirthDay.getFullYear()}-${
@@ -86,11 +91,15 @@ const Admit = () => {
         const response = await getCepApiAdapter(
           formik.values.patient.address.zipCode
         );
+        const findUf = statesData.state.find(
+          (state) => state.uf === response.data.uf
+        );
+        console.log(findUf);
         formik.setValues({
           ...formik.values,
           patient: {
             ...formik.values.patient,
-            address: response.data,
+            address: { ...response.data, uf: findUf },
           },
         });
         // eslint-disable-next-line no-empty
@@ -171,12 +180,17 @@ const Admit = () => {
               value={formik.values.patient.address.city}
               placeholder="Cidade"
             />
-            <Input
-              onChange={formik.handleChange}
-              value={formik.values.patient.address.uf}
+
+            <Select
+              onChange={(e) => {
+                formik.setFieldValue("patient.address.uf", e);
+              }}
               className="small"
-              name="patient.address.uf"
+              getOptionLabel={(option) => option.name}
+              getOptionValue={(option) => option.uf}
+              value={formik.values.patient.address.uf}
               placeholder="Estado"
+              options={statesData.state || []}
             />
             <Input
               onChange={formik.handleChange}

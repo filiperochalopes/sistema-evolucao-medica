@@ -133,6 +133,7 @@ mutation {
 ```graphql
 mutation {
   createInternment(
+<<<<<<< HEAD
     patient: {
       name: "Orlando Flórida"
       sex: "male"
@@ -151,6 +152,24 @@ mutation {
         city: "Água Fria"
         uf: "BA"
       }
+=======
+    admissionDatetime: "2022-11-21 15:22"
+    patient: {
+    name:"Orlando Flórida"
+    sex:"male"
+    birthday:"1995-12-01"
+    cns: "105118227480000"
+    cpf: "33131763990"
+    weightKg: 65.5
+    comorbidities: ["Hipertensão Arterial Sistêmica (HAS)", "Diabetes Mellitus (DM)"]
+    allergies: ["Dipirona", "Amoxicilina", "latex"]
+    address: {
+      street:"Rua Orlando Flórida"
+      zipCode:"40440360"
+      complement: ""
+      city:"Água Fria"
+      uf: "BA"
+>>>>>>> feature/graphql-api
     }
     hpi: "lorem ipsum"
     justification: "lorem ipsum"

@@ -146,6 +146,7 @@ class Patient(db.Model):
     cpf = db.Column(db.String, unique=True)
     cns = db.Column(db.String, unique=True)
     rg = db.Column(db.String, unique=True)
+    weight_kg = db.Column(db.Float)
     comorbidities = relationship('Comorbidity', secondary=PatientComorbidity)
     allergies = relationship('Allergy', secondary=PatientAllergy)
     address_id = db.Column(db.Integer, ForeignKey("address.id"))

@@ -86,3 +86,12 @@ export const DRUG_ROUTES = gql`
     drugRoutes
   }
 `;
+
+export const STATES = gql`
+  query stateData {
+    state {
+      name
+      uf
+    }
+  }
+`;
