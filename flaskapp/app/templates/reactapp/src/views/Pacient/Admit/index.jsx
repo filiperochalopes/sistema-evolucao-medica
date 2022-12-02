@@ -13,6 +13,7 @@ import { ALLERGIES, CID10, COMORBIDITIES, STATES } from "graphql/queries";
 import { useEffect } from "react";
 import getCepApiAdapter from "services/getCepApiAdapter";
 import schema from "./schema";
+import maskCpf from "utils/maskCpf";
 
 const Admit = () => {
   const [createInternment] = useMutation(CREATE_INTERNMENT);
@@ -99,6 +100,7 @@ const Admit = () => {
           ...formik.values,
           patient: {
             ...formik.values.patient,
+            cpf: formik.values.cpf.replace(/\D/g, ""),
             address: { ...response.data, uf: findUf },
           },
         });
@@ -232,7 +234,11 @@ const Admit = () => {
               placeholder="CNS"
             />
             <Input
-              onChange={formik.handleChange}
+              onChange={(e) => {
+                const cpfMask = maskCpf(e.target.value);
+
+                formik.setFieldValue("patient.cpf", cpfMask);
+              }}
               className="normal"
               name="patient.cpf"
               value={formik.values.patient.cpf}
