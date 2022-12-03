@@ -1,5 +1,6 @@
 from flask_marshmallow import Marshmallow
 from app.models import Drug, DrugGroupPreset, Internment, Patient, User, Cid10, Prescription, Diet, DrugPrescription, NursingActivity, RestingActivity, Evolution
+from app.utils import calculate_age
 from marshmallow import fields
 from marshmallow_sqlalchemy import fields as sqa_fields
 
@@ -21,11 +22,17 @@ class CamelCaseSchema(ma.SQLAlchemyAutoSchema):
         field_obj.data_key = camelcase(field_obj.data_key or field_name)
 
 
-class EnumToDictionary(fields.Field):
+class EnumToDictionaryField(fields.Field):
     def _serialize(self, value, attr, obj, **kwargs):
         if value is None:
             return None
         return value.name
+
+class AgeField(fields.Field):
+    def _serialize(self, value):
+        if value is None:
+            return None
+        return calculate_age(value)
 
 class Cid10Schema(CamelCaseSchema):
     class Meta:
@@ -48,7 +55,7 @@ class RestingActivitySchema(CamelCaseSchema):
 
 
 class DrugSchema(CamelCaseSchema):
-    kind = EnumToDictionary(attribute=('kind'))
+    kind = EnumToDictionaryField(attribute=('kind'))
 
     class Meta:
         model = Drug
@@ -88,9 +95,9 @@ class DrugGroupPresetSchema(CamelCaseSchema):
 
 
 class UserSchema(CamelCaseSchema):
-    professional_category = EnumToDictionary(
+    professional_category = EnumToDictionaryField(
         attribute=('professional_category'))
-    birthday = fields.Date(format='%Y-%m-%d')
+    birthdate = fields.Date(format='%Y-%m-%d')
 
     class Meta:
         model = User
@@ -98,7 +105,7 @@ class UserSchema(CamelCaseSchema):
 
 
 class PatientSchema(CamelCaseSchema):
-    sex = EnumToDictionary(attribute=('sex'))
+    sex = EnumToDictionaryField(attribute=('sex'))
 
     class Meta:
         model = Patient
@@ -109,3 +116,6 @@ class InternmentSchema(CamelCaseSchema):
     class Meta:
         model = Internment
         include_fk = True
+        include_relationships = True
+    
+    patient = sqa_fields.Nested(PatientSchema)
