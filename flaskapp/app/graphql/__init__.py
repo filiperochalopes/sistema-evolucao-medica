@@ -219,6 +219,9 @@ type_defs = gql('''
     type Patient {
         id: ID!
         name: String
+        birthday: String
+        sex: String
+        name: String
         cns: String
     }
 
