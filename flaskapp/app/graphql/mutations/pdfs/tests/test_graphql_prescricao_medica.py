@@ -18,6 +18,7 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 
 def data_to_use(_=None, info=None, document_datetime=datetime_to_use,
         patient_name='Pacient Name',
+        doctor_name='Doctor Name',
         prescription='{medicineName:"Dipirona 500mg", amount:"4 comprimidos", useMode:"1 comprimido, via oral, de 6/6h por 3 dias"}'):
         
         request_string = """
@@ -27,6 +28,7 @@ def data_to_use(_=None, info=None, document_datetime=datetime_to_use,
         campos_string = f"""
             documentDatetime: "{document_datetime}",
             patientName: "{patient_name}",
+            doctorName: "{doctor_name}",
             prescription: [{prescription}]
         """
 
@@ -53,6 +55,7 @@ def test_answer_with_all_fields():
 ##############################################################
 # ERRORS IN NAMES CAMPS
 # patient_name
+# doctor_name
 
 def test_wrongtype_patient_name():    
     assert data_to_use(patient_name=123124) == False
@@ -68,6 +71,21 @@ def test_long_patient_name():
 
 def test_short_patient_name():    
     assert data_to_use(patient_name='11113') == False
+
+def test_wrongtype_doctor_name():    
+    assert data_to_use(doctor_name=123124) == False
+
+def test_empty_doctor_name():    
+    assert data_to_use(doctor_name='') == False
+
+def test_with_space_doctor_name():    
+    assert data_to_use(doctor_name='  ') == False
+
+def test_long_doctor_name():    
+    assert data_to_use(doctor_name=str(lenght_test[:36])) == False
+
+def test_short_doctor_name():    
+    assert data_to_use(doctor_name='11113') == False
 
 #################################################################
 # TEST DATETIMES VARIABLES

@@ -47,7 +47,8 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str,
 
                 c = pdf_functions.add_datetime(can=c, date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
                 c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
-                c = pdf_functions.add_oneline_text(can=c, text=f'Medico:{doctor_name}', pos=(initial_doctor_X_pos, 487), camp_name='Doctor Name', len_max=34, len_min=7)
+                c = pdf_functions.add_oneline_text(can=c, text='Medico:', pos=(initial_doctor_X_pos, 487), camp_name='Doctor marking name', len_max=20, len_min=2)
+                c = pdf_functions.add_oneline_text(can=c, text=doctor_name, pos=(initial_name_X_pos, 487), camp_name='Doctor Name', len_max=34, len_min=7)
                 initial_date_X_pos += 450
                 initial_name_X_pos += 451
                 initial_doctor_X_pos += 451
