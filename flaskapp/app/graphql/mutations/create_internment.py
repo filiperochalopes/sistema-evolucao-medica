@@ -43,7 +43,7 @@ def create_comobidities_and_allergies(input_patient):
 def create_internment(_, info, hpi: str, justification: str, patient: dict, cid_10_code: str, admission_datetime:str, current_user: dict):
     print('current_user', file=sys.stderr)
     print(current_user.__dict__, file=sys.stderr)
-    patient['birthday'] = datetime.datetime.strptime(patient['birthday'], '%Y-%m-%d')
+    patient['birthdate'] = datetime.datetime.strptime(patient['birthdate'], '%Y-%m-%d')
     patient['sex'] = SexEnum[patient['sex']]
     # Verifica se já existe o paciente pelos campos únicos: `cpf`, `cns` e `rg`
     if 'cns' in patient.keys():

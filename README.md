@@ -97,7 +97,7 @@ mutation{
     user{
       id
       name
-      birthday
+      birthdate
     }
     token
   }
@@ -111,7 +111,7 @@ mutation {
     patient: {
     name:"Orlando Flórida"
     sex:"male"
-    birthday:"1995-12-01"
+    birthdate:"1995-12-01"
     cns: "105118227480000"
     cpf: "33131763990"
     weightKg: 65.5
