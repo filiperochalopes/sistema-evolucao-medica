@@ -246,6 +246,8 @@ type_defs = gql(
             documentDatetime: String!,
             "Nome do paciente, max:34 min:7 caracteres"
             patientName: String!,
+            "Nome do Medico, max:34 min:7 caracteres"
+            doctorName: String!,
             """
             List de precicoes enviadas pelo medico, voce pode adicionar mais de uma utilizando uma lista de PrescriptionInput, veja as docs do input PrescriptionInput para mais informações"
             """
