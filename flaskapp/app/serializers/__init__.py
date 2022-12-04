@@ -1,3 +1,4 @@
+import sys
 from flask_marshmallow import Marshmallow
 from app.models import Drug, DrugGroupPreset, Internment, Patient, User, Cid10, Prescription, Diet, DrugPrescription, NursingActivity, RestingActivity, Evolution
 from app.utils import calculate_age
@@ -28,11 +29,6 @@ class EnumToDictionaryField(fields.Field):
             return None
         return value.name
 
-class AgeField(fields.Field):
-    def _serialize(self, value):
-        if value is None:
-            return None
-        return calculate_age(value)
 
 class Cid10Schema(CamelCaseSchema):
     class Meta:
@@ -106,6 +102,7 @@ class UserSchema(CamelCaseSchema):
 
 class PatientSchema(CamelCaseSchema):
     sex = EnumToDictionaryField(attribute=('sex'))
+    age = fields.Str(dump_only=True)
 
     class Meta:
         model = Patient

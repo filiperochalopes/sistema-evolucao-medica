@@ -6,6 +6,9 @@ from sqlalchemy.orm import relationship, validates
 from sqlalchemy.sql import func
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Table
+from sqlalchemy.ext.hybrid import hybrid_property
+
+from app.utils import calculate_age
 
 
 class SexEnum(enum.Enum):
@@ -156,6 +159,10 @@ class Patient(db.Model):
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    @hybrid_property
+    def age(self):
+        return calculate_age(self.birthdate)
 
 
 DrugDrugGroupPreset = Table('_drug_group_preset',
