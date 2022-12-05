@@ -248,6 +248,8 @@ type_defs = gql(
             patientName: String!,
             "Nome do Medico, max:34 min:7 caracteres"
             doctorName: String!,
+            "CRM do medico, max:13 min:11"
+            doctorCrm: String!,
             """
             List de precicoes enviadas pelo medico, voce pode adicionar mais de uma utilizando uma lista de PrescriptionInput, veja as docs do input PrescriptionInput para mais informações"
             """

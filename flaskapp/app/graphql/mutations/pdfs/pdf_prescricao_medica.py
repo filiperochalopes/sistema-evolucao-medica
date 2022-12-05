@@ -14,13 +14,14 @@ from ariadne import convert_kwargs_to_snake_case
 
 @mutation.field('generatePdf_PrescricaoMedica')
 @convert_kwargs_to_snake_case
-def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str, doctor_name:str, prescription:list) -> str:
+def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str, doctor_name:str, doctor_crm:str, prescription:list) -> str:
     """fill pdf prescricao medica with 2 pages 
 
     Args:
         document_datetime (str): document_datetime in %d/%m/%Y %H:%M format
         patient_name (str): patient_name
         doctor_name (str)> doctor_name
+        doctor_crm (str): doctor_crm
         prescription (list): list of dicts precriptions, like [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]
 
     Returns:
@@ -43,15 +44,17 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str,
             initial_date_X_pos = 294
             initial_name_X_pos = 120
             initial_doctor_X_pos = 188
+            initial_crm_X_pos = 184
             for x in range(0, 2):
 
                 c = pdf_functions.add_datetime(can=c, date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
                 c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
-                #c = pdf_functions.add_oneline_text(can=c, text='Medico:', pos=(initial_doctor_X_pos, 487), camp_name='Doctor marking name', len_max=20, len_min=2)
-                c = pdf_functions.add_oneline_text(can=c, text=doctor_name, pos=(initial_doctor_X_pos, 106), camp_name='Doctor Name', len_max=34, len_min=7, centralized=True)
+                c = pdf_functions.add_oneline_text(can=c, text=doctor_crm, pos=(initial_crm_X_pos, 76), camp_name='Doctor CRM', len_max=13, len_min=11)
+                c = pdf_functions.add_oneline_text(can=c, text=doctor_name, pos=(initial_doctor_X_pos, 108), camp_name='Doctor Name', len_max=34, len_min=7, centralized=True)
                 initial_date_X_pos += 450
                 initial_name_X_pos += 451
                 initial_doctor_X_pos += 451
+                initial_crm_X_pos += 451
 
             c.setFont('Roboto-Mono', 10)
             c = add_prescription(canvas=c, prescription=prescription)
