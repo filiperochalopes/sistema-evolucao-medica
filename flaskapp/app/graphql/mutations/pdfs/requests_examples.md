@@ -330,6 +330,7 @@ mutation{
     documentDatetime: "17/11/2022",
     patientName: "Pacient Name",
 	doctorName: "Doctor Name",
+	doctorCrm: "CRM/UF 123456",
     prescription: [{medicineName:"Dipirona 500mg", amount:"4 comprimidos", useMode:"1 comprimido, via oral, de 6/6h por 3 dias"}]
 
   ){base64Pdf}
