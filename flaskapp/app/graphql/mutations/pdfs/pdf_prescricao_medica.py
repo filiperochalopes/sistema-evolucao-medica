@@ -38,19 +38,20 @@ def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str,
             # Change canvas font to mach with the document
             # this is also changed in the document to some especific fields
             pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
-            c.setFont('Roboto-Mono', 12)
             # Writing all data in respective fields
             # not null data
             initial_date_X_pos = 294
             initial_name_X_pos = 120
-            initial_doctor_X_pos = 184
-            initial_crm_X_pos = 188
+            initial_doctor_X_pos = 190
+            initial_crm_X_pos = 184
             for x in range(0, 2):
 
+                c.setFont('Roboto-Mono', 12)
                 c = pdf_functions.add_datetime(can=c, date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
                 c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
-                c = pdf_functions.add_oneline_text(can=c, text=doctor_crm, pos=(initial_crm_X_pos, 60), camp_name='Doctor CRM', len_max=13, len_min=11, centralized=True)
-                c = pdf_functions.add_oneline_text(can=c, text=doctor_name, pos=(initial_doctor_X_pos, 76), camp_name='Doctor Name', len_max=34, len_min=7)
+                c = pdf_functions.add_oneline_text(can=c, text=doctor_name, pos=(initial_doctor_X_pos, 90), camp_name='Doctor Name', len_max=34, len_min=7, centralized=True)
+                c.setFont('Roboto-Mono', 11)
+                c = pdf_functions.add_oneline_text(can=c, text=doctor_crm, pos=(initial_crm_X_pos, 76), camp_name='Doctor CRM', len_max=13, len_min=11)
                 initial_date_X_pos += 450
                 initial_name_X_pos += 451
                 initial_doctor_X_pos += 451
