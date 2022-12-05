@@ -19,6 +19,7 @@ client = Client(transport=transport, fetch_schema_from_transport=True)
 def data_to_use(_=None, info=None, document_datetime=datetime_to_use,
         patient_name='Pacient Name',
         doctor_name='Doctor Name',
+        doctor_crm= 'CRM/UF 123456',
         prescription='{medicineName:"Dipirona 500mg", amount:"4 comprimidos", useMode:"1 comprimido, via oral, de 6/6h por 3 dias"}'):
         
         request_string = """
@@ -29,6 +30,7 @@ def data_to_use(_=None, info=None, document_datetime=datetime_to_use,
             documentDatetime: "{document_datetime}",
             patientName: "{patient_name}",
             doctorName: "{doctor_name}",
+            doctorCrm: "{doctor_crm}",
             prescription: [{prescription}]
         """
 
@@ -86,6 +88,17 @@ def test_long_doctor_name():
 
 def test_short_doctor_name():    
     assert data_to_use(doctor_name='11113') == False
+
+#################################################################
+# TEST CRM 
+# doctor_crm
+
+def test_13_caracteres_doctor_crm():
+    assert data_to_use(doctor_crm='CRM/UF 123456') == True
+
+def test_11_caracteres_doctor_crm():
+    assert data_to_use(doctor_crm='CRMUF123456') == True
+
 
 #################################################################
 # TEST DATETIMES VARIABLES
