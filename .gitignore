@@ -1,3 +1,6 @@
 __pycache__
 .env
-sqlite3.db
+.idea
+flaskapp/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/*
+instance/
+*.db
