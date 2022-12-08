@@ -9,7 +9,7 @@ from app.env import MASTER_KEY
 from app.graphql import mutation
 from app.models import User, ProfessionalCategoryEnum
 from app.serializers import UserSchema
-from app.utils.functions import cpf_validator, cns_validator
+from app.utils.auth import cpf_validator, cns_validator
 
 
 @mutation.field('createUser')

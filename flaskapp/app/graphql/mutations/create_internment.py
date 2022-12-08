@@ -9,7 +9,7 @@ from app.serializers import InternmentSchema, PatientSchema
 from app.graphql import mutation
 from app.models import Internment
 from app.utils.decorators import token_authorization
-from app.utils.functions import cpf_validator, cns_validator
+from app.utils.auth import cpf_validator, cns_validator
 
 def create_comobidities_and_allergies(input_patient):
     # Edita e atualiza o paciente com os novos dados atuais. Criação de Comorbidades
