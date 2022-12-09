@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from ariadne import graphql_sync, make_executable_schema
 from flask_scss import Scss
 from ariadne.constants import PLAYGROUND_HTML
-from app.models import DrugGroupPreset, db, Cid10, Config, Diet, Drug, DrugKindEnum, FluidBalanceDescription, NursingActivity, RestingActivity, State, Allergy, Comorbidity
+from app.models import DrugGroupPreset, db, Cid10, Config, Diet, Drug, DrugKindEnum, FluidBalanceDescription, NursingActivity, RestingActivity, State, Allergy, Comorbidity, HighComplexityProcedure
 from flask_cors import CORS
 from app.serializers import ma
 from flask import Blueprint, render_template
@@ -94,6 +94,14 @@ def seed():
         for row in csvreader:
             state = State(ibge_code=int(row[0]), name=row[1], uf=row[2])
             db.session.add(state)
+
+    # cadastrando procedimentos de alta complexidade
+    with open(os.path.join(os.path.dirname(__file__), 'assets', 'HIGH-COMPLEXITY-PROCEDURES.csv'), 'r') as file:
+        csvreader = csv.reader(file, delimiter=',')
+        next(file)
+        for row in csvreader:
+            procedure = HighComplexityProcedure(name=int(row[0]), coded=row[1])
+            db.session.add(procedure)
 
     # Adicionando configurações das instituições
     configs = [

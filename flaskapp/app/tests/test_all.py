@@ -30,7 +30,7 @@ def test_hero_name_query(schema):
                     password: "passw@rd"
                     cpf: "01817013599"
                     cns: "856077573000002"
-                    birthday: "1995-12-01"
+                    birthdate: "1995-12-01"
                     professionalCategory: "doc"
                     professionalDocumentUf: "BA"
                     professionalDocumentNumber: "37825"

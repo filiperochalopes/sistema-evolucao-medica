@@ -39,7 +39,7 @@ def create_user(_, info, master_key: str, user: dict):
             name=user['name'], 
             email=user['email'], 
             phone=user['phone'],
-            birthday=datetime.strptime(user['birthday'], '%Y-%m-%d'),
+            birthdate=datetime.strptime(user['birthdate'], '%Y-%m-%d'),
             password_hash=encrypted_password, 
             cpf=user['cpf'], 
             cns=user['cns'],

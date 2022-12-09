@@ -4,38 +4,13 @@ import sys
 
 from ariadne import convert_kwargs_to_snake_case
 
-from app.models import Address, Allergy, Comorbidity, Internment, Patient, SexEnum, db
-from app.serializers import InternmentSchema, PatientSchema
+from app.models import Address, Internment, Patient, SexEnum, db
+from app.serializers import InternmentSchema
 from app.graphql import mutation
 from app.models import Internment
 from app.utils.decorators import token_authorization
 from app.utils.functions import cpf_validator, cns_validator
-
-def create_comobidities_and_allergies(input_patient):
-    # Edita e atualiza o paciente com os novos dados atuais. Criação de Comorbidades
-    comorbidities = []
-    for comorbidity_name in input_patient['comorbidities']:
-        # Verifica se já existe a comorbidade no banco de dados
-        if len(db.session.query(Comorbidity).filter(Comorbidity.value==comorbidity_name).all()) <= 0:
-            comorbidity = Comorbidity(value=comorbidity_name)
-            db.session.add(comorbidity)
-            comorbidities.append(comorbidity)
-        else:
-            comorbidities.append(db.session.query(Comorbidity).filter(Comorbidity.value==comorbidity_name).one())
-    # Criação de Alergias
-    allergies = []
-    for allergy_name in input_patient['allergies']:
-        if len(db.session.query(Allergy).filter(Allergy.value==allergy_name).all()) <= 0:
-            allergy = Allergy(value=allergy_name)
-            db.session.add(allergy)
-            allergies.append(allergy)
-        else:
-            allergies.append(db.session.query(Allergy).filter(Allergy.value==allergy_name).one())
-    
-    return {
-        'comorbidities': comorbidities,
-        'allergies': allergies
-    }
+from app.utils.create_comorbities_and_allergies import create_comorbidities_and_allergies
 
 @mutation.field('createInternment')
 @convert_kwargs_to_snake_case
@@ -43,7 +18,7 @@ def create_comobidities_and_allergies(input_patient):
 def create_internment(_, info, hpi: str, justification: str, patient: dict, cid_10_code: str, admission_datetime:str, current_user: dict):
     print('current_user', file=sys.stderr)
     print(current_user.__dict__, file=sys.stderr)
-    patient['birthday'] = datetime.datetime.strptime(patient['birthday'], '%Y-%m-%d')
+    patient['birthdate'] = datetime.datetime.strptime(patient['birthdate'], '%Y-%m-%d')
     patient['sex'] = SexEnum[patient['sex']]
     # Verifica se já existe o paciente pelos campos únicos: `cpf`, `cns` e `rg`
     if 'cns' in patient.keys():
@@ -68,7 +43,7 @@ def create_internment(_, info, hpi: str, justification: str, patient: dict, cid_
         del patient['address']
         stored_patient.allergies.clear()
         stored_patient.comorbidities.clear()
-        comorbidities, allergies = create_comobidities_and_allergies(input_patient=patient).values()
+        comorbidities, allergies = create_comorbidities_and_allergies(input_patient=patient).values()
         stored_patient.comorbidities.extend(comorbidities)
         stored_patient.allergies.extend(allergies)
         del patient['comorbidities']
@@ -79,7 +54,7 @@ def create_internment(_, info, hpi: str, justification: str, patient: dict, cid_
         db.session.add(patient_model)
     else:
         # Cria novo paciente
-        comorbidities, allergies = create_comobidities_and_allergies(input_patient=patient).values()
+        comorbidities, allergies = create_comorbidities_and_allergies(input_patient=patient).values()
         del patient['comorbidities']
         del patient['allergies']
         new_address = Address(**patient['address'])

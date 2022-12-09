@@ -14,8 +14,10 @@ type_defs = gql('''
        drugRoutes: [String]
        prescriptionTypes: [Option]
        prescription: [Prescription!]
+       patient(id:ID, queryNameCnsCpf:String): Patient
        patients(queryNameCnsCpf:String): [Patient]
-       internments(active:Boolean): [Internment]
+       internment(id:ID!): Internment
+       internments(active:Boolean, cns:String): [Internment]
        evolutions(patientId:ID!): Evolution
        allergies: [ValueObject]
        comorbidities: [ValueObject]
@@ -49,7 +51,7 @@ type_defs = gql('''
         """
         Atualizar paciente
         """
-        updatePatient(is: ID!, patient:PatientInput): Patient
+        updatePatient(id: ID!, patient:PatientInput): Patient
         createInternment(
             "No formato yyyy-mm-dd HH:MM"
             admissionDatetime:String,
@@ -172,7 +174,7 @@ type_defs = gql('''
         "Apenas dígitos, para fins de testes, pode gerar [nesse link](https://geradornv.com.br/gerador-cns/)"
         cns:String, 
         "Data de aniversário no formato `yyyy-mm-dd`"
-        birthday: String, 
+        birthdate: String, 
         "Categoria de profissional, um dedstes: `doc` para médicos, `nur` para enfermeira e `tec` para técnico de enfermagem"
         professionalCategory:String, 
         "UF do documento de conselho profissional"
@@ -188,7 +190,7 @@ type_defs = gql('''
         "Dado muito relevante para cáculos, peso em quilos"
         weightKg: Float!
         "Data de aniversário no formato `yyyy-mm-dd`"
-        birthday: String
+        birthdate: String
         "Apenas dígitos, para fins de testes pode gerar [nesse link](https://geradornv.com.br/gerador-cpf/)"
         cpf:String, 
         "Apenas dígitos, para fins de testes, pode gerar [nesse link](https://geradornv.com.br/gerador-cns/)"
@@ -205,7 +207,7 @@ type_defs = gql('''
         id: ID!
         email: String
         name: String
-        birthday: String
+        birthdate: String
         professionalCategory: String
         professionalDocumentUf: String
         professionalDocumentNumber: String
@@ -219,6 +221,9 @@ type_defs = gql('''
     type Patient {
         id: ID!
         name: String
+        birthdate: String
+        sex: String
+        age: String
         cns: String
     }
 
@@ -229,7 +234,7 @@ type_defs = gql('''
     }
 
     type Internment{
-        id: ID!
+        id: ID
         admissionDatetime: String
         patient: Patient
         hpi: String

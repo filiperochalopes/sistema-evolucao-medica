@@ -6,6 +6,9 @@ from sqlalchemy.orm import relationship, validates
 from sqlalchemy.sql import func
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Table
+from sqlalchemy.ext.hybrid import hybrid_property
+
+from app.utils import calculate_age
 
 
 class SexEnum(enum.Enum):
@@ -36,7 +39,7 @@ class User(db.Model):
     name = db.Column(db.String, nullable=False)
     cpf = db.Column(db.String, unique=True)
     cns = db.Column(db.String, unique=True)
-    birthday = db.Column(db.Date, nullable=False)
+    birthdate = db.Column(db.Date, nullable=False)
     professional_category = db.Column(db.Enum(ProfessionalCategoryEnum), nullable=False)
     phone = db.Column(db.String)
     professional_document_uf = db.Column(db.String)
@@ -142,7 +145,7 @@ class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     sex = db.Column(db.Enum(SexEnum), nullable=False)
-    birthday = db.Column(db.Date, nullable=False)
+    birthdate = db.Column(db.Date, nullable=False)
     cpf = db.Column(db.String, unique=True)
     cns = db.Column(db.String, unique=True)
     rg = db.Column(db.String, unique=True)
@@ -156,6 +159,10 @@ class Patient(db.Model):
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    @hybrid_property
+    def age(self):
+        return calculate_age(self.birthdate)
 
 
 DrugDrugGroupPreset = Table('_drug_group_preset',
@@ -380,3 +387,10 @@ class Pending(db.Model):
 
     internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
     internment = relationship('Internment', back_populates='pendings')
+
+class HighComplexityProcedure(db.Model):
+    __tablename__ = 'high_complexity_procedures'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    code = db.Column(db.String)
