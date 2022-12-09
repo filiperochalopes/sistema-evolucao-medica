@@ -9,8 +9,8 @@ from app.serializers import UserSchema
 @mutation.field('updatePassword')
 @convert_kwargs_to_snake_case
 @token_authorization
-def update_password(_, info, id:str, password:str):
-    user = db.session.query(User).get(id)
+def update_password(_, info, password:str, current_user:dict):
+    user = db.session.query(User).get(current_user['id'])
     encrypted_password = bcrypt.hashpw(
         password.encode('utf-8'), bcrypt.gensalt())
     user.password = encrypted_password

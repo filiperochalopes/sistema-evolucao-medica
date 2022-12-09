@@ -47,6 +47,14 @@ type_defs = gql('''
             masterKey:String!, 
             user: UserInput): User
         """
+        Atualização de senha por parte do próprio usuário
+        """
+        updatePassword(password: String!): User
+        """
+        Reset de senha direto na requisição para em caso de esquecimento ou perda de senha, a senha será resetada para "senha@123"
+        """
+        resetPassword(cns: String!): User
+        """
         Criar paciente para cadastro do 
         """
         createPatient(patient: PatientInput): Patient
