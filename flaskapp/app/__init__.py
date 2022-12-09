@@ -100,7 +100,7 @@ def seed():
         csvreader = csv.reader(file, delimiter=',')
         next(file)
         for row in csvreader:
-            procedure = HighComplexityProcedure(name=int(row[0]), coded=row[1])
+            procedure = HighComplexityProcedure(name=row[0], code=row[1])
             db.session.add(procedure)
 
     # Adicionando configurações das instituições

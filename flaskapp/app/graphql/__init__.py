@@ -21,6 +21,8 @@ type_defs = gql('''
        evolutions(patientId:ID!): Evolution
        allergies: [ValueObject]
        comorbidities: [ValueObject]
+       highComplexityProcedures: [Procedure]
+       myUser: User
     }
 
     type Mutation {
@@ -281,6 +283,12 @@ type_defs = gql('''
     type ValueObject{
         id: ID!
         value: String
+    }
+
+    type Procedure{
+        id: ID!
+        name: String
+        code: String
     }
 
     type Drug{

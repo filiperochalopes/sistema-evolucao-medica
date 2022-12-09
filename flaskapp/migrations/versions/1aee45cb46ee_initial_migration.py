@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: cf350284248a
+Revision ID: 1aee45cb46ee
 Revises: 
-Create Date: 2022-12-08 23:52:02.218187
+Create Date: 2022-12-09 00:31:50.712944
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'cf350284248a'
+revision = '1aee45cb46ee'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -97,6 +97,12 @@ def upgrade():
     sa.Column('value', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('high_complexity_procedures',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(), nullable=True),
+    sa.Column('code', sa.String(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('states',
     sa.Column('ibge_code', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
@@ -148,23 +154,6 @@ def upgrade():
     sa.UniqueConstraint('cpf'),
     sa.UniqueConstraint('rg')
     )
-    op.create_table('prescriptions',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('resting_activity_id', sa.Integer(), nullable=True),
-    sa.Column('diet_id', sa.Integer(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
-    sa.ForeignKeyConstraint(['diet_id'], ['diets.id'], ),
-    sa.ForeignKeyConstraint(['resting_activity_id'], ['auto_resting_activities.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('_nursing_activity_prescription',
-    sa.Column('nursing_activity_id', sa.Integer(), nullable=False),
-    sa.Column('prescription_id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
-    sa.ForeignKeyConstraint(['nursing_activity_id'], ['auto_nursing_activities.id'], ),
-    sa.ForeignKeyConstraint(['prescription_id'], ['prescriptions.id'], ),
-    sa.PrimaryKeyConstraint('nursing_activity_id', 'prescription_id')
-    )
     op.create_table('_patient_allergy',
     sa.Column('patient_id', sa.Integer(), nullable=False),
     sa.Column('allergy_id', sa.Integer(), nullable=False),
@@ -178,18 +167,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['comorbidity_id'], ['auto_comorbidities.id'], ),
     sa.ForeignKeyConstraint(['patient_id'], ['patients.id'], ),
     sa.PrimaryKeyConstraint('patient_id', 'comorbidity_id')
-    )
-    op.create_table('drug_prescriptions',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('drug_id', sa.Integer(), nullable=True),
-    sa.Column('dosage', sa.String(), nullable=True),
-    sa.Column('route', sa.String(), nullable=True),
-    sa.Column('initial_date', sa.DateTime(), nullable=True),
-    sa.Column('ending_date', sa.DateTime(), nullable=True),
-    sa.Column('prescription_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['drug_id'], ['drugs.id'], ),
-    sa.ForeignKeyConstraint(['prescription_id'], ['prescriptions.id'], ),
-    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('internments',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -260,25 +237,59 @@ def upgrade():
     sa.ForeignKeyConstraint(['professional_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('prescriptions',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('resting_activity_id', sa.Integer(), nullable=True),
+    sa.Column('diet_id', sa.Integer(), nullable=True),
+    sa.Column('professional_id', sa.Integer(), nullable=True),
+    sa.Column('internment_id', sa.Integer(), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.ForeignKeyConstraint(['diet_id'], ['diets.id'], ),
+    sa.ForeignKeyConstraint(['internment_id'], ['internments.id'], ),
+    sa.ForeignKeyConstraint(['professional_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['resting_activity_id'], ['auto_resting_activities.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('_nursing_activity_prescription',
+    sa.Column('nursing_activity_id', sa.Integer(), nullable=False),
+    sa.Column('prescription_id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.ForeignKeyConstraint(['nursing_activity_id'], ['auto_nursing_activities.id'], ),
+    sa.ForeignKeyConstraint(['prescription_id'], ['prescriptions.id'], ),
+    sa.PrimaryKeyConstraint('nursing_activity_id', 'prescription_id')
+    )
+    op.create_table('drug_prescriptions',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('drug_id', sa.Integer(), nullable=True),
+    sa.Column('dosage', sa.String(), nullable=True),
+    sa.Column('route', sa.String(), nullable=True),
+    sa.Column('initial_date', sa.DateTime(), nullable=True),
+    sa.Column('ending_date', sa.DateTime(), nullable=True),
+    sa.Column('prescription_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['drug_id'], ['drugs.id'], ),
+    sa.ForeignKeyConstraint(['prescription_id'], ['prescriptions.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     # ### end Alembic commands ###
 
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
+    op.drop_table('drug_prescriptions')
+    op.drop_table('_nursing_activity_prescription')
+    op.drop_table('prescriptions')
     op.drop_table('pendings')
     op.drop_table('measures')
     op.drop_table('fluid_balance')
     op.drop_table('evolutions')
     op.drop_table('internments')
-    op.drop_table('drug_prescriptions')
     op.drop_table('_patient_comorbidity')
     op.drop_table('_patient_allergy')
-    op.drop_table('_nursing_activity_prescription')
-    op.drop_table('prescriptions')
     op.drop_table('patients')
     op.drop_table('_drug_group_preset')
     op.drop_table('users')
     op.drop_table('states')
+    op.drop_table('high_complexity_procedures')
     op.drop_table('fluid_balance_description')
     op.drop_table('drugs')
     op.drop_table('drug_group_presets')

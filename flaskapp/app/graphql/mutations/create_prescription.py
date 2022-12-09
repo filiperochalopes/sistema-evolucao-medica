@@ -75,6 +75,8 @@ def create_prescription(_, info, internment_id:int, text:str, prescription:dict,
             db.session.flush()    
         prescription_model.nursing_activities.append(nursing_activity)
     
+    prescription_model.professional_id = professional['id']
+    
     db.session.commit()    
     schema = PrescriptionSchema()
 

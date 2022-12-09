@@ -6,3 +6,5 @@ import app.graphql.mutations.create_prescription
 import app.graphql.mutations.create_pending
 import app.graphql.mutations.create_fluid_balance
 import app.graphql.mutations.create_measure
+import app.graphql.mutations.update_password
+import app.graphql.mutations.update_patient

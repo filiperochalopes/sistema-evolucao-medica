@@ -267,6 +267,7 @@ class Internment(db.Model):
     measures = relationship('Measure', back_populates='internment')
     fluid_balance = relationship('FluidBalance', back_populates='internment')
     evolutions = relationship('Evolution', back_populates='internment')
+    prescriptions = relationship('Prescription', back_populates='internment')
     pendings = relationship('Pending', back_populates='internment')
 
     # timestamps
@@ -293,6 +294,12 @@ class Prescription(db.Model):
     drug_prescriptions = relationship('DrugPrescription')
     # Só temos uma dieta por prescrição
     nursing_activities = relationship('NursingActivity', secondary=NursingActivityPrescription, back_populates='prescriptions')
+
+    professional_id = db.Column(db.Integer, ForeignKey("users.id"))
+    professional = relationship('User')
+
+    internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
+    internment = relationship('Internment', back_populates='prescriptions')
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
 

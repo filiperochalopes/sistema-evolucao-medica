@@ -1,6 +1,3 @@
-from datetime import datetime
-import sys
-
 from ariadne import convert_kwargs_to_snake_case
 
 from app.graphql import mutation
