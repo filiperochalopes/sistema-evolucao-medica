@@ -2,7 +2,7 @@ from app.graphql import query
 from app.models import db, Patient, Allergy, Comorbidity
 from app.serializers import PatientSchema
 from ariadne import convert_kwargs_to_snake_case
-from app.utils.auth import cpf_validator, cns_validator
+from app.services.utils.auth import cpf_validator, cns_validator
 from sqlalchemy import or_
 
 @query.field("patient")

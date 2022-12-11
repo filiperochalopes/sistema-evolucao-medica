@@ -7,7 +7,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from typing import Union
-from app.utils import pdf_functions
+from app.services.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_FICHA_INTERN_DIRECTORY, WRITE_FICHA_INTERN_DIRECTORY
 
 from app.graphql import mutation

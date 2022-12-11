@@ -2,7 +2,7 @@ import sys
 
 from functools import wraps
 
-from app.utils.auth import check_token
+from app.services.utils.auth import check_token
 
 
 def token_authorization(func):
