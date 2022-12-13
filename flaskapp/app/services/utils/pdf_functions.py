@@ -177,7 +177,7 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_
         if not nullable:
             text = text.strip()
             if len(text) == 0:
-                raise Exception(f"{camp_name} cannot be empty")
+                raise Exception(f"{camp_name} nao pode ser vazio")
         # verify if text is in the need lenght
         text = text.strip()
         if len_min <= len(text) <= len_max:
@@ -687,8 +687,8 @@ def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bo
                 date_object = datetime.datetime.strptime(date, '%d/%m/%Y')
         except:
             if hours:
-                raise Exception(f'Date doenst match dd/mm/yyyy HH:MM format')
-            raise Exception(f'Date doenst match dd/mm/yyyy format')
+                raise Exception(f'A data nao corresponde ao formato dd/mm/yyyy HH:MM')
+            raise Exception(f'A data nao corresponde ao formato dd/mm/yyyy')
         str_date = str('%02d/%02d/%d %02d:%02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute, date_object.second)
         if hours:  
             if not formated:
@@ -739,7 +739,7 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=Fa
             can = add_data(can=can, data=uf, pos=pos)
             return can
         else:
-            raise Exception(f'{camp_name} not exists in Brazil') 
+            raise Exception(f'{camp_name} nao existe no Brasil') 
     
     except Exception as error:
         raise error
@@ -789,7 +789,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
         if 'cns' in all_document_keys:
             if document['cns'] != None:
                 if type(document['cns']) != type(str()):
-                    raise Exception(f'{camp_name} value CNS has to be str')
+                    raise Exception(f'{camp_name} CNS deve ser do tipo string')
                 
                 cns_validator = CNS()
                 if cns_validator.validate(document['cns']):
@@ -804,12 +804,12 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
                     can = add_data(can=can, data=cns, pos=pos_cns)
                     return can
                 else:
-                    raise Exception(f'{camp_name} CNS is not valid')
+                    raise Exception(f'{camp_name} CNS nao e valido')
         
         if 'cpf' in all_document_keys:
             if document['cpf'] != None:
                 if type(document['cpf']) != type(str()):
-                    raise Exception(f'{camp_name} value CPF has to be str')
+                    raise Exception(f'{camp_name} CPF deve ser do tipo string')
                 #Format cpf to validate
                 cpf_validator = CPF()
                 cpf = document['cpf']
@@ -826,13 +826,13 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
                     can = add_data(can=can, data=cpf, pos=pos_cpf)
                     return can
                 else:
-                    raise Exception(f'{camp_name} CPF is not valid')
+                    raise Exception(f'{camp_name} CPF nao e valido')
         
         if 'rg' in all_document_keys:
             if document['rg'] != None:
                 rg = document['rg']
                 if type(rg) != type(str()):
-                    raise Exception(f'{camp_name} value RG has to be str')
+                    raise Exception(f'{camp_name} RG deve ser do tipo string')
                 #The only verificatinon is that rg is not greater than 16 characteres
                 if is_RG_valid(rg):
                     rg = str(document['rg'])
@@ -841,9 +841,9 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
                     can = add_data(can=can, data=rg, pos=pos_rg)
                     return can
                 else:
-                    raise Exception(f'{camp_name} RG is not valid')
+                    raise Exception(f'{camp_name} RG nao e valido')
         
-        raise Exception(f'{camp_name} was not CPF, CNS or RG')
+        raise Exception(f'{camp_name} voce nao enviou um CPF, CNS ou RG')
     
     except Exception as error:
         raise error
@@ -879,7 +879,7 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
             if option == valid_options[opt]:
                 can = add_square(can=can, pos=options_positions[opt], size=square_size)
                 return can
-        raise Exception(f'Cannot add {camp_name} because the option choosed does not exists')
+        raise Exception(f'Nao foi possivel adicionar {camp_name} porque a opcao escolhida nao existe')
 
     except Exception as error:
         raise error
@@ -920,7 +920,7 @@ def add_multiple_markable_square(can:canvas.Canvas, options:list, valid_options:
                 exist = True
         if exist:
             return can
-        raise Exception(f'Cannot add {camp_name} because the option choosed does not exists')
+        raise Exception(f'Nao foi possivel adicionar {camp_name} porque a opcao escolhida nao existe')
     
     except Exception as error:
         raise error
@@ -960,13 +960,13 @@ def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_opt
                 #Verify if option requer a text
                 if option in text_options:
                     if text == None or str(text).strip() == '':
-                        raise Exception(f'Cannot add {camp_name} because a text is required for {option} option')
+                        raise Exception(f'Nao foi possivel adicionar {camp_name} porque a opcao {option} tambem necessita de uma string')
                     else:
                         #Add text line
                         can = add_oneline_text(can=can, text=text, pos=text_pos, camp_name=camp_name, len_max=len_max, len_min=len_min, interval=interval)
                 can = add_square(can=can, pos=options_positions[opt], size=square_size)
                 return can
-        raise Exception(f'Cannot add {camp_name} because the option choosed does not exists in {valid_options}')
+        raise Exception(f'Nao foi possivel adicionar {camp_name} porque a opcao escolhida nao existe em {valid_options}')
 
     except Exception as error:
         raise error
@@ -1004,13 +1004,13 @@ def add_markable_square_and_morelinestext(can:canvas.Canvas, option:str, valid_o
                 #Verify if option requer a text
                 if option in text_options:
                     if text == None or str(text).strip() == '':
-                        raise Exception(f'Cannot add {camp_name} because a text is required for {option} option')
+                        raise Exception(f'Nao foi possivel adicionar {camp_name} porque a opcao {option} tambem necessita de uma string')
                     else:
                         #Add text line
                         can = add_morelines_text(can=can, text=text, initial_pos=text_pos, camp_name=camp_name, len_max=len_max, len_min=len_min, decrease_ypos=decrease_ypos, interval=interval, char_per_lines=char_per_lines, max_lines_amount=max_lines_amount)
                 can = add_square(can=can, pos=options_positions[opt], size=square_size)
                 return can
-        raise Exception(f'Cannot add {camp_name} because the option choosed does not exists in {valid_options}')
+        raise Exception(f'Nao foi possivel adicionar {camp_name} porque a opcao escolhida nao existe em {valid_options}')
     
     except Exception as error:
         raise error
