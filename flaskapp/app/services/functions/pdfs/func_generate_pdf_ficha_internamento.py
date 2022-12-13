@@ -82,7 +82,7 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
         except Exception as error:
             return error
         except:
-            return Exception('Some error happen when adding data that cannot be null to fields')
+            return Exception('Erro desconhecido ocorreu enquanto adicionava dados obrigadorios')
 
         #Adding data that can be null
         try:
@@ -99,7 +99,7 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
         except Exception as error:
             return error
         except:
-            return Exception('Some error happen when adding data that can be null to fields')
+            return Exception('Erro desconhecido ocorreu enquanto adicionava dados opcionais')
 
         # create a new PDF with Reportlab
         c.save()
@@ -122,4 +122,4 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
     except:
-        return Exception("Error while filling ficha de internamento")
+        return Exception("Erro desconhecido enquanto preenchia o documento ficha de internamento")
