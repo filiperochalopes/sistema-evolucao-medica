@@ -142,7 +142,7 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
         except Exception as error:
             raise error
         except:
-            raise Exception('Some error happen when adding not null data to fields in page 1')
+            raise Exception('Algum erro nao diagnoticado ocorreu enquanto adicionava dados obrigatorios na pagina 1')
 
         #Adding data that can be null
         try:
@@ -180,14 +180,14 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
             if patient_ethnicity == None:
                 patient_ethnicity = [None, None]
             if type(patient_ethnicity) != type(list()):
-                raise Exception('Patient ethnicity has to be a list')
+                raise Exception('Etnia do paciente (Patient ethnicity) deve ser uma lista')
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'], text_options=['INDIGENA'], text_pos=(516, 563), options_positions=((278, 560), (323, 560),(363, 560),(401, 560), (450, 560)), camp_name='Patient Ethinicity', len_max=10, text=patient_ethnicity[1], len_min=4, square_size=(11, 9), nullable=True)
             c = pdf_functions.add_markable_square(can=c, option=patient_schooling, valid_options=['ANALFABETO', 'FUNDINCOM', 'FUNDCOMPL', 'MEDIOCOMPL', 'SUPCOMPL'], options_positions=((55, 380), (115, 381), (223, 381), (325, 381), (408, 381)), camp_name='Patient Schooling', square_size=(10,9), nullable=True)
             
         except Exception as error:
             return error
         except:
-            return Exception('Critical error happen when adding data that can be null to fields in page 1')
+            return Exception('Erro critico ocorreu enquanto adicionava dados opcionais na pagina 1')
 
 
 ### Add Page 2
@@ -211,7 +211,7 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
         except Exception as error:
             return error
         except:
-            return Exception('Some error happen when adding not null data to fields in page 2')
+            return Exception('Algum erro nao diagnoticado ocorreu enquanto adicionava dados obrigatorios na pagina 2')
 
         # create a new PDF with Reportlab
         c.save()
@@ -240,7 +240,7 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
     except:
-        return Exception("Error while filling solcit mamografia")
+        return Exception("Erro critico enquanto preenchia o documento de Solicitacao de Mamografia")
 
 
 def add_patient_adress_cep(can:canvas.Canvas, number:str):
@@ -257,18 +257,18 @@ def add_patient_adress_cep(can:canvas.Canvas, number:str):
         if number == None:
             return can
         if type(number) != type(str()) and number != None:
-            raise Exception('Patient Adress CEP has to be str, if can be null, please add nullable option and None')
+            raise Exception('Endereco de CEP do paciente (Patient Adress CEP) deve ser um string')
         number = str(number).strip()
         if len(number) == 8:
             can = pdf_functions.add_oneline_text(can=can, text=number[:5], pos=(47, 438), camp_name='Patient Adress CEP', len_max=5, len_min=5, interval=' ', nullable=True)
             can = pdf_functions.add_oneline_text(can=can, text=number[5:], pos=(138, 438), camp_name='Patient Adress CEP', len_max=3, len_min=3, interval=' ', nullable=True)
             return can
         else:
-            raise Exception("Unable to add Patient Adress CEP because is longer than 8 characters or smaller than 8")
+            raise Exception("Nao foi possivel adicionar o Endereco de CEP do paciente (Patient Adress CEP) porque deve ter somente 8 caracteres")
     except Exception as error:
         raise error
     except:
-        raise Exception('Unknow error while adding Patient Adress CEP')
+        raise Exception('Erro desconhecido ocorreu enquanto adicionava Endereco de CEP do paciente (Patient Adress CEP)')
 
 
 def add_patient_phonenumber(can:canvas.Canvas, number:str):
@@ -285,7 +285,7 @@ def add_patient_phonenumber(can:canvas.Canvas, number:str):
         if number == None:
             return can
         if type(number) != type(str()) and number != None:
-            raise Exception('Patient Phonenumber has to be str, if can be null, please add nullable option and None')
+            raise Exception('Numero de Telefone do paciente deve ser uma string')
         number = str(number).strip()
         if len(number) == 10:
             can = pdf_functions.add_oneline_text(can=can, text=number[:2], pos=(227, 438), camp_name='Patient Phonenumber', len_max=2, len_min=2, interval=' ', nullable=True)
@@ -293,12 +293,12 @@ def add_patient_phonenumber(can:canvas.Canvas, number:str):
             can = pdf_functions.add_oneline_text(can=can, text=number[6:], pos=(365, 438), camp_name='Patient Phonenumber', len_max=4, len_min=4, interval=' ', nullable=True)
             return can
         else:
-            raise Exception("Unable to add Patient Phonenumber because is longer than 10 characters or smaller than 10")
+            raise Exception("Nao foi possivel adicionar o Numero de Telefone do paciente porque deve ter somente 10 caracteres")
 
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding Patient Phonenumber')
+        raise Exception(f'Erro desconhecido ocorreu enquanto adicionava o numero de telefone do paciente')
 
 
 def add_radiotherapy_before(can:canvas.Canvas, radiotherapy_before:list):
@@ -315,7 +315,7 @@ def add_radiotherapy_before(can:canvas.Canvas, radiotherapy_before:list):
         if radiotherapy_before == None:
             return can
         if type(radiotherapy_before) != type(list()):
-            raise Exception('radiotherapy_before has to be list')
+            raise Exception('radiotherapy_before deve ser uma lista (list)')
         can = pdf_functions.add_markable_square_and_onelinetext(can=can, option=radiotherapy_before[0], valid_options=['SIMDIR', 'SIMESQ', 'NAO', 'NAOSABE'], text_options=['SIMDIR'], options_positions=((336,332), (336,319), (336, 307), (336, 294)), camp_name='Has made radiotherapy before', square_size=(15,9), len_max=4, len_min=4, text=radiotherapy_before[1], text_pos=(420, 334), interval=' ', nullable=True)
         if radiotherapy_before[0].upper() == 'SIMESQ':
             can = pdf_functions.add_oneline_text(can=can, text=radiotherapy_before[1], pos=(420, 321), camp_name='Has made radiotherapy before', len_max=4, len_min=4, interval=' ', nullable=True)
@@ -324,7 +324,7 @@ def add_radiotherapy_before(can:canvas.Canvas, radiotherapy_before:list):
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding radiotherapy before')
+        raise Exception(f'Erro desconhecido ocorreu enquanto adicionava as radioterapias anteriores(radiotherapy before)')
 
 
 def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
@@ -341,11 +341,11 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
         if breast_surgery_before == None:
             return can
         if type(breast_surgery_before) != type(dict()):
-            raise Exception("breast_surgery_before has to be a dict with lists or bool, like {'surgery':(year_esq, year_dir)} or {'didNot':True}, {'didNot':False,'biopsiaInsinonal':(None, 2020),'biopsiaExcisional':(2021, None),'centraledomia':(None, None),'segmentectomia':(None),'dutectomia':(None, None),'mastectomia':(None, None),'mastectomiaPoupadoraPele':(None, None),'mastectomiaPoupadoraPeleComplexoAreolo':(None, None),'linfadenectomiaAxilar':(None, None),'biopsiaLinfonodo':(None, None),'reconstrucaoMamaria':(None, None),'mastoplastiaRedutora':(None, None),'indusaoImplantes':(None, None)}")
+            raise Exception("breast_surgery_before deve ser um dicionarios com listas ou booleanos, exemplo {'surgery':(year_esq, year_dir)} or {'didNot':True}, {'didNot':False,'biopsiaInsinonal':(None, 2020),'biopsiaExcisional':(2021, None),'centraledomia':(None, None),'segmentectomia':(None),'dutectomia':(None, None),'mastectomia':(None, None),'mastectomiaPoupadoraPele':(None, None),'mastectomiaPoupadoraPeleComplexoAreolo':(None, None),'linfadenectomiaAxilar':(None, None),'biopsiaLinfonodo':(None, None),'reconstrucaoMamaria':(None, None),'mastoplastiaRedutora':(None, None),'indusaoImplantes':(None, None)}")
         necessary_keys_positions = {"didNot":(334, 41), "biopsiaInsinonal":((500, 251), (338, 251)), "biopsiaExcisional":((500, 235), (338, 235)), "centraledomia":((500, 220), (338, 220)), "segmentectomia":((500, 204), (338, 204)), "dutectomia":((500, 190), (338, 190)), "mastectomia":((500, 176), (338, 176)), "mastectomiaPoupadoraPele":((500, 159), (338, 159)), "mastectomiaPoupadoraPeleComplexoAreolo":((500, 143), (338, 143)), "linfadenectomiaAxilar":((500, 121), (338, 121)), "biopsiaLinfonodo":((500, 105), (338, 105)), "reconstrucaoMamaria":((500, 90), (338, 90)), "mastoplastiaRedutora":((500, 75), (338, 75)), "indusaoImplantes":((500, 60), (338, 60))}
 
         if len(breast_surgery_before) > 14:
-            raise Exception('You cannot add more than 14 keys in dict')
+            raise Exception('Você não pode adicionar mais que 14 chaves no dicionarios em breast_surgery_before')
         #Pick all valid keys
         valid_keys = [ x for x in breast_surgery_before.keys() if x in necessary_keys_positions.keys()]
         #Start adding data
@@ -362,10 +362,10 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
             elif current_surgery[0] == None:
                 continue
             elif type(current_surgery) != type(list()):
-                raise Exception(f'{surgery} has to be a list with the years right and left or just a None, like: surgery: None or surgery:(None, 2020)')
+                raise Exception(f'{surgery} deve ser uma lista com os anos da cirurgias no seio direito e esquerdo ou None, exemplo: surgery: None or surgery:(None, 2020)')
             
             if len(current_surgery) != 2:
-                raise Exception(f'{surgery} has to be a list with 2 values, like (leftyear, rightyear)')
+                raise Exception(f'{surgery} deve ser uma lista com 2 valores , exemplo: (ano_esquerdo, ano_direito)')
             
             cont = 0 
             for year in current_surgery:
@@ -379,7 +379,7 @@ def add_breast_surgery_before(can:canvas.Canvas, breast_surgery_before:dict):
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding breast_surgery_before')
+        raise Exception(f'Erro desconhecido ocorreu enquanto adicionava cirurgias anterioes nos seios (breast_surgery_before)')
 
 
 def add_diagnostic_mammogram(can:canvas.Canvas, diagnostic_mammogram:dict):
@@ -397,7 +397,8 @@ def add_diagnostic_mammogram(can:canvas.Canvas, diagnostic_mammogram:dict):
             return can
         if type(diagnostic_mammogram) != type(dict()):
             raise Exception("""
-diagnostic_mammogram has to be a dict with dicts in this extructure, see more in docstring in the function,  like: 'exame_clinico':
+Diagnostico de mamografia (diagnostic_mammogram) deve ser um dicionario com dicionarios no modelo da estrutura abaixo, existem mais exemplos na docstring da funcao, exemplo:
+'exame_clinico':
         {'direita':[
             'PAPILAR', 
             {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA']},
@@ -418,7 +419,7 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
         sections_keys = ['exame_clinico', 'controle_radiologico', 'lesao_diagnostico', 'avaliacao_resposta', 'revisao_mamografia_lesao', 'controle_lesao']
         
         if len(diagnostic_mammogram) > 6:
-            raise Exception(f'You cannot add more than 6 keys in diagnostic_mammogram, use {sections_keys}')
+            raise Exception(f'O dicionario de diagnostic_mammogram nao pode ter mais que 6 keys, use somente {sections_keys}')
         
         
         
@@ -430,7 +431,7 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
                 current_options = diagnostic_mammogram[section]
                 if section == 'exame_clinico':
                     if type(current_options) != type(dict()):
-                        raise Exception('exame_clinico has to be dict values, like "exame_clinico":["direita":["PAPILAR", {"":[]}]]')
+                        raise Exception('exame_clinico deve ser um dicionario, exemplo: "exame_clinico":["direita":["PAPILAR", {"":[]}]]')
                     # See all itens in dict
                     breast_keys = ['direita', 'esquerda']
                     for breast in breast_keys:
@@ -445,7 +446,7 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
                 
                 if section == 'controle_radiologico':
                     if type(current_options) != type(dict()):
-                        raise Exception('controle_radiologico has to be dict values, like "controle_radiologico":{"direita": [],      "esquerda": []}')
+                        raise Exception('controle_radiologico deve ser um dicionario, exemplo: "controle_radiologico":{"direita": [],      "esquerda": []}')
                     # See all itens in dict
                     breast_keys = ['direita', 'esquerda']
                     for breast in breast_keys:
@@ -458,7 +459,7 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
                                 
                 if section == 'lesao_diagnostico':
                     if type(current_options) != type(dict()):
-                        raise Exception('lesao_diagnostico has to be dict values, like "lesao_diagnostico":{"direita": [], "esquerda": []}')
+                        raise Exception('lesao_diagnostico deve ser um dicionario, exemplo: "lesao_diagnostico":{"direita": [], "esquerda": []}')
                     # See all itens in dict
                     breast_keys = ['direita', 'esquerda']
                     for breast in breast_keys:
@@ -471,7 +472,7 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
 
                 if section == 'avaliacao_resposta':
                     if type(current_options) != type(list()):
-                        raise Exception('avaliacao_resposta has to be list, like "avaliacao_resposta":["direita", "esquerda"]')
+                        raise Exception('avaliacao_resposta deve ser um dicionario, exemplo: "avaliacao_resposta":["direita", "esquerda"]')
                     # See all itens in list
                     for breast in current_options:
                         can = pdf_functions.add_markable_square(can=can, option=breast, valid_options=['DIREITA', 'ESQUERDA'], options_positions=((401, 562), (401, 547)), camp_name='avaliacao_resposta breastS', square_size=(11,10), nullable=True)
@@ -479,7 +480,7 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
 
                 if section == 'revisao_mamografia_lesao':
                     if type(current_options) != type(dict()):
-                        raise Exception('revisao_mamografia_lesao has to be dict values, like "revisao_mamografia_lesao":{"direita": [], "esquerda": []}')
+                        raise Exception('revisao_mamografia_lesao deve ser um dicionario, exemplo: "revisao_mamografia_lesao":{"direita": [], "esquerda": []}')
                     # See all itens in dict
                     breast_keys = ['direita', 'esquerda']
                     for breast in breast_keys:
@@ -493,7 +494,7 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
 
                 if section == 'controle_lesao':
                     if type(current_options) != type(dict()):
-                        raise Exception('controle_lesao has to be dict values, like "controle_lesao":{"direita": [], "esquerda": []}')
+                        raise Exception('controle_lesao deve ser um dicionario, exemplo: "controle_lesao":{"direita": [], "esquerda": []}')
                     # See all itens in dict
                     breast_keys = ['direita', 'esquerda']
                     for breast in breast_keys:
@@ -513,7 +514,7 @@ diagnostic_mammogram has to be a dict with dicts in this extructure, see more in
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding breast_surgery_before')
+        raise Exception(f'Erro desconhecido enquanto adicionava historico de cirurgias nos seios (breast_surgery_before)')
 
 
 def add_exame_clinico_direita(can:canvas.Canvas, current_options:dict):
@@ -529,7 +530,7 @@ def add_exame_clinico_direita(can:canvas.Canvas, current_options:dict):
     try:
         
         if type(current_options) != type(dict()):
-            raise Exception('direita values in exame_clinico has to be a list of dicts, like "exame_clinico":["direita":[{"":[]}]]')
+            raise Exception('o valores da direita em exame_clinico deve ser uma lista de dicionarios, exemplo: "exame_clinico":["direita":[{"":[]}]]')
         
         item_keys = current_options.keys()
         if 'papilar' in item_keys:
@@ -556,7 +557,7 @@ def add_exame_clinico_direita(can:canvas.Canvas, current_options:dict):
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding exame_clinico_direita')
+        raise Exception(f'Erro desconhecido enquanto adicionava exame_clinico_direita')
 
 
 
@@ -573,7 +574,7 @@ def add_exame_clinico_esquerda(can:canvas.Canvas, current_options:dict):
     try:
 
         if type(current_options) != type(dict()):
-            raise Exception('esquerda values in exame_clinico has to be a dict, like "exame_clinico":["esquerda":[{"":[]}]]')
+            raise Exception('valores da esquerda em exame_clinico deve ser uma lista de dicionarios, exemplo: "exame_clinico":["esquerda":[{"":[]}]]')
         item_keys = current_options.keys()
         if 'papilar' in item_keys:
             if current_options['papilar']:
@@ -598,7 +599,7 @@ def add_exame_clinico_esquerda(can:canvas.Canvas, current_options:dict):
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding exame_clinico_direita')
+        raise Exception(f'Erro desconhecido enquanto adicionava exame_clinico_direita')
 
 
 def add_controle_radiologico_direita(can:canvas.Canvas, current_options:list):
@@ -617,7 +618,7 @@ def add_controle_radiologico_direita(can:canvas.Canvas, current_options:list):
 
         return can
     except:
-        raise Exception('Unknow error when adding controle_radiologico_direita')
+        raise Exception('Erro desconhecido enquanto adicionava controle_radiologico_direita')
 
 
 def add_controle_radiologico_esquerda(can:canvas.Canvas, current_options:list):
@@ -636,7 +637,7 @@ def add_controle_radiologico_esquerda(can:canvas.Canvas, current_options:list):
 
         return can
     except:
-        raise Exception('Unknow error when adding controle_radiologico_esquerda')
+        raise Exception('Erro desconhecido enquanto adicionava controle_radiologico_esquerda')
 
 
 def add_lesao_diagnostico_direita(can:canvas.Canvas, current_options:list):
@@ -655,7 +656,7 @@ def add_lesao_diagnostico_direita(can:canvas.Canvas, current_options:list):
 
         return can
     except:
-        raise Exception('Unknow error when adding lesao_diagnostico_direita')
+        raise Exception('Erro desconhecido enquanto adicionava lesao_diagnostico_direita')
 
 
 def add_lesao_diagnostico_esquerda(can:canvas.Canvas, current_options:list):
@@ -674,7 +675,7 @@ def add_lesao_diagnostico_esquerda(can:canvas.Canvas, current_options:list):
 
         return can
     except:
-        raise Exception('Unknow error when adding lesao_diagnostico_esquerda')
+        raise Exception('Erro desconhecido enquanto adicionava lesao_diagnostico_esquerda')
 
 
 def add_revisao_mamografia_lesao_direita(can:canvas.Canvas, current_options:list):
@@ -693,7 +694,7 @@ def add_revisao_mamografia_lesao_direita(can:canvas.Canvas, current_options:list
 
         return can
     except:
-        raise Exception('Unknow error when adding mamografia_lesao_direita')
+        raise Exception('Erro desconhecido enquanto adicionava mamografia_lesao_direita')
 
 
 def add_revisao_mamografia_lesao_esquerda(can:canvas.Canvas, current_options:list):
@@ -711,7 +712,7 @@ def add_revisao_mamografia_lesao_esquerda(can:canvas.Canvas, current_options:lis
             can = pdf_functions.add_markable_square(can=can, option=option, valid_options=['0', '3', '4', '5'], options_positions=((164, 469), (164, 458), (164, 446), (164, 436)), camp_name='mamografia_lesao_esquerda options in right breast', square_size=(10,5), nullable=True)
         return can
     except:
-        raise Exception('Unknow error when adding mamografia_lesao_esquerda')
+        raise Exception('Erro desconhecido enquanto adicionava mamografia_lesao_esquerda')
 
 
 def add_controle_lesao_direita(can:canvas.Canvas, current_options:list):
@@ -730,7 +731,7 @@ def add_controle_lesao_direita(can:canvas.Canvas, current_options:list):
 
         return can
     except:
-        raise Exception('Unknow error when adding controle_lesao_direita')
+        raise Exception('Erro desconhecido enquanto adicionava controle_lesao_direita')
 
 
 def add_controle_lesao_esquerda(can:canvas.Canvas, current_options:list):
@@ -749,7 +750,7 @@ def add_controle_lesao_esquerda(can:canvas.Canvas, current_options:list):
 
         return can
     except:
-        raise Exception('Unknow error when adding controle_lesao_esquerda')
+        raise Exception('Erro desconhecido enquanto adicionava controle_lesao_esquerda')
 
 
 
