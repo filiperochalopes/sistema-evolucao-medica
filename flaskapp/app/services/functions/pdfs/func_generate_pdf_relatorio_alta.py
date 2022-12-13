@@ -62,7 +62,7 @@ def func_generate_pdf_relatorio_alta(document_datetime:str, patient_name:str, pa
         except Exception as error:
             return error
         except:
-            return Exception('Some error happen when adding not null data to fields')
+            return Exception('Erro desconhecido ocorreu enquanto adicionava dados obrigadorios')
             
         #Adding data that can be null
         try:
@@ -72,7 +72,7 @@ def func_generate_pdf_relatorio_alta(document_datetime:str, patient_name:str, pa
             return error
 
         except:
-            return Exception('Critical error happen when adding data that can be null to fields')
+            return Exception('Erro desconhecido ocorreu enquanto adicionava dados opcionais')
         
         # create a new PDF with Reportlab
         c.save()
@@ -95,4 +95,4 @@ def func_generate_pdf_relatorio_alta(document_datetime:str, patient_name:str, pa
         "base64Pdf":str(pdf_base64_enconded)[2:-1]
         }
     except:
-        return Exception("Error while filling relatorio de alta")
+        return Exception("Erro desconhecido enquanto preenchia o documento de relatorio de alta")
