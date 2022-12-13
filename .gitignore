@@ -5,3 +5,4 @@ flaskapp/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/*
 instance/
 *.db
 pdfs_created_files_test/*.pdf
+flaskapp/app/tests/files/tmp/*.pdf

@@ -22,7 +22,7 @@ TEMPLATE_RELATORIO_ALTA_DIRECTORY       = f"{TEMPLATE_BASE_URL}relatorio_de_alta
 TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY   = f"{TEMPLATE_BASE_URL}solicitacao_mamografia.pdf"
 
 # Write directories when creating pdf that will be enconded to base64
-WRITE_BASE_URL = "/app/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/"
+WRITE_BASE_URL = "/app/app/tests/files/tmp/"
 WRITE_AIH_SUS_DIRECTORY             = f"{WRITE_BASE_URL}aih_sus_teste.pdf"
 WRITE_APAC_DIRECTORY                = f"{WRITE_BASE_URL}apac_teste.pdf"
 WRITE_EXAM_REQUEST_DIRECTORY        = f"{WRITE_BASE_URL}exam_request_teste.pdf"
