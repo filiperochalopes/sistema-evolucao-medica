@@ -10,164 +10,8 @@ transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
 # Create a GraphQL client using the defined transport
 client = Client(transport=transport, fetch_schema_from_transport=True)
 
-def test_create_aih_sus_pdf():
-    request_string = """
-# Write your query or mutation here
-mutation{
-	generatePdf_AihSus(
-            establishmentSolitcName: "Establishmente Solict Name",
-            establishmentSolitcCnes: 1234567,
-            establishmentExecName: "Establishment exec Name",
-            establishmentExecCnes: 1234567,
-            patientName: "Patient Name",
-            patientCns: "928976954930007",
-            patientBirthday: "10/10/2022",
-            patientSex: "M",
-            patientMotherName: "Patient Mother Name",
-            patientAdress: "Patient Adress",
-            patientAdressCity: "Jau",
-            patientAdressCityIbgeCode: "1234567",
-            patientAdressUF: "SP",
-            patientAdressCEP: "12345678"
-            mainClinicalSignsSymptoms: "Patient main clinical signs sysmpthoms",
-            conditionsJustifyHospitalization: "Patient Conditions justify hiospitalizaiton",
-            initialDiagnostic: "initial Siagnostic",
-            principalCid10: "A12",
-            procedureSolicited: "Procedurew Solicited",
-            procedureCode: "1234567890",
-            clinic: "Clinic Name",
-            internationCarater: "TYriste",
-            profSolicitorDocument: {
-            cns: "928976954930007",
-            cpf: null,
-            rg: null
-            },
-            profSolicitorName: "Professional Solicitor Name",
-            solicitationDatetime: "10/02/2021",
-            profAutorizationName: "Professional Autorizator Name",
-            emissionOrgCode: "12aass",
-            autorizatonProfDocument: {
-            cpf: "28445400070",
-            cns: null,
-            rg: null
-            }
-            autorizatonDatetime: "21/10/2022",
-            hospitalizationAutorizationNumber: "1212",
-            examResults: "Exam Results",
-            chartNumber: "124",
-            patientEthnicity: "Etnia",
-            patientResponsibleName: "Responsible NAme",
-            patientMotherPhonenumber: "4212344321",
-            patientResponsiblePhonenumber: "1245875421",
-            secondaryCid10: "S32",
-            cid10AssociatedCauses: "A213",
-            acidentType: "WORK",
-            insuranceCompanyCnpj: "37549670000171",
-            insuranceCompanyTicketNumber: "12354",
-            insuranceCompanySeries: "1233",
-            companyCnpj: "37549670000171",
-            companyCnae: 5310501,
-            companyCbor: 123456,
-            pensionStatus: "WORKER"
-    ){base64Pdf}
-}
-    """
-
-    query = gql(request_string)
-    result = False
-    try:
-        #When some exception is created in grphql he return a error
-        client.execute(query)
-        result = True
-    except:
-        result = False 
-    
-    assert result == True
-
-
-def test_decode_base64_aih_sus_pdf():
-    request_string = """
-# Write your query or mutation here
-mutation{
-	generatePdf_AihSus(
-            establishmentSolitcName: "Establishmente Solict Name",
-            establishmentSolitcCnes: 1234567,
-            establishmentExecName: "Establishment exec Name",
-            establishmentExecCnes: 1234567,
-            patientName: "Patient Name",
-            patientCns: "928976954930007",
-            patientBirthday: "10/10/2022",
-            patientSex: "M",
-            patientMotherName: "Patient Mother Name",
-            patientAdress: "Patient Adress",
-            patientAdressCity: "Jau",
-            patientAdressCityIbgeCode: "1234567",
-            patientAdressUF: "SP",
-            patientAdressCEP: "12345678"
-            mainClinicalSignsSymptoms: "Patient main clinical signs sysmpthoms",
-            conditionsJustifyHospitalization: "Patient Conditions justify hiospitalizaiton",
-            initialDiagnostic: "initial Siagnostic",
-            principalCid10: "A12",
-            procedureSolicited: "Procedurew Solicited",
-            procedureCode: "1234567890",
-            clinic: "Clinic Name",
-            internationCarater: "TYriste",
-            profSolicitorDocument: {
-            cns: "928976954930007",
-            cpf: null,
-            rg: null
-            },
-            profSolicitorName: "Professional Solicitor Name",
-            solicitationDatetime: "10/02/2021",
-            profAutorizationName: "Professional Autorizator Name",
-            emissionOrgCode: "12aass",
-            autorizatonProfDocument: {
-            cpf: "28445400070",
-            cns: null,
-            rg: null
-            }
-            autorizatonDatetime: "21/10/2022",
-            hospitalizationAutorizationNumber: "1212",
-            examResults: "Exam Results",
-            chartNumber: "124",
-            patientEthnicity: "Etnia",
-            patientResponsibleName: "Responsible NAme",
-            patientMotherPhonenumber: "4212344321",
-            patientResponsiblePhonenumber: "1245875421",
-            secondaryCid10: "S32",
-            cid10AssociatedCauses: "A213",
-            acidentType: "WORK",
-            insuranceCompanyCnpj: "37549670000171",
-            insuranceCompanyTicketNumber: "12354",
-            insuranceCompanySeries: "1233",
-            companyCnpj: "37549670000171",
-            companyCnae: 5310501,
-            companyCbor: 123456,
-            pensionStatus: "WORKER"
-    ){base64Pdf}
-}
-    """
-
-    query = gql(request_string)
-    created = False
-    try:
-        #When some exception is created in grphql he return a error
-        result = client.execute(query)
-        generated_pdf_b64 = b64decode(result['generatePdf_AihSus']['base64Pdf'], validate=True)
-
-
-        f = open(WRITE_DECODE_AIH_SUS_DIRECTORY, 'wb')
-        f.write(generated_pdf_b64)
-        f.close()
-        created = True
-    except:
-        created = False
-
-    assert created == True
-
-
-def test_create_apac_pdf():
-    request_string = """
+## Requests strings
+apac_request_string = """
 # Write your query or mutation here
 mutation{
 	generatePdf_Apac(
@@ -236,20 +80,7 @@ mutation{
 }
 """
 
-    query = gql(request_string)
-    result = False
-    try:
-        #When some exception is created in grphql he return a error
-        client.execute(query)
-        result = True
-    except:
-        result = False 
-    
-    assert result == True
-
-
-def test_create_exam_request_pdf():
-    request_string = """
+exam_request_request_string = """
 # Write your query or mutation here
 mutation{
 	generatePdf_SolicitExames(
@@ -269,20 +100,7 @@ mutation{
 }
 """
 
-    query = gql(request_string)
-    result = False
-    try:
-        #When some exception is created in grphql he return a error
-        client.execute(query)
-        result = True
-    except:
-        result = False 
-    
-    assert result == True
-
-
-def test_create_ficha_internamento_pdf():
-    request_string = """
+ficha_internamento_request_string = """
 # Write your query or mutation here
 mutation{
 	generatePdf_FichaInternamento(
@@ -318,20 +136,69 @@ mutation{
 }
 """
 
-    query = gql(request_string)
-    result = False
-    try:
-        #When some exception is created in grphql he return a error
-        client.execute(query)
-        result = True
-    except:
-        result = False 
-    
-    assert result == True
+aih_sus_request_string = """
+# Write your query or mutation here
+mutation{
+	generatePdf_AihSus(
+            establishmentSolitcName: "Establishmente Solict Name",
+            establishmentSolitcCnes: 1234567,
+            establishmentExecName: "Establishment exec Name",
+            establishmentExecCnes: 1234567,
+            patientName: "Patient Name",
+            patientCns: "928976954930007",
+            patientBirthday: "10/10/2022",
+            patientSex: "M",
+            patientMotherName: "Patient Mother Name",
+            patientAdress: "Patient Adress",
+            patientAdressCity: "Jau",
+            patientAdressCityIbgeCode: "1234567",
+            patientAdressUF: "SP",
+            patientAdressCEP: "12345678"
+            mainClinicalSignsSymptoms: "Patient main clinical signs sysmpthoms",
+            conditionsJustifyHospitalization: "Patient Conditions justify hiospitalizaiton",
+            initialDiagnostic: "initial Siagnostic",
+            principalCid10: "A12",
+            procedureSolicited: "Procedurew Solicited",
+            procedureCode: "1234567890",
+            clinic: "Clinic Name",
+            internationCarater: "TYriste",
+            profSolicitorDocument: {
+            cns: "928976954930007",
+            cpf: null,
+            rg: null
+            },
+            profSolicitorName: "Professional Solicitor Name",
+            solicitationDatetime: "10/02/2021",
+            profAutorizationName: "Professional Autorizator Name",
+            emissionOrgCode: "12aass",
+            autorizatonProfDocument: {
+            cpf: "28445400070",
+            cns: null,
+            rg: null
+            }
+            autorizatonDatetime: "21/10/2022",
+            hospitalizationAutorizationNumber: "1212",
+            examResults: "Exam Results",
+            chartNumber: "124",
+            patientEthnicity: "Etnia",
+            patientResponsibleName: "Responsible NAme",
+            patientMotherPhonenumber: "4212344321",
+            patientResponsiblePhonenumber: "1245875421",
+            secondaryCid10: "S32",
+            cid10AssociatedCauses: "A213",
+            acidentType: "WORK",
+            insuranceCompanyCnpj: "37549670000171",
+            insuranceCompanyTicketNumber: "12354",
+            insuranceCompanySeries: "1233",
+            companyCnpj: "37549670000171",
+            companyCnae: 5310501,
+            companyCbor: 123456,
+            pensionStatus: "WORKER"
+    ){base64Pdf}
+}
+    """
 
-
-def test_create_lme_pdf():
-    request_string = """
+lme_request_string = """
 # Write your query or mutation here
 mutation{
 	generatePdf_Lme(
@@ -359,20 +226,7 @@ mutation{
 }
 """
 
-    query = gql(request_string)
-    result = False
-    try:
-        #When some exception is created in grphql he return a error
-        client.execute(query)
-        result = True
-    except:
-        result = False 
-    
-    assert result == True
-
-
-def test_create_precricao_medica_pdf():
-    request_string = """
+prescricao_medica_request_string = """
 # Write your query or mutation here
 mutation{
 	generatePdf_PrescricaoMedica(
@@ -384,19 +238,7 @@ mutation{
 }
 """
 
-    query = gql(request_string)
-    result = False
-    try:
-        #When some exception is created in grphql he return a error
-        client.execute(query)
-        result = True
-    except:
-        result = False 
-    
-    assert result == True
-
-def test_create_relatorio_alta_pdf():
-    request_string = """
+relatorio_alta_request_string = """
 # Write your query or mutation here
 mutation{
 	generatePdf_RelatorioAlta(
@@ -417,22 +259,7 @@ mutation{
 }
 """
 
-    query = gql(request_string)
-    result = False
-    try:
-        #When some exception is created in grphql he return a error
-        client.execute(query)
-        result = True
-    except:
-        result = False 
-    
-    assert result == True
-
-
-
-
-def test_create_solicit_mamografia_pdf():
-    request_string = """
+solicit_mamografia_request_string = """
 # Write your query or mutation here
 mutation{
 	generatePdf_SolicitMamografia(
@@ -532,7 +359,118 @@ mutation{
 }
 """
 
-    query = gql(request_string)
+
+def test_create_aih_sus_pdf():
+    query = gql(aih_sus_request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+
+def test_decode_base64_aih_sus_pdf():
+    query = gql(aih_sus_request_string)
+    created = False
+    try:
+        #When some exception is created in grphql he return a error
+        result = client.execute(query)
+        generated_pdf_b64 = b64decode(result['generatePdf_AihSus']['base64Pdf'], validate=True)
+
+
+        f = open(WRITE_DECODE_AIH_SUS_DIRECTORY, 'wb')
+        f.write(generated_pdf_b64)
+        f.close()
+        created = True
+    except:
+        created = False
+
+    assert created == True
+
+
+def test_create_apac_pdf():
+    query = gql(apac_request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+
+def test_create_exam_request_pdf():
+    query = gql(exam_request_request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+
+def test_create_ficha_internamento_pdf():
+    query = gql(ficha_internamento_request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+
+def test_create_lme_pdf():
+    query = gql(lme_request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+
+def test_create_precricao_medica_pdf():
+    query = gql(prescricao_medica_request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+def test_create_relatorio_alta_pdf():
+    query = gql(relatorio_alta_request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+    
+
+def test_create_solicit_mamografia_pdf():
+    query = gql(solicit_mamografia_request_string)
     result = False
     try:
         #When some exception is created in grphql he return a error
