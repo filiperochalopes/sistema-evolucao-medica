@@ -38,14 +38,14 @@ def validate_func_args(function_to_verify, variables_to_verify:dict, nullable_va
             elif arg_to_validate in defaults_types and variables_keys in nullable_variables:
                 continue
             else:
-                raise Exception(f'{variables_keys} has wrong type, has to be {right_type}')
+                raise Exception(f'{variables_keys} estao com o tipo errado, deve ser {right_type}')
         return None
     except Exception as error:
         raise error
     except KeyError:
-        raise Exception(f'KeyError, some key in {function_to_verify} is missing, when validate types, keys needed {args_types.keys()}')
+        raise Exception(f'KeyError, Alguma chave em {function_to_verify} esta faltando, enquanto validava os tipos, a chaves necessarias sao {args_types.keys()}')
     except:
-        raise Exception(f'{arg_to_validate} type {right_type} unkown error while validate_func_args {variables_keys} in {function_to_verify} function')
+        raise Exception(f'{arg_to_validate} tipo {right_type} erro desconhecido enquanto validava os argumentos {variables_keys} na funcao {function_to_verify}')
 
 
 def is_RG_valid(rg:str) -> bool:
@@ -91,7 +91,7 @@ def add_data(can:canvas.Canvas, data:str, pos:tuple) -> canvas.Canvas:
         can.drawString(pos[0], pos[1], data)
         return can
     except:
-        raise Exception("Error when adding data to document with canvas")
+        raise Exception("Erro desconhecido enquanto adicionava um dado no documento com o canvas")
 
 
 def add_square(can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)) -> canvas.Canvas:
@@ -110,7 +110,7 @@ def add_square(can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)) -> canvas.Canvas
         can.rect(x=pos[0], y=pos[1], width=size[0], height=size[1], fill=1)
         return can
     except:
-        raise Exception("Error when adding square to document with canvas")
+        raise Exception("Erro desconhecido enquanto adicionava um quadrado (opcoes de marcar) no documento com o canvas")
 
 
 def add_centralized_data(can:canvas.Canvas, data:str, pos:tuple) -> canvas.Canvas:
@@ -129,7 +129,7 @@ def add_centralized_data(can:canvas.Canvas, data:str, pos:tuple) -> canvas.Canva
         can.drawCentredString(pos[0], pos[1], data)
         return can
     except:
-        raise Exception("Error when adding centralized data to document with canvas")
+        raise Exception("Erro desconhecido enquanto adicionava um dado centralizado no documento com o canvas")
 
         
 def write_newpdf(newpdf:PdfWriter, new_directory:str) -> None:
@@ -147,7 +147,7 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str) -> None:
         newpdf.write(output_file)
         output_file.close()
     except:
-        raise Exception("Error when writing new pdf")
+        raise Exception("Erro desconhecido enquanto criava um novo arquivo pdf")
 
 
 def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> canvas.Canvas:
@@ -188,12 +188,12 @@ def add_oneline_text(can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_
                 can = add_data(can=can, data=text, pos=pos)
             return can
         else:
-            raise Exception(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}")
+            raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
     
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 
@@ -227,7 +227,7 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
         if not nullable:
             text = text.strip()
             if len(text) == 0:
-                raise Exception(f'{camp_name} cannot be empty')
+                raise Exception(f'{camp_name} nao pode ser vazio')
         # verify if text is in the need lenght
         text = text.strip()
         if len_min <= len(text) <= len_max:
@@ -235,7 +235,7 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
             str_to_line = ''
             broke_lines_times = int(len(text)/char_per_lines)
             if max_lines_amount != None and broke_lines_times + 1 > max_lines_amount:
-                raise Exception(f'Unable to add {camp_name} because lines amount needed is more than {max_lines_amount}')
+                raise Exception(f'Nao foi possivel adicionar {camp_name} pois a quantidade de linhas necessrias e maior que {max_lines_amount}')
             current_line = char_per_lines
             last_line = 0
             xpos = initial_pos[0]
@@ -251,12 +251,12 @@ def add_morelines_text(can:canvas.Canvas, text:str, initial_pos:tuple, decrease_
 
             return can
         else:
-            raise Exception(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}")
+            raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
 
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_phonenumber(can:canvas.Canvas, number:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
@@ -287,12 +287,12 @@ def add_phonenumber(can:canvas.Canvas, number:str, pos:tuple, camp_name:str, nul
             can = add_data(can=can, data=number, pos=pos)
             return can
         else:
-            raise Exception(f"Unable to add {camp_name} because is longer than {10} characters or smaller than {11}")
+            raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {10} caracteres ou menor que {11} caracteres")
     
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_CEP(can:canvas.Canvas, cep:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
@@ -323,12 +323,12 @@ def add_CEP(can:canvas.Canvas, cep:str, pos:tuple, camp_name:str, nullable:bool=
             can = add_data(can=can, data=cep, pos=pos)
             return can
         else:
-            raise Exception(f"Unable to add {camp_name} because cpf dont have 8 digits")
+            raise Exception(f"Nao foi possivel adicionar {camp_name} porque o cpf nao possui 8 digitos")
 
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:str, len_max:int, value_min:int, value_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> canvas.Canvas:
@@ -360,7 +360,7 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:st
 
         # verify if number is in the need lenght
         if value_min > number or value_max < number:
-            raise Exception(f"Unable to add {camp_name} because is bigger than {value_max} and smaller than {value_min}")
+            raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {value_max} ou menor que {value_min}")
         number = str(number)
         if len_min <= len(number) <= len_max:
             number = add_interval_to_data(data=number, interval=interval)
@@ -370,12 +370,12 @@ def add_oneline_intnumber(can:canvas.Canvas, number:int, pos:tuple, camp_name:st
                 can = add_data(can=can, data=number, pos=pos)
             return can
         else:
-            raise Exception(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}")
+            raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
 
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_name:str, len_max:int, value_min:float, value_max:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2) -> canvas.Canvas:
@@ -409,7 +409,7 @@ def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_nam
 
         # verify if number is in the need lenght
         if value_min > number or value_max < number:
-            raise Exception(f"Unable to add {camp_name} because is bigger than {value_max} and smaller than {value_min}")
+            raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {value_max} e menor que {value_min}")
         number = round(number, ndigits)
         number = str(number)
         if len_min <= len(number) <= len_max:
@@ -420,12 +420,12 @@ def add_oneline_floatnumber(can:canvas.Canvas, number:float, pos:tuple, camp_nam
                 can = add_data(can=can, data=number, pos=pos)
             return can
         else:
-            raise Exception(f"Unable to add {camp_name} because is longer than {len_max} characters or smaller than {len_min}")
+            raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
     
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 
@@ -441,9 +441,9 @@ def add_interval_to_data(data:str, interval:str) -> str:
         
     """    
     if type(data) != type(str()):
-        return Exception('The api has to use data in add interval as string, please check te function')
+        return Exception('O sistema deve enviar o dado para a funcao add_interval sendo do tipo string, contate o administrador do sistema')
     elif type(interval) != type(str()):
-        return Exception('The api has to use interval in add interval as string, please check te function')
+        return Exception('O sistema deve enviar o intervalo a ser adicionado no dado para a funcao add_interval sendo do tipo string, contate o administrador do sistema')
     # Add nterval between data
     return interval.join(data)
 
@@ -484,12 +484,12 @@ def add_cns(can:canvas.Canvas, cns:str, pos:tuple, camp_name:str,nullable:bool=F
             can = add_data(can=can, data=cns, pos=pos)
             return can
         else:
-            raise Exception(f"Unable to add {camp_name} because is a invalid CNS")
+            raise Exception(f"Nao foi possivel adicionar {camp_name} porque e um CNS invalido")
     
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_cnpj(can:canvas.Canvas, cnpj:str, pos:tuple, camp_name:str,nullable:bool=False, interval:str='') -> canvas.Canvas:
@@ -524,12 +524,12 @@ def add_cnpj(can:canvas.Canvas, cnpj:str, pos:tuple, camp_name:str,nullable:bool
             can = add_data(can=can, data=cnpj, pos=pos)
             return can
         else:
-            raise Exception(f"Unable to add {camp_name} because is a invalid cnpj")
+            raise Exception(f"Nao foi possivel adicionar {camp_name} porque e um CNPJ invalido")
 
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> canvas.Canvas:
@@ -564,12 +564,12 @@ def add_cnae(can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:boo
             can = add_data(can=can, data=cnae, pos=pos)
             return can
         else:
-            raise Exception(f"Unable to add {camp_name} because is a invalid cnae")
+            raise Exception(f"Nao foi possivel adicionar {camp_name} porque e um CNAE invalido")
 
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> canvas.Canvas:
@@ -603,12 +603,12 @@ def add_cbor(can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:boo
             can = add_data(can=can, data=cbor, pos=pos)
             return can
         else:
-            raise Exception(f"Unable to add {camp_name} because is a invalid cbor")
+            raise Exception(f"Nao foi possivel adicionar {camp_name} porque e um CBOR invalido")
     
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
@@ -636,9 +636,9 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
 
         sex = sex.upper()
         if len(sex) != 1:
-            raise Exception(f'{camp_name} has to be only one character F or M')
+            raise Exception(f'{camp_name} deve ter somente 1 caractere, F ou M')
         if sex not in ['M', 'F']:
-            raise Exception(f'{camp_name} is not valid, use F or M')
+            raise Exception(f'{camp_name} deve ter somente 1 caractere, F ou M')
         else:
             if sex == 'M':
                 can = add_square(can=can, pos=pos_male, size=square_size)
@@ -650,7 +650,7 @@ def add_sex_square(can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, ca
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='') -> canvas.Canvas:
@@ -706,7 +706,7 @@ def add_datetime(can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bo
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='') -> canvas.Canvas:
@@ -744,7 +744,7 @@ def add_UF(can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=Fa
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
@@ -848,7 +848,7 @@ def add_document_cns_cpf_rg(can:canvas.Canvas, document:dict, camp_name:str, squ
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
@@ -884,7 +884,7 @@ def add_markable_square(can:canvas.Canvas, option:str, valid_options:list, optio
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_multiple_markable_square(can:canvas.Canvas, options:list, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
@@ -925,7 +925,7 @@ def add_multiple_markable_square(can:canvas.Canvas, options:list, valid_options:
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 
@@ -971,7 +971,7 @@ def add_markable_square_and_onelinetext(can:canvas.Canvas, option:str, valid_opt
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
 def add_markable_square_and_morelinestext(can:canvas.Canvas, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, decrease_ypos:int, char_per_lines:int, max_lines_amount:int=None, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
@@ -1015,5 +1015,5 @@ def add_markable_square_and_morelinestext(can:canvas.Canvas, option:str, valid_o
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding {camp_name}')
+        raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
