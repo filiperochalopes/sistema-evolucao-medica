@@ -8,13 +8,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from app.services.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY, WRITE_PRESCRICAO_MEDICA_DIRECTORY
 
-from app.graphql import mutation
-from ariadne import convert_kwargs_to_snake_case
 
-
-@mutation.field('generatePdf_PrescricaoMedica')
-@convert_kwargs_to_snake_case
-def fill_pdf_prescricao_medica(_, info, document_datetime:str, patient_name:str, prescription:list) -> str:
+def func_generate_pdf_prescricao_medica( document_datetime:str, patient_name:str, prescription:list) -> str:
     """fill pdf prescricao medica with 2 pages 
 
     Args:

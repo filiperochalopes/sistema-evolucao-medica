@@ -9,6 +9,7 @@ from app.services.functions.pdfs.func_generate_pdf_apac import func_generate_pdf
 from app.services.functions.pdfs.func_generate_pdf_exam_request import func_generate_pdf_exam_request
 from app.services.functions.pdfs.func_generate_pdf_ficha_internamento import func_generate_pdf_ficha_internamento
 from app.services.functions.pdfs.func_generate_pdf_lme import func_generate_pdf_lme
+from app.services.functions.pdfs.func_generate_pdf_prescricao_medica import func_generate_pdf_prescricao_medica
 
 
 @mutation.field('generatePdf_AihSus')
@@ -37,5 +38,10 @@ def generate_pdf_ficha_internamento(_, info, **kwargs):
 def generate_pdf_lme(_, info, **kwargs):
     return func_generate_pdf_lme(**kwargs)
 
+
+@mutation.field('generatePdf_PrescricaoMedica')
+@convert_kwargs_to_snake_case
+def generate_pdf_prescricao_medica(_, info, **kwargs):
+    return func_generate_pdf_prescricao_medica(**kwargs)
 
 
