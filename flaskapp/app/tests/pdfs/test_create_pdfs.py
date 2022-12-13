@@ -526,6 +526,25 @@ def test_create_precricao_medica_pdf():
     
     assert result == True
 
+def test_decode_base64_precricao_medica_pdf():
+    query = gql(prescricao_medica_request_string)
+    created = False
+    try:
+        #When some exception is created in grphql he return a error
+        result = client.execute(query)
+        generated_pdf_b64 = b64decode(result['generatePdf_PrescricaoMedica']['base64Pdf'], validate=True)
+
+
+        f = open(WRITE_DECODE_PRESCRICAO_MEDICA_DIRECTORY, 'wb')
+        f.write(generated_pdf_b64)
+        f.close()
+        created = True
+    except:
+        created = False
+
+    assert created == True
+
+
 def test_create_relatorio_alta_pdf():
     query = gql(relatorio_alta_request_string)
     result = False
@@ -538,6 +557,23 @@ def test_create_relatorio_alta_pdf():
     
     assert result == True
 
+def test_decode_base64_relatorio_alta_pdf():
+    query = gql(relatorio_alta_request_string)
+    created = False
+    try:
+        #When some exception is created in grphql he return a error
+        result = client.execute(query)
+        generated_pdf_b64 = b64decode(result['generatePdf_RelatorioAlta']['base64Pdf'], validate=True)
+
+
+        f = open(WRITE_DECODE_RELATORIO_ALTA_DIRECTORY, 'wb')
+        f.write(generated_pdf_b64)
+        f.close()
+        created = True
+    except:
+        created = False
+
+    assert created == True
 
 def test_create_solicit_mamografia_pdf():
     query = gql(solicit_mamografia_request_string)
@@ -551,6 +587,23 @@ def test_create_solicit_mamografia_pdf():
     
     assert result == True
 
+def test_decode_base64_solicit_mamografia_pdf():
+    query = gql(solicit_mamografia_request_string)
+    created = False
+    try:
+        #When some exception is created in grphql he return a error
+        result = client.execute(query)
+        generated_pdf_b64 = b64decode(result['generatePdf_SolicitMamografia']['base64Pdf'], validate=True)
+
+
+        f = open(WRITE_DECODE_SOLICIT_MAMOGRAFIA_DIRECTORY, 'wb')
+        f.write(generated_pdf_b64)
+        f.close()
+        created = True
+    except:
+        created = False
+
+    assert created == True
 
 
 
