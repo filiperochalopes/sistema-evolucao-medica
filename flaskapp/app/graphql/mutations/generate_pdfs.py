@@ -7,6 +7,7 @@ from app.graphql import mutation
 from app.services.functions.pdfs.func_generate_pdf_aih_sus import func_generate_pdf_aih_sus
 from app.services.functions.pdfs.func_generate_pdf_apac import func_generate_pdf_apac
 from app.services.functions.pdfs.func_generate_pdf_exam_request import func_generate_pdf_exam_request
+from app.services.functions.pdfs.func_generate_pdf_ficha_internamento import func_generate_pdf_ficha_internamento
 
 
 @mutation.field('generatePdf_AihSus')
@@ -23,3 +24,10 @@ def generate_pdf_apac(_, info, **kwargs):
 @convert_kwargs_to_snake_case
 def generate_pdf_exam_request(_, info, **kwargs):
     return func_generate_pdf_exam_request(**kwargs)
+
+@mutation.field('generatePdf_FichaInternamento')
+@convert_kwargs_to_snake_case
+def generate_pdf_ficha_internamento(_, info, **kwargs):
+    return func_generate_pdf_ficha_internamento(**kwargs)
+
+

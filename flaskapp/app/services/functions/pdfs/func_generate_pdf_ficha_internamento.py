@@ -10,12 +10,8 @@ from typing import Union
 from app.services.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_FICHA_INTERN_DIRECTORY, WRITE_FICHA_INTERN_DIRECTORY
 
-from app.graphql import mutation
-from ariadne import convert_kwargs_to_snake_case
 
-@mutation.field('generatePdf_FichaInternamento')
-@convert_kwargs_to_snake_case
-def fill_pdf_ficha_internamento(_, info, document_datetime:datetime.datetime, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, patient_phonenumber:str, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:str, doctor_crm:str, patient_adress_number:int=None, patient_adress_neigh:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_adress_cep:str=None, patient_nationality:str=None, patient_estimate_weight:int=None, has_additional_health_insurance:bool=None) -> str:
+def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, patient_phonenumber:str, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:str, doctor_crm:str, patient_adress_number:int=None, patient_adress_neigh:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_adress_cep:str=None, patient_nationality:str=None, patient_estimate_weight:int=None, has_additional_health_insurance:bool=None) -> str:
     """fill pdf ficha internamento
 
     Args:
