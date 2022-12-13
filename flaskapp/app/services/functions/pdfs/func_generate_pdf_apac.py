@@ -84,7 +84,7 @@ def func_generate_pdf_apac(establishment_solitc_name:str, establishment_solitc_c
         except Exception as error:
             return error
         except:
-            return Exception('Critical error happen when adding not null data to fields')
+            return Exception('Erro desconhecido ocorreu enquanto adicionava dados obrigatorios')
 
         #Adding data that can be null
         try:
@@ -123,7 +123,7 @@ def func_generate_pdf_apac(establishment_solitc_name:str, establishment_solitc_c
         except Exception as error:
             return error
         except:
-            return Exception('Critical error happen when adding data that can be null to fields')
+            return Exception('Erro desconhecido ocorreu enquanto adicionava dados opcionais')
 
         # create a new PDF with Reportlab
         c.save()
@@ -146,7 +146,7 @@ def func_generate_pdf_apac(establishment_solitc_name:str, establishment_solitc_c
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
     except:
-        return Exception("Error while filling apac")
+        return Exception("Erro desconhecido enquanto preenchia o documento Apac")
 
 
 def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tuple, quant_pos:tuple, camp_name:str) -> canvas.Canvas:
@@ -167,18 +167,18 @@ def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tu
         if procedure == None:
             return can
         if type(procedure) != type(dict()):
-            raise Exception('procedure has to be a dict, like: {"name":"Procedure Name", "code":"cod124235", "quant":5}')
+            raise Exception('procedure deve ser um dicionario, exemplo: {"name":"Procedure Name", "code":"cod124235", "quant":5}')
         necessaryKeys = ["name", "code", "quant"]
         #Verify if the necessary keys are in the dict
         if 'name' not in procedure.keys() or 'code' not in procedure.keys() or "quant" not in procedure.keys():
-            raise Exception('Some keys in dict is missing, dict has to have "name", "code", "quant"')
+            raise Exception('Algumas chaves do dicionario estao faltando, o dicionario deve ter as chaves "name", "code", "quant"')
         #Verify if the value in the dics is the needed
         elif type(procedure['name']) != type(str()) or type(procedure['code']) != type(str()) or type(procedure["quant"]) != type(int()):
-            raise Exception('The values in the keys "name", "code" has to be string and "quant" has to be int')
+            raise Exception('Os valores das chaves "name", "code" devem ser string e "quant" deve ser um numero inteiro')
         #Verify if the dict has more keys than the needed
         for key in procedure.keys():
             if key not in necessaryKeys:
-                raise Exception('The dict can only have 3 keys "name", "code", "quant"')
+                raise Exception('O dicionario deve ter somente 3 chaves, sendo elas: "name", "code", "quant"')
         
         ## Add to canvas
         # Change size to add Code
@@ -194,7 +194,7 @@ def add_procedure(can:canvas.Canvas, procedure:dict, code_pos:tuple, name_pos:tu
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding procedure')
+        raise Exception(f'Erro desconhecido enquanto adicionava o procedimento (procedure)')
 
 
 def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> canvas.Canvas:
@@ -212,9 +212,9 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> canvas.Canva
         if procedures == None:
             return can
         if type(procedures) != type(list()):
-            raise Exception('procedures has to be a list of dicts, like: [{"name":"Procedure Name", "code":"cod124235", "quant":5}, {"name":"Another Procedure", "code":"another12", "quant":1}]')
+            raise Exception('procedimentos (procedures) devem ser uma lista de dicionarios, exemplo: [{"name":"Procedure Name", "code":"cod124235", "quant":5}, {"name":"Another Procedure", "code":"another12", "quant":1}]')
         if len(procedures) > 5:
-            raise Exception('You cannot add more than 5 secondary procedures')
+            raise Exception('Voce nao pode adicionar mais que 5 procedimentos secundarios')
         
         #Add to cnavas
         cont = 1
@@ -235,4 +235,4 @@ def add_secondary_procedures(can:canvas.Canvas, procedures:list) -> canvas.Canva
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding secondary procedures')
+        raise Exception(f'Erro desconhecido enquanto adicionava procedimentos secundarios')
