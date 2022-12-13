@@ -6,6 +6,7 @@ from ariadne import convert_kwargs_to_snake_case
 from app.graphql import mutation
 from app.services.functions.pdfs.func_generate_pdf_aih_sus import func_generate_pdf_aih_sus
 from app.services.functions.pdfs.func_generate_pdf_apac import func_generate_pdf_apac
+from app.services.functions.pdfs.func_generate_pdf_exam_request import func_generate_pdf_exam_request
 
 
 @mutation.field('generatePdf_AihSus')
@@ -17,3 +18,8 @@ def generate_pdf_aih_sus(_, info, **kwargs):
 @convert_kwargs_to_snake_case
 def generate_pdf_apac(_, info, **kwargs):
     return func_generate_pdf_apac(**kwargs)
+
+@mutation.field('generatePdf_SolicitExames')
+@convert_kwargs_to_snake_case
+def generate_pdf_exam_request(_, info, **kwargs):
+    return func_generate_pdf_exam_request(**kwargs)
