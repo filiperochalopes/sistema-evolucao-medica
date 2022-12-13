@@ -465,6 +465,24 @@ def test_create_ficha_internamento_pdf():
     
     assert result == True
 
+def test_decode_base64_ficha_internamento_pdf():
+    query = gql(ficha_internamento_request_string)
+    created = False
+    try:
+        #When some exception is created in grphql he return a error
+        result = client.execute(query)
+        generated_pdf_b64 = b64decode(result['generatePdf_FichaInternamento']['base64Pdf'], validate=True)
+
+
+        f = open(WRITE_DECODE_FICHA_INTERN_DIRECTORY, 'wb')
+        f.write(generated_pdf_b64)
+        f.close()
+        created = True
+    except:
+        created = False
+
+    assert created == True
+
 
 def test_create_lme_pdf():
     query = gql(lme_request_string)
