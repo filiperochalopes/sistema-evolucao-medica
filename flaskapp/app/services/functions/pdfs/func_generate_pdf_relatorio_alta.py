@@ -8,12 +8,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from app.services.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_RELATORIO_ALTA_DIRECTORY, WRITE_RELATORIO_ALTA_DIRECTORY
 
-from app.graphql import mutation
-from ariadne import convert_kwargs_to_snake_case
-
-@mutation.field('generatePdf_RelatorioAlta')
-@convert_kwargs_to_snake_case
-def fill_pdf_relatorio_alta(_, info, document_datetime:str, patient_name:str, patient_cns:str, patient_birthday:str, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:str, doctor_crm:str, orientations:str=None) -> str:
+def func_generate_pdf_relatorio_alta(document_datetime:str, patient_name:str, patient_cns:str, patient_birthday:str, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, evolution:str, doctor_name:str, doctor_cns:str, doctor_crm:str, orientations:str=None) -> str:
     """fill pdf relatorio alta
     
     Args:
