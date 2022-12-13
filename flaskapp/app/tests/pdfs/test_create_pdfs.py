@@ -1,6 +1,8 @@
 from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
-from app.env import GRAPHQL_MUTATION_QUERY_URL
+from base64 import b64decode
+from app.env import GRAPHQL_MUTATION_QUERY_URL, WRITE_DECODE_BASE_URL, WRITE_DECODE_AIH_SUS_DIRECTORY, WRITE_DECODE_APAC_DIRECTORY,WRITE_DECODE_EXAM_REQUEST_DIRECTORY,WRITE_DECODE_FICHA_INTERN_DIRECTORY, WRITE_DECODE_LME_DIRECTORY, WRITE_DECODE_PRESCRICAO_MEDICA_DIRECTORY, WRITE_DECODE_RELATORIO_ALTA_DIRECTORY, WRITE_DECODE_SOLICIT_MAMOGRAFIA_DIRECTORY
+
 
 # Select your transport with ag graphql url endpoint
 transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
@@ -81,6 +83,87 @@ mutation{
         result = False 
     
     assert result == True
+
+
+def test_decode_base64_aih_sus_pdf():
+    request_string = """
+# Write your query or mutation here
+mutation{
+	generatePdf_AihSus(
+            establishmentSolitcName: "Establishmente Solict Name",
+            establishmentSolitcCnes: 1234567,
+            establishmentExecName: "Establishment exec Name",
+            establishmentExecCnes: 1234567,
+            patientName: "Patient Name",
+            patientCns: "928976954930007",
+            patientBirthday: "10/10/2022",
+            patientSex: "M",
+            patientMotherName: "Patient Mother Name",
+            patientAdress: "Patient Adress",
+            patientAdressCity: "Jau",
+            patientAdressCityIbgeCode: "1234567",
+            patientAdressUF: "SP",
+            patientAdressCEP: "12345678"
+            mainClinicalSignsSymptoms: "Patient main clinical signs sysmpthoms",
+            conditionsJustifyHospitalization: "Patient Conditions justify hiospitalizaiton",
+            initialDiagnostic: "initial Siagnostic",
+            principalCid10: "A12",
+            procedureSolicited: "Procedurew Solicited",
+            procedureCode: "1234567890",
+            clinic: "Clinic Name",
+            internationCarater: "TYriste",
+            profSolicitorDocument: {
+            cns: "928976954930007",
+            cpf: null,
+            rg: null
+            },
+            profSolicitorName: "Professional Solicitor Name",
+            solicitationDatetime: "10/02/2021",
+            profAutorizationName: "Professional Autorizator Name",
+            emissionOrgCode: "12aass",
+            autorizatonProfDocument: {
+            cpf: "28445400070",
+            cns: null,
+            rg: null
+            }
+            autorizatonDatetime: "21/10/2022",
+            hospitalizationAutorizationNumber: "1212",
+            examResults: "Exam Results",
+            chartNumber: "124",
+            patientEthnicity: "Etnia",
+            patientResponsibleName: "Responsible NAme",
+            patientMotherPhonenumber: "4212344321",
+            patientResponsiblePhonenumber: "1245875421",
+            secondaryCid10: "S32",
+            cid10AssociatedCauses: "A213",
+            acidentType: "WORK",
+            insuranceCompanyCnpj: "37549670000171",
+            insuranceCompanyTicketNumber: "12354",
+            insuranceCompanySeries: "1233",
+            companyCnpj: "37549670000171",
+            companyCnae: 5310501,
+            companyCbor: 123456,
+            pensionStatus: "WORKER"
+    ){base64Pdf}
+}
+    """
+
+    query = gql(request_string)
+    created = False
+    try:
+        #When some exception is created in grphql he return a error
+        result = client.execute(query)
+        generated_pdf_b64 = b64decode(result['generatePdf_AihSus']['base64Pdf'], validate=True)
+
+
+        f = open(WRITE_DECODE_AIH_SUS_DIRECTORY, 'wb')
+        f.write(generated_pdf_b64)
+        f.close()
+        created = True
+    except:
+        created = False
+
+    assert created == True
 
 
 def test_create_apac_pdf():

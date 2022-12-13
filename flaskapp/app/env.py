@@ -32,6 +32,20 @@ WRITE_PRESCRICAO_MEDICA_DIRECTORY   = f"{WRITE_BASE_URL}prescricao_medica_teste.
 WRITE_RELATORIO_ALTA_DIRECTORY      = f"{WRITE_BASE_URL}relatorio_alta_teste.pdf"
 WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY  = f"{WRITE_BASE_URL}solicit_mamografia_teste.pdf"
 
+# Write directires that tests will use to decode pdfs from base64 
+WRITE_DECODE_BASE_URL = "/app/app/tests/files/tmp/"
+WRITE_DECODE_AIH_SUS_DIRECTORY             = f"{WRITE_DECODE_BASE_URL}aih_sus_teste.tmp.pdf"
+WRITE_DECODE_APAC_DIRECTORY                = f"{WRITE_DECODE_BASE_URL}apac_teste.tmp.pdf"
+WRITE_DECODE_EXAM_REQUEST_DIRECTORY        = f"{WRITE_DECODE_BASE_URL}exam_request_teste.tmp.pdf"
+WRITE_DECODE_FICHA_INTERN_DIRECTORY        = f"{WRITE_DECODE_BASE_URL}ficha_teste.tmp.pdf"
+WRITE_DECODE_LME_DIRECTORY                 = f"{WRITE_DECODE_BASE_URL}lme_teste.tmp.pdf"
+WRITE_DECODE_PRESCRICAO_MEDICA_DIRECTORY   = f"{WRITE_DECODE_BASE_URL}prescricao_medica_teste.tmp.pdf"
+WRITE_DECODE_RELATORIO_ALTA_DIRECTORY      = f"{WRITE_DECODE_BASE_URL}relatorio_alta_teste.tmp.pdf"
+WRITE_DECODE_SOLICIT_MAMOGRAFIA_DIRECTORY  = f"{WRITE_DECODE_BASE_URL}solicit_mamografia_teste.tmp.pdf"
+
+
+
+
 class InstitutionData:
     # Dados iniciais da instituição para cadastro do mesmo pelo `flask seed` para preenchimento de dados iniciais
     NAME = os.getenv('INSTITUTION_NAME', 'Hospital Maternidade Luís Eduardo Magalhães'),
