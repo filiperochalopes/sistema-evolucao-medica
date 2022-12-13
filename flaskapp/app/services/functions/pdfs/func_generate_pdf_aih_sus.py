@@ -118,7 +118,7 @@ def func_generate_pdf_aih_sus(establishment_solitc_name:str, establishment_solit
             return error
         
         except:
-            return Exception('Some error happen when adding not null data to fields')
+            return Exception('Erro desconhecido correu enquanto adicionava dados obrigatorios')
 
         #Adding data that can be null
         try:
@@ -148,7 +148,7 @@ def func_generate_pdf_aih_sus(establishment_solitc_name:str, establishment_solit
         except Exception as error:
             return error
         except:
-            return Exception('Some error happen when adding data that can be null to fields')
+            return Exception('Erro desconhecido ocorreu enquanto adicionava dados opcionais')
 
         # create a new PDF with Reportlab
         c.save()
@@ -170,4 +170,4 @@ def func_generate_pdf_aih_sus(establishment_solitc_name:str, establishment_solit
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
     except:
-        return Exception("Error while filling aih sus")
+        return Exception("Erro desconhecido enquanto preenchia o documento Aih Sus")
