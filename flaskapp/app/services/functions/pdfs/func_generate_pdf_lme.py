@@ -66,22 +66,22 @@ def func_generate_pdf_lme(establishment_solitc_name:str, establishment_solitc_cn
             c = pdf_functions.add_morelines_text(can=c, text=anamnese, initial_pos=(36, 430), decrease_ypos= 10, camp_name='Anamnese', len_max=485, char_per_lines=97, len_min=5)
             c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 224), camp_name='Professional Solicitor Name', len_max=45, len_min=8)
             if type(capacity_attest) != type(list()) or len(capacity_attest) > 2:
-                raise Exception('Cappacity Attest has to be a list with 2 itens')
+                raise Exception('Cappacity Attest deve ser uma lista com 2 itens')
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=capacity_attest[0], valid_options=['SIM','NAO'], text_options=['SIM'], text_pos=(308, 268), options_positions=((79, 271), (42,270)), camp_name='Capacity Attest', len_max=46, text=capacity_attest[1], len_min=5, square_size=(5, 8))
             if type(filled_by) != type(list()) or len(filled_by) > 3:
-                raise Exception('filled_by has to be a list with 3 itens')
+                raise Exception('filled_by deve ser uma lista com 3 itens')
             c = add_filled_by(can=c, filled_by=filled_by)
             if type(patient_ethnicity) != type(list()) or len(patient_ethnicity) > 2:
-                raise Exception('patient_ethnicity has to be a list with 2 itens')
+                raise Exception('patient_ethnicity deve ser uma lista com 2 itens')
             c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA', 'SEMINFO', 'INFORMAR'], text_options=['INFORMAR'], text_pos=(192, 108), options_positions=((40, 121), (40, 108),(40, 93),(94, 118), (94, 106),(94, 93), (94, 93)),camp_name='Patietn Ethinicity', len_max=31, text=patient_ethnicity[1], len_min=4, square_size=(5, 8))
             if type(previous_treatment) != type(list()) or len(previous_treatment) > 2:
-                raise Exception('previous_treatment has to be a list with 2 itens')
+                raise Exception('previous_treatment deve ser uma lista com 2 itens')
             c = pdf_functions.add_markable_square_and_morelinestext(can=c, option=previous_treatment[0], valid_options=['SIM','NAO'],text_options=['SIM'], text_pos=(100, 355), options_positions=((40, 355), (40, 337)), camp_name='Previous Treatment', len_max=170, text=previous_treatment[1], len_min=4, square_size=(5, 8),char_per_lines=85, decrease_ypos=15)
 
         except Exception as error:
             return error
         except:
-            return Exception('Some error happen when adding not null data to fields')
+            return Exception('Erro desconhecido ocorreu enquanto adicionava dados obrigadorios')
 
         #Adding data that can be null
         try:
@@ -95,7 +95,7 @@ def func_generate_pdf_lme(establishment_solitc_name:str, establishment_solitc_cn
         except Exception as error:
             return error
         except:
-            return Exception('Critical error happen when adding data that can be null to fields')
+            return Exception('Erro desconhecido ocorreu enquanto adicionava dados opcionais')
         
         # create a new PDF with Reportlab
         c.save()
@@ -118,7 +118,7 @@ def func_generate_pdf_lme(establishment_solitc_name:str, establishment_solitc_cn
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
     except:
-        return Exception("Error while filling aih sus")
+        return Exception("Erro desconhecido enquanto preenchia o documento aih sus")
 
 
 def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, interval:str) -> canvas.Canvas:
@@ -138,21 +138,21 @@ def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, int
         if phonenumbers == None:
             return can
         elif type(phonenumbers) != type(list()):
-            raise Exception('contacts phonenumbers has to be list')
+            raise Exception('Numeros de telefone de contatos (contacts phonenumbers) deve ser uma lista')
         elif len(phonenumbers) > 2:
-            raise Exception('Contats phonenumbers list cannot has more than 2 phonenumbers')
+            raise Exception('A lista de Numeros de telefone de contatos (contacts phonenumbers) pode ter no maximo 2 numeros')
 
         #Verify if all numbers are str and has 10 digits
         for number in phonenumbers:
             if type(number) != type(str()):
-                raise Exception('Contats phonenumbers has to be a str')
+                raise Exception('Numeros de telefone de contatos devem ser string')
             elif len(number) != 10:
-                raise Exception('Contats phonenumbers must have 10 digits')
+                raise Exception('Numeros de telefone de contatos devem ter 10 digitos')
 
         cont = 1
         for number in phonenumbers:
             formated_number = number[:2] + ' ' + number[2:]
-            can = pdf_functions.add_oneline_text(can=can, text=formated_number, pos=(pos[0], pos[1]), camp_name=f'Phone Number {cont}', len_max=11, len_min=11, nullable=True, interval=interval)
+            can = pdf_functions.add_oneline_text(can=can, text=formated_number, pos=(pos[0], pos[1]), camp_name=f'Numero de telefone de contato {cont}', len_max=11, len_min=11, nullable=True, interval=interval)
             cont += 1
             pos = (pos[0], pos[1]-20)
 
@@ -161,7 +161,7 @@ def add_contat_phonenumbers(can:canvas.Canvas, phonenumbers:list, pos:tuple, int
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding contact phone numbers')
+        raise Exception(f'Erro desconhecido enquanto adicionava numeros de telefone de contatos')
     
 
 
@@ -180,24 +180,24 @@ def add_medicines(can:canvas.Canvas, medicines:list) -> canvas.Canvas:
         if medicines == None:
                 return can
         if type(medicines) != type(list()):
-            raise Exception('medicines has to be a list of dicts, like: [{"medicine_name":"Procedure Name", "quant_1_month:"cod124235", "quant_2_month":"123", "quant_3_month":"quant"}]')
+            raise Exception('medicines (medicamentos) deve ser uma lista de dicionarios, exemplo: [{"medicine_name":"Procedure Name", "quant_1_month:"cod124235", "quant_2_month":"123", "quant_3_month":"quant"}]')
         necessaryKeys = ["medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"]
         if len(medicines) > 5:
-                raise Exception('You cannot add more than 5 secondary medicines')
+                raise Exception('Você nao pode adicionar mais que 5 medicamentos secundarios')
         for med in medicines:
             #verify if the item in list is a dict
             if type(med) != type(dict()):
-                raise Exception('All itens in list has to be a dict')
+                raise Exception('Todos os itens da lista de medicamentos devem ser dicionarios')
             #Verify if the necessary keys are in the dict
             if 'medicine_name' not in med.keys() or 'quant_1_month' not in med.keys() or "quant_2_month" not in med.keys() or "quant_3_month" not in med.keys():
-                raise Exception('Some keys in dict is missing, dict has to have "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"')
+                raise Exception('Algumas chaves estao faltado no dicionarios, o dicionario deve ter as chaves: "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"')
             #Verify if the value in the dics is the needed
             elif type(med['medicine_name']) != type(str()) or type(med['quant_1_month']) != type(str()) or type(med['quant_2_month']) != type(str()) or type(med['quant_3_month']) != type(str()):
-                raise Exception('The values in the keys "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month" has to be string')
+                raise Exception('Os valores nas chaves "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month" devem ser strings')
             #Verify if the dict has more keys than the needed
             for key in med.keys():
                 if key not in necessaryKeys:
-                    raise Exception('The dict can only have 4 keys "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"')
+                    raise Exception('O dicionario pode ter somente 4 chaves: "medicine_name", "quant_1_month", "quant_2_month", "quant_3_month"')
 
             #Add to cnavas
             cont = 1
@@ -220,7 +220,7 @@ def add_medicines(can:canvas.Canvas, medicines:list) -> canvas.Canvas:
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding Medicines')
+        raise Exception(f'Erro desconhecido enquanto adicionava medicamentos')
 
 
 
