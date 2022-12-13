@@ -404,6 +404,23 @@ def test_create_apac_pdf():
     
     assert result == True
 
+def test_decode_base64_apac_pdf():
+    query = gql(apac_request_string)
+    created = False
+    try:
+        #When some exception is created in grphql he return a error
+        result = client.execute(query)
+        generated_pdf_b64 = b64decode(result['generatePdf_Apac']['base64Pdf'], validate=True)
+
+
+        f = open(WRITE_DECODE_APAC_DIRECTORY, 'wb')
+        f.write(generated_pdf_b64)
+        f.close()
+        created = True
+    except:
+        created = False
+
+    assert created == True
 
 def test_create_exam_request_pdf():
     query = gql(exam_request_request_string)
@@ -467,7 +484,7 @@ def test_create_relatorio_alta_pdf():
         result = False 
     
     assert result == True
-    
+
 
 def test_create_solicit_mamografia_pdf():
     query = gql(solicit_mamografia_request_string)
