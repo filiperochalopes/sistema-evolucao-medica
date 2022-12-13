@@ -80,7 +80,7 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
         except Exception as error:
             return error
         except:
-            return Exception('Some error happen when adding not null data to fields')
+            return Exception('Erro desconhecido ocorreu enquanto adicionava dados obrigadorios')
 
         #Adding data that can be null
         try:
@@ -102,7 +102,7 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
         except Exception as error:
             return error
         except:
-            return Exception('Critical error happen when adding data that can be null to fields')
+            return Exception('Erro desconhecido ocorreu enquanto adicionava dados opcionais')
         
 
         # create a new PDF with Reportlab
@@ -125,7 +125,7 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
     except:
-        return Exception("Error while filling exam request")
+        return Exception("Erro desconhecido enquanto preenchia o documento de solicitacao de exames (exam request)")
 
 def add_exams(canvas:canvas.Canvas, exams:str) -> canvas.Canvas:
     """add solicited exams
@@ -139,10 +139,10 @@ def add_exams(canvas:canvas.Canvas, exams:str) -> canvas.Canvas:
     """    
     try:
         if type(exams) != type(str()):
-            raise Exception('Exams has to be a string')
+            raise Exception('Exams deve ser string')
         exams = exams.strip()
         if len(exams.strip()) > 972 or len(exams.strip()) < 5:
-            raise Exception('Exams has to be at least 5 characters and no more than 972 characters')
+            raise Exception('Exams deve ter entre 5 e 972 caracteres')
         # Making the line break whem has 105 charater in a line
         str_exams = ''
         #Calculate how many pags will have, ceil function round to upper int
@@ -176,6 +176,6 @@ def add_exams(canvas:canvas.Canvas, exams:str) -> canvas.Canvas:
     except Exception as error:
         raise error
     except:
-        raise Exception(f'Unknow error while adding Solicited Exams')
+        raise Exception(f'Erro desconhecido enquando adicionava os exames solicitados')
 
 
