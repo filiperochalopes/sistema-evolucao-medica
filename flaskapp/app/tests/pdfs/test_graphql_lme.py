@@ -202,12 +202,10 @@ def test_wrongtype_capacity_attest_responsible_name():
 # wrong type
 # invalid cnes
 
+@pytest.mark.parametrize("test_input", ['adsadad', 451236548])
+def test_wrongtype_invalid_establishment_solitc_cnes(test_input):
+    assert data_to_use(establishment_solitc_cnes=test_input) == False
 
-def test_wrongtype_establishment_solitc_cnes():
-    assert data_to_use(establishment_solitc_cnes='adsadad') == False
-
-def test_invalidcnes_establishment_solitc_cnes():
-    assert data_to_use(establishment_solitc_cnes=451236548) == False
 
 
 #################################################################
@@ -242,136 +240,59 @@ def test_valid_solicitation_datetime():
 def test_wrongtype_filled_by():
     assert data_to_use(filled_by=1231) == False
 
-def test_notexistopiton_filled_by():
-    assert data_to_use(filled_by='''["WTAHST", "Other name", "{'cpf':'28445400070'}"]''') == False
+@pytest.mark.parametrize("test_input", [
+    '''["WTAHST", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["OUTRO", "", "{'cpf':'28445400070'}"]''',
+    '''["OUTRO", " ", "{'cpf':'28445400070'}"]''',
+    f'''["OUTRO", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["OUTRO", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''',
+    '''["RESPONSAVEL", 123, "{'cpf':'28445400070'}"]''',
+    '''["OUTRO", 123, "{'cpf':'28445400070'}"]''',
+    '''["WTAHST", "Other name", "{'cpf':'28445400070'}"]'''
+    '''["OUTRO", null, "{'cpf':'28445400070'}"]''',
+    ])
+def test_false_filled_by(test_input):
+    # All options that are not supposed to pass
+    assert data_to_use(filled_by=test_input) == False
 
-def test_medico_optionUpper_filled_by():
-    assert data_to_use(filled_by='''["MEDICO", "Other name", "{'cpf':'28445400070'}"]''') == True
+@pytest.mark.parametrize("test_input", [
+    '''["MEDICO", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["medico", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["PACIENTE", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["paciente", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["MAE", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["mae", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["RESPONSAVEL", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["responsavel", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["OUTRO", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["outro", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["MEDICO", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["MAE", "Other name", "{'cpf':'28445400070'}"]''',
+    '''["MEDICO", null, "{'cpf':'28445400070'}"]''',
+    '''["PACIENTE", null, "{'cpf':'28445400070'}"]''',
+    '''["MAE", null, "{'cpf':'28445400070'}"]''',
+    '''["RESPONSAVEL", null, "{'cpf':'28445400070'}"]''',
+    '''["MEDICO", "  ", "{'cpf':'28445400070'}"]''',
+    '''["PACIENTE", "", "{'cpf':'28445400070'}"]''',
+    '''["MAE", "", "{'cpf':'28445400070'}"]''',
+    '''["RESPONSAVEL", "", "{'cpf':'28445400070'}"]''',
+    '''["MEDICO", " ", "{'cpf':'28445400070'}"]''',
+    '''["PACIENTE", " ", "{'cpf':'28445400070'}"]''',
+    '''["MAE", " ", "{'cpf':'28445400070'}"]''',
+    '''["RESPONSAVEL", " ", "{'cpf':'28445400070'}"]''',
+    f'''["MEDICO", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["PACIENTE", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["MAE", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["RESPONSAVEL", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["MEDICO", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["PACIENTE", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["MAE", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["RESPONSAVEL", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]'''
+    ])
+def test_true_filled_by(test_input):
+    # All options that had to be success
+    assert data_to_use(filled_by=test_input) == True
 
-def test_medico_optionLower_filled_by():
-    assert data_to_use(filled_by='''["medico", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_paciente_optionUpper_filled_by():
-    assert data_to_use(filled_by='''["PACIENTE", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_paciente_optionLower_filled_by():
-    assert data_to_use(filled_by='''["paciente", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_mae_optionUpper_filled_by():
-    assert data_to_use(filled_by='''["MAE", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_mae_optionLower_filled_by():
-    assert data_to_use(filled_by='''["mae", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_responsavel_optionUpper_filled_by():
-    assert data_to_use(filled_by='''["RESPONSAVEL", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_responsavel_optionLower_filled_by():
-    assert data_to_use(filled_by='''["responsavel", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_outro_optionUpper_filled_by():
-    assert data_to_use(filled_by='''["OUTRO", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_outro_optionLower_filled_by():
-    assert data_to_use(filled_by='''
-    ["outro", "Other name", "{'cpf':'28445400070'}"]
-    ''') == True
-
-def test_medico_with_text_filled_by():
-    assert data_to_use(filled_by='''["MEDICO", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_paciente_with_text_filled_by():
-    assert data_to_use(filled_by='''["PACIENTE", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_mae_with_text_filled_by():
-    assert data_to_use(filled_by='''["MAE", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_responsavel_with_text_filled_by():
-    assert data_to_use(filled_by='''["RESPONSAVEL", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_outro_with_text_filled_by():
-    assert data_to_use(filled_by='''["OUTRO", "Other name", "{'cpf':'28445400070'}"]''') == True
-
-def test_medico_without_text_filled_by():
-    assert data_to_use(filled_by='''["MEDICO", null, "{'cpf':'28445400070'}"]''') == True
-
-def test_paciente_without_text_filled_by():
-    assert data_to_use(filled_by='''["PACIENTE", null, "{'cpf':'28445400070'}"]''') == True
-
-def test_mae_without_text_filled_by():
-    assert data_to_use(filled_by='''["MAE", null, "{'cpf':'28445400070'}"]''') == True
-
-def test_responsavel_without_text_filled_by():
-    assert data_to_use(filled_by='''["RESPONSAVEL", null, "{'cpf':'28445400070'}"]''') == True
-
-def test_outro_without_text_filled_by():
-    assert data_to_use(filled_by='''["OUTRO", null, "{'cpf':'28445400070'}"]''') == False
-
-def test_medico_with_empty_text_filled_by():
-    assert data_to_use(filled_by='''["MEDICO", "  ", "{'cpf':'28445400070'}"]''') == True
-
-def test_paciente_with_empty_text_filled_by():
-    assert data_to_use(filled_by='''["PACIENTE", "", "{'cpf':'28445400070'}"]''') == True
-
-def test_mae_with_empty_text_filled_by():
-    assert data_to_use(filled_by='''["MAE", "", "{'cpf':'28445400070'}"]''') == True
-
-def test_responsavel_with_empty_text_filled_by():
-    assert data_to_use(filled_by='''["RESPONSAVEL", "", "{'cpf':'28445400070'}"]''') == True
-
-def test_outro_with_empty_text_filled_by():
-    assert data_to_use(filled_by='''["OUTRO", "", "{'cpf':'28445400070'}"]''') == False
-
-def test_medico_with_space_text_filled_by():
-    assert data_to_use(filled_by='''["MEDICO", " ", "{'cpf':'28445400070'}"]''') == True
-
-def test_paciente_with_space_text_filled_by():
-    assert data_to_use(filled_by='''["PACIENTE", " ", "{'cpf':'28445400070'}"]''') == True
-
-def test_mae_with_space_text_filled_by():
-    assert data_to_use(filled_by='''["MAE", " ", "{'cpf':'28445400070'}"]''') == True
-
-def test_responsavel_with_space_text_filled_by():
-    assert data_to_use(filled_by='''["RESPONSAVEL", " ", "{'cpf':'28445400070'}"]''') == True
-
-def test_outro_with_space_text_filled_by():
-    assert data_to_use(filled_by='''["OUTRO", " ", "{'cpf':'28445400070'}"]''') == False
-
-def test_medico_with_shorttext_filled_by():
-    assert data_to_use(filled_by=f'''["MEDICO", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''') == True
-
-def test_paciente_with_shorttext_filled_by():
-    assert data_to_use(filled_by=f'''["PACIENTE", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''') == True
-
-def test_mae_with_shorttext_filled_by():
-    assert data_to_use(filled_by=f'''["MAE", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''') == True
-
-def test_responsavel_with_shorttext_filled_by():
-    assert data_to_use(filled_by=f'''["RESPONSAVEL", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''') == True
-
-def test_outro_with_shorttext_filled_by():
-    assert data_to_use(filled_by=f'''["OUTRO", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''') == False
-
-def test_medico_with_longtext_filled_by():
-    assert data_to_use(filled_by=f'''["MEDICO", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''') == True
-
-def test_paciente_with_longtext_filled_by():
-    assert data_to_use(filled_by=f'''["PACIENTE", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''') == True
-
-def test_mae_with_longtext_filled_by():
-    assert data_to_use(filled_by=f'''["MAE", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''') == True
-
-def test_responsavel_with_longtext_filled_by():
-    assert data_to_use(filled_by=f'''["RESPONSAVEL", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''') == True
-
-def test_outro_with_longtext_filled_by():
-    assert data_to_use(filled_by=f'''["OUTRO", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''') == False
-
-def test_responsavel_with_wrong_type_text_filled_by():
-    assert data_to_use(filled_by='''["RESPONSAVEL", 123, "{'cpf':'28445400070'}"]''') == False
-
-def test_outro_with_wrong_type_text_filled_by():
-    assert data_to_use(filled_by='''["OUTRO", 123, "{'cpf':'28445400070'}"]''') == False
 
 def test_wrongtype_patient_ethnicity():
     assert data_to_use(patient_ethnicity=1231) == False
