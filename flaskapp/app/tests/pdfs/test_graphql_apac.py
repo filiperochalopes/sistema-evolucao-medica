@@ -2,6 +2,7 @@ from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
 import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
+import pytest
 
 global lenght_test
 lenght_test = ''
@@ -130,29 +131,23 @@ def test_awnser_with_only_required_data():
 # short name
 # wrong name type
 
-def test_empty_patient_mother_name():    
-    assert data_to_use(patient_mother_name='') == True
 
-def test_with_space_patient_mother_name():    
-    assert data_to_use(patient_mother_name='  ') == True
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_patient_mother_name(test_input):
+    assert data_to_use(patient_mother_name=test_input) == True
 
-def test_empty_establishment_exec_name():    
-    assert data_to_use(establishment_exec_name='') == True
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_establishment_exec_name(test_input):
+    assert data_to_use(establishment_exec_name=test_input) == True
 
-def test_with_space_establishment_exec_name():    
-    assert data_to_use(establishment_exec_name='  ') == True
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_prof_solicitor_name(test_input):
+    assert data_to_use(prof_solicitor_name=test_input) == True
 
-def test_empty_prof_solicitor_name():    
-    assert data_to_use(prof_solicitor_name='') == True
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_autorization_prof_name(test_input):
+    assert data_to_use(autorization_prof_name=test_input) == True
 
-def test_with_space_prof_solicitor_name():    
-    assert data_to_use(prof_solicitor_name='  ') == True
-
-def test_empty_autorization_prof_name():    
-    assert data_to_use(autorization_prof_name='') == True
-
-def test_with_space_autorization_prof_name():    
-    assert data_to_use(autorization_prof_name='  ') == True
 
 
 #################################################################
