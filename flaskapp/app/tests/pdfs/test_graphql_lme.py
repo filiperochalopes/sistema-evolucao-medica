@@ -248,7 +248,7 @@ def test_wrongtype_filled_by():
     f'''["OUTRO", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''',
     '''["RESPONSAVEL", 123, "{'cpf':'28445400070'}"]''',
     '''["OUTRO", 123, "{'cpf':'28445400070'}"]''',
-    '''["WTAHST", "Other name", "{'cpf':'28445400070'}"]'''
+    '''["WTAHST", "Other name", "{'cpf':'28445400070'}"]''',
     '''["OUTRO", null, "{'cpf':'28445400070'}"]''',
     ])
 def test_false_filled_by(test_input):
@@ -455,38 +455,20 @@ def test_cid_10(test_input):
 # short value
 # long value  
 
-def test_wrong_type_patient_weight():
-    assert data_to_use(patient_weight='"asd"') == False
+@pytest.mark.parametrize("test_input", ['""', '"   "', 5875, '"ada"'])
+def test_patient_weight(test_input):
+    # All options that had to be success
+    assert data_to_use(patient_weight=test_input) == False
 
-def test_empty_value_patient_weight():
-    assert data_to_use(patient_weight='""') == False
+@pytest.mark.parametrize("test_input", ['""', '"   "', 5875, '"ada"'])
+def test_patient_height(test_input):
+    # All options that had to be success
+    assert data_to_use(patient_height=test_input) == False
 
-def test_empty_spaces_patient_weight():
-    assert data_to_use(patient_weight='"   "') == False
-
-def test_longValue_patient_weight():
-    assert data_to_use(patient_weight=5487) == False
-
-def test_empty_value_patient_height():
-    assert data_to_use(patient_height='""') == False
-
-def test_empty_spaces_patient_height():
-    assert data_to_use(patient_height='"  "') == False
-
-def test_longValue_patient_height():
-    assert data_to_use(patient_height=5487) == False
-
-def test_empty_value_contacts_phonenumbers():
-    assert data_to_use(contacts_phonenumbers='""') == False
-
-def test_empty_spaces_contacts_phonenumbers():
-    assert data_to_use(contacts_phonenumbers='"   "') == False
-
-def test_longValue_contacts_phonenumbers():
-    assert data_to_use(contacts_phonenumbers='["9854894846", "98641984195156"]') == False
-
-
-
+@pytest.mark.parametrize("test_input", ['""', '"   "', '["9854894846", "98641984195156"]'])
+def test_contacts_phonenumbers(test_input):
+    # All options that had to be success
+    assert data_to_use(contacts_phonenumbers=test_input) == False
 
 #################################################################
 # TEST DOCUMENTS CNS AND CPF
@@ -497,26 +479,27 @@ def test_longValue_contacts_phonenumbers():
 # invalid cpf
 # wrong option
 
-def test_wrongtype_prof_solicitor_document():
-    assert data_to_use(prof_solicitor_document='451236548554') == False
 
-def test_invalidcns_prof_solicitor_document():
-    assert data_to_use(prof_solicitor_document='{cns:"284123312123", rg: null, cpf: null}') == False
+@pytest.mark.parametrize("test_input", [
+    '451236548554',
+    '{cns:"284123312123", rg: null, cpf: null}',
+    '{cpf:"284123312123", rg: null, cns: null}',
+    '{cpf:null, rg: null, cns: null}'
+])
+def test_prof_solicitor_document(test_input):
+    # All options that had to be success
+    assert data_to_use(prof_solicitor_document=test_input) == False
 
-def test_invalidccpf_prof_solicitor_document():
-    assert data_to_use(prof_solicitor_document='{cpf:"284123312123", rg: null, cns: null}') == False
+@pytest.mark.parametrize("test_input", [
+    '451236548554',
+    '{cns:"284123312123", rg: null, cpf: null}',
+    '{cpf:"284123312123", rg: null, cns: null}',
+    '{cpf:null, rg: null, cns: null}'
+])
+def test_patient_document(test_input):
+    # All options that had to be success
+    assert data_to_use(patient_document=test_input) == False
 
-def test_wrongoption_prof_solicitor_document():
-    assert data_to_use(prof_solicitor_document='{cpf:null, rg: null, cns: null}') == False
-
-def test_wrongtype_patient_document():
-    assert data_to_use(patient_document='451236548554') == False
-
-def test_invalidcns_patient_document():
-    assert data_to_use(patient_document='{cns:"284123312123", rg: null, cpf: null}') == False
-
-def test_invalidccpf_patient_document():
-    assert data_to_use(patient_document='{cpf:"284123312123", rg: null, cns: null}') == False
 
 # TEST medicines
 # test wront type
