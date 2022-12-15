@@ -231,14 +231,13 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
         output.add_page(page)
         output.add_page(page_2)
 
-        pdf_functions.write_newpdf(output, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY)
-        
-        with open(WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY, "rb") as pdf_file:
-            pdf_base64_enconded = base64.b64encode(pdf_file.read())
+        pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
 
         return {
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
+    except Exception as error:
+        return error
     except:
         return Exception("Erro critico enquanto preenchia o documento de Solicitacao de Mamografia")
 

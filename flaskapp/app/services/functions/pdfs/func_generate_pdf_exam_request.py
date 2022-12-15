@@ -117,13 +117,13 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
         page.merge_page(new_pdf.pages[0])
         output.add_page(page)
 
-        pdf_functions.write_newpdf(output, WRITE_EXAM_REQUEST_DIRECTORY)
-        
-        with open(WRITE_EXAM_REQUEST_DIRECTORY, "rb") as pdf_file:
-            pdf_base64_enconded = base64.b64encode(pdf_file.read())
+        pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
+
         return {
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
+    except Exception as error:
+        return error
     except:
         return Exception("Erro desconhecido enquanto preenchia o documento de solicitacao de exames (exam request)")
 

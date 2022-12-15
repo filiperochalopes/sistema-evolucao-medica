@@ -62,15 +62,14 @@ def func_generate_pdf_prescricao_medica( document_datetime:str, patient_name:str
         page = template_pdf.pages[0]
         page.merge_page(new_pdf.pages[0])
         output.add_page(page)
-        pdf_functions.write_newpdf(output, WRITE_PRESCRICAO_MEDICA_DIRECTORY)
-        
-        with open(WRITE_PRESCRICAO_MEDICA_DIRECTORY, "rb") as pdf_file:
-            pdf_base64_enconded = base64.b64encode(pdf_file.read())
+
+        pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
 
         return {
-        "base64Pdf":str(pdf_base64_enconded)[2:-1]
+            "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
-        
+    except Exception as error:
+        return error
     except:
         return Exception('Erro desconhecido enquanto preenchia o documento de prescricao medica')
 
