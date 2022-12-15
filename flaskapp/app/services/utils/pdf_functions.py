@@ -162,6 +162,7 @@ def get_base64(newpdf:PdfWriter) -> bytes:
         
     """ 
     try:
+        # Create a BytesIO object to use as file
         bytes_stream = BytesIO()
         newpdf.write(bytes_stream)
         return base64.b64encode(bytes_stream.getvalue())
