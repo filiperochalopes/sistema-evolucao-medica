@@ -2,6 +2,7 @@ from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
 import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
+import pytest
 
 global lenght_test
 lenght_test = ''
@@ -54,20 +55,10 @@ def test_answer_with_all_fields():
 # ERRORS IN NAMES CAMPS
 # patient_name
 
-def test_wrongtype_patient_name():    
-    assert data_to_use(patient_name=123124) == False
+@pytest.mark.parametrize("test_input", ['    ', '', lenght_test[:36], '11113', 123124])
+def test_patient_name(test_input):
+    assert data_to_use(patient_name=test_input) == False
 
-def test_empty_patient_name():    
-    assert data_to_use(patient_name='') == False
-
-def test_with_space_patient_name():    
-    assert data_to_use(patient_name='  ') == False
-
-def test_long_patient_name():    
-    assert data_to_use(patient_name=str(lenght_test[:36])) == False
-
-def test_short_patient_name():    
-    assert data_to_use(patient_name='11113') == False
 
 #################################################################
 # TEST DATETIMES VARIABLES
@@ -95,8 +86,6 @@ def test_valid_document_datetime():
 def test_wrongtype_prescriptions():
     assert data_to_use(prescription=131231) == False
 
-def test_list_with_other_types():
-    assert data_to_use(prescription=154287) == False
 
 
 def test_dicts_without_necessary_keys():
