@@ -1,4 +1,3 @@
-import base64
 import datetime
 from PyPDF2 import PdfWriter, PdfReader
 import io
@@ -161,13 +160,13 @@ def func_generate_pdf_aih_sus(establishment_solitc_name:str, establishment_solit
         page = template_pdf.pages[0]
         page.merge_page(new_pdf.pages[0])
         output.add_page(page)
-        
-        pdf_functions.write_newpdf(output, WRITE_AIH_SUS_DIRECTORY)
-        
-        with open(WRITE_AIH_SUS_DIRECTORY, "rb") as pdf_file:
-            pdf_base64_enconded = base64.b64encode(pdf_file.read())
+
+        pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
+
         return {
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
+    except Exception as error:
+        return error
     except:
         return Exception("Erro desconhecido enquanto preenchia o documento Aih Sus")

@@ -4,6 +4,8 @@ from PyPDF2  import PdfWriter
 import datetime
 from inspect import getfullargspec
 from validate_docbr import CNS, CPF, CNPJ
+import base64
+from io import BytesIO
 
 
 def validate_func_args(function_to_verify, variables_to_verify:dict, nullable_variables:list=[]) -> None:
@@ -146,6 +148,23 @@ def write_newpdf(newpdf:PdfWriter, new_directory:str) -> None:
         output_file = open(new_directory, 'wb')
         newpdf.write(output_file)
         output_file.close()
+    except:
+        raise Exception("Erro desconhecido enquanto criava um novo arquivo pdf")
+
+
+def get_base64(newpdf:PdfWriter) -> bytes:
+    """Write new pdf and return a base64
+
+    Args:
+        newpdf (PdfFileWriter): new pdf with all the changes made by canvas
+    Returns:
+        bytes
+        
+    """ 
+    try:
+        bytes_stream = BytesIO()
+        newpdf.write(bytes_stream)
+        return base64.b64encode(bytes_stream.getvalue())
     except:
         raise Exception("Erro desconhecido enquanto criava um novo arquivo pdf")
 
