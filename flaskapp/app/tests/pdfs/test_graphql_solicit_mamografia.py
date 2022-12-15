@@ -2,6 +2,7 @@ from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
 import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
+import pytest
 
 global lenght_test
 lenght_test = ''
@@ -237,149 +238,69 @@ def test_valid_solicitation_datetime():
 # test all options in Upper Case
 # test all options in lower Case
 
-def test_M_optionUpper_patient_sex():
-    assert data_to_use(patient_sex='M') == True
+@pytest.mark.parametrize("test_input", ['G', 1231])
+def test_false_sex(test_input):
+    assert data_to_use(patient_sex=test_input) == False
 
-def test_M_optionLower_patient_sex():
-    assert data_to_use(patient_sex='m') == True
+@pytest.mark.parametrize("test_input", ['M', 'm', 'F', 'f'])
+def test_sex(test_input):
+    assert data_to_use(patient_sex=test_input) == True
 
-def test_F_optionUpper_patient_sex():
-    assert data_to_use(patient_sex='F') == True
+@pytest.mark.parametrize("test_input", ['SIMDIR', 'simdir', 'SIMESQ', 'simesq',
+'NAO', 'nao'])
+def test_nodule_lump(test_input):
+    assert data_to_use(nodule_lump=test_input) == True
 
-def test_F_optionLower_patient_sex():
-    assert data_to_use(patient_sex='f') == True
+@pytest.mark.parametrize("test_input", ['SIM', 'sim', 'NAOSABE', 'naosabe',
+'NAO', 'nao'])
+def test_high_risk(test_input):
+    assert data_to_use(high_risk=test_input) == True
 
-def test_SIMDIR_optionUpper_nodule_lump():
-    assert data_to_use(nodule_lump='SIMDIR') == True
+@pytest.mark.parametrize("test_input", ['SIM', 'sim', 'NAOSABE', 'naosabe',
+'NUNCA', 'nunca'])
+def test_examinated_before(test_input):
+    assert data_to_use(examinated_before=test_input) == True
 
-def test_SIMDIR_optionLower_nodule_lump():
-    assert data_to_use(nodule_lump='simdir') == True
+@pytest.mark.parametrize("test_input", [
+'["BRANCA", "ehinith"]',
+'["branca", "ehinith"]',
+'["PRETA", "ehinith"]',
+'["preta", "ehinith"]',
+'["PARDA", "ehinith"]',
+'["parda", "ehinith"]',
+'["AMARELA", "ehinith"]',
+'["amarela", "ehinith"]',
+'["INDIGENA", "ehinith"]',
+'["indigena", "ehinith"]'
+])
+def test_patient_ethnicity(test_input):
+    assert data_to_use(patient_ethnicity=test_input) == True
 
-def test_SIMESQ_optionUpper_nodule_lump():
-    assert data_to_use(nodule_lump='SIMESQ') == True
+@pytest.mark.parametrize("test_input", [
+    'ANALFABETO', 
+    'analfabeto',
+    'FUNDINCOM',
+    'fundincom',
+    'FUNDCOMPL',
+    'fundcompl',
+    'MEDIOCOMPL',
+    'mediocompl',
+    'SUPCOMPL',
+    'supcompl'
+])
+def test_patient_schooling(test_input):
+    assert data_to_use(patient_schooling=test_input) == True
 
-def test_SIMESQ_optionLower_nodule_lump():
-    assert data_to_use(nodule_lump='simesq') == True
-
-def test_NAO_optionUpper_nodule_lump():
-    assert data_to_use(nodule_lump='NAO') == True
-
-def test_NAO_optionLower_nodule_lump():
-    assert data_to_use(nodule_lump='nao') == True
-
-def test_SIM_optionUpper_high_risk():
-    assert data_to_use(high_risk='SIM') == True
-
-def test_SIM_optionLower_high_risk():
-    assert data_to_use(high_risk='sim') == True
-
-def test_NAOSABE_optionUpper_high_risk():
-    assert data_to_use(high_risk='NAOSABE') == True
-
-def test_NAOSABE_optionLower_high_risk():
-    assert data_to_use(high_risk='naosabe') == True
-
-def test_NAO_optionUpper_high_risk():
-    assert data_to_use(high_risk='NAO') == True
-
-def test_NAO_optionLower_high_risk():
-    assert data_to_use(high_risk='nao') == True
-
-def test_SIM_optionUpper_examinated_before():
-    assert data_to_use(examinated_before='SIM') == True
-
-def test_SIM_optionLower_examinated_before():
-    assert data_to_use(examinated_before='sim') == True
-
-def test_NUNCA_optionUpper_examinated_before():
-    assert data_to_use(examinated_before='NUNCA') == True
-
-def test_NUNCA_optionLower_examinated_before():
-    assert data_to_use(examinated_before='nunca') == True
-
-def test_NAOSABE_optionUpper_examinated_before():
-    assert data_to_use(examinated_before='NAOSABE') == True
-
-def test_NAOSABE_optionLower_examinated_before():
-    assert data_to_use(examinated_before='naosabe') == True
-
-def test_BRANCA_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=['BRANCA', 'ehinith']) == True
-
-def test_BRANCA_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=['branca', 'ehinith']) == True
-
-def test_PRETA_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=['PRETA', 'ehinith']) == True
-
-def test_PRETA_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=['preta', 'ehinith']) == True
-
-def test_PARDA_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=['PARDA', 'ehinith']) == True
-
-def test_PARDA_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=['parda', 'ehinith']) == True
-
-def test_AMARELA_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=['AMARELA', 'ehinith']) == True
-
-def test_AMARELA_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=['amarela', 'ehinith']) == True
-
-def test_INDIGENA_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=['INDIGENA', 'ehinith']) == True
-
-def test_INDIGENA_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=['indigena', 'ehinith']) == True
-
-def test_ANALFABETO_optionUpper_patient_schooling():
-    assert data_to_use(patient_schooling='ANALFABETO') == True
-
-def test_ANALFABETO_optionLower_patient_schooling():
-    assert data_to_use(patient_schooling='analfabeto') == True
-
-def test_FUNDINCOM_optionUpper_patient_schooling():
-    assert data_to_use(patient_schooling='FUNDINCOM') == True
-
-def test_FUNDINCOM_optionLower_patient_schooling():
-    assert data_to_use(patient_schooling='fundincom') == True
-
-def test_FUNDCOMPL_optionUpper_patient_schooling():
-    assert data_to_use(patient_schooling='FUNDCOMPL') == True
-
-def test_FUNDCOMPL_optionLower_patient_schooling():
-    assert data_to_use(patient_schooling='fundcompl') == True
-
-def test_MEDIOCOMPL_optionUpper_patient_schooling():
-    assert data_to_use(patient_schooling='MEDIOCOMPL') == True
-
-def test_MEDIOCOMPL_optionLower_patient_schooling():
-    assert data_to_use(patient_schooling='mediocompl') == True
-
-def test_SUPCOMPL_optionUpper_patient_schooling():
-    assert data_to_use(patient_schooling='SUPCOMPL') == True
-
-def test_SUPCOMPL_optionLower_patient_schooling():
-    assert data_to_use(patient_schooling='supcompl') == True
-
-def test_POPALVO_optionUpper_tracking_mammogram():
-    assert data_to_use(tracking_mammogram='POPALVO') == True
-
-def test_POPALVO_optionLower_tracking_mammogram():
-    assert data_to_use(tracking_mammogram='popalvo') == True
-
-def test_RISCOELEVADO_optionUpper_tracking_mammogram():
-    assert data_to_use(tracking_mammogram='RISCOELEVADO') == True
-
-def test_RISCOELEVADO_optionLower_tracking_mammogram():
-    assert data_to_use(tracking_mammogram='riscoelevado') == True
-
-def test_JATRATADO_optionUpper_tracking_mammogram():
-    assert data_to_use(tracking_mammogram='JATRATADO') == True
-
-def test_JATRATADO_optionLower_tracking_mammogram():
-    assert data_to_use(tracking_mammogram='jatratado') == True
+@pytest.mark.parametrize("test_input", [
+    'POPALVO',
+    'popalvo',
+    'RISCOELEVADO',
+    'riscoelevado',
+    'JATRATADO',
+    'jatratado'
+])
+def test_tracking_mammogram(test_input):
+    assert data_to_use(tracking_mammogram=test_input) == True
 
 
 ####################################################################
@@ -402,365 +323,37 @@ def test_JATRATADO_optionLower_tracking_mammogram():
 # invalid value
 # Long value
 
-def test_empty_value_patient_adress():
-    assert data_to_use(patient_adress='') == True
-
-def test_empty_space_patient_adress():
-    assert data_to_use(patient_adress='  ') == True
-
-def test_empty_value_patient_adress_city():
-    assert data_to_use(patient_adress_city='') == True
-
-def test_empty_space_patient_adress_city():
-    assert data_to_use(patient_adress_city='  ') == True
-
-def test_empty_value_health_unit_adress_city():
-    assert data_to_use(health_unit_adress_city='') == True
-
-def test_empty_space_health_unit_adress_city():
-    assert data_to_use(health_unit_adress_city='  ') == True
-
-def test_empty_value_patient_adress_adjunct():
-    assert data_to_use(patient_adress_adjunct='') == True
-
-def test_empty_space_patient_adress_adjunct():
-    assert data_to_use(patient_adress_adjunct='  ') == True
-
-def test_empty_value_patient_adress_neighborhood():
-    assert data_to_use(patient_adress_neighborhood='') == True
-
-def test_empty_space_patient_adress_neighborhood():
-    assert data_to_use(patient_adress_neighborhood='  ') == True
-
-def test_empty_value_patient_adress_reference():
-    assert data_to_use(patient_adress_reference='') == True
-
-def test_empty_space_patient_adress_reference():
-    assert data_to_use(patient_adress_reference='  ') == True
-
-def test_AC_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='AC') == True
-
-def test_AC_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ac') == True
-
-def test_AL_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='AL') == True
-
-def test_AL_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='al') == True
-
-def test_AP_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='AP') == True
-
-def test_AP_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ap') == True
-
-def test_AM_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='AM') == True
-
-def test_AM_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='am') == True
-
-def test_BA_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='BA') == True
-
-def test_BA_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ba') == True
-
-def test_CE_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='CE') == True
-
-def test_CE_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ce') == True
-
-def test_DF_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='DF') == True
-
-def test_DF_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='df') == True
-
-def test_ES_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ES') == True
-
-def test_ES_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='es') == True
-
-def test_GO_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='GO') == True
-
-def test_GO_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='go') == True
-
-def test_MA_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='MA') == True
-
-def test_MA_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ma') == True
-
-def test_MS_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='MS') == True
-
-def test_MS_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ms') == True
-
-def test_MT_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='MT') == True
-
-def test_MT_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='mt') == True
-
-def test_MG_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='MG') == True
-
-def test_MG_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='mg') == True
-
-def test_PA_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='PA') == True
-
-def test_PA_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='pa') == True
-
-def test_PB_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='PB') == True
-
-def test_PB_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='pb') == True
-
-def test_PR_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='PR') == True
-
-def test_PR_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='pr') == True
-
-def test_PE_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='PE') == True
-
-def test_PE_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='pe') == True
-
-def test_PI_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='PI') == True
-
-def test_PI_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='pi') == True
-
-def test_RJ_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='RJ') == True
-
-def test_RJ_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='rj') == True
-
-def test_RN_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='RN') == True
-
-def test_RN_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='rn') == True
-
-def test_RS_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='RS') == True
-
-def test_RS_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='rs') == True
-
-def test_RO_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='RO') == True
-
-def test_RO_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ro') == True
-
-def test_RR_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='RR') == True
-
-def test_RR_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='rr') == True
-
-def test_SC_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='SC') == True
-
-def test_SC_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='sc') == True
-
-def test_SP_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='SP') == True
-
-def test_SP_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='sp') == True
-
-def test_SE_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='SE') == True
-
-def test_SE_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='se') == True
-
-def test_TO_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='TO') == True
-
-def test_TO_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='to') == True
-
-def test_AC_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='AC') == True
-
-def test_AC_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='ac') == True
-
-def test_AL_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='AL') == True
-
-def test_AL_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='al') == True
-
-def test_AP_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='AP') == True
-
-def test_AP_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='ap') == True
-
-def test_AM_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='AM') == True
-
-def test_AM_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='am') == True
-
-def test_BA_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='BA') == True
-
-def test_BA_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='ba') == True
-
-def test_CE_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='CE') == True
-
-def test_CE_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='ce') == True
-
-def test_DF_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='DF') == True
-
-def test_DF_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='df') == True
-
-def test_ES_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='ES') == True
-
-def test_ES_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='es') == True
-
-def test_GO_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='GO') == True
-
-def test_GO_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='go') == True
-
-def test_MA_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='MA') == True
-
-def test_MA_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='ma') == True
-
-def test_MS_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='MS') == True
-
-def test_MS_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='ms') == True
-
-def test_MT_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='MT') == True
-
-def test_MT_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='mt') == True
-
-def test_MG_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='MG') == True
-
-def test_MG_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='mg') == True
-
-def test_PA_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='PA') == True
-
-def test_PA_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='pa') == True
-
-def test_PB_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='PB') == True
-
-def test_PB_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='pb') == True
-
-def test_PR_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='PR') == True
-
-def test_PR_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='pr') == True
-
-def test_PE_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='PE') == True
-
-def test_PE_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='pe') == True
-
-def test_PI_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='PI') == True
-
-def test_PI_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='pi') == True
-
-def test_RJ_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='RJ') == True
-
-def test_RJ_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='rj') == True
-
-def test_RN_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='RN') == True
-
-def test_RN_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='rn') == True
-
-def test_RS_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='RS') == True
-
-def test_RS_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='rs') == True
-
-def test_RO_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='RO') == True
-
-def test_RO_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='ro') == True
-
-def test_RR_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='RR') == True
-
-def test_RR_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='rr') == True
-
-def test_SC_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='SC') == True
-
-def test_SC_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='sc') == True
-
-def test_SP_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='SP') == True
-
-def test_SP_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='sp') == True
-
-def test_SE_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='SE') == True
-
-def test_SE_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='se') == True
-
-def test_TO_optionUpper_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='TO') == True
-
-def test_TO_optionLower_health_unit_adress_uf():
-    assert data_to_use(health_unit_adress_uf='to') == True
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_patient_adress(test_input):
+    assert data_to_use(patient_adress=test_input) == True
+
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_patient_adress_city(test_input):
+    assert data_to_use(patient_adress_city=test_input) == True
+
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_health_unit_adress_city(test_input):
+    assert data_to_use(health_unit_adress_city=test_input) == True
+
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_patient_adress_adjunct(test_input):
+    assert data_to_use(patient_adress_adjunct=test_input) == True
+
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_patient_adress_neighborhood(test_input):
+    assert data_to_use(patient_adress_neighborhood=test_input) == True
+
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_patient_adress_reference(test_input):
+    assert data_to_use(patient_adress_reference=test_input) == True
+
+@pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
+def test_ufs(test_input):
+    assert data_to_use(patient_adress_uf=test_input) == True
+
+@pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
+def test_health_unit_adress_uf(test_input):
+    assert data_to_use(health_unit_adress_uf=test_input) == True
 
 
 #############################################################################
@@ -789,7 +382,6 @@ def test_empty_spaces_patient_nationality():
 #################################################################################
 # TEST markable square and oneline text
 # radiotherapy_before
-# patient_ethnicity
 # mammogram_before
 # test wrong type
 # short value
@@ -798,35 +390,6 @@ def test_empty_spaces_patient_nationality():
 # test all options in Upper Case
 # test all options in lower Case
 
-def test_BRANCA_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["BRANCA", "ehinith"]') == True
-
-def test_BRANCA_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["branca", "ehinith"]') == True
-
-def test_PRETA_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PRETA", "ehinith"]') == True
-
-def test_PRETA_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["preta", "ehinith"]') == True
-
-def test_PARDA_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PARDA", "ehinith"]') == True
-
-def test_PARDA_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["parda", "ehinith"]') == True
-
-def test_AMARELA_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["AMARELA", "ehinith"]') == True
-
-def test_AMARELA_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["amarela", "ehinith"]') == True
-
-def test_INDIGENA_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INDIGENA", "ehinith"]') == True
-
-def test_INDIGENA_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["indigena", "ehinith"]') == True
 
 def test_SIMDIR_optionUpper_radiotherapy_before():
     assert data_to_use(radiotherapy_before='["SIMDIR", "2020"]') == True
