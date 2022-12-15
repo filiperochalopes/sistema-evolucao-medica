@@ -186,53 +186,27 @@ def test_sex(test_input):
 # TEST ADRESS VARIABLES
 # patient_adress
 
-def test_empty_value_patient_adress():
-    assert data_to_use(patient_adress='') == False
+@pytest.mark.parametrize("test_input", ['', '    ', '111', lenght_test[:65]])
+def test_patient_adress(test_input):
+    assert data_to_use(patient_adress=test_input) == False
 
-def test_empty_space_patient_adress():
-    assert data_to_use(patient_adress='   ') == False
-
-def test_invalid_value_patient_adress():
-    assert data_to_use(patient_adress='111') == False
-
-def test_long_value_patient_adress():
-    assert data_to_use(patient_adress=str(lenght_test[:65])) == False
 
 #############################################################################
 # TEST BIG TEXT WITH LINE BRAKES
 # evolution
 # orientations
 
-def test_wrong_type_evolution():
-    assert data_to_use(evolution=131) == False
+@pytest.mark.parametrize("test_input", ['', '    ', 111, 'aaaa', lenght_test[:2150]])
+def test_evolution(test_input):
+    assert data_to_use(evolution=test_input) == False
 
-def test_empty_value_evolution():
-    assert data_to_use(evolution='') == False
+@pytest.mark.parametrize("test_input", [111, 'aaaa', lenght_test[:850]])
+def test_false_orientations(test_input):
+    assert data_to_use(orientations=test_input) == False
 
-def test_empty_spaces_evolution():
-    assert data_to_use(evolution='    ') == False
-
-def test_shortText_evolution():
-    assert data_to_use(evolution='ablas') == False
-
-def test_more_than_limit_evolution():
-    assert data_to_use(evolution=lenght_test[:2150]) == False
-
-def test_wrong_type_orientations():
-    assert data_to_use(orientations=131) == False
-
-def test_empty_value_orientations():
-    assert data_to_use(orientations='') == True
-
-def test_empty_spaces_orientations():
-    assert data_to_use(orientations='    ') == True
-
-def test_shortText_orientations():
-    assert data_to_use(orientations='ablas') == False
-
-def test_more_than_limit_orientations():
-    assert data_to_use(orientations=lenght_test[:850]) == False
-
+@pytest.mark.parametrize("test_input", ['', '    '])
+def test_true_orientations(test_input):
+    assert data_to_use(orientations=test_input) == True
 
 #################################################################################
 # TEST CNS
@@ -243,37 +217,18 @@ def test_more_than_limit_orientations():
 # invalid
 # empty send
 
-def test_wrongtype_patient_cns():
-    assert data_to_use(patient_cns='13123') == False
+@pytest.mark.parametrize("test_input", ['13123', '928976546250007', 'null'])
+def test_false_patient_cns(test_input):
+    assert data_to_use(patient_cns=test_input) == False
 
 def test_valid_patient_cns():
     assert data_to_use(patient_cns="928976954930007") == True
 
-def test_invalid_patient_cns():
-    assert data_to_use(patient_cns="928976546250007") == False
 
-def test_empty_patient_cns():
-    assert data_to_use(patient_cns='null') == False
-
-def test_wrongtype_doctor_cns():
-    assert data_to_use(doctor_cns='13123') == False
+@pytest.mark.parametrize("test_input", ['13123', '928976546250007', 'null'])
+def test_false_doctor_cns(test_input):
+    assert data_to_use(doctor_cns=test_input) == False
 
 def test_valid_doctor_cns():
     assert data_to_use(doctor_cns="928976954930007") == True
-
-def test_invalid_doctor_cns():
-    assert data_to_use(doctor_cns="928976546250007") == False
-
-def test_empty_doctor_cns():
-    assert data_to_use(doctor_cns='null') == False
-
-
-
-
-
-
-
-
-
-
 
