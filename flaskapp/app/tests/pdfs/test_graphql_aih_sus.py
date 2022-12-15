@@ -194,60 +194,9 @@ def test_sex(test_input):
 def test_acident_type(test_input):
     assert data_to_use(acident_type=test_input) == True
 
-
-def test_worker_option_pension_status():
-    assert data_to_use(pension_status='worker') == True
-
-def test_worker_optionUpper_pension_status():
-    assert data_to_use(pension_status='WORKER') == True
-
-def test_worker_optionLower_pension_status():
-    assert data_to_use(pension_status='worker') == True
-
-def test_employer_option_pension_status():
-    assert data_to_use(pension_status='employer') == True
-
-def test_employer_optionUpper_pension_status():
-    assert data_to_use(pension_status='EMPLOYER') == True
-
-def test_employer_optionLower_pension_status():
-    assert data_to_use(pension_status='employer') == True
-
-def test_autonomous_option_pension_status():
-    assert data_to_use(pension_status='autonomous') == True
-
-def test_autonomous_optionUpper_pension_status():
-    assert data_to_use(pension_status='AUTONOMOUS') == True
-
-def test_autonomous_optionLower_pension_status():
-    assert data_to_use(pension_status='autonomous') == True
-
-def test_unemployed_option_pension_status():
-    assert data_to_use(pension_status='unemployed') == True
-
-def test_unemployed_optionUpper_pension_status():
-    assert data_to_use(pension_status='UNEMPLOYED') == True
-
-def test_unemployed_optionLower_pension_status():
-    assert data_to_use(pension_status='unemployed') == True
-
-def test_retired_option_pension_status():
-    assert data_to_use(pension_status='retired') == True
-
-def test_retired_optionUpper_pension_status():
-    assert data_to_use(pension_status='RETIRED') == True
-
-def test_retired_optionLower_pension_status():
-    assert data_to_use(pension_status='retired') == True
-
-def test_not_insured_option_pension_status():
-    assert data_to_use(pension_status='not_insured') == True
-
-def test_not_insured_optionUpper_pension_status():
-    assert data_to_use(pension_status='NOT_INSURED') == True
-
-def test_not_insured_optionLower_pension_status():
-    assert data_to_use(pension_status='not_insured') == True
+@pytest.mark.parametrize("test_input", ['WORKER', 'worker', 'EMPLOYER', 'employer', 'AUTONOMOUS', 'autonomous', 'UNEMPLOYED', 'unemployed', 'RETIRED', 'retired', 'NOT_INSURED', 'not_insured'])
+def test_pension_status(test_input):
+    assert data_to_use(pension_status=test_input) == True
 
 
 @pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
