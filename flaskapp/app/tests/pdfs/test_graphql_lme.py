@@ -293,228 +293,103 @@ def test_true_filled_by(test_input):
     # All options that had to be success
     assert data_to_use(filled_by=test_input) == True
 
-
-def test_wrongtype_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=1231) == False
-
-def test_notexistopiton_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["WTAHST", "Patient Ethnicity"]') == False
-
-def test_branca_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["BRANCA", "Patient Ethnicity"]') == True
-
-def test_branca_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["branca", "Patient Ethnicity"]') == True
-
-def test_preta_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PRETA", "Patient Ethnicity"]') == True
-
-def test_preta_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["preta", "Patient Ethnicity"]') == True
-
-def test_parda_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PARDA", "Patient Ethnicity"]') == True
-
-def test_parda_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["parda", "Patient Ethnicity"]') == True
-
-def test_amarela_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["AMARELA", "Patient Ethnicity"]') == True
-
-def test_amarela_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["amarela", "Patient Ethnicity"]') == True
-
-def test_indigena_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INDIGENA", "Patient Ethnicity"]') == True
-
-def test_indigena_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["indigena", "Patient Ethnicity"]') == True
-
-def test_seminfo_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["SEMINFO", "Patient Ethnicity"]') == True
-
-def test_seminfo_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["seminfo", "Patient Ethnicity"]') == True
-
-def test_informar_optionUpper_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INFORMAR", "Patient Ethnicity"]') == True
-
-def test_informar_optionLower_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INFORMAR", "Patient Ethnicity"]') == True
-
-def test_branca_with_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["BRANCA", "Patient Ethnicity"]') == True
-
-def test_preta_with_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PRETA", "Patient Ethnicity"]') == True
-
-def test_parda_with_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PARDA", "Patient Ethnicity"]') == True
-
-def test_amarela_with_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["AMARELA", "Patient Ethnicity"]') == True
-
-def test_indigena_with_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INDIGENA", "Patient Ethnicity"]') == True
-
-def test_seminfo_with_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["SEMINFO", "Patient Ethnicity"]') == True
-
-def test_informar_with_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INFORMAR", "Patient Ethnicity"]') == True
-
-def test_branca_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["BRANCA", null]') == True
-
-def test_preta_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PRETA", null]') == True
-
-def test_parda_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PARDA", null]') == True
-
-def test_amarela_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["AMARELA", null]') == True
-
-def test_indigena_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INDIGENA", null]') == True
-
-def test_seminfo_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["SEMINFO", null]') == True
-
-def test_informar_without_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INFORMAR", null]') == False
-
-def test_branca_with_empty_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["BRANCA", ""]') == True
-
-def test_preta_with_empty_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PRETA", ""]') == True
-
-def test_parda_with_empty_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PARDA", ""]') == True
-
-def test_amarela_with_empty_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["AMARELA", ""]') == True
-
-def test_indigena_with_empty_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INDIGENA", ""]') == True
-
-def test_seminfo_with_empty_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["SEMINFO", ""]') == True
-
-def test_informar_with_empty_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INFORMAR", ""]') == False
-
-def test_branca_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["BRANCA", " "]') == True
-
-def test_preta_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PRETA", "  "]') == True
-
-def test_parda_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["PARDA", "  "]') == True
-
-def test_amarela_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["AMARELA", "  "]') == True
-
-def test_indigena_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INDIGENA", "  "]') == True
-
-def test_seminfo_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["SEMINFO", "  "]') == True
-
-def test_informar_with_space_text_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='["INFORMAR", "  "]') == False
-
-def test_branca_with_shorttext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["BRANCA", "{lenght_test[:3]}"]') == True
-
-def test_preta_with_shorttext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["PRETA", "{lenght_test[:3]}"]') == True
-
-def test_parda_with_shorttext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["PARDA", "{lenght_test[:3]}"]') == True
-
-def test_amarela_with_shorttext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["AMARELA", "{lenght_test[:3]}"]') == True
-
-def test_indigena_with_shorttext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["INDIGENA", "{lenght_test[:3]}"]') == True
-
-def test_seminfo_with_shorttext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["SEMINFO", "{lenght_test[:3]}"]') == True
-
-def test_informar_with_shorttext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["INFORMAR", "{lenght_test[:3]}"]') == False
-
-def test_branca_with_longtext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["BRANCA", "{lenght_test[:35]}"]') == True
-
-def test_preta_with_longtext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["PRETA", "{lenght_test[:35]}"]') == True
-
-def test_parda_with_longtext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["PARDA", "{lenght_test[:35]}"]') == True
-
-def test_amarela_with_longtext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["AMARELA", "{lenght_test[:35]}"]') == True
-
-def test_indigena_with_longtext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["INDIGENA", "{lenght_test[:35]}"]') == True
-
-def test_seminfo_with_longtext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["SEMINFO", "{lenght_test[:35]}"]') == True
-
-def test_informar_with_longtext_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=f'["INFORMAR", "{lenght_test[:35]}"]') == False
-
-def test_wrongtype_previous_treatment():
-    assert data_to_use(previous_treatment=1231) == False
-
-def test_notexistopiton_previous_treatment():
-    assert data_to_use(previous_treatment='["WTAHST", "Patient Ethnicity"]') == False
-
-def test_sim_optionUpper_previous_treatment():
-    assert data_to_use(previous_treatment='["SIM", "Patient Ethnicity"]') == True
-
-def test_sim_optionLower_previous_treatment():
-    assert data_to_use(previous_treatment='["sim", "Patient Ethnicity"]') == True
-
-def test_sim_with_text_previous_treatment():
-    assert data_to_use(previous_treatment='["SIM", "Patient Ethnicity"]') == True
-
-def test_nao_with_text_previous_treatment():
-    assert data_to_use(previous_treatment='["NAO", "Patient Ethnicity"]') == True
-
-def test_sim_without_text_previous_treatment():
-    assert data_to_use(previous_treatment='["SIM", null]') == False
-
-def test_nao_without_text_previous_treatment():
-    assert data_to_use(previous_treatment='["NAO", null]') == True
-
-def test_sim_with_empty_previous_treatment():
-    assert data_to_use(previous_treatment='["SIM", null]') == False
-
-def test_nao_with_empty_previous_treatment():
-    assert data_to_use(previous_treatment='["NAO", null]') == True
-
-def test_sim_with_space_text_previous_treatment():
-    assert data_to_use(previous_treatment='["SIM", " "]') == False
-
-def test_nao_with_space_text_previous_treatment():
-    assert data_to_use(previous_treatment='["NAO", " "]') == True
-
-def test_sim_with_shorttext_previous_treatment():
-    assert data_to_use(previous_treatment=f'["SIM", "{lenght_test[:3]}"]') == False
-
-def test_nao_with_shorttext_previous_treatment():
-    assert data_to_use(previous_treatment=f'["NAO", "{lenght_test[:3]}"]') == True
-
-def test_sim_with_longtext_previous_treatment():
-    assert data_to_use(previous_treatment=f'["SIM", "{lenght_test[:172]}"]') == False
-
-def test_nao_with_longtext_previous_treatment():
-    assert data_to_use(previous_treatment=f'["NAO", "{lenght_test[:170]}"]') == True
+@pytest.mark.parametrize("test_input", [
+    '["INFORMAR", null]',
+    '["INFORMAR", ""]',
+    '["INFORMAR", "  "]',
+    f'["INFORMAR", "{lenght_test[:3]}"]',
+    f'["INFORMAR", "{lenght_test[:35]}"]',
+    1231,
+    '["WTAHST", "Patient Ethnicity"]'
+    ])
+def test_false_patient_ethnicity(test_input):
+    # All options that had to be success
+    assert data_to_use(patient_ethnicity=test_input) == False
+
+
+@pytest.mark.parametrize("test_input", [
+    '["BRANCA", "Patient Ethnicity"]',
+    '["branca", "Patient Ethnicity"]',
+    '["PRETA", "Patient Ethnicity"]',
+    '["preta", "Patient Ethnicity"]',
+    '["PARDA", "Patient Ethnicity"]',
+    '["parda", "Patient Ethnicity"]',
+    '["AMARELA", "Patient Ethnicity"]',
+    '["amarela", "Patient Ethnicity"]',
+    '["INDIGENA", "Patient Ethnicity"]',
+    '["indigena", "Patient Ethnicity"]',
+    '["SEMINFO", "Patient Ethnicity"]',
+    '["seminfo", "Patient Ethnicity"]',
+    '["INFORMAR", "Patient Ethnicity"]',
+    '["INFORMAR", "Patient Ethnicity"]',
+    '["BRANCA", "Patient Ethnicity"]',
+    '["PRETA", "Patient Ethnicity"]',
+    '["PARDA", "Patient Ethnicity"]',
+    '["AMARELA", "Patient Ethnicity"]',
+    '["INDIGENA", "Patient Ethnicity"]',
+    '["SEMINFO", "Patient Ethnicity"]',
+    '["INFORMAR", "Patient Ethnicity"]',
+    '["BRANCA", null]',
+    '["PRETA", null]',
+    '["PARDA", null]',
+    '["AMARELA", null]',
+    '["INDIGENA", null]',
+    '["SEMINFO", null]',
+    '["BRANCA", ""]',
+    '["PRETA", ""]',
+    '["PARDA", ""]',
+    '["AMARELA", ""]',
+    '["INDIGENA", ""]',
+    '["SEMINFO", ""]',
+    '["BRANCA", " "]',
+    '["PRETA", "  "]',
+    '["PARDA", "  "]',
+    '["AMARELA", "  "]',
+    '["INDIGENA", "  "]',
+    '["SEMINFO", "  "]',
+    f'["BRANCA", "{lenght_test[:3]}"]',
+    f'["PRETA", "{lenght_test[:3]}"]',
+    f'["PARDA", "{lenght_test[:3]}"]',
+    f'["AMARELA", "{lenght_test[:3]}"]',
+    f'["INDIGENA", "{lenght_test[:3]}"]',
+    f'["SEMINFO", "{lenght_test[:3]}"]',
+    f'["BRANCA", "{lenght_test[:35]}"]',
+    f'["PRETA", "{lenght_test[:35]}"]',
+    f'["PARDA", "{lenght_test[:35]}"]',
+    f'["AMARELA", "{lenght_test[:35]}"]',
+    f'["INDIGENA", "{lenght_test[:35]}"]',
+    f'["SEMINFO", "{lenght_test[:35]}"]'
+    ])
+def test_true_patient_ethnicity(test_input):
+    # All options that had to be success
+    assert data_to_use(patient_ethnicity=test_input) == True
+
+@pytest.mark.parametrize("test_input", [
+    1231,
+    '["WTAHST", "Patient Ethnicity"]',
+    '["SIM", null]',
+    '["SIM", " "]',
+    f'["SIM", "{lenght_test[:3]}"]',
+    f'["SIM", "{lenght_test[:172]}"]'
+    ])
+def test_false_previous_treatment(test_input):
+    # All options that had to be success
+    assert data_to_use(previous_treatment=test_input) == False
+
+@pytest.mark.parametrize("test_input", [
+    '["SIM", "Patient Ethnicity"]',
+    '["sim", "Patient Ethnicity"]',
+    '["SIM", "Patient Ethnicity"]',
+    '["NAO", "Patient Ethnicity"]',
+    '["NAO", null]',
+    '["NAO", null]',
+    '["NAO", " "]',
+    f'["NAO", "{lenght_test[:3]}"]',
+    f'["NAO", "{lenght_test[:170]}"]'
+    ])
+def test_true_previous_treatment(test_input):
+    # All options that had to be success
+    assert data_to_use(previous_treatment=test_input) == True
 
 
 #############################################################################
