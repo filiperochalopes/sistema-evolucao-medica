@@ -390,31 +390,17 @@ def test_empty_spaces_patient_nationality():
 # test all options in Upper Case
 # test all options in lower Case
 
-
-def test_SIMDIR_optionUpper_radiotherapy_before():
-    assert data_to_use(radiotherapy_before='["SIMDIR", "2020"]') == True
-
-def test_SIMDIR_optionLower_radiotherapy_before():
-    assert data_to_use(radiotherapy_before='["simdir", "2020"]') == True
-
-def test_SIMESQ_optionUpper_radiotherapy_before():
-    assert data_to_use(radiotherapy_before='["SIMESQ", "2020"]') == True
-
-def test_SIMESQ_optionLower_radiotherapy_before():
-    assert data_to_use(radiotherapy_before='["simesq", "2020"]') == True
-
-def test_NAO_optionUpper_radiotherapy_before():
-    assert data_to_use(radiotherapy_before='["NAO", "2020"]') == True
-
-def test_NAO_optionLower_radiotherapy_before():
-    assert data_to_use(radiotherapy_before='["nao", "2020"]') == True
-
-def test_NAOSABE_optionUpper_radiotherapy_before():
-    assert data_to_use(radiotherapy_before='["NAOSABE", "2020"]') == True
-
-def test_NAOSABE_optionLower_radiotherapy_before():
-    assert data_to_use(radiotherapy_before='["naosabe", "2020"]') == True
-
+@pytest.mark.parametrize("test_input", [
+    '["SIMDIR", "2020"]',
+    '["simdir", "2020"]',
+    '["SIMESQ", "2020"]',
+    '["simesq", "2020"]',
+    '["NAO", "2020"]',
+    '["nao", "2020"]',
+    '["NAOSABE", "2020"]'
+])
+def test_radiotherapy_before(test_input):
+    assert data_to_use(radiotherapy_before=test_input) == True
 
 #############################################################################
 # test diagnostic_mammogram
@@ -481,28 +467,4 @@ def test_right_diagnostic_mammogram_revisao_controle_lesao():
         esquerda: ["nodulo", "microca", "assimetria_focal"]
         }
         }''') == True
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
