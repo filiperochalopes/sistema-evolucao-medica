@@ -2,7 +2,7 @@ from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
 import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
-
+import pytest
 
 global lenght_test
 lenght_test = ''
@@ -279,167 +279,10 @@ def test_not_insured_optionUpper_pension_status():
 def test_not_insured_optionLower_pension_status():
     assert data_to_use(pension_status='not_insured') == True
 
-def test_AC_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='AC') == True
 
-def test_AC_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ac') == True
-
-def test_AL_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='AL') == True
-
-def test_AL_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='al') == True
-
-def test_AP_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='AP') == True
-
-def test_AP_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ap') == True
-
-def test_AM_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='AM') == True
-
-def test_AM_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='am') == True
-
-def test_BA_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='BA') == True
-
-def test_BA_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ba') == True
-
-def test_CE_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='CE') == True
-
-def test_CE_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ce') == True
-
-def test_DF_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='DF') == True
-
-def test_DF_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='df') == True
-
-def test_ES_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ES') == True
-
-def test_ES_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='es') == True
-
-def test_GO_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='GO') == True
-
-def test_GO_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='go') == True
-
-def test_MA_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='MA') == True
-
-def test_MA_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ma') == True
-
-def test_MS_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='MS') == True
-
-def test_MS_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ms') == True
-
-def test_MT_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='MT') == True
-
-def test_MT_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='mt') == True
-
-def test_MG_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='MG') == True
-
-def test_MG_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='mg') == True
-
-def test_PA_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='PA') == True
-
-def test_PA_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='pa') == True
-
-def test_PB_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='PB') == True
-
-def test_PB_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='pb') == True
-
-def test_PR_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='PR') == True
-
-def test_PR_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='pr') == True
-
-def test_PE_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='PE') == True
-
-def test_PE_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='pe') == True
-
-def test_PI_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='PI') == True
-
-def test_PI_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='pi') == True
-
-def test_RJ_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='RJ') == True
-
-def test_RJ_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='rj') == True
-
-def test_RN_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='RN') == True
-
-def test_RN_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='rn') == True
-
-def test_RS_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='RS') == True
-
-def test_RS_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='rs') == True
-
-def test_RO_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='RO') == True
-
-def test_RO_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='ro') == True
-
-def test_RR_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='RR') == True
-
-def test_RR_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='rr') == True
-
-def test_SC_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='SC') == True
-
-def test_SC_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='sc') == True
-
-def test_SP_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='SP') == True
-
-def test_SP_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='sp') == True
-
-def test_SE_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='SE') == True
-
-def test_SE_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='se') == True
-
-def test_TO_optionUpper_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='TO') == True
-
-def test_TO_optionLower_patient_adress_uf():
-    assert data_to_use(patient_adress_uf='to') == True
+@pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
+def test_ufs(test_input):
+    assert data_to_use(patient_adress_uf=test_input) == True
 
 #################################################################################
 # TEST INT VARIABLES CAN/CANNOT BE NULL
