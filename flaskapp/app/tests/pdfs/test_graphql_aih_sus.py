@@ -151,12 +151,9 @@ def test_awnser_with_only_required_data():
 ##############################################################
 # ERRORS IN NAMES CAMPS
 
-def test_empty_patient_responsible_name():    
-    assert data_to_use(patient_responsible_name='') == True
-
-def test_with_space_patient_responsible_name():    
-    assert data_to_use(patient_responsible_name='  ') == True
-
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_patient_responsible_name(test_input):
+    assert data_to_use(patient_responsible_name=test_input) == True
 
 #################################################################
 # TEST DATETIMES VARIABLES
@@ -257,10 +254,6 @@ def test_validCNPJ_company_cnpj():
 @pytest.mark.parametrize("test_input", [None, '    ', ''])
 def test_empty_value_patient_ethnicity(test_input):
     assert data_to_use(patient_ethnicity=test_input) == True
-
-@pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_patient_responsible_name(test_input):
-    assert data_to_use(patient_responsible_name=test_input) == True
 
 @pytest.mark.parametrize("test_input", [None, '    ', ''])
 def test_empty_value_secondary_cid_10(test_input):
