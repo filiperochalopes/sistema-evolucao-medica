@@ -213,11 +213,10 @@ def test_ufs(test_input):
 # invalid value
 # Long value
 
-def test_empty_value_patient_adress():
-    assert data_to_use(patient_adress='') == True
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_patient_adress(test_input):
+    assert data_to_use(patient_adress=test_input) == True
 
-def test_empty_space_patient_adress():
-    assert data_to_use(patient_adress='  ') == True
 
 #############################################################################
 # TEST BIG TEXT WITH LINE BRAKES
@@ -228,11 +227,15 @@ def test_empty_space_patient_adress():
 # test short text
 # test more than limit
 
-def test_empty_value_procedure_justification_comments():
-    assert data_to_use(procedure_justification_comments='') == True
 
-def test_empty_spaces_procedure_justification_comments():
-    assert data_to_use(procedure_justification_comments='    ') == True
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_procedure_justification_comments(test_input):
+    assert data_to_use(procedure_justification_comments=test_input) == True
+
+@pytest.mark.parametrize("test_input", [lenght_test[0], lenght_test])
+def test_text_lenght_procedure_justification_comments(test_input):
+    assert data_to_use(procedure_justification_comments=test_input) == False
+
 
 
 ##############################################################################
