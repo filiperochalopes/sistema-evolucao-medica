@@ -1,4 +1,3 @@
-import base64
 import datetime
 from PyPDF2  import PdfWriter, PdfReader
 import io
