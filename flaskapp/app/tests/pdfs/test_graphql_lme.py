@@ -401,21 +401,10 @@ def test_true_previous_treatment(test_input):
 # test short text
 # test more than limit
 
-def test_wrong_type_anamnese():
-    assert data_to_use(anamnese=131) == False
-
-def test_empty_value_anamnese():
-    assert data_to_use(anamnese='') == False
-
-def test_empty_spaces_anamnese():
-    assert data_to_use(anamnese='    ') == False
-
-def test_shortText_anamnese():
-    assert data_to_use(anamnese='abla') == False
-
-def test_more_than_limit_anamnese():
-    assert data_to_use(anamnese=lenght_test[:500]) == False
-
+@pytest.mark.parametrize("test_input", [131, '', '   ', 'vlza', lenght_test[:500]])
+def test_anamnese(test_input):
+    # All options that had to be success
+    assert data_to_use(anamnese=test_input) == False
 
 #############################################################################
 # TEST STRING THAT CAN/CANNOT BE NULL
@@ -428,47 +417,31 @@ def test_more_than_limit_anamnese():
 # test short text
 # test more than limit
 
-def test_wrong_type_diagnostic():
-    assert data_to_use(diagnostic=123) == False
+@pytest.mark.parametrize("test_input", [123, 'aaa', lenght_test[:86]])
+def test_false_diagnostic(test_input):
+    # All options that had to be success
+    assert data_to_use(diagnostic=test_input) == False
 
-def test_empty_value_diagnostic():
-    assert data_to_use(diagnostic='null') == True
+@pytest.mark.parametrize("test_input", ['null' , '', '   '])
+def test_true_diagnostic(test_input):
+    # All options that had to be success
+    assert data_to_use(diagnostic=test_input) == True
 
-def test_empty_spaces_diagnostic():
-    assert data_to_use(diagnostic='    ') == True
+@pytest.mark.parametrize("test_input", [123, 'aaa', lenght_test[:65]])
+def test_false_patient_email(test_input):
+    # All options that had to be success
+    assert data_to_use(patient_email=test_input) == False
 
-def test_longValue_diagnostic():
-    assert data_to_use(diagnostic=lenght_test[:86]) == False
+@pytest.mark.parametrize("test_input", ['', '   '])
+def test_true_patient_email(test_input):
+    # All options that had to be success
+    assert data_to_use(patient_email=test_input) == True
 
-def test_shortValue_diagnostic():
-    assert data_to_use(diagnostic='aaa') == False
 
-def test_wrong_type_patient_email():
-    assert data_to_use(patient_email=123) == False
-
-def test_empty_value_patient_email():
-    assert data_to_use(patient_email=' ') == True
-
-def test_empty_spaces_patient_email():
-    assert data_to_use(patient_email='    ') == True
-
-def test_longValue_patient_email():
-    assert data_to_use(patient_email=lenght_test[:65]) == False
-
-def test_shortValue_patient_email():
-    assert data_to_use(patient_email='aaa') == False
-
-def test_empty_value_cid_10():
-    assert data_to_use(cid_10=' ') == False
-
-def test_empty_spaces_cid_10():
-    assert data_to_use(cid_10='    ') == False
-
-def test_longValue_cid_10():
-    assert data_to_use(cid_10=lenght_test[:6]) == False
-
-def test_shortValue_cid_10():
-    assert data_to_use(cid_10='aa') == False
+@pytest.mark.parametrize("test_input", ['', '   ', 'aa', lenght_test[:6]])
+def test_cid_10(test_input):
+    # All options that had to be success
+    assert data_to_use(cid_10=test_input) == False
 
 #################################################################################
 # TEST INT VARIABLES CAN/CANNOT BE NULL
@@ -570,9 +543,6 @@ def test_invalidccpf_patient_document():
 # test short values in quant1month
 # test short values in quant2month
 # test short values in quant3month
-
-def test_wrong_type_medicines():
-    assert data_to_use(medicines=123) == False
 
 def test_wrong_type_medicines():
     assert data_to_use(medicines=123) == False
