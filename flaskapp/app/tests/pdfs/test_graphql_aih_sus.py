@@ -183,6 +183,10 @@ def test_valid_autorizaton_datetime():
 # test all options in Upper Case
 # test all options in lower Case
 
+@pytest.mark.parametrize("test_input", ['G', 1231])
+def test_false_sex(test_input):
+    assert data_to_use(patient_sex=test_input) == False
+
 @pytest.mark.parametrize("test_input", ['M', 'm', 'F', 'f'])
 def test_sex(test_input):
     assert data_to_use(patient_sex=test_input) == True
