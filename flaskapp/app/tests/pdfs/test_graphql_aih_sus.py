@@ -198,7 +198,6 @@ def test_acident_type(test_input):
 def test_pension_status(test_input):
     assert data_to_use(pension_status=test_input) == True
 
-
 @pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
 def test_ufs(test_input):
     assert data_to_use(patient_adress_uf=test_input) == True
@@ -254,31 +253,27 @@ def test_validCNPJ_company_cnpj():
 # test long values
 # test short values
 
-def test_empty_value_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=None) == True
 
-def test_empty_spaces_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='    ') == True
+@pytest.mark.parametrize("test_input", [None, '    ', ''])
+def test_empty_value_patient_ethnicity(test_input):
+    assert data_to_use(patient_ethnicity=test_input) == True
 
-def test_empty_spaces_patient_responsible_name():
-    assert data_to_use(patient_responsible_name='    ') == True
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_patient_responsible_name(test_input):
+    assert data_to_use(patient_responsible_name=test_input) == True
 
-def test_empty_value_secondary_cid_10():
-    assert data_to_use(secondary_cid_10=None) == True
+@pytest.mark.parametrize("test_input", [None, '    ', ''])
+def test_empty_value_secondary_cid_10(test_input):
+    assert data_to_use(secondary_cid_10=test_input) == True
 
-def test_empty_spaces_secondary_cid_10():
-    assert data_to_use(secondary_cid_10='    ') == True
+@pytest.mark.parametrize("test_input", [None, '    ', ''])
+def test_empty_value_cid_10_associated_causes(test_input):
+    assert data_to_use(cid_10_associated_causes=test_input) == True
 
-def test_empty_value_cid_10_associated_causes():
-    assert data_to_use(cid_10_associated_causes=None) == True
+@pytest.mark.parametrize("test_input", [None, '    ', ''])
+def test_empty_value_insurance_company_series(test_input):
+    assert data_to_use(insurance_company_series=test_input) == True
 
-def test_empty_spaces_cid_10_associated_causes():
-    assert data_to_use(cid_10_associated_causes='    ') == True
 
-def test_empty_value_insurance_company_series():
-    assert data_to_use(insurance_company_series=None) == True
-
-def test_empty_spaces_insurance_company_series():
-    assert data_to_use(insurance_company_series='    ') == True
 
 
