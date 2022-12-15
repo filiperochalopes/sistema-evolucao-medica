@@ -268,38 +268,26 @@ def test_more_than_5_secondary_procedure():
 # test long values
 # test short values
 
-def test_empty_value_patient_ethnicity():
-    assert data_to_use(patient_ethnicity=None) == True
+@pytest.mark.parametrize("test_input", [None, '    ', ''])
+def test_empty_value_patient_ethnicity(test_input):
+    assert data_to_use(patient_ethnicity=test_input) == True
 
-def test_empty_spaces_patient_ethnicity():
-    assert data_to_use(patient_ethnicity='    ') == True
+@pytest.mark.parametrize("test_input", [None, '    ', ''])
+def test_empty_value_patient_color(test_input):
+    assert data_to_use(patient_color=test_input) == True
 
-def test_empty_value_patient_color():
-    assert data_to_use(patient_color=None) == True
+@pytest.mark.parametrize("test_input", [None, '    ', ''])
+def test_empty_value_prodedure_justification_main_cid_10(test_input):
+    assert data_to_use(prodedure_justification_main_cid_10=test_input) == True
 
-def test_empty_spaces_patient_color():
-    assert data_to_use(patient_color='    ') == True
+@pytest.mark.parametrize("test_input", [None, '    ', ''])
+def test_empty_value_prodedure_justification_sec_cid_10(test_input):
+    assert data_to_use(prodedure_justification_sec_cid_10=test_input) == True
 
-def test_empty_value_prodedure_justification_main_cid_10():
-    assert data_to_use(prodedure_justification_main_cid_10=None) == True
+@pytest.mark.parametrize("test_input", [None, '    ', ''])
+def test_empty_value_procedure_justification_associated_cause_cid_10(test_input):
+    assert data_to_use(procedure_justification_associated_cause_cid_10=test_input) == True
 
-def test_empty_spaces_prodedure_justification_main_cid_10():
-    assert data_to_use(prodedure_justification_main_cid_10='    ') == True
-
-def test_empty_value_prodedure_justification_sec_cid_10():
-    assert data_to_use(prodedure_justification_sec_cid_10=None) == True
-
-def test_empty_spaces_prodedure_justification_sec_cid_10():
-    assert data_to_use(prodedure_justification_sec_cid_10='    ') == True
-
-def test_empty_value_procedure_justification_associated_cause_cid_10():
-    assert data_to_use(procedure_justification_associated_cause_cid_10 =None) == True
-
-def test_empty_spaces_procedure_justification_associated_cause_cid_10():
-    assert data_to_use(procedure_justification_associated_cause_cid_10 ='    ') == True
-
-def test_empty_value_emission_org_code():
-    assert data_to_use(emission_org_code =None) == True
-
-def test_empty_spaces_emission_org_code():
-    assert data_to_use(emission_org_code ='    ') == True
+@pytest.mark.parametrize("test_input", [None, '    ', ''])
+def test_empty_value_emission_org_code(test_input):
+    assert data_to_use(emission_org_code=test_input) == True
