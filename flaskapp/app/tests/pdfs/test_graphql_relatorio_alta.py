@@ -2,6 +2,7 @@ from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
 import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
+import pytest
 
 global lenght_test
 lenght_test = ''
@@ -110,36 +111,13 @@ def test_awnser_with_only_required_data():
 # short name
 # wrong name type
 
+@pytest.mark.parametrize("test_input", ['    ', '', lenght_test[:71], '11113', 123124])
+def test_patient_mother_name(test_input):
+    assert data_to_use(patient_mother_name=test_input) == False
 
-def test_wrongtype_patient_mother_name():    
-    assert data_to_use(patient_mother_name=123124) == False
-
-def test_empty_patient_mother_name():    
-    assert data_to_use(patient_mother_name='') == False
-
-def test_with_space_patient_mother_name():    
-    assert data_to_use(patient_mother_name='  ') == False
-
-def test_long_patient_mother_name():    
-    assert data_to_use(patient_mother_name=str(lenght_test[:71])) == False
-
-def test_short_patient_mother_name():    
-    assert data_to_use(patient_mother_name='11113') == False
-
-def test_wrongtype_doctor_name():    
-    assert data_to_use(doctor_name=123124) == False
-
-def test_empty_doctor_name():    
-    assert data_to_use(doctor_name='') == False
-
-def test_with_space_doctor_name():    
-    assert data_to_use(doctor_name='  ') == False
-
-def test_long_doctor_name():    
-    assert data_to_use(doctor_name=str(lenght_test[:52])) == False
-
-def test_short_doctor_name():    
-    assert data_to_use(doctor_name='11113') == False
+@pytest.mark.parametrize("test_input", ['    ', '', lenght_test[:52], '11113', 123124])
+def test_doctor_name(test_input):
+    assert data_to_use(doctor_name=test_input) == False
 
 
 #################################################################
@@ -152,23 +130,23 @@ def test_short_doctor_name():
 # valid cpf
 # wrong option
 
-def test_wrongtype_patient_document():
-    assert data_to_use(patient_document='451236548554') == False
 
-def test_invalidrg_patient_document():
-    assert data_to_use(patient_document='{cpf: null, rg: "28123", cns: null}') == False
+@pytest.mark.parametrize("test_input", [
+    '451236548554',
+    '{cpf: null, rg: "28123", cns: null}',
+    '{BBB: "284123312123", rg: null, cns: null}',
+    '{cpf: "284123312123", rg: null, cns: null}'
+])
+def test_false_patient_document(test_input):
+    assert data_to_use(patient_document=test_input) == False
 
-def test_validrg_patient_document():
-    assert data_to_use(patient_document='{cpf: null, rg: "928976954930007", cns: null}') == True
+@pytest.mark.parametrize("test_input", [
+'{cpf: null, rg: "928976954930007", cns: null}',
+'{cpf: "43423412399", rg: null, cns: null}'
+])
+def test_true_patient_document(test_input):
+    assert data_to_use(patient_document=test_input) == True
 
-def test_invalidccpf_patient_document():
-    assert data_to_use(patient_document='{cpf: "284123312123", rg: null, cns: null}') == False
-
-def test_validcpf_patient_document():
-    assert data_to_use(patient_document='{cpf: "43423412399", rg: null, cns: null}') == True
-
-def test_wrongoption_patient_document():
-    assert data_to_use(patient_document='{BBB: "284123312123", rg: null, cns: null}') == False
 
 #################################################################
 # TEST DATETIMES VARIABLES
@@ -194,23 +172,13 @@ def test_valid_patient_birthday():
 # TEST MARKABLE OPTIONS
 # patient_sex
 
-def test_wrongtype_patient_sex():
-    assert data_to_use(patient_sex=1231) == False
+@pytest.mark.parametrize("test_input", ['G', 1231])
+def test_false_sex(test_input):
+    assert data_to_use(patient_sex=test_input) == False
 
-def test_notexistopiton_patient_sex():
-    assert data_to_use(patient_sex='G') == False
-
-def test_M_optionUpper_patient_sex():
-    assert data_to_use(patient_sex='M') == True
-
-def test_M_optionLower_patient_sex():
-    assert data_to_use(patient_sex='m') == True
-
-def test_F_optionUpper_patient_sex():
-    assert data_to_use(patient_sex='F') == True
-
-def test_F_optionLower_patient_sex():
-    assert data_to_use(patient_sex='f') == True
+@pytest.mark.parametrize("test_input", ['M', 'm', 'F', 'f'])
+def test_sex(test_input):
+    assert data_to_use(patient_sex=test_input) == True
 
 
 
