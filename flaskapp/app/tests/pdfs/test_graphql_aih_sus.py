@@ -190,32 +190,10 @@ def test_valid_autorizaton_datetime():
 def test_sex(test_input):
     assert data_to_use(patient_sex=test_input) == True
 
-def test_work_option_acident_type():
-    assert data_to_use(acident_type='work') == True
+@pytest.mark.parametrize("test_input", ['WORK', 'work', 'TRAFFIC', 'traffic', 'WORK_PATH', 'work_path'])
+def test_acident_type(test_input):
+    assert data_to_use(acident_type=test_input) == True
 
-def test_work_optionUpper_acident_type():
-    assert data_to_use(acident_type='WORK') == True
-
-def test_work_optionLower_acident_type():
-    assert data_to_use(acident_type='work') == True
-
-def test_traffic_option_acident_type():
-    assert data_to_use(acident_type='traffic') == True
-
-def test_traffic_optionUpper_acident_type():
-    assert data_to_use(acident_type='TRAFFIC') == True
-
-def test_traffic_optionLower_acident_type():
-    assert data_to_use(acident_type='traffic') == True
-
-def test_work_path_option_acident_type():
-    assert data_to_use(acident_type='work_path') == True
-
-def test_work_path_optionUpper_acident_type():
-    assert data_to_use(acident_type='WORK_PATH') == True
-
-def test_work_path_optionLower_acident_type():
-    assert data_to_use(acident_type='work_path') == True
 
 def test_worker_option_pension_status():
     assert data_to_use(pension_status='worker') == True
