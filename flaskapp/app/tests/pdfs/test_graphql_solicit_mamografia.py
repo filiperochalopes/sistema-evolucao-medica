@@ -366,17 +366,15 @@ def test_health_unit_adress_uf(test_input):
 # test short text
 # test more than limit
 
-def test_empty_value_protocol_number():
-    assert data_to_use(protocol_number='') == True
 
-def test_empty_spaces_protocol_number():
-    assert data_to_use(protocol_number='    ') == True
 
-def test_empty_value_patient_nationality():
-    assert data_to_use(patient_nationality='') == True
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_protocol_number(test_input):
+    assert data_to_use(protocol_number=test_input) == True
 
-def test_empty_spaces_patient_nationality():
-    assert data_to_use(patient_nationality='    ') == True
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_patient_nationality(test_input):
+    assert data_to_use(patient_nationality=test_input) == True
 
 
 #################################################################################
