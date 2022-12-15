@@ -186,17 +186,9 @@ def test_valid_autorizaton_datetime():
 # test all options in Upper Case
 # test all options in lower Case
 
-def test_M_optionUpper_patient_sex():
-    assert data_to_use(patient_sex='M') == True
-
-def test_M_optionLower_patient_sex():
-    assert data_to_use(patient_sex='m') == True
-
-def test_F_optionUpper_patient_sex():
-    assert data_to_use(patient_sex='F') == True
-
-def test_F_optionLower_patient_sex():
-    assert data_to_use(patient_sex='f') == True
+@pytest.mark.parametrize("test_input", ['M', 'm', 'F', 'f'])
+def test_sex(test_input):
+    assert data_to_use(patient_sex=test_input) == True
 
 def test_work_option_acident_type():
     assert data_to_use(acident_type='work') == True
