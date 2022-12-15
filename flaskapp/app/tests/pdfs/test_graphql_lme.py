@@ -2,6 +2,7 @@ from gql import gql, Client
 from gql.transport.aiohttp import AIOHTTPTransport
 import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
+import pytest
 
 global lenght_test
 lenght_test = ''
@@ -142,77 +143,54 @@ def test_awnser_with_only_required_data():
 # short name
 # wrong name type
 
-def test_empty_establishment_solitc_name():    
-    assert data_to_use(establishment_solitc_name='') == False
 
-def test_with_space_establishment_solitc_name():    
-    assert data_to_use(establishment_solitc_name='  ') == False
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_establishment_solitc_name(test_input):
+    assert data_to_use(establishment_solitc_name=test_input) == False
 
-def test_long_establishment_solitc_name():    
-    assert data_to_use(establishment_solitc_name=lenght_test[:70]) == False
-
-def test_short_establishment_solitc_name():    
-    assert data_to_use(establishment_solitc_name='bro') == False
+@pytest.mark.parametrize("test_input", [lenght_test[:70], lenght_test[:1]])
+def test_text_establishment_solitc_name(test_input):
+    assert data_to_use(establishment_solitc_name=test_input) == False
 
 def test_wrongtype_establishment_solitc_name():    
     assert data_to_use(establishment_solitc_name=123124) == False
 
-def test_empty_patient_name():    
-    assert data_to_use(patient_name='') == False
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_patient_name(test_input):
+    assert data_to_use(patient_name=test_input) == False
 
-def test_with_space_patient_name():    
-    assert data_to_use(patient_name='  ') == False
-
-def test_long_patient_name():    
-    assert data_to_use(patient_name=lenght_test[:81]) == False
-
-def test_short_patient_name():    
-    assert data_to_use(patient_name='bro') == False
+@pytest.mark.parametrize("test_input", [lenght_test[:81], lenght_test[:1]])
+def test_text_patient_name(test_input):
+    assert data_to_use(patient_name=test_input) == False
 
 def test_wrongtype_patient_name():    
     assert data_to_use(patient_name=123124) == False
 
-def test_empty_patient_mother_name():    
-    assert data_to_use(patient_mother_name='') == False
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_patient_mother_name(test_input):
+    assert data_to_use(patient_mother_name=test_input) == False
 
-def test_with_space_patient_mother_name():    
-    assert data_to_use(patient_mother_name='  ') == False
-
-def test_long_patient_mother_name():    
-    assert data_to_use(patient_mother_name=lenght_test[:81]) == False
-
-def test_short_patient_mother_name():    
-    assert data_to_use(patient_mother_name='bro') == False
+@pytest.mark.parametrize("test_input", [lenght_test[:81], lenght_test[:1]])
+def test_text_patient_mother_name(test_input):
+    assert data_to_use(patient_mother_name=test_input) == False
 
 def test_wrongtype_patient_mother_name():    
     assert data_to_use(patient_mother_name=123124) == False
 
-def test_empty_prof_solicitor_name():    
-    assert data_to_use(prof_solicitor_name='') == False
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_prof_solicitor_name(test_input):
+    assert data_to_use(prof_solicitor_name=test_input) == False
 
-def test_with_space_prof_solicitor_name():    
-    assert data_to_use(prof_solicitor_name='  ') == False
-
-def test_long_prof_solicitor_name():    
-    assert data_to_use(prof_solicitor_name=lenght_test[:50]) == False
-
-def test_short_prof_solicitor_name():    
-    assert data_to_use(prof_solicitor_name='bro') == False
+@pytest.mark.parametrize("test_input", [lenght_test[:50], lenght_test[:1]])
+def test_text_prof_solicitor_name(test_input):
+    assert data_to_use(prof_solicitor_name=test_input) == False
 
 def test_wrongtype_prof_solicitor_name():    
     assert data_to_use(prof_solicitor_name=123124) == False
 
-def test_empty_capacity_attest_responsible_name():    
-    assert data_to_use(capacity_attest=f'["sim", ""]') == False
-
-def test_with_space_capacity_attest_responsible_name():    
-    assert data_to_use(capacity_attest=f'["sim", " "]') == False
-
-def test_long_capacity_attest_responsible_name():    
-    assert data_to_use(capacity_attest=f'["sim", "{lenght_test[:50]}"]') == False
-
-def test_short_capacity_attest_responsible_name():    
-    assert data_to_use(capacity_attest='bro') == False
+@pytest.mark.parametrize("test_input", ['["sim", ""]', '["sim", " "]', f'["sim", "{lenght_test[:50]}"]', 'aa'])
+def test_text_capacity_attest_responsible_name(test_input):
+    assert data_to_use(capacity_attest=test_input) == False
 
 def test_wrongtype_capacity_attest_responsible_name():    
     assert data_to_use(capacity_attest=123124) == False
