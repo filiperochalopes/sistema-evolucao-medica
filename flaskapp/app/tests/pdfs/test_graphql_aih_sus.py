@@ -4,10 +4,12 @@ import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
 import pytest
 
-global lenght_test
-lenght_test = ''
-for x in range(0, 1100):
-    lenght_test += str(x)
+@pytest.fixture
+def lenght_test():
+    lenght_test = ''
+    for x in range(0, 1100):
+        lenght_test += str(x)
+    return lenght_test
 
 datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
 
