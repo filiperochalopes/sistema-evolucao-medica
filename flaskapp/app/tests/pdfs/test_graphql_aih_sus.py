@@ -11,7 +11,10 @@ def lenght_test():
         lenght_test += str(x)
     return lenght_test
 
-datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
+
+@pytest.fixture
+def datetime_to_use():
+    return datetime.datetime.now().strftime('%d/%m/%Y')
 
 @pytest.fixture
 def client():
@@ -21,8 +24,15 @@ def client():
     return Client(transport=transport, fetch_schema_from_transport=True)
 
 
-def data_to_use(client, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,establishment_exec_name='Establshment Exec Name',establishment_exec_cnes=7654321,patient_name='Patient Name',patient_cns="928976954930007",patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name='Patient Mother Name',patient_adress='Patient Adress street neighobourd',patient_adress_city='Patient City',patient_adress_city_ibge_code='1234567', patient_adress_uf='SP',patient_adress_cep='12345678',main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnostic='Patient Initial Diagnostic',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', prof_solicitor_document='{cns: "928976954930007", cpf: null, rg: null}',
-prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=datetime_to_use, prof_autorization_name='Autorization professional name', emission_org_code='OrgCode2022', autorizaton_prof_document='{cns: null, cpf: "28445400070", rg: null}', autorizaton_datetime=datetime_to_use,hospitalization_autorization_number='1234567890',exam_results='Xray tibia broken',chart_number='1234',patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber='5613248546', patient_responsible_phonenumber='8564721598', secondary_cid_10='A01',cid_10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj='37549670000171', insurance_company_ticket_number='123450123456', insurance_company_series='Insurn',company_cnpj='37549670000171', company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
+def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,establishment_exec_name='Establshment Exec Name',establishment_exec_cnes=7654321,patient_name='Patient Name',patient_cns="928976954930007",patient_birthday=None,patient_sex='F',patient_mother_name='Patient Mother Name',patient_adress='Patient Adress street neighobourd',patient_adress_city='Patient City',patient_adress_city_ibge_code='1234567', patient_adress_uf='SP',patient_adress_cep='12345678',main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnostic='Patient Initial Diagnostic',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', prof_solicitor_document='{cns: "928976954930007", cpf: null, rg: null}',
+prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=None, prof_autorization_name='Autorization professional name', emission_org_code='OrgCode2022', autorizaton_prof_document='{cns: null, cpf: "28445400070", rg: null}', autorizaton_datetime=None,hospitalization_autorization_number='1234567890',exam_results='Xray tibia broken',chart_number='1234',patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber='5613248546', patient_responsible_phonenumber='8564721598', secondary_cid_10='A01',cid_10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj='37549670000171', insurance_company_ticket_number='123450123456', insurance_company_series='Insurn',company_cnpj='37549670000171', company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
+
+    if patient_birthday == None:
+        patient_birthday = datetime_to_use
+    if solicitation_datetime == None:
+        solicitation_datetime = datetime_to_use
+    if autorizaton_datetime == None:
+        autorizaton_datetime = datetime_to_use
 
     request_string = """
         mutation{
@@ -89,7 +99,6 @@ prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=datetime_
         return True
     except:
         return False 
-
 
 #Testing Aih SUS
 def test_with_data_in_function(client):
@@ -168,8 +177,8 @@ def test_empty_value_patient_responsible_name(client, test_input):
 # test wrong type
 # test valid datetime
 
-def test_valid_patient_birthday(client):
-    assert data_to_use(client, patient_birthday=datetime_to_use) == True
+def test_valid_patient_birthday(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_birthday=datetime_to_use) == True
 
 def test_valid_solicitation_datetime(client):
     assert data_to_use(client, solicitation_datetime=datetime_to_use) == True
