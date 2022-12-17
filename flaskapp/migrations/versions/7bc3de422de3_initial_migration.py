@@ -1,8 +1,14 @@
 """Initial migration
 
+<<<<<<<< HEAD:flaskapp/migrations/versions/7bc3de422de3_initial_migration.py
 Revision ID: 7bc3de422de3
 Revises: 
 Create Date: 2022-12-04 00:16:34.231809
+========
+Revision ID: a4194f3034e7
+Revises: 
+Create Date: 2022-12-03 18:28:01.201871
+>>>>>>>> feature/graphql-api:flaskapp/migrations/versions/a4194f3034e7_initial_migration.py
 
 """
 from alembic import op
@@ -10,7 +16,11 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
+<<<<<<<< HEAD:flaskapp/migrations/versions/7bc3de422de3_initial_migration.py
 revision = '7bc3de422de3'
+========
+revision = 'a4194f3034e7'
+>>>>>>>> feature/graphql-api:flaskapp/migrations/versions/a4194f3034e7_initial_migration.py
 down_revision = None
 branch_labels = None
 depends_on = None
