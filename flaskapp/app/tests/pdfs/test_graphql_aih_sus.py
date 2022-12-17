@@ -11,7 +11,6 @@ def lenght_test():
         lenght_test += str(x)
     return lenght_test
 
-
 @pytest.fixture
 def datetime_to_use():
     return datetime.datetime.now().strftime('%d/%m/%Y')
@@ -101,11 +100,11 @@ prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=None, pro
         return False 
 
 #Testing Aih SUS
-def test_with_data_in_function(client):
-    assert data_to_use(client) == True
+def test_with_data_in_function(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use) == True
 
-def test_answer_with_all_fields(client):
-    assert data_to_use(client) == True
+def test_answer_with_all_fields(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use) == True
 
 def test_awnser_with_only_required_data(client):
     request_string = """
@@ -166,8 +165,8 @@ def test_awnser_with_only_required_data(client):
 # ERRORS IN NAMES CAMPS
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_patient_responsible_name(client, test_input):
-    assert data_to_use(client, patient_responsible_name=test_input) == True
+def test_empty_value_patient_responsible_name(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_responsible_name=test_input) == True
 
 #################################################################
 # TEST DATETIMES VARIABLES
@@ -180,11 +179,11 @@ def test_empty_value_patient_responsible_name(client, test_input):
 def test_valid_patient_birthday(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, patient_birthday=datetime_to_use) == True
 
-def test_valid_solicitation_datetime(client):
-    assert data_to_use(client, solicitation_datetime=datetime_to_use) == True
+def test_valid_solicitation_datetime(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, solicitation_datetime=datetime_to_use) == True
 
-def test_valid_autorizaton_datetime(client):
-    assert data_to_use(client, autorizaton_datetime=datetime_to_use) == True
+def test_valid_autorizaton_datetime(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, autorizaton_datetime=datetime_to_use) == True
 
 ##################################################################
 # TEST MARKABLE OPTIONS
@@ -198,24 +197,24 @@ def test_valid_autorizaton_datetime(client):
 # test all options in lower Case
 
 @pytest.mark.parametrize("test_input", ['G', 1231])
-def test_false_sex(client, test_input):
-    assert data_to_use(client, patient_sex=test_input) == False
+def test_false_sex(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_sex=test_input) == False
 
 @pytest.mark.parametrize("test_input", ['M', 'm', 'F', 'f'])
-def test_sex(client, test_input):
-    assert data_to_use(client, patient_sex=test_input) == True
+def test_sex(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_sex=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['WORK', 'work', 'TRAFFIC', 'traffic', 'WORK_PATH', 'work_path'])
-def test_acident_type(client, test_input):
-    assert data_to_use(client, acident_type=test_input) == True
+def test_acident_type(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, acident_type=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['WORKER', 'worker', 'EMPLOYER', 'employer', 'AUTONOMOUS', 'autonomous', 'UNEMPLOYED', 'unemployed', 'RETIRED', 'retired', 'NOT_INSURED', 'not_insured'])
-def test_pension_status(client, test_input):
-    assert data_to_use(client, pension_status=test_input) == True
+def test_pension_status(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, pension_status=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
-def test_ufs(client, test_input):
-    assert data_to_use(client, patient_adress_uf=test_input) == True
+def test_ufs(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_adress_uf=test_input) == True
 
 #################################################################################
 # TEST INT VARIABLES CAN/CANNOT BE NULL
@@ -233,11 +232,11 @@ def test_ufs(client, test_input):
 # short value
 # long value  
 
-def test_empty_value_chart_number(client):
-    assert data_to_use(client, chart_number=None) == True
+def test_empty_value_chart_number(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, chart_number=None) == True
 
-def test_empty_value_insurance_company_ticket_number(client):
-    assert data_to_use(client, insurance_company_ticket_number=None) == True
+def test_empty_value_insurance_company_ticket_number(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, insurance_company_ticket_number=None) == True
 
 
 ##############################################################################
@@ -248,11 +247,11 @@ def test_empty_value_insurance_company_ticket_number(client):
 # test invalid cnpj
 # test valid cpnj
 
-def test_validCNPJ_insurance_company_cnpj(client):
-    assert data_to_use(client, insurance_company_cnpj=37549670000171) == True
+def test_validCNPJ_insurance_company_cnpj(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, insurance_company_cnpj=37549670000171) == True
 
-def test_validCNPJ_company_cnpj(client):
-    assert data_to_use(client, company_cnpj=37549670000171) == True
+def test_validCNPJ_company_cnpj(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, company_cnpj=37549670000171) == True
 
 
 ##############################################################################
@@ -270,20 +269,20 @@ def test_validCNPJ_company_cnpj(client):
 
 
 @pytest.mark.parametrize("test_input", [None, '    ', ''])
-def test_empty_value_patient_ethnicity(client, test_input):
-    assert data_to_use(client, patient_ethnicity=test_input) == True
+def test_empty_value_patient_ethnicity(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_ethnicity=test_input) == True
 
 @pytest.mark.parametrize("test_input", [None, '    ', ''])
-def test_empty_value_secondary_cid_10(client, test_input):
-    assert data_to_use(client, secondary_cid_10=test_input) == True
+def test_empty_value_secondary_cid_10(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, secondary_cid_10=test_input) == True
 
 @pytest.mark.parametrize("test_input", [None, '    ', ''])
-def test_empty_value_cid_10_associated_causes(client, test_input):
-    assert data_to_use(client, cid_10_associated_causes=test_input) == True
+def test_empty_value_cid_10_associated_causes(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, cid_10_associated_causes=test_input) == True
 
 @pytest.mark.parametrize("test_input", [None, '    ', ''])
-def test_empty_value_insurance_company_series(client, test_input):
-    assert data_to_use(client, insurance_company_series=test_input) == True
+def test_empty_value_insurance_company_series(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, insurance_company_series=test_input) == True
 
 
 
