@@ -11,13 +11,15 @@ for x in range(0, 1100):
 
 datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
 
-# Select your transport with ag graphql url endpoint
-transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+@pytest.fixture
+def client():
+    # Select your transport with ag graphql url endpoint
+    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+    # Create a GraphQL client using the defined transport
+    return Client(transport=transport, fetch_schema_from_transport=True)
 
-# Create a GraphQL client using the defined transport
-client = Client(transport=transport, fetch_schema_from_transport=True)
 
-def data_to_use(establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,establishment_exec_name='Establshment Exec Name',establishment_exec_cnes=7654321,patient_name='Patient Name',patient_cns="928976954930007",patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name='Patient Mother Name',patient_adress='Patient Adress street neighobourd',patient_adress_city='Patient City',patient_adress_city_ibge_code='1234567', patient_adress_uf='SP',patient_adress_cep='12345678',main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnostic='Patient Initial Diagnostic',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', prof_solicitor_document='{cns: "928976954930007", cpf: null, rg: null}',
+def data_to_use(client, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,establishment_exec_name='Establshment Exec Name',establishment_exec_cnes=7654321,patient_name='Patient Name',patient_cns="928976954930007",patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name='Patient Mother Name',patient_adress='Patient Adress street neighobourd',patient_adress_city='Patient City',patient_adress_city_ibge_code='1234567', patient_adress_uf='SP',patient_adress_cep='12345678',main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnostic='Patient Initial Diagnostic',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', prof_solicitor_document='{cns: "928976954930007", cpf: null, rg: null}',
 prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=datetime_to_use, prof_autorization_name='Autorization professional name', emission_org_code='OrgCode2022', autorizaton_prof_document='{cns: null, cpf: "28445400070", rg: null}', autorizaton_datetime=datetime_to_use,hospitalization_autorization_number='1234567890',exam_results='Xray tibia broken',chart_number='1234',patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber='5613248546', patient_responsible_phonenumber='8564721598', secondary_cid_10='A01',cid_10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj='37549670000171', insurance_company_ticket_number='123450123456', insurance_company_series='Insurn',company_cnpj='37549670000171', company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
 
     request_string = """
@@ -86,9 +88,14 @@ prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=datetime_
     except:
         return False 
 
+
+
+def test_fixture(client):
+    client.execute('aaaa')
+
 #Testing Aih SUS
-def test_with_data_in_function():
-    assert data_to_use() == True
+def test_with_data_in_function(client):
+    assert data_to_use(client) == True
 
 def test_answer_with_all_fields():
     assert data_to_use() == True
