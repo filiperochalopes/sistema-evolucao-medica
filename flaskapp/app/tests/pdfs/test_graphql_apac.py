@@ -9,16 +9,33 @@ lenght_test = ''
 for x in range(0, 1100):
     lenght_test += str(x)
 
-datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
+@pytest.fixture
+def datetime_to_use():
+    return datetime.datetime.now().strftime('%d/%m/%Y')
 
-# Select your transport with ag graphql url endpoint
-transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+@pytest.fixture
+def client():
+    # Select your transport with ag graphql url endpoint
+    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+    # Create a GraphQL client using the defined transport
+    return Client(transport=transport, fetch_schema_from_transport=True)
 
-# Create a GraphQL client using the defined transport
-client = Client(transport=transport, fetch_schema_from_transport=True)
 
+def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,patient_name='Patient Name',patient_cns="928976954930007",patient_sex='M',patient_birthday=None, patient_adress_city='Patient Adress City',main_procedure='{name: "teste procedimento",code: "hkmaug347s",quant: 1}',patient_mother_name='Patient Mother Name',patient_mother_phonenumber='5286758957', patient_responsible_name='Patient Responsible Name', patient_responsible_phonenumber='5465981345', patient_adress='Patient Adress',patient_color='Branca',patient_ethnicity='Indigena',patient_adress_uf='BA',patient_adressCEP='86425910', document_chart_number='12345',patient_adress_city_ibge_code=4528765,procedure_justification_description='Procedure Justification Description', prodedure_justification_main_cid_10='A98', prodedure_justification_sec_cid_10='A01', procedure_justification_associated_cause_cid_10='A45',procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', establishment_exec_cnes=7654321,prof_solicitor_document='{cns: "928976954930007",cpf: null,rg: null}', prof_solicitor_name='Profissional Solicit Name',solicitation_datetime=None,signature_datetime=None,validity_period_start=None,validity_period_end=None,autorization_prof_name='Autorization Professional Name', emission_org_code='Cod121234',autorizaton_prof_document='{cns: "928976954930007",cpf: null,rg: null}', autorizaton_datetime=None,secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "segundo",code: "hkmhsa3s23",quant: 4}]'):
 
-def data_to_use(establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,patient_name='Patient Name',patient_cns="928976954930007",patient_sex='M',patient_birthday=datetime_to_use, patient_adress_city='Patient Adress City',main_procedure='{name: "teste procedimento",code: "hkmaug347s",quant: 1}',patient_mother_name='Patient Mother Name',patient_mother_phonenumber='5286758957', patient_responsible_name='Patient Responsible Name', patient_responsible_phonenumber='5465981345', patient_adress='Patient Adress',patient_color='Branca',patient_ethnicity='Indigena',patient_adress_uf='BA',patient_adressCEP='86425910', document_chart_number='12345',patient_adress_city_ibge_code=4528765,procedure_justification_description='Procedure Justification Description', prodedure_justification_main_cid_10='A98', prodedure_justification_sec_cid_10='A01', procedure_justification_associated_cause_cid_10='A45',procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', establishment_exec_cnes=7654321,prof_solicitor_document='{cns: "928976954930007",cpf: null,rg: null}', prof_solicitor_name='Profissional Solicit Name',solicitation_datetime=datetime_to_use,signature_datetime=datetime_to_use,validity_period_start=datetime_to_use,validity_period_end=datetime_to_use,autorization_prof_name='Autorization Professional Name', emission_org_code='Cod121234',autorizaton_prof_document='{cns: "928976954930007",cpf: null,rg: null}', autorizaton_datetime=datetime_to_use,secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "segundo",code: "hkmhsa3s23",quant: 4}]'):
+    if patient_birthday == None:
+        patient_birthday = datetime_to_use
+    if solicitation_datetime == None:
+        solicitation_datetime = datetime_to_use
+    if validity_period_start == None:
+        validity_period_start = datetime_to_use
+    if validity_period_end == None:
+        validity_period_end = datetime_to_use
+    if signature_datetime == None:
+        signature_datetime = datetime_to_use
+    if autorizaton_datetime == None:
+        autorizaton_datetime = datetime_to_use
+
     request_string = """
         mutation{
             generatePdf_Apac("""
@@ -77,13 +94,13 @@ def data_to_use(establishment_solitc_name='Establishment Solicit Name',establish
         return False 
 
 #Testing APAC
-def test_with_data_in_function():
-    assert data_to_use() == True
+def test_with_data_in_function(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use) == True
 
-def test_answer_with_all_fields():
-    assert data_to_use() == True
+def test_answer_with_all_fields(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use) == True
 
-def test_awnser_with_only_required_data():
+def test_awnser_with_only_required_data(client):
     request_string = """
         mutation{
             generatePdf_Apac("""
@@ -133,20 +150,20 @@ def test_awnser_with_only_required_data():
 
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_patient_mother_name(test_input):
-    assert data_to_use(patient_mother_name=test_input) == True
+def test_empty_value_patient_mother_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_mother_name=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_establishment_exec_name(test_input):
-    assert data_to_use(establishment_exec_name=test_input) == True
+def test_empty_value_establishment_exec_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, establishment_exec_name=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_prof_solicitor_name(test_input):
-    assert data_to_use(prof_solicitor_name=test_input) == True
+def test_empty_value_prof_solicitor_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, prof_solicitor_name=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_autorization_prof_name(test_input):
-    assert data_to_use(autorization_prof_name=test_input) == True
+def test_empty_value_autorization_prof_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, autorization_prof_name=test_input) == True
 
 
 
@@ -161,23 +178,23 @@ def test_empty_value_autorization_prof_name(test_input):
 # test wrong type
 # test valid datetime
 
-def test_valid_patient_birthday():
-    assert data_to_use(patient_birthday=datetime_to_use) == True
+def test_valid_patient_birthday(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_birthday=datetime_to_use) == True
 
-def test_valid_solicitation_datetime():
-    assert data_to_use(solicitation_datetime=datetime_to_use) == True
+def test_valid_solicitation_datetime(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, solicitation_datetime=datetime_to_use) == True
 
-def test_valid_autorizaton_datetime():
-    assert data_to_use(autorizaton_datetime=datetime_to_use) == True
+def test_valid_autorizaton_datetime(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, autorizaton_datetime=datetime_to_use) == True
 
-def test_valid_signature_datetime():
-    assert data_to_use(signature_datetime=datetime_to_use) == True
+def test_valid_signature_datetime(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, signature_datetime=datetime_to_use) == True
 
-def test_valid_validity_period_start():
-    assert data_to_use(validity_period_start=datetime_to_use) == True
+def test_valid_validity_period_start(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, validity_period_start=datetime_to_use) == True
 
-def test_valid_validity_period_end ():
-    assert data_to_use(validity_period_end =datetime_to_use) == True
+def test_valid_validity_period_end (client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, validity_period_end =datetime_to_use) == True
 
 
 
@@ -192,16 +209,16 @@ def test_valid_validity_period_end ():
 # test all options in lower Case
 
 @pytest.mark.parametrize("test_input", ['G', 1231])
-def test_false_sex(test_input):
-    assert data_to_use(patient_sex=test_input) == False
+def test_false_sex(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_sex=test_input) == False
 
 @pytest.mark.parametrize("test_input", ['M', 'm', 'F', 'f'])
-def test_sex(test_input):
-    assert data_to_use(patient_sex=test_input) == True
+def test_sex(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_sex=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
-def test_ufs(test_input):
-    assert data_to_use(patient_adress_uf=test_input) == True
+def test_ufs(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_adress_uf=test_input) == True
 
 
 ####################################################################
@@ -218,8 +235,8 @@ def test_ufs(test_input):
 # Long value
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_patient_adress(test_input):
-    assert data_to_use(patient_adress=test_input) == True
+def test_empty_value_patient_adress(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_adress=test_input) == True
 
 
 #############################################################################
@@ -233,29 +250,29 @@ def test_empty_value_patient_adress(test_input):
 
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_procedure_justification_comments(test_input):
-    assert data_to_use(procedure_justification_comments=test_input) == True
+def test_empty_value_procedure_justification_comments(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, procedure_justification_comments=test_input) == True
 
 @pytest.mark.parametrize("test_input", [lenght_test[0], lenght_test])
-def test_text_lenght_procedure_justification_comments(test_input):
-    assert data_to_use(procedure_justification_comments=test_input) == False
+def test_text_lenght_procedure_justification_comments(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, procedure_justification_comments=test_input) == False
 
 
 
 ##############################################################################
 # TEST MAIN PROCEDURES
 
-def test_right_main_procedure():
-    assert data_to_use(main_procedure='{name: "teste procedimento",code: "hkmaug347s",quant: 1}') == True
+def test_right_main_procedure(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, main_procedure='{name: "teste procedimento",code: "hkmaug347s",quant: 1}') == True
 
-def test_one_secondary_procedure():
-    assert data_to_use(secondaries_procedures='{name: "teste procedimento",code: "hkmaug347s",quant: 1}') == True
+def test_one_secondary_procedure(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, secondaries_procedures='{name: "teste procedimento",code: "hkmaug347s",quant: 1}') == True
 
-def test_5_secondary_procedure():
-    assert data_to_use(secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quant: 1}, {name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1}]') == True
+def test_5_secondary_procedure(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quant: 1}, {name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1}]') == True
 
-def test_more_than_5_secondary_procedure():
-    assert data_to_use(secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quant: 1}, {name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1}]') == False
+def test_more_than_5_secondary_procedure(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quant: 1}, {name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "teste procedimento",code: "hkmaug347s",quant: 1}]') == False
 
 
 ##############################################################################
@@ -273,25 +290,25 @@ def test_more_than_5_secondary_procedure():
 # test short values
 
 @pytest.mark.parametrize("test_input", [None, '    ', ''])
-def test_empty_value_patient_ethnicity(test_input):
-    assert data_to_use(patient_ethnicity=test_input) == True
+def test_empty_value_patient_ethnicity(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_ethnicity=test_input) == True
 
 @pytest.mark.parametrize("test_input", [None, '    ', ''])
-def test_empty_value_patient_color(test_input):
-    assert data_to_use(patient_color=test_input) == True
+def test_empty_value_patient_color(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_color=test_input) == True
 
 @pytest.mark.parametrize("test_input", [None, '    ', ''])
-def test_empty_value_prodedure_justification_main_cid_10(test_input):
-    assert data_to_use(prodedure_justification_main_cid_10=test_input) == True
+def test_empty_value_prodedure_justification_main_cid_10(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, prodedure_justification_main_cid_10=test_input) == True
 
 @pytest.mark.parametrize("test_input", [None, '    ', ''])
-def test_empty_value_prodedure_justification_sec_cid_10(test_input):
-    assert data_to_use(prodedure_justification_sec_cid_10=test_input) == True
+def test_empty_value_prodedure_justification_sec_cid_10(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, prodedure_justification_sec_cid_10=test_input) == True
 
 @pytest.mark.parametrize("test_input", [None, '    ', ''])
-def test_empty_value_procedure_justification_associated_cause_cid_10(test_input):
-    assert data_to_use(procedure_justification_associated_cause_cid_10=test_input) == True
+def test_empty_value_procedure_justification_associated_cause_cid_10(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, procedure_justification_associated_cause_cid_10=test_input) == True
 
 @pytest.mark.parametrize("test_input", [None, '    ', ''])
-def test_empty_value_emission_org_code(test_input):
-    assert data_to_use(emission_org_code=test_input) == True
+def test_empty_value_emission_org_code(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, emission_org_code=test_input) == True
