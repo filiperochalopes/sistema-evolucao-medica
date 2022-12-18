@@ -13,6 +13,21 @@ def client():
     return Client(transport=transport, fetch_schema_from_transport=True)
 
 
+@pytest.mark.parametrize("request_string", [aih_sus_request_string, apac_request_string, exam_request_request_string, ficha_internamento_request_string, prescricao_medica_request_string, lme_request_string, solicit_mamografia_request_string, relatorio_alta_request_string, exam_request_2_pages_request_string, exam_request_3_pages_request_string])
+def test_create_requests(request_string, client):
+    query = gql(request_string)
+    result = False
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        result = True
+    except:
+        result = False 
+    
+    assert result == True
+
+
+
 def test_create_aih_sus_pdf(client):
     query = gql(aih_sus_request_string)
     result = False
@@ -316,6 +331,4 @@ def test_decode_base64_solicit_mamografia_pdf(client):
         created = False
 
     assert created == True
-
-
 
