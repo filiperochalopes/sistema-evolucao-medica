@@ -259,7 +259,7 @@ def test_empty_value_procedure_justification_comments(test_input, client, dateti
 
 @pytest.mark.parametrize("test_input", [1, 1090])
 def test_text_lenght_procedure_justification_comments(test_input, client, datetime_to_use, lenght_test):
-    text = lenght_test[test_input]
+    text = lenght_test[:test_input]
     assert data_to_use(client, datetime_to_use, procedure_justification_comments=text) == False
 
 

@@ -4,10 +4,13 @@ import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
 import pytest
 
-global lenght_test
-lenght_test = ''
-for x in range(0, 1100):
-    lenght_test += str(x)
+@pytest.fixture
+def lenght_test():
+    """generate a string with data with charactes to test lenght"""
+    lenght_test = ''
+    for x in range(0, 1100):
+        lenght_test += str(x)
+    return lenght_test
 
 @pytest.fixture
 def datetime_to_use():
@@ -156,9 +159,10 @@ def test_awnser_with_only_required_data(client):
 def test_empty_value_establishment_solitc_name(test_input, client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, establishment_solitc_name=test_input) == False
 
-@pytest.mark.parametrize("test_input", [lenght_test[:70], lenght_test[:1]])
-def test_text_establishment_solitc_name(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, establishment_solitc_name=test_input) == False
+@pytest.mark.parametrize("test_input", [70, 1])
+def test_text_establishment_solitc_name(test_input, client, datetime_to_use, lenght_test):
+    text = lenght_test[:test_input]
+    assert data_to_use(client, datetime_to_use, establishment_solitc_name=text) == False
 
 def test_wrongtype_establishment_solitc_name(client, datetime_to_use):    
     assert data_to_use(client, datetime_to_use, establishment_solitc_name=123124) == False
