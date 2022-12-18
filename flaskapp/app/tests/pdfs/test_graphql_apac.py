@@ -6,6 +6,7 @@ import pytest
 
 @pytest.fixture
 def lenght_test():
+    """generate a string with data with charactes to test lenght"""
     lenght_test = ''
     for x in range(0, 1100):
         lenght_test += str(x)
@@ -13,6 +14,7 @@ def lenght_test():
 
 @pytest.fixture
 def datetime_to_use():
+    """get current datetime to test"""
     return datetime.datetime.now().strftime('%d/%m/%Y')
 
 @pytest.fixture
