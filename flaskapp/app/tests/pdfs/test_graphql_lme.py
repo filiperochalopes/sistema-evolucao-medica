@@ -93,10 +93,10 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
 def test_with_data_in_function(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use) == True
 
-def test_answer_with_all_fields():
-    assert data_to_use() == True
+def test_answer_with_all_fields(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use) == True
 
-def test_awnser_with_only_required_data():
+def test_awnser_with_only_required_data(client):
     result = False
     request_string = """
         mutation{
@@ -153,55 +153,55 @@ def test_awnser_with_only_required_data():
 
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_establishment_solitc_name(test_input):
-    assert data_to_use(establishment_solitc_name=test_input) == False
+def test_empty_value_establishment_solitc_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, establishment_solitc_name=test_input) == False
 
 @pytest.mark.parametrize("test_input", [lenght_test[:70], lenght_test[:1]])
-def test_text_establishment_solitc_name(test_input):
-    assert data_to_use(establishment_solitc_name=test_input) == False
+def test_text_establishment_solitc_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, establishment_solitc_name=test_input) == False
 
-def test_wrongtype_establishment_solitc_name():    
-    assert data_to_use(establishment_solitc_name=123124) == False
+def test_wrongtype_establishment_solitc_name(client, datetime_to_use):    
+    assert data_to_use(client, datetime_to_use, establishment_solitc_name=123124) == False
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_patient_name(test_input):
-    assert data_to_use(patient_name=test_input) == False
+def test_empty_value_patient_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_name=test_input) == False
 
 @pytest.mark.parametrize("test_input", [lenght_test[:81], lenght_test[:1]])
-def test_text_patient_name(test_input):
-    assert data_to_use(patient_name=test_input) == False
+def test_text_patient_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_name=test_input) == False
 
-def test_wrongtype_patient_name():    
-    assert data_to_use(patient_name=123124) == False
+def test_wrongtype_patient_name(client, datetime_to_use):    
+    assert data_to_use(client, datetime_to_use, patient_name=123124) == False
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_patient_mother_name(test_input):
-    assert data_to_use(patient_mother_name=test_input) == False
+def test_empty_value_patient_mother_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_mother_name=test_input) == False
 
 @pytest.mark.parametrize("test_input", [lenght_test[:81], lenght_test[:1]])
-def test_text_patient_mother_name(test_input):
-    assert data_to_use(patient_mother_name=test_input) == False
+def test_text_patient_mother_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_mother_name=test_input) == False
 
-def test_wrongtype_patient_mother_name():    
-    assert data_to_use(patient_mother_name=123124) == False
+def test_wrongtype_patient_mother_name(client, datetime_to_use):    
+    assert data_to_use(client, datetime_to_use, patient_mother_name=123124) == False
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_prof_solicitor_name(test_input):
-    assert data_to_use(prof_solicitor_name=test_input) == False
+def test_empty_value_prof_solicitor_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, prof_solicitor_name=test_input) == False
 
 @pytest.mark.parametrize("test_input", [lenght_test[:50], lenght_test[:1]])
-def test_text_prof_solicitor_name(test_input):
-    assert data_to_use(prof_solicitor_name=test_input) == False
+def test_text_prof_solicitor_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, prof_solicitor_name=test_input) == False
 
-def test_wrongtype_prof_solicitor_name():    
-    assert data_to_use(prof_solicitor_name=123124) == False
+def test_wrongtype_prof_solicitor_name(client, datetime_to_use):    
+    assert data_to_use(client, datetime_to_use, prof_solicitor_name=123124) == False
 
 @pytest.mark.parametrize("test_input", ['["sim", ""]', '["sim", " "]', f'["sim", "{lenght_test[:50]}"]', 'aa'])
-def test_text_capacity_attest_responsible_name(test_input):
-    assert data_to_use(capacity_attest=test_input) == False
+def test_text_capacity_attest_responsible_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, capacity_attest=test_input) == False
 
-def test_wrongtype_capacity_attest_responsible_name():    
-    assert data_to_use(capacity_attest=123124) == False
+def test_wrongtype_capacity_attest_responsible_name(client, datetime_to_use):    
+    assert data_to_use(client, datetime_to_use, capacity_attest=123124) == False
 
 
 ####################################################################
@@ -211,8 +211,8 @@ def test_wrongtype_capacity_attest_responsible_name():
 # invalid cnes
 
 @pytest.mark.parametrize("test_input", ['adsadad', 451236548])
-def test_wrongtype_invalid_establishment_solitc_cnes(test_input):
-    assert data_to_use(establishment_solitc_cnes=test_input) == False
+def test_wrongtype_invalid_establishment_solitc_cnes(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, establishment_solitc_cnes=test_input) == False
 
 
 
@@ -222,11 +222,11 @@ def test_wrongtype_invalid_establishment_solitc_cnes(test_input):
 # test wrong type
 # test valid datetime
 
-def test_wrongtype_solicitation_datetime():
-    assert data_to_use(solicitation_datetime='bahabah') == False
+def test_wrongtype_solicitation_datetime(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, solicitation_datetime='bahabah') == False
 
-def test_valid_solicitation_datetime():
-    assert data_to_use(solicitation_datetime=datetime_to_use) == True
+def test_valid_solicitation_datetime(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, solicitation_datetime=datetime_to_use) == True
 
 
 ##################################################################
@@ -245,8 +245,8 @@ def test_valid_solicitation_datetime():
 # test short text
 # test wrong text type 
 
-def test_wrongtype_filled_by():
-    assert data_to_use(filled_by=1231) == False
+def test_wrongtype_filled_by(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, filled_by=1231) == False
 
 @pytest.mark.parametrize("test_input", [
     '''["WTAHST", "Other name", "{'cpf':'28445400070'}"]''',
@@ -259,9 +259,9 @@ def test_wrongtype_filled_by():
     '''["WTAHST", "Other name", "{'cpf':'28445400070'}"]''',
     '''["OUTRO", null, "{'cpf':'28445400070'}"]''',
     ])
-def test_false_filled_by(test_input):
+def test_false_filled_by(test_input, client, datetime_to_use):
     # All options that are not supposed to pass
-    assert data_to_use(filled_by=test_input) == False
+    assert data_to_use(client, datetime_to_use, filled_by=test_input) == False
 
 @pytest.mark.parametrize("test_input", [
     '''["MEDICO", "Other name", "{'cpf':'28445400070'}"]''',
@@ -297,9 +297,9 @@ def test_false_filled_by(test_input):
     f'''["MAE", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''',
     f'''["RESPONSAVEL", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]'''
     ])
-def test_true_filled_by(test_input):
+def test_true_filled_by(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(filled_by=test_input) == True
+    assert data_to_use(client, datetime_to_use, filled_by=test_input) == True
 
 @pytest.mark.parametrize("test_input", [
     '["INFORMAR", null]',
@@ -310,9 +310,9 @@ def test_true_filled_by(test_input):
     1231,
     '["WTAHST", "Patient Ethnicity"]'
     ])
-def test_false_patient_ethnicity(test_input):
+def test_false_patient_ethnicity(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(patient_ethnicity=test_input) == False
+    assert data_to_use(client, datetime_to_use, patient_ethnicity=test_input) == False
 
 
 @pytest.mark.parametrize("test_input", [
@@ -368,9 +368,9 @@ def test_false_patient_ethnicity(test_input):
     f'["INDIGENA", "{lenght_test[:35]}"]',
     f'["SEMINFO", "{lenght_test[:35]}"]'
     ])
-def test_true_patient_ethnicity(test_input):
+def test_true_patient_ethnicity(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(patient_ethnicity=test_input) == True
+    assert data_to_use(client, datetime_to_use, patient_ethnicity=test_input) == True
 
 @pytest.mark.parametrize("test_input", [
     1231,
@@ -380,9 +380,9 @@ def test_true_patient_ethnicity(test_input):
     f'["SIM", "{lenght_test[:3]}"]',
     f'["SIM", "{lenght_test[:172]}"]'
     ])
-def test_false_previous_treatment(test_input):
+def test_false_previous_treatment(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(previous_treatment=test_input) == False
+    assert data_to_use(client, datetime_to_use, previous_treatment=test_input) == False
 
 @pytest.mark.parametrize("test_input", [
     '["SIM", "Patient Ethnicity"]',
@@ -395,9 +395,9 @@ def test_false_previous_treatment(test_input):
     f'["NAO", "{lenght_test[:3]}"]',
     f'["NAO", "{lenght_test[:170]}"]'
     ])
-def test_true_previous_treatment(test_input):
+def test_true_previous_treatment(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(previous_treatment=test_input) == True
+    assert data_to_use(client, datetime_to_use, previous_treatment=test_input) == True
 
 
 #############################################################################
@@ -410,9 +410,9 @@ def test_true_previous_treatment(test_input):
 # test more than limit
 
 @pytest.mark.parametrize("test_input", [131, '', '   ', 'vlza', lenght_test[:500]])
-def test_anamnese(test_input):
+def test_anamnese(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(anamnese=test_input) == False
+    assert data_to_use(client, datetime_to_use, anamnese=test_input) == False
 
 #############################################################################
 # TEST STRING THAT CAN/CANNOT BE NULL
@@ -426,30 +426,30 @@ def test_anamnese(test_input):
 # test more than limit
 
 @pytest.mark.parametrize("test_input", [123, 'aaa', lenght_test[:86]])
-def test_false_diagnostic(test_input):
+def test_false_diagnostic(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(diagnostic=test_input) == False
+    assert data_to_use(client, datetime_to_use, diagnostic=test_input) == False
 
 @pytest.mark.parametrize("test_input", ['null' , '', '   '])
-def test_true_diagnostic(test_input):
+def test_true_diagnostic(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(diagnostic=test_input) == True
+    assert data_to_use(client, datetime_to_use, diagnostic=test_input) == True
 
 @pytest.mark.parametrize("test_input", [123, 'aaa', lenght_test[:65]])
-def test_false_patient_email(test_input):
+def test_false_patient_email(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(patient_email=test_input) == False
+    assert data_to_use(client, datetime_to_use, patient_email=test_input) == False
 
 @pytest.mark.parametrize("test_input", ['', '   '])
-def test_true_patient_email(test_input):
+def test_true_patient_email(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(patient_email=test_input) == True
+    assert data_to_use(client, datetime_to_use, patient_email=test_input) == True
 
 
 @pytest.mark.parametrize("test_input", ['', '   ', 'aa', lenght_test[:6]])
-def test_cid_10(test_input):
+def test_cid_10(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(cid_10=test_input) == False
+    assert data_to_use(client, datetime_to_use, cid_10=test_input) == False
 
 #################################################################################
 # TEST INT VARIABLES CAN/CANNOT BE NULL
@@ -464,19 +464,19 @@ def test_cid_10(test_input):
 # long value  
 
 @pytest.mark.parametrize("test_input", ['""', '"   "', 5875, '"ada"'])
-def test_patient_weight(test_input):
+def test_patient_weight(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(patient_weight=test_input) == False
+    assert data_to_use(client, datetime_to_use, patient_weight=test_input) == False
 
 @pytest.mark.parametrize("test_input", ['""', '"   "', 5875, '"ada"'])
-def test_patient_height(test_input):
+def test_patient_height(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(patient_height=test_input) == False
+    assert data_to_use(client, datetime_to_use, patient_height=test_input) == False
 
 @pytest.mark.parametrize("test_input", ['""', '"   "', '["9854894846", "98641984195156"]'])
-def test_contacts_phonenumbers(test_input):
+def test_contacts_phonenumbers(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(contacts_phonenumbers=test_input) == False
+    assert data_to_use(client, datetime_to_use, contacts_phonenumbers=test_input) == False
 
 #################################################################
 # TEST DOCUMENTS CNS AND CPF
@@ -494,9 +494,9 @@ def test_contacts_phonenumbers(test_input):
     '{cpf:"284123312123", rg: null, cns: null}',
     '{cpf:null, rg: null, cns: null}'
 ])
-def test_prof_solicitor_document(test_input):
+def test_prof_solicitor_document(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(prof_solicitor_document=test_input) == False
+    assert data_to_use(client, datetime_to_use, prof_solicitor_document=test_input) == False
 
 @pytest.mark.parametrize("test_input", [
     '451236548554',
@@ -504,9 +504,9 @@ def test_prof_solicitor_document(test_input):
     '{cpf:"284123312123", rg: null, cns: null}',
     '{cpf:null, rg: null, cns: null}'
 ])
-def test_patient_document(test_input):
+def test_patient_document(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(patient_document=test_input) == False
+    assert data_to_use(client, datetime_to_use, patient_document=test_input) == False
 
 
 # TEST medicines
@@ -535,70 +535,70 @@ def test_patient_document(test_input):
 # test short values in quant2month
 # test short values in quant3month
 
-def test_wrong_type_medicines():
-    assert data_to_use(medicines=123) == False
+def test_wrong_type_medicines(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines=123) == False
 
-def test_wrong_type_medicine_name():
-    assert data_to_use(medicines='[{medicineName:234234, quant1month:"20 comp", quant2month:"15 comp", quant3month:"5 comp"}]') == False
+def test_wrong_type_medicine_name(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:234234, quant1month:"20 comp", quant2month:"15 comp", quant3month:"5 comp"}]') == False
 
-def test_wrong_type_quant_1_month():
-    assert data_to_use(medicines='[{medicineName:"234234", quant1month:541, quant2month:"15 comp", quant3month:"5 comp"}]') == False
+def test_wrong_type_quant_1_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"234234", quant1month:541, quant2month:"15 comp", quant3month:"5 comp"}]') == False
 
-def test_wrong_type_quant_2_month():
-    assert data_to_use(medicines='[{medicineName:"234234", quant1month:"541", quant2month:649781, quant3month:"5 comp"}]') == False
+def test_wrong_type_quant_2_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"234234", quant1month:"541", quant2month:649781, quant3month:"5 comp"}]') == False
 
-def test_wrong_type_quant_3_month():
-    assert data_to_use(medicines='[{medicineName:"234234", quant1month:"541", quant2month:"64981", quant3month:234234}]') == False
+def test_wrong_type_quant_3_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"234234", quant1month:"541", quant2month:"64981", quant3month:234234}]') == False
 
-def test_empty_value_medicine_name():
-    assert data_to_use(medicines='[{medicineName:"", quant1month:"541", quant2month:"64981", quant3month:"234234"}]') == False
+def test_empty_value_medicine_name(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"", quant1month:"541", quant2month:"64981", quant3month:"234234"}]') == False
 
-def test_empty_value_quant_1_month():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"", quant2month:"64981", quant3month:"234234"}]') == False
+def test_empty_value_quant_1_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"", quant2month:"64981", quant3month:"234234"}]') == False
 
-def test_empty_value_quant_2_month():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"", quant3month:"234234"}]') == False
+def test_empty_value_quant_2_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"", quant3month:"234234"}]') == False
 
-def test_empty_value_quant_3_month():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:""}]') == False
+def test_empty_value_quant_3_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:""}]') == False
 
-def test_empty_spaces_medicine_name():
-    assert data_to_use(medicines='[{medicineName:"   ", quant1month:"541", quant2month:"64981", quant3month:"234234"}]') == False
+def test_empty_spaces_medicine_name(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"   ", quant1month:"541", quant2month:"64981", quant3month:"234234"}]') == False
 
-def test_empty_spaces_quant_1_month():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"      ", quant2month:"64981", quant3month:"234234"}]') == False
+def test_empty_spaces_quant_1_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"      ", quant2month:"64981", quant3month:"234234"}]') == False
 
-def test_empty_spaces_quant_2_month():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"     ", quant3month:"234234"}]') == False
+def test_empty_spaces_quant_2_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"     ", quant3month:"234234"}]') == False
 
-def test_empty_spaces_quant_3_month():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"      "}]') == False
+def test_empty_spaces_quant_3_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"      "}]') == False
 
-def test_more_than_limit_dicts():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"asdadasd"}, {medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"asdadasd"}, {medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"asdadasd"}, {medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"asdadasd"}, {medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"asdadasd"}, {medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"asdadasd"}]') == False
+def test_more_than_limit_dicts(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"asdadasd"}, {medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"asdadasd"}, {medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"asdadasd"}, {medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"asdadasd"}, {medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"asdadasd"}, {medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"asdadasd"}]') == False
 
 
-def test_short_value_medicine_name():
-    assert data_to_use(medicines='[{medicineName:"asd", quant1month:"541", quant2month:"64981", quant3month:"234234"}]') == False
+def test_short_value_medicine_name(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"asd", quant1month:"541", quant2month:"64981", quant3month:"234234"}]') == False
 
-def test_short_value_quant_1_month():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"", quant2month:"64981", quant3month:"234234"}]') == False
+def test_short_value_quant_1_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"", quant2month:"64981", quant3month:"234234"}]') == False
 
-def test_short_value_quant_2_month():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"", quant3month:"234234"}]') == False
+def test_short_value_quant_2_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"", quant3month:"234234"}]') == False
 
-def test_short_value_quant_3_month():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:""}]') == False
+def test_short_value_quant_3_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:""}]') == False
 
-def test_long_value_medicine_name():
-    assert data_to_use(medicines='[{medicineName:"lenght_test", quant1month:"541", quant2month:"64981", quant3month:"234234"}]'.replace('lenght_test', lenght_test[:70])) == False
+def test_long_value_medicine_name(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"lenght_test", quant1month:"541", quant2month:"64981", quant3month:"234234"}]'.replace('lenght_test', lenght_test[:70])) == False
 
-def test_long_value_quant_1_month():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"lenght_test", quant2month:"64981", quant3month:"234234"}]'.replace('lenght_test', lenght_test[:11])) == False
+def test_long_value_quant_1_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"lenght_test", quant2month:"64981", quant3month:"234234"}]'.replace('lenght_test', lenght_test[:11])) == False
 
-def test_long_value_quant_2_month():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"lenght_test", quant3month:"234234"}]'.replace('lenght_test', lenght_test[:11])) == False
+def test_long_value_quant_2_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"lenght_test", quant3month:"234234"}]'.replace('lenght_test', lenght_test[:11])) == False
 
-def test_long_value_quant_3_month():
-    assert data_to_use(medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"lenght_test"}]'.replace('lenght_test', lenght_test[:11])) == False
+def test_long_value_quant_3_month(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"lenght_test"}]'.replace('lenght_test', lenght_test[:11])) == False
 
