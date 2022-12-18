@@ -9,15 +9,19 @@ lenght_test = ''
 for x in range(0, 1100):
     lenght_test += str(x)
 
-datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
+@pytest.fixture
+def datetime_to_use():
+    """get current datetime to test"""
+    return datetime.datetime.now().strftime('%d/%m/%Y')
 
-# Select your transport with ag graphql url endpoint
-transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+@pytest.fixture
+def client():
+    # Select your transport with ag graphql url endpoint
+    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+    # Create a GraphQL client using the defined transport
+    return Client(transport=transport, fetch_schema_from_transport=True)
 
-# Create a GraphQL client using the defined transport
-client = Client(transport=transport, fetch_schema_from_transport=True)
-
-def data_to_use(establishment_solitc_name='Establishment Solicit Name',
+def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',
 establishment_solitc_cnes=1234567,
 patient_name='Patient Name',
 patient_mother_name='Patient Mother Name',
@@ -26,7 +30,7 @@ patient_height=180,
 cid_10='A123',
 anamnese="Anamnese",
 prof_solicitor_name="Professional Solicitor Name",
-solicitation_datetime=datetime_to_use,
+solicitation_datetime=None,
 prof_solicitor_document='{cpf:"28445400070"}',
 capacity_attest='["nao", "Responsible Name"]',
 filled_by='''["MEDICO", "Other name", "{'cpf':'28445400070'}"]''',
@@ -38,6 +42,10 @@ patient_email="patietemail@gmail.com",
 contacts_phonenumbers='["1254875652", "4578456598"]',
 medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        quant2month: "15 comp", quant3month: "5 comp"},{medicineName: "nome do Medicamneto", quant1month:"20 comp", quant2month: "15 comp", quant3month: "5 comp"}]'
     ):
+
+    if solicitation_datetime == None:
+        solicitation_datetime = datetime_to_use
+
     request_string = """
         mutation{
             generatePdf_Lme("""
@@ -82,8 +90,8 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
 
 
 #Testing APAC
-def test_with_data_in_function():
-    assert data_to_use() == True
+def test_with_data_in_function(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use) == True
 
 def test_answer_with_all_fields():
     assert data_to_use() == True
