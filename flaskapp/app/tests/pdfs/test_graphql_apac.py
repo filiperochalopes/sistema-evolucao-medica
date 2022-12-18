@@ -4,10 +4,12 @@ import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
 import pytest
 
-global lenght_test
-lenght_test = ''
-for x in range(0, 1100):
-    lenght_test += str(x)
+@pytest.fixture
+def lenght_test():
+    lenght_test = ''
+    for x in range(0, 1100):
+        lenght_test += str(x)
+    return lenght_test
 
 @pytest.fixture
 def datetime_to_use():
@@ -253,9 +255,10 @@ def test_empty_value_patient_adress(test_input, client, datetime_to_use):
 def test_empty_value_procedure_justification_comments(test_input, client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, procedure_justification_comments=test_input) == True
 
-@pytest.mark.parametrize("test_input", [lenght_test[0], lenght_test])
-def test_text_lenght_procedure_justification_comments(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, procedure_justification_comments=test_input) == False
+@pytest.mark.parametrize("test_input", [1, 1090])
+def test_text_lenght_procedure_justification_comments(test_input, client, datetime_to_use, lenght_test):
+    text = lenght_test[test_input]
+    assert data_to_use(client, datetime_to_use, procedure_justification_comments=text) == False
 
 
 
