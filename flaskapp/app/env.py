@@ -38,6 +38,7 @@ WRITE_DECODE_AIH_SUS_DIRECTORY             = f"{WRITE_DECODE_BASE_URL}aih_sus_de
 WRITE_DECODE_APAC_DIRECTORY                = f"{WRITE_DECODE_BASE_URL}apac_decoded_teste.tmp.pdf"
 WRITE_DECODE_EXAM_REQUEST_DIRECTORY        = f"{WRITE_DECODE_BASE_URL}exam_request_decoded_teste.tmp.pdf"
 WRITE_DECODE_EXAM_REQUEST_2_PAGES_DIRECTORY        = f"{WRITE_DECODE_BASE_URL}exam_request_2_pages_decoded_teste.tmp.pdf"
+WRITE_DECODE_EXAM_REQUEST_3_PAGES_DIRECTORY        = f"{WRITE_DECODE_BASE_URL}exam_request_3_pages_decoded_teste.tmp.pdf"
 WRITE_DECODE_FICHA_INTERN_DIRECTORY        = f"{WRITE_DECODE_BASE_URL}ficha_decoded_teste.tmp.pdf"
 WRITE_DECODE_LME_DIRECTORY                 = f"{WRITE_DECODE_BASE_URL}lme_decoded_teste.tmp.pdf"
 WRITE_DECODE_PRESCRICAO_MEDICA_DIRECTORY   = f"{WRITE_DECODE_BASE_URL}prescricao_medica_decoded_teste.tmp.pdf"
