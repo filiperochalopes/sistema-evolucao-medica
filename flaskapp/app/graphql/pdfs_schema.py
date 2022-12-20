@@ -11,15 +11,39 @@ pdfs_schema_type_defs = gql(
     }
 
     input MeasureInput{
-        timestamp: String!
+        "Valores de saturação periférica de oxigênio de 20 a 99"
+        spO2: Int
+        "Escala de dor de 0 a 10"
+        pain: Int
+        "Pressão arterial sistólica"
+        sistolicBloodPressure: Int
+        "Pressão arterial diastólica"
+        diastolicBloodPressure: Int
+        cardiacFrequency: Int
+        respiratoryFrequency: Int
+        celciusAxillaryTemperature: Int
+        "Aferição de glicemia capilar, pode ser um número de 0 a 500, ou 'HI'"
+        glucose: String
+        fetalCardiacFrequency: Int
+        createdAt: String
+    }
+
+    input FluidBalanceInput{
+        value: Int!
+        description: String!
     }
 
     input PrescriptionItemInput{
-        text: String!
-        useMode: String
-        route: String
-        "Medicação, "
+        "Medicação, Cuidados de Enfermagem, Repouso ou Dieta"
         type: String
+        "Texto principal da prescrição, pode ser a medicação e forma de uso de uma medicação ou instruções de cuidados para enfermagem"
+        description: String!
+        "Seguintes exclusivos para o tipo de medicação"
+        route: String
+        "Em caso de ser um antibiótico ou AINES é necessário estabelecer data de início"
+        startDate: String
+        "Em caso de ser um antibiótico ou AINES é interessante estabelecer data de fim"
+        endingDate: String
     }
 
     type GeneratedPdf {
@@ -29,22 +53,25 @@ pdfs_schema_type_defs = gql(
     extend type Mutation {
         "Gerando página de evolução, sendo que na primeira página sempre mostra a tabela de evolução"
         generatePdf_FolhaEvolucao(
-            timestamp_start: String!
-            timestamp_ending: String!
+            "String no formato de yyyy-mm-aa"
+            timestampStart: String!
+            timestampEnding: String!
             evolutions: [EvolutionInput]
             measures: [MeasureInput]
         ): GeneratedPdf
 
         "Gerando página de evolução, sendo que na primeira página sempre mostra a tabela de evolução"
         generatePdf_FolhaPrescricao(
-            timestamp_start: String!
-            timestamp_ending: String!
+            timestampStart: String!
+            timestampEnding: String!
             prescriptions: [PrescriptionItemInput]
         ): GeneratedPdf
 
         "Gerando página de evolução, sendo que na primeira página sempre mostra a tabela de evolução"
         generatePdf_BalancoHidrico(
-            timestamp: String!
+            timestampStart: String!
+            timestampEnding: String!
+            fluidBalance: [FluidBalanceInput]
         ): GeneratedPdf
 
         "Criação de documento de AIH"
