@@ -27,6 +27,10 @@ reset_db:
 		flask db migrate -m "Initial migration" && \
 		chmod -R 777 /app/migrations && \
 		flask db upgrade'
+clean_db:
+	docker exec -it evolucao_hospitalar_flaskapp bash -c ' \
+		rm -rf instance && \
+		flask db upgrade'
 fix-folder-permission:
 	docker exec -it evolucao_hospitalar_flaskapp bash -c ' \
 		chmod -R 777 /app/migrations'

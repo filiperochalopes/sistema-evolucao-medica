@@ -10,7 +10,7 @@ from app.utils.decorators import token_authorization
 @mutation.field('createMeasure')
 @convert_kwargs_to_snake_case
 @token_authorization
-def create_measure(_, info, internment_id:int, sp_o_2: int, pain: int, systolic_blood_pressure: int, diastolic_blood_pressure: int, cardiac_frequency: int, respiratory_frequency: int, celcius_axillary_temperature: int, glucose: int, fetal_cardiac_frequency: int, current_user: dict):
+def create_measure(_, info, internment_id:int, sp_o_2: int=None, pain: int=None, systolic_blood_pressure: int=None, diastolic_blood_pressure: int=None, cardiac_frequency: int=None, respiratory_frequency: int=None, celcius_axillary_temperature: int=None, glucose: int=None, fetal_cardiac_frequency: int=None, current_user: dict=None):
     # Determinando internamento
     internment = db.session.query(Internment).get(internment_id)
     # Determinando profissional que está registrando

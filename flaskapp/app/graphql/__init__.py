@@ -8,7 +8,7 @@ type_defs = gql('''
        state: [State!]
        restingActivities: [NamedObject!]
        diets: [NamedObject!]
-       drugs: [NamedObject!]
+       drugs: [Drug!]
        drugPresets: [DrugPreset!]
        nursingActivities: [NamedObject!]
        drugRoutes: [String]
@@ -18,11 +18,13 @@ type_defs = gql('''
        patients(queryNameCnsCpf:String): [Patient]
        internment(id:ID!): Internment
        internments(active:Boolean, cns:String): [Internment]
-       evolutions(patientId:ID!): Evolution
-       allergies: [ValueObject]
-       comorbidities: [ValueObject]
-       highComplexityProcedures: [Procedure]
        myUser: User
+       "ValueObject Alergia"
+       allergies: [ValueObject]
+       "ValueObject Comorbidade"
+       comorbidities: [ValueObject]
+       "ValueObject Procedimentos de Alta Complexidade"
+       highComplexityProcedures: [Procedure]
     }
 
     type Mutation {
@@ -53,7 +55,9 @@ type_defs = gql('''
         """
         Reset de senha direto na requisição para em caso de esquecimento ou perda de senha, a senha será resetada para "senha@123"
         """
-        resetPassword(cns: String!): User
+        resetPassword(
+            masterKey:String!,
+            cns: String!): User
         """
         Criar paciente para cadastro do 
         """
@@ -62,6 +66,9 @@ type_defs = gql('''
         Atualizar paciente
         """
         updatePatient(id: ID!, patient:PatientInput): Patient
+        """
+        Cria internamento básico
+        """
         createInternment(
             "No formato yyyy-mm-dd HH:MM"
             admissionDatetime:String,
@@ -73,6 +80,16 @@ type_defs = gql('''
             justification:String,
             "Diagnóstico inicial de internamento"
             cid10Code: String
+        ): Internment
+        """
+        Atualiza internamento: Serve para poder encerrar um internamento. Ele registra a data de encerramento da internação.
+        """
+        updateInternment(
+            id: ID!
+            "Data de alta/encerramento do internamento yyyy-mm-dd HH:MM"
+            finishedAt: String
+            "Para reabrir um internamento para algum tipo de acréscrimo, evolução em fase de teste passe o parâmetro como true"
+            reOpen: Boolean
         ): Internment
         """
         Cria uma evolução textual de enfermagem ou médica
@@ -249,11 +266,12 @@ type_defs = gql('''
         patient: Patient
         hpi: String
         justification: String
-        cid10Code: String
+        cid10: Cid10
         createdAt: String
+        finishedAt: String
         evolutions: [Evolution]
         measures: [Measure]
-        prescription: [Prescription]
+        prescriptions: [Prescription]
     }
 
 
@@ -327,11 +345,14 @@ type_defs = gql('''
         id: ID!
         drug: Drug
         dosage: String
+        route: String
+        kind: String
         initialDate: String
         endingDate: String
     }
 
     type Prescription{
+        id: ID!
         "Note que a atividade de repouso é única"
         restingActivity: NamedObject
         "Note que a dieta é única"

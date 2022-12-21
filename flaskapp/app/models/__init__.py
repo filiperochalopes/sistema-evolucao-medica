@@ -259,7 +259,7 @@ class Internment(db.Model):
     patient = relationship('Patient')
 
     professional_id = db.Column(db.Integer, ForeignKey("users.id"))
-    professional = relationship('User')
+    professional = relationship('User', foreign_keys=professional_id)
 
     cid10_code = db.Column(db.String, ForeignKey("cid10.code"))
     cid10 = relationship('Cid10')
@@ -277,6 +277,8 @@ class Internment(db.Model):
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
     # Se removido deve ir para outra lista, lista das "Altas ou Transferências"
     finished_at = db.Column(db.DateTime(timezone=True))
+    finished_by_id = db.Column(db.Integer, ForeignKey("users.id"))
+    finished_by = relationship('User', foreign_keys=finished_by_id)
 
 
 class Prescription(db.Model):
