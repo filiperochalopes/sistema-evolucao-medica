@@ -4,7 +4,6 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import io
 import re
-from PyPDF2  import PdfWriter, PdfReader
 import datetime
 from inspect import getfullargspec
 from validate_docbr import CNS, CPF, CNPJ
@@ -153,16 +152,7 @@ class ReportLabCanvasUtils():
             
         """ 
         try:
-            self.can.save()
-            self.packet.seek(0)
-            new_pdf = PdfReader(self.packet)
-            # read the template pdf 
-            template_pdf = PdfReader(open(self.TEMPLATE_DIRECTORY, "rb"))
-            output = PdfWriter()
-            # add the "watermark" (which is the new pdf) on the existing page
-            page = template_pdf.pages[0]
-            page.merge_page(new_pdf.pages[0])
-            output.add_page(page)
+            output = self.get_output()
             output_file = open(self.WRITE_DIRECTORY, 'wb')
             output.write(output_file)
             output_file.close()
@@ -170,7 +160,7 @@ class ReportLabCanvasUtils():
             raise Exception("Erro desconhecido enquanto criava um novo arquivo pdf")
 
 
-    def get_base64(newpdf:PdfWriter) -> bytes:
+    def get_base64(self) -> bytes:
         """Write new pdf and return a base64
 
         Args:
@@ -181,8 +171,9 @@ class ReportLabCanvasUtils():
         """ 
         try:
             # Create a BytesIO object to use as file
+            output = self.get_output()
             bytes_stream = io.BytesIO()
-            newpdf.write(bytes_stream)
+            output.write(bytes_stream)
             return base64.b64encode(bytes_stream.getvalue())
         except:
             raise Exception("Erro desconhecido enquanto criava um novo arquivo pdf")
