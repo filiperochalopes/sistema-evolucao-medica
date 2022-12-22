@@ -103,7 +103,7 @@ class ReportLabCanvasUtils():
             raise Exception("Erro desconhecido enquanto adicionava um dado no documento com o canvas")
 
 
-    def add_square(self, can:canvas.Canvas, pos:tuple, size:tuple=(9, 9)) -> canvas.Canvas:
+    def add_square(self, pos:tuple, size:tuple=(9, 9)) -> canvas.Canvas:
         """Add square in document using canvas object
 
         Args:
@@ -116,13 +116,13 @@ class ReportLabCanvasUtils():
             
         """
         try:
-            can.rect(x=pos[0], y=pos[1], width=size[0], height=size[1], fill=1)
-            return can
+            self.can.rect(x=pos[0], y=pos[1], width=size[0], height=size[1], fill=1)
+            return None
         except:
             raise Exception("Erro desconhecido enquanto adicionava um quadrado (opcoes de marcar) no documento com o canvas")
 
 
-    def add_centralized_data(self, can:canvas.Canvas, data:str, pos:tuple) -> canvas.Canvas:
+    def add_centralized_data(self, data:str, pos:tuple) -> canvas.Canvas:
         """Add centralized_data in pdf using canvas object
 
         Args:
@@ -135,8 +135,8 @@ class ReportLabCanvasUtils():
             
         """
         try:
-            can.drawCentredString(pos[0], pos[1], data)
-            return can
+            self.can.drawCentredString(pos[0], pos[1], data)
+            return None
         except:
             raise Exception("Erro desconhecido enquanto adicionava um dado centralizado no documento com o canvas")
 
@@ -179,7 +179,7 @@ class ReportLabCanvasUtils():
             raise Exception("Erro desconhecido enquanto criava um novo arquivo pdf")
 
 
-    def add_oneline_text(self, can:canvas.Canvas, text:str, pos:tuple, camp_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> canvas.Canvas:
+    def add_oneline_text(self, text:str, pos:tuple, camp_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> canvas.Canvas:
         """Add text that is fill in one line
 
         Args:
@@ -199,9 +199,9 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if text == None or len(str(text).strip()) == 0:
-                    return can
+                    return None
 
-            validate_func_args(function_to_verify=add_oneline_text, variables_to_verify={'can':can, 'text':text, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized})
+            self.validate_func_args(function_to_verify=self.add_oneline_text, variables_to_verify={'text':text, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized})
 
             if not nullable:
                 text = text.strip()
@@ -210,12 +210,12 @@ class ReportLabCanvasUtils():
             # verify if text is in the need lenght
             text = text.strip()
             if len_min <= len(text) <= len_max:
-                text = add_interval_to_data(data=text, interval=interval)
+                text = self.add_interval_to_data(data=text, interval=interval)
                 if centralized:
-                    can = add_centralized_data(can=can, data=text, pos=pos)
+                    self.add_centralized_data(data=text, pos=pos)
                 else:
-                    can = add_data(can=can, data=text, pos=pos)
-                return can
+                    self.add_data(data=text, pos=pos)
+                return None
             else:
                 raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
         
@@ -227,7 +227,7 @@ class ReportLabCanvasUtils():
 
 
 
-    def add_morelines_text(self, can:canvas.Canvas, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='') -> canvas.Canvas:
+    def add_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='') -> canvas.Canvas:
         """Add text that is fill in one line
 
         Args:
@@ -249,8 +249,8 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if text == None or len(str(text).strip()) == 0:
-                    return can
-            validate_func_args(function_to_verify=add_morelines_text, variables_to_verify={'can':can, 'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'camp_name':camp_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval}, nullable_variables=['max_lines_amount'])
+                    return None
+            self.validate_func_args(function_to_verify=self.add_morelines_text, variables_to_verify={'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'camp_name':camp_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval}, nullable_variables=['max_lines_amount'])
 
 
             if not nullable:
@@ -260,7 +260,7 @@ class ReportLabCanvasUtils():
             # verify if text is in the need lenght
             text = text.strip()
             if len_min <= len(text) <= len_max:
-                text = add_interval_to_data(data=text, interval=interval)
+                text = self.add_interval_to_data(data=text, interval=interval)
                 str_to_line = ''
                 broke_lines_times = int(len(text)/char_per_lines)
                 if max_lines_amount != None and broke_lines_times + 1 > max_lines_amount:
@@ -272,13 +272,13 @@ class ReportLabCanvasUtils():
                 # Making the line break whem has max charater limiti reached in a line
                 while broke_lines_times >= 0:
                     str_to_line = text[last_line:current_line]
-                    can = add_data(can=can, data=str_to_line, pos=(xpos, ypos))
+                    self.add_data(data=str_to_line, pos=(xpos, ypos))
                     last_line = current_line
                     current_line += char_per_lines
                     broke_lines_times -= 1
                     ypos -= decrease_ypos
 
-                return can
+                return None
             else:
                 raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
 
@@ -288,7 +288,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_phonenumber(self, can:canvas.Canvas, number:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
+    def add_phonenumber(self, number:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
         """_summary_
 
         Args:
@@ -303,18 +303,18 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if number == None:
-                    return can
+                    return None
 
-            validate_func_args(function_to_verify=add_phonenumber, variables_to_verify={'can':can, 'number':number, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval, 'formated':formated})
+            self.validate_func_args(function_to_verify=self.add_phonenumber, variables_to_verify={'number':number, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval, 'formated':formated})
             
             number = str(number).strip()
             if 10 <= len(number) <= 11:
                 if formated:
                     number = '(' + number[:2] + ') ' + number[2:7] + '-' + number[7:]
 
-                number = add_interval_to_data(data=number, interval=interval)
-                can = add_data(can=can, data=number, pos=pos)
-                return can
+                number = self.add_interval_to_data(data=number, interval=interval)
+                self.add_data(data=number, pos=pos)
+                return None
             else:
                 raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {10} caracteres ou menor que {11} caracteres")
         
@@ -324,7 +324,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_CEP(self, can:canvas.Canvas, cep:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
+    def add_CEP(self, cep:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
         """Add cep to canvas
 
         Args:
@@ -339,18 +339,18 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if cep == None:
-                    return can
+                    return None
 
-            validate_func_args(function_to_verify=add_CEP, variables_to_verify={'can':can, 'cep':cep, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval, 'formated':formated})
+            self.validate_func_args(function_to_verify=self.add_CEP, variables_to_verify={'cep':cep, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval, 'formated':formated})
 
             cep = str(cep).strip()
             if len(cep) == 8:
                 if formated:
                     cep = cep[:5] + '-' + cep[5:]
 
-                cep = add_interval_to_data(data=cep, interval=interval)
-                can = add_data(can=can, data=cep, pos=pos)
-                return can
+                cep = self.add_interval_to_data(data=cep, interval=interval)
+                self.add_data(data=cep, pos=pos)
+                return None
             else:
                 raise Exception(f"Nao foi possivel adicionar {camp_name} porque o cpf nao possui 8 digitos")
 
@@ -360,7 +360,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_oneline_intnumber(self, can:canvas.Canvas, number:int, pos:tuple, camp_name:str, len_max:int, value_min:int, value_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> canvas.Canvas:
+    def add_oneline_intnumber(self, number:int, pos:tuple, camp_name:str, len_max:int, value_min:int, value_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> canvas.Canvas:
         """Add one line number to canvas
 
         Args:
@@ -383,21 +383,21 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if number == None:
-                    return can
+                    return None
 
-            verify = validate_func_args(function_to_verify=add_oneline_intnumber, variables_to_verify={'can':can, 'number':number, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'value_min':value_min, 'value_max':value_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized})
+            verify = self.validate_func_args(function_to_verify=self.add_oneline_intnumber, variables_to_verify={'number':number, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'value_min':value_min, 'value_max':value_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized})
 
             # verify if number is in the need lenght
             if value_min > number or value_max < number:
                 raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {value_max} ou menor que {value_min}")
             number = str(number)
             if len_min <= len(number) <= len_max:
-                number = add_interval_to_data(data=number, interval=interval)
+                number = self.add_interval_to_data(data=number, interval=interval)
                 if centralized:
-                    can = add_centralized_data(can=can, data=number, pos=pos)
+                    self.add_centralized_data(data=number, pos=pos)
                 else:
-                    can = add_data(can=can, data=number, pos=pos)
-                return can
+                    self.add_data(data=number, pos=pos)
+                return None
             else:
                 raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
 
@@ -407,7 +407,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_oneline_floatnumber(self, can:canvas.Canvas, number:float, pos:tuple, camp_name:str, len_max:int, value_min:float, value_max:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2) -> canvas.Canvas:
+    def add_oneline_floatnumber(self, number:float, pos:tuple, camp_name:str, len_max:int, value_min:float, value_max:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2) -> canvas.Canvas:
         """Add one line number to canvas
 
         Args:
@@ -431,9 +431,9 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if number == None:
-                    return can
+                    return None
 
-            validate_func_args(function_to_verify=add_oneline_floatnumber, variables_to_verify={'can':can, 'number':number, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'value_min':value_min, 'value_max':value_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized, 'ndigits':ndigits})
+            self.validate_func_args(function_to_verify=self.add_oneline_floatnumber, variables_to_verify={'number':number, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'value_min':value_min, 'value_max':value_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized, 'ndigits':ndigits})
             
 
             # verify if number is in the need lenght
@@ -442,12 +442,12 @@ class ReportLabCanvasUtils():
             number = round(number, ndigits)
             number = str(number)
             if len_min <= len(number) <= len_max:
-                number = add_interval_to_data(data=number, interval=interval)
+                number = self.add_interval_to_data(data=number, interval=interval)
                 if centralized:
-                    can = add_centralized_data(can=can, data=number, pos=pos)
+                    self.add_centralized_data(data=number, pos=pos)
                 else:
-                    can = add_data(can=can, data=number, pos=pos)
-                return can
+                    self.add_data(data=number, pos=pos)
+                return None
             else:
                 raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
         
@@ -458,7 +458,7 @@ class ReportLabCanvasUtils():
 
 
 
-    def add_interval_to_data(data:str, interval:str) -> str:
+    def add_interval_to_data(self, data:str, interval:str) -> str:
         """add interval to data
 
         Args:
@@ -477,7 +477,7 @@ class ReportLabCanvasUtils():
         return interval.join(data)
 
 
-    def add_cns(self, can:canvas.Canvas, cns:str, pos:tuple, camp_name:str,nullable:bool=False, formated:bool=False, interval:str='') -> canvas.Canvas:
+    def add_cns(self, cns:str, pos:tuple, camp_name:str,nullable:bool=False, formated:bool=False, interval:str='') -> canvas.Canvas:
         """Add cns to canvas
 
         Args:
@@ -496,22 +496,22 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if cns == None:
-                    return can
+                    return None
 
             cns_validator = CNS()
 
-            validate_func_args(function_to_verify=add_cns, variables_to_verify={'can':can, 'cns':cns, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated, 'interval':interval})
+            self.validate_func_args(function_to_verify=self.add_cns, variables_to_verify={'cns':cns, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated, 'interval':interval})
             
 
             # Verify if the cns is valid
             if cns_validator.validate(cns):
                 cns = str(cns)
                 # Add interval selected
-                cns = add_interval_to_data(data=cns, interval=interval)
+                cns = self.add_interval_to_data(data=cns, interval=interval)
                 if formated: 
                     cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
-                can = add_data(can=can, data=cns, pos=pos)
-                return can
+                self.add_data(data=cns, pos=pos)
+                return None
             else:
                 raise Exception(f"Nao foi possivel adicionar {camp_name} porque e um CNS invalido")
         
@@ -521,7 +521,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_cnpj(self, can:canvas.Canvas, cnpj:str, pos:tuple, camp_name:str,nullable:bool=False, interval:str='') -> canvas.Canvas:
+    def add_cnpj(self, cnpj:str, pos:tuple, camp_name:str,nullable:bool=False, interval:str='') -> canvas.Canvas:
         """Add cnpj to canvas
 
         Args:
@@ -539,9 +539,9 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if cnpj == None:
-                    return can
+                    return None
 
-            validate_func_args(function_to_verify=add_cnpj, variables_to_verify={'can':can, 'cnpj':cnpj, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'interval':interval})
+            self.validate_func_args(function_to_verify=self.add_cnpj, variables_to_verify={'cnpj':cnpj, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'interval':interval})
 
 
             cnpj_validator = CNPJ()
@@ -549,9 +549,9 @@ class ReportLabCanvasUtils():
             cnpj = cnpj.strip()
             if cnpj_validator.validate(cnpj):
                 # Add interval selected
-                cnpj = add_interval_to_data(data=cnpj, interval=interval)
-                can = add_data(can=can, data=cnpj, pos=pos)
-                return can
+                cnpj = self.add_interval_to_data(data=cnpj, interval=interval)
+                self.add_data(data=cnpj, pos=pos)
+                return None
             else:
                 raise Exception(f"Nao foi possivel adicionar {camp_name} porque e um CNPJ invalido")
 
@@ -561,7 +561,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_cnae(self, can:canvas.Canvas, cnae:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> canvas.Canvas:
+    def add_cnae(self, cnae:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> canvas.Canvas:
         """Add cnae to canvas
 
         Args:
@@ -580,9 +580,9 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if cnae == None:
-                    return can
+                    return None
 
-            validate_func_args(function_to_verify=add_cnae, variables_to_verify={'can':can, 'cnae':cnae, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated})
+            self.validate_func_args(function_to_verify=self.add_cnae, variables_to_verify={'cnae':cnae, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated})
 
 
             cnae = str(cnae)
@@ -590,8 +590,8 @@ class ReportLabCanvasUtils():
                 #Format cnae to add in doc
                 if formated:
                     cnae = cnae[:2] + '.' + cnae[2:4] + '-' + cnae[4] + '-' + cnae[5:]
-                can = add_data(can=can, data=cnae, pos=pos)
-                return can
+                self.add_data(data=cnae, pos=pos)
+                return None
             else:
                 raise Exception(f"Nao foi possivel adicionar {camp_name} porque e um CNAE invalido")
 
@@ -601,7 +601,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_cbor(self, can:canvas.Canvas, cbor:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> canvas.Canvas:
+    def add_cbor(self, cbor:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> canvas.Canvas:
         """Add cbor to canvas
 
         Args:
@@ -619,9 +619,9 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if cbor == None:
-                    return can
+                    return None
 
-            validate_func_args(function_to_verify=add_cbor, variables_to_verify={'can':can, 'cbor':cbor, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated})
+            self.validate_func_args(function_to_verify=self.add_cbor, variables_to_verify={'cbor':cbor, 'pos':pos, 'camp_name':camp_name,'nullable':nullable, 'formated':formated})
 
 
             cbor = str(cbor)
@@ -629,8 +629,8 @@ class ReportLabCanvasUtils():
                 #Format cbor to add in doc
                 if formated:
                     cbor = cbor[:5] + '-' + cbor[5:]
-                can = add_data(can=can, data=cbor, pos=pos)
-                return can
+                self.add_data(data=cbor, pos=pos)
+                return None
             else:
                 raise Exception(f"Nao foi possivel adicionar {camp_name} porque e um CBOR invalido")
         
@@ -640,7 +640,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_sex_square(self, can:canvas.Canvas, sex:str, pos_male:tuple, pos_fem:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
+    def add_sex_square(self, sex:str, pos_male:tuple, pos_fem:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
         """Add sex square to canvas
 
         Args:
@@ -659,9 +659,9 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if sex == None or len(str(sex).strip()) == 0:
-                    return can
+                    return None
 
-            validate_func_args(function_to_verify=add_sex_square, variables_to_verify={'can':can, 'sex':sex, 'pos_male':pos_male, 'pos_fem':pos_fem, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
+            self.validate_func_args(function_to_verify=self.add_sex_square, variables_to_verify={'sex':sex, 'pos_male':pos_male, 'pos_fem':pos_fem, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
 
             sex = sex.upper()
             if len(sex) != 1:
@@ -670,11 +670,11 @@ class ReportLabCanvasUtils():
                 raise Exception(f'{camp_name} deve ter somente 1 caractere, F ou M')
             else:
                 if sex == 'M':
-                    can = add_square(can=can, pos=pos_male, size=square_size)
-                    return can
+                    self.add_square(pos=pos_male, size=square_size)
+                    return None
                 else:
-                    can = add_square(can=can, pos=pos_fem, size=square_size)
-                    return can
+                    self.add_square(pos=pos_fem, size=square_size)
+                    return None
         
         except Exception as error:
             raise error
@@ -682,7 +682,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_datetime(self, can:canvas.Canvas, date:str, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='') -> canvas.Canvas:
+    def add_datetime(self, date:str, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='') -> canvas.Canvas:
         """Add datetime to canvas
 
         Args:
@@ -702,9 +702,9 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if date == None:
-                    return can
+                    return None
             
-            validate_func_args(function_to_verify=add_datetime, variables_to_verify={'can':can, 'date':date, 'pos':pos, 'camp_name':camp_name, 'hours':hours, 'nullable':nullable, 'formated':formated, 'interval':interval, 'interval_between_numbers':interval_between_numbers})
+            self.validate_func_args(function_to_verify=self.add_datetime, variables_to_verify={'date':date, 'pos':pos, 'camp_name':camp_name, 'hours':hours, 'nullable':nullable, 'formated':formated, 'interval':interval, 'interval_between_numbers':interval_between_numbers})
 
 
             #Add to respective fields
@@ -721,16 +721,16 @@ class ReportLabCanvasUtils():
             str_date = str('%02d/%02d/%d %02d:%02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute, date_object.second)
             if hours:  
                 if not formated:
-                    str_date = add_interval_to_data(data=str_date, interval=interval_between_numbers)
+                    str_date = self.add_interval_to_data(data=str_date, interval=interval_between_numbers)
                     str_date = str_date.replace('/', interval)
                     str_date = str_date.replace(':', interval)
             else:
                 str_date = str_date[0:10]
                 if not formated:
                     str_date = str_date.replace('/', interval)
-                str_date = add_interval_to_data(data=str_date, interval=interval_between_numbers)
-            can = add_data(can=can, data=str_date, pos=pos)
-            return can
+                str_date = self.add_interval_to_data(data=str_date, interval=interval_between_numbers)
+            self.add_data(data=str_date, pos=pos)
+            return None
 
         except Exception as error:
             raise error
@@ -738,7 +738,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_UF(self, can:canvas.Canvas, uf:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='') -> canvas.Canvas:
+    def add_UF(self, uf:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='') -> canvas.Canvas:
         """Verify uf and add to document
 
         Args:
@@ -756,17 +756,17 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if uf == None or str(uf).strip() == '':
-                    return can
+                    return None
 
-            validate_func_args(function_to_verify=add_UF, variables_to_verify={'can':can, 'uf':uf, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval})
+            self.validate_func_args(function_to_verify=self.add_UF, variables_to_verify={'uf':uf, 'pos':pos, 'camp_name':camp_name, 'nullable':nullable, 'interval':interval})
 
             
             uf = uf.strip()
-            if uf_exists(uf=uf):
+            if self.uf_exists(uf=uf):
                 # Add empty spaces interval between averu character
-                uf = add_interval_to_data(data=uf, interval=interval)
-                can = add_data(can=can, data=uf, pos=pos)
-                return can
+                uf = self.add_interval_to_data(data=uf, interval=interval)
+                self.add_data(data=uf, pos=pos)
+                return None
             else:
                 raise Exception(f'{camp_name} nao existe no Brasil') 
         
@@ -776,7 +776,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_document_cns_cpf_rg(self, can:canvas.Canvas, document:dict, camp_name:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
+    def add_document_cns_cpf_rg(self, document:dict, camp_name:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
         """Validate and add document to canvas, can be CPF, RG or CNS
 
         Args:
@@ -801,10 +801,10 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if document == None:
-                    return can
+                    return None
 
             
-            validate_func_args(function_to_verify=add_document_cns_cpf_rg, variables_to_verify={'can':can, 'document':document, 'camp_name':camp_name, 'square_size':square_size, 'pos_cpf':pos_cpf, 'pos_cns':pos_cns, 'pos_rg':pos_rg, 'pos_square_cpf':pos_square_cpf, 'pos_square_cns':pos_square_cns, 'pos_square_rg':pos_square_rg, 'nullable':nullable, 'interval':interval, 'formated':formated}, nullable_variables=['pos_cpf', 'pos_cns', 'pos_rg', 'pos_square_cpf', 'pos_square_cns', 'pos_square_rg'])
+            self.validate_func_args(function_to_verify=self.add_document_cns_cpf_rg, variables_to_verify={'document':document, 'camp_name':camp_name, 'square_size':square_size, 'pos_cpf':pos_cpf, 'pos_cns':pos_cns, 'pos_rg':pos_rg, 'pos_square_cpf':pos_square_cpf, 'pos_square_cns':pos_square_cns, 'pos_square_rg':pos_square_rg, 'nullable':nullable, 'interval':interval, 'formated':formated}, nullable_variables=['pos_cpf', 'pos_cns', 'pos_rg', 'pos_square_cpf', 'pos_square_cns', 'pos_square_rg'])
 
             
             # See id document is CPF, CNS or RG
@@ -823,15 +823,15 @@ class ReportLabCanvasUtils():
                     cns_validator = CNS()
                     if cns_validator.validate(document['cns']):
                         if pos_square_cns != None:
-                            can = add_square(can=can, pos=pos_square_cns, size=square_size)
+                            self.add_square(pos=pos_square_cns, size=square_size)
                         # Add empty spaces interval between every character
 
                         cns = str(document['cns'])
-                        cns = add_interval_to_data(data=cns, interval=interval)
+                        cns = self.add_interval_to_data(data=cns, interval=interval)
                         if formated:
                             cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
-                        can = add_data(can=can, data=cns, pos=pos_cns)
-                        return can
+                        self.add_data(data=cns, pos=pos_cns)
+                        return None
                     else:
                         raise Exception(f'{camp_name} CNS nao e valido')
             
@@ -844,16 +844,16 @@ class ReportLabCanvasUtils():
                     cpf = document['cpf']
                     if cpf_validator.validate(cpf):
                         if pos_square_cpf != None:
-                            can = add_square(can=can, pos=pos_square_cpf, size=square_size)
+                            self.add_square(pos=pos_square_cpf, size=square_size)
                         # Add empty spaces interval between averu character
                         if formated:
                             formated_cpf = cpf[:3] + "." + cpf[3:6] + '.' + cpf[6:9] + '-' + cpf[9:]
-                            cpf = add_interval_to_data(data=formated_cpf, interval=interval)
+                            cpf = self.add_interval_to_data(data=formated_cpf, interval=interval)
                         else:
-                            cpf = add_interval_to_data(data=cpf, interval=interval)
+                            cpf = self.add_interval_to_data(data=cpf, interval=interval)
 
-                        can = add_data(can=can, data=cpf, pos=pos_cpf)
-                        return can
+                        self.add_data(data=cpf, pos=pos_cpf)
+                        return None
                     else:
                         raise Exception(f'{camp_name} CPF nao e valido')
             
@@ -863,12 +863,12 @@ class ReportLabCanvasUtils():
                     if type(rg) != type(str()):
                         raise Exception(f'{camp_name} RG deve ser do tipo string')
                     #The only verificatinon is that rg is not greater than 16 characteres
-                    if is_RG_valid(rg):
+                    if self.is_RG_valid(rg):
                         rg = str(document['rg'])
                         if pos_square_rg != None:
-                            can = add_square(can=can, pos=pos_square_rg, size=square_size)
-                        can = add_data(can=can, data=rg, pos=pos_rg)
-                        return can
+                            self.add_square(pos=pos_square_rg, size=square_size)
+                        self.add_data(data=rg, pos=pos_rg)
+                        return None
                     else:
                         raise Exception(f'{camp_name} RG nao e valido')
             
@@ -880,7 +880,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_markable_square(self, can:canvas.Canvas, option:str, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
+    def add_markable_square(self, option:str, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
         """Verifiy option choose and add to canvas, the option is automatic upper cased
 
         Args:
@@ -899,15 +899,15 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if option == None or len(str(option).strip()) == 0:
-                    return can
+                    return None
 
-            validate_func_args(function_to_verify=add_markable_square, variables_to_verify={'can':can, 'option':option, 'valid_options':valid_options, 'options_positions':options_positions, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
+            self.validate_func_args(function_to_verify=self.add_markable_square, variables_to_verify={'option':option, 'valid_options':valid_options, 'options_positions':options_positions, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
 
             option = option.upper()
             for opt in range(0, len(valid_options)):
                 if option == valid_options[opt]:
-                    can = add_square(can=can, pos=options_positions[opt], size=square_size)
-                    return can
+                    self.add_square(pos=options_positions[opt], size=square_size)
+                    return None
             raise Exception(f'Nao foi possivel adicionar {camp_name} porque a opcao escolhida nao existe')
 
         except Exception as error:
@@ -916,7 +916,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_multiple_markable_square(self, can:canvas.Canvas, options:list, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
+    def add_multiple_markable_square(self, options:list, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
         """Verifiy option choose and add to canvas, the option is automatic upper cased
 
         Args:
@@ -935,20 +935,20 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if option == None or len(str(option).strip()) == 0:
-                    return can
+                    return None
             
 
-            validate_func_args(function_to_verify=add_multiple_markable_square, variables_to_verify={'can':can, 'options':options, 'valid_options':valid_options, 'options_positions':options_positions, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
+            self.validate_func_args(function_to_verify=self.add_multiple_markable_square, variables_to_verify={'options':options, 'valid_options':valid_options, 'options_positions':options_positions, 'camp_name':camp_name, 'square_size':square_size, 'nullable':nullable})
 
 
             option = option.upper()
             exist = False
             for opt in range(0, len(valid_options)):
                 if option == valid_options[opt]:
-                    can = add_square(can=can, pos=options_positions[opt], size=square_size)
+                    self.add_square(pos=options_positions[opt], size=square_size)
                     exist = True
             if exist:
-                return can
+                return None
             raise Exception(f'Nao foi possivel adicionar {camp_name} porque a opcao escolhida nao existe')
         
         except Exception as error:
@@ -958,7 +958,7 @@ class ReportLabCanvasUtils():
 
 
 
-    def add_markable_square_and_onelinetext(self, can:canvas.Canvas, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
+    def add_markable_square_and_onelinetext(self, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
         """Verifiy option choose and add to canvas, the option is automatic upper cased
 
         Args:
@@ -977,10 +977,10 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if option == None or len(str(option).strip()) == 0:
-                    return can
+                    return None
 
             
-            validate_func_args(function_to_verify=add_markable_square_and_onelinetext, variables_to_verify={'can':can, 'option':option, 'valid_options':valid_options, 'text_options':text_options, 'text_pos':text_pos, 'options_positions':options_positions, 'camp_name':camp_name, 'len_max':len_max, 'text':text, 'len_min':len_min, 'interval':interval, 'square_size':square_size, 'nullable':nullable}, nullable_variables=['text'])
+            self.validate_func_args(function_to_verify=self.add_markable_square_and_onelinetext, variables_to_verify={'option':option, 'valid_options':valid_options, 'text_options':text_options, 'text_pos':text_pos, 'options_positions':options_positions, 'camp_name':camp_name, 'len_max':len_max, 'text':text, 'len_min':len_min, 'interval':interval, 'square_size':square_size, 'nullable':nullable}, nullable_variables=['text'])
 
             #Verify if option exist
             option = option.upper()
@@ -992,9 +992,9 @@ class ReportLabCanvasUtils():
                             raise Exception(f'Nao foi possivel adicionar {camp_name} porque a opcao {option} tambem necessita de uma string')
                         else:
                             #Add text line
-                            can = add_oneline_text(can=can, text=text, pos=text_pos, camp_name=camp_name, len_max=len_max, len_min=len_min, interval=interval)
-                    can = add_square(can=can, pos=options_positions[opt], size=square_size)
-                    return can
+                            self.add_oneline_text(text=text, pos=text_pos, camp_name=camp_name, len_max=len_max, len_min=len_min, interval=interval)
+                    self.add_square(pos=options_positions[opt], size=square_size)
+                    return None
             raise Exception(f'Nao foi possivel adicionar {camp_name} porque a opcao escolhida nao existe em {valid_options}')
 
         except Exception as error:
@@ -1003,7 +1003,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_markable_square_and_morelinestext(self, can:canvas.Canvas, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, decrease_ypos:int, char_per_lines:int, max_lines_amount:int=None, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
+    def add_markable_square_and_morelinestext(self, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, decrease_ypos:int, char_per_lines:int, max_lines_amount:int=None, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
         """Verifiy option choose and add to canvas, the option is automatic upper cased
 
         Args:
@@ -1021,9 +1021,9 @@ class ReportLabCanvasUtils():
         try:
             if nullable:
                 if option == None or len(str(option).strip()) == 0:
-                    return can
+                    return None
 
-            validate_func_args(function_to_verify=add_markable_square_and_morelinestext, variables_to_verify={'can':can, 'option':option, 'valid_options':valid_options, 'text_options':text_options, 'text_pos':text_pos, 'options_positions':options_positions, 'camp_name':camp_name, 'len_max':len_max, 'decrease_ypos':decrease_ypos, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'text':text, 'len_min':len_min, 'interval':interval, 'square_size':square_size, 'nullable':nullable}, nullable_variables=['text', 'max_lines_amount'])
+            self.validate_func_args(function_to_verify=self.add_markable_square_and_morelinestext, variables_to_verify={'option':option, 'valid_options':valid_options, 'text_options':text_options, 'text_pos':text_pos, 'options_positions':options_positions, 'camp_name':camp_name, 'len_max':len_max, 'decrease_ypos':decrease_ypos, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'text':text, 'len_min':len_min, 'interval':interval, 'square_size':square_size, 'nullable':nullable}, nullable_variables=['text', 'max_lines_amount'])
 
 
             #Verify if option exist
@@ -1036,9 +1036,9 @@ class ReportLabCanvasUtils():
                             raise Exception(f'Nao foi possivel adicionar {camp_name} porque a opcao {option} tambem necessita de uma string')
                         else:
                             #Add text line
-                            can = add_morelines_text(can=can, text=text, initial_pos=text_pos, camp_name=camp_name, len_max=len_max, len_min=len_min, decrease_ypos=decrease_ypos, interval=interval, char_per_lines=char_per_lines, max_lines_amount=max_lines_amount)
-                    can = add_square(can=can, pos=options_positions[opt], size=square_size)
-                    return can
+                            self.add_morelines_text(text=text, initial_pos=text_pos, camp_name=camp_name, len_max=len_max, len_min=len_min, decrease_ypos=decrease_ypos, interval=interval, char_per_lines=char_per_lines, max_lines_amount=max_lines_amount)
+                    self.add_square(pos=options_positions[opt], size=square_size)
+                    return None
             raise Exception(f'Nao foi possivel adicionar {camp_name} porque a opcao escolhida nao existe em {valid_options}')
         
         except Exception as error:
