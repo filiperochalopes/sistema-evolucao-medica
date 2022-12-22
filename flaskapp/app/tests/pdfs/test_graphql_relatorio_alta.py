@@ -18,16 +18,29 @@ def lenght_test():
         lenght_test += str(x)
     return lenght_test
 
-datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
-document_datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
+@pytest.fixture
+def datetime_to_use():
+    """get current datetime to test"""
+    return datetime.datetime.now().strftime('%d/%m/%Y')
 
-# Select your transport with ag graphql url endpoint
-transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+@pytest.fixture
+def document_datetime_to_use():
+    """get current datetime with hours and minutes to test"""
+    return datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
 
-# Create a GraphQL client using the defined transport
-client = Client(transport=transport, fetch_schema_from_transport=True)
+@pytest.fixture
+def client():
+    # Select your transport with ag graphql url endpoint
+    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+    # Create a GraphQL client using the defined transport
+    return Client(transport=transport, fetch_schema_from_transport=True)
 
-def data_to_use(document_datetime=document_datetime_to_use, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=datetime_to_use,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document='{cpf: "28445400070", rg: null, cns: null}',patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',orientations='Do not jump'):
+def data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime=None, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=None,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document='{cpf: "28445400070", rg: null, cns: null}',patient_adress='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',orientations='Do not jump'):
+
+    if document_datetime == None:
+        document_datetime = document_datetime_to_use
+    if patient_birthday == None:
+        patient_birthday = datetime_to_use
 
     request_string = """
         mutation{
@@ -64,11 +77,11 @@ def data_to_use(document_datetime=document_datetime_to_use, patient_name="Patien
         return False 
 
 #Testing telatorio alta
-def test_answer_with_all_fields():
+def test_answer_with_all_fields(client, datetime_to_use, document_datetime_to_use):
     """Test relatorio alta with all data correct"""
-    assert data_to_use() == True
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use) == True
 
-def test_awnser_with_only_required_data():
+def test_awnser_with_only_required_data(client, datetime_to_use, document_datetime_to_use):
     result = False
     document_test = '{cpf: "28445400070", rg: null, cns: null}'
     
@@ -121,12 +134,12 @@ def test_awnser_with_only_required_data():
 # wrong name type
 
 @pytest.mark.parametrize("test_input", ['    ', '', lenght_test_parametrize[:71], '11113', 123124])
-def test_patient_mother_name(test_input):
-    assert data_to_use(patient_mother_name=test_input) == False
+def test_patient_mother_name(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_mother_name=test_input) == False
 
 @pytest.mark.parametrize("test_input", ['    ', '', lenght_test_parametrize[:52], '11113', 123124])
-def test_doctor_name(test_input):
-    assert data_to_use(doctor_name=test_input) == False
+def test_doctor_name(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, doctor_name=test_input) == False
 
 
 #################################################################
@@ -146,15 +159,15 @@ def test_doctor_name(test_input):
     '{BBB: "284123312123", rg: null, cns: null}',
     '{cpf: "284123312123", rg: null, cns: null}'
 ])
-def test_false_patient_document(test_input):
-    assert data_to_use(patient_document=test_input) == False
+def test_false_patient_document(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_document=test_input) == False
 
 @pytest.mark.parametrize("test_input", [
 '{cpf: null, rg: "928976954930007", cns: null}',
 '{cpf: "43423412399", rg: null, cns: null}'
 ])
-def test_true_patient_document(test_input):
-    assert data_to_use(patient_document=test_input) == True
+def test_true_patient_document(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_document=test_input) == True
 
 
 #################################################################
@@ -164,17 +177,17 @@ def test_true_patient_document(test_input):
 # autorizaton_datetime
 # test wrong type
 
-def test_wrongtype_document_datetime():
-    assert data_to_use(document_datetime='bahabah') == False
+def test_wrongtype_document_datetime(client, datetime_to_use, document_datetime_to_use):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime='bahabah') == False
 
-def test_valid_document_datetime():
-    assert data_to_use(document_datetime=document_datetime_to_use) == True
+def test_valid_document_datetime(client, datetime_to_use, document_datetime_to_use):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime=document_datetime_to_use) == True
 
-def test_wrongtype_patient_birthday():
-    assert data_to_use(patient_birthday='bahabah') == False
+def test_wrongtype_patient_birthday(client, datetime_to_use, document_datetime_to_use):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_birthday='bahabah') == False
 
-def test_valid_patient_birthday():
-    assert data_to_use(patient_birthday=datetime_to_use) == True
+def test_valid_patient_birthday(client, datetime_to_use, document_datetime_to_use):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_birthday=datetime_to_use) == True
 
 
 ##################################################################
@@ -182,12 +195,12 @@ def test_valid_patient_birthday():
 # patient_sex
 
 @pytest.mark.parametrize("test_input", ['G', 1231])
-def test_false_sex(test_input):
-    assert data_to_use(patient_sex=test_input) == False
+def test_false_sex(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_sex=test_input) == False
 
 @pytest.mark.parametrize("test_input", ['M', 'm', 'F', 'f'])
-def test_sex(test_input):
-    assert data_to_use(patient_sex=test_input) == True
+def test_sex(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_sex=test_input) == True
 
 
 
@@ -196,8 +209,8 @@ def test_sex(test_input):
 # patient_adress
 
 @pytest.mark.parametrize("test_input", ['', '    ', '111', lenght_test_parametrize[:65]])
-def test_patient_adress(test_input):
-    assert data_to_use(patient_adress=test_input) == False
+def test_patient_adress(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_adress=test_input) == False
 
 
 #############################################################################
@@ -206,16 +219,16 @@ def test_patient_adress(test_input):
 # orientations
 
 @pytest.mark.parametrize("test_input", ['', '    ', 111, 'aaaa', lenght_test_parametrize[:2150]])
-def test_evolution(test_input):
-    assert data_to_use(evolution=test_input) == False
+def test_evolution(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, evolution=test_input) == False
 
 @pytest.mark.parametrize("test_input", [111, 'aaaa', lenght_test_parametrize[:850]])
-def test_false_orientations(test_input):
-    assert data_to_use(orientations=test_input) == False
+def test_false_orientations(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, orientations=test_input) == False
 
 @pytest.mark.parametrize("test_input", ['', '    '])
-def test_true_orientations(test_input):
-    assert data_to_use(orientations=test_input) == True
+def test_true_orientations(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, orientations=test_input) == True
 
 #################################################################################
 # TEST CNS
@@ -227,17 +240,17 @@ def test_true_orientations(test_input):
 # empty send
 
 @pytest.mark.parametrize("test_input", ['13123', '928976546250007', 'null'])
-def test_false_patient_cns(test_input):
-    assert data_to_use(patient_cns=test_input) == False
+def test_false_patient_cns(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_cns=test_input) == False
 
-def test_valid_patient_cns():
-    assert data_to_use(patient_cns="928976954930007") == True
+def test_valid_patient_cns(client, datetime_to_use, document_datetime_to_use):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_cns="928976954930007") == True
 
 
 @pytest.mark.parametrize("test_input", ['13123', '928976546250007', 'null'])
-def test_false_doctor_cns(test_input):
-    assert data_to_use(doctor_cns=test_input) == False
+def test_false_doctor_cns(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, doctor_cns=test_input) == False
 
-def test_valid_doctor_cns():
-    assert data_to_use(doctor_cns="928976954930007") == True
+def test_valid_doctor_cns(client, datetime_to_use, document_datetime_to_use):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, doctor_cns="928976954930007") == True
 
