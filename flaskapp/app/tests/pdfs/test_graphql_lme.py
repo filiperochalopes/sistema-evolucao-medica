@@ -4,6 +4,12 @@ import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
 import pytest
 
+# Variable to parametrize 
+global lenght_test_parametrize
+lenght_test_parametrize = ''
+for x in range(0, 1100):
+    lenght_test_parametrize += str(x)
+
 @pytest.fixture
 def lenght_test():
     """generate a string with data with charactes to test lenght"""
@@ -171,9 +177,10 @@ def test_wrongtype_establishment_solitc_name(client, datetime_to_use):
 def test_empty_value_patient_name(test_input, client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, patient_name=test_input) == False
 
-@pytest.mark.parametrize("test_input", [lenght_test[:81], lenght_test[:1]])
-def test_text_patient_name(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, patient_name=test_input) == False
+@pytest.mark.parametrize("test_input", [81, 1])
+def test_text_patient_name(test_input, client, datetime_to_use, lenght_test):
+    text = lenght_test[:test_input]
+    assert data_to_use(client, datetime_to_use, patient_name=text) == False
 
 def test_wrongtype_patient_name(client, datetime_to_use):    
     assert data_to_use(client, datetime_to_use, patient_name=123124) == False
@@ -182,9 +189,10 @@ def test_wrongtype_patient_name(client, datetime_to_use):
 def test_empty_value_patient_mother_name(test_input, client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, patient_mother_name=test_input) == False
 
-@pytest.mark.parametrize("test_input", [lenght_test[:81], lenght_test[:1]])
-def test_text_patient_mother_name(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, patient_mother_name=test_input) == False
+@pytest.mark.parametrize("test_input", [81,1])
+def test_text_patient_mother_name(test_input, client, datetime_to_use, lenght_test):
+    text = lenght_test[:test_input]
+    assert data_to_use(client, datetime_to_use, patient_mother_name=text) == False
 
 def test_wrongtype_patient_mother_name(client, datetime_to_use):    
     assert data_to_use(client, datetime_to_use, patient_mother_name=123124) == False
@@ -193,16 +201,18 @@ def test_wrongtype_patient_mother_name(client, datetime_to_use):
 def test_empty_value_prof_solicitor_name(test_input, client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, prof_solicitor_name=test_input) == False
 
-@pytest.mark.parametrize("test_input", [lenght_test[:50], lenght_test[:1]])
-def test_text_prof_solicitor_name(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, prof_solicitor_name=test_input) == False
+@pytest.mark.parametrize("test_input", [50, 1])
+def test_text_prof_solicitor_name(test_input, client, datetime_to_use, lenght_test):
+    text = lenght_test[:test_input]
+    assert data_to_use(client, datetime_to_use, prof_solicitor_name=text) == False
 
 def test_wrongtype_prof_solicitor_name(client, datetime_to_use):    
     assert data_to_use(client, datetime_to_use, prof_solicitor_name=123124) == False
 
-@pytest.mark.parametrize("test_input", ['["sim", ""]', '["sim", " "]', f'["sim", "{lenght_test[:50]}"]', 'aa'])
+@pytest.mark.parametrize("test_input", ['["sim", ""]', '["sim", " "]', f'["sim", "{lenght_test_parametrize[:50]}"]', 'aa'])
 def test_text_capacity_attest_responsible_name(test_input, client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, capacity_attest=test_input) == False
+
 
 def test_wrongtype_capacity_attest_responsible_name(client, datetime_to_use):    
     assert data_to_use(client, datetime_to_use, capacity_attest=123124) == False
@@ -256,8 +266,8 @@ def test_wrongtype_filled_by(client, datetime_to_use):
     '''["WTAHST", "Other name", "{'cpf':'28445400070'}"]''',
     '''["OUTRO", "", "{'cpf':'28445400070'}"]''',
     '''["OUTRO", " ", "{'cpf':'28445400070'}"]''',
-    f'''["OUTRO", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''',
-    f'''["OUTRO", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["OUTRO", "{lenght_test_parametrize[:3]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["OUTRO", "{lenght_test_parametrize[:45]}", "{"'cpf':'28445400070'"}"]''',
     '''["RESPONSAVEL", 123, "{'cpf':'28445400070'}"]''',
     '''["OUTRO", 123, "{'cpf':'28445400070'}"]''',
     '''["WTAHST", "Other name", "{'cpf':'28445400070'}"]''',
@@ -292,14 +302,14 @@ def test_false_filled_by(test_input, client, datetime_to_use):
     '''["PACIENTE", " ", "{'cpf':'28445400070'}"]''',
     '''["MAE", " ", "{'cpf':'28445400070'}"]''',
     '''["RESPONSAVEL", " ", "{'cpf':'28445400070'}"]''',
-    f'''["MEDICO", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''',
-    f'''["PACIENTE", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''',
-    f'''["MAE", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''',
-    f'''["RESPONSAVEL", "{lenght_test[:3]}", "{"'cpf':'28445400070'"}"]''',
-    f'''["MEDICO", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''',
-    f'''["PACIENTE", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''',
-    f'''["MAE", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]''',
-    f'''["RESPONSAVEL", "{lenght_test[:45]}", "{"'cpf':'28445400070'"}"]'''
+    f'''["MEDICO", "{lenght_test_parametrize[:3]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["PACIENTE", "{lenght_test_parametrize[:3]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["MAE", "{lenght_test_parametrize[:3]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["RESPONSAVEL", "{lenght_test_parametrize[:3]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["MEDICO", "{lenght_test_parametrize[:45]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["PACIENTE", "{lenght_test_parametrize[:45]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["MAE", "{lenght_test_parametrize[:45]}", "{"'cpf':'28445400070'"}"]''',
+    f'''["RESPONSAVEL", "{lenght_test_parametrize[:45]}", "{"'cpf':'28445400070'"}"]'''
     ])
 def test_true_filled_by(test_input, client, datetime_to_use):
     # All options that had to be success
@@ -309,8 +319,8 @@ def test_true_filled_by(test_input, client, datetime_to_use):
     '["INFORMAR", null]',
     '["INFORMAR", ""]',
     '["INFORMAR", "  "]',
-    f'["INFORMAR", "{lenght_test[:3]}"]',
-    f'["INFORMAR", "{lenght_test[:35]}"]',
+    f'["INFORMAR", "{lenght_test_parametrize[:3]}"]',
+    f'["INFORMAR", "{lenght_test_parametrize[:35]}"]',
     1231,
     '["WTAHST", "Patient Ethnicity"]'
     ])
@@ -359,18 +369,18 @@ def test_false_patient_ethnicity(test_input, client, datetime_to_use):
     '["AMARELA", "  "]',
     '["INDIGENA", "  "]',
     '["SEMINFO", "  "]',
-    f'["BRANCA", "{lenght_test[:3]}"]',
-    f'["PRETA", "{lenght_test[:3]}"]',
-    f'["PARDA", "{lenght_test[:3]}"]',
-    f'["AMARELA", "{lenght_test[:3]}"]',
-    f'["INDIGENA", "{lenght_test[:3]}"]',
-    f'["SEMINFO", "{lenght_test[:3]}"]',
-    f'["BRANCA", "{lenght_test[:35]}"]',
-    f'["PRETA", "{lenght_test[:35]}"]',
-    f'["PARDA", "{lenght_test[:35]}"]',
-    f'["AMARELA", "{lenght_test[:35]}"]',
-    f'["INDIGENA", "{lenght_test[:35]}"]',
-    f'["SEMINFO", "{lenght_test[:35]}"]'
+    f'["BRANCA", "{lenght_test_parametrize[:3]}"]',
+    f'["PRETA", "{lenght_test_parametrize[:3]}"]',
+    f'["PARDA", "{lenght_test_parametrize[:3]}"]',
+    f'["AMARELA", "{lenght_test_parametrize[:3]}"]',
+    f'["INDIGENA", "{lenght_test_parametrize[:3]}"]',
+    f'["SEMINFO", "{lenght_test_parametrize[:3]}"]',
+    f'["BRANCA", "{lenght_test_parametrize[:35]}"]',
+    f'["PRETA", "{lenght_test_parametrize[:35]}"]',
+    f'["PARDA", "{lenght_test_parametrize[:35]}"]',
+    f'["AMARELA", "{lenght_test_parametrize[:35]}"]',
+    f'["INDIGENA", "{lenght_test_parametrize[:35]}"]',
+    f'["SEMINFO", "{lenght_test_parametrize[:35]}"]'
     ])
 def test_true_patient_ethnicity(test_input, client, datetime_to_use):
     # All options that had to be success
@@ -381,8 +391,8 @@ def test_true_patient_ethnicity(test_input, client, datetime_to_use):
     '["WTAHST", "Patient Ethnicity"]',
     '["SIM", null]',
     '["SIM", " "]',
-    f'["SIM", "{lenght_test[:3]}"]',
-    f'["SIM", "{lenght_test[:172]}"]'
+    f'["SIM", "{lenght_test_parametrize[:3]}"]',
+    f'["SIM", "{lenght_test_parametrize[:172]}"]'
     ])
 def test_false_previous_treatment(test_input, client, datetime_to_use):
     # All options that had to be success
@@ -396,8 +406,8 @@ def test_false_previous_treatment(test_input, client, datetime_to_use):
     '["NAO", null]',
     '["NAO", null]',
     '["NAO", " "]',
-    f'["NAO", "{lenght_test[:3]}"]',
-    f'["NAO", "{lenght_test[:170]}"]'
+    f'["NAO", "{lenght_test_parametrize[:3]}"]',
+    f'["NAO", "{lenght_test_parametrize[:170]}"]'
     ])
 def test_true_previous_treatment(test_input, client, datetime_to_use):
     # All options that had to be success
@@ -413,7 +423,7 @@ def test_true_previous_treatment(test_input, client, datetime_to_use):
 # test short text
 # test more than limit
 
-@pytest.mark.parametrize("test_input", [131, '', '   ', 'vlza', lenght_test[:500]])
+@pytest.mark.parametrize("test_input", [131, '', '   ', 'vlza', lenght_test_parametrize[:500]])
 def test_anamnese(test_input, client, datetime_to_use):
     # All options that had to be success
     assert data_to_use(client, datetime_to_use, anamnese=test_input) == False
@@ -429,7 +439,7 @@ def test_anamnese(test_input, client, datetime_to_use):
 # test short text
 # test more than limit
 
-@pytest.mark.parametrize("test_input", [123, 'aaa', lenght_test[:86]])
+@pytest.mark.parametrize("test_input", [123, 'aaa', lenght_test_parametrize[:86]])
 def test_false_diagnostic(test_input, client, datetime_to_use):
     # All options that had to be success
     assert data_to_use(client, datetime_to_use, diagnostic=test_input) == False
@@ -439,7 +449,7 @@ def test_true_diagnostic(test_input, client, datetime_to_use):
     # All options that had to be success
     assert data_to_use(client, datetime_to_use, diagnostic=test_input) == True
 
-@pytest.mark.parametrize("test_input", [123, 'aaa', lenght_test[:65]])
+@pytest.mark.parametrize("test_input", [123, 'aaa', lenght_test_parametrize[:65]])
 def test_false_patient_email(test_input, client, datetime_to_use):
     # All options that had to be success
     assert data_to_use(client, datetime_to_use, patient_email=test_input) == False
@@ -450,7 +460,7 @@ def test_true_patient_email(test_input, client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, patient_email=test_input) == True
 
 
-@pytest.mark.parametrize("test_input", ['', '   ', 'aa', lenght_test[:6]])
+@pytest.mark.parametrize("test_input", ['', '   ', 'aa', lenght_test_parametrize[:6]])
 def test_cid_10(test_input, client, datetime_to_use):
     # All options that had to be success
     assert data_to_use(client, datetime_to_use, cid_10=test_input) == False
@@ -594,15 +604,15 @@ def test_short_value_quant_2_month(client, datetime_to_use):
 def test_short_value_quant_3_month(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:""}]') == False
 
-def test_long_value_medicine_name(client, datetime_to_use):
+def test_long_value_medicine_name(client, datetime_to_use, lenght_test):
     assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"lenght_test", quant1month:"541", quant2month:"64981", quant3month:"234234"}]'.replace('lenght_test', lenght_test[:70])) == False
 
-def test_long_value_quant_1_month(client, datetime_to_use):
+def test_long_value_quant_1_month(client, datetime_to_use, lenght_test):
     assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"lenght_test", quant2month:"64981", quant3month:"234234"}]'.replace('lenght_test', lenght_test[:11])) == False
 
-def test_long_value_quant_2_month(client, datetime_to_use):
+def test_long_value_quant_2_month(client, datetime_to_use, lenght_test):
     assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"lenght_test", quant3month:"234234"}]'.replace('lenght_test', lenght_test[:11])) == False
 
-def test_long_value_quant_3_month(client, datetime_to_use):
+def test_long_value_quant_3_month(client, datetime_to_use, lenght_test):
     assert data_to_use(client, datetime_to_use, medicines='[{medicineName:"1asdasdasd", quant1month:"123123", quant2month:"adasdasda", quant3month:"lenght_test"}]'.replace('lenght_test', lenght_test[:11])) == False
 
