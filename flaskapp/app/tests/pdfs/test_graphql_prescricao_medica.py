@@ -17,18 +17,24 @@ def lenght_test():
         lenght_test += str(x)
     return lenght_test
 
-datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
+@pytest.fixture
+def datetime_to_use():
+    """get current datetime to test"""
+    return datetime.datetime.now().strftime('%d/%m/%Y')
 
-# Select your transport with ag graphql url endpoint
-transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+@pytest.fixture
+def client():
+    # Select your transport with ag graphql url endpoint
+    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+    # Create a GraphQL client using the defined transport
+    return Client(transport=transport, fetch_schema_from_transport=True)
 
-# Create a GraphQL client using the defined transport
-client = Client(transport=transport, fetch_schema_from_transport=True)
-
-def data_to_use(_=None, info=None, document_datetime=datetime_to_use,
+def data_to_use(client, datetime_to_use, document_datetime=None,
         patient_name='Pacient Name',
         prescription='{medicineName:"Dipirona 500mg", amount:"4 comprimidos", useMode:"1 comprimido, via oral, de 6/6h por 3 dias"}'):
         
+        if document_datetime == None:
+            document_datetime = datetime_to_use
         request_string = """
         mutation{
             generatePdf_PrescricaoMedica("""
@@ -54,31 +60,31 @@ def data_to_use(_=None, info=None, document_datetime=datetime_to_use,
             return False 
 
 #Testing Ficha Internamento
-def test_answer_with_all_fields():
+def test_answer_with_all_fields(client, datetime_to_use):
     """Test fill ficha internamento with all data correct"""
-    assert data_to_use() == True
+    assert data_to_use(client, datetime_to_use) == True
 
 
 ##############################################################
 # ERRORS IN NAMES CAMPS
 # patient_name
 @pytest.mark.parametrize("test_input", ['    ', '','11113', 123124])
-def test_patient_name(test_input):
-    assert data_to_use(patient_name=test_input) == False
+def test_patient_name(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_name=test_input) == False
 
-def test_lenght_patient_name(lenght_test):
+def test_lenght_patient_name(client, datetime_to_use, lenght_test):
     text = lenght_test[:36]
-    assert data_to_use(patient_name=text) == False
+    assert data_to_use(client, datetime_to_use, patient_name=text) == False
 
 #################################################################
 # TEST DATETIMES VARIABLES
 # document_datetime
 
-def test_wrongtype_document_datetime():
-    assert data_to_use(document_datetime='bahabah') == False
+def test_wrongtype_document_datetime(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, document_datetime='bahabah') == False
 
-def test_valid_document_datetime():
-    assert data_to_use(document_datetime=datetime_to_use) == True
+def test_valid_document_datetime(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, document_datetime=datetime_to_use) == True
 
 #################################################################
 # TEST prescriptions
@@ -135,6 +141,6 @@ def test_valid_document_datetime():
     useMode:"{lenght_test_parametrize[:265]}"
     """
 ])
-def test_prescription(test_input):
-    assert data_to_use(prescription=str('{' + test_input + '}')) == False
+def test_prescription(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, prescription=str('{' + test_input + '}')) == False
 
