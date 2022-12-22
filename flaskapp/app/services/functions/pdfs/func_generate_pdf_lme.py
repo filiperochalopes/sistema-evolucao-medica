@@ -8,6 +8,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from app.services.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_LME_DIRECTORY, WRITE_LME_DIRECTORY
+from app.services.utils.PdfLme import PdfLme
 
 
 def func_generate_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid_10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> str:
@@ -39,6 +40,8 @@ def func_generate_pdf_lme(establishment_solitc_name:str, establishment_solitc_cn
         str: Request with pdf in base64
     """    
     try:
+        pdf = PdfLme()
+
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -50,32 +53,58 @@ def func_generate_pdf_lme(establishment_solitc_name:str, establishment_solitc_cn
         # not null data
 
         try:
-            c = pdf_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(38, 658), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='   ')
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_weight, pos=(485, 628), camp_name='Patient Weight', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_height, pos=(485, 602), camp_name='Patient Height', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
-            c = pdf_functions.add_oneline_text(can=c, text=cid_10, pos=(34, 455), camp_name='cid_10', len_max=4, len_min=3, interval='  ')
-            c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(292, 222), camp_name='Solicitation Datetime', hours=False, interval='   ', formated=False)
-            c = pdf_functions.add_document_cns_cpf_rg(can=c, document=prof_solicitor_document, pos_square_cpf=(41, 195), pos_square_cns=(84,194), pos_cns=(129, 195), pos_cpf=(129, 195),camp_name='Professional Solicitor Document', interval='  ', square_size=(5, 8))
+            # c = pdf_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(38, 658), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='   ')
+            # c = pdf_functions.add_oneline_intnumber(can=c, number=patient_weight, pos=(485, 628), camp_name='Patient Weight', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
+            # c = pdf_functions.add_oneline_intnumber(can=c, number=patient_height, pos=(485, 602), camp_name='Patient Height', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
+            # c = pdf_functions.add_oneline_text(can=c, text=cid_10, pos=(34, 455), camp_name='cid_10', len_max=4, len_min=3, interval='  ')
+            # c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(292, 222), camp_name='Solicitation Datetime', hours=False, interval='   ', formated=False)
+            # c = pdf_functions.add_document_cns_cpf_rg(can=c, document=prof_solicitor_document, pos_square_cpf=(41, 195), pos_square_cns=(84,194), pos_cns=(129, 195), pos_cpf=(129, 195),camp_name='Professional Solicitor Document', interval='  ', square_size=(5, 8))
 
 
-            c.setFont('Roboto-Mono', 9)
-            c = pdf_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(206, 658), camp_name='Establishment Solicit Name', len_max=65, len_min=8)
-            c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(36, 628), camp_name='Patient Name', len_max=79, len_min=7)
-            c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 602), camp_name='Patient Mother Name', len_max=79, len_min=7)
-            c = pdf_functions.add_morelines_text(can=c, text=anamnese, initial_pos=(36, 430), decrease_ypos= 10, camp_name='Anamnese', len_max=485, char_per_lines=97, len_min=5)
-            c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 224), camp_name='Professional Solicitor Name', len_max=45, len_min=8)
+            # c.setFont('Roboto-Mono', 9)
+            # c = pdf_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(206, 658), camp_name='Establishment Solicit Name', len_max=65, len_min=8)
+            # c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(36, 628), camp_name='Patient Name', len_max=79, len_min=7)
+            # c = pdf_functions.add_oneline_text(can=c, text=patient_mother_name, pos=(36, 602), camp_name='Patient Mother Name', len_max=79, len_min=7)
+            # c = pdf_functions.add_morelines_text(can=c, text=anamnese, initial_pos=(36, 430), decrease_ypos= 10, camp_name='Anamnese', len_max=485, char_per_lines=97, len_min=5)
+            # c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(36, 224), camp_name='Professional Solicitor Name', len_max=45, len_min=8)
+            # if type(capacity_attest) != type(list()) or len(capacity_attest) > 2:
+            #     raise Exception('Cappacity Attest deve ser uma lista com 2 itens')
+            # c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=capacity_attest[0], valid_options=['SIM','NAO'], text_options=['SIM'], text_pos=(308, 268), options_positions=((79, 271), (42,270)), camp_name='Capacity Attest', len_max=46, text=capacity_attest[1], len_min=5, square_size=(5, 8))
+            # if type(filled_by) != type(list()) or len(filled_by) > 3:
+            #     raise Exception('filled_by deve ser uma lista com 3 itens')
+            # c = add_filled_by(can=c, filled_by=filled_by)
+            # if type(patient_ethnicity) != type(list()) or len(patient_ethnicity) > 2:
+            #     raise Exception('patient_ethnicity deve ser uma lista com 2 itens')
+            # c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA', 'SEMINFO', 'INFORMAR'], text_options=['INFORMAR'], text_pos=(192, 108), options_positions=((40, 121), (40, 108),(40, 93),(94, 118), (94, 106),(94, 93), (94, 93)),camp_name='Patietn Ethinicity', len_max=31, text=patient_ethnicity[1], len_min=4, square_size=(5, 8))
+            # if type(previous_treatment) != type(list()) or len(previous_treatment) > 2:
+            #     raise Exception('previous_treatment deve ser uma lista com 2 itens')
+            # c = pdf_functions.add_markable_square_and_morelinestext(can=c, option=previous_treatment[0], valid_options=['SIM','NAO'],text_options=['SIM'], text_pos=(100, 355), options_positions=((40, 355), (40, 337)), camp_name='Previous Treatment', len_max=170, text=previous_treatment[1], len_min=4, square_size=(5, 8),char_per_lines=85, decrease_ypos=15)
+            pdf.add_oneline_intnumber(number=establishment_solitc_cnes, pos=(38, 658), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='   ')
+            pdf.add_oneline_intnumber(number=patient_weight, pos=(485, 628), camp_name='Patient Weight', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
+            pdf.add_oneline_intnumber(number=patient_height, pos=(485, 602), camp_name='Patient Height', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
+            pdf.add_oneline_text(text=cid_10, pos=(34, 455), camp_name='cid_10', len_max=4, len_min=3, interval='  ')
+            pdf.add_datetime(date=solicitation_datetime, pos=(292, 222), camp_name='Solicitation Datetime', hours=False, interval='   ', formated=False)
+            pdf.add_document_cns_cpf_rg(document=prof_solicitor_document, pos_square_cpf=(41, 195), pos_square_cns=(84,194), pos_cns=(129, 195), pos_cpf=(129, 195),camp_name='Professional Solicitor Document', interval='  ', square_size=(5, 8))
+
+
+            pdf.set_font('Roboto-Mono', 9)
+            pdf.add_oneline_text(text=establishment_solitc_name, pos=(206, 658), camp_name='Establishment Solicit Name', len_max=65, len_min=8)
+            pdf.add_oneline_text(text=patient_name, pos=(36, 628), camp_name='Patient Name', len_max=79, len_min=7)
+            pdf.add_oneline_text(text=patient_mother_name, pos=(36, 602), camp_name='Patient Mother Name', len_max=79, len_min=7)
+            pdf.add_morelines_text(text=anamnese, initial_pos=(36, 430), decrease_ypos= 10, camp_name='Anamnese', len_max=485, char_per_lines=97, len_min=5)
+            pdf.add_oneline_text(text=prof_solicitor_name, pos=(36, 224), camp_name='Professional Solicitor Name', len_max=45, len_min=8)
             if type(capacity_attest) != type(list()) or len(capacity_attest) > 2:
                 raise Exception('Cappacity Attest deve ser uma lista com 2 itens')
-            c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=capacity_attest[0], valid_options=['SIM','NAO'], text_options=['SIM'], text_pos=(308, 268), options_positions=((79, 271), (42,270)), camp_name='Capacity Attest', len_max=46, text=capacity_attest[1], len_min=5, square_size=(5, 8))
+            pdf.add_markable_square_and_onelinetext(option=capacity_attest[0], valid_options=['SIM','NAO'], text_options=['SIM'], text_pos=(308, 268), options_positions=((79, 271), (42,270)), camp_name='Capacity Attest', len_max=46, text=capacity_attest[1], len_min=5, square_size=(5, 8))
             if type(filled_by) != type(list()) or len(filled_by) > 3:
                 raise Exception('filled_by deve ser uma lista com 3 itens')
-            c = add_filled_by(can=c, filled_by=filled_by)
+            pdf.add_filled_by(filled_by=filled_by)
             if type(patient_ethnicity) != type(list()) or len(patient_ethnicity) > 2:
                 raise Exception('patient_ethnicity deve ser uma lista com 2 itens')
-            c = pdf_functions.add_markable_square_and_onelinetext(can=c, option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA', 'SEMINFO', 'INFORMAR'], text_options=['INFORMAR'], text_pos=(192, 108), options_positions=((40, 121), (40, 108),(40, 93),(94, 118), (94, 106),(94, 93), (94, 93)),camp_name='Patietn Ethinicity', len_max=31, text=patient_ethnicity[1], len_min=4, square_size=(5, 8))
+            pdf.add_markable_square_and_onelinetext(option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA', 'SEMINFO', 'INFORMAR'], text_options=['INFORMAR'], text_pos=(192, 108), options_positions=((40, 121), (40, 108),(40, 93),(94, 118), (94, 106),(94, 93), (94, 93)),camp_name='Patietn Ethinicity', len_max=31, text=patient_ethnicity[1], len_min=4, square_size=(5, 8))
             if type(previous_treatment) != type(list()) or len(previous_treatment) > 2:
                 raise Exception('previous_treatment deve ser uma lista com 2 itens')
-            c = pdf_functions.add_markable_square_and_morelinestext(can=c, option=previous_treatment[0], valid_options=['SIM','NAO'],text_options=['SIM'], text_pos=(100, 355), options_positions=((40, 355), (40, 337)), camp_name='Previous Treatment', len_max=170, text=previous_treatment[1], len_min=4, square_size=(5, 8),char_per_lines=85, decrease_ypos=15)
+            pdf.add_markable_square_and_morelinestext(option=previous_treatment[0], valid_options=['SIM','NAO'],text_options=['SIM'], text_pos=(100, 355), options_positions=((40, 355), (40, 337)), camp_name='Previous Treatment', len_max=170, text=previous_treatment[1], len_min=4, square_size=(5, 8),char_per_lines=85, decrease_ypos=15)
 
         except Exception as error:
             return error
@@ -96,19 +125,22 @@ def func_generate_pdf_lme(establishment_solitc_name:str, establishment_solitc_cn
         except:
             return Exception('Erro desconhecido ocorreu enquanto adicionava dados opcionais')
         
-        # create a new PDF with Reportlab
-        c.save()
-        packet.seek(0)
-        new_pdf = PdfReader(packet)
-        # read the template pdf 
-        template_pdf = PdfReader(open(TEMPLATE_LME_DIRECTORY, "rb"))
-        output = PdfWriter()
-        # add the "watermark" (which is the new pdf) on the existing page
-        page = template_pdf.pages[0]
-        page.merge_page(new_pdf.pages[0])
-        output.add_page(page)
+        # # create a new PDF with Reportlab
+        # c.save()
+        # packet.seek(0)
+        # new_pdf = PdfReader(packet)
+        # # read the template pdf 
+        # template_pdf = PdfReader(open(TEMPLATE_LME_DIRECTORY, "rb"))
+        # output = PdfWriter()
+        # # add the "watermark" (which is the new pdf) on the existing page
+        # page = template_pdf.pages[0]
+        # page.merge_page(new_pdf.pages[0])
+        # output.add_page(page)
 
-        pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
+        # pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
+
+        #Get pdf base64
+        pdf_base64_enconded = pdf.get_base64()
 
         return {
             "base64Pdf": str(pdf_base64_enconded)[2:-1]

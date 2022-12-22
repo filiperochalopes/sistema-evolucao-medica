@@ -488,7 +488,7 @@ class ReportLabCanvasUtils():
         """Add cns to canvas
 
         Args:
-            can (canvas.Canvas): canvas to add
+            
             cns (str): cns to add
             pos (tuple): position in canvas
             camp_name (str): camp nam
@@ -532,7 +532,6 @@ class ReportLabCanvasUtils():
         """Add cnpj to canvas
 
         Args:
-            can (canvas.Canvas): canvas to add
             cnpj (str): cnpj to add
             pos (tuple): position in canvas
             camp_name (str): camp nam
@@ -572,7 +571,6 @@ class ReportLabCanvasUtils():
         """Add cnae to canvas
 
         Args:
-            can (canvas.Canvas): canvas to add
             cnae (int): cnae to add
             pos (tuple): position in canvas
             camp_name (str): camp nam
@@ -612,7 +610,7 @@ class ReportLabCanvasUtils():
         """Add cbor to canvas
 
         Args:
-            can (canvas.Canvas): canvas to add
+            
             cbor (int): cbor to add
             pos (tuple): position in canvas
             camp_name (str): camp nam
