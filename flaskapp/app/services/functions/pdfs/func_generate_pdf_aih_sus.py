@@ -1,12 +1,4 @@
 import datetime
-from PyPDF2 import PdfWriter, PdfReader
-import io
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-from app.services.utils import pdf_functions
-from app.env import FONT_DIRECTORY, TEMPLATE_AIH_SUS_DIRECTORY, WRITE_AIH_SUS_DIRECTORY
 from app.services.utils.PdfAihSus import PdfAihSus
 
 
@@ -115,28 +107,6 @@ def func_generate_pdf_aih_sus(establishment_solitc_name:str, establishment_solit
 
         #Adding data that can be null
         try:
-            # c = pdf_functions.add_morelines_text(can=c, text=exam_results, initial_pos=(25, 362), decrease_ypos= 10, camp_name='Exam Results', len_max=403, char_per_lines=101, len_min=5, nullable=True)            
-            # c = pdf_functions.add_oneline_text(can=c, text=chart_number, pos=(466, 683), camp_name='Chart Number', len_max=20, len_min=1,nullable=True)            
-            # c = pdf_functions.add_oneline_text(can=c, text=patient_ethnicity, pos=(510, 658), camp_name='Patient Ehinicity', len_max=11, len_min=4, nullable=True)
-            # c = pdf_functions.add_oneline_text(can=c, text=patient_responsible_name, pos=(25, 612), camp_name='Patient Responsible Name', len_max=70, len_min=7, nullable=True)        
-            # c = pdf_functions.add_phonenumber(can=c, number=patient_mother_phonenumber, pos=(415, 631), camp_name='Patient Mother phone number', nullable=True, interval='  ')
-            # c = pdf_functions.add_phonenumber(can=c, number=patient_responsible_phonenumber, pos=(415, 608), camp_name='Patient responsible phone number', nullable=True, interval='  ')
-            # c = pdf_functions.add_oneline_text(can=c, text=secondary_cid_10, pos=(406, 314), camp_name='Secondary Cid10', len_max=4, len_min=3, nullable=True)
-            # c = pdf_functions.add_oneline_text(can=c, text=cid_10_associated_causes, pos=(512, 314), camp_name='Associated causes Cid10', len_max=4, len_min=3, nullable=True)
-            # c = pdf_functions.add_markable_square(can=c, option=acident_type, valid_options=['TRAFFIC', 'WORK', 'WORK_PATH'], options_positions=((38,184),(38,170), (38,156)), square_size=(9,9), camp_name='Acident Type', nullable=True)
-
-            # #Data that change Font Size
-            # c.setFont('Roboto-Mono', 10)
-            # c = pdf_functions.add_cnpj(can=c, cnpj=insurance_company_cnpj, pos=(168,183), camp_name='Insurance Company CNPJ', nullable=True, interval='  ')           
-            # c = pdf_functions.add_cnpj(can=c, cnpj=company_cnpj, pos=(168,156), camp_name='Company CNPJ', nullable=True, interval='  ')
-            
-
-            # c.setFont('Roboto-Mono', 9)
-            # c = pdf_functions.add_oneline_text(can=c, text=insurance_company_ticket_number, pos=(465, 183), camp_name='Insurance company ticket number', len_max=16, len_min=1,nullable=True, centralized=True)           
-            # c = pdf_functions.add_oneline_text(can=c, text=insurance_company_series, pos=(543, 183), camp_name='Insurance Company Series', len_max=10, len_min=1, nullable=True, centralized=True)           
-            # c = pdf_functions.add_cnae(can=c, cnae=company_cnae, pos=(434, 156), camp_name='Company CNAE', nullable=True, formated=True)
-            # c = pdf_functions.add_cbor(can=c, cbor=company_cbor, pos=(529, 156), camp_name='Company CBOR', nullable=True, formated=True)
-            # c = pdf_functions.add_markable_square(can=c, option=pension_status, valid_options=['WORKER', 'EMPLOYER', 'AUTONOMOUS', 'UNEMPLOYED', 'RETIRED', 'NOT_INSURED'], options_positions=((33,131),(124,131),(219,131),(305,131),(408,131),(500,131),), square_size=(9,9), camp_name='Pension Status', nullable=True)
             pdf.add_morelines_text(text=exam_results, initial_pos=(25, 362), decrease_ypos= 10, camp_name='Exam Results', len_max=403, char_per_lines=101, len_min=5, nullable=True)            
             pdf.add_oneline_text(text=chart_number, pos=(466, 683), camp_name='Chart Number', len_max=20, len_min=1,nullable=True)            
             pdf.add_oneline_text(text=patient_ethnicity, pos=(510, 658), camp_name='Patient Ehinicity', len_max=11, len_min=4, nullable=True)

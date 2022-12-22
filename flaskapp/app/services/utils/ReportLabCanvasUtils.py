@@ -56,6 +56,15 @@ class ReportLabCanvasUtils():
         except:
             raise Exception(f'{arg_to_validate} tipo {right_type} erro desconhecido enquanto validava os argumentos {variables_keys} na funcao {function_to_verify}')
 
+    def set_font(self, fontname:str, size:int) -> None:
+        """Change canvas font
+
+        Args:
+            fontname (str): font name
+            size (int): size 
+        """
+        self.can.setFont(fontname, size)
+        return None
 
     def is_RG_valid(self, rg:str) -> bool:
         # Notice that RG changes a lot in every brazillian state

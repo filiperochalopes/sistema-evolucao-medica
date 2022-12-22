@@ -23,16 +23,6 @@ class PdfAihSus(ReportLabCanvasUtils):
         pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
         self.can.setFont('Roboto-Mono', 9)
     
-    
-    def set_font(self, fontname:str, size:int) -> None:
-        """Change canvas font
-
-        Args:
-            fontname (str): font name
-            size (int): size 
-        """
-        self.can.setFont(fontname, size)
-        return None
 
     def get_output(self) -> PdfWriter:
         """Return a PdfWriter Object to output a file"""
