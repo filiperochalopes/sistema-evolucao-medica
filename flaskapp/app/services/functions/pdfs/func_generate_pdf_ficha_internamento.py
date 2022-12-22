@@ -109,15 +109,24 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
 
         #Adding data that can be null
         try:
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_number, pos=(24, 580), camp_name='Patient Adress Number', len_max=6, len_min=1, value_min=0, value_max=999999, nullable=True)
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_neigh, pos=(66, 580), camp_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(243, 580), camp_name='Patient Adress City', len_max=34, len_min=3, nullable=True)
-            c = pdf_functions.add_UF(can=c, uf=patient_adress_uf, pos=(444, 580), camp_name='Patient Adress UF', nullable=True)
-            c = pdf_functions.add_CEP(can=c, cep=patient_adress_cep, pos=(483, 580), camp_name='Patient Adress CEP', nullable=True, formated=True)
-            c = pdf_functions.add_oneline_text(can=c, text=patient_nationality, pos=(27, 547), camp_name='Patient nationality', len_max=25, len_min=3, nullable=True)
-            c = pdf_functions.add_oneline_intnumber(can=c, number=patient_estimate_weight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, value_min=1, value_max=500, nullable=True)
+            # c = pdf_functions.add_oneline_intnumber(can=c, number=patient_adress_number, pos=(24, 580), camp_name='Patient Adress Number', len_max=6, len_min=1, value_min=0, value_max=999999, nullable=True)
+            # c = pdf_functions.add_oneline_text(can=c, text=patient_adress_neigh, pos=(66, 580), camp_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
+            # c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(243, 580), camp_name='Patient Adress City', len_max=34, len_min=3, nullable=True)
+            # c = pdf_functions.add_UF(can=c, uf=patient_adress_uf, pos=(444, 580), camp_name='Patient Adress UF', nullable=True)
+            # c = pdf_functions.add_CEP(can=c, cep=patient_adress_cep, pos=(483, 580), camp_name='Patient Adress CEP', nullable=True, formated=True)
+            # c = pdf_functions.add_oneline_text(can=c, text=patient_nationality, pos=(27, 547), camp_name='Patient nationality', len_max=25, len_min=3, nullable=True)
+            # c = pdf_functions.add_oneline_intnumber(can=c, number=patient_estimate_weight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, value_min=1, value_max=500, nullable=True)
+            # if has_additional_health_insurance != None:
+            #     c = pdf_functions.add_markable_square(can=c, option=str(has_additional_health_insurance), valid_options=['SIM','NAO'], options_positions=((419, 544), (380, 544)), camp_name='Has additional Healt insurance', nullable=False)
+            pdf.add_oneline_intnumber(number=patient_adress_number, pos=(24, 580), camp_name='Patient Adress Number', len_max=6, len_min=1, value_min=0, value_max=999999, nullable=True)
+            pdf.add_oneline_text(text=patient_adress_neigh, pos=(66, 580), camp_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
+            pdf.add_oneline_text(text=patient_adress_city, pos=(243, 580), camp_name='Patient Adress City', len_max=34, len_min=3, nullable=True)
+            pdf.add_UF(uf=patient_adress_uf, pos=(444, 580), camp_name='Patient Adress UF', nullable=True)
+            pdf.add_CEP(cep=patient_adress_cep, pos=(483, 580), camp_name='Patient Adress CEP', nullable=True, formated=True)
+            pdf.add_oneline_text(text=patient_nationality, pos=(27, 547), camp_name='Patient nationality', len_max=25, len_min=3, nullable=True)
+            pdf.add_oneline_intnumber(number=patient_estimate_weight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, value_min=1, value_max=500, nullable=True)
             if has_additional_health_insurance != None:
-                c = pdf_functions.add_markable_square(can=c, option=str(has_additional_health_insurance), valid_options=['SIM','NAO'], options_positions=((419, 544), (380, 544)), camp_name='Has additional Healt insurance', nullable=False)
+                pdf.add_markable_square(option=str(has_additional_health_insurance), valid_options=['SIM','NAO'], options_positions=((419, 544), (380, 544)), camp_name='Has additional Healt insurance', nullable=False)
 
         except Exception as error:
             return error
@@ -140,7 +149,7 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
 
         #Get pdf base64
         pdf_base64_enconded = pdf.get_base64()        
-        
+
         return {
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
         }
