@@ -4,10 +4,18 @@ import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
 import pytest
 
-global lenght_test
-lenght_test = ''
-for x in range(0, 2000):
-    lenght_test += str(x)
+global lenght_test_parametrize
+lenght_test_parametrize = ''
+for x in range(0, 1100):
+    lenght_test_parametrize += str(x)
+
+@pytest.fixture
+def lenght_test():
+    """generate a string with data with charactes to test lenght"""
+    lenght_test = ''
+    for x in range(0, 1100):
+        lenght_test += str(x)
+    return lenght_test
 
 datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
 
@@ -54,11 +62,13 @@ def test_answer_with_all_fields():
 ##############################################################
 # ERRORS IN NAMES CAMPS
 # patient_name
-
-@pytest.mark.parametrize("test_input", ['    ', '', lenght_test[:36], '11113', 123124])
+@pytest.mark.parametrize("test_input", ['    ', '','11113', 123124])
 def test_patient_name(test_input):
     assert data_to_use(patient_name=test_input) == False
 
+def test_lenght_patient_name(lenght_test):
+    text = lenght_test[:36]
+    assert data_to_use(patient_name=text) == False
 
 #################################################################
 # TEST DATETIMES VARIABLES
@@ -83,85 +93,48 @@ def test_valid_document_datetime():
 # test use_mode with wrong type
 # test use_mode longer
 
-def test_wrongtype_prescriptions():
-    assert data_to_use(prescription=131231) == False
-
-
-
-def test_dicts_without_necessary_keys():
-    query_to_test = f"""
+@pytest.mark.parametrize("test_input", [
+    f"""
     medicineName:"Dipirona", 
     amount: "8 comprimidos"
-    """
-    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
-
-def test_dicts_with_more_than_necessary_keys():
-    query_to_test = f"""
+    """,
+    f"""
     medicineName:"Dipirona", 
     amount: "8 comprimidos", 
     useMode:"8/8 comprimidos",
     dontExiste: "uai"
-    """
-    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
-
-def test_medicine_name_with_wrongtype():
-    query_to_test = f"""
+    """,
+    f"""
     medicineName:65452, 
     amount: "8 comprimidos", 
     useMode:"8/8 comprimidos"
-    """
-    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
-
-def test_medicine_name_longer():
-    query_to_test = f"""
-    medicineName:"{lenght_test[:70]}", 
+    """,
+    f"""
+    medicineName:"{lenght_test_parametrize[:70]}", 
     amount: "8 comprimidos", 
     useMode:"8/8 comprimidos"
-    """
-    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
-
-def test_amount_with_wrongtype():
-    query_to_test = f"""
+    """,
+    f"""
     medicineName:"sadfasdf", 
     amount:875452, 
     useMode:"8/8 comprimidos"
-    """
-    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
-
-def test_amount_longer():
-    query_to_test = f"""
+    """,
+    f"""
     medicineName:"sadfasdf", 
-    amount:"{lenght_test[:265]}", 
+    amount:"{lenght_test_parametrize[:265]}", 
     useMode:"8/8 comprimidos"
-    """
-    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
-    
-
-def test_use_mode_with_wrongtype():
-    query_to_test = f"""
+    """,
+    f"""
     medicineName:"sadfasdf", 
     amount:"4 comprimidos", 
     useMode: 112313
-    """
-    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
-
-def test_use_mode_longer():
-    query_to_test = f"""
+    """,
+    f"""
     medicineName:"sadfasdf", 
     amount:"4 comprimidos", 
-    useMode:"{lenght_test[:265]}"
+    useMode:"{lenght_test_parametrize[:265]}"
     """
-    assert data_to_use(prescription=str('{' + query_to_test + '}')) == False
-    
-
-
-
-
-
-
-
-
-
-
-
+])
+def test_prescription(test_input):
+    assert data_to_use(prescription=str('{' + test_input + '}')) == False
 
