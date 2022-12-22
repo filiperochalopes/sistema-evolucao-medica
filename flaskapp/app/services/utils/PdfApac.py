@@ -50,7 +50,7 @@ class PdfApac(ReportLabCanvasUtils):
             camp_name (str): camp name
 
         Returns:
-            canvas.Canvas: canvas updated
+            None
         """
         try:
             if procedure == None:
@@ -84,3 +84,45 @@ class PdfApac(ReportLabCanvasUtils):
             raise error
         except:
             raise Exception(f'Erro desconhecido enquanto adicionava o procedimento {procedure}')
+    
+
+    def add_secondary_procedures(self, procedures:list) -> None:
+        """Add secondary procedures
+
+        Args:
+            can (canvas.Canvas): canvas to use
+            procedures (list): list with dicts with procedures
+
+        Returns:
+            None
+        """    
+        #verify if the type is list
+        try:
+            if procedures == None:
+                return None
+            if type(procedures) != type(list()):
+                raise Exception('procedimentos (procedures) devem ser uma lista de dicionarios, exemplo: [{"name":"Procedure Name", "code":"cod124235", "quant":5}, {"name":"Another Procedure", "code":"another12", "quant":1}]')
+            if len(procedures) > 5:
+                raise Exception('Voce nao pode adicionar mais que 5 procedimentos secundarios')
+            
+            #Add to cnavas
+            cont = 1
+            NAME_X_POS = 220
+            CODE_X_POS = 36
+            QUANT_X_POS = 516
+            ypos = 495
+            REDUCE_Y = 26
+            #Add code fist with upper font
+            self.set_font('Roboto-Mono', 10)
+            # Add all procedures
+            for proc in procedures:
+                self.add_procedure(procedure=proc, code_pos=(CODE_X_POS, ypos), name_pos=(NAME_X_POS, ypos), quant_pos=(QUANT_X_POS, ypos), camp_name=f'({cont}) second procedures')
+                ypos -= REDUCE_Y
+
+            return None
+
+        except Exception as error:
+            raise error
+        except:
+            raise Exception(f'Erro desconhecido enquanto adicionava procedimentos secundarios')
+
