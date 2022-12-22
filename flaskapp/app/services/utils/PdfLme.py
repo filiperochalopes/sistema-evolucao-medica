@@ -1,5 +1,4 @@
 from app.env import FONT_DIRECTORY, TEMPLATE_LME_DIRECTORY, WRITE_LME_DIRECTORY
-
 from app.services.utils.ReportLabCanvasUtils import ReportLabCanvasUtils
 import io
 from reportlab.pdfgen import canvas

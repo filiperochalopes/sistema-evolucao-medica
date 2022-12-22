@@ -6,6 +6,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from app.services.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY, WRITE_PRESCRICAO_MEDICA_DIRECTORY
+from app.services.utils.PdfPrescricaoMedica import PdfPrescricaoMedica
 
 
 def func_generate_pdf_prescricao_medica( document_datetime:str, patient_name:str, prescription:list) -> str:
@@ -23,6 +24,8 @@ def func_generate_pdf_prescricao_medica( document_datetime:str, patient_name:str
     
     try:
         try:
+            pdf = PdfPrescricaoMedica()
+            
             packet = io.BytesIO()
             # Create canvas and add data
             page_size_points = (841.92, 595.2)
@@ -33,36 +36,51 @@ def func_generate_pdf_prescricao_medica( document_datetime:str, patient_name:str
             c.setFont('Roboto-Mono', 12)
             # Writing all data in respective fields
             # not null data
+
+            # initial_date_X_pos = 294
+            # initial_name_X_pos = 120
+            # for x in range(0, 2):
+            #     c = pdf_functions.add_datetime(can=c, date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
+            #     c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
+            #     initial_date_X_pos += 450
+            #     initial_name_X_pos += 451
+
+            # c.setFont('Roboto-Mono', 10)
+            # c = add_prescription(canvas=c, prescription=prescription)
+            #c = add_prescription(canvas=c, prescription=prescription)
+
             initial_date_X_pos = 294
             initial_name_X_pos = 120
             for x in range(0, 2):
-
-                c = pdf_functions.add_datetime(can=c, date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
-                c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
+                pdf.add_datetime(date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
+                pdf.add_oneline_text(text=patient_name, pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
                 initial_date_X_pos += 450
                 initial_name_X_pos += 451
 
-            c.setFont('Roboto-Mono', 10)
-            c = add_prescription(canvas=c, prescription=prescription)
-
+            pdf.set_font('Roboto-Mono', 10)
+            pdf.add_prescription(prescription=prescription)
         except Exception as error:
             return error
         except:
             return Exception('Erro desconhecido ocorreu enquanto adicionava dados obrigadorios')
     
-        # create a new PDF with Reportlab
-        c.save()
-        packet.seek(0)
-        new_pdf = PdfReader(packet)
-        # read the template pdf 
-        template_pdf = PdfReader(open(TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY, "rb"))
-        output = PdfWriter()
-        # add the "watermark" (which is the new pdf) on the existing page
-        page = template_pdf.pages[0]
-        page.merge_page(new_pdf.pages[0])
-        output.add_page(page)
+        # # create a new PDF with Reportlab
+        # c.save()
+        # packet.seek(0)
+        # new_pdf = PdfReader(packet)
+        # # read the template pdf 
+        # template_pdf = PdfReader(open(TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY, "rb"))
+        # output = PdfWriter()
+        # # add the "watermark" (which is the new pdf) on the existing page
+        # page = template_pdf.pages[0]
+        # page.merge_page(new_pdf.pages[0])
+        # output.add_page(page)
 
-        pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
+        # pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
+
+
+        #Get pdf base64
+        pdf_base64_enconded = pdf.get_base64()
 
         return {
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
