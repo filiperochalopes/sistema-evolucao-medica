@@ -38,17 +38,3 @@ class PdfAihSus(ReportLabCanvasUtils):
         output.add_page(page)
         return output
 
-
-    
-
-if __name__ == '__main__':
-    bah = PdfAihSus()
-    bah.add_data('testando', pos=(34, 32))
-    print(bah)
-
-def test_class():
-    bah = PdfAihSus()
-    bah.add_data('output test', pos=(34, 32))
-    bah.write_newpdf()
-    print(bah)
-    assert type(bah) == 'str'
