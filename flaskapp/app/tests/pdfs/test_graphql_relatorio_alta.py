@@ -4,10 +4,19 @@ import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
 import pytest
 
-global lenght_test
-lenght_test = ''
-for x in range(0, 2200):
-    lenght_test += str(x)
+# Variable to parametrize 
+global lenght_test_parametrize
+lenght_test_parametrize = ''
+for x in range(0, 1100):
+    lenght_test_parametrize += str(x)
+
+@pytest.fixture
+def lenght_test():
+    """generate a string with data with charactes to test lenght"""
+    lenght_test = ''
+    for x in range(0, 1100):
+        lenght_test += str(x)
+    return lenght_test
 
 datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
 document_datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
@@ -111,11 +120,11 @@ def test_awnser_with_only_required_data():
 # short name
 # wrong name type
 
-@pytest.mark.parametrize("test_input", ['    ', '', lenght_test[:71], '11113', 123124])
+@pytest.mark.parametrize("test_input", ['    ', '', lenght_test_parametrize[:71], '11113', 123124])
 def test_patient_mother_name(test_input):
     assert data_to_use(patient_mother_name=test_input) == False
 
-@pytest.mark.parametrize("test_input", ['    ', '', lenght_test[:52], '11113', 123124])
+@pytest.mark.parametrize("test_input", ['    ', '', lenght_test_parametrize[:52], '11113', 123124])
 def test_doctor_name(test_input):
     assert data_to_use(doctor_name=test_input) == False
 
@@ -186,7 +195,7 @@ def test_sex(test_input):
 # TEST ADRESS VARIABLES
 # patient_adress
 
-@pytest.mark.parametrize("test_input", ['', '    ', '111', lenght_test[:65]])
+@pytest.mark.parametrize("test_input", ['', '    ', '111', lenght_test_parametrize[:65]])
 def test_patient_adress(test_input):
     assert data_to_use(patient_adress=test_input) == False
 
@@ -196,11 +205,11 @@ def test_patient_adress(test_input):
 # evolution
 # orientations
 
-@pytest.mark.parametrize("test_input", ['', '    ', 111, 'aaaa', lenght_test[:2150]])
+@pytest.mark.parametrize("test_input", ['', '    ', 111, 'aaaa', lenght_test_parametrize[:2150]])
 def test_evolution(test_input):
     assert data_to_use(evolution=test_input) == False
 
-@pytest.mark.parametrize("test_input", [111, 'aaaa', lenght_test[:850]])
+@pytest.mark.parametrize("test_input", [111, 'aaaa', lenght_test_parametrize[:850]])
 def test_false_orientations(test_input):
     assert data_to_use(orientations=test_input) == False
 
