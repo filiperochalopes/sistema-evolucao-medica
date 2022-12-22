@@ -9,6 +9,8 @@ from math import ceil
 from typing import Union
 from app.services.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_EXAM_REQUEST_DIRECTORY, WRITE_EXAM_REQUEST_DIRECTORY
+from app.services.utils.PdfExamRequest import PdfExamRequest
+
 
 def func_generate_pdf_exam_request(patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_adress:str, solicitation_reason:str,
 exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof_authorized_name:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> str:
@@ -33,6 +35,8 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
     """
 
     try:
+        pdf = PdfExamRequest()
+
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -49,6 +53,7 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
             c, pags_quant = add_exams(canvas=c, exams=exams)
             # verify if c is a error at some point
 
+            pdf.add_exams(exams=exams)
             #Add to multiple pages
             decreaseYpos = 280
             patient_name_ypos = 775
@@ -104,19 +109,22 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
             return Exception('Erro desconhecido ocorreu enquanto adicionava dados opcionais')
         
 
-        # create a new PDF with Reportlab
-        c.save()
-        packet.seek(0)
-        new_pdf = PdfReader(packet)
-        # read the template pdf 
-        template_pdf = PdfReader(open(TEMPLATE_EXAM_REQUEST_DIRECTORY[pags_quant-1], "rb"))
-        output = PdfWriter()
-        # add the "watermark" (which is the new pdf) on the existing page
-        page = template_pdf.pages[0]
-        page.merge_page(new_pdf.pages[0])
-        output.add_page(page)
+        # # create a new PDF with Reportlab
+        # c.save()
+        # packet.seek(0)
+        # new_pdf = PdfReader(packet)
+        # # read the template pdf 
+        # template_pdf = PdfReader(open(TEMPLATE_EXAM_REQUEST_DIRECTORY[pags_quant-1], "rb"))
+        # output = PdfWriter()
+        # # add the "watermark" (which is the new pdf) on the existing page
+        # page = template_pdf.pages[0]
+        # page.merge_page(new_pdf.pages[0])
+        # output.add_page(page)
 
-        pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
+        #pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
+
+        #Get pdf base64
+        pdf_base64_enconded = pdf.get_base64()
 
         return {
             "base64Pdf": str(pdf_base64_enconded)[2:-1]
