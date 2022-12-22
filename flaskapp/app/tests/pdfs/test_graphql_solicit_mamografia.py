@@ -408,9 +408,8 @@ def test_radiotherapy_before(test_input):
 # long value  
 # test not exist option
 
-
-def test_right_diagnostic_mammogram_exame_clinico():
-    assert data_to_use(diagnostic_mammogram='''{
+@pytest.mark.parametrize("test_input", [
+    '''{
     exameClinico:{
         direta: {
             papilar: true,
@@ -427,42 +426,53 @@ def test_right_diagnostic_mammogram_exame_clinico():
             linfonodoPalpavel:["AXILAR", "SUPRACLAVICULAR"]
             }
         }
-    }''') == True
-
-def test_right_diagnostic_mammogram_controle_radiologico():
-    assert data_to_use(diagnostic_mammogram='''{
+    }''',
+    '''{
         controleRadiologico:{
         direta: ["nodulo", "microca", "assimetria_focal"],
         esquerda: ["nodulo", "microca", "assimetria_focal"]
         }
-    }''') == True
-
-def test_right_diagnostic_mammogram_lesao_diagnostico():
-    assert data_to_use(diagnostic_mammogram='''{
+    }''',
+    '''{
         lesaoDiagnostico: {
         direta: ["nodulo", "microca", "assimetria_focal"],
         esquerda: ["nodulo", "microca", "assimetria_focal"] 
         }
-    }''') == True
-
-def test_right_diagnostic_mammogram_avaliacao_resposta():
-    assert data_to_use(diagnostic_mammogram='''{
+    }''',
+    '''{
         avaliacaoResposta: ["direita", "esquerda"]
-    }''') == True
-
-def test_right_diagnostic_mammogram_revisao_mamografia_lesao():
-    assert data_to_use(diagnostic_mammogram='''{
+    }''',
+    '''{
         revisaoMamografiaLesao: {
         direta: ["0", "3", "4", "5"],
         esquerda: ["0", "3", "4", "5"]
         }
-    }''') == True
-
-def test_right_diagnostic_mammogram_revisao_controle_lesao():
-    assert data_to_use(diagnostic_mammogram='''{
+    }''',
+    '''{
         controleLesao: {
         direta: ["nodulo", "microca", "assimetria_focal"],
         esquerda: ["nodulo", "microca", "assimetria_focal"]
         }
-        }''') == True
+        }'''
+])
+def test_diagnostic_mammogram(test_input):
+    assert data_to_use(diagnostic_mammogram=test_input) == True
+
+# def test_right_diagnostic_mammogram_exame_clinico():
+#     assert data_to_use(diagnostic_mammogram=) == True
+
+# def test_right_diagnostic_mammogram_controle_radiologico():
+#     assert data_to_use(diagnostic_mammogram=) == True
+
+# def test_right_diagnostic_mammogram_lesao_diagnostico():
+#     assert data_to_use(diagnostic_mammogram=) == True
+
+# def test_right_diagnostic_mammogram_avaliacao_resposta():
+#     assert data_to_use(diagnostic_mammogram=) == True
+
+# def test_right_diagnostic_mammogram_revisao_mamografia_lesao():
+#     assert data_to_use(diagnostic_mammogram=) == True
+
+# def test_right_diagnostic_mammogram_revisao_controle_lesao():
+#     assert data_to_use(diagnostic_mammogram=) == True
 
