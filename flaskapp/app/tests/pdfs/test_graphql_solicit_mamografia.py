@@ -4,25 +4,33 @@ import datetime
 from app.env import GRAPHQL_MUTATION_QUERY_URL
 import pytest
 
-global lenght_test
-lenght_test = ''
-for x in range(0, 1100):
-    lenght_test += str(x)
+@pytest.fixture
+def lenght_test():
+    """generate a string with data with charactes to test lenght"""
+    lenght_test = ''
+    for x in range(0, 1100):
+        lenght_test += str(x)
+    return lenght_test
 
-datetime_to_use = datetime.datetime.now().strftime('%d/%m/%Y')
-# Select your transport with ag graphql url endpoint
-transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+@pytest.fixture
+def datetime_to_use():
+    """get current datetime to test"""
+    return datetime.datetime.now().strftime('%d/%m/%Y')
 
-# Create a GraphQL client using the defined transport
-client = Client(transport=transport, fetch_schema_from_transport=True)
+@pytest.fixture
+def client():
+    # Select your transport with ag graphql url endpoint
+    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+    # Create a GraphQL client using the defined transport
+    return Client(transport=transport, fetch_schema_from_transport=True)
 
 
-def data_to_use(
+def data_to_use(client, datetime_to_use, 
     patient_name='Patient Name',
     patient_cns='928976954930007',
     patient_mother_name='Patient Mother Name',
-    patient_birthday=datetime_to_use,
-    solicitation_datetime=datetime_to_use,
+    patient_birthday=None,
+    solicitation_datetime=None,
     prof_solicitor_name='Professional Name',
     nodule_lump='NAO',
     high_risk='NAOSABE',
@@ -51,7 +59,7 @@ def data_to_use(
     patient_adress_reference='Adress Reference',
     patient_schooling='SUPCOMPL',
     patient_adress_cep='12345678',
-    exam_number=lenght_test[:10],
+    exam_number="4512457845",
     tracking_mammogram='JATRATADO',
     patient_phonenumber='1234567890',
     radiotherapy_before='["SIMESQ", "2020"]',
@@ -109,6 +117,11 @@ indusaoImplantes: [null]
 }'''
 ):
 
+    if solicitation_datetime == None:
+        solicitation_datetime = datetime_to_use
+    if patient_birthday == None:
+        patient_birthday = datetime_to_use
+    
     request_string = """
         mutation{
             generatePdf_SolicitMamografia("""
@@ -170,13 +183,13 @@ indusaoImplantes: [null]
         return False 
 
 
-def test_with_data_in_function():
-    assert data_to_use() == True
+def test_with_data_in_function(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use) == True
 
-def test_answer_with_all_fields():
-    assert data_to_use() == True
+def test_answer_with_all_fields(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use) == True
 
-def test_awnser_with_only_required_data():
+def test_awnser_with_only_required_data(client, datetime_to_use):
     request_string = """
         mutation{
             generatePdf_SolicitMamografia("""
@@ -218,11 +231,11 @@ def test_awnser_with_only_required_data():
 # test valid datetime
 
 
-def test_valid_patient_birthday():
-    assert data_to_use(patient_birthday=datetime_to_use) == True
+def test_valid_patient_birthday(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_birthday=datetime_to_use) == True
 
-def test_valid_solicitation_datetime():
-    assert data_to_use(solicitation_datetime=datetime_to_use) == True
+def test_valid_solicitation_datetime(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, solicitation_datetime=datetime_to_use) == True
 
 ##################################################################
 # TEST MARKABLE OPTIONS
@@ -239,27 +252,27 @@ def test_valid_solicitation_datetime():
 # test all options in lower Case
 
 @pytest.mark.parametrize("test_input", ['G', 1231])
-def test_false_sex(test_input):
-    assert data_to_use(patient_sex=test_input) == False
+def test_false_sex(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_sex=test_input) == False
 
 @pytest.mark.parametrize("test_input", ['M', 'm', 'F', 'f'])
-def test_sex(test_input):
-    assert data_to_use(patient_sex=test_input) == True
+def test_sex(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_sex=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['SIMDIR', 'simdir', 'SIMESQ', 'simesq',
 'NAO', 'nao'])
-def test_nodule_lump(test_input):
-    assert data_to_use(nodule_lump=test_input) == True
+def test_nodule_lump(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, nodule_lump=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['SIM', 'sim', 'NAOSABE', 'naosabe',
 'NAO', 'nao'])
-def test_high_risk(test_input):
-    assert data_to_use(high_risk=test_input) == True
+def test_high_risk(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, high_risk=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['SIM', 'sim', 'NAOSABE', 'naosabe',
 'NUNCA', 'nunca'])
-def test_examinated_before(test_input):
-    assert data_to_use(examinated_before=test_input) == True
+def test_examinated_before(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, examinated_before=test_input) == True
 
 @pytest.mark.parametrize("test_input", [
 '["BRANCA", "ehinith"]',
@@ -273,8 +286,8 @@ def test_examinated_before(test_input):
 '["INDIGENA", "ehinith"]',
 '["indigena", "ehinith"]'
 ])
-def test_patient_ethnicity(test_input):
-    assert data_to_use(patient_ethnicity=test_input) == True
+def test_patient_ethnicity(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_ethnicity=test_input) == True
 
 @pytest.mark.parametrize("test_input", [
     'ANALFABETO', 
@@ -288,8 +301,8 @@ def test_patient_ethnicity(test_input):
     'SUPCOMPL',
     'supcompl'
 ])
-def test_patient_schooling(test_input):
-    assert data_to_use(patient_schooling=test_input) == True
+def test_patient_schooling(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_schooling=test_input) == True
 
 @pytest.mark.parametrize("test_input", [
     'POPALVO',
@@ -299,8 +312,8 @@ def test_patient_schooling(test_input):
     'JATRATADO',
     'jatratado'
 ])
-def test_tracking_mammogram(test_input):
-    assert data_to_use(tracking_mammogram=test_input) == True
+def test_tracking_mammogram(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, tracking_mammogram=test_input) == True
 
 
 ####################################################################
@@ -324,36 +337,36 @@ def test_tracking_mammogram(test_input):
 # Long value
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_patient_adress(test_input):
-    assert data_to_use(patient_adress=test_input) == True
+def test_patient_adress(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_adress=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_patient_adress_city(test_input):
-    assert data_to_use(patient_adress_city=test_input) == True
+def test_patient_adress_city(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_adress_city=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_health_unit_adress_city(test_input):
-    assert data_to_use(health_unit_adress_city=test_input) == True
+def test_health_unit_adress_city(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, health_unit_adress_city=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_patient_adress_adjunct(test_input):
-    assert data_to_use(patient_adress_adjunct=test_input) == True
+def test_patient_adress_adjunct(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_adress_adjunct=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_patient_adress_neighborhood(test_input):
-    assert data_to_use(patient_adress_neighborhood=test_input) == True
+def test_patient_adress_neighborhood(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_adress_neighborhood=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_patient_adress_reference(test_input):
-    assert data_to_use(patient_adress_reference=test_input) == True
+def test_patient_adress_reference(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_adress_reference=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
-def test_ufs(test_input):
-    assert data_to_use(patient_adress_uf=test_input) == True
+def test_ufs(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_adress_uf=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
-def test_health_unit_adress_uf(test_input):
-    assert data_to_use(health_unit_adress_uf=test_input) == True
+def test_health_unit_adress_uf(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, health_unit_adress_uf=test_input) == True
 
 
 #############################################################################
@@ -369,12 +382,12 @@ def test_health_unit_adress_uf(test_input):
 
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_protocol_number(test_input):
-    assert data_to_use(protocol_number=test_input) == True
+def test_protocol_number(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, protocol_number=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_patient_nationality(test_input):
-    assert data_to_use(patient_nationality=test_input) == True
+def test_patient_nationality(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_nationality=test_input) == True
 
 
 #################################################################################
@@ -397,8 +410,8 @@ def test_patient_nationality(test_input):
     '["nao", "2020"]',
     '["NAOSABE", "2020"]'
 ])
-def test_radiotherapy_before(test_input):
-    assert data_to_use(radiotherapy_before=test_input) == True
+def test_radiotherapy_before(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, radiotherapy_before=test_input) == True
 
 #############################################################################
 # test diagnostic_mammogram
@@ -455,24 +468,6 @@ def test_radiotherapy_before(test_input):
         }
         }'''
 ])
-def test_diagnostic_mammogram(test_input):
-    assert data_to_use(diagnostic_mammogram=test_input) == True
-
-# def test_right_diagnostic_mammogram_exame_clinico():
-#     assert data_to_use(diagnostic_mammogram=) == True
-
-# def test_right_diagnostic_mammogram_controle_radiologico():
-#     assert data_to_use(diagnostic_mammogram=) == True
-
-# def test_right_diagnostic_mammogram_lesao_diagnostico():
-#     assert data_to_use(diagnostic_mammogram=) == True
-
-# def test_right_diagnostic_mammogram_avaliacao_resposta():
-#     assert data_to_use(diagnostic_mammogram=) == True
-
-# def test_right_diagnostic_mammogram_revisao_mamografia_lesao():
-#     assert data_to_use(diagnostic_mammogram=) == True
-
-# def test_right_diagnostic_mammogram_revisao_controle_lesao():
-#     assert data_to_use(diagnostic_mammogram=) == True
+def test_diagnostic_mammogram(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, diagnostic_mammogram=test_input) == True
 
