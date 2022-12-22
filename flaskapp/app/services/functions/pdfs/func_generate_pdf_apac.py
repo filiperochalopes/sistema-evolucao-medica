@@ -8,6 +8,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from app.services.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_APAC_DIRECTORY, WRITE_APAC_DIRECTORY
+from app.services.utils.PdfApac import PdfApac
 
 
 def func_generate_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:str, patient_sex:str, patient_birthday:str, patient_adress_city:str, main_procedure:dict, patient_mother_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adress_uf:str=None, patient_adress_cep:str=None, document_chart_number:str=None, patient_adress_city_ibge_code:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, prof_autorization_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
@@ -59,6 +60,7 @@ def func_generate_pdf_apac(establishment_solitc_name:str, establishment_solitc_c
         str: Request with pdf in base64
     """    
     try:
+        pdf = PdfApac()
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -69,16 +71,16 @@ def func_generate_pdf_apac(establishment_solitc_name:str, establishment_solitc_c
         # Writing all data in respective fields
         # not null data
         try:
-            c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(36, 678), camp_name='Patient CNS', interval='  ')
-            c = add_procedure(can=c, procedure=main_procedure, code_pos=(36,542), name_pos=(220, 542), quant_pos=(508, 542), camp_name='Main Procedure')
+            pdf.add_cns(cns=patient_cns, pos=(36, 678), camp_name='Patient CNS', interval='  ')
+            pdf.add_procedure(procedure=main_procedure, code_pos=(36,542), name_pos=(220, 542), quant_pos=(508, 542), camp_name='Main Procedure')
 
-            c.setFont('Roboto-Mono', 9)
-            c = pdf_functions.add_oneline_text(can=c, text=establishment_solitc_name, pos=(36, 742), camp_name='Establishment Solict Name', len_max=77, len_min=7)
-            c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(36, 702), camp_name='Patient Name', len_max=67, len_min=7)
-            c = pdf_functions.add_sex_square(can=c, sex=patient_sex, pos_male=(423, 699), pos_fem=(456, 699), camp_name='Patient Sex', square_size=(9,9))
-            c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(315, 678), camp_name='Patient Birthday', hours=False, interval='  ', formated=False)
-            c = pdf_functions.add_oneline_text(can=c, text=patient_adress_city, pos=(36, 584), camp_name='Patient Adress City', len_max=58, len_min=3)
-            c = pdf_functions.add_oneline_intnumber(can=c, number=establishment_solitc_cnes, pos=(468, 742), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999)
+            pdf.set_font('Roboto-Mono', 9)
+            pdf.add_oneline_text(text=establishment_solitc_name, pos=(36, 742), camp_name='Establishment Solict Name', len_max=77, len_min=7)
+            pdf.add_oneline_text(text=patient_name, pos=(36, 702), camp_name='Patient Name', len_max=67, len_min=7)
+            pdf.add_sex_square(sex=patient_sex, pos_male=(423, 699), pos_fem=(456, 699), camp_name='Patient Sex', square_size=(9,9))
+            pdf.add_datetime(date=patient_birthday, pos=(315, 678), camp_name='Patient Birthday', hours=False, interval='  ', formated=False)
+            pdf.add_oneline_text(text=patient_adress_city, pos=(36, 584), camp_name='Patient Adress City', len_max=58, len_min=3)
+            pdf.add_oneline_intnumber(number=establishment_solitc_cnes, pos=(468, 742), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999)
         
         except Exception as error:
             return error
@@ -125,18 +127,21 @@ def func_generate_pdf_apac(establishment_solitc_name:str, establishment_solitc_c
             return Exception('Erro desconhecido ocorreu enquanto adicionava dados opcionais')
 
         # create a new PDF with Reportlab
-        c.save()
-        packet.seek(0)
-        new_pdf = PdfReader(packet)
-        # read the template pdf 
-        template_pdf = PdfReader(open(TEMPLATE_APAC_DIRECTORY, "rb"))
-        output = PdfWriter()
-        # add the "watermark" (which is the new pdf) on the existing page
-        page = template_pdf.pages[0]
-        page.merge_page(new_pdf.pages[0])
-        output.add_page(page)
+        # c.save()
+        # packet.seek(0)
+        # new_pdf = PdfReader(packet)
+        # # read the template pdf 
+        # template_pdf = PdfReader(open(TEMPLATE_APAC_DIRECTORY, "rb"))
+        # output = PdfWriter()
+        # # add the "watermark" (which is the new pdf) on the existing page
+        # page = template_pdf.pages[0]
+        # page.merge_page(new_pdf.pages[0])
+        # output.add_page(page)
 
-        pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
+        # pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
+        
+        #Get pdf base64
+        pdf_base64_enconded = pdf.get_base64()
 
         return {
             "base64Pdf": str(pdf_base64_enconded)[2:-1]

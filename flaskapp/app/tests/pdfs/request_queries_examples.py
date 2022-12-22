@@ -129,13 +129,6 @@ mutation{
 """
 
 
-
-
-
-
-
-
-
 ficha_internamento_request_string = """
 # Write your query or mutation here
 mutation{
