@@ -11,7 +11,6 @@ from validate_docbr import CNS, CPF, CNPJ
 import base64
 
 
-
 class ReportLabCanvasUtils():
 
     def __init__(self):
@@ -167,8 +166,6 @@ class ReportLabCanvasUtils():
             output_file = open(self.WRITE_DIRECTORY, 'wb')
             output.write(output_file)
             output_file.close()
-        except Exception as error:
-            raise error
         except:
             raise Exception("Erro desconhecido enquanto criava um novo arquivo pdf")
 
@@ -1057,58 +1054,4 @@ class ReportLabCanvasUtils():
             raise error
         except:
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
-
-
-
-from app.env import FONT_DIRECTORY, TEMPLATE_AIH_SUS_DIRECTORY, WRITE_AIH_SUS_DIRECTORY
-
-class PdfAihSus(ReportLabCanvasUtils):
-
-    TEMPLATE_DIRECTORY = TEMPLATE_AIH_SUS_DIRECTORY
-    WRITE_DIRECTORY = WRITE_AIH_SUS_DIRECTORY
-
-    def __init__(self):
-        self.packet = io.BytesIO()
-        # Create canvas and add data
-        self.can = canvas.Canvas(self.packet, pagesize=letter)
-        # Change canvas font to mach with the document
-        # this is also changed in the document to some especific fields
-        pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
-        self.can.setFont('Roboto-Mono', 9)
-
-
-    
-
-if __name__ == '__main__':
-    bah = PdfAihSus()
-    bah.add_data('testando', pos=(34, 32))
-    print(bah)
-
-def test_class():
-    bah = PdfAihSus()
-    bah.add_data('testando', pos=(34, 32))
-    bah.write_newpdf()
-    print(bah)
-    assert type(bah) == 'str'
- 
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
