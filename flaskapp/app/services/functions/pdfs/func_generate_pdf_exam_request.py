@@ -48,11 +48,38 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
         # Writing all data in respective fields
         # not null data
         try:
-            global pags_quant
-            pags_quant = 0
-            c, pags_quant = add_exams(canvas=c, exams=exams)
+            # global pags_quant
+            # pags_quant = 0
+            # c, pags_quant = add_exams(canvas=c, exams=exams)
             # verify if c is a error at some point
 
+            # #Add to multiple pages
+            # decreaseYpos = 280
+            # patient_name_ypos = 775
+            # patient_cns_ypos = 765
+            # patient_birthday_ypos = 784
+            # solicitation_datetime_ypos = 572
+            # patient_adress_ypos = 734
+            # solicitation_reason_ypos = 690
+            # prof_solicitor_ypos = 595
+            # for x in range(pags_quant):
+            #     c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(7, patient_name_ypos), camp_name='Patient Name', len_max=70, len_min=7)
+            #     c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(450, patient_cns_ypos), camp_name='Patient CNS',formated=True)
+            #     c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(441, patient_birthday_ypos), camp_name='Patient Birthday', hours=False, formated=True)
+            #     c = pdf_functions.add_morelines_text(can=c, text=patient_adress, initial_pos=(7, patient_adress_ypos), decrease_ypos=10, camp_name='Patient Adress', len_max=216, len_min=7, char_per_lines=108)
+            #     c = pdf_functions.add_morelines_text(can=c, text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, camp_name='Solicitation Reason', len_max=216, len_min=7, char_per_lines=108)
+            #     c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(7, prof_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
+            #     c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True)
+
+            #     #Decrese ypos in all lines to complete the page
+            #     patient_name_ypos -= decreaseYpos
+            #     patient_cns_ypos -= decreaseYpos
+            #     patient_birthday_ypos -= decreaseYpos
+            #     patient_adress_ypos -= decreaseYpos
+            #     solicitation_reason_ypos -= decreaseYpos
+            #     prof_solicitor_ypos -= decreaseYpos
+            #     solicitation_datetime_ypos -= decreaseYpos
+            
             pdf.add_exams(exams=exams)
             #Add to multiple pages
             decreaseYpos = 280
@@ -63,14 +90,14 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
             patient_adress_ypos = 734
             solicitation_reason_ypos = 690
             prof_solicitor_ypos = 595
-            for x in range(pags_quant):
-                c = pdf_functions.add_oneline_text(can=c, text=patient_name, pos=(7, patient_name_ypos), camp_name='Patient Name', len_max=70, len_min=7)
-                c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(450, patient_cns_ypos), camp_name='Patient CNS',formated=True)
-                c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(441, patient_birthday_ypos), camp_name='Patient Birthday', hours=False, formated=True)
-                c = pdf_functions.add_morelines_text(can=c, text=patient_adress, initial_pos=(7, patient_adress_ypos), decrease_ypos=10, camp_name='Patient Adress', len_max=216, len_min=7, char_per_lines=108)
-                c = pdf_functions.add_morelines_text(can=c, text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, camp_name='Solicitation Reason', len_max=216, len_min=7, char_per_lines=108)
-                c = pdf_functions.add_oneline_text(can=c, text=prof_solicitor_name, pos=(7, prof_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
-                c = pdf_functions.add_datetime(can=c, date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True)
+            for x in range(pdf.pags_quant):
+                pdf.add_oneline_text(text=patient_name, pos=(7, patient_name_ypos), camp_name='Patient Name', len_max=70, len_min=7)
+                pdf.add_cns(cns=patient_cns, pos=(450, patient_cns_ypos), camp_name='Patient CNS',formated=True)
+                pdf.add_datetime(date=patient_birthday, pos=(441, patient_birthday_ypos), camp_name='Patient Birthday', hours=False, formated=True)
+                pdf.add_morelines_text(text=patient_adress, initial_pos=(7, patient_adress_ypos), decrease_ypos=10, camp_name='Patient Adress', len_max=216, len_min=7, char_per_lines=108)
+                pdf.add_morelines_text(text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, camp_name='Solicitation Reason', len_max=216, len_min=7, char_per_lines=108)
+                pdf.add_oneline_text(text=prof_solicitor_name, pos=(7, prof_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
+                pdf.add_datetime(date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True)
 
                 #Decrese ypos in all lines to complete the page
                 patient_name_ypos -= decreaseYpos
@@ -81,6 +108,7 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
                 prof_solicitor_ypos -= decreaseYpos
                 solicitation_datetime_ypos -= decreaseYpos
 
+
         except Exception as error:
             return error
         except:
@@ -88,15 +116,29 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
 
         #Adding data that can be null
         try:
+            # prof_authorized_ypos = 595
+            # document_pacient_name_ypos = 605
+            # autorization_datetime_ypos = 572
+            # document_pacient_date_ypos = 572
+            # for x in range(pags_quant):
+            #     c = pdf_functions.add_oneline_text(can=c, text=prof_authorized_name, pos=(174, prof_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
+            #     c = pdf_functions.add_oneline_text(can=c, text=document_pacient_name, pos=(340, document_pacient_name_ypos), camp_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
+            #     c = pdf_functions.add_datetime(can=c, date=autorization_datetime, pos=(195, autorization_datetime_ypos), camp_name='Authorization Datetime', hours=False, formated=True, nullable=True)
+            #     c = pdf_functions.add_datetime(can=c, date=document_pacient_date, pos=(362, document_pacient_date_ypos), camp_name='Document Pacient Datetime', hours=False, formated=True, nullable=True)
+
+            #     prof_authorized_ypos -= decreaseYpos
+            #     document_pacient_name_ypos -= decreaseYpos
+            #     autorization_datetime_ypos -= decreaseYpos
+            #     document_pacient_date_ypos -= decreaseYpos
             prof_authorized_ypos = 595
             document_pacient_name_ypos = 605
             autorization_datetime_ypos = 572
             document_pacient_date_ypos = 572
-            for x in range(pags_quant):
-                c = pdf_functions.add_oneline_text(can=c, text=prof_authorized_name, pos=(174, prof_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
-                c = pdf_functions.add_oneline_text(can=c, text=document_pacient_name, pos=(340, document_pacient_name_ypos), camp_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
-                c = pdf_functions.add_datetime(can=c, date=autorization_datetime, pos=(195, autorization_datetime_ypos), camp_name='Authorization Datetime', hours=False, formated=True, nullable=True)
-                c = pdf_functions.add_datetime(can=c, date=document_pacient_date, pos=(362, document_pacient_date_ypos), camp_name='Document Pacient Datetime', hours=False, formated=True, nullable=True)
+            for x in range(pdf.pags_quant):
+                pdf.add_oneline_text(text=prof_authorized_name, pos=(174, prof_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
+                pdf.add_oneline_text(text=document_pacient_name, pos=(340, document_pacient_name_ypos), camp_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
+                pdf.add_datetime(date=autorization_datetime, pos=(195, autorization_datetime_ypos), camp_name='Authorization Datetime', hours=False, formated=True, nullable=True)
+                pdf.add_datetime(date=document_pacient_date, pos=(362, document_pacient_date_ypos), camp_name='Document Pacient Datetime', hours=False, formated=True, nullable=True)
 
                 prof_authorized_ypos -= decreaseYpos
                 document_pacient_name_ypos -= decreaseYpos
