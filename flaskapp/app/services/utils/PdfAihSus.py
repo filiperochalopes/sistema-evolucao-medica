@@ -13,7 +13,7 @@ class PdfAihSus(ReportLabCanvasUtils):
     TEMPLATE_DIRECTORY = TEMPLATE_AIH_SUS_DIRECTORY
     WRITE_DIRECTORY = WRITE_AIH_SUS_DIRECTORY
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         self.packet = io.BytesIO()
         # Create canvas and add data
@@ -22,9 +22,19 @@ class PdfAihSus(ReportLabCanvasUtils):
         # this is also changed in the document to some especific fields
         pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
         self.can.setFont('Roboto-Mono', 9)
+    
+    
+    def set_font(self, fontname:str, size:int) -> None:
+        """Change canvas font
 
+        Args:
+            fontname (str): font name
+            size (int): size 
+        """
+        self.can.setFont(fontname, size)
+        return None
 
-    def get_output(self):
+    def get_output(self) -> PdfWriter:
         """Return a PdfWriter Object to output a file"""
         self.can.save()
         self.packet.seek(0)
