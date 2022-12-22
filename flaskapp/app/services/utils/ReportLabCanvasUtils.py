@@ -24,7 +24,7 @@ class ReportLabCanvasUtils():
             nullable_variables (list): list with variables that can be null
 
         Returns:
-            [None, Response]: None if is all alright or Response with a error
+            None
         """  
         try:
         #get args types and defaults types form function
@@ -86,14 +86,13 @@ class ReportLabCanvasUtils():
 
         Returns:
             Bollean true or false
-            Reponse if the receive worng type
         """    
         self.validate_func_args(function_to_verify=self.uf_exists, variables_to_verify={'uf':uf})
 
         return bool(re.match(r'^(\s*(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)?)$', uf, flags=re.I))
 
 
-    def add_data(self, data:str, pos:tuple) -> canvas.Canvas:
+    def add_data(self, data:str, pos:tuple) -> None:
         """Add data in pdf using canvas object
 
         Args:
@@ -102,7 +101,7 @@ class ReportLabCanvasUtils():
             pos (tuple): data insert position in points
 
         Returns:
-            can(canvas.Canvas): canvas with all changes
+            None
             
         """
         try:
@@ -112,7 +111,7 @@ class ReportLabCanvasUtils():
             raise Exception("Erro desconhecido enquanto adicionava um dado no documento com o canvas")
 
 
-    def add_square(self, pos:tuple, size:tuple=(9, 9)) -> canvas.Canvas:
+    def add_square(self, pos:tuple, size:tuple=(9, 9)) -> None:
         """Add square in document using canvas object
 
         Args:
@@ -121,7 +120,7 @@ class ReportLabCanvasUtils():
             size (tuple, optional): square size default is the size of the option quare. Defaults to 9.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """
         try:
@@ -131,7 +130,7 @@ class ReportLabCanvasUtils():
             raise Exception("Erro desconhecido enquanto adicionava um quadrado (opcoes de marcar) no documento com o canvas")
 
 
-    def add_centralized_data(self, data:str, pos:tuple) -> canvas.Canvas:
+    def add_centralized_data(self, data:str, pos:tuple) -> None:
         """Add centralized_data in pdf using canvas object
 
         Args:
@@ -140,7 +139,7 @@ class ReportLabCanvasUtils():
             pos (tuple): centralized_data insert position in points
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """
         try:
@@ -188,7 +187,7 @@ class ReportLabCanvasUtils():
             raise Exception("Erro desconhecido enquanto criava um novo arquivo pdf")
 
 
-    def add_oneline_text(self, text:str, pos:tuple, camp_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> canvas.Canvas:
+    def add_oneline_text(self, text:str, pos:tuple, camp_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> None:
         """Add text that is fill in one line
 
         Args:
@@ -202,7 +201,7 @@ class ReportLabCanvasUtils():
             interval (str): interval to add between every char
             centralized (bool, optional): Data has to be centralized. Defaults to False.
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """
         try:
@@ -236,7 +235,7 @@ class ReportLabCanvasUtils():
 
 
 
-    def add_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='') -> canvas.Canvas:
+    def add_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='') -> None:
         """Add text that is fill in one line
 
         Args:
@@ -252,8 +251,7 @@ class ReportLabCanvasUtils():
             len_min (int, optional): Minimum text lenght. Defaults to 0.
             interval (str): interval to add between every char
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
-            _summary_
+            None
         """    
         try:
             if nullable:
@@ -297,7 +295,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_phonenumber(self, number:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
+    def add_phonenumber(self, number:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> None:
         """_summary_
 
         Args:
@@ -333,7 +331,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_CEP(self, cep:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
+    def add_CEP(self, cep:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> None:
         """Add cep to canvas
 
         Args:
@@ -369,7 +367,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_oneline_intnumber(self, number:int, pos:tuple, camp_name:str, len_max:int, value_min:int, value_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> canvas.Canvas:
+    def add_oneline_intnumber(self, number:int, pos:tuple, camp_name:str, len_max:int, value_min:int, value_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> None:
         """Add one line number to canvas
 
         Args:
@@ -386,7 +384,7 @@ class ReportLabCanvasUtils():
             centralized (bool, optional): Data has to be centralized. Defaults to False.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -416,7 +414,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_oneline_floatnumber(self, number:float, pos:tuple, camp_name:str, len_max:int, value_min:float, value_max:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2) -> canvas.Canvas:
+    def add_oneline_floatnumber(self, number:float, pos:tuple, camp_name:str, len_max:int, value_min:float, value_max:float, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, ndigits:int=2) -> None:
         """Add one line number to canvas
 
         Args:
@@ -434,7 +432,7 @@ class ReportLabCanvasUtils():
             ndigits (int, optional): Number of digits after , . Defaults to 2.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -486,7 +484,7 @@ class ReportLabCanvasUtils():
         return interval.join(data)
 
 
-    def add_cns(self, cns:str, pos:tuple, camp_name:str,nullable:bool=False, formated:bool=False, interval:str='') -> canvas.Canvas:
+    def add_cns(self, cns:str, pos:tuple, camp_name:str,nullable:bool=False, formated:bool=False, interval:str='') -> None:
         """Add cns to canvas
 
         Args:
@@ -499,7 +497,7 @@ class ReportLabCanvasUtils():
             interval (str, optional): interval to add between interval. Defaults to ''.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -530,7 +528,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_cnpj(self, cnpj:str, pos:tuple, camp_name:str,nullable:bool=False, interval:str='') -> canvas.Canvas:
+    def add_cnpj(self, cnpj:str, pos:tuple, camp_name:str,nullable:bool=False, interval:str='') -> None:
         """Add cnpj to canvas
 
         Args:
@@ -542,7 +540,7 @@ class ReportLabCanvasUtils():
             interval (str, optional): interval to add between interval. Defaults to ''.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -570,7 +568,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_cnae(self, cnae:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> canvas.Canvas:
+    def add_cnae(self, cnae:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> None:
         """Add cnae to canvas
 
         Args:
@@ -583,7 +581,7 @@ class ReportLabCanvasUtils():
             formated (bool, optional): format (add '/' and ':'). Defaults to True.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -610,7 +608,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_cbor(self, cbor:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> canvas.Canvas:
+    def add_cbor(self, cbor:int, pos:tuple, camp_name:str, nullable:bool=False, formated:bool=False) -> None:
         """Add cbor to canvas
 
         Args:
@@ -622,7 +620,7 @@ class ReportLabCanvasUtils():
             formated (bool, optional): format (add '/' and ':'). Defaults to True.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -649,7 +647,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_sex_square(self, sex:str, pos_male:tuple, pos_fem:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
+    def add_sex_square(self, sex:str, pos_male:tuple, pos_fem:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> None:
         """Add sex square to canvas
 
         Args:
@@ -662,7 +660,7 @@ class ReportLabCanvasUtils():
             nullable (bool, optional): can be null. Defaults to False.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -691,7 +689,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_datetime(self, date:str, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='') -> canvas.Canvas:
+    def add_datetime(self, date:str, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='') -> None:
         """Add datetime to canvas
 
         Args:
@@ -705,7 +703,7 @@ class ReportLabCanvasUtils():
             interval (str, optional): add interval between  day, month, year, hour, min, sec. Defaults to ''.
             interval_between_numbers (str, optional): add interval between  every number. Defaults to ''.
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -747,7 +745,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_UF(self, uf:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='') -> canvas.Canvas:
+    def add_UF(self, uf:str, pos:tuple, camp_name:str, nullable:bool=False, interval:str='') -> None:
         """Verify uf and add to document
 
         Args:
@@ -759,7 +757,7 @@ class ReportLabCanvasUtils():
             interval (str, optional): and interval between char. Defaults to ''.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -785,7 +783,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_document_cns_cpf_rg(self, document:dict, camp_name:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False) -> canvas.Canvas:
+    def add_document_cns_cpf_rg(self, document:dict, camp_name:str, square_size:tuple=(9,9), pos_cpf:tuple=None, pos_cns:tuple=None, pos_rg:tuple=None, pos_square_cpf:tuple=None, pos_square_cns:tuple=None, pos_square_rg:tuple=None, nullable:bool=False, interval:str='', formated:bool=False) -> None:
         """Validate and add document to canvas, can be CPF, RG or CNS
 
         Args:
@@ -804,7 +802,7 @@ class ReportLabCanvasUtils():
             formated (bool, optional): has to format, format using the default for every doc (rg is exception). Defaults to False.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -889,7 +887,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_markable_square(self, option:str, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
+    def add_markable_square(self, option:str, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> None:
         """Verifiy option choose and add to canvas, the option is automatic upper cased
 
         Args:
@@ -902,7 +900,7 @@ class ReportLabCanvasUtils():
             nullable (bool, optional): can be null. Defaults to False.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -925,7 +923,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_multiple_markable_square(self, options:list, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
+    def add_multiple_markable_square(self, options:list, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> None:
         """Verifiy option choose and add to canvas, the option is automatic upper cased
 
         Args:
@@ -938,7 +936,7 @@ class ReportLabCanvasUtils():
             nullable (bool, optional): can be null. Defaults to False.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -967,7 +965,7 @@ class ReportLabCanvasUtils():
 
 
 
-    def add_markable_square_and_onelinetext(self, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
+    def add_markable_square_and_onelinetext(self, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> None:
         """Verifiy option choose and add to canvas, the option is automatic upper cased
 
         Args:
@@ -980,7 +978,7 @@ class ReportLabCanvasUtils():
             nullable (bool, optional): can be null. Defaults to False.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
             
         """    
         try:
@@ -1012,7 +1010,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_markable_square_and_morelinestext(self, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, decrease_ypos:int, char_per_lines:int, max_lines_amount:int=None, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> canvas.Canvas:
+    def add_markable_square_and_morelinestext(self, option:str, valid_options:list, text_options:list, text_pos:tuple, options_positions:tuple, camp_name:str, len_max:int, decrease_ypos:int, char_per_lines:int, max_lines_amount:int=None, text:str=None, len_min:int=0, interval:str='', square_size:tuple=(9,9), nullable:bool=False) -> None:
         """Verifiy option choose and add to canvas, the option is automatic upper cased
 
         Args:
@@ -1025,7 +1023,7 @@ class ReportLabCanvasUtils():
             nullable (bool, optional): can be null. Defaults to False.
 
         Returns:
-            canvas(canvas.Canvas): canvas with all changes
+            None
         """    
         try:
             if nullable:
