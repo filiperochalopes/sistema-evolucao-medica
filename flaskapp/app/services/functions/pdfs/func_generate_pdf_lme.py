@@ -113,12 +113,18 @@ def func_generate_pdf_lme(establishment_solitc_name:str, establishment_solitc_cn
 
         #Adding data that can be null
         try:
-            c.setFont('Roboto-Mono', 9)
-            c = pdf_functions.add_document_cns_cpf_rg(can=c, document=patient_document, pos_square_cpf=(40, 66), pos_square_cns=(84,66), pos_cns=(129, 66), pos_cpf=(129, 66),camp_name='Patient Document', interval='  ', nullable=True, square_size=(5, 8))
-            c = pdf_functions.add_oneline_text(can=c, text=diagnostic, pos=(105, 455), camp_name='Diagnostic', len_max=84, len_min=4, nullable=True)
-            c = pdf_functions.add_oneline_text(can=c, text=patient_email, pos=(36, 42), camp_name='Patient Email', len_max=62, len_min=8, nullable=True)
-            c = add_contat_phonenumbers(can=c, phonenumbers=contacts_phonenumbers, pos=(384, 116), interval='  ')
-            c = add_medicines(can=c, medicines=medicines)
+            # c.setFont('Roboto-Mono', 9)
+            # c = pdf_functions.add_document_cns_cpf_rg(can=c, document=patient_document, pos_square_cpf=(40, 66), pos_square_cns=(84,66), pos_cns=(129, 66), pos_cpf=(129, 66),camp_name='Patient Document', interval='  ', nullable=True, square_size=(5, 8))
+            # c = pdf_functions.add_oneline_text(can=c, text=diagnostic, pos=(105, 455), camp_name='Diagnostic', len_max=84, len_min=4, nullable=True)
+            # c = pdf_functions.add_oneline_text(can=c, text=patient_email, pos=(36, 42), camp_name='Patient Email', len_max=62, len_min=8, nullable=True)
+            # c = add_contat_phonenumbers(can=c, phonenumbers=contacts_phonenumbers, pos=(384, 116), interval='  ')
+            # c = add_medicines(can=c, medicines=medicines)
+            pdf.set_font('Roboto-Mono', 9)
+            pdf.add_document_cns_cpf_rg(document=patient_document, pos_square_cpf=(40, 66), pos_square_cns=(84,66), pos_cns=(129, 66), pos_cpf=(129, 66),camp_name='Patient Document', interval='  ', nullable=True, square_size=(5, 8))
+            pdf.add_oneline_text(text=diagnostic, pos=(105, 455), camp_name='Diagnostic', len_max=84, len_min=4, nullable=True)
+            pdf.add_oneline_text(text=patient_email, pos=(36, 42), camp_name='Patient Email', len_max=62, len_min=8, nullable=True)
+            pdf.add_contat_phonenumbers(phonenumbers=contacts_phonenumbers, pos=(384, 116), interval='  ')
+            pdf.add_medicines(medicines=medicines)
 
         except Exception as error:
             return error
