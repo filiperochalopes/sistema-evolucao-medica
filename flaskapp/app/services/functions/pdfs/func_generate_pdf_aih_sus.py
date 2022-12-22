@@ -59,6 +59,8 @@ def func_generate_pdf_aih_sus(establishment_solitc_name:str, establishment_solit
     """
     try:
         pdf = PdfAihSus()
+        # Writing all data in respective fields
+        # not null data
         try:     
             pdf.add_oneline_text(text=establishment_solitc_name, pos=(25, 750), camp_name='Establishment Solicit Name', len_max=82, len_min=8)
             pdf.add_oneline_intnumber(number=establishment_solitc_cnes, pos=(470, 750), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='  ')
