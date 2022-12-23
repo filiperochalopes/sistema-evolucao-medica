@@ -111,11 +111,11 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
             pdf.add_markable_square_and_onelinetext(option=mammogram_before[0], valid_options=['SIM', 'NAO', 'NAOSABE'], text_options=['SIM'], options_positions=((51,64), (51,52), (51, 40)), camp_name='Has made mamogram before', square_size=(15,9), len_max=4, len_min=4, text=mammogram_before[1], text_pos=(200, 68), interval=' ')
             pdf.add_oneline_intnumber(number=patient_age, pos=(217, 563), camp_name='Patient Birthday', len_max=2, len_min=1,value_min=1, value_max=99, interval=' ')
 
-            c.setFont('Roboto-Mono', 13)
+            pdf.set_font('Roboto-Mono', 13)
             pdf.add_morelines_text(text=patient_name, initial_pos=(47, 653), decrease_ypos=18, camp_name='Patient Name', len_max=42, len_min=7, interval=' ', char_per_lines=87)
             pdf.add_oneline_text(text=patient_mother_name, pos=(47, 612), camp_name='Patient Mother Name', len_max=42, len_min=7, interval=' ')
             
-            c.setFont('Roboto-Mono', 9)
+            pdf.set_font('Roboto-Mono', 9)
             pdf.add_markable_square(option=nodule_lump, valid_options=['SIMDIR', 'SIMESQ', 'NAO'], options_positions=((50,332), (50,320), (50, 310)), camp_name='Has nodule lump', square_size=(15,9))
             pdf.add_markable_square(option=high_risk, valid_options=['SIM', 'NAO', 'NAOSABE'], options_positions=((51,278), (51,266), (51, 255)), camp_name='Has high risk', square_size=(15,9))
             pdf.add_markable_square(option=examinated_before, valid_options=['SIM', 'NUNCA', 'NAOSABE'], options_positions=((51,120), (51,107), (51, 94)), camp_name='Has been examinated before', square_size=(15,9))
