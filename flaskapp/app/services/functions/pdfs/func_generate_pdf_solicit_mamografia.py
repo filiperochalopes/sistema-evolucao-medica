@@ -250,15 +250,22 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
         pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
         c_2.setFont('Roboto-Mono', 13)
         try:
-            pdf.add_oneline_text(text=prof_solicitor_name, pos=(206, 346), camp_name='Professional Solicitor Name', len_max=23, len_min=7, interval=' ')
-            c_2 = pdf_functions.add_oneline_text(can=c_2, text=prof_solicitor_name, pos=(206, 346), camp_name='Professional Solicitor Name', len_max=23, len_min=7, interval=' ')
+            # c_2 = pdf_functions.add_oneline_text(can=c_2, text=prof_solicitor_name, pos=(206, 346), camp_name='Professional Solicitor Name', len_max=23, len_min=7, interval=' ')
 
-            c_2.setFont('Roboto-Mono', 12)
-            c_2 = pdf_functions.add_datetime(can=c_2, date=solicitation_datetime, pos=(48, 346), camp_name='Solicitation Datetime', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
-            c_2 = pdf_functions.add_oneline_text(can=c_2, text=exam_number, pos=(114, 324), camp_name='Exam number', len_max=16, len_min=1, nullable=True, interval=' ')
-            c_2.setFont('Roboto-Mono', 9)
-            c_2 = pdf_functions.add_markable_square(can=c_2, option=tracking_mammogram, valid_options=['POPALVO', 'RISCOELEVADO', 'JATRATADO'], options_positions=((56, 374), (152, 374), (328, 374)), camp_name='Tracking Mammogram', square_size=(11,10), nullable=True)
-            c_2 = add_diagnostic_mammogram(can=c_2, diagnostic_mammogram=diagnostic_mammogram)
+            # c_2.setFont('Roboto-Mono', 12)
+            # c_2 = pdf_functions.add_datetime(can=c_2, date=solicitation_datetime, pos=(48, 346), camp_name='Solicitation Datetime', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
+            # c_2 = pdf_functions.add_oneline_text(can=c_2, text=exam_number, pos=(114, 324), camp_name='Exam number', len_max=16, len_min=1, nullable=True, interval=' ')
+            # c_2.setFont('Roboto-Mono', 9)
+            # c_2 = pdf_functions.add_markable_square(can=c_2, option=tracking_mammogram, valid_options=['POPALVO', 'RISCOELEVADO', 'JATRATADO'], options_positions=((56, 374), (152, 374), (328, 374)), camp_name='Tracking Mammogram', square_size=(11,10), nullable=True)
+            # c_2 = add_diagnostic_mammogram(can=c_2, diagnostic_mammogram=diagnostic_mammogram)
+            pdf.add_oneline_text(text=prof_solicitor_name, pos=(206, 346), camp_name='Professional Solicitor Name', len_max=23, len_min=7, interval=' ')
+
+            pdf.set_font('Roboto-Mono', 12)
+            pdf.add_datetime(date=solicitation_datetime, pos=(48, 346), camp_name='Solicitation Datetime', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
+            pdf.add_oneline_text(text=exam_number, pos=(114, 324), camp_name='Exam number', len_max=16, len_min=1, nullable=True, interval=' ')
+            pdf.set_font('Roboto-Mono', 9)
+            pdf.add_markable_square(option=tracking_mammogram, valid_options=['POPALVO', 'RISCOELEVADO', 'JATRATADO'], options_positions=((56, 374), (152, 374), (328, 374)), camp_name='Tracking Mammogram', square_size=(11,10), nullable=True)
+            pdf.add_diagnostic_mammogram(diagnostic_mammogram=diagnostic_mammogram)
 
         except Exception as error:
             return error
