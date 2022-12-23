@@ -57,3 +57,85 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
         self.can_1 = self.can
         self.can = self.can_2
         return None
+    
+    def add_patient_adress_cep(self, number:str) -> None:
+        """add patient addes cep to document
+
+        Args:
+            number (str): adress cep
+
+        Returns:
+            None
+        """    
+        try:
+            if number == None:
+                return None
+            if type(number) != type(str()) and number != None:
+                raise Exception('Endereco de CEP do paciente (Patient Adress CEP) deve ser um string')
+            number = str(number).strip()
+            if len(number) == 8:
+                self.add_oneline_text(text=number[:5], pos=(47, 438), camp_name='Patient Adress CEP', len_max=5, len_min=5, interval=' ', nullable=True)
+                self.add_oneline_text(text=number[5:], pos=(138, 438), camp_name='Patient Adress CEP', len_max=3, len_min=3, interval=' ', nullable=True)
+                return None
+            else:
+                raise Exception("Nao foi possivel adicionar o Endereco de CEP do paciente (Patient Adress CEP) porque deve ter somente 8 caracteres")
+        except Exception as error:
+            raise error
+        except:
+            raise Exception('Erro desconhecido ocorreu enquanto adicionava Endereco de CEP do paciente (Patient Adress CEP)')
+
+
+    def add_patient_phonenumber(self, number:str) -> None:
+        """add patient phonenumber to document
+
+        Args:
+            number (str): phone number
+
+        Returns:
+            None
+        """
+        try:
+            if number == None:
+                return None
+            if type(number) != type(str()) and number != None:
+                raise Exception('Numero de Telefone do paciente deve ser uma string')
+            number = str(number).strip()
+            if len(number) == 10:
+                self.add_oneline_text(text=number[:2], pos=(227, 438), camp_name='Patient Phonenumber', len_max=2, len_min=2, interval=' ', nullable=True)
+                self.add_oneline_text(text=number[2:6], pos=(288, 438), camp_name='Patient Phonenumber', len_max=4, len_min=4, interval=' ', nullable=True)
+                self.add_oneline_text(text=number[6:], pos=(365, 438), camp_name='Patient Phonenumber', len_max=4, len_min=4, interval=' ', nullable=True)
+                return None
+            else:
+                raise Exception("Nao foi possivel adicionar o Numero de Telefone do paciente porque deve ter somente 10 caracteres")
+
+        except Exception as error:
+            raise error
+        except:
+            raise Exception(f'Erro desconhecido ocorreu enquanto adicionava o numero de telefone do paciente')
+
+
+    def add_radiotherapy_before(self, radiotherapy_before:list):
+        """add radiotherapy option to document
+
+        Args:
+            radiotherapy_before (list): radiotherapy option
+
+        Returns:
+            None
+        """
+        try:
+            if radiotherapy_before == None:
+                return None
+            if type(radiotherapy_before) != type(list()):
+                raise Exception('radiotherapy_before deve ser uma lista (list)')
+            self.add_markable_square_and_onelinetext(option=radiotherapy_before[0], valid_options=['SIMDIR', 'SIMESQ', 'NAO', 'NAOSABE'], text_options=['SIMDIR'], options_positions=((336,332), (336,319), (336, 307), (336, 294)), camp_name='Has made radiotherapy before', square_size=(15,9), len_max=4, len_min=4, text=radiotherapy_before[1], text_pos=(420, 334), interval=' ', nullable=True)
+            if radiotherapy_before[0].upper() == 'SIMESQ':
+                self.add_oneline_text(text=radiotherapy_before[1], pos=(420, 321), camp_name='Has made radiotherapy before', len_max=4, len_min=4, interval=' ', nullable=True)
+            return None
+
+        except Exception as error:
+            raise error
+        except:
+            raise Exception(f'Erro desconhecido ocorreu enquanto adicionava as radioterapias anteriores(radiotherapy before)')
+
+
