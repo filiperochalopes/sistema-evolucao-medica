@@ -160,6 +160,10 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
             #Pick all valid keys
             valid_keys = [ x for x in breast_surgery_before.keys() if x in necessary_keys_positions.keys()]
             #Start adding data
+            if breast_surgery_before['did_not'].lower() == 'true':
+                self.add_square(pos=necessary_keys_positions['did_not'], size=(15, 9))
+                return None
+        
             for surgery in valid_keys:
                 #Receive the current surgery
                 current_surgery = breast_surgery_before[surgery]
@@ -170,17 +174,10 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
                     else:
                         continue
 
-                # if type(current_surgery) == type(bool()):
-                #     # when is didNot key
-                #     if current_surgery:
-                #         self.add_square(pos=necessary_keys_positions[surgery], size=(15, 9))
-                #         return None
-                #     else:
-                #         continue
-                if current_surgery[0] == None:
-                    continue
-                elif type(current_surgery) != type(list()):
+                if type(current_surgery) != type(list()):
                     raise Exception(f'{surgery} deve ser uma lista com os anos da cirurgias no seio direito e esquerdo ou None, exemplo: surgery: None or surgery:(None, 2020)')
+                elif len(current_surgery) == 1 and current_surgery[0] == None:
+                    continue
                 
                 if len(current_surgery) != 2:
                     raise Exception(f'{surgery} deve ser uma lista com 2 valores , exemplo: (ano_esquerdo, ano_direito)')
@@ -188,7 +185,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
                 cont = 0 
                 for year in current_surgery:
                     # Add year in right position
-                    self.add_oneline_intnumber(number=year, pos=necessary_keys_positions[surgery][cont], camp_name=f'{surgery} year', len_max=4, len_min=4, value_min=1900, value_max=2100, nullable=True, interval=' ')
+                    self.add_oneline_text(text=year, pos=necessary_keys_positions[surgery][cont], camp_name=f'{surgery} year', len_max=4, len_min=4, nullable=True, interval=' ')
                     cont = 1
                 
                 
