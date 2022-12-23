@@ -1,5 +1,4 @@
 from app.env import FONT_DIRECTORY, TEMPLATE_RELATORIO_ALTA_DIRECTORY, WRITE_RELATORIO_ALTA_DIRECTORY
-
 from app.services.utils.ReportLabCanvasUtils import ReportLabCanvasUtils
 import io
 from reportlab.pdfgen import canvas

@@ -181,6 +181,8 @@ indusaoImplantes: [null]
         return True
     except:
         return False 
+    
+    
 
 
 def test_with_data_in_function(client, datetime_to_use):

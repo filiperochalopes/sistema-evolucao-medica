@@ -7,6 +7,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from app.services.utils import pdf_functions
 from app.env import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
+from app.services.utils.PdfSolicitMamografia import PdfSolicitMamografia
 
 
 def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:str=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_ibge_code:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adress_cep:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:str=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> str:
@@ -106,6 +107,8 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
         str: Request with pdf in base64
     """    
     try:
+        pdf = PdfSolicitMamografia()
+
         packet = io.BytesIO()
         # Create canvas and add data
         c = canvas.Canvas(packet, pagesize=letter)
@@ -121,6 +124,7 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
         # not null data
 
         try:
+            pdf.add_cns(cns=patient_cns, pos=(46, 676), camp_name='Patient CNS', interval=' ')
             c = pdf_functions.add_cns(can=c, cns=patient_cns, pos=(46, 676), camp_name='Patient CNS', interval=' ')
             c = pdf_functions.add_datetime(can=c, date=patient_birthday, pos=(48, 563), camp_name='Patient Birthday', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
             
@@ -190,6 +194,8 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
 
 
 ### Add Page 2
+        pdf.change_canvas()
+
         packet_2 = io.BytesIO()
         # Create canvas and add data
         c_2 = canvas.Canvas(packet_2, pagesize=letter)
@@ -198,6 +204,7 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
         pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
         c_2.setFont('Roboto-Mono', 13)
         try:
+            pdf.add_oneline_text(text=prof_solicitor_name, pos=(206, 346), camp_name='Professional Solicitor Name', len_max=23, len_min=7, interval=' ')
             c_2 = pdf_functions.add_oneline_text(can=c_2, text=prof_solicitor_name, pos=(206, 346), camp_name='Professional Solicitor Name', len_max=23, len_min=7, interval=' ')
 
             c_2.setFont('Roboto-Mono', 12)
@@ -212,25 +219,28 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
         except:
             return Exception('Algum erro nao diagnoticado ocorreu enquanto adicionava dados obrigatorios na pagina 2')
 
-        # create a new PDF with Reportlab
-        c.save()
-        c_2.save()
-        packet.seek(0)
-        packet_2.seek(0)
-        new_pdf = PdfReader(packet)
-        new_pdf_2 = PdfReader(packet_2)
-        # read the template pdf 
-        template_pdf = PdfReader(open(TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, "rb"))
-        output = PdfWriter()
-        # add the "watermark" (which is the new pdf) on the existing page
-        page = template_pdf.pages[0]
-        page.merge_page(new_pdf.pages[0])
-        page_2 = template_pdf.pages[1]
-        page_2.merge_page(new_pdf_2.pages[0])
-        output.add_page(page)
-        output.add_page(page_2)
+        # # create a new PDF with Reportlab
+        # c.save()
+        # c_2.save()
+        # packet.seek(0)
+        # packet_2.seek(0)
+        # new_pdf = PdfReader(packet)
+        # new_pdf_2 = PdfReader(packet_2)
+        # # read the template pdf 
+        # template_pdf = PdfReader(open(TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, "rb"))
+        # output = PdfWriter()
+        # # add the "watermark" (which is the new pdf) on the existing page
+        # page = template_pdf.pages[0]
+        # page.merge_page(new_pdf.pages[0])
+        # page_2 = template_pdf.pages[1]
+        # page_2.merge_page(new_pdf_2.pages[0])
+        # output.add_page(page)
+        # output.add_page(page_2)
 
-        pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
+        # pdf_base64_enconded = pdf_functions.get_base64(newpdf=output)
+
+        #Get pdf base64
+        pdf_base64_enconded = pdf.get_base64()
 
         return {
             "base64Pdf": str(pdf_base64_enconded)[2:-1]

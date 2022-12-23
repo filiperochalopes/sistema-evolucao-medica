@@ -56,7 +56,6 @@ def func_generate_pdf_relatorio_alta(document_datetime:str, patient_name:str, pa
         
         except Exception as error:
             return error
-
         except:
             return Exception('Erro desconhecido ocorreu enquanto adicionava dados opcionais')
         
