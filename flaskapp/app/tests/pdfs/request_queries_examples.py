@@ -12,65 +12,11 @@ apac_request_string = get_request_from_txt('apac.txt')
 
 
 
-exam_request_request_string = """
-# Write your query or mutation here
-mutation{
-	generatePdf_SolicitExames(
-            patientName: "Patient NAme",
-            patientCns: "928976954930007",
-            patientBirthday: "10/10/2021",
-            patientAdress: "Patient Adress",
-            solicitationReason: "Solicitation reason",
-            profSolicitorName: "Professional solicitor Name",
-            solicitationDatetime: "10/10/2014",
-            exams: "Exames Solicitados",
-            profAuthorizedName: "Prof Autorization Name", 
-            documentPacientName: "Document Pacient NAme",
-            autorizationDatetime: "10/10/2021",
-            documentPacientDate: "10/08/2021"
-		){base64Pdf}
-}
-"""
+exam_request_request_string = get_request_from_txt('exam_request.txt')
 
-exam_request_2_pages_request_string = """
-# Write your query or mutation here
-mutation{
-	generatePdf_SolicitExames(
-            patientName: "Patient NAme",
-            patientCns: "928976954930007",
-            patientBirthday: "10/10/2021",
-            patientAdress: "Patient Adress",
-            solicitationReason: "Solicitation reason",
-            profSolicitorName: "Professional solicitor Name",
-            solicitationDatetime: "10/10/2014",
-            exams: "0123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161162163164165166167168169",
-            profAuthorizedName: "Prof Autorization Name", 
-            documentPacientName: "Document Pacient NAme",
-            autorizationDatetime: "10/10/2021",
-            documentPacientDate: "10/08/2021"
-		){base64Pdf}
-}
-"""
+exam_request_2_pages_request_string = get_request_from_txt('exam_request_2_pages.txt')
 
-exam_request_3_pages_request_string = """
-# Write your query or mutation here
-mutation{
-	generatePdf_SolicitExames(
-            patientName: "Patient NAme",
-            patientCns: "928976954930007",
-            patientBirthday: "10/10/2021",
-            patientAdress: "Patient Adress",
-            solicitationReason: "Solicitation reason",
-            profSolicitorName: "Professional solicitor Name",
-            solicitationDatetime: "10/10/2014",
-            exams: "012345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210310410510610710810911011111211311411511611711811912012112212312412512612712812913013113213313413513613713813914014114214314414514614714814915015115215315415515615715815916016116216316416516616716816917017117217317417517617717817918018118218318418518618718818919019119219319419519619719819920020120220320420520620720820921021121221321421521621721821922022122222322422522622722822923023123223323423523623723823924024124224324424524624724824925025125225325425525625725825926026126226326426526626726826927027127227327427527627727827928028128228328428528",
-            profAuthorizedName: "Prof Autorization Name", 
-            documentPacientName: "Document Pacient NAme",
-            autorizationDatetime: "10/10/2021",
-            documentPacientDate: "10/08/2021"
-		){base64Pdf}
-}
-"""
+exam_request_3_pages_request_string = get_request_from_txt('exam_request_3_pages.txt')
 
 
 ficha_internamento_request_string = """

@@ -2,7 +2,7 @@
 mutation{
 	generatePdf_Apac(
 		establishmentSolitcName: "Establihsment Name",
-		establishmentSolitcCnes: 1234567,
+		establishmentSolitcCnes: 7654321,
 		patientName: "Patient Name",
 		patientCns: "928976954930007",
 		patientSex: "M",
