@@ -64,12 +64,12 @@ def data_to_use(client, datetime_to_use,
     patient_phonenumber='1234567890',
     radiotherapy_before='["SIMESQ", "2020"]',
     breast_surgery_before='''{
-didNot: "TRUE",
-biopsiaInsinonal: [null],
+didNot: "false",
+biopsiaInsinonal: ["2020", null],
 biopsiaLinfonodo: [null],
 biopsiaExcisional: [null],
 centraledomia: [null], 
-segmentectomia: [null],
+segmentectomia: ["2021", "2010"],
 dutectomia: [null],
 mastectomia: [null],
 mastectomiaPoupadoraPele: [null],
@@ -175,13 +175,13 @@ indusaoImplantes: [null]
     """
     all_string = request_string + campos_string + final_string
     query = gql(all_string)
-    # try:
-    #     #When some exception is created in grphql he return a error
-    #     client.execute(query)
-    #     return True
-    # except:
-    #     return False 
-    client.execute(query)
+    try:
+        #When some exception is created in grphql he return a error
+        client.execute(query)
+        return True
+    except:
+        return False 
+    
     
 
 
