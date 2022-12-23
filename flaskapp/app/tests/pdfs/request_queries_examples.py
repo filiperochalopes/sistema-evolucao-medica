@@ -1,72 +1,16 @@
+QUERIES_DIRECTORY = '/app/app/tests/pdfs/queries_examples/'
+def get_request_from_txt(filename:str):
+    """Return as string with a request"""
+    with open(f'{QUERIES_DIRECTORY}{filename}', 'r') as file:
+        request = file.read()
+    file.close()
+    return request
+
+
 ## Requests strings
-apac_request_string = """
-# Write your query or mutation here
-mutation{
-	generatePdf_Apac(
-		establishmentSolitcName: "Establihsment Name",
-		establishmentSolitcCnes: 1234567,
-		patientName: "Patient Name",
-		patientCns: "928976954930007",
-		patientSex: "M",
-		patientBirthday: "22/10/2022",
-		patientAdressCity: "Patient",
-		mainProcedure: {
-		name: "teste procedimento",
-		code: "hkmaug347s",
-		quant: 1
-		},
-		secondariesProcedures:[
-		{
-		name: "teste procedimento",
-		code: "hkmaug347s",
-		quant: 1
-		},
-		{
-		name: "segundo procedimento",
-		code: "hkmhsa3s23",
-		quant: 4
-		}
-		],
-		patientMotherName: "Patient Mother Name",
-		patientMotherPhonenumber: "3412344321",
-		patientResponsibleName: "Patient Responsible Name",
-		patientResponsiblePhonenumber: "5425415864",
-		patientAdress: "Patient Adress ",
-		patientEthnicity: "Etinia",
-		patientColor: "BRANCA",
-		patientAdressUF: "SP",
-		patientAdressCEP: "12345678",
-		documentChartNumber: "12345",
-		patientAdressCityIbgeCode: "4528765",
-		procedureJustificationDescription: "Procedure Justification Description",
-		procedureJustificationMainCid10: "A123",
-		procedureJustificationSecCid10: "A31",
-		procedureJustificationAssociatedCauseCid10: "B435",
-		procedureJustificationComments: "Procedure Justification Comments",
-		establishmentExecName: "Etablishment Exec Name",
-		establishmentExecCnes: 7654321,
-		profSolicitorDocument: {
-		cns: "928976954930007",
-		cpf: null,
-		rg: null
-		},
-		profSolicitorName: "Professional Solicitator",
-		solicitationDatetime: "10/11/2021",
-		profAutorizationName: "Professional Autorizaton",
-		emissionOrgCode: "Cod121234",
-		autorizatonProfDocument: {
-		cns: "928976954930007",
-		cpf: null,
-		rg: null
-		},
-		autorizatonDatetime: "10/10/2022",
-		signatureDatetime: "15/10/2022",
-		validityPeriodStart: "15/10/2022",
-		validityPeriodEnd: "15/11/2022"
-		)
-{base64Pdf}
-}
-"""
+apac_request_string = get_request_from_txt('apac.txt') 
+
+
 
 exam_request_request_string = """
 # Write your query or mutation here
