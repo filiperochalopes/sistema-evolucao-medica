@@ -210,7 +210,7 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
             pdf.add_patient_adress_cep(number=patient_adress_cep)            
             pdf.add_patient_phonenumber(number=patient_phonenumber)            
             pdf.add_radiotherapy_before(radiotherapy_before=radiotherapy_before)
-            #c = add_breast_surgery_before(breast_surgery_before=breast_surgery_before)
+            pdf.add_breast_surgery_before(breast_surgery_before=breast_surgery_before)
 
             pdf.set_font('Roboto-Mono', 12)
             pdf.add_oneline_intnumber(number=health_unit_cnes, pos=(178, 761), camp_name='Health Unit CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval=' ', nullable=True)

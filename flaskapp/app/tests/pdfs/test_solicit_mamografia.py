@@ -175,12 +175,13 @@ indusaoImplantes: [null]
     """
     all_string = request_string + campos_string + final_string
     query = gql(all_string)
-    try:
-        #When some exception is created in grphql he return a error
-        client.execute(query)
-        return True
-    except:
-        return False 
+    # try:
+    #     #When some exception is created in grphql he return a error
+    #     client.execute(query)
+    #     return True
+    # except:
+    #     return False 
+    client.execute(query)
     
 
 

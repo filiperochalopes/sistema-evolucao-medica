@@ -314,7 +314,7 @@ mutation{
             patientPhonenumber: "4212345678",
             radiotherapyBefore: ["NAO", null],
             breastSurgeryBefore: {
-            didNot: "TRUE",
+            didNot: "true",
             biopsiaInsinonal: [null],
             biopsiaLinfonodo: [null],
             biopsiaExcisional: [null],

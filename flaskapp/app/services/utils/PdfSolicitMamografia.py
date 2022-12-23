@@ -139,3 +139,62 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
             raise Exception(f'Erro desconhecido ocorreu enquanto adicionava as radioterapias anteriores(radiotherapy before)')
 
 
+    def add_breast_surgery_before(self, breast_surgery_before:dict) -> None:
+        """add breast_surgery_before to document
+
+        Args:
+            breast_surgery_before (dict): breast_surgery_before
+
+        Returns:
+            None
+        """
+        try:
+            if breast_surgery_before == None:
+                return None
+            if type(breast_surgery_before) != type(dict()):
+                raise Exception("breast_surgery_before deve ser um dicionarios com listas ou booleanos, exemplo {'surgery':(year_esq, year_dir)} or {'didNot':True}, {'didNot':False,'biopsiaInsinonal':(None, 2020),'biopsiaExcisional':(2021, None),'centraledomia':(None, None),'segmentectomia':(None),'dutectomia':(None, None),'mastectomia':(None, None),'mastectomiaPoupadoraPele':(None, None),'mastectomiaPoupadoraPeleComplexoAreolo':(None, None),'linfadenectomiaAxilar':(None, None),'biopsiaLinfonodo':(None, None),'reconstrucaoMamaria':(None, None),'mastoplastiaRedutora':(None, None),'indusaoImplantes':(None, None)}")
+            necessary_keys_positions = {"did_not":(334, 41), "biopsia_insinonal":((500, 251), (338, 251)), "biopsia_excisional":((500, 235), (338, 235)), "centraledomia":((500, 220), (338, 220)), "segmentectomia":((500, 204), (338, 204)), "dutectomia":((500, 190), (338, 190)), "mastectomia":((500, 176), (338, 176)), "mastectomia_poupadora_pele":((500, 159), (338, 159)), "mastectomia_poupadora_pele_complexo_areolo":((500, 143), (338, 143)), "linfadenectomia_axilar":((500, 121), (338, 121)), "biopsia_linfonodo":((500, 105), (338, 105)), "reconstrucao_mamaria":((500, 90), (338, 90)), "mastoplastia_redutora":((500, 75), (338, 75)), "indusao_implantes":((500, 60), (338, 60))}
+
+            if len(breast_surgery_before) > 14:
+                raise Exception('Você não pode adicionar mais que 14 chaves no dicionarios em breast_surgery_before')
+            #Pick all valid keys
+            valid_keys = [ x for x in breast_surgery_before.keys() if x in necessary_keys_positions.keys()]
+            #Start adding data
+            for surgery in valid_keys:
+                #Receive the current surgery
+                current_surgery = breast_surgery_before[surgery]
+                if surgery == 'did_not':
+                    if current_surgery.lower() == 'true':
+                        self.add_square(pos=necessary_keys_positions[surgery], size=(15, 9))
+                        return None
+                    else:
+                        continue
+
+                # if type(current_surgery) == type(bool()):
+                #     # when is didNot key
+                #     if current_surgery:
+                #         self.add_square(pos=necessary_keys_positions[surgery], size=(15, 9))
+                #         return None
+                #     else:
+                #         continue
+                if current_surgery[0] == None:
+                    continue
+                elif type(current_surgery) != type(list()):
+                    raise Exception(f'{surgery} deve ser uma lista com os anos da cirurgias no seio direito e esquerdo ou None, exemplo: surgery: None or surgery:(None, 2020)')
+                
+                if len(current_surgery) != 2:
+                    raise Exception(f'{surgery} deve ser uma lista com 2 valores , exemplo: (ano_esquerdo, ano_direito)')
+                
+                cont = 0 
+                for year in current_surgery:
+                    # Add year in right position
+                    self.add_oneline_intnumber(number=year, pos=necessary_keys_positions[surgery][cont], camp_name=f'{surgery} year', len_max=4, len_min=4, value_min=1900, value_max=2100, nullable=True, interval=' ')
+                    cont = 1
+                
+                
+            return None
+        
+        except Exception as error:
+            raise error
+        except:
+            raise Exception(f'Erro desconhecido ocorreu enquanto adicionava cirurgias anterioes nos seios (breast_surgery_before)')
