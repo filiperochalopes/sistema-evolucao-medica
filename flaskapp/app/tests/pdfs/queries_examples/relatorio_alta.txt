@@ -1,0 +1,18 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_RelatorioAlta(
+    documentDatetime: "17/11/2022 03:23",
+    patientName: "Patient Name",
+    patientCns: "928976954930007",
+    patientBirthday: "17/11/2022",
+    patientSex: "F",
+    patientMotherName: "Patient Mother Name",
+    patientDocument: {cpf: "28445400070", rg: null, cns: null},
+    patientAdress: "pacient street, 43, paciten, USA",
+    doctorName: "Doctor Name",
+    doctorCns: "928976954930007",
+    doctorCrm: "CRM/UF 123456",
+    evolution: "Current illnes hsitoryaaaaaaaaaaaedqeqa",
+    orientations: "Do not jump"
+){base64Pdf}
+}
