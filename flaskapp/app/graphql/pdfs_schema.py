@@ -46,6 +46,13 @@ pdfs_schema_type_defs = gql(
         endingDate: String
     }
 
+    input EstablishmentInput{
+        "Nome do Estabelecimento max:82 min:7 caracteres"
+        name: String
+        "CNES do Estabelecimento"
+        cnes: String
+    }
+
     type GeneratedPdf {
         base64Pdf: String
     }
@@ -73,38 +80,15 @@ pdfs_schema_type_defs = gql(
             timestampEnding: String!
             fluidBalance: [FluidBalanceInput]
         ): GeneratedPdf
-
+        
         "Criação de documento de AIH"
         generatePdf_AihSus(
-            "Nome do Estabelecimento Solicitante, max:82 min:7 caracteres"
-            establishmentSolitcName: String!,
-            "CNES do Estabelecimento Solicitante"
-            establishmentSolitcCnes: Int!, 
-            "Nome do Estabelecimento Executante, max:82 min:8 caracteres"
-            establishmentExecName: String!, 
-            "CNES do Estabelecimento Executante"
-            establishmentExecCnes: Int!, 
-            "Nome do paciente, max:79 min:7 caracteres"
-            patientName: String!, 
-            "Número do Cartão do SUS do paciente"
-            patientCns: String!,
-            "Data de nascimento do paciente, no formato DD/MM/YYYY"
-            patientBirthday: String!,
-            "Sexo do Paciente, opcao M ou F."
-            patientSex: String!,
-            "Nome da Mae do paciente, max:70 min:7 caracteres"
-            patientMotherName: String!, 
-            "Endereco do paciente, somente 'rua, numero, bairro', max: 101 min:7 caracteres"
-            patientAdress: String!, 
-            "Cidade do paciente, max:58 min:3 caracteres"
-            patientAdressCity: String!, 
-            "Codigo IBGE do municipio do paciente"
-            patientAdressCityIbgeCode: String!,
-            "Sigla do estado, UF, da cidade do paciente, somente a sigla"
-            patientAdressUF: String!,
-            "CEP do endereço do paciente"
-            patientAdressCEP: String!,
-            "Principais sintomas e sintomas clinicos, max:1009 min:5 caracteres"
+            "Dados do Estabelecimento Solicitante"
+            establishmentSolitc: EstablishmentInput!,
+            "Dados do Estabelecimento Executante"
+            establishmentExec: EstablishmentInput, 
+            "Dados do Paciente"
+            patient: PatientInput
             mainClinicalSignsSymptoms: String!,
             "Condicoes que justificam a internacao, max:403 min:5 caracteres"
             conditionsJustifyHospitalization: String!,

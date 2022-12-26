@@ -60,6 +60,7 @@ type_defs = gql(
         complement:String
         number:String
         city: String!
+        ibgeCityCode: String
         uf: String!
     }
 
@@ -127,15 +128,19 @@ type_defs = gql(
     }
 
     input PatientInput{
+        "Nome completo do paciente"
         name:String,
+        "Nome completo da mãe do paciente"
+        motherName: String
         "Sexo biológico binário `male` ou `female`"
         sex:String,
         "Data de aniversário no formato `yyyy-mm-dd`"
-        birthday: String
+        birthdate: String
         "Apenas dígitos, para fins de testes pode gerar [nesse link](https://geradornv.com.br/gerador-cpf/)"
         cpf:String, 
         "Apenas dígitos, para fins de testes, pode gerar [nesse link](https://geradornv.com.br/gerador-cns/)"
         cns:String!, 
+        "Apenas dígito do Documento de Registro Geral"
         rg: String
         "Lista de doenças do paciente"
         comorbidities: [String]
