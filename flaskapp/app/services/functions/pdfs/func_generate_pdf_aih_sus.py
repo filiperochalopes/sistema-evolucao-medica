@@ -3,24 +3,13 @@ from app.services.utils.PdfAihSus import PdfAihSus
 
 
 
-def func_generate_pdf_aih_sus(establishment_solitc_name:str, establishment_solitc_cnes:int, establishment_exec_name:str, establishment_exec_cnes:int, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_adress:str, patient_adress_city:str, patient_adress_city_ibge_code:int, patient_adress_uf:str, patient_adress_cep:str, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_autorization_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:str ,exam_results:str=None, chart_number:str=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> str:
+def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_autorization_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:str ,exam_results:str=None, chart_number:str=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> str:
     """fill pdf aih sus 
 
     Args:
-        establishment_solitc_name (str): establishment_solitc_name
-        establishment_solitc_cnes (int): establishment_solitc_cnes
-        establishment_exec_name (str): establishment_exec_name
-        establishment_exec_cnes (int): establishment_exec_cnes
-        patient_name (str): patient_name
-        patient_cns (int): patient_cns
-        patient_birthday (datetime.datetime): patient_birthday
-        patient_sex (str): patient_sex
-        patient_mother_name (str): patient_mother_name
-        patient_adress (str): patient_adress
-        patient_adress_city (str): patient_adress_city
-        patient_adress_city_ibge_code (int): patient_adress_city_ibge_code
-        patient_adress_uf (str): patient_adress_uf
-        patient_adress_cep (int): patient_adress_cep
+        establishment_solitc (dict): establishment_solitc
+        establishment_exec (dict): establishment_exec
+        patient (dict): Patient info
         main_clinical_signs_symptoms (str): main_clinical_signs_symptoms
         conditions_justify_hospitalization (str): conditions_justify_hospitalization
         initial_diagnostic (str): initial_diagnostic
@@ -62,26 +51,26 @@ def func_generate_pdf_aih_sus(establishment_solitc_name:str, establishment_solit
         # Writing all data in respective fields
         # not null data
         try:     
-            pdf.add_oneline_text(text=establishment_solitc_name, pos=(25, 750), camp_name='Establishment Solicit Name', len_max=82, len_min=8)
-            pdf.add_oneline_intnumber(number=establishment_solitc_cnes, pos=(470, 750), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='  ')
-            pdf.add_oneline_text(text=establishment_exec_name, pos=(25, 726), camp_name='Establishment Exec Name', len_max=82, len_min=8)
-            pdf.add_oneline_intnumber(number=establishment_exec_cnes, pos=(470, 726), camp_name='Establishment Exec CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='  ')
-            pdf.add_oneline_text(text=patient_name, pos=(25, 683), camp_name='Patient Name', len_max=79, len_min=7)
+            pdf.add_oneline_text(text=establishment_solitc['name'], pos=(25, 750), camp_name='Establishment Solicit Name', len_max=82, len_min=8)
+            pdf.add_oneline_text(text=establishment_solitc['cnes'], pos=(470, 750), camp_name='Establishment Solict CNES', len_max=7, len_min=7,interval='  ')
+            pdf.add_oneline_text(text=establishment_exec['name'], pos=(25, 726), camp_name='Establishment Exec Name', len_max=82, len_min=8)
+            pdf.add_oneline_text(text=establishment_exec['cnes'], pos=(470, 726), camp_name='Establishment Exec CNES', len_max=7, len_min=7,interval='  ')
+            pdf.add_oneline_text(text=patient['name'], pos=(25, 683), camp_name='Patient Name', len_max=79, len_min=7)
             #Data that change Font Size
 
             pdf.set_font('Roboto-Mono', 10)
-            pdf.add_cns(cns=patient_cns, pos=(28, 658), camp_name='Patient CNS', interval='  ')
-            pdf.add_oneline_text(text=patient_adress_cep, pos=(482, 566), camp_name='Patient Adress CEP', len_max=8, len_min=8, interval=' ')
+            pdf.add_cns(cns=patient['cns'], pos=(28, 658), camp_name='Patient CNS', interval='  ')
+            pdf.add_oneline_text(text=patient['address']['zip_code'], pos=(482, 566), camp_name='Patient Adress CEP', len_max=8, len_min=8, interval=' ')
             pdf.add_oneline_text(text=procedure_code, pos=(404, 269), camp_name='Procedure Code', len_max=10, len_min=10, interval='  ')
             
             pdf.set_font('Roboto-Mono', 9)
-            pdf.add_datetime(date=patient_birthday, pos=(312, 658), camp_name='Patient Birthday', hours=False, interval='  ', formated=False)
-            pdf.add_sex_square(sex=patient_sex, pos_male=(415, 657), pos_fem=(468, 657), camp_name='Patient Sex', square_size=(8,9))
-            pdf.add_oneline_text(text=patient_mother_name, pos=(25, 636), camp_name='Patient Mother Name', len_max=70, len_min=7)
-            pdf.add_oneline_text(text=patient_adress, pos=(25, 593), camp_name='Patient Adress', len_max=101, len_min=7)
-            pdf.add_oneline_text(text=patient_adress_city, pos=(25, 566), camp_name='Patient Adress City', len_max=58, len_min=3)
-            pdf.add_oneline_text(text=patient_adress_city_ibge_code, pos=(388, 566), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7)
-            pdf.add_UF(uf=patient_adress_uf, pos=(450, 566), camp_name='Patient Adress UF', interval='  ')
+            pdf.add_datetime(date=patient['birthdate'], pos=(312, 658), camp_name='Patient Birthday', hours=False, interval='  ', formated=False)
+            pdf.add_sex_square(sex=patient['sex'], pos_male=(415, 657), pos_fem=(468, 657), camp_name='Patient Sex', square_size=(8,9))
+            pdf.add_oneline_text(text=patient['mother_name'], pos=(25, 636), camp_name='Patient Mother Name', len_max=70, len_min=7)
+            pdf.add_oneline_text(text=patient['address']['street'], pos=(25, 593), camp_name='Patient Adress', len_max=101, len_min=7)
+            pdf.add_oneline_text(text=patient['address']['city'], pos=(25, 566), camp_name='Patient Adress City', len_max=58, len_min=3)
+            pdf.add_oneline_text(text=patient['address']['ibge_city_code'], pos=(388, 566), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7)
+            pdf.add_UF(uf=patient['address']['uf'], pos=(450, 566), camp_name='Patient Adress UF', interval='  ')
             pdf.add_morelines_text(text=main_clinical_signs_symptoms, initial_pos=(25, 530), decrease_ypos= 10, camp_name='Main Clinical Signs Symptoms', len_max=1009, char_per_lines=101, len_min=5)
             pdf.add_morelines_text(text=conditions_justify_hospitalization, initial_pos=(25, 422), decrease_ypos= 10, camp_name='Conditions that Justify hospitalization', len_max=403, char_per_lines=101, len_min=5)
             pdf.add_oneline_text(text=initial_diagnostic, pos=(25, 314), camp_name='Initial Diagnostic', len_max=44, len_min=5)
