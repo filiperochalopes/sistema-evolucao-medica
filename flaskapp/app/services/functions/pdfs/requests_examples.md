@@ -282,34 +282,35 @@ mutation{
 # Write your query or mutation here
 mutation{
 	generatePdf_FichaInternamento(
-	    documentDatetime: "10/10/2014 10:12",
-	    patientName: "Patient Name",
-	    patientCns: "928976954930007",
-	    patientBirthday: "10/10/2021",
-	    patientSex: "M",
-	    patientMotherName: "Patient Mother Name",
-	    patientDocument: {
-	      cpf: "28445400070",
-	      cns: null,
-	      rg: null
-	    },
-	    patientAdress: "Patient Adress",
-	    patientPhonenumber: "10123456789",
-	    patientDrugAllergies: "Patient Drug Allergies",
-	    patientComorbidities: "Patient Commorbidites",
-	    currentIllnessHistory: "Current Illness History",
-	    hasAdditionalHealthInsurance: "SIM",
-	    initialDiagnosticSuspicion: "Initial Suspiction",
-	    doctorName: "Doctor Name",
-	    doctorCns: "928976954930007",
-	    doctorCrm: "CRM/UF 123456",
-	    patientAdressNumber: 124,
-	    patientAdressNeigh: "Patient Neighbourhood",
-	    patientAdressCity: "Patient City",
-	    patientAdressUf: "SP",
-	    patientAdressCep: "12345678",
-	    patientNationality: "Brasileira",
-	    patientEstimateWeight: 140
+      documentDatetime: "10/10/2020 10:12",
+			patient: {
+        name: "Patient Name",
+        cns: "928976954930007",
+        cpf: "14383811744",
+        rg: null,
+        birthdate: "10/10/2021",
+        sex: "M",
+        motherName: "Patient Mother Name",
+        address: {
+          street: "Patient Adress",
+          number: "124",
+          district: "Patient Neighbourhood",
+          city: "Patient City",
+          uf: "SP",
+          zipCode: "12345678",
+        },
+      	comorbidities: ["Patient", "Commorbidites"],
+        allergies: ["Patient", "Drug", "Allergies"],
+      }
+      currentIllnessHistory: "Current Illness History",
+    	patientPhonenumber: "10123456789",
+      hasAdditionalHealthInsurance: "SIM",
+      initialDiagnosticSuspicion: "Initial Suspiction",
+      doctorName: "Doctor Name",
+      doctorCns: "928976954930007",
+      doctorCrm: "CRM/UF 123456",
+      patientNationality: "Brasileira",
+      patientEstimateWeight: 140
 		){base64Pdf}
 }
 ```
