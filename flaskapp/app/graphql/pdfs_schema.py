@@ -169,46 +169,28 @@ pdfs_schema_type_defs = gql(
 
         "Criação de documento de APAC"
         generatePdf_Apac(
-            "Nome do Estabelecimento Solicitante, max:77 min:7 caracteres"
-            establishmentSolitcName: String!,
-            "CNES do Estabelecimento Solicitante"
-            establishmentSolitcCnes: Int!,
-            "Nome do paciente, max:67 min:7 caracteres"
-            patientName: String!, 
-            "Número do Cartão do SUS do paciente"
-            patientCns: String!,
-            "Sexo do Paciente, opcao M ou F."
-            patientSex: String!,
-            "Data de nascimento do paciente, no formato DD/MM/YYYY"
-            patientBirthday: String!,
-            "Cidade do paciente, max:58 min:3 caracteres"
-            patientAdressCity: String!,
+           "Dados do Estabelecimento Solicitante"
+            establishmentSolitc: EstablishmentInput!,
+            "Dados do Estabelecimento Executante"
+            establishmentExec: EstablishmentInput, 
+            "Dados do Paciente"
+            patient: PatientInput
             "Procedimento Solicitado, utilize o input ProcedimentoInput"
             mainProcedure: ProcedimentoInput!,
             "Procedimentos Secundarios, no maximo 5, envie uma lista de ProcedimentoInput"
             secondariesProcedures: [ProcedimentoInput],
-            "Nome da Mae do paciente, max:65 min:7 caracteres"
-            patientMotherName: String,
             "Numero de telefone da mae do paciente, envie somente numeros, 10 ou 11 digitos"
             patientMotherPhonenumber: String, 
             "Nome do responsavel do paciente, max:67 min:7 caracteres"
             patientResponsibleName: String, 
             "Numero de telefone do Responsavel do paciente, envie somente numeros, 10 ou 11 digitos"
             patientResponsiblePhonenumber: String,
-            "Endereco do paciente, somente 'rua, numero, bairro', max: 97 min:7 caracteres"
-            patientAdress: String,
             "Etinia do Paciente, max:17 min:4 caracteres"
             patientEthnicity: String, 
             "Cor do Paciente, max:10 min:4 caracteres"
             patientColor: String, 
-            "Sigla do estado, UF, da cidade do paciente, somente a sigla"
-            patientAdressUF: String,
-            "CEP do endereço do paciente"
-            patientAdressCEP: String,
             "Numero do Prontuario, max:14 min:1 caracteres"
             documentChartNumber: String,
-            "Codigo IBGE do municipio do paciente"
-            patientAdressCityIbgeCode: String,
             "Descricao do diagnostico do procedimento solicitado. max: 55 min: 4 caracteres"
             procedureJustificationDescription: String,
             "Cid 10 principal do diagnostico"
@@ -219,10 +201,6 @@ pdfs_schema_type_defs = gql(
             procedureJustificationAssociatedCauseCid10: String,
             "Observacoes do diagnostico, max: 776 min: 5 caracteres"  
             procedureJustificationComments: String,
-            "Nome do Estabelecimento Executante, max:71 min:8 caracteres"
-            establishmentExecName: String,
-            "CNES do Estabelecimento Executante"
-            establishmentExecCnes: Int,
             "Documento do profissional solicitante, cns ou cpf, utilize o input DocumentInput"
             profSolicitorDocument: DocumentInput, 
             "Nome do profissional solicitante, max:48 min:5 caracteres"
