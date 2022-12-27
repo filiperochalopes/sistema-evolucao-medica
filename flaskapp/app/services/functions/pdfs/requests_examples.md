@@ -76,48 +76,56 @@ mutation{
 # Write your query or mutation here
 mutation{
 	generatePdf_Apac(
-		establishmentSolitcName: "Establihsment Name",
-		establishmentSolitcCnes: 1234567,
-		patientName: "Patient Name",
-		patientCns: "928976954930007",
-		patientSex: "M",
-		patientBirthday: "22/10/2022",
-		patientAdressCity: "Patient",
+		establishmentSolitc: {
+        name: "Establishmente Solict Name",
+        cnes: "1234567"
+      },
+    establishmentExec: {
+      name:"Establishment exec Name",
+      cnes: "1234567"
+    },
+    patient: {
+        name: "Patient Patient Name",
+        cns: "928976954930007",
+        birthdate: "10/10/2022",
+        sex: "M",
+        motherName: "Patient Mother Name",
+        address: {
+          street: "Patient Adress",
+          city: "Jau",
+          ibgeCityCode: "1234567",
+          uf: "SP",
+          zipCode: "12345678"
+        },
+    },
 		mainProcedure: {
-		name: "teste procedimento",
-		code: "hkmaug347s",
-		quant: 1
-		},
-		secondariesProcedures:[
-		{
-		name: "teste procedimento",
-		code: "hkmaug347s",
-		quant: 1
-		},
-		{
-		name: "segundo procedimento",
-		code: "hkmhsa3s23",
-		quant: 4
-		}
+      name: "teste procedimento",
+      code: "hkmaug347s",
+      quant: 1
+      },
+      secondariesProcedures:[
+      {
+      name: "teste procedimento",
+      code: "hkmaug347s",
+      quant: 1
+      },
+      {
+      name: "segundo procedimento",
+      code: "hkmhsa3s23",
+      quant: 4
+      }
 		],
-		patientMotherName: "Patient Mother Name",
 		patientMotherPhonenumber: "3412344321",
 		patientResponsibleName: "Patient Responsible Name",
 		patientResponsiblePhonenumber: "5425415864",
-		patientAdress: "Patient Adress ",
 		patientEthnicity: "Etinia",
 		patientColor: "BRANCA",
-		patientAdressUF: "SP",
-		patientAdressCEP: "12345678",
 		documentChartNumber: "12345",
-		patientAdressCityIbgeCode: "4528765",
 		procedureJustificationDescription: "Procedure Justification Description",
 		procedureJustificationMainCid10: "A123",
 		procedureJustificationSecCid10: "A31",
 		procedureJustificationAssociatedCauseCid10: "B435",
 		procedureJustificationComments: "Procedure Justification Comments",
-		establishmentExecName: "Etablishment Exec Name",
-		establishmentExecCnes: 7654321,
 		profSolicitorDocument: {
 		cns: "928976954930007",
 		cpf: null,
@@ -247,18 +255,24 @@ mutation{
 # Write your query or mutation here
 mutation{
 	generatePdf_SolicitExames(
-	    patientName: "Patient NAme",
-	    patientCns: "928976954930007",
-	    patientBirthday: "10/10/2021",
-	    patientAdress: "Patient Adress",
-	    solicitationReason: "Solicitation reason",
-	    profSolicitorName: "Professional solicitor Name",
-	    solicitationDatetime: "10/10/2014",
-	    exams: "Exames Solicitados",
-	    profAuthorizedName: "Prof Autorization Name", 
-	    documentPacientName: "Document Pacient NAme",
-	    autorizationDatetime: "10/10/2021",
-	    documentPacientDate: "10/08/2021"
+      patient: {
+        name: "Patient NAme",
+        cns: "928976954930007",
+        birthdate: "10/10/2021",
+        address: {
+          street: "Patient Adress",
+          city: "City",
+          uf: "SP",
+        },
+      },
+      solicitationReason: "Solicitation reason",
+      profSolicitorName: "Professional solicitor Name",
+      solicitationDatetime: "10/10/2014",
+      exams: "Exames Solicitados",
+      profAuthorizedName: "Prof Autorization Name", 
+      documentPacientName: "Document Pacient NAme",
+      autorizationDatetime: "10/10/2021",
+      documentPacientDate: "10/08/2021"
 		){base64Pdf}
 }
 ```
