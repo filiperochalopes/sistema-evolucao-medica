@@ -58,6 +58,7 @@ type_defs = gql(
         zipCode: String
         street:String
         complement:String
+        district:String
         number:String
         city: String!
         ibgeCityCode: String
