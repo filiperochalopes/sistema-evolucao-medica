@@ -2,36 +2,25 @@ import datetime
 from app.services.utils.PdfApac import PdfApac
 
 
-def func_generate_pdf_apac(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_cns:str, patient_sex:str, patient_birthday:str, patient_adress_city:str, main_procedure:dict, patient_mother_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_adress:str=None, patient_ethnicity:str=None, patient_color:str=None, patient_adress_uf:str=None, patient_adress_cep:str=None, document_chart_number:str=None, patient_adress_city_ibge_code:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None, establishment_exec_name:str=None, establishment_exec_cnes:int=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, prof_autorization_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
+def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_procedure:dict, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_ethnicity:str=None, patient_color:str=None, document_chart_number:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, prof_autorization_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
     """fill pdf apac
 
     Args:
-        establishment_solitc_name (str): establishment_solitc_name
-        establishment_solitc_cnes (int): establishment_solitc_cnes
-        patient_name (str): patient_name
-        patient_cns (str): patient_cns
-        patient_sex (str): patient_sex
-        patient_birthday (str): patient_birthday
-        patient_adress_city (str): patient_adress_city
+        establishment_solitc (dict): establishment_solitc
+        establishment_exec (dict): establishment_exec
+        patient (dict): info
         main_procedure (dict): dict with name, code and quat of main procedure
-        patient_mother_name (str, optional): patient_mother_name. Defaults to None.
         patient_mother_phonenumber (int, optional): patient_mother_phonenumber. Defaults to None.
         patient_responsible_name (str, optional): patient_responsible_name. Defaults to None.
         patient_responsible_phonenumber (int, optional): patient_responsible_phonenumber. Defaults to None.
-        patient_adress (str, optional): patient_adress. Defaults to None.
         patient_ethnicity (str, optional): patient_ethnicity. Defaults to None.
         patient_color (str, optional): patient_color. Defaults to None.
-        patient_adress_uf (str, optional): patient_adress_uf. Defaults to None.
-        patient_adress_cep (int, optional): patient_adress_cep. Defaults to None.
         document_chart_number (str, optional): document_chart_number. Defaults to None.
-        patient_adress_city_ibge_code (str, optional): patient_adress_city_ibge_code. Defaults to None.
         procedure_justification_description (str, optional): procedure_justification_description. Defaults to None.
         procedure_justification_main_cid_10 (str, optional): procedure_justification_main_cid_10. Defaults to None.
         procedure_justification_sec_cid_10 (str, optional): procedure_justification_sec_cid_10. Defaults to None.
         procedure_justification_associated_cause_cid_10 (str, optional): procedure_justification_associated_cause_cid_10. Defaults to None.
         procedure_justification_comments (str, optional): procedure_justification_comments. Defaults to None.
-        establishment_exec_name (str, optional): establishment_exec_name. Defaults to None.
-        establishment_exec_cnes (int, optional): establishment_exec_cnes. Defaults to None.
         prof_solicitor_document (dict, optional): prof_solicitor_document. Defaults to None.
         prof_solicitor_name (str, optional): prof_solicitor_name. Defaults to None.
         solicitation_datetime (datetime.datetime, optional): solicitation_datetime. Defaults to None.
@@ -55,16 +44,16 @@ def func_generate_pdf_apac(establishment_solitc_name:str, establishment_solitc_c
         # Writing all data in respective fields
         # not null data
         try:
-            pdf.add_cns(cns=patient_cns, pos=(36, 678), camp_name='Patient CNS', interval='  ')
+            pdf.add_cns(cns=patient['cns'], pos=(36, 678), camp_name='Patient CNS', interval='  ')
             pdf.add_procedure(procedure=main_procedure, code_pos=(36,542), name_pos=(220, 542), quant_pos=(508, 542), camp_name='Main Procedure')
 
             pdf.set_font('Roboto-Mono', 9)
-            pdf.add_oneline_text(text=establishment_solitc_name, pos=(36, 742), camp_name='Establishment Solict Name', len_max=77, len_min=7)
-            pdf.add_oneline_text(text=patient_name, pos=(36, 702), camp_name='Patient Name', len_max=67, len_min=7)
-            pdf.add_sex_square(sex=patient_sex, pos_male=(423, 699), pos_fem=(456, 699), camp_name='Patient Sex', square_size=(9,9))
-            pdf.add_datetime(date=patient_birthday, pos=(315, 678), camp_name='Patient Birthday', hours=False, interval='  ', formated=False)
-            pdf.add_oneline_text(text=patient_adress_city, pos=(36, 584), camp_name='Patient Adress City', len_max=58, len_min=3)
-            pdf.add_oneline_intnumber(number=establishment_solitc_cnes, pos=(468, 742), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999)
+            pdf.add_oneline_text(text=establishment_solitc['name'], pos=(36, 742), camp_name='Establishment Solict Name', len_max=77, len_min=7)
+            pdf.add_oneline_text(text=patient['name'], pos=(36, 702), camp_name='Patient Name', len_max=67, len_min=7)
+            pdf.add_sex_square(sex=patient['sex'], pos_male=(423, 699), pos_fem=(456, 699), camp_name='Patient Sex', square_size=(9,9))
+            pdf.add_datetime(date=patient['birthdate'], pos=(315, 678), camp_name='Patient Birthday', hours=False, interval='  ', formated=False)
+            pdf.add_oneline_text(text=patient['address']['city'], pos=(36, 584), camp_name='Patient Adress City', len_max=58, len_min=3)
+            pdf.add_oneline_text(text=establishment_solitc['cnes'], pos=(468, 742), camp_name='Establishment Solict CNES', len_max=7, len_min=7)
         
         except Exception as error:
             return error
@@ -74,24 +63,24 @@ def func_generate_pdf_apac(establishment_solitc_name:str, establishment_solitc_c
         #Adding data that can be null
         try:
             pdf.set_font('Roboto-Mono', 11)
-            pdf.add_oneline_intnumber(number=establishment_exec_cnes, pos=(450, 28), camp_name='Establishment Exec CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=establishment_exec['cnes'], pos=(450, 28), camp_name='Establishment Exec CNES', len_max=7, len_min=7,interval=' ', nullable=True)
             pdf.set_font('Roboto-Mono', 9)
-            pdf.add_oneline_text(text=patient_mother_name, pos=(36, 654), camp_name='Patient Mother Name', len_max=67, len_min=7, nullable=True)
+            pdf.add_oneline_text(text=patient['mother_name'], pos=(36, 654), camp_name='Patient Mother Name', len_max=67, len_min=7, nullable=True)
             pdf.add_phonenumber(number=patient_mother_phonenumber, pos=(409, 650), camp_name='Patient Mother Phone Number', nullable=True, interval='  ')
             pdf.add_oneline_text(text=patient_responsible_name, pos=(36, 630), camp_name='Patient Responsible Name', len_max=67, len_min=7, nullable=True)
             pdf.add_phonenumber(number=patient_responsible_phonenumber, pos=(409, 626), camp_name='Patient Responsible Phone Number', nullable=True, interval='  ')
-            pdf.add_oneline_text(text=patient_adress, pos=(36, 608), camp_name='Patient Adress', len_max=97, len_min=7, nullable=True)
+            pdf.add_oneline_text(text=patient['address']['street'], pos=(36, 608), camp_name='Patient Adress', len_max=97, len_min=7, nullable=True)
             pdf.add_oneline_text(text=patient_color, pos=(404, 678), camp_name='Patient Color', len_max=10, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient_ethnicity, pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)
-            pdf.add_oneline_text(text=patient_adress_cep, pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, nullable=True, interval=' ')
+            pdf.add_oneline_text(text=patient['address']['zip_code'], pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, nullable=True, interval=' ')
             pdf.add_oneline_text(text=document_chart_number, pos=(483, 702), camp_name='Document Chart Number', len_max=14, len_min=1, nullable=True)
-            pdf.add_oneline_text(text=patient_adress_city_ibge_code, pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, nullable=True)
-            pdf.add_UF(uf=patient_adress_uf, pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
+            pdf.add_oneline_text(text=patient['address']['ibge_city_code'], pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, nullable=True)
+            pdf.add_UF(uf=patient['address']['uf'], pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
             pdf.add_oneline_text(text=procedure_justification_description, pos=(36, 344), camp_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
             pdf.add_oneline_text(text=procedure_justification_main_cid_10, pos=(352, 344), camp_name='Procedure Justification main CID10', len_max=4, len_min=3, nullable=True)
             pdf.add_oneline_text(text=procedure_justification_sec_cid_10, pos=(420, 344), camp_name='Procedure Justification secondary CID10', len_max=4, len_min=3, nullable=True)
             pdf.add_oneline_text(text=procedure_justification_associated_cause_cid_10, pos=(505, 344), camp_name='Procedure Justification Associated Causes CID10', len_max=4, len_min=3, nullable=True)
-            pdf.add_oneline_text(text=establishment_exec_name, pos=(36, 30), camp_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
+            pdf.add_oneline_text(text=establishment_exec['name'], pos=(36, 30), camp_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
             pdf.add_oneline_text(text=prof_solicitor_name, pos=(36, 204), camp_name='Profissional Solicitor Name', len_max=48, len_min=5, nullable=True)
             pdf.add_oneline_text(text=prof_autorization_name, pos=(36, 136), camp_name='Profissional Authorizator Name', len_max=46, len_min=5, nullable=True)
             pdf.add_oneline_text(text=emission_org_code, pos=(290, 136), camp_name='Emission Org Code', len_max=16, len_min=2, nullable=True)
