@@ -1,17 +1,23 @@
 # Write your query or mutation here
 mutation{
 	generatePdf_SolicitExames(
-            patientName: "Patient NAme",
-            patientCns: "928976954930007",
-            patientBirthday: "10/10/2021",
-            patientAdress: "Patient Adress",
-            solicitationReason: "Solicitation reason",
-            profSolicitorName: "Professional solicitor Name",
-            solicitationDatetime: "10/10/2014",
-            exams: "Exames Solicitados",
-            profAuthorizedName: "Prof Autorization Name", 
-            documentPacientName: "Document Pacient NAme",
-            autorizationDatetime: "10/10/2021",
-            documentPacientDate: "10/08/2021"
+      patient: {
+        name: "Patient NAme",
+        cns: "928976954930007",
+        birthdate: "10/10/2021",
+        address: {
+          street: "Patient Adress",
+          city: "City",
+          uf: "SP",
+        },
+      },
+      solicitationReason: "Solicitation reason",
+      profSolicitorName: "Professional solicitor Name",
+      solicitationDatetime: "10/10/2014",
+      exams: "Exames Solicitados",
+      profAuthorizedName: "Prof Autorization Name", 
+      documentPacientName: "Document Pacient NAme",
+      autorizationDatetime: "10/10/2021",
+      documentPacientDate: "10/08/2021"
 		){base64Pdf}
 }
