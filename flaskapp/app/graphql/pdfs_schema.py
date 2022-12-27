@@ -349,14 +349,8 @@ pdfs_schema_type_defs = gql(
 
         "Criação de documento de Solicitacao de Exames"
         generatePdf_SolicitExames(
-            "Nome do paciente, max:70 min:7 caracteres"
-            patientName: String!,
-            "CNS do paciente"
-            patientCns: String!,
-            "Data de nascimento do paciente no formato DD/MM/YYYY"
-            patientBirthday: String!,
-            "Endereco do paciente, max: 216 min:7 caracteres"
-            patientAdress: String!,
+            "Dados do Paciente"
+            patient: PatientInput
             "Motivo da Solicitacao, max: 216 min:7 caracteres"
             solicitationReason: String!,
             "Nome do profissional Solicitante, max:29 min:7 caracteres"

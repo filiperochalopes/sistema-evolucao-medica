@@ -2,15 +2,12 @@ import datetime
 from app.services.utils.PdfExamRequest import PdfExamRequest
 
 
-def func_generate_pdf_exam_request(patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_adress:str, solicitation_reason:str,
-exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof_authorized_name:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> str:
+def func_generate_pdf_exam_request(patient:dict, solicitation_reason:str,
+exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_authorized_name:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> str:
     """fill pdf exam request (Solicitacao de exames e procedimentos)
 
     Args:
-        patient_name (str): patient_name
-        patient_cns (str): patient_cns
-        patient_birthday (datetime.datetime): patient_birthday
-        patient_adress (str): patient_adress
+        patient (dict): patient info
         solicitation_reason (str): solicitation_reason
         exams (str): text with exams, this is what extends pdf size to fill all exams
         prof_solicitor_name (str): prof_solicitor_name
@@ -42,10 +39,10 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime,prof
             solicitation_reason_ypos = 690
             prof_solicitor_ypos = 595
             for x in range(pdf.pags_quant):
-                pdf.add_oneline_text(text=patient_name, pos=(7, patient_name_ypos), camp_name='Patient Name', len_max=70, len_min=7)
-                pdf.add_cns(cns=patient_cns, pos=(450, patient_cns_ypos), camp_name='Patient CNS',formated=True)
-                pdf.add_datetime(date=patient_birthday, pos=(441, patient_birthday_ypos), camp_name='Patient Birthday', hours=False, formated=True)
-                pdf.add_morelines_text(text=patient_adress, initial_pos=(7, patient_adress_ypos), decrease_ypos=10, camp_name='Patient Adress', len_max=216, len_min=7, char_per_lines=108)
+                pdf.add_oneline_text(text=patient['name'], pos=(7, patient_name_ypos), camp_name='Patient Name', len_max=70, len_min=7)
+                pdf.add_cns(cns=patient['cns'], pos=(450, patient_cns_ypos), camp_name='Patient CNS',formated=True)
+                pdf.add_datetime(date=patient['birthdate'], pos=(441, patient_birthday_ypos), camp_name='Patient Birthday', hours=False, formated=True)
+                pdf.add_morelines_text(text=f"{patient['address']['street']}, {patient['address']['city']} - {patient['address']['uf']}", initial_pos=(7, patient_adress_ypos), decrease_ypos=10, camp_name='Patient Adress', len_max=216, len_min=7, char_per_lines=108)
                 pdf.add_morelines_text(text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, camp_name='Solicitation Reason', len_max=216, len_min=7, char_per_lines=108)
                 pdf.add_oneline_text(text=prof_solicitor_name, pos=(7, prof_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
                 pdf.add_datetime(date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True)
