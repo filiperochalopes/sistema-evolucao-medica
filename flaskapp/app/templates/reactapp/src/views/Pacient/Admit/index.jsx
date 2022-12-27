@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import getCepApiAdapter from "services/getCepApiAdapter";
 import schema from "./schema";
 import maskCpf from "utils/maskCpf";
+import { useNavigate } from "react-router-dom";
 
 const Admit = () => {
   const [createInternment] = useMutation(CREATE_INTERNMENT);
@@ -21,6 +22,7 @@ const Admit = () => {
   const { data: comorbiditiesData } = useQuery(COMORBIDITIES);
   const { data: statesData } = useQuery(STATES);
   const { data: cid10Data } = useQuery(CID10);
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       addPacient: false,
@@ -48,7 +50,7 @@ const Admit = () => {
         },
       },
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const { addPacient, cid10Code, ...rest } = values;
       const patient = {
         ...values.patient,
@@ -74,14 +76,19 @@ const Admit = () => {
         date.getMonth() + 1
       }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
 
-      createInternment({
-        variables: {
-          ...rest,
-          patient,
-          admissionDatetime,
-          cid10Code: cid10Code.code,
-        },
-      });
+      try {
+        await createInternment({
+          variables: {
+            ...rest,
+            patient,
+            admissionDatetime,
+            cid10Code: cid10Code.code,
+          },
+        });
+        navigate.navigate("/");
+      } catch {
+        console.log("error");
+      }
     },
     validationSchema: schema,
   });

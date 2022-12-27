@@ -10,10 +10,11 @@ import { useModalContext } from "services/ModalContext";
 import EvolutionButton from "./components/EvolutionButton";
 import { useQuery } from "@apollo/client";
 import { PATIENTS } from "graphql/queries";
-
+import { CONVERT_LABEL_SEX } from "constants/convertsexName";
 const List = () => {
   const { data } = useQuery(PATIENTS);
   const { addModal } = useModalContext();
+
   return (
     <Container>
       <Link to="/adimitir-paciente">
@@ -24,11 +25,14 @@ const List = () => {
         <h2>Pacientes Internados</h2>
         <div className="pacients">
           {data &&
-            data?.pacients &&
-            data?.pacients.map((pacient) => (
+            data?.patients &&
+            data?.patients.map((pacient) => (
               <Pacient key={pacient.id}>
                 <PacientContent>
-                  <p>Nome Completo, masculino, 80 anos</p>
+                  <p>
+                    {pacient.name}, {CONVERT_LABEL_SEX[pacient.sex]},
+                    {pacient.age}
+                  </p>
                   <div className="container_buttons">
                     <Link to="/prontuario">
                       <Button
@@ -39,7 +43,7 @@ const List = () => {
                         Visualizar
                       </Button>
                     </Link>
-                    <EvolutionButton />
+                    <EvolutionButton id={pacient.id} />
                     <Button
                       onClick={() => {
                         addModal(printScreen);

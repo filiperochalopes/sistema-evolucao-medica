@@ -6,6 +6,7 @@ export const PATIENTS = gql`
       id
       name
       cns
+      age
     }
   }
 `;

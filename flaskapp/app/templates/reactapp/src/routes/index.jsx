@@ -35,11 +35,11 @@ const routers = createBrowserRouter([
         element: <Admit />,
       },
       {
-        path: "/evoluir-paciente",
+        path: "/evoluir-paciente/:id",
         element: <Evolution />,
       },
       {
-        path: "/sinais-vitais",
+        path: "/sinais-vitais/:id",
         element: <VitalSign />,
       },
       {

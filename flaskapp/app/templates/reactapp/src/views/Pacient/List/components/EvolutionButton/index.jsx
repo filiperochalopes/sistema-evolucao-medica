@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Container, { PopUp } from "./styles";
 
-const EvolutionButton = () => {
+const EvolutionButton = ({ id }) => {
   const [showPopUp, setShowPopUp] = useState(false);
 
   return (
@@ -17,9 +17,9 @@ const EvolutionButton = () => {
       </Button>
       {showPopUp && (
         <PopUp>
-          <Link to="/evoluir-paciente">Adicionar evolução</Link>
+          <Link to={`/evoluir-paciente/${id}`}>Adicionar evolução</Link>
 
-          <Link to="/sinais-vitais">Atualizar sinais vitais</Link>
+          <Link to={`/sinais-vitais/${id}`}>Atualizar sinais vitais</Link>
         </PopUp>
       )}
     </Container>
