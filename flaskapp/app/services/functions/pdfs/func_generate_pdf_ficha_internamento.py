@@ -2,31 +2,17 @@ import datetime
 from app.services.utils.PdfFichaInternamento import PdfFichaInternamento
 
 
-def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, patient_name:str, patient_cns:str, patient_birthday:datetime.datetime, patient_sex:str, patient_mother_name:str, patient_document:dict, patient_adress:str, patient_phonenumber:str, patient_drug_allergies:str, patient_comorbidities:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:str, doctor_crm:str, patient_adress_number:int=None, patient_adress_neigh:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_adress_cep:str=None, patient_nationality:str=None, patient_estimate_weight:int=None, has_additional_health_insurance:bool=None) -> str:
+def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, patient:dict, patient_phonenumber:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:str, doctor_crm:str, patient_nationality:str=None, patient_estimate_weight:int=None, has_additional_health_insurance:bool=None) -> str:
     """fill pdf ficha internamento
 
     Args:
         document_datetime (datetime.datetime): document_datetime
-        patient_name (str): patient_name
-        patient_cns (str):fill_pdf_ficha_internamento patient_cns
-        patient_birthday (datetime.datetime): patient_birthday
-        patient_sex (str): patient_sex
-        patient_mother_name (str): patient_mother_name
-        patient_document (dict): patient_document
-        patient_adress (str): patient_adress
-        patient_phonenumber (int): patient_phonenumber
-        patient_drug_allergies (str): patient_drug_allergies
-        patient_comorbidities (str): patient_comorbidities
+        patient (dict): patient info
         current_illness_history (str): current_illness_history
         initial_diagnostic_suspicion (str): initial_diagnostic_suspicion
         doctor_name (str): doctor_name
         doctor_cns (int): doctor_cns
         doctor_crm (str): doctor_crm
-        patient_adress_number (int, optional): patient_adress_number. Defaults to None.
-        patient_adress_neigh (str, optional): patient_adress_neigh. Defaults to None.
-        patient_adress_city (str, optional): patient_adress_city. Defaults to None.
-        patient_adress_uf (str, optional): patient_adress_uf. Defaults to None.
-        patient_adress_cep (int, optional): patient_adress_cep. Defaults to None.
         patient_nationality (str, optional): patient_nationality. Defaults to None.
         patient_estimate_weight (int, optional): patient_estimate_weight. Defaults to None.
         has_additional_health_insurance (bool, optional): has_additional_health_insurance. Defaults to None.
