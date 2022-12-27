@@ -18,6 +18,13 @@ import Container from "./styles";
 import { v4 as uuidv4 } from "uuid";
 import schema from "./schema";
 
+const medicamentsAdapter = {
+  drug: "drugs",
+  diet: "diets",
+  nursingActivity: "nursingActivities",
+  restingActivity: "restingActivities",
+};
+
 const prescriptionTypesStrategies = {
   drug: ({ formik }) => {
     const { data: drugRoutesData } = useQuery(DRUG_ROUTES);
@@ -94,11 +101,10 @@ const ModalAddPrescription = ({ confirmButton }) => {
   const [getDiets] = useLazyQuery(DIETS);
   const [getNusingActivities] = useLazyQuery(NURSING_ACTIVITIES);
 
-  const [prescriptionType, setPrescriptionType] = useState(undefined);
   const [medicaments, setMedicaments] = useState([]);
   const formik = useFormik({
     initialValues: {
-      type: "",
+      type: null,
       medicament: "",
       drug: {
         useMode: "",
@@ -116,34 +122,38 @@ const ModalAddPrescription = ({ confirmButton }) => {
 
   useEffect(() => {
     let request = null;
-    if (!prescriptionType?.name) {
+    if (!formik.values.type?.name) {
       return;
     }
-    if (prescriptionType.name === "drug") {
+    if (formik.values.type.name === "drug") {
       request = getDrugs;
-    } else if (prescriptionType.name === "diet") {
+    } else if (formik.values.type.name === "diet") {
       request = getDiets;
-    } else if (prescriptionType.name === "restingActivity") {
+    } else if (formik.values.type.name === "restingActivity") {
       request = getRestingActivities;
-    } else if (prescriptionType.name === "nursingActivity") {
+    } else if (formik.values.type.name === "nursingActivity") {
       request = getNusingActivities;
     }
-    if (request) {
-      request().then((response) => {
-        setMedicaments(response.data.drugs);
-      });
+    if (!request) {
+      return;
     }
+    request().then((response) => {
+      setMedicaments(
+        response.data[medicamentsAdapter[formik.values.type.name]]
+      );
+    });
   }, [
     getDiets,
     getDrugs,
     getRestingActivities,
     getNusingActivities,
-    prescriptionType,
+    formik.values.type,
   ]);
 
   const PrescriptionComponent =
-    prescriptionTypesStrategies[prescriptionType?.name || ""] ||
+    prescriptionTypesStrategies[formik.values.type?.name || ""] ||
     prescriptionTypesStrategies.default;
+  console.log(formik.values);
 
   return (
     <Container onSubmit={formik.handleSubmit}>
@@ -153,8 +163,8 @@ const ModalAddPrescription = ({ confirmButton }) => {
         options={prescriptionTypesData?.prescriptionTypes || []}
         className="medium_size"
         placeholder="Tipo de Prescrição"
-        value={prescriptionType}
-        onChange={(e) => setPrescriptionType(e)}
+        value={formik.values.type}
+        onChange={(e) => formik.setFieldValue("type", e)}
       />
       <div className="container_medicaments">
         <Select

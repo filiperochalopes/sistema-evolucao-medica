@@ -1,8 +1,8 @@
 import * as Yup from "yup";
 
 export default Yup.object().shape({
-  type: Yup.string().required(),
-  medicament: Yup.string().required(),
+  type: Yup.mixed().required(),
+  medicament: Yup.mixed().required(),
   drug: Yup.object()
     .shape({
       useMode: Yup.string(),
@@ -21,7 +21,7 @@ export default Yup.object().shape({
     })
     .test("is-drug-valid", "is required", (value, schema) => {
       if (
-        schema.parent.type !== "drug" ||
+        schema.parent.type?.name !== "drug" ||
         (value.finalDate &&
           value.initialDate &&
           value.isAntibiotic &&
