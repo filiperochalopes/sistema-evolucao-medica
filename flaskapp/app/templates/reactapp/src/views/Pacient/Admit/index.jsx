@@ -30,7 +30,7 @@ const Admit = () => {
       patient: {
         name: "",
         sex: "",
-        birthday: "",
+        birthdate: "",
         cpf: "",
         cns: "",
         rg: "",
@@ -43,7 +43,7 @@ const Admit = () => {
           complement: "",
           number: "32",
           city: "",
-          uf: "",
+          uf: null,
           neighborhood: "",
         },
       },
@@ -60,14 +60,14 @@ const Admit = () => {
         weightKg: parseFloat(values.patient.weightKg),
         address: {
           ...values.patient.address,
-          uf: values.patient.address.uf,
+          uf: values.patient.address.uf.uf,
         },
       };
-      const dateBirthDay = new Date(patient.birthday);
+      const dateBirthDay = new Date(patient.birthdate);
       const birthday = `${dateBirthDay.getFullYear()}-${
         dateBirthDay.getMonth() + 1
       }-${dateBirthDay.getDate()}`;
-      patient.birthday = birthday;
+      patient.birthdate = birthday;
 
       const date = new Date();
       const admissionDatetime = `${date.getFullYear()}-${
@@ -85,7 +85,6 @@ const Admit = () => {
     },
     validationSchema: schema,
   });
-  console.log(formik);
   useEffect(() => {
     async function getCep() {
       try {
@@ -95,12 +94,11 @@ const Admit = () => {
         const findUf = statesData.state.find(
           (state) => state.uf === response.data.uf
         );
-        console.log(findUf);
         formik.setValues({
           ...formik.values,
           patient: {
             ...formik.values.patient,
-            cpf: formik.values.cpf.replace(/\D/g, ""),
+            cpf: formik.values.patient.cpf.replace(/\D/gi, ""),
             address: { ...response.data, uf: findUf },
           },
         });
@@ -141,8 +139,8 @@ const Admit = () => {
             <Input
               onChange={formik.handleChange}
               className="small"
-              name="patient.birthday"
-              value={formik.values.patient.birthday}
+              name="patient.birthdate"
+              value={formik.values.patient.birthdate}
               placeholder="Data de Nascimento"
               type="date"
             />

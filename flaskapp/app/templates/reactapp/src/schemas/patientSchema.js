@@ -3,7 +3,7 @@ import * as Yup from "yup";
 export default Yup.object().shape({
   name: Yup.string().required(),
   sex: Yup.mixed().required(),
-  birthday: Yup.string().required(),
+  birthdate: Yup.string().required(),
   cpf: Yup.string().required(),
   cns: Yup.string().required(),
   rg: Yup.string().required(),
@@ -16,7 +16,7 @@ export default Yup.object().shape({
     complement: Yup.string(),
     number: Yup.string().required(),
     city: Yup.string().required(),
-    uf: Yup.string().required(),
+    uf: Yup.mixed().required(),
     neighborhood: Yup.string().required(),
   }),
 });
