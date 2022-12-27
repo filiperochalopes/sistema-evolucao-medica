@@ -64,9 +64,9 @@ const Evolution = () => {
       <div className="prescriptions_pacient">
         <h2>Prescrição</h2>
         <ol>
-          <li>
-            <ListOption>
-              {formik.values.diet && (
+          {formik.values.diet && (
+            <li>
+              <ListOption>
                 <ContainerListOption>
                   <p>{formik.values.diet}</p>{" "}
                   <div>
@@ -78,7 +78,8 @@ const Evolution = () => {
                       onClick={() =>
                         addModal(
                           deletePrescription({
-                            confirmButtonAction: () => console.log("oi"),
+                            confirmButtonAction: () =>
+                              formik.setFieldValue("diet", ""),
                           })
                         )
                       }
@@ -87,10 +88,14 @@ const Evolution = () => {
                     </button>
                   </div>
                 </ContainerListOption>
-              )}
-              {formik.values.restingActivity && (
+              </ListOption>
+            </li>
+          )}
+          {formik.values.nursingActivities.map((nursingActivity) => (
+            <li>
+              <ListOption>
                 <ContainerListOption>
-                  <p>{formik.values.restingActivity}</p>{" "}
+                  <p>{nursingActivity}</p>
                   <div>
                     <button type="button">
                       <MdModeEdit size={18} color={theme.colors.blue} />
@@ -100,7 +105,16 @@ const Evolution = () => {
                       onClick={() =>
                         addModal(
                           deletePrescription({
-                            confirmButtonAction: () => console.log("oi"),
+                            confirmButtonAction: () => {
+                              const filterNursingActivities =
+                                formik.values.nursingActivities.filter(
+                                  (value) => value === nursingActivity
+                                );
+                              formik.setFieldValue(
+                                "nursingActivities",
+                                filterNursingActivities
+                              );
+                            },
                           })
                         )
                       }
@@ -109,8 +123,12 @@ const Evolution = () => {
                     </button>
                   </div>
                 </ContainerListOption>
-              )}
-              {formik.values.drugs.map((drug) => (
+              </ListOption>
+            </li>
+          ))}
+          {formik.values.drugs.map((drug) => (
+            <li>
+              <ListOption>
                 <ContainerListOption key={drug.id}>
                   <p>{drug.medicament}</p>{" "}
                   <div>
@@ -131,9 +149,9 @@ const Evolution = () => {
                     </button>
                   </div>
                 </ContainerListOption>
-              ))}
-            </ListOption>
-          </li>
+              </ListOption>
+            </li>
+          ))}
           <li>
             <ListOption>REPOUSO RELATIVO NO LEITO À 30°</ListOption>
           </li>
@@ -158,8 +176,22 @@ const Evolution = () => {
             onClick={() =>
               addModal(
                 addPrescription({
-                  confirmButtonAction: (values) =>
-                    console.log("values", values),
+                  confirmButtonAction: (values) => {
+                    const type = values.type.name;
+                    if (type === "diet") {
+                      formik.setFieldValue("diet", values.medicament.name);
+                    } else if (type === "restingActivity") {
+                      formik.setFieldValue(
+                        "restingActivity",
+                        values.medicament.name
+                      );
+                    } else if (type === "nursingActivity") {
+                      formik.setFieldValue("nursingActivities", [
+                        ...formik.values.nursingActivities,
+                        values.medicament.name,
+                      ]);
+                    }
+                  },
                 })
               )
             }
