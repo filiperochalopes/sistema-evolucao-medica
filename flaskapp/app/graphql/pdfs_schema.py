@@ -500,20 +500,8 @@ pdfs_schema_type_defs = gql(
         generatePdf_FichaInternamento(
             "Data Hora do documento no formato DD/MM/YYYY HH:mm"
             documentDatetime: String!,
-            "Nome do paciente, max: 64 min:7 caracteres"
-            patientName: String!,
-            "CNS do paciente"
-            patientCns: String!,
-            "Data de nascimento do paciente no formato DD/MM/YYYY"
-            patientBirthday: String!,
-            "Sexo do paciente, Escolha a opcao M ou F"
-            patientSex: String!,
-            "Nome da Mae do paciente, max: 69 min:7 caracteres"
-            patientMotherName: String!,
-            "Documento do paciente, CPF ou RG, utilize o DocumentInput"
-            patientDocument: DocumentInput!,
-            "Endereco do paciente, max: 63 min:7 caracteres"
-            patientAdress: String!,
+            "Dados do Paciente"
+            patient: PatientInput
             "Numero de telefone do paciente, envie somente os numeros sem formatacao, ex: XXXXXXXXXX, 10 ou 11 caracteres"
             patientPhonenumber: String!,
             "Alergias Medicamentosas, max:100 min:5 caracteres"
@@ -530,16 +518,6 @@ pdfs_schema_type_defs = gql(
             doctorCns: String!,
             "CRM do medico, max:13 min:11"
             doctorCrm: String!,
-            "Numero do endereco do paciente, max:6 digitos"
-            patientAdressNumber: Int,
-            "Bairro do endereco do paciente, max: 31 min: 4 caracters"
-            patientAdressNeigh: String,
-            "Cidade do endereco do paciente, max:34 min:3 caracteres"
-            patientAdressCity: String,
-            "UF do endereco do paciente, envie somente a sigla"
-            patientAdressUf: String,
-            "CEP do endereco do paciente, envie somente numeros"
-            patientAdressCep: String,
             "Nacionalidade do paciente, max:25 min:3 caracteres"
             patientNationality: String,
             "Possui convenio suplementar, opcoes: 'SIM','NAO'"
