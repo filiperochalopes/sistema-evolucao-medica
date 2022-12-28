@@ -245,6 +245,16 @@ type_defs = gql('''
         token: String
     }
 
+    type Address{
+        zipCode: String
+        street:String
+        number:String
+        neighborhood:String
+        complement:String
+        city: String
+        uf: String
+    }
+
     type Patient {
         id: ID!
         name: String
@@ -252,6 +262,7 @@ type_defs = gql('''
         sex: String
         age: String
         cns: String
+        address: Address
     }
 
     type State {

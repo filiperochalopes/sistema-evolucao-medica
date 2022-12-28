@@ -1,7 +1,7 @@
 run:
-	docker-compose up --build
+	docker compose up --build
 logs:
-	docker-compose logs -f
+	docker compose logs -f
 seed:
 	docker exec -it evolucao_hospitalar_flaskapp bash -c "FLASK_APP=app/__init__.py && \
 	flask seed"
