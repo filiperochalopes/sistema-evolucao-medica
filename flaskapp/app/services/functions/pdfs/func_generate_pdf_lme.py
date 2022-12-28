@@ -42,9 +42,9 @@ def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_weigh
 
 
             pdf.set_font('Roboto-Mono', 9)
-            pdf.add_oneline_text(text=establishment_solitc_name, pos=(206, 658), camp_name='Establishment Solicit Name', len_max=65, len_min=8)
-            pdf.add_oneline_text(text=patient_name, pos=(36, 628), camp_name='Patient Name', len_max=79, len_min=7)
-            pdf.add_oneline_text(text=patient_mother_name, pos=(36, 602), camp_name='Patient Mother Name', len_max=79, len_min=7)
+            pdf.add_oneline_text(text=establishment_solitc['name'], pos=(206, 658), camp_name='Establishment Solicit Name', len_max=65, len_min=8)
+            pdf.add_oneline_text(text=patient['name'], pos=(36, 628), camp_name='Patient Name', len_max=79, len_min=7)
+            pdf.add_oneline_text(text=patient['mother_name'], pos=(36, 602), camp_name='Patient Mother Name', len_max=79, len_min=7)
             pdf.add_morelines_text(text=anamnese, initial_pos=(36, 430), decrease_ypos= 10, camp_name='Anamnese', len_max=485, char_per_lines=97, len_min=5)
             pdf.add_oneline_text(text=prof_solicitor_name, pos=(36, 224), camp_name='Professional Solicitor Name', len_max=45, len_min=8)
             if type(capacity_attest) != type(list()) or len(capacity_attest) > 2:
@@ -68,7 +68,7 @@ def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_weigh
         #Adding data that can be null
         try:
             pdf.set_font('Roboto-Mono', 9)
-            pdf.add_document_cns_cpf_rg(document=patient_document, pos_square_cpf=(40, 66), pos_square_cns=(84,66), pos_cns=(129, 66), pos_cpf=(129, 66),camp_name='Patient Document', interval='  ', nullable=True, square_size=(5, 8))
+            pdf.add_document_cns_cpf_rg(document={'cpf': patient['cpf'], 'cns': patient['cns']}, pos_square_cpf=(40, 66), pos_square_cns=(84,66), pos_cns=(129, 66), pos_cpf=(129, 66),camp_name='Patient Document', interval='  ', nullable=True, square_size=(5, 8))
             pdf.add_oneline_text(text=diagnostic, pos=(105, 455), camp_name='Diagnostic', len_max=84, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient_email, pos=(36, 42), camp_name='Patient Email', len_max=62, len_min=8, nullable=True)
             pdf.add_contat_phonenumbers(phonenumbers=contacts_phonenumbers, pos=(384, 116), interval='  ')
