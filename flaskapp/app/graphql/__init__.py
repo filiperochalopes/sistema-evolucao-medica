@@ -288,6 +288,7 @@ type_defs = gql('''
         evolutions: [Evolution]
         measures: [Measure]
         prescriptions: [Prescription]
+        pendings: [Pending]
     }
 
 
