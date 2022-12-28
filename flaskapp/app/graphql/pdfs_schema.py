@@ -88,7 +88,7 @@ pdfs_schema_type_defs = gql(
             "Dados do Estabelecimento Executante"
             establishmentExec: EstablishmentInput, 
             "Dados do Paciente"
-            patient: PatientInput
+            patient: PatientInput!
             mainClinicalSignsSymptoms: String!,
             "Condicoes que justificam a internacao, max:403 min:5 caracteres"
             conditionsJustifyHospitalization: String!,
@@ -174,7 +174,7 @@ pdfs_schema_type_defs = gql(
             "Dados do Estabelecimento Executante"
             establishmentExec: EstablishmentInput, 
             "Dados do Paciente"
-            patient: PatientInput
+            patient: PatientInput!
             "Procedimento Solicitado, utilize o input ProcedimentoInput"
             mainProcedure: ProcedimentoInput!,
             "Procedimentos Secundarios, no maximo 5, envie uma lista de ProcedimentoInput"
@@ -228,7 +228,7 @@ pdfs_schema_type_defs = gql(
             "Data do documento no formato DD/MM/YYYY"
             documentDatetime: String!,
             "Nome do paciente, max:34 min:7 caracteres"
-            patientName: String!,
+            patient: PatientInput!,
             """
             List de precicoes enviadas pelo medico, voce pode adicionar mais de uma utilizando uma lista de PrescriptionInput, veja as docs do input PrescriptionInput para mais informações"
             """

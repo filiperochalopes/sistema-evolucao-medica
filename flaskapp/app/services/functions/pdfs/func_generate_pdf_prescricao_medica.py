@@ -1,12 +1,12 @@
 from app.services.utils.PdfPrescricaoMedica import PdfPrescricaoMedica
 
 
-def func_generate_pdf_prescricao_medica(document_datetime:str, patient_name:str, prescription:list) -> str:
+def func_generate_pdf_prescricao_medica(document_datetime:str, patient:dict, prescription:list) -> str:
     """fill pdf prescricao medica with 2 pages 
 
     Args:
         document_datetime (str): document_datetime in %d/%m/%Y %H:%M format
-        patient_name (str): patient_name
+        patient (dict): patient info
         prescription (list): list of dicts precriptions, like [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}]
 
     Returns:
@@ -22,7 +22,7 @@ def func_generate_pdf_prescricao_medica(document_datetime:str, patient_name:str,
             initial_name_X_pos = 120
             for x in range(0, 2):
                 pdf.add_datetime(date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
-                pdf.add_oneline_text(text=patient_name, pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
+                pdf.add_oneline_text(text=patient['name'], pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
                 initial_date_X_pos += 450
                 initial_name_X_pos += 451
 
