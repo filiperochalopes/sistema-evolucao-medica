@@ -2,14 +2,12 @@ import datetime
 from app.services.utils.PdfLme import PdfLme
 
 
-def func_generate_pdf_lme(establishment_solitc_name:str, establishment_solitc_cnes:int, patient_name:str, patient_mother_name:str, patient_weight:int, patient_height:int, cid_10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_document:dict=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> str:
+def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_weight:int, patient_height:int, cid_10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> str:
     """fill pdf lme (laudo de solicitacao, avaliacao e autorizacao e documentos)
 
     Args:
-        establishment_solitc_name (str): establishment_solitc_name
-        establishment_solitc_cnes (int): establishment_solitc_cnes
-        patient_name (str): patient_name
-        patient_mother_name (str): patient_mother_name
+        establishment_solitc_name (dict): establishment_solitc info
+        patient (dict): patient info
         patient_weight (int): patient_weight
         patient_height (int): patient_height
         cid_10 (str): cid_10
@@ -22,7 +20,6 @@ def func_generate_pdf_lme(establishment_solitc_name:str, establishment_solitc_cn
         patient_ethnicity (list): list with options and text (if others options is) eg ['SEMINFO', 'Patient Ethnicity']
         previous_treatment (list): list with option and text if sim option eg ['SIM', 'Previout Theatment']
         diagnostic (str, optional): diagnostic. Defaults to None.
-        patient_document (dict, optional): patient_document. Defaults to None.
         patient_email (str, optional): patient_email. Defaults to None.
         contacts_phonenumbers (list, optional): lsit with contacts_phonenumbers . Defaults to None.
         medicines (list, optional): list with dicts eg: [{"medicine_name":lenght_test[:60], "quant_1_month":"20 comp", "quant_2_month":"15 comp", "quant_3_month":"5 comp"}] . Defaults to None.
@@ -36,7 +33,7 @@ def func_generate_pdf_lme(establishment_solitc_name:str, establishment_solitc_cn
         # not null data
 
         try:
-            pdf.add_oneline_intnumber(number=establishment_solitc_cnes, pos=(38, 658), camp_name='Establishment Solict CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval='   ')
+            pdf.add_oneline_text(text=establishment_solitc['cnes'], pos=(38, 658), camp_name='Establishment Solict CNES', len_max=7, len_min=7,interval='   ')
             pdf.add_oneline_intnumber(number=patient_weight, pos=(485, 628), camp_name='Patient Weight', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
             pdf.add_oneline_intnumber(number=patient_height, pos=(485, 602), camp_name='Patient Height', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
             pdf.add_oneline_text(text=cid_10, pos=(34, 455), camp_name='cid_10', len_max=4, len_min=3, interval='  ')

@@ -227,7 +227,7 @@ pdfs_schema_type_defs = gql(
         generatePdf_PrescricaoMedica(
             "Data do documento no formato DD/MM/YYYY"
             documentDatetime: String!,
-            "Nome do paciente, max:34 min:7 caracteres"
+            "Dados do Paciente, somente o nome e cns sao necessarios"
             patient: PatientInput!,
             """
             List de precicoes enviadas pelo medico, voce pode adicionar mais de uma utilizando uma lista de PrescriptionInput, veja as docs do input PrescriptionInput para mais informações"
@@ -267,14 +267,10 @@ pdfs_schema_type_defs = gql(
 
         "Criação de documento de LME"
         generatePdf_Lme(
-            "Nome do estabelecimento Solicitante, max:65 min:8 caracteres"
-            establishmentSolitcName: String!,
-            "CNES do estabelecimento Solicitante"
-            establishmentSolitcCnes: Int!
-            "Nome do paciente, max:79 min:7 caracteres"
-            patientName: String!,
-            "Nome da Mae do paciente, max:79 min:7 caracteres"
-            patientMotherName: String!,
+            "Dados do Estabelecimento Solicitante"
+            establishmentSolitc: EstablishmentInput!,
+            "Dados do Paciente"
+            patient: PatientInput!
             """
             Peso do paciente, numero inteiro no maximo 3 digitos, sera entendido como um valor total.
             Exemplo:
@@ -332,8 +328,6 @@ pdfs_schema_type_defs = gql(
             previousTreatment: [String]!,
             "Diagnostico, max: 84 min:4 caracteres"
             diagnostic: String,
-            "Documento do Paciente, CPF, envie um DocumentInput"
-            patientDocument: DocumentInput,
             "Email do paciente, max:62 min: 8 caracteres"
             patientEmail: String,
             """
