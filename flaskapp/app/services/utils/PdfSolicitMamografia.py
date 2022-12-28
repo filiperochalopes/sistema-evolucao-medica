@@ -1,6 +1,7 @@
 from app.env import FONT_DIRECTORY, TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY
 from app.services.utils.ReportLabCanvasUtils import ReportLabCanvasUtils
 import io
+import datetime
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.pagesizes import letter
@@ -113,6 +114,13 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
         except:
             raise Exception(f'Erro desconhecido ocorreu enquanto adicionava o numero de telefone do paciente')
 
+    def get_patient_age(self, birthdate):
+        try:
+            today = datetime.datetime.now()
+            age = datetime.datetime.strptime(birthdate, '%d/%m/%Y')
+            return today.year - age.year - ((today.month, today.day) < (age.month, age.day))
+        except Exception:
+            raise Exception(f'A data de nascimento do paciente nao corresponde ao formato dd/mm/yyyy')
 
     def add_radiotherapy_before(self, radiotherapy_before:list):
         """add radiotherapy option to document

@@ -63,6 +63,7 @@ type_defs = gql(
         city: String!
         ibgeCityCode: String
         uf: String!
+        reference: String
     }
 
     input ProcedimentoInput{
