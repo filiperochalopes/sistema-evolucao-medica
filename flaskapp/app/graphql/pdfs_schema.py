@@ -239,20 +239,8 @@ pdfs_schema_type_defs = gql(
         generatePdf_RelatorioAlta(
             "Data do documento no formato DD/MM/YYYY HH:mm"
             documentDatetime: String!,
-            "Nome do paciente, max:64 min:7 caracteres"
-            patientName: String!,
-            "CNS do paciente, envie sem formatacao, apenas numeros. Exemplo XXXXXXXXXXXXXXX"
-            patientCns: String!,
-            "Data de Nascimento do paciente no formato DD/MM/YYYY"
-            patientBirthday: String!,
-            "Sexo do Paciente, opcao M ou F."
-            patientSex: String!,
-            "Nome da Mae do paciente, max:69 min 7 caracteres"
-            patientMotherName: String!,
-            "Documento do paciente, CPF ou RG, utilize o input DocumentInput"
-            patientDocument: DocumentInput!,
-            "Endereco do paciente, max:63 min:7 caracteres"
-            patientAdress: String!,
+            "Dados do Paciente"
+            patient: PatientInput!
             "Nome do Medico, max:49 min:7 caracteres"
             doctorName: String!,
             "CNS do medico, envie sem formatacao, apenas numeros. Exemplo XXXXXXXXXXXXXXX"
