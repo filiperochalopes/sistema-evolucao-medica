@@ -13,7 +13,7 @@ mutation{
         address: {
           street: "Patient Adress",
           number: "124",
-          district: "Patient Neighbourhood",
+          neighborhood: "Patient Neighbourhood",
           city: "Patient City",
           uf: "SP",
           zipCode: "12345678",

@@ -12,7 +12,7 @@ mutation{
       rg: null,
       address: {
         street: "pacient street",
-        district: "District",
+        neighborhood: "neighborhood",
         number: "41",
         city: "City",
         uf: "SP"

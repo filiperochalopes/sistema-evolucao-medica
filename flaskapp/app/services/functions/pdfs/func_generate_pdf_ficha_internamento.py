@@ -57,7 +57,7 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
         try:
             
             pdf.add_oneline_text(text=patient['address']['number'], pos=(24, 580), camp_name='Patient Adress Number', len_max=6, len_min=1,nullable=True)
-            pdf.add_oneline_text(text=patient['address']['district'], pos=(66, 580), camp_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
+            pdf.add_oneline_text(text=patient['address']['neighborhood'], pos=(66, 580), camp_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient['address']['city'], pos=(243, 580), camp_name='Patient Adress City', len_max=34, len_min=3, nullable=True)
             pdf.add_UF(uf=patient['address']['uf'], pos=(444, 580), camp_name='Patient Adress UF', nullable=True)
             pdf.add_CEP(cep=patient['address']['zip_code'], pos=(483, 580), camp_name='Patient Adress CEP', nullable=True, formated=True)
