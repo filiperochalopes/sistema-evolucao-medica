@@ -119,10 +119,8 @@ type_defs = gql('''
         createPending(
             "Id do internamento do paciente para o qual a evolução está sendo inserida"
             internmentId: Int!, 
-            restingActivity: String
-            diet: String
-            drugs: [DrugPrescriptionInput]
-            nursingActivities: [String]
+            "Texto com relatório sucinto de pendências para o paciente"
+            text: String
             ): Prescription
         """
         É responsável por salvar os sinais vitais de um paciente, relacionado a um internamento
