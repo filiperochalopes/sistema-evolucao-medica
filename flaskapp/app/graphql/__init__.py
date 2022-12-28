@@ -262,6 +262,10 @@ type_defs = gql('''
         sex: String
         age: String
         cns: String
+        cpf: String
+        weightKg: Float
+        comorbidities: [ValueObject]
+        allergies: [ValueObject]
         address: Address
     }
 
