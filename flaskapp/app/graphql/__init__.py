@@ -262,6 +262,7 @@ type_defs = gql('''
         sex: String
         age: String
         cns: String
+        rg: String
         cpf: String
         weightKg: Float
         comorbidities: [ValueObject]
