@@ -372,18 +372,27 @@ mutation{
 mutation{
 	generatePdf_RelatorioAlta(
     documentDatetime: "17/11/2022 03:23",
-    patientName: "Patient Name",
-    patientCns: "928976954930007",
-    patientBirthday: "17/11/2022",
-    patientSex: "F",
-    patientMotherName: "Patient Mother Name",
-    patientDocument: {cpf: "28445400070", rg: null, cns: null},
-    patientAdress: "pacient street, 43, paciten, USA",
+    patient: {
+      name:"Patient Name",
+      cns: "928976954930007",
+      birthdate: "17/11/2022",
+      sex: "F",
+      motherName: "Patient Mother Name",
+      cpf: "28445400070",
+      rg: null,
+      address: {
+        street: "pacient street",
+        district: "District",
+        number: "41",
+        city: "City",
+        uf: "SP"
+      }
+    }    
     doctorName: "Doctor Name",
     doctorCns: "928976954930007",
     doctorCrm: "CRM/UF 123456",
     evolution: "Current illnes hsitoryaaaaaaaaaaaedqeqa",
     orientations: "Do not jump"
-  ){base64Pdf}
+){base64Pdf}
 }
 ```
