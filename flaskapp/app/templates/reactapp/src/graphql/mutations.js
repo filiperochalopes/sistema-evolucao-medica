@@ -45,3 +45,23 @@ export const CREATE_INTERNMENT = gql`
     }
   }
 `;
+
+export const CREATE_PRESCRIPTION = gql`
+  mutation createPrescription(
+    $internmentId: Int!
+    $restingActivity: String
+    $diet: String
+    $drugs: [DrugPrescriptionInput]
+    $nursingActivities: [String]
+  ) {
+    createPrescription(
+      internmentId: $internmentId
+      restingActivity: $restingActivity
+      diet: $diet
+      drugs: $drugs
+      nursingActivities: $nursingActivities
+    ) {
+      id
+    }
+  }
+`;

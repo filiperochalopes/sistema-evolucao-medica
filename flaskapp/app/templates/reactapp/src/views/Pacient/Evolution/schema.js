@@ -13,5 +13,5 @@ export default Yup.object().shape({
       endingDate: Yup.string().required(),
     })
   ),
-  nursingActivities: Yup.array().of(Yup.string().required()),
+  nursingActivities: Yup.array().of(Yup.string()),
 });

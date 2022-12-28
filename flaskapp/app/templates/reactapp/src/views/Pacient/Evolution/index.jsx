@@ -1,4 +1,5 @@
 import Container, { ContainerListOption } from "./styles";
+import { createFilter, components } from "react-select";
 
 import Button from "components/Button";
 import Input from "components/Input";
@@ -14,9 +15,16 @@ import deletePrescription from "helpers/deletePrescription";
 import { useTheme } from "styled-components";
 import { useFormik } from "formik";
 import schema from "./schema";
+import { useMutation, useQuery } from "@apollo/client";
+import { CREATE_PRESCRIPTION } from "graphql/mutations";
+import { useParams } from "react-router-dom";
+import { CID10 } from "graphql/queries";
 
 const Evolution = () => {
   const { addModal } = useModalContext();
+  const [createPrescription] = useMutation(CREATE_PRESCRIPTION);
+  const { data: cid10Data } = useQuery(CID10);
+  const params = useParams();
   const theme = useTheme();
   const formik = useFormik({
     initialValues: {
@@ -24,6 +32,11 @@ const Evolution = () => {
       diet: "",
       drugs: [],
       nursingActivities: [],
+    },
+    onSubmit: (values) => {
+      createPrescription({
+        variables: { ...values, internmentId: Number(params.id) },
+      });
     },
     validationSchema: schema,
   });
@@ -52,7 +65,28 @@ const Evolution = () => {
           <Input placeholder="N° CONSELHO" className="small" />
         </div>
         <div>
-          <Input placeholder="CID - SUSPEITA INICIAL" />
+          <Select
+            onChange={(e) => {
+              formik.setFieldValue("cid10Code", e);
+            }}
+            components={{
+              Option: ({ children, ...props }) => {
+                const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+                const newProps = Object.assign(props, { innerProps: rest });
+                return (
+                  <components.Option {...newProps}>
+                    {children}
+                  </components.Option>
+                );
+              },
+            }}
+            filterOption={createFilter({ ignoreAccents: false })}
+            getOptionLabel={(option) => option.description}
+            getOptionValue={(option) => option.code}
+            options={cid10Data?.cid10 || []}
+            value={formik.values.cid10Code}
+            placeholder="CID - SUSPEITA INICIAL"
+          />
           <p className="legend">
             ÚLTIMA EVOLUÇÃO ATUALIZADA POR FULANO EM DD/MM/AAAA HH:DD
           </p>
@@ -199,7 +233,11 @@ const Evolution = () => {
             Adicionar nova linha
           </Button>
         </div>
-        <Button className="button_normal button-update_prescription">
+        <Button
+          type="button"
+          onClick={() => formik.handleSubmit()}
+          className="button_normal button-update_prescription"
+        >
           Atualizar prescrição
         </Button>
       </div>
