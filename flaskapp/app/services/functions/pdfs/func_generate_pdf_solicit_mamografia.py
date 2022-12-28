@@ -2,18 +2,14 @@ import datetime
 from app.services.utils.PdfSolicitMamografia import PdfSolicitMamografia
 
 
-def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, patient_mother_name:str, patient_birthday:datetime.datetime, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, patient_age:int, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:str=None, protocol_number:str=None, patient_sex:str=None, patient_surname:str=None, patient_document_cpf:dict=None, patient_nationality:str=None, patient_adress:str=None, patient_adress_number:int=None, patient_adress_adjunct:str=None, patient_adress_neighborhood:str=None, patient_city_ibge_code:str=None, patient_adress_city:str=None, patient_adress_uf:str=None, patient_ethnicity:list=None, patient_adress_reference:str=None, patient_schooling:str=None, patient_adress_cep:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:str=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> str:
+def func_generate_pdf_solicit_mamografia(patient:dict, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, solicitation_datetime:datetime.datetime, prof_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:str=None, protocol_number:str=None, patient_surname:str=None,  patient_ethnicity:list=None, patient_schooling:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:str=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> str:
     """Fill solicitacion mamografia (Solicitacao de Mamografia) 
     Args:
-        patient_name (str): Patient Name
-        patient_cns (str): patient_cns
-        patient_mother_name (str): patient_mother_name
-        patient_birthday (datetime.datetime): patient_birthday
+        patient (dict): Patient info
         nodule_lump (str): nodule_lump
         high_risk (str): high_risk
         examinated_before (str): examinated_before
         mammogram_before (list): list with option and year, ['SIM', '2020']
-        patient_age (int): patient_age
         solicitation_datetime (datetime.datetime): solicitation_datetime
         prof_solicitor_name (str): prof_solicitor_name
         health_unit_adress_uf (str, optional): health_unit_adress_uf. Defaults to None.
@@ -23,21 +19,9 @@ def func_generate_pdf_solicit_mamografia(patient_name:str, patient_cns:str, pati
         health_unit_city_ibge_code (str, optional): health_unit_city_ibge_code. Defaults to None.
         document_chart_number (str, optional): document_chart_number. Defaults to None.
         protocol_number (str, optional): protocol_number. Defaults to None.
-        patient_sex (str, optional): patient_sex. Defaults to None.
         patient_surname (str, optional): patient_surname. Defaults to None.
-        patient_document_cpf (dict, optional): CPF dict format patient_document_cpf, {'CPF':1111111111}. Defaults to None.
-        patient_nationality (str, optional): patient_nationality. Defaults to None.
-        patient_adress (str, optional): patient_adress. Defaults to None.
-        patient_adress_number (int, optional): patient_adress_number. Defaults to None.
-        patient_adress_adjunct (str, optional): patient_adress_adjunct. Defaults to None.
-        patient_adress_neighborhood (str, optional): patient_adress_neighborhood. Defaults to None.
-        patient_city_ibge_code (str, optional): patient_city_ibge_code. Defaults to None.
-        patient_adress_city (str, optional): patient_adress_city. Defaults to None.
-        patient_adress_uf (str, optional): patient_adress_uf. Defaults to None.
         patient_ethnicity (list, optional): patient_ethnicity. Defaults to None.
-        patient_adress_reference (str, optional): patient_adress_reference. Defaults to None.
         patient_schooling (str, optional): patient_schooling. Defaults to None.
-        patient_adress_cep (str, optional): patient_adress_cep. Defaults to None.
         patient_phonenumber (int, optional): patient_phonenumber. Defaults to None.
         radiotherapy_before (list, optional): Option and year, eg ['SIMESQ', '2020']. Defaults to None.
         breast_surgery_before (dict, optional): dict with opions and years, eg:
