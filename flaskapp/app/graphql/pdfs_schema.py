@@ -353,10 +353,8 @@ pdfs_schema_type_defs = gql(
 
         "Criação de documento de Solicitacao de Mamografia"
         generatePdf_SolicitMamografia(
-            "CNS do paciente"
-            patientCns: String!,
-            "Data de nascimento do paciente no formato DD/MM/YYYY"
-            patientBirthday: String!,
+            "Dados do Paciente"
+            patient: PatientInput!
             """
             Fez mamograma antes, envie uma lista com o primeiro valor ['SIM'/'NAO', 'Ano do mamograga']
             Exemplo: 
@@ -364,12 +362,6 @@ pdfs_schema_type_defs = gql(
                 ['NAO', null]
             """
             mammogramBefore: [String]!,
-            "Idade do paciente"
-            patientAge: Int!,
-            "Nome do Paciente, max:42 min:7 caracteres"
-            patientName: String!,
-            "Nome da mae do paciente, max:42 min:7 car"
-            patientMotherName: String!,
             """
             Possui nodulo. Opcoes:
                 - "SIMDIR" -> Sim direita
@@ -399,18 +391,6 @@ pdfs_schema_type_defs = gql(
             healthUnitAdressCity: String,
             "Apelido do paciente, max:18 min:4 caracteres" 
             patientSurname: String,
-            "Endereco do Paciente, max:42 min:7 caracteres"
-            patientAdress: String,
-            "Complemento do endereco do paciente, max:25 min:7 caracteres"
-            patientAdressAdjunct: String,
-            "Bairro do endereco do paciente, max:14 min:7 caracteres"
-            patientAdressNeighborhood: String,
-            "Referencia do endereco do paciente, max:33 min:4 caracteres"
-            patientAdressReference: String,
-            "Cidade do endereco do paciente, max:15 min:3 caracteres"
-            patientAdressCity: String,
-            "CEP do endereco do paciente, envie somente numeros sem formatacao, Exemplo: XXXXXXXX"
-            patientAdressCep: String,
             """
             Escolaridade do paciente, opcoes:
             "ANALFABETO"  -> Analfabeto
@@ -437,22 +417,10 @@ pdfs_schema_type_defs = gql(
             healthUnitCnes: Int,
             "Numero do protocolo, max:23 min:1 caracteres"        
             protocolNumber: String,
-            "CPF do paciente, envie com o input DocumentInput"
-            patientDocumentCpf: DocumentInput,
-            "Numero do endereco do paciente, max: 6 digitos"
-            patientAdressNumber: Int,
-            "UF do endereco do paciente, envie somente a sigla"
-            patientAdressUf: String,
             "Codigo do IBGE do Município da Unidade de Saude"
             healthUnitCityIbgeCode: String,
             "Numero do protocolo, max: 10 caracteres"
             documentChartNumber: String,
-            "Sexo do paciente, envie M ou F"
-            patientSex: String,
-            "Nacionalidade do paciente"
-            patientNationality: String,
-            "Codigo do IBGE do Município do paciente"
-            patientCityIbgeCode: String,
             """
             Etinia do paciente, envie uma lista com algumas das opcoes, e caso seja indigena especificar o nome com no max: 10 caracteres. Opcoes:
             'BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'.

@@ -143,6 +143,8 @@ type_defs = gql(
         cns:String!, 
         "Apenas dígito do Documento de Registro Geral"
         rg: String
+        "Nacionalidade do Paciente"
+        nationality: String
         "Lista de doenças do paciente"
         comorbidities: [String]
         "Alergias"
