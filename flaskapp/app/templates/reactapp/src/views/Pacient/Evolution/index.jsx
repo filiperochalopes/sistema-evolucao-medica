@@ -16,13 +16,19 @@ import { useTheme } from "styled-components";
 import { useFormik } from "formik";
 import schema from "./schema";
 import { useMutation, useQuery } from "@apollo/client";
-import { CREATE_PRESCRIPTION } from "graphql/mutations";
+import {
+  CREATE_EVOLUTION,
+  CREATE_PENDING,
+  CREATE_PRESCRIPTION,
+} from "graphql/mutations";
 import { useParams } from "react-router-dom";
 import { CID10 } from "graphql/queries";
 
 const Evolution = () => {
   const { addModal } = useModalContext();
   const [createPrescription] = useMutation(CREATE_PRESCRIPTION);
+  const [createEvolution] = useMutation(CREATE_EVOLUTION);
+  const [createPeding] = useMutation(CREATE_PENDING);
   const { data: cid10Data } = useQuery(CID10);
   const params = useParams();
   const theme = useTheme();
@@ -41,9 +47,84 @@ const Evolution = () => {
     validationSchema: schema,
   });
 
+  const formikEvolution = useFormik({
+    initialValues: {
+      text: "",
+      cid10Code: null,
+    },
+    onSubmit: (values) => {
+      createEvolution({
+        variables: { ...values, internmentId: Number(params.id) },
+      });
+    },
+  });
+
+  const formikPending = useFormik({
+    initialValues: {
+      text: "",
+    },
+    onSubmit: (values) => {
+      createPeding({
+        variables: {
+          internmentId: Number(params.id),
+          text: values.text,
+        },
+      });
+    },
+  });
+
+  function chainHandleSetDrugs(values) {
+    if (values.type.name === "drug") {
+      formik.setFieldValue("drugs", [
+        ...formik.values.drugs,
+        {
+          drugName: values.medicament.name,
+          drugKind: values.drug.isAntibiotic,
+          dosage: values.drug.useMode,
+          route: values.drug.routeAdministration.value,
+          initialDate: values.drug.initialDate,
+          endingDate: values.drug.finalDate,
+        },
+      ]);
+      return true;
+    }
+    throw new Error("tratamento não existe");
+  }
+
+  function chainHandleSetNursingActivity(values) {
+    if (values.type.name === "nursingActivities") {
+      formik.setFieldValue("nursingActivities", [
+        ...formik.values.nursingActivities,
+        values.medicament.name,
+      ]);
+      return true;
+    }
+    return chainHandleSetDrugs(values);
+  }
+
+  function chainHandleSetRestingActivity(values) {
+    if (values.type.name === "restingActivity") {
+      formik.setFieldValue("restingActivity", values.medicament.name);
+      return true;
+    }
+
+    return chainHandleSetNursingActivity(values);
+  }
+
+  function chainHandleSetDiet(values) {
+    if (values.type.name === "diet") {
+      formik.setFieldValue("diet", values.medicament.name);
+      return true;
+    }
+    return chainHandleSetRestingActivity(values);
+  }
+
   return (
     <Container>
-      <div className="evolution_pacient">
+      <form
+        className="evolution_pacient"
+        onSubmit={formikEvolution.handleSubmit}
+      >
         <div className="header">
           <h2>Evoluir Paciente (João Miguel dos Santos Polenta, 83 anos)</h2>
           <Button
@@ -55,19 +136,16 @@ const Evolution = () => {
             Atualizar Dados do Paciente
           </Button>
         </div>
-        <TextArea placeholder="EVOLUÇÃO" />
-        <div className="row">
-          <Input
-            placeholder="RESPONSÁVEL PELA EVOLUÇÃO (NOME COMPLETO)"
-            className="larger"
-          />
-          <Select className="normal" placeholder="FUNÇÃO" />
-          <Input placeholder="N° CONSELHO" className="small" />
-        </div>
+        <TextArea
+          placeholder="EVOLUÇÃO"
+          value={formikEvolution.values.text}
+          name="text"
+          onChange={formikEvolution.handleChange}
+        />
         <div>
           <Select
             onChange={(e) => {
-              formik.setFieldValue("cid10Code", e);
+              formikEvolution.setFieldValue("cid10Code", e);
             }}
             components={{
               Option: ({ children, ...props }) => {
@@ -84,7 +162,7 @@ const Evolution = () => {
             getOptionLabel={(option) => option.description}
             getOptionValue={(option) => option.code}
             options={cid10Data?.cid10 || []}
-            value={formik.values.cid10Code}
+            value={formikEvolution.values.cid10Code}
             placeholder="CID - SUSPEITA INICIAL"
           />
           <p className="legend">
@@ -93,7 +171,7 @@ const Evolution = () => {
         </div>
 
         <Button className="evolution_button">Evoluir</Button>
-      </div>
+      </form>
 
       <div className="prescriptions_pacient">
         <h2>Prescrição</h2>
@@ -126,7 +204,7 @@ const Evolution = () => {
             </li>
           )}
           {formik.values.nursingActivities.map((nursingActivity) => (
-            <li>
+            <li key={nursingActivity}>
               <ListOption>
                 <ContainerListOption>
                   <p>{nursingActivity}</p>
@@ -161,10 +239,10 @@ const Evolution = () => {
             </li>
           ))}
           {formik.values.drugs.map((drug) => (
-            <li>
+            <li key={drug.drugName}>
               <ListOption>
-                <ContainerListOption key={drug.id}>
-                  <p>{drug.medicament}</p>{" "}
+                <ContainerListOption>
+                  <p>{drug.drugName}</p>
                   <div>
                     <button type="button">
                       <MdModeEdit size={18} color={theme.colors.blue} />
@@ -186,16 +264,6 @@ const Evolution = () => {
               </ListOption>
             </li>
           ))}
-          <li>
-            <ListOption>REPOUSO RELATIVO NO LEITO À 30°</ListOption>
-          </li>
-          <li>
-            <ListOption>REPOUSO RELATIVO NO LEITO À 30°</ListOption>
-            <p className="error">
-              PARA CADASTRAR UM ANTIBIÓTICO É NECESSÁRIO COLOCAR QUAL FOI O DIA
-              INICIAL DE USO ESCREVENDO “D0 12/08/2022”
-            </p>
-          </li>
         </ol>
         <p className="legend">
           ÚLTIMA PRESCRIÇÃO ATUALIZADA EM DD/MM/AAAA HH:DD
@@ -210,21 +278,10 @@ const Evolution = () => {
             onClick={() =>
               addModal(
                 addPrescription({
+                  drugs: formik.values.drugs,
+                  nursingActivities: formik.values.nursingActivities,
                   confirmButtonAction: (values) => {
-                    const type = values.type.name;
-                    if (type === "diet") {
-                      formik.setFieldValue("diet", values.medicament.name);
-                    } else if (type === "restingActivity") {
-                      formik.setFieldValue(
-                        "restingActivity",
-                        values.medicament.name
-                      );
-                    } else if (type === "nursingActivity") {
-                      formik.setFieldValue("nursingActivities", [
-                        ...formik.values.nursingActivities,
-                        values.medicament.name,
-                      ]);
-                    }
+                    chainHandleSetDiet(values);
                   },
                 })
               )
@@ -241,16 +298,24 @@ const Evolution = () => {
           Atualizar prescrição
         </Button>
       </div>
-      <div className="pendencies_pacient">
+      <form
+        onSubmit={formikPending.handleSubmit}
+        className="pendencies_pacient"
+      >
         <h2>Pendências</h2>
-        <TextArea placeholder="AQUI SEGUE UM TEXTO COM AS PENDÊNCIAS"></TextArea>
+        <TextArea
+          name="text"
+          onChange={formikPending.handleChange}
+          value={formikPending.values.text}
+          placeholder="AQUI SEGUE UM TEXTO COM AS PENDÊNCIAS"
+        ></TextArea>
         <p className="legend">
           ÚLTIMA PENDÊNCIA ATUALIZADA EM DD/MM/AAAA HH:DD
         </p>
         <Button className="button_normal button-update_pendencies">
           Atualizar Pendências
         </Button>
-      </div>
+      </form>
     </Container>
   );
 };

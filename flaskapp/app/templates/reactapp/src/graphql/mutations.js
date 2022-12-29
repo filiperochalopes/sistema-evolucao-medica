@@ -65,3 +65,27 @@ export const CREATE_PRESCRIPTION = gql`
     }
   }
 `;
+
+export const CREATE_EVOLUTION = gql`
+  mutation createEvolution(
+    $internmentId: Int!
+    $text: String
+    $cid10Code: String
+  ) {
+    createEvolution(
+      internmentId: $internmentId
+      text: $text
+      cid10Code: $cid10Code
+    ) {
+      id
+    }
+  }
+`;
+
+export const CREATE_PENDING = gql`
+  mutation createPending($internmentId: Int!, $text: String) {
+    createPending(internmentId: $internmentId, text: $text) {
+      text
+    }
+  }
+`;
