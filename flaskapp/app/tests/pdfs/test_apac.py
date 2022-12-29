@@ -25,7 +25,7 @@ def client():
     return Client(transport=transport, fetch_schema_from_transport=True)
 
 
-def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,patient_name='Patient Name',patient_cns="928976954930007",patient_sex='M',patient_birthday=None, patient_adress_city='Patient Adress City',main_procedure='{name: "teste procedimento",code: "hkmaug347s",quant: 1}',patient_mother_name='Patient Mother Name',patient_mother_phonenumber='5286758957', patient_responsible_name='Patient Responsible Name', patient_responsible_phonenumber='5465981345', patient_adress='Patient Adress',patient_color='Branca',patient_ethnicity='Indigena',patient_adress_uf='BA',patient_adressCEP='86425910', document_chart_number='12345',patient_adress_city_ibge_code=4528765,procedure_justification_description='Procedure Justification Description', prodedure_justification_main_cid_10='A98', prodedure_justification_sec_cid_10='A01', procedure_justification_associated_cause_cid_10='A45',procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', establishment_exec_cnes=7654321,prof_solicitor_document='{cns: "928976954930007",cpf: null,rg: null}', prof_solicitor_name='Profissional Solicit Name',solicitation_datetime=None,signature_datetime=None,validity_period_start=None,validity_period_end=None,autorization_prof_name='Autorization Professional Name', emission_org_code='Cod121234',autorizaton_prof_document='{cns: "928976954930007",cpf: null,rg: null}', autorizaton_datetime=None,secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "segundo",code: "hkmhsa3s23",quant: 4}]'):
+def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,patient_name='Patient Name',patient_cns="928976954930007",patient_sex='M',patient_birthday=None, patient_address_city='Patient Adress City',main_procedure='{name: "teste procedimento",code: "hkmaug347s",quant: 1}',patient_mother_name='Patient Mother Name',patient_mother_phonenumber='5286758957', patient_responsible_name='Patient Responsible Name', patient_responsible_phonenumber='5465981345', patient_address='Patient Adress',patient_color='Branca',patient_ethnicity='Indigena',patient_address_uf='BA',patient_address_cep='86425910', document_chart_number='12345',patient_address_city_ibge_code=4528765,procedure_justification_description='Procedure Justification Description', prodedure_justification_main_cid_10='A98', prodedure_justification_sec_cid_10='A01', procedure_justification_associated_cause_cid_10='A45',procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', establishment_exec_cnes=7654321,prof_solicitor_document='{cns: "928976954930007",cpf: null,rg: null}', prof_solicitor_name='Profissional Solicit Name',solicitation_datetime=None,signature_datetime=None,validity_period_start=None,validity_period_end=None,autorization_prof_name='Autorization Professional Name', emission_org_code='Cod121234',autorizaton_prof_document='{cns: "928976954930007",cpf: null,rg: null}', autorizaton_datetime=None,secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "segundo",code: "hkmhsa3s23",quant: 4}]'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
@@ -40,38 +40,36 @@ def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishmen
     if autorizaton_datetime == None:
         autorizaton_datetime = datetime_to_use
 
+
+    # Creating inputs
+    establishment_solitc = '{name: ' + f'"{establishment_solitc_name}"' + ', cnes: ' + f'"{establishment_solitc_cnes}"' + '}'
+    establishment_exec = '{name: ' + f'"{establishment_exec_name}"' + ', cnes: ' + f'"{establishment_exec_cnes}"' + '}'
+
+    patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"{patient_address_city}"' + ', ibgeCityCode: ' + f'"{patient_address_city_ibge_code}"' + ', uf:' + f'"{patient_address_uf}"' + ', zipCode: ' + f'"{patient_address_cep}"' + '},'
+
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
+
     request_string = """
         mutation{
             generatePdf_Apac("""
 
     campos_string = f"""
-    establishmentSolitcName: "{establishment_solitc_name}",
-    establishmentSolitcCnes: {establishment_solitc_cnes},
-    patientName: "{patient_name}",
-    patientCns: "{patient_cns}",
-    patientSex: "{patient_sex}",
-    patientBirthday: "{patient_birthday}",
-    patientAdressCity: "{patient_adress_city}",
+    establishmentSolitc: {establishment_solitc},
+    patient: {patient}
     mainProcedure: {main_procedure},
     secondariesProcedures: {secondaries_procedures},
-    patientMotherName: "{patient_mother_name}",
     patientMotherPhonenumber: "{patient_mother_phonenumber}",
     patientResponsibleName: "{patient_responsible_name}",
     patientResponsiblePhonenumber: "{patient_responsible_phonenumber}",
-    patientAdress: "{patient_adress}",
     patientEthnicity: "{patient_ethnicity}",
     patientColor: "{patient_color}",
-    patientAdressUF: "{patient_adress_uf}",
-    patientAdressCEP: "{patient_adressCEP}",
     documentChartNumber: "{document_chart_number}",
-    patientAdressCityIbgeCode: "{patient_adress_city_ibge_code}",
     procedureJustificationDescription: "{procedure_justification_description}",
     procedureJustificationMainCid10: "{prodedure_justification_main_cid_10}",
     procedureJustificationSecCid10: "{prodedure_justification_sec_cid_10}",
     procedureJustificationAssociatedCauseCid10: "{procedure_justification_associated_cause_cid_10}",
     procedureJustificationComments: "{procedure_justification_comments}",
-    establishmentExecName: "{establishment_exec_name}",
-    establishmentExecCnes: {establishment_exec_cnes},
+    establishmentExec: {establishment_exec},
     profSolicitorDocument: {prof_solicitor_document},
     profSolicitorName: "{prof_solicitor_name}",
     solicitationDatetime: "{solicitation_datetime}",
@@ -110,13 +108,25 @@ def test_awnser_with_only_required_data(client):
             generatePdf_Apac("""
 
     campos_string = """
-    establishmentSolitcName: "Establihsment Name",
-    establishmentSolitcCnes: 1234567,
-    patientName: "Patient Name",
-    patientCns: "928976954930007",
-    patientSex: "M",
-    patientBirthday: "22/10/2022",
-    patientAdressCity: "Patient",
+    establishmentSolitc: {
+        name: "Establishmente Solict Name",
+        cnes: "1234567"
+    },
+    establishmentExec: {
+        name:"Establishment exec Name",
+        cnes: "1234567"
+    },
+    patient: {
+        name: "Patient Patient Name",
+        cns: "928976954930007",
+        birthdate: "10/10/2022",
+        sex: "M",
+        address: {
+            city: "Jau",
+            ibgeCityCode: "1234567",
+            uf: "SP",
+        }
+    },
     mainProcedure: {name: "teste procedimento",code: "hkmaug347s",quant: 1}
     """
 
@@ -206,7 +216,7 @@ def test_valid_validity_period_end (client, datetime_to_use):
 ##################################################################
 # TEST MARKABLE OPTIONS
 # patient_sex
-# patient_adress_uf
+# patient_address_uf
 # test wrong type
 # test not exist option
 # test all options in Upper Case
@@ -222,16 +232,16 @@ def test_sex(test_input, client, datetime_to_use):
 
 @pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
 def test_ufs(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, patient_adress_uf=test_input) == True
+    assert data_to_use(client, datetime_to_use, patient_address_uf=test_input) == True
 
 
 ####################################################################
 # TEST ADRESS VARIABLES
-# patient_adress
-# patient_adress_city
-# patient_adress_city_ibge_code
-# patient_adress_uf (already tested in option tests)
-# patient_adressCEP
+# patient_address
+# patient_address_city
+# patient_address_city_ibge_code
+# patient_address_uf (already tested in option tests)
+# patient_address_cep
 # test wrong type
 # test empty value
 # test empty space value
@@ -239,8 +249,8 @@ def test_ufs(test_input, client, datetime_to_use):
 # Long value
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_patient_adress(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, patient_adress=test_input) == True
+def test_empty_value_patient_address(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, patient_address=test_input) == True
 
 
 #############################################################################

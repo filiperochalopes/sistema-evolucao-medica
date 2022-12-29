@@ -63,24 +63,44 @@ def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, p
         #Adding data that can be null
         try:
             pdf.set_font('Roboto-Mono', 11)
-            pdf.add_oneline_text(text=establishment_exec['cnes'], pos=(450, 28), camp_name='Establishment Exec CNES', len_max=7, len_min=7,interval=' ', nullable=True)
+            try:
+                pdf.add_oneline_text(text=establishment_exec['cnes'], pos=(450, 28), camp_name='Establishment Exec CNES', len_max=7, len_min=7,interval=' ', nullable=True)
+            except KeyError:
+                pass
             pdf.set_font('Roboto-Mono', 9)
-            pdf.add_oneline_text(text=patient['mother_name'], pos=(36, 654), camp_name='Patient Mother Name', len_max=67, len_min=7, nullable=True)
+            
+            pdf.add_oneline_text(text=patient.get('mother_name'), pos=(36, 654), camp_name='Patient Mother Name', len_max=67, len_min=7, nullable=True)
+            
+            try:
+                pdf.add_oneline_text(text=patient['address']['street'], pos=(36, 608), camp_name='Patient Adress', len_max=97, len_min=7, nullable=True)
+            except KeyError:
+                pass
+            try:
+                pdf.add_oneline_text(text=patient['address']['zip_code'], pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, nullable=True, interval=' ')
+            except KeyError:
+                pass
+            try:
+                pdf.add_oneline_text(text=patient['address']['ibge_city_code'], pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, nullable=True)
+            except KeyError:
+                pass
+            try:
+                pdf.add_UF(uf=patient['address']['uf'], pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
+            except KeyError:
+                pass
+            try:
+                pdf.add_oneline_text(text=establishment_exec['name'], pos=(36, 30), camp_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
+            except KeyError:
+                pass
+            pdf.add_oneline_text(text=procedure_justification_description, pos=(36, 344), camp_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
             pdf.add_phonenumber(number=patient_mother_phonenumber, pos=(409, 650), camp_name='Patient Mother Phone Number', nullable=True, interval='  ')
             pdf.add_oneline_text(text=patient_responsible_name, pos=(36, 630), camp_name='Patient Responsible Name', len_max=67, len_min=7, nullable=True)
             pdf.add_phonenumber(number=patient_responsible_phonenumber, pos=(409, 626), camp_name='Patient Responsible Phone Number', nullable=True, interval='  ')
-            pdf.add_oneline_text(text=patient['address']['street'], pos=(36, 608), camp_name='Patient Adress', len_max=97, len_min=7, nullable=True)
             pdf.add_oneline_text(text=patient_color, pos=(404, 678), camp_name='Patient Color', len_max=10, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient_ethnicity, pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)
-            pdf.add_oneline_text(text=patient['address']['zip_code'], pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, nullable=True, interval=' ')
             pdf.add_oneline_text(text=document_chart_number, pos=(483, 702), camp_name='Document Chart Number', len_max=14, len_min=1, nullable=True)
-            pdf.add_oneline_text(text=patient['address']['ibge_city_code'], pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, nullable=True)
-            pdf.add_UF(uf=patient['address']['uf'], pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
-            pdf.add_oneline_text(text=procedure_justification_description, pos=(36, 344), camp_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
             pdf.add_oneline_text(text=procedure_justification_main_cid_10, pos=(352, 344), camp_name='Procedure Justification main CID10', len_max=4, len_min=3, nullable=True)
             pdf.add_oneline_text(text=procedure_justification_sec_cid_10, pos=(420, 344), camp_name='Procedure Justification secondary CID10', len_max=4, len_min=3, nullable=True)
             pdf.add_oneline_text(text=procedure_justification_associated_cause_cid_10, pos=(505, 344), camp_name='Procedure Justification Associated Causes CID10', len_max=4, len_min=3, nullable=True)
-            pdf.add_oneline_text(text=establishment_exec['name'], pos=(36, 30), camp_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
             pdf.add_oneline_text(text=prof_solicitor_name, pos=(36, 204), camp_name='Profissional Solicitor Name', len_max=48, len_min=5, nullable=True)
             pdf.add_oneline_text(text=prof_autorization_name, pos=(36, 136), camp_name='Profissional Authorizator Name', len_max=46, len_min=5, nullable=True)
             pdf.add_oneline_text(text=emission_org_code, pos=(290, 136), camp_name='Emission Org Code', len_max=16, len_min=2, nullable=True)
@@ -93,7 +113,6 @@ def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, p
             pdf.add_morelines_text(text=procedure_justification_comments, initial_pos=(36, 318), decrease_ypos= 10, camp_name='Procedura justification Comments', len_max=776, char_per_lines=97, len_min=5, nullable=True)
             pdf.add_document_cns_cpf_rg(document=prof_solicitor_document, pos_square_cpf=(103, 180), pos_square_cns=(51,180), pos_cns=(151, 181), pos_cpf=(151, 181),camp_name='Professional Solicitor Document', interval='  ',nullable=True)
             pdf.add_document_cns_cpf_rg(document=autorizaton_prof_document, pos_square_cpf=(103, 104), pos_square_cns=(51,104), pos_cns=(149, 105), pos_cpf=(151, 105),camp_name='Professional Authorizator Document', interval='  ',nullable=True)
-        
         except Exception as error:
             return error
         except:
