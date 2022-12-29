@@ -56,11 +56,11 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
         #Adding data that can be null
         try:
             
-            pdf.add_oneline_text(text=patient['address']['number'], pos=(24, 580), camp_name='Patient Adress Number', len_max=6, len_min=1,nullable=True)
-            pdf.add_oneline_text(text=patient['address']['neighborhood'], pos=(66, 580), camp_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
-            pdf.add_oneline_text(text=patient['address']['city'], pos=(243, 580), camp_name='Patient Adress City', len_max=34, len_min=3, nullable=True)
-            pdf.add_UF(uf=patient['address']['uf'], pos=(444, 580), camp_name='Patient Adress UF', nullable=True)
-            pdf.add_CEP(cep=patient['address']['zip_code'], pos=(483, 580), camp_name='Patient Adress CEP', nullable=True, formated=True)
+            pdf.add_oneline_text(text=patient['address'].get('number'), pos=(24, 580), camp_name='Patient Adress Number', len_max=6, len_min=1,nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('neighborhood'), pos=(66, 580), camp_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('city'), pos=(243, 580), camp_name='Patient Adress City', len_max=34, len_min=3, nullable=True)
+            pdf.add_UF(uf=patient['address'].get('uf'), pos=(444, 580), camp_name='Patient Adress UF', nullable=True)
+            pdf.add_CEP(cep=patient['address'].get('zip_code'), pos=(483, 580), camp_name='Patient Adress CEP', nullable=True, formated=True)
             pdf.add_oneline_text(text=patient_nationality, pos=(27, 547), camp_name='Patient nationality', len_max=25, len_min=3, nullable=True)
             pdf.add_oneline_intnumber(number=patient_estimate_weight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, value_min=1, value_max=500, nullable=True)
             if has_additional_health_insurance != None:

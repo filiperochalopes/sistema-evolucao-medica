@@ -32,12 +32,17 @@ def client():
     return Client(transport=transport, fetch_schema_from_transport=True)
 
 
-def data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime=None, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=None,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document='{cpf: "28445400070",cns: null,rg: null}',patient_adress='pacient street, 43, paciten, USA',patient_phonenumber='44387694628', patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.', patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',current_illness_history='Current illnes hsitoryaaaaaaaaaaa',initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',patient_adress_number=123456,patient_adress_neigh='Patient Neighborhood',patient_adress_city='Patient city',patient_adress_uf='sp',patient_adress_cep='12345678',patient_nationality='Brasileira',patient_estimate_weight=123,has_additional_health_insurance='SIM'):
+def data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime=None, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=None,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document='{cpf: "28445400070",cns: null,rg: null}',patient_address='pacient street, 43, paciten, USA',patient_phonenumber='44387694628', patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.', patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',current_illness_history='Current illnes hsitoryaaaaaaaaaaa',initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',patient_address_number=123456,patient_address_neigh='Patient Neighborhood',patient_address_city='Patient city',patient_address_uf='sp',patient_address_cep='12345678',patient_nationality='Brasileira',patient_estimate_weight=123,has_additional_health_insurance='SIM'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
     if document_datetime == None:
         document_datetime = document_datetime_to_use
+    
+
+    patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"{patient_address_city}"' + ', number: ' + f'"{patient_address_number}"' + ', uf:' + f'"{patient_address_uf}"' + ', zipCode: ' + f'"{patient_address_cep}"' + '},'
+
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
 
     request_string = """
         mutation{
@@ -45,13 +50,14 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
 
     campos_string = f"""
     documentDatetime: "{document_datetime}",
+    patient: {patient}
     patientName: "{patient_name}",
     patientCns: "{patient_cns}",
     patientBirthday: "{patient_birthday}",
     patientSex: "{patient_sex}",
     patientMotherName: "{patient_mother_name}",
     patientDocument: {patient_document},
-    patientAdress: "{patient_adress}",
+    patientAdress: "{patient_address}",
     patientPhonenumber: "{patient_phonenumber}",
     patientDrugAllergies: "{patient_drug_allergies}",
     patientComorbidities: "{patient_comorbidities}",
@@ -61,11 +67,11 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
     doctorName: "{doctor_name}",
     doctorCns: "{doctor_cns}",
     doctorCrm: "{doctor_crm}",
-    patientAdressNumber: {patient_adress_number},
-    patientAdressNeigh: "{patient_adress_neigh}",
-    patientAdressCity: "{patient_adress_city}",
-    patientAdressUf: "{patient_adress_uf}",
-    patientAdressCep: "{patient_adress_cep}",
+    patientAdressNumber: {patient_address_number},
+    patientAdressNeigh: "{patient_address_neigh}",
+    patientAdressCity: "{patient_address_city}",
+    patientAdressUf: "{patient_address_uf}",
+    patientAdressCep: "{patient_address_cep}",
     patientNationality: "{patient_nationality}",
     patientEstimateWeight: {patient_estimate_weight}
     """
@@ -173,12 +179,12 @@ def test_has_additional_health_insurance(client, datetime_to_use, document_datet
 
 ####################################################################
 # TEST ADRESS VARIABLES
-# patient_adress
-# patient_adress_number
-# patient_adress_neigh
-# patient_adress_city
-# patient_adress_uf 
-# patient_adress_cep
+# patient_address
+# patient_address_number
+# patient_address_neigh
+# patient_address_city
+# patient_address_uf 
+# patient_address_cep
 # test wrong type
 # test empty value
 # test empty space value
@@ -187,7 +193,7 @@ def test_has_additional_health_insurance(client, datetime_to_use, document_datet
 
 @pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
 def test_ufs(client, datetime_to_use, document_datetime_to_use,test_input):
-    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_adress_uf=test_input) == True
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_address_uf=test_input) == True
 
 
 #################################################################################
