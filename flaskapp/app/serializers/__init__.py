@@ -114,13 +114,16 @@ class Cid10Schema(CamelCaseSchema):
     class Meta:
         model = Cid10
 
+
 class MeasureSchema(CamelCaseSchema):
     class Meta:
         model = Measure
 
+
 class PendingSchema(CamelCaseSchema):
     class Meta:
         model = Pending
+
 
 class InternmentSchema(CamelCaseSchema):
     class Meta:

@@ -19,6 +19,8 @@ type_defs = gql('''
        internment(id:ID!): Internment
        internments(active:Boolean, cns:String): [Internment]
        myUser: User
+       "ValueObject Descrição de registro de Balanço Hídrico"
+       fluidBalanceDescriptions: [ValueObject]
        "ValueObject Alergia"
        allergies: [ValueObject]
        "ValueObject Comorbidade"
