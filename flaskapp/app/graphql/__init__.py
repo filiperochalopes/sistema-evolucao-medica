@@ -121,7 +121,7 @@ type_defs = gql('''
             internmentId: Int!, 
             "Texto com relatório sucinto de pendências para o paciente"
             text: String
-            ): Prescription
+            ): Pending
         """
         É responsável por salvar os sinais vitais de um paciente, relacionado a um internamento
         """
