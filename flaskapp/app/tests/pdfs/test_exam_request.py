@@ -24,7 +24,7 @@ def client():
     # Create a GraphQL client using the defined transport
     return Client(transport=transport, fetch_schema_from_transport=True)
 
-def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns='928976954930007', patient_birthday=None,patient_adress="Patient Adress",exams="Exames tests with a text",solicitation_reason="Solicitation Reason",prof_solicitor_name="Professional Solicitor",prof_authorized_name="Professional Authorized",solicitation_datetime=None,autorization_datetime=None, document_pacient_date=None,document_pacient_name='Document pacient name'):
+def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns='928976954930007', patient_birthday=None,patient_address="Patient Adress",exams="Exames tests with a text",solicitation_reason="Solicitation Reason",prof_solicitor_name="Professional Solicitor",prof_authorized_name="Professional Authorized",solicitation_datetime=None,autorization_datetime=None, document_pacient_date=None,document_pacient_name='Document pacient name'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
@@ -35,15 +35,16 @@ def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns
     if autorization_datetime == None:
         autorization_datetime = datetime_to_use
 
+    patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', uf:' + '"SP"' + ', city: ' + '"City"' + '},'
+
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', address: ' + f'{patient_address}' + '}'
+
     request_string = """
         mutation{
             generatePdf_SolicitExames("""
 
     campos_string = f"""
-    patientName: "{patient_name}",
-    patientCns: "{patient_cns}",
-    patientBirthday: "{patient_birthday}",
-    patientAdress: "{patient_adress}",
+    patient: {patient},
     solicitationReason: "{solicitation_reason}",
     profSolicitorName: "{prof_solicitor_name}",
     solicitationDatetime: "{solicitation_datetime}",
@@ -65,6 +66,7 @@ def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns
         client.execute(query)
         return True
     except:
+        print(all_string)
         return False 
 
 #Testing Ficha Internamento
@@ -80,10 +82,14 @@ def test_awnser_with_only_required_data(client, datetime_to_use):
             generatePdf_SolicitExames("""
 
     campos_string = """
-    patientName: "Patient NAme",
-    patientCns: "928976954930007",
-    patientBirthday: "10/10/2021",
-    patientAdress: "Patient Adress",
+    patient: {
+        name: "Patient Name", 
+        cns: "928976954930007", 
+        birthdate: "29/12/2022", 
+        address: {
+            street: "Patient Adress", 
+            uf:"SP", 
+            city: "City"},},
     solicitationReason: "Solicitation reason",
     profSolicitorName: "Professional solicitor Name",
     solicitationDatetime: "10/10/2014",
