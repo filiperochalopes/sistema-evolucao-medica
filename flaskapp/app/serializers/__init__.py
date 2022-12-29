@@ -1,6 +1,6 @@
 import sys
 from flask_marshmallow import Marshmallow
-from app.models import Drug, DrugGroupPreset, Internment, Measure, Patient, User, Cid10, Prescription, Diet, DrugPrescription, NursingActivity, RestingActivity, Evolution
+from app.models import Drug, DrugGroupPreset, Internment, Measure, Patient, User, Cid10, Prescription, Diet, DrugPrescription, NursingActivity, RestingActivity, Evolution, Pending
 from marshmallow import fields
 from marshmallow_sqlalchemy import fields as sqa_fields
 
@@ -118,6 +118,10 @@ class MeasureSchema(CamelCaseSchema):
     class Meta:
         model = Measure
 
+class PendingSchema(CamelCaseSchema):
+    class Meta:
+        model = Pending
+
 class InternmentSchema(CamelCaseSchema):
     class Meta:
         model = Internment
@@ -129,3 +133,4 @@ class InternmentSchema(CamelCaseSchema):
     measures = sqa_fields.RelatedList(sqa_fields.Nested(MeasureSchema))
     evolutions = sqa_fields.RelatedList(sqa_fields.Nested(EvolutionSchema))
     prescriptions = sqa_fields.RelatedList(sqa_fields.Nested(PrescriptionSchema))
+    pendings = sqa_fields.RelatedList(sqa_fields.Nested(PendingSchema))
