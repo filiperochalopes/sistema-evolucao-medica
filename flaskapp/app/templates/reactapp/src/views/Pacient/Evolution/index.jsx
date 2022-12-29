@@ -23,8 +23,10 @@ import {
 } from "graphql/mutations";
 import { useParams } from "react-router-dom";
 import { CID10 } from "graphql/queries";
+import { useSnackbar } from "notistack";
 
 const Evolution = () => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { addModal } = useModalContext();
   const [createPrescription] = useMutation(CREATE_PRESCRIPTION);
   const [createEvolution] = useMutation(CREATE_EVOLUTION);
@@ -39,10 +41,15 @@ const Evolution = () => {
       drugs: [],
       nursingActivities: [],
     },
-    onSubmit: (values) => {
-      createPrescription({
-        variables: { ...values, internmentId: Number(params.id) },
-      });
+    onSubmit: async (values) => {
+      try {
+        await createPrescription({
+          variables: { ...values, internmentId: Number(params.id) },
+        });
+        enqueueSnackbar("Prescrição Cadastrada", { variant: "success" });
+      } catch {
+        enqueueSnackbar("Error: Tente novamente", { variant: "error" });
+      }
     },
     validationSchema: schema,
   });
@@ -52,10 +59,16 @@ const Evolution = () => {
       text: "",
       cid10Code: null,
     },
-    onSubmit: (values) => {
-      createEvolution({
-        variables: { ...values, internmentId: Number(params.id) },
-      });
+    onSubmit: async (values) => {
+      try {
+        await createEvolution({
+          variables: { ...values, internmentId: Number(params.id) },
+        });
+
+        enqueueSnackbar("Evolução Cadastrada", { variant: "success" });
+      } catch {
+        enqueueSnackbar("Error: Tente novamente", { variant: "error" });
+      }
     },
   });
 
@@ -63,13 +76,18 @@ const Evolution = () => {
     initialValues: {
       text: "",
     },
-    onSubmit: (values) => {
-      createPeding({
-        variables: {
-          internmentId: Number(params.id),
-          text: values.text,
-        },
-      });
+    onSubmit: async (values) => {
+      try {
+        await createPeding({
+          variables: {
+            internmentId: Number(params.id),
+            text: values.text,
+          },
+        });
+        enqueueSnackbar("Pendencia Cadastrada", { variant: "success" });
+      } catch {
+        enqueueSnackbar("Error: Tente novamente", { variant: "error" });
+      }
     },
   });
 
