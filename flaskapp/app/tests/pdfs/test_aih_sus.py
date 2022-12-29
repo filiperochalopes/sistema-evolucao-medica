@@ -25,15 +25,23 @@ def client():
     return Client(transport=transport, fetch_schema_from_transport=True)
 
 
-def data_to_use(client, datetime_to_use, establishment_solitc='{name:"Establishmente Solict Name",cnes: "1234567"}',establishment_exec='{name:"Establishment exec Name",cnes: "1234567"}', patient='{name: "Patient Name",cns: "928976954930007",birthdate: "10/10/2022",sex: "M",motherName: "Patient Mother Name",address: {street: "Patient Adress",city: "Jau",ibgeCityCode: "1234567",uf: "SP",zipCode: "12345678"},}',main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnostic='Patient Initial Diagnostic',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', prof_solicitor_document='{cns: "928976954930007", cpf: null, rg: null}',
-prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=None, prof_autorization_name='Autorization professional name', emission_org_code='OrgCode2022', autorizaton_prof_document='{cns: null, cpf: "28445400070", rg: null}', autorizaton_datetime=None,hospitalization_autorization_number='1234567890',exam_results='Xray tibia broken',chart_number='1234',patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber='5613248546', patient_responsible_phonenumber='8564721598', secondary_cid_10='A01',cid_10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj='37549670000171', insurance_company_ticket_number='123450123456', insurance_company_series='Insurn',company_cnpj='37549670000171', company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
+def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes="1234567",establishment_exec_name='Establshment Exec Name',establishment_exec_cnes="7654321",patient_name='Patient Name',patient_cns="928976954930007",patient_birthday=None,patient_sex='F',patient_mother_name='Patient Mother Name',patient_address='Patient Adress street neighobourd',patient_address_city='Patient City',patient_address_city_ibge_code='1234567', patient_address_uf='SP',patient_address_cep='12345678',main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnostic='Patient Initial Diagnostic',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', prof_solicitor_document='{cns: "928976954930007", cpf: null, rg: null}', prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=None, prof_autorization_name='Autorization professional name', emission_org_code='OrgCode2022', autorizaton_prof_document='{cns: null, cpf: "28445400070", rg: null}', autorizaton_datetime=None,hospitalization_autorization_number='1234567890',exam_results='Xray tibia broken',chart_number='1234',patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber='5613248546', patient_responsible_phonenumber='8564721598', secondary_cid_10='A01',cid_10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj='37549670000171', insurance_company_ticket_number='123450123456', insurance_company_series='Insurn',company_cnpj='37549670000171', company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
 
-    # if patient_birthday == None:
-    #     patient_birthday = datetime_to_use
+    if patient_birthday == None:
+        patient_birthday = datetime_to_use
     if solicitation_datetime == None:
         solicitation_datetime = datetime_to_use
     if autorizaton_datetime == None:
         autorizaton_datetime = datetime_to_use
+
+
+    # Creating inputs
+    establishment_solitc = '{name: ' + f'"{establishment_solitc_name}"' + ', cnes: ' + f'"{establishment_solitc_cnes}"' + '}'
+    establishment_exec = '{name: ' + f'"{establishment_exec_name}"' + ', cnes: ' + f'"{establishment_exec_cnes}"' + '}'
+
+    patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"{patient_address_city}"' + ', ibgeCityCode: ' + f'"{patient_address_city_ibge_code}"' + ', uf:' + f'"{patient_address_uf}"' + ', zipCode: ' + f'"{patient_address_cep}"' + '},'
+
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
 
     request_string = """
         mutation{
@@ -181,7 +189,7 @@ def test_valid_autorizaton_datetime(client, datetime_to_use):
 # patient_sex
 # acident_type
 # pension_status
-# patient_adress_uf
+# patient_address_uf
 # test wrong type
 # test not exist option
 # test all options in Upper Case
@@ -205,7 +213,7 @@ def test_pension_status(client, datetime_to_use, test_input):
 
 @pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
 def test_ufs(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, patient_adress_uf=test_input) == True
+    assert data_to_use(client, datetime_to_use, patient_address_uf=test_input) == True
 
 #################################################################################
 # TEST INT VARIABLES CAN/CANNOT BE NULL
