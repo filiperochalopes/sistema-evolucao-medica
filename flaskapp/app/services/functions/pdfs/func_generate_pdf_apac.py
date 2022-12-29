@@ -63,34 +63,14 @@ def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, p
         #Adding data that can be null
         try:
             pdf.set_font('Roboto-Mono', 11)
-            try:
-                pdf.add_oneline_text(text=establishment_exec['cnes'], pos=(450, 28), camp_name='Establishment Exec CNES', len_max=7, len_min=7,interval=' ', nullable=True)
-            except KeyError:
-                pass
+            pdf.add_oneline_text(text=establishment_exec.get('cnes'), pos=(450, 28), camp_name='Establishment Exec CNES', len_max=7, len_min=7,interval=' ', nullable=True)
             pdf.set_font('Roboto-Mono', 9)
-            
             pdf.add_oneline_text(text=patient.get('mother_name'), pos=(36, 654), camp_name='Patient Mother Name', len_max=67, len_min=7, nullable=True)
-            
-            try:
-                pdf.add_oneline_text(text=patient['address']['street'], pos=(36, 608), camp_name='Patient Adress', len_max=97, len_min=7, nullable=True)
-            except KeyError:
-                pass
-            try:
-                pdf.add_oneline_text(text=patient['address']['zip_code'], pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, nullable=True, interval=' ')
-            except KeyError:
-                pass
-            try:
-                pdf.add_oneline_text(text=patient['address']['ibge_city_code'], pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, nullable=True)
-            except KeyError:
-                pass
-            try:
-                pdf.add_UF(uf=patient['address']['uf'], pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
-            except KeyError:
-                pass
-            try:
-                pdf.add_oneline_text(text=establishment_exec['name'], pos=(36, 30), camp_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
-            except KeyError:
-                pass
+            pdf.add_oneline_text(text=patient['address'].get('street'), pos=(36, 608), camp_name='Patient Adress', len_max=97, len_min=7, nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('zip_code'), pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, nullable=True, interval=' ')
+            pdf.add_oneline_text(text=patient['address'].get('ibge_city_code'), pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, nullable=True)
+            pdf.add_UF(uf=patient['address']['uf'], pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
+            pdf.add_oneline_text(text=establishment_exec.get('name'), pos=(36, 30), camp_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
             pdf.add_oneline_text(text=procedure_justification_description, pos=(36, 344), camp_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
             pdf.add_phonenumber(number=patient_mother_phonenumber, pos=(409, 650), camp_name='Patient Mother Phone Number', nullable=True, interval='  ')
             pdf.add_oneline_text(text=patient_responsible_name, pos=(36, 630), camp_name='Patient Responsible Name', len_max=67, len_min=7, nullable=True)
