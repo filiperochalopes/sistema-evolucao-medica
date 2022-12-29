@@ -9,10 +9,10 @@ import { Link } from "react-router-dom";
 import { useModalContext } from "services/ModalContext";
 import EvolutionButton from "./components/EvolutionButton";
 import { useQuery } from "@apollo/client";
-import { PATIENTS } from "graphql/queries";
+import { INTERNMENTS, PATIENTS } from "graphql/queries";
 import { CONVERT_LABEL_SEX } from "constants/convertsexName";
 const List = () => {
-  const { data } = useQuery(PATIENTS);
+  const { data } = useQuery(INTERNMENTS);
   const { addModal } = useModalContext();
 
   return (
@@ -25,13 +25,14 @@ const List = () => {
         <h2>Pacientes Internados</h2>
         <div className="pacients">
           {data &&
-            data?.patients &&
-            data?.patients.map((pacient) => (
+            data?.internments &&
+            data?.internments.map((pacient) => (
               <Pacient key={pacient.id}>
                 <PacientContent>
                   <p>
-                    {pacient.name}, {CONVERT_LABEL_SEX[pacient.sex]},
-                    {pacient.age}
+                    {pacient.patient.name},{" "}
+                    {CONVERT_LABEL_SEX[pacient.patient.sex]},
+                    {pacient.patient.age}
                   </p>
                   <div className="container_buttons">
                     <Link to="/prontuario">

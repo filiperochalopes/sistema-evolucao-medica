@@ -1,12 +1,15 @@
 import { gql } from "@apollo/client";
 
-export const PATIENTS = gql`
-  query getPatients {
-    patients {
+export const INTERNMENTS = gql`
+  query getIntenments {
+    internments {
       id
-      name
-      cns
-      age
+      patient {
+        id
+        name
+        cns
+        age
+      }
     }
   }
 `;
@@ -93,6 +96,52 @@ export const STATES = gql`
     state {
       name
       uf
+    }
+  }
+`;
+
+export const GET_INTERNMENT = gql`
+  query internment($internment: ID!) {
+    internment(id: $internment) {
+      justification
+      cid10 {
+        code
+        description
+      }
+      evolutions {
+        text
+        professional {
+          name
+        }
+        createdAt
+      }
+      prescriptions {
+        id
+        restingActivity {
+          name
+        }
+        diet {
+          name
+        }
+        drugPrescriptions {
+          id
+          drug {
+            name
+          }
+          dosage
+          route
+          kind
+          initialDate
+          endingDate
+        }
+        nursingActivities {
+          name
+        }
+      }
+
+      pendings {
+        text
+      }
     }
   }
 `;

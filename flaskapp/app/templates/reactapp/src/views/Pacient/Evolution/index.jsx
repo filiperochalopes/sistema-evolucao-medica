@@ -15,25 +15,35 @@ import deletePrescription from "helpers/deletePrescription";
 import { useTheme } from "styled-components";
 import { useFormik } from "formik";
 import schema from "./schema";
-import { useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import {
   CREATE_EVOLUTION,
   CREATE_PENDING,
   CREATE_PRESCRIPTION,
 } from "graphql/mutations";
 import { useParams } from "react-router-dom";
-import { CID10 } from "graphql/queries";
+import { CID10, GET_INTERNMENT } from "graphql/queries";
 import { useSnackbar } from "notistack";
+import { useEffect } from "react";
 
 const Evolution = () => {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const { addModal } = useModalContext();
   const [createPrescription] = useMutation(CREATE_PRESCRIPTION);
   const [createEvolution] = useMutation(CREATE_EVOLUTION);
   const [createPeding] = useMutation(CREATE_PENDING);
   const { data: cid10Data } = useQuery(CID10);
+  const [getInternment, { data }] = useLazyQuery(GET_INTERNMENT);
   const params = useParams();
   const theme = useTheme();
+
+  useEffect(() => {
+    getInternment({
+      variables: {
+        internment: Number(params.id),
+      },
+    });
+  }, [params.id]);
   const formik = useFormik({
     initialValues: {
       restingActivity: "",
@@ -62,7 +72,11 @@ const Evolution = () => {
     onSubmit: async (values) => {
       try {
         await createEvolution({
-          variables: { ...values, internmentId: Number(params.id) },
+          variables: {
+            cid10Code: values.cid10Code.code,
+            internmentId: Number(params.id),
+            text: values.text,
+          },
         });
 
         enqueueSnackbar("Evolução Cadastrada", { variant: "success" });
@@ -71,6 +85,7 @@ const Evolution = () => {
       }
     },
   });
+  console.log(formik);
 
   const formikPending = useFormik({
     initialValues: {
@@ -91,6 +106,55 @@ const Evolution = () => {
     },
   });
 
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    if (data.internment?.prescriptions?.length > 0) {
+      const prescription =
+        data.internment?.prescriptions[
+          data.internment?.prescriptions.length - 1
+        ];
+      formik.setValues({
+        diet: prescription?.diet?.name || "",
+        drugs: prescription.drugPrescriptions.map((drug) => ({
+          drugName: drug.drug.name,
+          drugKind: drug.kind,
+          dosage: drug.drug.usualDosage,
+          route: drug.route,
+          initialDate: drug.initialDate,
+          endingDate: drug.finalDate,
+        })),
+        nursingActivities: prescription.nursingActivities.map(
+          (nursingActivity) => nursingActivity.name
+        ),
+        restingActivity: prescription.restingActivity?.name || "",
+      });
+    }
+
+    if (data.internment?.pendings?.length > 0) {
+      formikPending.setValues({
+        text: data.internment.pendings[data.internment?.pendings?.length - 1]
+          .text,
+      });
+    }
+
+    if (data.internment?.pendings?.length > 0) {
+      formikPending.setValues({
+        text: data.internment.pendings[data.internment?.pendings?.length - 1]
+          .text,
+      });
+    }
+    if (data.internment?.evolutions?.length > 0) {
+      formikEvolution.setValues({
+        cid10Code: data.internment.cid10,
+        text: data.internment.evolutions[
+          data.internment?.evolutions?.length - 1
+        ].text,
+      });
+    }
+  }, [data]);
+
   function chainHandleSetDrugs(values) {
     if (values.type.name === "drug") {
       formik.setFieldValue("drugs", [
@@ -110,7 +174,8 @@ const Evolution = () => {
   }
 
   function chainHandleSetNursingActivity(values) {
-    if (values.type.name === "nursingActivities") {
+    console.log(values);
+    if (values.type.name === "nursingActivity") {
       formik.setFieldValue("nursingActivities", [
         ...formik.values.nursingActivities,
         values.medicament.name,
