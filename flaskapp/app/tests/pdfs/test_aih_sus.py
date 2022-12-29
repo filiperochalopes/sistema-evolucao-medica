@@ -111,20 +111,9 @@ def test_awnser_with_only_required_data(client):
             generatePdf_AihSus("""
 
     campos_string = """
-    establishmentSolitcName: "Establishment Solicit Name",
-    establishmentSolitcCnes: 1234567,
-    establishmentExecName: "Establshment Exec Name",
-    establishmentExecCnes: 7654321,
-    patientName: "Patient Name",
-    patientCns: "928976954930007",
-    patientBirthday: "10/10/2010",
-    patientSex: "M",
-    patientMotherName: "Patient Mother Name",
-    patientAdress: "Patient Adress street neighobourd",
-    patientAdressCity: "Patient City",
-    patientAdressCityIbgeCode: "1234567",
-    patientAdressUF: "SP",
-    patientAdressCEP: "12345678"
+    establishmentSolitc: {name: "Establishment Solicit Name", cnes: "1234567"},
+    establishmentExec: {name: "Establshment Exec Name", cnes: "7654321"},
+    patient: {name: "Patient Name", cns: "928976954930007", birthdate: "29/12/2022", sex: "F", motherName: "Patient Mother Name", address: {street: "Patient Adress street neighobourd", city: "Patient City", ibgeCityCode: "1234567", uf:"SP", zipCode: "12345678"},},
     mainClinicalSignsSymptoms: "Patient main clinical signs sysmpthoms",
     conditionsJustifyHospitalization: "'Patient Conditions justify hiospitalizaiton",
     initialDiagnostic: "Patient Initial Diagnostic",
