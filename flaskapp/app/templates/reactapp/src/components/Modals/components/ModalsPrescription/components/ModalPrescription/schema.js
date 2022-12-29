@@ -7,14 +7,14 @@ export default Yup.object().shape({
     .shape({
       useMode: Yup.string(),
       routeAdministration: Yup.mixed(),
-      isAntibiotic: Yup.boolean(),
+      isAntibiotic: Yup.string(),
       initialDate: Yup.string().when("isAntibiotic", {
-        is: true,
+        is: "abt",
         otherwise: Yup.string(),
         then: Yup.string().required(),
       }),
       finalDate: Yup.string().when("isAntibiotic", {
-        is: true,
+        is: "abt",
         otherwise: Yup.string(),
         then: Yup.string().required(),
       }),
@@ -22,8 +22,8 @@ export default Yup.object().shape({
     .test("is-drug-valid", "is required", (value, schema) => {
       if (
         schema.parent.type?.name !== "drug" ||
-        (value.finalDate &&
-          value.initialDate &&
+        ((value.finalDate || value.isAntibiotic === "oth") &&
+          (value.initialDate || value.isAntibiotic === "oth") &&
           value.isAntibiotic &&
           value.routeAdministration &&
           value.useMode)

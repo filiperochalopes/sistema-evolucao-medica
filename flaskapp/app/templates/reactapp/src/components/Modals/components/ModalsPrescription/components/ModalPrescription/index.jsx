@@ -38,6 +38,7 @@ const prescriptionTypesStrategies = {
         setDataDrugsRoutesInObject(transformDrugsRoutesInObject);
       }
     }, [drugRoutesData]);
+    console.log(formik);
     return (
       <>
         <Input
@@ -55,18 +56,18 @@ const prescriptionTypesStrategies = {
         />
         <div className="container_checkbox">
           <CheckBox
-            checked={formik.values.drug.isAntibiotic}
+            checked={formik.values.drug.isAntibiotic === "atb"}
             id="checkbox"
             onClick={() =>
               formik.setFieldValue(
                 "drug.isAntibiotic",
-                !formik.values.drug.isAntibiotic
+                formik.values.drug.isAntibiotic === "atb" ? "oth" : "atb"
               )
             }
           />
           <label htmlFor="checkbox">É antibiótico.</label>
         </div>
-        {formik.values.drug.isAntibiotic && (
+        {formik.values.drug.isAntibiotic === "atb" && (
           <div className="row">
             <Input
               onChange={formik.handleChange}
@@ -94,7 +95,7 @@ const prescriptionTypesStrategies = {
   },
 };
 
-const ModalAddPrescription = ({ confirmButton }) => {
+const ModalAddPrescription = ({ confirmButton, nursingActivities, drugs }) => {
   const { data: prescriptionTypesData } = useQuery(PRESCRIPTION_TYPES);
   const [getDrugs] = useLazyQuery(DRUGS);
   const [getRestingActivities] = useLazyQuery(RESTING_ACTIVITIES);
@@ -109,7 +110,7 @@ const ModalAddPrescription = ({ confirmButton }) => {
       drug: {
         useMode: "",
         routeAdministration: "",
-        isAntibiotic: false,
+        isAntibiotic: "oth",
         initialDate: "",
         finalDate: "",
       },
@@ -138,9 +139,22 @@ const ModalAddPrescription = ({ confirmButton }) => {
       return;
     }
     request().then((response) => {
-      setMedicaments(
-        response.data[medicamentsAdapter[formik.values.type.name]]
-      );
+      let newMedicaments =
+        response.data[medicamentsAdapter[formik.values.type.name]];
+      if (formik.values.type.name === "drug") {
+        newMedicaments = newMedicaments.filter(
+          (medicament) =>
+            !drugs.find((drug) => drug.drugName === medicament.name)
+        );
+      } else if (formik.values.type.name === "nursingActivity") {
+        newMedicaments = newMedicaments.filter(
+          (medicament) =>
+            !nursingActivities.find(
+              (nursingActivitie) => nursingActivitie === medicament.name
+            )
+        );
+      }
+      setMedicaments(newMedicaments);
     });
   }, [
     getDiets,
@@ -148,12 +162,13 @@ const ModalAddPrescription = ({ confirmButton }) => {
     getRestingActivities,
     getNusingActivities,
     formik.values.type,
+    drugs,
+    nursingActivities,
   ]);
 
   const PrescriptionComponent =
     prescriptionTypesStrategies[formik.values.type?.name || ""] ||
     prescriptionTypesStrategies.default;
-  console.log(formik.values);
 
   return (
     <Container onSubmit={formik.handleSubmit}>
