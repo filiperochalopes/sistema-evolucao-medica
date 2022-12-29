@@ -55,14 +55,23 @@ type_defs = gql(
     }
 
     input AddressInput{
+        "CEP do endereco"
         zipCode: String
+        "Nome da Rua"
         street:String
+        "Complemento"
         complement:String
+        "Bairro do endereco"
         neighborhood:String
+        "Numero do endereco"
         number:String
+        "Nome da Cidade"
         city: String!
+        "Codigo IGBE do municipio"
         ibgeCityCode: String
+        "Sigla do estado"
         uf: String!
+        "Pontos de Referencia"
         reference: String
     }
 
