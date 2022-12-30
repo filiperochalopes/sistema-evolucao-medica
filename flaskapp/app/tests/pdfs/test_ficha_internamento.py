@@ -32,7 +32,7 @@ def client():
     return Client(transport=transport, fetch_schema_from_transport=True)
 
 
-def data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime=None, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=None,patient_sex='F',patient_mother_name="Patient Mother Name",patient_document='{cpf: "28445400070",cns: null,rg: null}',patient_address='pacient street, 43, paciten, USA',patient_phonenumber='44387694628', patient_drug_allergies='Penicillin, Aspirin, Ibuprofen, Anticonvulsants.', patient_comorbidities='Heart disease, High blood pressure, Diabetes, Cerebrovascular disease.',current_illness_history='Current illnes hsitoryaaaaaaaaaaa',initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',patient_address_number=123456,patient_address_neigh='Patient Neighborhood',patient_address_city='Patient city',patient_address_uf='sp',patient_address_cep='12345678',patient_nationality='Brasileira',patient_estimate_weight=123,has_additional_health_insurance='SIM'):
+def data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime=None, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=None,patient_sex='F',patient_mother_name="Patient Mother Name",patient_cpf="28445400070", patient_rg='null',patient_address='pacient street, 43, paciten, USA',patient_phonenumber='44387694628', patient_drug_allergies='"Penicillin", "Aspirin", "Ibuprofen", "Anticonvulsants"', patient_comorbidities='"Heart disease", "High blood pressure", "Diabetes", "Cerebrovascular disease"',current_illness_history='Current illnes hsitoryaaaaaaaaaaa',initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',patient_address_number=123456,patient_address_neigh='Patient Neighborhood',patient_address_city='Patient city',patient_address_uf='sp',patient_address_cep='12345678',patient_nationality='Brasileira',patient_estimate_weight=123,has_additional_health_insurance='SIM'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
@@ -40,9 +40,9 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
         document_datetime = document_datetime_to_use
     
 
-    patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"{patient_address_city}"' + ', number: ' + f'"{patient_address_number}"' + ', uf:' + f'"{patient_address_uf}"' + ', zipCode: ' + f'"{patient_address_cep}"' + '},'
+    patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"{patient_address_city}"' + ', number: ' + f'"{patient_address_number}"' + ', uf:' + f'"{patient_address_uf}"' + ', zipCode: ' + f'"{patient_address_cep}"' + ', neighborhood: ' + f'"{patient_address_neigh}"' + '}'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', cpf: ' + f'"{patient_cpf}"' + ', rg: ' + f'"{patient_rg}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', nationality: ' + f'"{patient_nationality}"' + ', address: ' + f'{patient_address}' + ', comorbidities: ['+ patient_comorbidities + ']' + ', allergies: ['+ patient_drug_allergies + ']'  + '}'
 
     request_string = """
         mutation{
@@ -51,28 +51,13 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
     campos_string = f"""
     documentDatetime: "{document_datetime}",
     patient: {patient}
-    patientName: "{patient_name}",
-    patientCns: "{patient_cns}",
-    patientBirthday: "{patient_birthday}",
-    patientSex: "{patient_sex}",
-    patientMotherName: "{patient_mother_name}",
-    patientDocument: {patient_document},
-    patientAdress: "{patient_address}",
     patientPhonenumber: "{patient_phonenumber}",
-    patientDrugAllergies: "{patient_drug_allergies}",
-    patientComorbidities: "{patient_comorbidities}",
     currentIllnessHistory: "{current_illness_history}",
     hasAdditionalHealthInsurance: "{has_additional_health_insurance}",
     initialDiagnosticSuspicion: "{initial_diagnostic_suspicion}",
     doctorName: "{doctor_name}",
     doctorCns: "{doctor_cns}",
     doctorCrm: "{doctor_crm}",
-    patientAdressNumber: {patient_address_number},
-    patientAdressNeigh: "{patient_address_neigh}",
-    patientAdressCity: "{patient_address_city}",
-    patientAdressUf: "{patient_address_uf}",
-    patientAdressCep: "{patient_address_cep}",
-    patientNationality: "{patient_nationality}",
     patientEstimateWeight: {patient_estimate_weight}
     """
 
@@ -87,6 +72,7 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
         client.execute(query)
         return True
     except:
+        print(all_string)
         return False 
 
 

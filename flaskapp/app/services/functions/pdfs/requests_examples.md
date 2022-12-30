@@ -287,12 +287,13 @@ mutation{
         cpf: "14383811744",
         rg: null,
         birthdate: "10/10/2021",
+        nationality: "Brasileira",
         sex: "M",
         motherName: "Patient Mother Name",
         address: {
           street: "Patient Adress",
           number: "124",
-          district: "Patient Neighbourhood",
+          neighborhood: "Patient Neighbourhood",
           city: "Patient City",
           uf: "SP",
           zipCode: "12345678",
@@ -307,7 +308,6 @@ mutation{
       doctorName: "Doctor Name",
       doctorCns: "928976954930007",
       doctorCrm: "CRM/UF 123456",
-      patientNationality: "Brasileira",
       patientEstimateWeight: 140
 		){base64Pdf}
 }
