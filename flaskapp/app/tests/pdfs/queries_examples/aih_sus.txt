@@ -14,7 +14,7 @@ mutation{
         cns: "928976954930007",
         birthdate: "10/10/2022",
         sex: "M",
-        ethnicity: "Etnia"
+        ethnicity: "Etnia",
         motherName: "Patient Mother Name",
         address: {
           street: "Patient Adress",

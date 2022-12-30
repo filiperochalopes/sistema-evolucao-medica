@@ -18,6 +18,7 @@ mutation{
         cns: "928976954930007",
         birthdate: "10/10/2022",
         sex: "M",
+        ethnicity: "Etnia",
         motherName: "Patient Mother Name",
         address: {
           street: "Patient Adress",
@@ -53,7 +54,6 @@ mutation{
       hospitalizationAutorizationNumber: "1212",
       examResults: "Exam Results",
       chartNumber: "124",
-      patientEthnicity: "Etnia",
       patientResponsibleName: "Responsible NAme",
       patientMotherPhonenumber: "4212344321",
       patientResponsiblePhonenumber: "1245875421",
@@ -89,6 +89,7 @@ mutation{
         cns: "928976954930007",
         birthdate: "10/10/2022",
         sex: "M",
+        ethnicity: "Etnia",
         motherName: "Patient Mother Name",
         address: {
           street: "Patient Adress",
@@ -118,7 +119,6 @@ mutation{
 		patientMotherPhonenumber: "3412344321",
 		patientResponsibleName: "Patient Responsible Name",
 		patientResponsiblePhonenumber: "5425415864",
-		patientEthnicity: "Etinia",
 		patientColor: "BRANCA",
 		documentChartNumber: "12345",
 		procedureJustificationDescription: "Procedure Justification Description",
