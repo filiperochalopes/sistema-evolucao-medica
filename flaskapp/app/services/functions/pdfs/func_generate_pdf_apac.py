@@ -2,7 +2,7 @@ import datetime
 from app.services.utils.PdfApac import PdfApac
 
 
-def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_procedure:dict, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_ethnicity:str=None, patient_color:str=None, document_chart_number:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, prof_autorization_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
+def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_procedure:dict, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_color:str=None, document_chart_number:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None,prof_solicitor_document:dict=None, prof_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, prof_autorization_name:str=None, emission_org_code:str=None, autorizaton_prof_document:dict=None, autorizaton_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
     """fill pdf apac
 
     Args:
@@ -13,7 +13,6 @@ def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, p
         patient_mother_phonenumber (int, optional): patient_mother_phonenumber. Defaults to None.
         patient_responsible_name (str, optional): patient_responsible_name. Defaults to None.
         patient_responsible_phonenumber (int, optional): patient_responsible_phonenumber. Defaults to None.
-        patient_ethnicity (str, optional): patient_ethnicity. Defaults to None.
         patient_color (str, optional): patient_color. Defaults to None.
         document_chart_number (str, optional): document_chart_number. Defaults to None.
         procedure_justification_description (str, optional): procedure_justification_description. Defaults to None.
@@ -76,7 +75,7 @@ def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, p
             pdf.add_oneline_text(text=patient_responsible_name, pos=(36, 630), camp_name='Patient Responsible Name', len_max=67, len_min=7, nullable=True)
             pdf.add_phonenumber(number=patient_responsible_phonenumber, pos=(409, 626), camp_name='Patient Responsible Phone Number', nullable=True, interval='  ')
             pdf.add_oneline_text(text=patient_color, pos=(404, 678), camp_name='Patient Color', len_max=10, len_min=4, nullable=True)
-            pdf.add_oneline_text(text=patient_ethnicity, pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)
+            pdf.add_oneline_text(text=patient.get('ethnicity'), pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)
             pdf.add_oneline_text(text=document_chart_number, pos=(483, 702), camp_name='Document Chart Number', len_max=14, len_min=1, nullable=True)
             pdf.add_oneline_text(text=procedure_justification_main_cid_10, pos=(352, 344), camp_name='Procedure Justification main CID10', len_max=4, len_min=3, nullable=True)
             pdf.add_oneline_text(text=procedure_justification_sec_cid_10, pos=(420, 344), camp_name='Procedure Justification secondary CID10', len_max=4, len_min=3, nullable=True)

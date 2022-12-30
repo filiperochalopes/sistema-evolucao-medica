@@ -3,7 +3,7 @@ from app.services.utils.PdfAihSus import PdfAihSus
 
 
 
-def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_autorization_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:str ,exam_results:str=None, chart_number:str=None, patient_ethnicity:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> str:
+def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, prof_solicitor_document:dict, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_autorization_name:str, emission_org_code:str, autorizaton_prof_document:dict, autorizaton_datetime:datetime.datetime, hospitalization_autorization_number:str ,exam_results:str=None, chart_number:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> str:
     """fill pdf aih sus 
 
     Args:
@@ -28,7 +28,6 @@ def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict
         hospitalization_autorization_number (str): hospitalization_autorization_number
         exam_results (str, optional): exam_results. Defaults to None.
         chart_number (str, optional): chart_number. Defaults to None.
-        patient_ethnicity (str, optional): patient_ethnicity. Defaults to None.
         patient_responsible_name (str, optional): patient_responsible_name. Defaults to None.
         patient_mother_phonenumber (int, optional): patient_mother_phonenumber. Defaults to None.
         patient_responsible_phonenumber (int, optional): patient_responsible_phonenumber. Defaults to None.
@@ -100,7 +99,7 @@ def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict
         try:
             pdf.add_morelines_text(text=exam_results, initial_pos=(25, 362), decrease_ypos= 10, camp_name='Exam Results', len_max=403, char_per_lines=101, len_min=5, nullable=True)            
             pdf.add_oneline_text(text=chart_number, pos=(466, 683), camp_name='Chart Number', len_max=20, len_min=1,nullable=True)            
-            pdf.add_oneline_text(text=patient_ethnicity, pos=(510, 658), camp_name='Patient Ehinicity', len_max=11, len_min=4, nullable=True)
+            pdf.add_oneline_text(text=patient.get('ethnicity'), pos=(510, 658), camp_name='Patient Ehinicity', len_max=11, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient_responsible_name, pos=(25, 612), camp_name='Patient Responsible Name', len_max=70, len_min=7, nullable=True)        
             pdf.add_phonenumber(number=patient_mother_phonenumber, pos=(415, 631), camp_name='Patient Mother phone number', nullable=True, interval='  ')
             pdf.add_phonenumber(number=patient_responsible_phonenumber, pos=(415, 608), camp_name='Patient responsible phone number', nullable=True, interval='  ')
