@@ -464,8 +464,6 @@ pdfs_schema_type_defs = gql(
             doctorCns: String!,
             "CRM do medico, max:13 min:11"
             doctorCrm: String!,
-            "Nacionalidade do paciente, max:25 min:3 caracteres"
-            patientNationality: String,
             "Possui convenio suplementar, opcoes: 'SIM','NAO'"
             hasAdditionalHealthInsurance: String,
             """

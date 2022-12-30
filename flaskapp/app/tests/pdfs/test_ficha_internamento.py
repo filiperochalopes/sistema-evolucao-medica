@@ -131,10 +131,10 @@ def test_awnser_with_only_required_data(client, datetime_to_use, document_dateti
     assert result == True
 
 def test_validrg_patient_document(client, datetime_to_use, document_datetime_to_use):
-    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_document='{cpf: null,cns: null,rg: "928976954930007"}') == True
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_rg="928976954930007") == True
 
 def test_validcpf_patient_document(client, datetime_to_use, document_datetime_to_use):
-    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_document='{cpf: "28445400070",cns: null,rg: null}') == True
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_cpf="28445400070") == True
 
 
 #################################################################
