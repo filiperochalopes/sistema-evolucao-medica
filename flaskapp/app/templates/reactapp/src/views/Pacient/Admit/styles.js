@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default styled.form`
+export default styled.div`
   margin: 2.625rem 0;
   width: 100%;
   display: flex;
@@ -24,7 +24,7 @@ export default styled.form`
   }
 `;
 
-export const ContainerSearchInput = styled.div`
+export const ContainerSearchInput = styled.form`
   display: flex;
   background-color: ${({ theme }) => theme.colors.gray};
   align-items: center;
