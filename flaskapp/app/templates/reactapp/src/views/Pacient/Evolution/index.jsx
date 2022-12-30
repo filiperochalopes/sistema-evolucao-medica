@@ -44,6 +44,7 @@ const Evolution = () => {
       },
     });
   }, [params.id]);
+
   const formik = useFormik({
     initialValues: {
       restingActivity: "",
@@ -85,7 +86,6 @@ const Evolution = () => {
       }
     },
   });
-  console.log(formik);
 
   const formikPending = useFormik({
     initialValues: {
@@ -213,7 +213,7 @@ const Evolution = () => {
           <Button
             type="button"
             onClick={() => {
-              addModal(updatePacientData);
+              addModal(updatePacientData(params.id));
             }}
           >
             Atualizar Dados do Paciente
