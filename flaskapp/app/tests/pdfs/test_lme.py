@@ -529,7 +529,7 @@ def test_prof_solicitor_document(test_input, client, datetime_to_use):
 ])
 def test_invalid_patient_cpf(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(client, datetime_to_use, patient_cpf=test_input) == False
+    assert data_to_use(client, datetime_to_use, patient_cns="null", patient_cpf=test_input) == False
 
 
 # TEST medicines
