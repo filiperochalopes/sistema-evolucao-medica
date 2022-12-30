@@ -46,19 +46,19 @@ def data_to_use(client, datetime_to_use,
     protocol_number='5478546135245165',
     patient_sex='F',
     patient_surname='Patient Surname',
-    patient_document_cpf='{cns: null,rg: null,cpf: "28445400070"}',
+    patient_document_cpf='"28445400070"',
     patient_nationality='Patient Nationality',
-    patient_adress='Patient Adress',
-    patient_adress_number=123456,
-    patient_adress_adjunct='Patient Adress Adjunct',
-    patient_adress_neighborhood='Neighborhood',
-    patient_city_ibge_code='1234567',
-    patient_adress_city='Patient City',
-    patient_adress_uf='SP',
+    patient_address='Patient Adress',
+    patient_address_number=123456,
+    patient_address_adjunct='Patient Adress Adjunct',
+    patient_address_neighborhood='Neighborhood',
+    patient_address_city_ibge_code='1234567',
+    patient_address_city='Patient City',
+    patient_address_uf='SP',
     patient_ethnicity='["INDIGENA", "Indigena"]',
-    patient_adress_reference='Adress Reference',
+    patient_address_reference='Adress Reference',
     patient_schooling='SUPCOMPL',
-    patient_adress_cep='12345678',
+    patient_address_cep='12345678',
     exam_number="4512457845",
     tracking_mammogram='JATRATADO',
     patient_phonenumber='1234567890',
@@ -122,44 +122,33 @@ indusaoImplantes: [null]
     if patient_birthday == None:
         patient_birthday = datetime_to_use
     
+
+    patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"{patient_address_city}"' + ',reference: ' + f'"{patient_address_reference}"' + 'neighborhood: ' + f'"{patient_address_neighborhood}"' +', complement: ' + f'"{patient_address_adjunct}"' + ',number: ' + f'"{patient_address_number}"'  + ', ibgeCityCode: ' + f'"{patient_address_city_ibge_code}"' + ', uf:' + f'"{patient_address_uf}"' + ', zipCode: ' + f'"{patient_address_cep}"' + '},'
+
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ',cpf: ' + str(patient_document_cpf) + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + 'nationality:' + f'"{patient_nationality}"' + '}'
+
     request_string = """
         mutation{
             generatePdf_SolicitMamografia("""
 
     campos_string = f"""
-    patientCns: "{patient_cns}",
-    patientBirthday: "{patient_birthday}",
+    patient: {patient},
+    patientPhonenumber: "{patient_phonenumber}",
+    patientSchooling: "{patient_schooling}",
+    patientSurname: "{patient_surname}",
     mammogramBefore: {mammogram_before},
-    patientAge: {patient_age},
-    patientName: "{patient_name}",
-    patientMotherName: "{patient_mother_name}",
     noduleLump: "{nodule_lump}",
     highRisk: "{high_risk}",
     examinatedBefore: "{examinated_before}",
     healthUnitName: "{health_unit_name}",
     healthUnitAdressUf: "{health_unit_adress_uf}",
     healthUnitAdressCity: "{health_unit_adress_city}",
-    patientSurname: "{patient_surname}",
-    patientSchooling: "{patient_schooling}",
-    patientAdress: "{patient_adress}",
-    patientAdressAdjunct: "{patient_adress_adjunct}",
-    patientAdressNeighborhood: "{patient_adress_neighborhood}",
-    patientAdressReference: "{patient_adress_reference}",
-    patientAdressCity: "{patient_adress_city}",
-    patientAdressCep: "{patient_adress_cep}",
-    patientPhonenumber: "{patient_phonenumber}",
     radiotherapyBefore: {radiotherapy_before},
     breastSurgeryBefore: {breast_surgery_before},
     healthUnitCnes: {health_unit_cnes},
     protocolNumber: "{protocol_number}",
-    patientDocumentCpf: {patient_document_cpf},
-    patientAdressNumber: {patient_adress_number},
-    patientAdressUf: "{patient_adress_uf}",
     healthUnitCityIbgeCode: "{health_unit_city_ibge_code}",
     documentChartNumber: "{document_chart_number}",
-    patientSex: "{patient_sex}",
-    patientNationality: "{patient_nationality}",
-    patientCityIbgeCode: "{patient_city_ibge_code}",
     patientEthnicity: {patient_ethnicity},
     profSolicitorName: "{prof_solicitor_name}",
     solicitationDatetime: "{solicitation_datetime}",
@@ -180,6 +169,7 @@ indusaoImplantes: [null]
         client.execute(query)
         return True
     except:
+        print(all_string)
         return False 
     
     
@@ -323,15 +313,15 @@ def test_tracking_mammogram(client, datetime_to_use, test_input):
 # health_unit_adress_uf
 # health_unit_adress_city
 # health_unit_city_ibge_code
-# patient_city_ibge_code
-# patient_adress
-# patient_adress_number
-# patient_adress_adjunct
-# patient_adress_neighborhood
-# patient_adress_city
-# patient_adress_uf (already tested in option tests)
-# patient_adress_reference
-# patient_adress_cep
+# patient_address_city_ibge_code
+# patient_address
+# patient_address_number
+# patient_address_adjunct
+# patient_address_neighborhood
+# patient_address_city
+# patient_address_uf (already tested in option tests)
+# patient_address_reference
+# patient_address_cep
 # test wrong type
 # test empty value
 # test empty space value
@@ -339,32 +329,32 @@ def test_tracking_mammogram(client, datetime_to_use, test_input):
 # Long value
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_patient_adress(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, patient_adress=test_input) == True
+def test_patient_address(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_address=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_patient_adress_city(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, patient_adress_city=test_input) == True
+def test_patient_address_city(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_address_city=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
 def test_health_unit_adress_city(client, datetime_to_use, test_input):
     assert data_to_use(client, datetime_to_use, health_unit_adress_city=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_patient_adress_adjunct(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, patient_adress_adjunct=test_input) == True
+def test_patient_address_adjunct(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_address_adjunct=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_patient_adress_neighborhood(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, patient_adress_neighborhood=test_input) == True
+def test_patient_address_neighborhood(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_address_neighborhood=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_patient_adress_reference(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, patient_adress_reference=test_input) == True
+def test_patient_address_reference(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_address_reference=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
 def test_ufs(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, patient_adress_uf=test_input) == True
+    assert data_to_use(client, datetime_to_use, patient_address_uf=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['AC', 'ac', 'AL', 'al', 'AP', 'ap', 'AM', 'am', 'BA', 'ba', 'CE', 'ce', 'DF', 'df', 'ES', 'es', 'GO', 'go', 'MA', 'ma', 'MS', 'ms', 'MT','mt', 'MG', 'mg', 'PA', 'pa', 'PB', 'pb', 'PE', 'pe', 'PR', 'pr', 'PI', 'pi', 'RJ', 'rj', 'RN', 'rn', 'RS', 'rs', 'RO', 'ro', 'RR', 'rr', 'SC', 'sc', 'SP', 'sp', 'SE', 'se', 'TO', 'to'])
 def test_health_unit_adress_uf(client, datetime_to_use, test_input):
