@@ -100,6 +100,39 @@ export const STATES = gql`
   }
 `;
 
+export const GET_PATIENT = gql`
+  query patient($id: ID, $queryNameCnsCpf: String) {
+    patient(id: $id, queryNameCnsCpf: $queryNameCnsCpf) {
+      id
+      name
+      birthdate
+      sex
+      age
+      cns
+      rg
+      cpf
+      weightKg
+      comorbidities {
+        id
+        value
+      }
+      allergies {
+        id
+        value
+      }
+      address {
+        zipCode
+        street
+        number
+        neighborhood
+        complement
+        city
+        uf
+      }
+    }
+  }
+`;
+
 export const GET_INTERNMENT = gql`
   query internment($internment: ID!) {
     internment(id: $internment) {

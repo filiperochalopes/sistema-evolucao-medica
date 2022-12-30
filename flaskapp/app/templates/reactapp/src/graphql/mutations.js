@@ -17,11 +17,9 @@ export const SIGNING = gql`
 `;
 
 export const UPDATE_PATIENT = gql`
-  mutation updatePatient($is: ID!, $patient: PatientInput!) {
-    updatePatient(is: $is, patient: $patient) {
+  mutation updatePatient($id: ID!, $patient: PatientInput!) {
+    updatePatient(id: $id, patient: $patient) {
       id
-      name
-      cns
     }
   }
 `;
@@ -86,6 +84,36 @@ export const CREATE_PENDING = gql`
   mutation createPending($internmentId: Int!, $text: String) {
     createPending(internmentId: $internmentId, text: $text) {
       text
+    }
+  }
+`;
+
+export const CREATE_MEASURE = gql`
+  mutation createMeasure(
+    $internmentId: Int!
+    $spO2: Int
+    $pain: Int
+    $systolicBloodPressure: Int
+    $diastolicBloodPressure: Int
+    $cardiacFrequency: Int
+    $respiratoryFrequency: Int
+    $celciusAxillaryTemperature: Int
+    $glucose: Int
+    $fetalCardiacFrequency: Int
+  ) {
+    createMeasure(
+      internmentId: $internmentId
+      spO2: $spO2
+      pain: $pain
+      systolicBloodPressure: $systolicBloodPressure
+      diastolicBloodPressure: $diastolicBloodPressure
+      cardiacFrequency: $cardiacFrequency
+      respiratoryFrequency: $respiratoryFrequency
+      celciusAxillaryTemperature: $celciusAxillaryTemperature
+      glucose: $glucose
+      fetalCardiacFrequency: $fetalCardiacFrequency
+    ) {
+      id
     }
   }
 `;
