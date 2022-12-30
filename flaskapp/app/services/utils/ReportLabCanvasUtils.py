@@ -820,25 +820,6 @@ class ReportLabCanvasUtils():
                 
             # updating all document keys
             all_document_keys = document.keys()
-            if 'cns' in all_document_keys:
-                if document['cns'] != None:
-                    if type(document['cns']) != type(str()):
-                        raise Exception(f'{camp_name} CNS deve ser do tipo string')
-                    
-                    cns_validator = CNS()
-                    if cns_validator.validate(document['cns']):
-                        if pos_square_cns != None:
-                            self.add_square(pos=pos_square_cns, size=square_size)
-                        # Add empty spaces interval between every character
-
-                        cns = str(document['cns'])
-                        cns = self.add_interval_to_data(data=cns, interval=interval)
-                        if formated:
-                            cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
-                        self.add_data(data=cns, pos=pos_cns)
-                        return None
-                    else:
-                        raise Exception(f'{camp_name} CNS nao e valido')
             
             if 'cpf' in all_document_keys:
                 if document['cpf'] != None:
@@ -862,6 +843,26 @@ class ReportLabCanvasUtils():
                     else:
                         raise Exception(f'{camp_name} CPF nao e valido')
             
+            if 'cns' in all_document_keys:
+                if document['cns'] != None:
+                    if type(document['cns']) != type(str()):
+                        raise Exception(f'{camp_name} CNS deve ser do tipo string')
+                    
+                    cns_validator = CNS()
+                    if cns_validator.validate(document['cns']):
+                        if pos_square_cns != None:
+                            self.add_square(pos=pos_square_cns, size=square_size)
+                        # Add empty spaces interval between every character
+
+                        cns = str(document['cns'])
+                        cns = self.add_interval_to_data(data=cns, interval=interval)
+                        if formated:
+                            cns = cns[:3] + " " + cns[3:7] + " " + cns[7:11] + " " + cns[11:15]
+                        self.add_data(data=cns, pos=pos_cns)
+                        return None
+                    else:
+                        raise Exception(f'{camp_name} CNS nao e valido')
+                        
             if 'rg' in all_document_keys:
                 if document['rg'] != None:
                     rg = document['rg']

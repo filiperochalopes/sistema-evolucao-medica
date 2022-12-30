@@ -72,7 +72,6 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
         client.execute(query)
         return True
     except:
-        print(all_string)
         return False 
 
 
