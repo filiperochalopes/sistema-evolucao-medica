@@ -89,21 +89,29 @@ def test_awnser_with_only_required_data(client, datetime_to_use, document_dateti
 
     campos_string = """
     documentDatetime: "10/10/2014 10:12",
-    patientName: "Patient Name",
-    patientCns: "928976954930007",
-    patientBirthday: "10/10/2021",
-    patientSex: "M",
-    patientMotherName: "Patient Mother Name",
-    patientDocument: {cpf: "28445400070",cns: null,rg: null},
-    patientAdress: "Patient Adress",
+    patient: {
+        name: "Patient Name",
+        cns: "928976954930007",
+        cpf: "14383811744",
+        rg: null,
+        birthdate: "10/10/2021",
+        nationality: "Brasileira",
+        sex: "M",
+        motherName: "Patient Mother Name",
+        comorbidities: ["Patient", "Commorbidites"],
+        allergies: ["Patient", "Drug", "Allergies"],
+        address: {
+            street: "Patient Adress",
+            city: "City",
+            uf: "SP",
+        },
+    },
     patientPhonenumber: "10123456789",
-    patientDrugAllergies: "Patient Drug Allergies",
-    patientComorbidities: "Patient Commorbidites",
     currentIllnessHistory: "Current Illness History",
     initialDiagnosticSuspicion: "Initial Suspiction",
     doctorName: "Doctor Name",
     doctorCns: "928976954930007",
-    doctorCrm: "CRM/UF 123456",
+    doctorCrm: "CRM/UF 123456"
     """
 
     final_string = """
