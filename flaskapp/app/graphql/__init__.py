@@ -155,6 +155,8 @@ type_defs = gql(
         rg: String
         "Nacionalidade do Paciente"
         nationality: String
+        "Etnia do Paciente"
+        ethnicity: String
         "Lista de doenças do paciente"
         comorbidities: [String]
         "Alergias"

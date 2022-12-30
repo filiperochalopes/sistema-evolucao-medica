@@ -124,8 +124,6 @@ pdfs_schema_type_defs = gql(
             examResults: String,
             "Numero do Prontuario, max:20 min:1 caracteres"
             chartNumber: String, 
-            "Etinia do Paciente, max:11 min:4 caracteres"
-            patientEthnicity: String, 
             "Nome do responsavel do paciente, max:70 min:7 caracteres"
             patientResponsibleName: String, 
             "Numero de telefone da mae do paciente, envie somente numeros, 10 ou 11 digitos"
@@ -185,8 +183,6 @@ pdfs_schema_type_defs = gql(
             patientResponsibleName: String, 
             "Numero de telefone do Responsavel do paciente, envie somente numeros, 10 ou 11 digitos"
             patientResponsiblePhonenumber: String,
-            "Etinia do Paciente, max:17 min:4 caracteres"
-            patientEthnicity: String, 
             "Cor do Paciente, max:10 min:4 caracteres"
             patientColor: String, 
             "Numero do Prontuario, max:14 min:1 caracteres"
