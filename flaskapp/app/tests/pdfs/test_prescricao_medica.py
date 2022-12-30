@@ -35,13 +35,16 @@ def data_to_use(client, datetime_to_use, document_datetime=None,
         
         if document_datetime == None:
             document_datetime = datetime_to_use
+
+        patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + '}'
+
         request_string = """
         mutation{
             generatePdf_PrescricaoMedica("""
 
         campos_string = f"""
             documentDatetime: "{document_datetime}",
-            patientName: "{patient_name}",
+            patient: {patient},
             prescription: [{prescription}]
         """
 
@@ -57,6 +60,7 @@ def data_to_use(client, datetime_to_use, document_datetime=None,
             client.execute(query)
             return True
         except:
+            print(all_string)
             return False 
 
 #Testing Ficha Internamento
