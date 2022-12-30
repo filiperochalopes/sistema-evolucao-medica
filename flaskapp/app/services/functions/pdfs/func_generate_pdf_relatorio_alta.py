@@ -33,7 +33,7 @@ def func_generate_pdf_relatorio_alta(document_datetime:str, patient:dict, evolut
             pdf.add_sex_square(sex=patient['sex'], pos_male=(117, 640), pos_fem=(147, 640), camp_name='Patient Sex', square_size=(9,9))
             pdf.add_oneline_text(text=patient['mother_name'], pos=(194, 642), camp_name='Patient Mother Name', len_max=69, len_min=7)
             pdf.add_document_cns_cpf_rg(document={'cpf': patient['cpf'], 'rg': patient['rg']}, pos_square_cpf=(24, 608), pos_square_rg=(58,608), pos_rg=(92, 610), pos_cpf=(92, 610),camp_name='Pacient Document', formated=True)
-            formated_address = f"{patient['address']['street']}, {patient['address']['neighborhood']}, {patient['address']['number']}, {patient['address']['city']}, {patient['address']['uf']} "
+            formated_address = f"{patient['address']['street']}, {patient['address']['neighborhood']}, {patient['address']['number']}, {patient['address']['city']}, {patient['address']['uf']}"
             pdf.add_oneline_text(text=formated_address, pos=(230, 610), camp_name='Patient Adress', len_max=63, len_min=7)
             pdf.add_oneline_text(text=doctor_name, pos=(304, 195), camp_name='Doctor Name', len_max=49, len_min=7)
             pdf.add_cns(cns=doctor_cns, pos=(304, 163), camp_name='Doctor CNS', formated=True)

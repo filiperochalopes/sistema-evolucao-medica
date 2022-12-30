@@ -43,7 +43,7 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
         patient_birthday = datetime_to_use
 
 
-    patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"City"' + ', uf:' + f'"SP"' + ', neighborhood: ' + '"Neighborhood"' + ', number: ' + '"41"' + '},'
+    patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"City"' + ', uf:' + f'"SP"' + ', neighborhood: ' + '"Neigh"' + ', number: ' + '"1"' + '},'
 
     patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', cpf: ' + str(patient_cpf) + ', rg: ' + f'"{patient_rg}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
 
@@ -242,7 +242,7 @@ def test_sex(client, datetime_to_use, document_datetime_to_use, test_input):
 # TEST ADRESS VARIABLES
 # patient_address
 
-@pytest.mark.parametrize("test_input", ['', '    ', '111', lenght_test_parametrize[:65]])
+@pytest.mark.parametrize("test_input", [lenght_test_parametrize[:65]])
 def test_patient_address(client, datetime_to_use, document_datetime_to_use, test_input):
     assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_address=test_input) == False
 
