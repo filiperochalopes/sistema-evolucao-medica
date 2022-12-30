@@ -173,26 +173,29 @@ indusaoImplantes: [null]
         return False 
     
     
-
-
 def test_with_data_in_function(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use) == True
 
 def test_answer_with_all_fields(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use) == True
 
-def test_awnser_with_only_required_data(client, datetime_to_use):
+def test_awnser_with_only_required_data(client):
     request_string = """
         mutation{
             generatePdf_SolicitMamografia("""
 
     campos_string = """
-    patientCns: "928976954930007",
-    patientBirthday: "17/11/2022",
+    patient: {
+        name: "Pacient Name",
+        cns: "928976954930007",
+        birthdate: "10/10/2000",
+        motherName: "Paciente Mother Name",
+        address:{
+            uf: "SP",
+            city: "Jau"
+        }
+    },
     mammogramBefore: ["NAO", "2020"],
-    patientAge: 23,
-    patientName: "Patient Name",
-    patientMotherName: "Patient Mother Name",
     noduleLump: "NAO",
     highRisk: "NAOSABE",
     examinatedBefore: "NUNCA",
