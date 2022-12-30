@@ -47,7 +47,7 @@ def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishmen
 
     patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"{patient_address_city}"' + ', ibgeCityCode: ' + f'"{patient_address_city_ibge_code}"' + ', uf:' + f'"{patient_address_uf}"' + ', zipCode: ' + f'"{patient_address_cep}"' + '},'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + 'ethnicity: ' + f'"{patient_ethnicity}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
 
     request_string = """
         mutation{
@@ -61,7 +61,6 @@ def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishmen
     patientMotherPhonenumber: "{patient_mother_phonenumber}",
     patientResponsibleName: "{patient_responsible_name}",
     patientResponsiblePhonenumber: "{patient_responsible_phonenumber}",
-    patientEthnicity: "{patient_ethnicity}",
     patientColor: "{patient_color}",
     documentChartNumber: "{document_chart_number}",
     procedureJustificationDescription: "{procedure_justification_description}",
