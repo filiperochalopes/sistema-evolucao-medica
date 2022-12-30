@@ -33,6 +33,7 @@ def client():
 def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',
 establishment_solitc_cnes=1234567,
 patient_name='Patient Name',
+patient_cns='928976954930007',
 patient_mother_name='Patient Mother Name',
 patient_weight=142,
 patient_height=180,
@@ -46,7 +47,8 @@ filled_by='''["MEDICO", "Other name", "{'cpf':'28445400070'}"]''',
 patient_ethnicity='["SEMINFO", "Patient Ethnicity"]',
 previous_treatment='["SIM", "Previout Theatment"]',
 diagnostic='Diagnostic',
-patient_document='{cns: "928976954930007", rg: null, cpf: null}',
+patient_cpf="28445400070", 
+patient_rg='null',
 patient_email="patietemail@gmail.com",
 contacts_phonenumbers='["1254875652", "4578456598"]',
 medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        quant2month: "15 comp", quant3month: "5 comp"},{medicineName: "nome do Medicamneto", quant1month:"20 comp", quant2month: "15 comp", quant3month: "5 comp"}]'
@@ -55,15 +57,21 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
     if solicitation_datetime == None:
         solicitation_datetime = datetime_to_use
 
+
+    # Creating inputs
+    establishment_solitc = '{name: ' + f'"{establishment_solitc_name}"' + ', cnes: ' + f'"{establishment_solitc_cnes}"' + '}'
+
+
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', cpf: ' + f'"{patient_cpf}"' + ', motherName: ' + f'"{patient_mother_name}"' + '}'
+    
+
     request_string = """
         mutation{
             generatePdf_Lme("""
 
     campos_string = f"""
-        establishmentSolitcName: "{establishment_solitc_name}",
-        establishmentSolitcCnes: {establishment_solitc_cnes},
-        patientName: "{patient_name}",
-        patientMotherName: "{patient_mother_name}",
+        establishmentSolitc: {establishment_solitc},
+        patient: {patient},
         patientWeight: {patient_weight},
         patientHeight: {patient_height},
         cid10: "{cid_10}",
@@ -76,7 +84,6 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
         patientEthnicity: {patient_ethnicity},
         previousTreatment: {previous_treatment},
         diagnostic: "{diagnostic}",
-        patientDocument: {patient_document},
         patientEmail: "{patient_email}",
         contactsPhonenumbers: {contacts_phonenumbers},
         medicines: {medicines}
@@ -112,10 +119,15 @@ def test_awnser_with_only_required_data(client):
             generatePdf_Lme("""
 
     campos_string = """
-        establishmentSolitcName: "Establishment",
-        establishmentSolitcCnes: 1234567,
-        patientName: "Patient Name",
-        patientMotherName: "Patient Mother Name",
+        establishmentSolitc: {
+            name: "Establishment Solicit Name",
+            cnes: "1234567"
+        },
+        patient: {
+            name: "Patient Name Name",
+            motherName:"Patient Mother Name",
+            cns: "928976954930007"
+        },
         patientWeight: 180,
         patientHeight: 140,
         cid10: "A123",
@@ -224,7 +236,7 @@ def test_wrongtype_capacity_attest_responsible_name(client, datetime_to_use):
 # wrong type
 # invalid cnes
 
-@pytest.mark.parametrize("test_input", ['adsadad', 451236548])
+@pytest.mark.parametrize("test_input", ['1adsadad', '451236548'])
 def test_wrongtype_invalid_establishment_solitc_cnes(test_input, client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, establishment_solitc_cnes=test_input) == False
 
@@ -513,14 +525,11 @@ def test_prof_solicitor_document(test_input, client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, prof_solicitor_document=test_input) == False
 
 @pytest.mark.parametrize("test_input", [
-    '451236548554',
-    '{cns:"284123312123", rg: null, cpf: null}',
-    '{cpf:"284123312123", rg: null, cns: null}',
-    '{cpf:null, rg: null, cns: null}'
+    "284123312123"
 ])
-def test_patient_document(test_input, client, datetime_to_use):
+def test_invalid_patient_cpf(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(client, datetime_to_use, patient_document=test_input) == False
+    assert data_to_use(client, datetime_to_use, patient_cpf=test_input) == False
 
 
 # TEST medicines
