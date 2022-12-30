@@ -74,7 +74,8 @@ class ReportLabCanvasUtils():
         self.validate_func_args(function_to_verify=self.is_RG_valid, variables_to_verify={'rg':rg})
 
         if 5 < len(str(rg)) < 17:
-            return True
+            if str(rg).isnumeric():
+                return True
         return False
 
 
@@ -862,7 +863,7 @@ class ReportLabCanvasUtils():
                         return None
                     else:
                         raise Exception(f'{camp_name} CNS nao e valido')
-                        
+
             if 'rg' in all_document_keys:
                 if document['rg'] != None:
                     rg = document['rg']

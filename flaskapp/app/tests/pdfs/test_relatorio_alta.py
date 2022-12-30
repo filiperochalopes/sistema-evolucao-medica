@@ -35,7 +35,7 @@ def client():
     # Create a GraphQL client using the defined transport
     return Client(transport=transport, fetch_schema_from_transport=True)
 
-def data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime=None, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=None,patient_sex='F',patient_mother_name="Patient Mother Name",patient_cpf="28445400070", patient_rg='null',patient_address='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',orientations='Do not jump'):
+def data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime=None, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=None,patient_sex='F',patient_mother_name="Patient Mother Name",patient_cpf='"28445400070"', patient_rg='null',patient_address='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',orientations='Do not jump'):
 
     if document_datetime == None:
         document_datetime = document_datetime_to_use
@@ -45,7 +45,7 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
 
     patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"City"' + ', uf:' + f'"SP"' + ', neighborhood: ' + '"Neighborhood"' + ', number: ' + '"41"' + '},'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', cpf: ' + f'"{patient_cpf}"' + ', rg: ' + f'"{patient_rg}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', cpf: ' + str(patient_cpf) + ', rg: ' + f'"{patient_rg}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
 
     request_string = """
         mutation{
@@ -161,35 +161,48 @@ def test_doctor_name(client, datetime_to_use, document_datetime_to_use, test_inp
 
 
 @pytest.mark.parametrize("test_input", [
-    '451236548554',
-    "284123312123",
-    "284123312123"
+    '"451236548554"',
+    '"284123312123"',
+    '"284123312123"'
 ])
 def test_false_patient_cpf(client, datetime_to_use, document_datetime_to_use, test_input):
     assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_cpf=test_input) == False
 
 @pytest.mark.parametrize("test_input", [
-    "43423412399"
+    '"43423412399"'
 ])
 def test_true_patient_cpf(client, datetime_to_use, document_datetime_to_use, test_input):
     # Until this time, cns is as 
     assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_cpf=test_input) == True
 
 @pytest.mark.parametrize("test_input", [
-    '451236548554',
-    '{cpf: null, rg: "28123", cns: null}',
-    '{BBB: "284123312123", rg: null, cns: null}',
-    '{cpf: "284123312123", rg: null, cns: null}'
+    '1964895912341948',
+    '52541675346',
+    'asdyugaudygay'
 ])
 def test_false_patient_cns(client, datetime_to_use, document_datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_document=test_input) == False
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_cns=test_input) == False
 
 @pytest.mark.parametrize("test_input", [
-'{cpf: null, rg: "928976954930007", cns: null}',
-'{cpf: "43423412399", rg: null, cns: null}'
+    '928976954930007'
 ])
 def test_true_patient_cns(client, datetime_to_use, document_datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_document=test_input) == True
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_cns=test_input) == True
+
+@pytest.mark.parametrize("test_input", [
+    "sdfsf2",
+    "28123",
+    "284123312123123421",
+    "sdffsd2323425sdf"
+])
+def test_false_patient_rg(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_rg=test_input, patient_cpf='null') == False
+
+@pytest.mark.parametrize("test_input", [
+    "928976954930007"
+])
+def test_true_patient_rg(client, datetime_to_use, document_datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, document_datetime_to_use, patient_rg=test_input, patient_cpf='null') == True
 
 #################################################################
 # TEST DATETIMES VARIABLES
