@@ -5,6 +5,7 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from PyPDF2 import PdfWriter, PdfReader
+from reportlab.lib.colors import pink, green
 
 
 class PdfFolhaPrescricao(ReportLabCanvasUtils):
@@ -37,3 +38,21 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
         page.merge_page(new_pdf.pages[0])
         output.add_page(page)
         return output
+
+    def add_rect_prescription_background(self, pos:tuple) -> None:
+        """Add the gray rectangle in prescription background
+
+        Args:
+            pos (tuple): position (x, y)
+        """
+        
+        # width = 789
+        # height = 28
+
+        #Change fill color do draw rect
+        self.can.setFillColorRGB(.9215, .9215, .9215, 1)
+        self.can.rect(pos[0], pos[1], width=789, height=28, stroke=0, fill=1)
+        #Change fill color to black
+        self.can.setFillColorRGB(0, 0, 0, 1)
+
+        return None

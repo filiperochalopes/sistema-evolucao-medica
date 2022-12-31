@@ -28,4 +28,5 @@ prescricao_medica_request_string = get_request_from_txt('prescricao_medica.txt')
 relatorio_alta_request_string = get_request_from_txt('relatorio_alta.txt')
 
 solicit_mamografia_request_string = get_request_from_txt('solicit_mamografia.txt')
+
 folha_prescricao_request_string = get_request_from_txt('folha_prescricao.txt')
