@@ -1,0 +1,16 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_FolhaPrescricao(
+    timestampStart: "10/10/2021",
+    timestampEnding: "12/02/2022",
+    prescriptions: {
+      type: "Repouso",
+      description: "Repouso absoluto em leito",
+      route: "Endovenosa",
+      startDate: "'10/11/2022",
+      endingDate: "21/11/2022"      
+    }
+    
+
+){base64Pdf}
+}
