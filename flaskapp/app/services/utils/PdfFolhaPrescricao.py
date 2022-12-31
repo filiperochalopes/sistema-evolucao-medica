@@ -30,7 +30,7 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
         self.packet.seek(0)
         new_pdf = PdfReader(self.packet)
         # read the template pdf 
-        template_pdf = PdfReader(open(self.TEMPLATE_DIRECTORY[self.pags_quant-1], "rb"))
+        template_pdf = PdfReader(open(self.TEMPLATE_DIRECTORY, "rb"))
         output = PdfWriter()
         # add the "watermark" (which is the new pdf) on the existing page
         page = template_pdf.pages[0]

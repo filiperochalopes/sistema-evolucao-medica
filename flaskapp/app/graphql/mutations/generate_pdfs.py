@@ -12,6 +12,7 @@ from app.services.functions.pdfs.func_generate_pdf_lme import func_generate_pdf_
 from app.services.functions.pdfs.func_generate_pdf_prescricao_medica import func_generate_pdf_prescricao_medica
 from app.services.functions.pdfs.func_generate_pdf_relatorio_alta import func_generate_pdf_relatorio_alta
 from app.services.functions.pdfs.func_generate_pdf_solicit_mamografia import func_generate_pdf_solicit_mamografia
+from app.services.functions.pdfs.func_generate_pdf_folha_prescricao import func_generate_pdf_folha_prescricao
 
 
 @mutation.field('generatePdf_AihSus')
@@ -54,3 +55,7 @@ def generate_pdf_relatorio_alta(_, info, **kwargs):
 def generate_pdf_solicit_mamografia(_, info, **kwargs):
     return func_generate_pdf_solicit_mamografia(**kwargs)
 
+@mutation.field('generatePdf_FolhaPrescricao')
+@convert_kwargs_to_snake_case
+def generate_pdf_folha_prescricao(_, info, **kwargs):
+    return func_generate_pdf_folha_prescricao(**kwargs)
