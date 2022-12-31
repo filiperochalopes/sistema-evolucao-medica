@@ -57,5 +57,6 @@ def generate_pdf_solicit_mamografia(_, info, **kwargs):
 
 @mutation.field('generatePdf_FolhaPrescricao')
 @convert_kwargs_to_snake_case
+#@token_authorization
 def generate_pdf_folha_prescricao(_, info, **kwargs):
     return func_generate_pdf_folha_prescricao(**kwargs)
