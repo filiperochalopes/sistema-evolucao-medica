@@ -130,7 +130,7 @@ type_defs = gql('''
         createMeasure(
             "Id do internamento do paciente para o qual a evolução está sendo inserida"
             internmentId: Int!, 
-            "Saturação de Oxigênio"
+            "Saturação de Oxigênio, deve ser maior que 0 e menor que 100"
             spO2: Int
             "Escala de dor de 0 a 10"
             pain: Int

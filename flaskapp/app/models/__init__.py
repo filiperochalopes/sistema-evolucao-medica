@@ -337,9 +337,17 @@ class Measure(db.Model):
     internment = relationship('Internment', back_populates='measures')
 
     @validates('spO2')
-    def validate_email(self, _, value):
-        assert value > 0
-        assert value <= 100
+    def validate_spO2(self, _, value):
+        if value <= 0:
+            raise ValueError("SpO2 deve ser maior que 0")
+        if value >= 100:
+            raise ValueError("Valor não natural de SpO2, deve ser menor que 100")
+        return value
+
+    @validates('systolic_bp')
+    def validate_systolic_bp(self, _, value):
+        if value is not None and self.diastolic_bp is None:
+            raise ValueError("Pressão arterial diastólica deve ser preenchida")
         return value
 
 class FluidBalanceDescription(db.Model):

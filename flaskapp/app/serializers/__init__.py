@@ -1,6 +1,6 @@
 import sys
 from flask_marshmallow import Marshmallow
-from app.models import Drug, DrugGroupPreset, Internment, Measure, Patient, User, Cid10, Prescription, Diet, DrugPrescription, NursingActivity, RestingActivity, Evolution, Pending
+from app.models import Drug, DrugGroupPreset, Internment, Measure, Patient, User, Cid10, Prescription, Diet, DrugPrescription, NursingActivity, RestingActivity, Evolution, Pending, Allergy, Comorbidity
 from marshmallow import fields
 from marshmallow_sqlalchemy import fields as sqa_fields
 
@@ -93,6 +93,15 @@ class UserSchema(CamelCaseSchema):
         model = User
         include_fk = True
 
+class AllergySchema(CamelCaseSchema):
+    class Meta:
+        model = Allergy
+
+
+class ComorbiditySchema(CamelCaseSchema):
+    class Meta:
+        model = Comorbidity
+
 
 class EvolutionSchema(CamelCaseSchema):
     class Meta:
@@ -102,12 +111,14 @@ class EvolutionSchema(CamelCaseSchema):
 
 
 class PatientSchema(CamelCaseSchema):
-    sex = EnumToDictionaryField(attribute=('sex'))
-    age = fields.Str(dump_only=True)
-
     class Meta:
         model = Patient
         include_fk = True
+
+    sex = EnumToDictionaryField(attribute=('sex'))
+    age = fields.Str(dump_only=True)
+    allergies = sqa_fields.RelatedList(sqa_fields.Nested(AllergySchema))
+    comorbidities = sqa_fields.RelatedList(sqa_fields.Nested(ComorbiditySchema))
 
 
 class Cid10Schema(CamelCaseSchema):
