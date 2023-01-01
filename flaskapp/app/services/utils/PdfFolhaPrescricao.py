@@ -67,19 +67,26 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
             cont = 1
             CHAR_PER_LINES = 108
             DEFAULT_RECT_HEIGHT = 28
+            DEFAULT_DECREASE_Y_POS = 12
             y_text_pos = 511
             for presc in prescriptions:
                 # Create text
-                prescription_text = f'{cont}.{presc["description"]}'.strip()
+                prescription_text = f'{cont}.{presc["type"]} {presc["description"]} ({presc["route"]})'.strip()
                 # Get quant of lines
                 break_lines_quant = int(len(prescription_text)/CHAR_PER_LINES)
                 # Get rect heigt with the total lines will need
-                rect_height = DEFAULT_RECT_HEIGHT + (break_lines_quant * 12)
-                rect_y_pos = int(y_text_pos - 11) - int(break_lines_quant * 12) 
-                self.add_rect_prescription_background(pos=(24, rect_y_pos), height=rect_height)
-                self.add_morelines_text(text=prescription_text, initial_pos=(28, y_text_pos), decrease_ypos=12, camp_name=f'{cont} Prescription', len_max=4032, char_per_lines=CHAR_PER_LINES)
+                rect_height = DEFAULT_RECT_HEIGHT + (break_lines_quant * DEFAULT_DECREASE_Y_POS)
+                rect_y_pos = int(y_text_pos - 11) - int(break_lines_quant * DEFAULT_DECREASE_Y_POS)
+                if cont % 2 != 0:
+                    self.add_rect_prescription_background(pos=(24, rect_y_pos), height=rect_height)
+                self.add_morelines_text(text=prescription_text, initial_pos=(28, y_text_pos), decrease_ypos=DEFAULT_DECREASE_Y_POS, camp_name=f'{cont} Prescription', len_max=4032, char_per_lines=CHAR_PER_LINES)
 
+                # New y pos
+                y_text_pos = rect_y_pos - 20
                 cont += 1
+                # Verify if the document is full
+                if rect_y_pos < 50:
+                    raise Exception('The data reached the end of the document')
 
             
             return None

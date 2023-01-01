@@ -3,13 +3,78 @@ mutation{
 	generatePdf_FolhaPrescricao(
     timestampStart: "10/10/2021",
     timestampEnding: "12/02/2022",
-    prescriptions: {
-      type: "Repouso",
-      description: "Prescription description",
-      route: "Endovenosa",
-      startDate: "'10/11/2022",
-      endingDate: "21/11/2022"      
-    }
+    prescriptions: [
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "10/11/2022",
+        endingDate: "21/11/2022"      
+      },
+      {
+        type: "Dieta",
+        description: "Dieta para hidratacao haahahah",
+        route: "Dieta",
+        startDate: "10/11/2022",
+        endingDate: "21/11/2022"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "10/11/2022",
+        endingDate: "21/11/2022"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "10/11/2022",
+        endingDate: "21/11/2022"      
+      },
+      {
+        type: "Dieta",
+        description: "Dieta para hidratacao haahahah",
+        route: "Dieta",
+        startDate: "10/11/2022",
+        endingDate: "21/11/2022"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "10/11/2022",
+        endingDate: "21/11/2022"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "10/11/2022",
+        endingDate: "21/11/2022"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription description",
+        route: "Endovenosa",
+        startDate: "10/11/2022",
+        endingDate: "21/11/2022"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "10/11/2022",
+        endingDate: "21/11/2022"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "10/11/2022",
+        endingDate: "21/11/2022"      
+      }
+    ]
     
 
 ){base64Pdf}
