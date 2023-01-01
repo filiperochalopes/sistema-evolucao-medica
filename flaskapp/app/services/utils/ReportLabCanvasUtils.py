@@ -278,6 +278,8 @@ class ReportLabCanvasUtils():
                 xpos = initial_pos[0]
                 ypos = initial_pos[1]
                 # Making the line break whem has max charater limiti reached in a line
+                total_lines = broke_lines_times + 1
+
                 while broke_lines_times >= 0:
                     str_to_line = text[last_line:current_line]
                     self.add_data(data=str_to_line, pos=(xpos, ypos))

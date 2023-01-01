@@ -5,7 +5,7 @@ mutation{
     timestampEnding: "12/02/2022",
     prescriptions: {
       type: "Repouso",
-      description: "Repouso absoluto em leito",
+      description: "Prescription description",
       route: "Endovenosa",
       startDate: "'10/11/2022",
       endingDate: "21/11/2022"      
