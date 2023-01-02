@@ -1,4 +1,4 @@
-from app.env import FONT_DIRECTORY, TEMPLATE_FOLHA_EVOLUCAO_DIRECTORY, WRITE_FOLHA_EVOLUCAO_DIRECTORY
+from app.env import FONT_DIRECTORY, BOLD_FONT_DIRECTORY,TEMPLATE_FOLHA_EVOLUCAO_DIRECTORY, WRITE_FOLHA_EVOLUCAO_DIRECTORY
 from app.services.utils.ReportLabCanvasUtils import ReportLabCanvasUtils
 import io
 from reportlab.pdfgen import canvas
@@ -22,7 +22,8 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
         pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
-        self.can.setFont('Roboto-Mono', 20)
+        pdfmetrics.registerFont(TTFont('Roboto-Condensed-Bold', BOLD_FONT_DIRECTORY))
+        self.can.setFont('Roboto-Condensed-Bold', 20)
     
 
     def get_output(self) -> PdfWriter:

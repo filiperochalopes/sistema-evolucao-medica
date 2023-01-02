@@ -252,7 +252,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_abbreviated_name(self, name:str, pos:tuple, camp_name:str, len_max:int, len_min:int=0, centralized:bool=False, nullable:bool=False):
+    def add_abbreviated_name(self, name:str, pos:tuple, camp_name:str, len_max:int, len_min:int=0, centralized:bool=False, nullable:bool=False, uppered:bool=False):
         """Abbreviate a name and add to canvas
 
         Args:
@@ -263,19 +263,23 @@ class ReportLabCanvasUtils():
             len_min (int, optional): Minimum text lenght. Defaults to 0.
             nullable (bool, optional): Data can me None. Defaults to False.
             centralized (bool, optional): Data has to be centralized. Defaults to False.
+            uppered (bool, optional): Upper all text, example JOAO DA SILVA. Defaults to False.
         """    
         try:    
             if nullable:
                 if name == None or len(str(name).strip()) == 0:
                     return None
 
-            self.validate_func_args(function_to_verify=self.add_abbreviated_name, variables_to_verify={'name':name, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min,'centralized':centralized})
+            self.validate_func_args(function_to_verify=self.add_abbreviated_name, variables_to_verify={'name':name, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min,'centralized':centralized, 'uppered':uppered})
 
             abbrevitated_name = self.get_abbrevitate_name(name=name).strip()
 
             if len(abbrevitated_name) > len_max:
                 raise Exception('O nome abreviado ficou maior que o espaço disponível, lembre-se que o sistema abrevia somente os nomes do meio, ou seja, o primeiro e o ultimo nome nao sao abreviados. Voce pode abrevialos manualmente.')
 
+            if uppered:
+                abbrevitated_name = abbrevitated_name.upper()
+    
             self.add_oneline_text(text=abbrevitated_name, pos=pos, camp_name=camp_name, len_max=len_max, len_min=len_min, centralized=centralized, nullable=nullable)
 
             return None

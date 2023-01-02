@@ -8,6 +8,7 @@ TOKEN_HOUR_EXPIRATION = os.getenv('TOKEN_HOUR_EXPIRATION', 6)
 # Dados para criação de pdfs
 
 FONT_DIRECTORY = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
+BOLD_FONT_DIRECTORY = "/app/app/assets/pdfs_templates/Roboto-Condensed-Bold.ttf"
 GRAPHQL_MUTATION_QUERY_URL = "http://localhost:5000/api/v1/graphql"
 
 # Templates Directorys
