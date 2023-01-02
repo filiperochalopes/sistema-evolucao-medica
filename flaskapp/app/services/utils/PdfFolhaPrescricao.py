@@ -66,7 +66,7 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
             self.validate_func_args(function_to_verify=self.add_prescriptions, variables_to_verify={'prescriptions':prescriptions})
 
             cont = 1
-            CHAR_PER_LINES = 108
+            CHAR_PER_LINES = 71
             DEFAULT_RECT_HEIGHT = 28
             DEFAULT_DECREASE_Y_POS = 12
             y_text_pos = 511
