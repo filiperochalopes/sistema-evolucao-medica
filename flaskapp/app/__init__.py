@@ -24,7 +24,7 @@ db.init_app(app)
 ma.init_app(app)
 CORS(app)
 
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, render_as_batch=True)
 Scss(app, static_dir='app/static/css', asset_dir='app/assets/scss')
 
 

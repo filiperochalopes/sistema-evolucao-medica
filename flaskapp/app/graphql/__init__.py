@@ -8,7 +8,7 @@ type_defs = gql('''
        state: [State!]
        restingActivities: [NamedObject!]
        diets: [NamedObject!]
-       drugs: [NamedObject!]
+       drugs: [Drug!]
        drugPresets: [DrugPreset!]
        nursingActivities: [NamedObject!]
        drugRoutes: [String]
@@ -18,11 +18,15 @@ type_defs = gql('''
        patients(queryNameCnsCpf:String): [Patient]
        internment(id:ID!): Internment
        internments(active:Boolean, cns:String): [Internment]
-       evolutions(patientId:ID!): Evolution
-       allergies: [ValueObject]
-       comorbidities: [ValueObject]
-       highComplexityProcedures: [Procedure]
        myUser: User
+       "ValueObject Descrição de registro de Balanço Hídrico"
+       fluidBalanceDescriptions: [ValueObject]
+       "ValueObject Alergia"
+       allergies: [ValueObject]
+       "ValueObject Comorbidade"
+       comorbidities: [ValueObject]
+       "ValueObject Procedimentos de Alta Complexidade"
+       highComplexityProcedures: [Procedure]
     }
 
     type Mutation {
@@ -53,7 +57,9 @@ type_defs = gql('''
         """
         Reset de senha direto na requisição para em caso de esquecimento ou perda de senha, a senha será resetada para "senha@123"
         """
-        resetPassword(cns: String!): User
+        resetPassword(
+            masterKey:String!,
+            cns: String!): User
         """
         Criar paciente para cadastro do 
         """
@@ -62,6 +68,9 @@ type_defs = gql('''
         Atualizar paciente
         """
         updatePatient(id: ID!, patient:PatientInput): Patient
+        """
+        Cria internamento básico
+        """
         createInternment(
             "No formato yyyy-mm-dd HH:MM"
             admissionDatetime:String,
@@ -73,6 +82,16 @@ type_defs = gql('''
             justification:String,
             "Diagnóstico inicial de internamento"
             cid10Code: String
+        ): Internment
+        """
+        Atualiza internamento: Serve para poder encerrar um internamento. Ele registra a data de encerramento da internação.
+        """
+        updateInternment(
+            id: ID!
+            "Data de alta/encerramento do internamento yyyy-mm-dd HH:MM"
+            finishedAt: String
+            "Para reabrir um internamento para algum tipo de acréscrimo, evolução em fase de teste passe o parâmetro como true"
+            reOpen: Boolean
         ): Internment
         """
         Cria uma evolução textual de enfermagem ou médica
@@ -102,18 +121,16 @@ type_defs = gql('''
         createPending(
             "Id do internamento do paciente para o qual a evolução está sendo inserida"
             internmentId: Int!, 
-            restingActivity: String
-            diet: String
-            drugs: [DrugPrescriptionInput]
-            nursingActivities: [String]
-            ): Prescription
+            "Texto com relatório sucinto de pendências para o paciente"
+            text: String
+            ): Pending
         """
         É responsável por salvar os sinais vitais de um paciente, relacionado a um internamento
         """
         createMeasure(
             "Id do internamento do paciente para o qual a evolução está sendo inserida"
             internmentId: Int!, 
-            "Saturação de Oxigênio"
+            "Saturação de Oxigênio, deve ser maior que 0 e menor que 100"
             spO2: Int
             "Escala de dor de 0 a 10"
             pain: Int
@@ -228,6 +245,16 @@ type_defs = gql('''
         token: String
     }
 
+    type Address{
+        zipCode: String
+        street:String
+        number:String
+        neighborhood:String
+        complement:String
+        city: String
+        uf: String
+    }
+
     type Patient {
         id: ID!
         name: String
@@ -235,6 +262,12 @@ type_defs = gql('''
         sex: String
         age: String
         cns: String
+        rg: String
+        cpf: String
+        weightKg: Float
+        comorbidities: [ValueObject]
+        allergies: [ValueObject]
+        address: Address
     }
 
     type FluidBalance{
@@ -255,11 +288,13 @@ type_defs = gql('''
         patient: Patient
         hpi: String
         justification: String
-        cid10Code: String
+        cid10: Cid10
         createdAt: String
+        finishedAt: String
         evolutions: [Evolution]
         measures: [Measure]
-        prescription: [Prescription]
+        prescriptions: [Prescription]
+        pendings: [Pending]
     }
 
 
@@ -333,11 +368,14 @@ type_defs = gql('''
         id: ID!
         drug: Drug
         dosage: String
+        route: String
+        kind: String
         initialDate: String
         endingDate: String
     }
 
     type Prescription{
+        id: ID!
         "Note que a atividade de repouso é única"
         restingActivity: NamedObject
         "Note que a dieta é única"

@@ -11,9 +11,7 @@ from app.utils.decorators import token_authorization
 @mutation.field('createPrescription')
 @convert_kwargs_to_snake_case
 @token_authorization
-def create_prescription(_, info, internment_id:int, text:str, prescription:dict, pendings:str, cid_10_code: str, current_user: dict):
-    # Determinando internamento
-    internment = db.session.query(Internment).get(internment_id)
+def create_prescription(_, info, internment_id:int, resting_activity: str, diet: str, drugs: list, nursing_activities: list, current_user: dict):
     # Determinando profissional que está registrando
     professional = current_user
 
@@ -23,9 +21,9 @@ def create_prescription(_, info, internment_id:int, text:str, prescription:dict,
     db.session.flush()
     # Cria ou seleciona a atividade de descanso
     try:
-        resting_activity = db.session.query(RestingActivity).filter(RestingActivity.name == prescription['resting_activity']).one()
+        resting_activity = db.session.query(RestingActivity).filter(RestingActivity.name == resting_activity).one()
     except Exception:
-        resting_activity = RestingActivity(name=prescription['resting_activity'])
+        resting_activity = RestingActivity(name=resting_activity)
         db.session.add(resting_activity)
         db.session.flush()    
 
@@ -33,17 +31,16 @@ def create_prescription(_, info, internment_id:int, text:str, prescription:dict,
 
     # Cria ou seleciona a dieta
     try:
-        diet = db.session.query(Diet).filter(Diet.name == prescription['diet']).one()
+        diet = db.session.query(Diet).filter(Diet.name == diet).one()
     except Exception:
-        diet = Diet(name=prescription['diet'])
+        diet = Diet(name=diet)
         db.session.add(diet)
         db.session.flush()    
 
     prescription_model.diet = diet
     
     # Cria as prescrições de medicações e as drugs, se necessário
-    drug_prescriptions_raw = prescription['drugs']
-    for drug_prescription in drug_prescriptions_raw:
+    for drug_prescription in drugs:
         # Seleciona ou cria a medicação utilizada
         try:
             drug = db.session.query(Drug).filter(Drug.name == drug_prescription['drug_name']).filter(Drug.usual_route == drug_prescription['route']).one()
@@ -66,7 +63,7 @@ def create_prescription(_, info, internment_id:int, text:str, prescription:dict,
         prescription_model.drug_prescriptions.append(drug_prescription)
 
     # Cria ou seleciona as atividades de enfermagem
-    for nursing_activity_name in prescription['nursing_activities']:
+    for nursing_activity_name in nursing_activities:
         try:
             nursing_activity = db.session.query(NursingActivity).filter(NursingActivity.name == nursing_activity_name).one()
         except Exception:
@@ -75,7 +72,8 @@ def create_prescription(_, info, internment_id:int, text:str, prescription:dict,
             db.session.flush()    
         prescription_model.nursing_activities.append(nursing_activity)
     
-    prescription_model.professional_id = professional['id']
+    prescription_model.professional_id = professional.id
+    prescription_model.internment_id = internment_id
     
     db.session.commit()    
     schema = PrescriptionSchema()

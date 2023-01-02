@@ -259,7 +259,7 @@ class Internment(db.Model):
     patient = relationship('Patient')
 
     professional_id = db.Column(db.Integer, ForeignKey("users.id"))
-    professional = relationship('User')
+    professional = relationship('User', foreign_keys=professional_id)
 
     cid10_code = db.Column(db.String, ForeignKey("cid10.code"))
     cid10 = relationship('Cid10')
@@ -277,6 +277,8 @@ class Internment(db.Model):
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
     # Se removido deve ir para outra lista, lista das "Altas ou Transferências"
     finished_at = db.Column(db.DateTime(timezone=True))
+    finished_by_id = db.Column(db.Integer, ForeignKey("users.id"))
+    finished_by = relationship('User', foreign_keys=finished_by_id)
 
 
 class Prescription(db.Model):
@@ -335,9 +337,17 @@ class Measure(db.Model):
     internment = relationship('Internment', back_populates='measures')
 
     @validates('spO2')
-    def validate_email(self, _, value):
-        assert value > 0
-        assert value <= 100
+    def validate_spO2(self, _, value):
+        if value <= 0:
+            raise ValueError("SpO2 deve ser maior que 0")
+        if value >= 100:
+            raise ValueError("Valor não natural de SpO2, deve ser menor que 100")
+        return value
+
+    @validates('systolic_bp')
+    def validate_systolic_bp(self, _, value):
+        if value is not None and self.diastolic_bp is None:
+            raise ValueError("Pressão arterial diastólica deve ser preenchida")
         return value
 
 class FluidBalanceDescription(db.Model):

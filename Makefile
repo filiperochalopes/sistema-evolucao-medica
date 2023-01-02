@@ -1,7 +1,7 @@
 run:
-	docker-compose up --build
+	docker compose up --build
 logs:
-	docker-compose logs -f
+	docker compose logs -f
 seed:
 	docker exec -it evolucao_hospitalar_flaskapp bash -c "FLASK_APP=app/__init__.py && \
 	flask seed"
@@ -26,6 +26,10 @@ reset_db:
 		flask db init && \
 		flask db migrate -m "Initial migration" && \
 		chmod -R 777 /app/migrations && \
+		flask db upgrade'
+clean_db:
+	docker exec -it evolucao_hospitalar_flaskapp bash -c ' \
+		rm -rf instance && \
 		flask db upgrade'
 fix-folder-permission:
 	docker exec -it evolucao_hospitalar_flaskapp bash -c ' \

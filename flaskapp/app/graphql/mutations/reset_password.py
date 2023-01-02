@@ -10,7 +10,7 @@ from app.serializers import UserSchema
 @mutation.field('resetPassword')
 @convert_kwargs_to_snake_case
 @token_authorization
-def reset_password(_, info, cns:str, master_key:str):
+def reset_password(_, info, master_key:str, cns:str):
     if master_key == MASTER_KEY:
         user = db.session.query(User).filter(User.cns == cns).one()
         encrypted_password = bcrypt.hashpw(

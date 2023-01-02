@@ -9,7 +9,7 @@ from app.utils.create_comorbities_and_allergies import create_comorbidities_and_
 @mutation.field('updatePatient')
 @convert_kwargs_to_snake_case
 @token_authorization
-def update_patient(_, info, id:int, patient:dict):
+def update_patient(_, info, id:int, patient:dict, current_user:dict):
     stored_patient = db.session.query(Patient).get(id)
     updated_address = Address(**patient['address'])
     db.session.add(updated_address)
