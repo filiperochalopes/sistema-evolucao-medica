@@ -1,6 +1,6 @@
 import sys
 from flask_marshmallow import Marshmallow
-from app.models import Drug, DrugGroupPreset, Internment, Measure, Patient, User, Cid10, Prescription, Diet, DrugPrescription, NursingActivity, RestingActivity, Evolution, Pending, Allergy, Comorbidity
+from app.models import Drug, DrugGroupPreset, Internment, Measure, Patient, User, Cid10, Prescription, Diet, DrugPrescription, NursingActivity, RestingActivity, Evolution, Pending, Allergy, Comorbidity, FluidBalance, FluidBalanceDescription
 from marshmallow import fields
 from marshmallow_sqlalchemy import fields as sqa_fields
 
@@ -27,6 +27,13 @@ class EnumToDictionaryField(fields.Field):
         if value is None:
             return None
         return value.name
+
+
+class ChildValueField(fields.Field):
+    def _serialize(self, value, attr, obj, **kwargs):
+        if value is None:
+            return None
+        return value.value
 
 
 class Cid10Schema(CamelCaseSchema):
@@ -64,6 +71,7 @@ class DrugPrescriptionSchema(CamelCaseSchema):
 
     drug = sqa_fields.Nested(DrugSchema)
 
+
 class PrescriptionSchema(CamelCaseSchema):
     class Meta:
         model = Prescription
@@ -74,6 +82,7 @@ class PrescriptionSchema(CamelCaseSchema):
     nursing_activities = sqa_fields.RelatedList(sqa_fields.Nested(NursingActivitySchema))
     diet = sqa_fields.Nested(DietSchema)
     resting_activity = sqa_fields.Nested(RestingActivitySchema)
+
 
 class DrugGroupPresetSchema(CamelCaseSchema):
     class Meta:
@@ -101,6 +110,26 @@ class AllergySchema(CamelCaseSchema):
 class ComorbiditySchema(CamelCaseSchema):
     class Meta:
         model = Comorbidity
+
+
+class EvolutionSchema(CamelCaseSchema):
+    class Meta:
+        model = Evolution
+
+    professional = sqa_fields.Nested(UserSchema)
+
+
+class FluidBalanceDescriptionSchema(CamelCaseSchema):
+    class Meta:
+        model = FluidBalanceDescription
+
+
+class FluidBalanceSchema(CamelCaseSchema):
+    class Meta:
+        model = FluidBalance
+
+    professional = sqa_fields.Nested(UserSchema)
+    description = sqa_fields.Nested(FluidBalanceDescriptionSchema)
 
 
 class EvolutionSchema(CamelCaseSchema):
@@ -148,3 +177,4 @@ class InternmentSchema(CamelCaseSchema):
     evolutions = sqa_fields.RelatedList(sqa_fields.Nested(EvolutionSchema))
     prescriptions = sqa_fields.RelatedList(sqa_fields.Nested(PrescriptionSchema))
     pendings = sqa_fields.RelatedList(sqa_fields.Nested(PendingSchema))
+    fluidBalance = sqa_fields.RelatedList(sqa_fields.Nested(FluidBalanceSchema))

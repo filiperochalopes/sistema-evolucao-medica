@@ -273,7 +273,9 @@ type_defs = gql('''
     type FluidBalance{
         id: ID!
         volumeMl: Int
-        description: String    
+        description: ValueObject    
+        createdAt: String
+        professional: User
     }
 
     type State {
@@ -295,6 +297,7 @@ type_defs = gql('''
         measures: [Measure]
         prescriptions: [Prescription]
         pendings: [Pending]
+        fluidBalance: [FluidBalance]
     }
 
 
