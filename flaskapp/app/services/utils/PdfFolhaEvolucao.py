@@ -5,6 +5,7 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from PyPDF2 import PdfWriter, PdfReader
+import datetime
 
 
 class PdfFolhaEvolucao(ReportLabCanvasUtils):
@@ -38,3 +39,40 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         output.add_page(page)
         return output
         
+
+    def add_medical_nursing_evolution(self, evolution_description:str, responsible:dict, evolution_initial_pos:tuple, responsible_initial_pos:tuple, camp_name:str) -> None:
+        """Add a medical evolution to the pdf
+
+        Args:
+            evolution_description (str): evolution description
+            responsible (dict): Responsible info 
+            evolution_initial_pos (tuple): initial evolution description position in pdf
+            responsible_initial_pos (tuple): initial responsible info position in pdf
+            camp_name (str): Camp name (Medica | De enfermagem)
+
+        Returns:
+            None
+        """
+        self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'responsible_initial_pos':responsible_initial_pos, 'evolution_initial_pos':evolution_initial_pos, 'camp_name':camp_name})
+
+
+        # getting data
+        name = responsible.get('name')
+        crm = responsible.get('professional_document_number')
+        crm_uf = responsible.get('professional_document_uf')
+
+        for camp in [name, crm, crm_uf]:
+            if camp == None:
+                raise Exception('Algum campo do profissional está faltando, o documento precisa do nome, crm e sigla uf do estado do crm')
+
+        professional_info = f"{str(name).strip()} CRM {str(crm).strip()}/{str(crm_uf).strip()}"
+
+        self.add_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=13, camp_name=f'Descricao evolucao {camp_name}', len_max=406, char_per_lines=58)
+
+        self.add_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=13, camp_name=f'Informacao do responsavel na evolucao {camp_name}', len_max=99, char_per_lines=49)
+        
+        return None
+
+
+
+

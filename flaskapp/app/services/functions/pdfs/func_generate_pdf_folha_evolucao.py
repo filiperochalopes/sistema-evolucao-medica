@@ -26,6 +26,11 @@ def func_generate_pdf_folha_evolucao(timestamp_start:str, timestamp_ending:str, 
             pdf.set_font('Roboto-Mono', 16)
             pdf.add_datetime(date=today_day, pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
 
+            pdf.set_font('Roboto-Mono', 11)
+
+            #Data that arent in mutations
+            pdf.add_medical_nursing_evolution(evolution_description=lenght_test[:405], responsible=professional, evolution_initial_pos=(30, 498), responsible_initial_pos=(90, 399), camp_name='Medica')
+
 
         except Exception as error:
             return error

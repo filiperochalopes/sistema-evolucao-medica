@@ -1,0 +1,27 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_FolhaEvolucao(
+    timestampStart: "1672670884",
+    timestampEnding: "1672670884",
+    evolutions:[
+      {
+        timestamp: "1672670884"
+      }
+    ]
+    measures: [
+      {
+        spO2: 96,
+        pain: 2,
+        sistolicBloodPressure: null,
+        diastolicBloodPressure: null,
+        cardiacFrequency: 152,
+				respiratoryFrequency: 15,
+        celciusAxillaryTemperature: 37,
+        glucose: "152",
+        createdAt: "1672670884"
+      }
+    ]
+    
+
+){base64Pdf}
+}
