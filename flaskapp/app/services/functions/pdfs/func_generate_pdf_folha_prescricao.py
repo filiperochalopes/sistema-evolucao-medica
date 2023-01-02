@@ -17,13 +17,19 @@ def func_generate_pdf_folha_prescricao(timestamp_start:str, timestamp_ending:str
         pdf = PdfFolhaPrescricao()
         # Writing all data in respective fields
         # not null data
+
+        # Provisory data to test
+        lenght_test = ''
+        for x in range(0, 1100):
+            lenght_test += str(x)
+        patient = {'name': 'Marcos Antonia de Freitas testando o Nome'}
+
+
         try:
-            lenght_test = ''
-            for x in range(0, 1100):
-                lenght_test += str(x)
+            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True)
+
+            pdf.set_font('Roboto-Mono', 12)
             pdf.add_prescriptions(prescriptions=prescriptions)
-            #pdf.add_rect_prescription_background(pos=(24, 500))
-            #pdf.add_oneline_text(text=prescriptions.get('description'), pos=(28, 511), camp_name='Testing', len_max=30, len_min=1)
         except Exception as error:
             return error
         except:

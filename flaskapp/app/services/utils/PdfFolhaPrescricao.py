@@ -5,7 +5,6 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from PyPDF2 import PdfWriter, PdfReader
-from reportlab.lib.colors import pink, green
 
 
 class PdfFolhaPrescricao(ReportLabCanvasUtils):
@@ -22,7 +21,7 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
         pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
-        self.can.setFont('Roboto-Mono', 12)
+        self.can.setFont('Roboto-Mono', 20)
     
 
     def get_output(self) -> PdfWriter:
@@ -38,6 +37,7 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
         page.merge_page(new_pdf.pages[0])
         output.add_page(page)
         return output
+        
 
     def add_rect_prescription_background(self, pos:tuple,width:int=789, height:int=28) -> None:
         """Add the gray rectangle in prescription background
@@ -52,8 +52,8 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
         self.can.rect(pos[0], pos[1], width=width, height=height, stroke=0, fill=1)
         #Change fill color to black
         self.can.setFillColorRGB(0, 0, 0, 1)
-
         return None
+
 
     def add_prescriptions(self, prescriptions:list):
         """Add prescriptions to pdf
@@ -88,7 +88,6 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
                 if rect_y_pos < 50:
                     raise Exception('The data reached the end of the document')
 
-            
             return None
 
         except Exception as error:

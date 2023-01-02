@@ -97,7 +97,6 @@ class ReportLabCanvasUtils():
         """Add data in pdf using canvas object
 
         Args:
-            can (canvas.Canvas): canvas that will be used to add data
             data (str): data to be added
             pos (tuple): data insert position in points
 
@@ -116,7 +115,7 @@ class ReportLabCanvasUtils():
         """Add square in document using canvas object
 
         Args:
-            can (canvas.Canvas): canvas to use
+            
             pos (tuple): position to add the square
             size (tuple, optional): square size default is the size of the option quare. Defaults to 9.
 
@@ -192,7 +191,6 @@ class ReportLabCanvasUtils():
         """Add text that is fill in one line
 
         Args:
-            can (canvas.Canvas): canvas to use
             text (str): text value
             pos (tuple): position in canvas
             camp_name (str): Camp name, this is used when return Responses
@@ -234,13 +232,44 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
+    def add_abbreviated_name(self, name:str, pos:tuple, camp_name:str, len_max:int, len_min:int=0, centralized:bool=False, nullable:bool=False):
+        """Abbreviate a name and add to canvas
+
+        Args:
+            name (str): name to be abbrebiated
+            pos (tuple): position in canvas
+            camp_name (str): Camp name, this is used when return Responses
+            len_max (int): maximum text lenght
+            len_min (int, optional): Minimum text lenght. Defaults to 0.
+            nullable (bool, optional): Data can me None. Defaults to False.
+            centralized (bool, optional): Data has to be centralized. Defaults to False.
+        """    
+        try:    
+            if nullable:
+                if name == None or len(str(name).strip()) == 0:
+                    return None
+
+            self.validate_func_args(function_to_verify=self.add_abbreviated_name, variables_to_verify={'name':name, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min,'centralized':centralized})
+
+            abbrevitated_name = self.get_abbrevitate_name(name=name).strip()
+
+            if len(abbrevitated_name) > len_max:
+                raise Exception('O nome abreviado ficou maior que o espaço disponível, lembre-se que o sistema abrevia somente os nomes do meio, ou seja, o primeiro e o ultimo nome nao sao abreviados. Voce pode abrevialos manualmente.')
+
+            self.add_oneline_text(text=abbrevitated_name, pos=pos, camp_name=camp_name, len_max=len_max, len_min=len_min, centralized=centralized, nullable=nullable)
+
+            return None
+
+        except Exception as error:
+            raise error
+        except:
+            raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
     def add_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='') -> None:
         """Add text that is fill in one line
 
         Args:
-            can (canvas.Canvas): canvas to use
             text (str): text value
             initial_pos (tuple): initial position in canvas
             decrease_ypos (int): decrease y value to break lines
@@ -302,7 +331,7 @@ class ReportLabCanvasUtils():
         """_summary_
 
         Args:
-            can (canvas.Canvas):  canvas to use
+            
             number (str): number to add
             pos (tuple): position in canvas
             camp_name (str): camp name to Responses
@@ -338,7 +367,7 @@ class ReportLabCanvasUtils():
         """Add cep to canvas
 
         Args:
-            can (canvas.Canvas):  canvas to use
+            
             cep (str): cep to add
             pos (tuple): position in canvas
             camp_name (str): camp name to Responses
@@ -374,7 +403,7 @@ class ReportLabCanvasUtils():
         """Add one line number to canvas
 
         Args:
-            can (canvas.Canvas): canvas to use
+            
             number (int): number to add
             pos (tuple): position in canvas
             camp_name (str): camp name to Responses
@@ -421,7 +450,7 @@ class ReportLabCanvasUtils():
         """Add one line number to canvas
 
         Args:
-            can (canvas.Canvas): canvas to use
+            
             number (float): number to add
             pos (tuple): position in canvas
             camp_name (str): camp name to Responses
@@ -652,7 +681,7 @@ class ReportLabCanvasUtils():
         """Add sex square to canvas
 
         Args:
-            can (canvas.Canvas): canvas to use
+            
             sex (str): sex select
             pos_male (tuple): male option position
             pos_fem (tuple): female option position
@@ -694,7 +723,7 @@ class ReportLabCanvasUtils():
         """Add datetime to canvas
 
         Args:
-            can (canvas.Canvas): canvas to use
+            
             date (str): date to use
             pos (tuple): position
             camp_name (str): camp name
@@ -750,7 +779,7 @@ class ReportLabCanvasUtils():
         """Verify uf and add to document
 
         Args:
-            can (canvas.Canvas): canvas to use
+            
             uf (str): uf to add
             pos (tuple): position uf
             camp_name (str): camp name
@@ -788,7 +817,7 @@ class ReportLabCanvasUtils():
         """Validate and add document to canvas, can be CPF, RG or CNS
 
         Args:
-            can (canvas.Canvas): canvas to use
+            
             document (dict): dict with the document
             camp_name (str): camp name 
             square_size (tuple, optional): suqare size if has mark option. Defaults to (9,9).
@@ -893,7 +922,7 @@ class ReportLabCanvasUtils():
         """Verifiy option choose and add to canvas, the option is automatic upper cased
 
         Args:
-            can (canvas.Canvas): canvas to use
+            
             option (str): option select, will be upperCased
             valid_options (list): list of valid options, recommendend UPPER (str)
             options_positions (tuple): tuple of tuples with positions to every option
@@ -925,11 +954,36 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
+    def get_abbrevitate_name(self, name:str) -> str:
+        """abbreviate name. By default the function abbreviate the first and last name complete, and mid names are replaced with the first char
+        Examples: Joao Marcos da Silva -> Joao M. D. Silva
+
+        Args:
+            name (str): name to abbreviate
+        """        
+        
+        # Create a list with the name
+        list_name = name.split()
+        abbrevitated_name = str(list_name.pop(0)).title() + ' '
+    
+        # Abreviate all names, except the first (removed with pop) and the last
+        for i in range(1, len(list_name)-1):
+            current_name = list_name[i]
+            
+            # adds the capital first character
+            abbrevitated_name += str(current_name[0].upper()) + '. '
+        
+        abbrevitated_name += str(list_name[-1]).title()
+
+        return abbrevitated_name
+
+
+
     def add_multiple_markable_square(self, options:list, valid_options:list, options_positions:tuple, camp_name:str, square_size:tuple=(9,9), nullable:bool=False) -> None:
         """Verifiy option choose and add to canvas, the option is automatic upper cased
 
         Args:
-            can (canvas.Canvas): canvas to use
+            
             options (list): list of option selects, will be upperCased
             valid_options (list): list of valid options, recommendend UPPER (str)
             options_positions (tuple): tuple of tuples with positions to every option
@@ -971,7 +1025,7 @@ class ReportLabCanvasUtils():
         """Verifiy option choose and add to canvas, the option is automatic upper cased
 
         Args:
-            can (canvas.Canvas): canvas to use
+            
             option (str): option select, will be upperCased
             valid_options (list): list of valid options, recommendend UPPER (str)
             options_positions (tuple): tuple of tuples with positions to every option
@@ -1016,7 +1070,7 @@ class ReportLabCanvasUtils():
         """Verifiy option choose and add to canvas, the option is automatic upper cased
 
         Args:
-            can (canvas.Canvas): canvas to use
+            
             option (str): option select, will be upperCased
             valid_options (list): list of valid options, recommendend UPPER (str)
             options_positions (tuple): tuple of tuples with positions to every option
