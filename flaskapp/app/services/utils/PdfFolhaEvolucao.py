@@ -41,12 +41,44 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         return output
         
 
-    def add_medical_nursing_evolution(self, evolution_description:str, responsible:dict, evolution_initial_pos:tuple, responsible_initial_pos:tuple, camp_name:str) -> None:
-        """Add a medical evolution to the pdf
+    
+    def create_professional_info(self, professional:dict, date:str) -> str:
+        """Create professional info merging name, document and date
+
+        Args:
+            professional (dict): _description_
+            date (str): _description_
+
+        Raises:
+            Exception: _description_
+
+        Returns:
+            _type_: _description_
+        """        
+        # getting data
+        name = professional.get('name')
+        crm = professional.get('professional_document_number')
+        crm_uf = professional.get('professional_document_uf')
+
+        for camp in [name, crm, crm_uf]:
+            if camp == None:
+                raise Exception('Algum campo do profissional está faltando, o documento precisa do nome, crm e sigla uf do estado do crm')
+
+        date_object = datetime.datetime.strptime(date, '%d/%m/%Y %H:%M')
+        str_date = str('%02d/%02d/%d %02d:%02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute, date_object.second)
+
+        professional_info = f"{str(name).strip()} CRM {str(crm).strip()}/{str(crm_uf).strip()}" + ' Criado em: ' + str_date
+
+        return professional_info
+
+
+    def add_medical_nursing_evolution(self, evolution_description:str, responsible:dict, date:str, evolution_initial_pos:tuple, responsible_initial_pos:tuple, camp_name:str) -> None:
+        """Add a medical and nursing evolution to the pdf, this function only works to the 2 big squares with data, in order, the first and third square, the other 2 minor nursing evolution will be created by another function
 
         Args:
             evolution_description (str): evolution description
             responsible (dict): Responsible info 
+            date (str): date of the evolution with format DD/MM/YYYY HH:mm
             evolution_initial_pos (tuple): initial evolution description position in pdf
             responsible_initial_pos (tuple): initial responsible info position in pdf
             camp_name (str): Camp name (Medica | De enfermagem)
@@ -54,19 +86,9 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         Returns:
             None
         """
-        self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'responsible_initial_pos':responsible_initial_pos, 'evolution_initial_pos':evolution_initial_pos, 'camp_name':camp_name})
+        self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'responsible_initial_pos':responsible_initial_pos, 'evolution_initial_pos':evolution_initial_pos, 'camp_name':camp_name, 'date':date})
 
-
-        # getting data
-        name = responsible.get('name')
-        crm = responsible.get('professional_document_number')
-        crm_uf = responsible.get('professional_document_uf')
-
-        for camp in [name, crm, crm_uf]:
-            if camp == None:
-                raise Exception('Algum campo do profissional está faltando, o documento precisa do nome, crm e sigla uf do estado do crm')
-
-        professional_info = f"{str(name).strip()} CRM {str(crm).strip()}/{str(crm_uf).strip()}"
+        professional_info = self.create_professional_info(professional=responsible, date=date)
 
         self.add_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=13, camp_name=f'Descricao evolucao {camp_name}', len_max=406, char_per_lines=58)
 

@@ -15,7 +15,7 @@ def func_generate_pdf_folha_evolucao(timestamp_start:str, timestamp_ending:str, 
         for x in range(0, 1100):
             lenght_test += str(x)
         patient = {'name': 'Marcos Antonia de Freitas testando o Nome'}
-        professional = {'name': 'Professioanl Info', 'professional_document_uf': 'BA', 'professional_document_number':'12457'}
+        professional = {'name': 'Professioanl Complete name', 'professional_document_uf': 'BA', 'professional_document_number':'12457'}
         today = '12/12/2020 15:10'
         today_day = '12/12/2020'
 
@@ -28,8 +28,14 @@ def func_generate_pdf_folha_evolucao(timestamp_start:str, timestamp_ending:str, 
 
             pdf.set_font('Roboto-Mono', 11)
 
-            #Data that arent in mutations
-            pdf.add_medical_nursing_evolution(evolution_description=lenght_test[:405], responsible=professional, evolution_initial_pos=(30, 498), responsible_initial_pos=(90, 399), camp_name='Medica')
+            #Data that arent in mutations wet
+            # Add medical evolution
+            pdf.add_medical_nursing_evolution(evolution_description=lenght_test[:405], responsible=professional, date=today, evolution_initial_pos=(30, 498), responsible_initial_pos=(90, 399), camp_name='Medica')
+            # Add nursing evolution with the same square size than medical evolution
+            pdf.add_medical_nursing_evolution(evolution_description=lenght_test[:405], responsible=professional, date=today, evolution_initial_pos=(30, 224), responsible_initial_pos=(90, 126), camp_name='de Enfermagem')
+
+
+            # Adding nursing evolution
 
 
         except Exception as error:
