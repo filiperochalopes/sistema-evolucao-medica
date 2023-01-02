@@ -1,4 +1,4 @@
-from app.env import FONT_DIRECTORY, TEMPLATE_FOLHA_PRESCRICAO_DIRECTORY, WRITE_FOLHA_PRESCRICAO_DIRECTORY
+from app.env import FONT_DIRECTORY, BOLD_FONT_DIRECTORY, TEMPLATE_FOLHA_PRESCRICAO_DIRECTORY, WRITE_FOLHA_PRESCRICAO_DIRECTORY
 from app.services.utils.ReportLabCanvasUtils import ReportLabCanvasUtils
 import io
 from reportlab.pdfgen import canvas
@@ -21,7 +21,8 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
         # Change canvas font to mach with the document
         # this is also changed in the document to some especific fields
         pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
-        self.can.setFont('Roboto-Mono', 20)
+        pdfmetrics.registerFont(TTFont('Roboto-Condensed-Bold', BOLD_FONT_DIRECTORY))
+        self.can.setFont('Roboto-Condensed-Bold', 20)
     
 
     def get_output(self) -> PdfWriter:
@@ -85,7 +86,7 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
                 y_text_pos = rect_y_pos - 20
                 cont += 1
                 # Verify if the document is full
-                if rect_y_pos < 50:
+                if rect_y_pos < 100:
                     raise Exception('The data reached the end of the document')
 
             return None

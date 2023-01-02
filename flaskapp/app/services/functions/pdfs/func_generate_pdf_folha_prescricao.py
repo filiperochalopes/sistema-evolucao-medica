@@ -30,7 +30,7 @@ def func_generate_pdf_folha_prescricao(timestamp_start:str, timestamp_ending:str
 
 
         try:
-            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True)
+            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
 
             pdf.set_font('Roboto-Mono', 16)
             pdf.add_datetime(date=today_day, pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
@@ -39,7 +39,6 @@ def func_generate_pdf_folha_prescricao(timestamp_start:str, timestamp_ending:str
             pdf.add_prescriptions(prescriptions=prescriptions)
             pdf.add_datetime(date=today, pos=(673, 34), camp_name="Document printed date (Bottom position)")
             pdf.add_datetime(date=today, pos=(692, 20), camp_name="Document created date (Bottom position)")
-
 
             pdf.set_font('Roboto-Mono', 11)
             professional_info = pdf.create_professional_info_text(professional=professional, nullable=False)
