@@ -30,12 +30,14 @@ def func_generate_pdf_folha_evolucao(timestamp_start:str, timestamp_ending:str, 
 
             #Data that arent in mutations wet
             # Add medical evolution
-            pdf.add_medical_nursing_evolution(evolution_description=lenght_test[:405], responsible=professional, date=today, evolution_initial_pos=(30, 498), responsible_initial_pos=(90, 399), camp_name='Medica')
+            pdf.add_medical_nursing_evolution_big_squares(evolution_description=lenght_test[:405], responsible=professional, date=today, evolution_initial_pos=(30, 498), responsible_initial_pos=(90, 399), camp_name='Medica')
             # Add nursing evolution with the same square size than medical evolution
-            pdf.add_medical_nursing_evolution(evolution_description=lenght_test[:405], responsible=professional, date=today, evolution_initial_pos=(30, 224), responsible_initial_pos=(90, 126), camp_name='de Enfermagem')
+            pdf.add_medical_nursing_evolution_big_squares(evolution_description=lenght_test[:405], responsible=professional, date=today, evolution_initial_pos=(30, 224), responsible_initial_pos=(90, 126), camp_name='de Enfermagem')
 
 
             # Adding nursing evolution
+            pdf.add_nursing_evolution(evolution_description=lenght_test[:174], responsible=professional, date=today, evolution_initial_pos=(30, 339), responsible_initial_pos=(90, 285), camp_name='de Enfermagem')
+            pdf.add_nursing_evolution(evolution_description=lenght_test[:174], responsible=professional, date=today, evolution_initial_pos=(432, 498), responsible_initial_pos=(490, 445), camp_name='de Enfermagem')
 
 
         except Exception as error:

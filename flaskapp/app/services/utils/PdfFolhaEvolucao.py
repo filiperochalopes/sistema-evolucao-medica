@@ -72,7 +72,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         return professional_info
 
 
-    def add_medical_nursing_evolution(self, evolution_description:str, responsible:dict, date:str, evolution_initial_pos:tuple, responsible_initial_pos:tuple, camp_name:str) -> None:
+    def add_medical_nursing_evolution_big_squares(self, evolution_description:str, responsible:dict, date:str, evolution_initial_pos:tuple, responsible_initial_pos:tuple, camp_name:str) -> None:
         """Add a medical and nursing evolution to the pdf, this function only works to the 2 big squares with data, in order, the first and third square, the other 2 minor nursing evolution will be created by another function
 
         Args:
@@ -86,16 +86,28 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         Returns:
             None
         """
-        self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'responsible_initial_pos':responsible_initial_pos, 'evolution_initial_pos':evolution_initial_pos, 'camp_name':camp_name, 'date':date})
+        self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution_big_squares, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'responsible_initial_pos':responsible_initial_pos, 'evolution_initial_pos':evolution_initial_pos, 'camp_name':camp_name, 'date':date})
 
         professional_info = self.create_professional_info(professional=responsible, date=date)
 
         self.add_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=13, camp_name=f'Descricao evolucao {camp_name}', len_max=406, char_per_lines=58)
 
-        self.add_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=13, camp_name=f'Informacao do responsavel na evolucao {camp_name}', len_max=99, char_per_lines=49)
+        self.add_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=13, camp_name=f'Informacao do responsavel na evolucao {camp_name}', len_max=99, char_per_lines=49, max_lines_amount=3)
         
         return None
 
+
+    def add_nursing_evolution(self, evolution_description:str, responsible:dict, date:str, evolution_initial_pos:tuple, responsible_initial_pos:tuple, camp_name:str) -> None:
+
+        self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution_big_squares, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'responsible_initial_pos':responsible_initial_pos, 'evolution_initial_pos':evolution_initial_pos, 'camp_name':camp_name, 'date':date})
+
+        professional_info = self.create_professional_info(professional=responsible, date=date)
+
+        self.add_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=13, camp_name=f'Descricao evolucao {camp_name}', len_max=175, char_per_lines=58)
+
+        self.add_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=13, camp_name=f'Informacao do responsavel na evolucao {camp_name}', len_max=99, char_per_lines=49, max_lines_amount=3)
+        
+        return None
 
 
 
