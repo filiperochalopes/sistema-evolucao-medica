@@ -94,3 +94,32 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
             raise error
         except:
             raise Exception('Erro desconhecido enquanto adicionava prescricoes')
+
+    
+    def create_professional_info_text(self, professional:dict, nullable:bool=True):
+        """Create professional info string.
+        Example: "Responsavel Medico {name} CRM {number}/{uf}"
+
+        Args:
+            professional (dict): Dict with professioanl info
+        """
+
+        self.validate_func_args(function_to_verify=self.create_professional_info_text, variables_to_verify={'professional':professional, 'nullable':nullable})
+
+        # getting data
+        name = professional.get('name')
+        crm = professional.get('professional_document_number')
+        crm_uf = professional.get('professional_document_uf')
+
+        if not nullable:
+            # if any camp can be null, the function will check all variables and return a Exception if is missing
+            for camp in [name, crm, crm_uf]:
+                if camp == None:
+                    raise Exception('Algum campo do profissional está faltando, o documento precisa do nome, crm e sigla uf do estado do crm')
+
+        prof_info = f"Responsável Médico {str(name).strip()} CRM {str(crm).strip()}/{str(crm_uf).strip()}"
+
+        return prof_info
+
+
+

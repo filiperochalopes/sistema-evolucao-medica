@@ -148,7 +148,25 @@ class ReportLabCanvasUtils():
         except:
             raise Exception("Erro desconhecido enquanto adicionava um dado centralizado no documento com o canvas")
 
+
+    def add_right_data(self, data:str, pos:tuple) -> None:
+        """Add right string in pdf using canvas object
+
+        Args:
+            can (canvas.Canvas): canvas that will be used to add right data
+            data (str): right_data to be added
+            pos (tuple): right_data insert position in points
+
+        Returns:
+            None
             
+        """
+        try:
+            self.can.drawRightString(pos[0], pos[1], data)
+            return None
+        except:
+            raise Exception("Erro desconhecido enquanto adicionava um dado alinhado a direita no documento com o canvas")
+
     def write_newpdf(self) -> None:
         """Write new pdf in a file
 
@@ -187,7 +205,7 @@ class ReportLabCanvasUtils():
             raise Exception("Erro desconhecido enquanto criava um novo arquivo pdf")
 
 
-    def add_oneline_text(self, text:str, pos:tuple, camp_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False) -> None:
+    def add_oneline_text(self, text:str, pos:tuple, camp_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, right_align:bool=False) -> None:
         """Add text that is fill in one line
 
         Args:
@@ -199,16 +217,16 @@ class ReportLabCanvasUtils():
             len_min (int, optional): Minimum text lenght. Defaults to 0.
             interval (str): interval to add between every char
             centralized (bool, optional): Data has to be centralized. Defaults to False.
+            right_align (bool, optional): Data has to be right align. Defaults to False.
         Returns:
             None
-            
         """
         try:
             if nullable:
                 if text == None or len(str(text).strip()) == 0:
                     return None
 
-            self.validate_func_args(function_to_verify=self.add_oneline_text, variables_to_verify={'text':text, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized})
+            self.validate_func_args(function_to_verify=self.add_oneline_text, variables_to_verify={'text':text, 'pos':pos, 'camp_name':camp_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized, 'right_align':right_align})
 
             if not nullable:
                 text = text.strip()
@@ -220,6 +238,8 @@ class ReportLabCanvasUtils():
                 text = self.add_interval_to_data(data=text, interval=interval)
                 if centralized:
                     self.add_centralized_data(data=text, pos=pos)
+                elif right_align: 
+                    self.add_right_data(data=text, pos=pos)
                 else:
                     self.add_data(data=text, pos=pos)
                 return None

@@ -24,6 +24,7 @@ def func_generate_pdf_folha_prescricao(timestamp_start:str, timestamp_ending:str
         for x in range(0, 1100):
             lenght_test += str(x)
         patient = {'name': 'Marcos Antonia de Freitas testando o Nome'}
+        professional = {'name': 'Professioanl Info', 'professional_document_uf': 'BA', 'professional_document_number':'12457'}
         today = '12/12/2020 15:10'
         today_day = '12/12/2020'
 
@@ -38,6 +39,11 @@ def func_generate_pdf_folha_prescricao(timestamp_start:str, timestamp_ending:str
             pdf.add_prescriptions(prescriptions=prescriptions)
             pdf.add_datetime(date=today, pos=(673, 34), camp_name="Document printed date (Bottom position)")
             pdf.add_datetime(date=today, pos=(692, 20), camp_name="Document created date (Bottom position)")
+
+
+            pdf.set_font('Roboto-Mono', 11)
+            professional_info = pdf.create_professional_info_text(professional=professional, nullable=False)
+            pdf.add_oneline_text(text=professional_info, pos=(812, 50), camp_name='Professional Info', len_max=67, right_align=True)
         except Exception as error:
             return error
         except:
