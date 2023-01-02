@@ -2,13 +2,15 @@ from app.services.utils.PdfFolhaPrescricao import PdfFolhaPrescricao
 import datetime
 
 
-def func_generate_pdf_folha_prescricao(timestamp_start:str, timestamp_ending:str, prescriptions:list) -> str:
+def func_generate_pdf_folha_prescricao(created_at:str, printed_at:str, patient_name:str, prescriptions:list) -> str:
     """Fill pdf folha prescricao
 
     Args:
-        timestamp_start (str): date start   
-        timestamp_ending (str): date end
+        created_at (str): created date
+        printed_at (str): Printed date
+        patient_name (str): Patient Name
         prescriptions (list): prescriptions
+        current_user (dict): Professional info
 
     Returns:
         str: Request with pdf in base64
@@ -24,25 +26,25 @@ def func_generate_pdf_folha_prescricao(timestamp_start:str, timestamp_ending:str
         for x in range(0, 1100):
             lenght_test += str(x)
         patient = {'name': 'Marcos Antonia de Freitas testando o Nome'}
-        professional = {'name': 'Professioanl Info', 'professional_document_uf': 'BA', 'professional_document_number':'12457'}
+        current_user = {'name': 'Professioanl Info', 'professional_document_uf': 'BA', 'professional_document_number':'12457'}
         today = '12/12/2020 15:10'
         today_day = '12/12/2020'
 
 
         try:
-            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
+            pdf.add_abbreviated_name(name=patient_name, pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
 
             pdf.set_font('Roboto-Mono', 16)
-            pdf.add_datetime(date=today_day, pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
+            pdf.add_datetime(date=created_at[:-6], pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
 
             pdf.set_font('Roboto-Mono', 12)
             pdf.add_prescriptions(prescriptions=prescriptions)
-            pdf.add_datetime(date=today, pos=(673, 34), camp_name="Document printed date (Bottom position)")
-            pdf.add_datetime(date=today, pos=(692, 20), camp_name="Document created date (Bottom position)")
+            pdf.add_datetime(date=printed_at, pos=(673, 34), camp_name="Document printed date (Bottom position)")
+            pdf.add_datetime(date=created_at, pos=(692, 20), camp_name="Document created date (Bottom position)")
 
             pdf.set_font('Roboto-Mono', 11)
-            professional_info = pdf.create_professional_info_text(professional=professional, nullable=False)
-            pdf.add_oneline_text(text=professional_info, pos=(812, 50), camp_name='Professional Info', len_max=67, right_align=True)
+            current_user_info = pdf.create_professional_info_text(professional=current_user, nullable=False)
+            pdf.add_oneline_text(text=current_user_info, pos=(812, 50), camp_name='Professional Info', len_max=67, right_align=True)
         except Exception as error:
             return error
         except:

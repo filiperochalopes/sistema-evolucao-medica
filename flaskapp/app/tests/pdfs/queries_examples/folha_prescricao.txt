@@ -1,8 +1,9 @@
 # Write your query or mutation here
 mutation{
 	generatePdf_FolhaPrescricao(
-    timestampStart: "10/10/2021",
-    timestampEnding: "12/02/2022",
+    createdAt: "10/10/2022 10:21",
+    printedAt: "10/10/2022 10:21",
+    patientName: "Nome do Paciente",
     prescriptions: [
       {
         type: "Repouso",

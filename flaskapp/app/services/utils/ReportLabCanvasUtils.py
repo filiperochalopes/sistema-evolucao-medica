@@ -991,7 +991,7 @@ class ReportLabCanvasUtils():
         abbrevitated_name = str(list_name.pop(0)).title() + ' '
     
         # Abreviate all names, except the first (removed with pop) and the last
-        for i in range(1, len(list_name)-1):
+        for i in range(0, len(list_name)-1):
             current_name = list_name[i]
             
             # adds the capital first character

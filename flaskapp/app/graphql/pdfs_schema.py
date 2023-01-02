@@ -69,8 +69,12 @@ pdfs_schema_type_defs = gql(
 
         "Gerando página de evolução, sendo que na primeira página sempre mostra a tabela de evolução"
         generatePdf_FolhaPrescricao(
-            timestampStart: String!
-            timestampEnding: String!
+            "Data da criacao. String no formato de dd/mm/aaaa hh:mm"
+            createdAt: String!
+            "Data da impressao. String no formato de dd/mm/aaaa hh:mm"
+            printedAt: String!
+            "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
+            patientName: String!
             prescriptions: [PrescriptionItemInput]
         ): GeneratedPdf
 
