@@ -142,7 +142,7 @@ type_defs = gql('''
             volumeMl: Int
             "Essa string deve ser, de preferência, uma das disponibilizadas para FluidBalanceDescription"
             description: String
-        ): Boolean
+        ): FluidBalance
     }
 
     input DrugPrescriptionInput{
@@ -235,6 +235,12 @@ type_defs = gql('''
         sex: String
         age: String
         cns: String
+    }
+
+    type FluidBalance{
+        id: ID!
+        volumeMl: Int
+        description: String    
     }
 
     type State {
