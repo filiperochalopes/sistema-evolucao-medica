@@ -7,7 +7,12 @@ pdfs_schema_type_defs = gql(
     }
 
     input EvolutionInput{
-        timestamp: String!
+        "Data da criacao. String no formato de dd/mm/aaaa hh:mm"
+        createdAt: String!
+        "Categoria da evolucao. Opcoes M, E1, E2, E3 (medica, enfermagem1, enfermagem2, enfermagem3). Lembre-se que o nunmero apos o 'E' se refere ao bloco presente no documento, o bloco 2 possui um limite maior de caracteres"
+        category: String!
+        "Descricao da evolucao"
+        description: String!
     }
 
     input MeasureInput{
@@ -60,10 +65,13 @@ pdfs_schema_type_defs = gql(
     extend type Mutation {
         "Gerando página de evolução, sendo que na primeira página sempre mostra a tabela de evolução"
         generatePdf_FolhaEvolucao(
-            "String no formato de yyyy-mm-aa"
-            timestampStart: String!
-            timestampEnding: String!
+            "Data da criacao. String no formato de dd/mm/aaaa"
+            createdAt: String!
+            "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
+            patientName: String!
+            "Evolucoes, no maximo 4"
             evolutions: [EvolutionInput]
+            "Medicoes"
             measures: [MeasureInput]
         ): GeneratedPdf
 

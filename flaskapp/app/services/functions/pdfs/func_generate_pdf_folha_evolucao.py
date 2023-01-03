@@ -1,8 +1,7 @@
 from app.services.utils.PdfFolhaEvolucao import PdfFolhaEvolucao
-import datetime
 
 
-def func_generate_pdf_folha_evolucao(timestamp_start:str, timestamp_ending:str, evolutions:list, measures:list, 
+def func_generate_pdf_folha_evolucao(created_at:str, patient_name:str, evolutions:list, measures:list, 
 #current_user: dict
 ) -> str:
 
@@ -32,15 +31,26 @@ def func_generate_pdf_folha_evolucao(timestamp_start:str, timestamp_ending:str, 
             pdf.set_font('Roboto-Mono', 11)
 
             #Data that arent in mutations wet
-            # Add medical evolution
-            pdf.add_medical_nursing_evolution_big_squares(evolution_description=lenght_test[:405], responsible=professional, date=today, evolution_initial_pos=(30, 498), responsible_initial_pos=(90, 399), camp_name='Medica')
-            # Add nursing evolution with the same square size than medical evolution
-            pdf.add_medical_nursing_evolution_big_squares(evolution_description=lenght_test[:405], responsible=professional, date=today, evolution_initial_pos=(30, 224), responsible_initial_pos=(90, 126), camp_name='de Enfermagem')
-
-
-            # Adding nursing evolution
-            pdf.add_nursing_evolution(evolution_description=lenght_test[:174], responsible=professional, date=today, evolution_initial_pos=(30, 339), responsible_initial_pos=(90, 285), camp_name='de Enfermagem')
-            pdf.add_nursing_evolution(evolution_description=lenght_test[:174], responsible=professional, date=today, evolution_initial_pos=(432, 498), responsible_initial_pos=(490, 445), camp_name='de Enfermagem')
+            if len(evolutions) > 4:
+                raise Exception('You cant add more than 4 evolutions')
+            
+            for evo in evolutions:
+                current_category = str(evo['category']).strip().lower()
+                # Add the big squares first
+                if current_category == 'e2':
+                # Add nursing evolution with the same square size than medical evolution
+                    pdf.add_medical_nursing_evolution_big_squares(evolution_description=evo['description'], responsible=professional, date=evo['created_at'], evolution_initial_pos=(30, 224), responsible_initial_pos=(90, 126), camp_name='de Enfermagem - bloco 2')
+                    
+                elif current_category == 'm':
+                    # Add medical evolution
+                    pdf.add_medical_nursing_evolution_big_squares(evolution_description=evo['description'], responsible=professional, date=evo['created_at'], evolution_initial_pos=(30, 498), responsible_initial_pos=(90, 399), camp_name='Medica')
+                elif current_category == 'e1':
+                    # Adding nursing evolution
+                    pdf.add_nursing_evolution(evolution_description=evo['description'], responsible=professional, date=evo['created_at'], evolution_initial_pos=(30, 339), responsible_initial_pos=(90, 285), camp_name='de Enfermagem - Bloco 1')
+                elif current_category == 'e3':
+                    pdf.add_nursing_evolution(evolution_description=evo['description'], responsible=professional, date=evo['created_at'], evolution_initial_pos=(432, 498), responsible_initial_pos=(490, 445), camp_name='de Enfermagem - Bloco 3')
+                else:   
+                    raise Exception(f'A categoria {current_category} nao existe, voce deve escolher M, E1, E2 ou E3, sendo que o numero significa a ordem do bloco, nao se preocupe com espacos ou letras maiusculas')
 
 
         except Exception as error:

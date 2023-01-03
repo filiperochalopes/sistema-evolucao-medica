@@ -1,12 +1,29 @@
 # Write your query or mutation here
 mutation{
 	generatePdf_FolhaEvolucao(
-    timestampStart: "1672670884",
-    timestampEnding: "1672670884",
+    createdAt: "10/10/2022 20:10",
+    patientName: "Patient test Name",
     evolutions:[
       {
-        timestamp: "1672670884"
-      }
+        createdAt: "10/10/2022 20:10",
+        category: "M",
+        description: "Testign M "
+      },
+      {
+        createdAt: "10/10/2022 20:10",
+        category: "E1",
+        description: "Testign M1312ASD78YGayudsgAIUYGD	 "
+      },
+      {
+        createdAt: "10/10/2022 20:10",
+        category: "E2",
+        description: "Testign M E2 aooo "
+      },
+      {
+        createdAt: "10/10/2022 20:10",
+        category: "E3",
+        description: "Testign M E3 asuidhauidhaudhaos "
+      },
     ]
     measures: [
       {
