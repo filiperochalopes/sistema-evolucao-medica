@@ -10,6 +10,7 @@ import Chart from "views/Pacient/Chart";
 import Evolution from "views/Pacient/Evolution";
 import List from "views/Pacient/List";
 import VitalSign from "views/Pacient/VitalSigns";
+import PrivateRouter from "./PrivateRouter";
 
 const routers = createBrowserRouter([
   {
@@ -28,23 +29,43 @@ const routers = createBrowserRouter([
       },
       {
         path: "/pacientes",
-        element: <List />,
+        element: (
+          <PrivateRouter>
+            <List />
+          </PrivateRouter>
+        ),
       },
       {
         path: "/adimitir-paciente",
-        element: <Admit />,
+        element: (
+          <PrivateRouter>
+            <Admit />
+          </PrivateRouter>
+        ),
       },
       {
         path: "/evoluir-paciente/:id",
-        element: <Evolution />,
+        element: (
+          <PrivateRouter>
+            <Evolution />
+          </PrivateRouter>
+        ),
       },
       {
         path: "/sinais-vitais/:id",
-        element: <VitalSign />,
+        element: (
+          <PrivateRouter>
+            <VitalSign />
+          </PrivateRouter>
+        ),
       },
       {
         path: "/prontuario",
-        element: <Chart />,
+        element: (
+          <PrivateRouter>
+            <Chart />
+          </PrivateRouter>
+        ),
       },
     ],
   },
