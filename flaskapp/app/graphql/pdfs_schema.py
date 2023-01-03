@@ -30,14 +30,20 @@ pdfs_schema_type_defs = gql(
         sistolicBloodPressure: Int
         "Pressão arterial diastólica"
         diastolicBloodPressure: Int
+        "Frequencia cardiaca em bpm"
         cardiacFrequency: Int
+        "Frequencia respiratoria em ipm"
         respiratoryFrequency: Int
+        "Temperatura Axilar em graus Celsius"
         celciusAxillaryTemperature: Int
         "Aferição de glicemia capilar, pode ser um número de 0 a 500, ou 'HI'"
         glucose: String
+        "Frequencia cardiaca fetal"
         fetalCardiacFrequency: Int
         "Data da criacao. String no formato de dd/mm/aaaa hh:mm"
-        createdAt: String
+        createdAt: String!
+        "Profissional responsavel"
+        professional: ProfessionalInput!
     }
 
     input FluidBalanceInput{

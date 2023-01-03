@@ -36,6 +36,11 @@ def func_generate_pdf_folha_evolucao(created_at:str, patient_name:str, evolution
             
             # Add evolutions
             pdf.add_evolutions(evolutions=evolutions)
+
+            #Add measures
+            pdf.set_font('Roboto-Mono', 9)
+            pdf.add_measures(measures=measures)
+
             
 
 

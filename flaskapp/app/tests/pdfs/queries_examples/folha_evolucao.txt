@@ -30,8 +30,7 @@ mutation{
         createdAt: "10/10/2022 20:10",
         category: "E2",
         description: "Testign M E2 aooo ",
-        professional:
-        {
+        professional:{
           name: "Professional aaaa Name",
           category: "m",
           document: "54321/BA"
@@ -51,15 +50,20 @@ mutation{
     ]
     measures: [
       {
-        spO2: 96,
-        pain: 2,
-        sistolicBloodPressure: null,
-        diastolicBloodPressure: null,
-        cardiacFrequency: 152,
-				respiratoryFrequency: 15,
-        celciusAxillaryTemperature: 37,
+        createdAt: "10/10/2022 20:10",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
         glucose: "152",
-        createdAt: "1672670884"
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        professional:{
+          name: "Professional aaaa Name",
+          category: "m",
+          document: "54321/BA"
+        }
       }
     ]
     
