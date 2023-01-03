@@ -267,7 +267,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 # Add new responsible names to document
                 all_responsible_names += self.create_professional_info(professional=professional, date=complete_time) + '| '
 
-            # Add new resonsible name to docs
+            # Add new responsible name to docs
             self.set_font('Roboto-Mono', 8)
             self.add_morelines_text(text=all_responsible_names, initial_pos=(428, 66), decrease_ypos=8, camp_name='All professionals names in measures', len_max=4060, char_per_lines=80)
 

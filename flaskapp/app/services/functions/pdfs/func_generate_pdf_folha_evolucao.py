@@ -12,21 +12,12 @@ def func_generate_pdf_folha_evolucao(created_at:str, patient_name:str, evolution
         # Writing all data in respective fields
         # not null data
 
-        # Provisory data to test
-        lenght_test = ''
-        for x in range(0, 1100):
-            lenght_test += str(x)
-        patient = {'name': 'Marcos Antonia de Freitas testando o Nome'}
-        professional = {'name': 'Professioanl Complete name', 'professional_document_uf': 'BA', 'professional_document_number':'12457'}
-        today = '12/12/2020 15:10'
-        today_day = '12/12/2020'
-
-
         try:
-            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
+            pdf.add_abbreviated_name(name=patient_name, pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
 
             pdf.set_font('Roboto-Mono', 16)
-            pdf.add_datetime(date=today_day, pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
+            
+            pdf.add_datetime(date=created_at[:-6], pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
 
             pdf.set_font('Roboto-Mono', 11)
 
@@ -40,10 +31,6 @@ def func_generate_pdf_folha_evolucao(created_at:str, patient_name:str, evolution
             #Add measures
             pdf.set_font('Roboto-Mono', 9)
             pdf.add_measures(measures=measures)
-
-            
-
-
 
         except Exception as error:
             return error
