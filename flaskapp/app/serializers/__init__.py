@@ -177,4 +177,4 @@ class InternmentSchema(CamelCaseSchema):
     evolutions = sqa_fields.RelatedList(sqa_fields.Nested(EvolutionSchema))
     prescriptions = sqa_fields.RelatedList(sqa_fields.Nested(PrescriptionSchema))
     pendings = sqa_fields.RelatedList(sqa_fields.Nested(PendingSchema))
-    fluidBalance = sqa_fields.RelatedList(sqa_fields.Nested(FluidBalanceSchema))
+    fluid_balance = sqa_fields.RelatedList(sqa_fields.Nested(FluidBalanceSchema))
