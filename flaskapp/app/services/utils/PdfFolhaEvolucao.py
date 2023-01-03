@@ -110,4 +110,35 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         return None
 
 
+    def add_evolutions(self, evolutions:list, professional:dict):
+        """Add evolutions to pdf
 
+        Args:
+            evolutions (list): list with dict of evolutions
+            professional (dict): _description_
+
+        Raises:
+            Exception: _description_
+
+        Returns:
+            _type_: _description_
+        """        
+        for evo in evolutions:
+            current_category = str(evo['category']).strip().lower()
+            # Add the big squares first
+            if current_category == 'e2':
+            # Add nursing evolution with the same square size than medical evolution
+                self.add_medical_nursing_evolution_big_squares(evolution_description=evo['description'], responsible=professional, date=evo['created_at'], evolution_initial_pos=(30, 224), responsible_initial_pos=(90, 126), camp_name='de Enfermagem - bloco 2')
+                
+            elif current_category == 'm':
+                # Add medical evolution
+                self.add_medical_nursing_evolution_big_squares(evolution_description=evo['description'], responsible=professional, date=evo['created_at'], evolution_initial_pos=(30, 498), responsible_initial_pos=(90, 399), camp_name='Medica')
+            elif current_category == 'e1':
+                # Adding nursing evolution
+                self.add_nursing_evolution(evolution_description=evo['description'], responsible=professional, date=evo['created_at'], evolution_initial_pos=(30, 339), responsible_initial_pos=(90, 285), camp_name='de Enfermagem - Bloco 1')
+            elif current_category == 'e3':
+                self.add_nursing_evolution(evolution_description=evo['description'], responsible=professional, date=evo['created_at'], evolution_initial_pos=(432, 498), responsible_initial_pos=(490, 445), camp_name='de Enfermagem - Bloco 3')
+            else:   
+                raise Exception(f'A categoria {current_category} nao existe, voce deve escolher M, E1, E2 ou E3, sendo que o numero significa a ordem do bloco, nao se preocupe com espacos ou letras maiusculas')
+
+        return None

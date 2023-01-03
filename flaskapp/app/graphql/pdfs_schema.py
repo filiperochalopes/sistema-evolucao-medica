@@ -30,6 +30,7 @@ pdfs_schema_type_defs = gql(
         "Aferição de glicemia capilar, pode ser um número de 0 a 500, ou 'HI'"
         glucose: String
         fetalCardiacFrequency: Int
+        "Data da criacao. String no formato de dd/mm/aaaa hh:mm"
         createdAt: String
     }
 
