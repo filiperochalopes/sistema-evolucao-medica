@@ -35,7 +35,8 @@ def func_generate_pdf_folha_evolucao(created_at:str, patient_name:str, evolution
                 raise Exception('You cant add more than 4 evolutions')
             
             # Add evolutions
-            pdf.add_evolutions(evolutions=evolutions, professional=professional)
+            pdf.add_evolutions(evolutions=evolutions)
+            
 
 
 

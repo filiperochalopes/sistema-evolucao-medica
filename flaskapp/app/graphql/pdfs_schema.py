@@ -3,7 +3,11 @@ from ariadne import gql
 pdfs_schema_type_defs = gql(
     '''
     input ProfessionalInput{
-        name: String
+        name: String!
+        "Categoria do Profissional, envie 'M' ou 'E', sendo respectivamente Medico/a ou Enfermeiro/a"
+        category: String!
+        "Documento do profissional, se for medico envie o CRM no formato '12345/UF', case seja enfermeiro, envie somente o numero do COREM"
+        document: String!
     }
 
     input EvolutionInput{
@@ -13,6 +17,8 @@ pdfs_schema_type_defs = gql(
         category: String!
         "Descricao da evolucao"
         description: String!
+        "Profissional responsavel"
+        professional: ProfessionalInput!
     }
 
     input MeasureInput{
