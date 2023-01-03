@@ -181,9 +181,10 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
             #Add to cnavas
             global_cont = 0
             y_pos = INITIAL_Y_POS
+            all_responsible_names = 'Responsaveis:' #get all responsible names to add in bottom
+            
 
             for measur in measures:
-
                 complete_time = measur.get('created_at')
                 if complete_time == None:
                     raise Exception('create_at cannot be null')
@@ -207,6 +208,8 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 celcius_axillary_temperature = measur.get('celcius_axillary_temperature')
                 pain = measur.get('pain')
 
+                professional = measur.get('professional')
+
                 # Creating blood plesure
                 blood_pressure = str(sistolic_blood_pressure) + '/' + str(diastolic_blood_pressure)
 
@@ -222,9 +225,18 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                     current_x_pos = x_pos_and_meas_list[x_pos_cont][0]
                     self.add_oneline_text(text=current_value, pos=(current_x_pos, y_pos), centralized=True, nullable=True, len_max=20, camp_name=f'{global_cont} - {x_pos_and_meas_keys[x_pos_cont]}')
                     x_pos_cont += 1
+                
+                # Update count variables
+                y_pos -= 12
+                global_cont += 1
+                # Add new responsible names to document
+                all_responsible_names += self.create_professional_info(professional=professional, date=complete_time) + '| '
+
+            # Add new resonsible name to docs
+            self.set_font('Roboto-Mono', 8)
+            self.add_morelines_text(text=all_responsible_names, initial_pos=(428, 66), decrease_ypos=13, camp_name='All professionals names in measures', len_max=406, char_per_lines=80)
 
             return None
-
         except Exception as error:
             raise error
         except:
