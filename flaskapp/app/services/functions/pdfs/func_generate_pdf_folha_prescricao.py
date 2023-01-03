@@ -2,7 +2,9 @@ from app.services.utils.PdfFolhaPrescricao import PdfFolhaPrescricao
 import datetime
 
 
-def func_generate_pdf_folha_prescricao(created_at:str, printed_at:str, patient_name:str, prescriptions:list) -> str:
+def func_generate_pdf_folha_prescricao(created_at:str, printed_at:str, patient_name:str, prescriptions:list, 
+#current_user: dict
+) -> str:
     """Fill pdf folha prescricao
 
     Args:

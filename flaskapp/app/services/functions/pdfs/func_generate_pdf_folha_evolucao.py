@@ -2,7 +2,10 @@ from app.services.utils.PdfFolhaEvolucao import PdfFolhaEvolucao
 import datetime
 
 
-def func_generate_pdf_folha_evolucao(timestamp_start:str, timestamp_ending:str, evolutions:list, measures:list) -> str:
+def func_generate_pdf_folha_evolucao(timestamp_start:str, timestamp_ending:str, evolutions:list, measures:list, 
+#current_user: dict
+) -> str:
+
     
 
     try:
