@@ -66,7 +66,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 raise Exception('Algum campo do profissional está faltando, o documento precisa do nome, document e category')
 
         date_object = datetime.datetime.strptime(date, '%d/%m/%Y %H:%M')
-        str_date = str('%02d/%02d/%d %02d:%02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute, date_object.second)
+        str_date = str('%02d/%02d/%d %02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute)
 
         if category.lower() == 'm':
             doc_type = 'CRM '
