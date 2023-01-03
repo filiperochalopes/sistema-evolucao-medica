@@ -1,0 +1,15 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_BalancoHidrico(
+    createdAt: "10/10/2020",
+    patientName: "Patient Test Name",
+    patientWeight: 52,
+    fluidBalance:[
+      {
+        createdAt: "20/12/2022 10:35",
+        value: -600,
+        description: "diurese"
+      }
+    ]
+	){base64Pdf}
+}
