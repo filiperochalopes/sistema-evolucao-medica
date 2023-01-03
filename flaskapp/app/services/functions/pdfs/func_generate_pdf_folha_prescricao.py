@@ -2,8 +2,8 @@ from app.services.utils.PdfFolhaPrescricao import PdfFolhaPrescricao
 import datetime
 
 
-def func_generate_pdf_folha_prescricao(created_at:str, printed_at:str, patient_name:str, prescriptions:list, 
-#current_user: dict
+def func_generate_pdf_folha_prescricao(created_at:str, patient_name:str, prescriptions:list, printed_at:str=None, 
+#current_user:dict=None
 ) -> str:
     """Fill pdf folha prescricao
 
@@ -24,13 +24,7 @@ def func_generate_pdf_folha_prescricao(created_at:str, printed_at:str, patient_n
         # not null data
 
         # Provisory data to test
-        lenght_test = ''
-        for x in range(0, 1100):
-            lenght_test += str(x)
-        patient = {'name': 'Marcos Antonia de Freitas testando o Nome'}
         current_user = {'name': 'Professioanl Info', 'professional_document_uf': 'BA', 'professional_document_number':'12457'}
-        today = '12/12/2020 15:10'
-        today_day = '12/12/2020'
 
 
         try:
@@ -41,7 +35,7 @@ def func_generate_pdf_folha_prescricao(created_at:str, printed_at:str, patient_n
 
             pdf.set_font('Roboto-Mono', 12)
             pdf.add_prescriptions(prescriptions=prescriptions)
-            pdf.add_datetime(date=printed_at, pos=(673, 34), camp_name="Document printed date (Bottom position)")
+            pdf.add_datetime(date=printed_at, pos=(673, 34), camp_name="Document printed date (Bottom position)", nullable=True)
             pdf.add_datetime(date=created_at, pos=(692, 20), camp_name="Document created date (Bottom position)")
 
             pdf.set_font('Roboto-Mono', 11)

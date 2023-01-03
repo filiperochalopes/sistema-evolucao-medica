@@ -93,7 +93,7 @@ pdfs_schema_type_defs = gql(
             "Data da criacao. String no formato de dd/mm/aaaa hh:mm"
             createdAt: String!
             "Data da impressao. String no formato de dd/mm/aaaa hh:mm"
-            printedAt: String!
+            printedAt: String
             "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
             patientName: String!
             prescriptions: [PrescriptionItemInput]
