@@ -153,31 +153,81 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         return None
         
 
-    def add_measures(self, measures:list) -> None:
+    def get_measures_list(self, date_object:datetime, measure:dict):
+        """Return measures list with the tabel order to use index
+
+        Args:
+            date_object (datetime): date object
+            measure (dict): current measure
+
+        Returns:
+            _type_: _description_
+        """        
         
+        create_at = str('%02d:%02d') % (date_object.hour, date_object.minute)
+        cardiac_frequency = measure.get('cardiac_frequency')
+        respiratory_frequency = measure.get('respiratory_frequency')
+        sistolic_blood_pressure = measure.get('sistolic_blood_pressure')
+        diastolic_blood_pressure = measure.get('diastolic_blood_pressure')
+        glucose = measure.get('glucose')
+        spO2 = measure.get('sp_o_2')
+        celcius_axillary_temperature = measure.get('celcius_axillary_temperature')
+        pain = measure.get('pain')
+
+        professional = measure.get('professional')
+
+        # Creating blood plesure
+        blood_pressure = str(sistolic_blood_pressure) + '/' + str(diastolic_blood_pressure)
+
+        measures_list = [create_at, cardiac_frequency, respiratory_frequency, blood_pressure, glucose, spO2, celcius_axillary_temperature, pain]
+
+        return measures_list, professional
+
+
+    def get_x_positions_and_measures(self):
+        """Return the x positiions and measures needed to add measures
+
+        Returns:
+            list
+        """        
+        #Dict with x position and increment string to every measure, DO NOT CHANGE THE ORDER, the list x_pos_and_measures use the index position
+        x_positions_and_measures = {
+            'created_at': (440, ''),
+            'cardiac_frequency': (475, 'bpm'), 
+            'respiratory_frequency': (517, 'ipm'), 
+            'blood_pressure': (572, 'mmHg'), 
+            'glucose': (633, 'mg/dL'), 
+            'sp_o_2': (677, '%'), 
+            'celcius_axillary_temperature': (714, '°C'), 
+            'pain': (750, '/10'), 
+        }
+
+        x_pos_and_meas_list = list(x_positions_and_measures.values())
+        x_pos_and_meas_keys = list(x_positions_and_measures.keys())
+
+        return x_pos_and_meas_list, x_pos_and_meas_keys
+
+
+    def add_measures(self, measures:list) -> None:
+        """Add measures to pdf
+
+        Args:
+            measures (list): list of dicts
+
+        Returns:
+            None
+        """
         try:
 
             self.validate_func_args(function_to_verify=self.add_measures, variables_to_verify={'measures':measures})
             
-            
+            if len(measures) > 14:
+                raise Exception('You cant add more than 14 measures')
+
+            # get all x positions and keys
+            x_pos_and_meas_list, x_pos_and_meas_keys = self.get_x_positions_and_measures()
+
             INITIAL_Y_POS = 234
-
-
-            #Dict with x position and increment string to every measure, DO NOT CHANGE THE ORDER, the list x_pos_and_measures use the index position
-            x_positions_and_measures = {
-                'created_at': (440, ''),
-                'cardiac_frequency': (475, 'bpm'), 
-                'respiratory_frequency': (517, 'ipm'), 
-                'blood_pressure': (572, 'mmHg'), 
-                'glucose': (633, 'mg/dL'), 
-                'sp_o_2': (677, '%'), 
-                'celcius_axillary_temperature': (714, '°C'), 
-                'pain': (750, '/10'), 
-            }
-
-            x_pos_and_meas_list = list(x_positions_and_measures.values())
-            x_pos_and_meas_keys = list(x_positions_and_measures.keys())
-
             #Add to cnavas
             global_cont = 0
             y_pos = INITIAL_Y_POS
@@ -198,22 +248,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 #Reset x_pos_cont
                 x_pos_cont = 0
 
-                create_at = str('%02d:%02d') % (date_object.hour, date_object.minute)
-                cardiac_frequency = measur.get('cardiac_frequency')
-                respiratory_frequency = measur.get('respiratory_frequency')
-                sistolic_blood_pressure = measur.get('sistolic_blood_pressure')
-                diastolic_blood_pressure = measur.get('diastolic_blood_pressure')
-                glucose = measur.get('glucose')
-                spO2 = measur.get('sp_o_2')
-                celcius_axillary_temperature = measur.get('celcius_axillary_temperature')
-                pain = measur.get('pain')
-
-                professional = measur.get('professional')
-
-                # Creating blood plesure
-                blood_pressure = str(sistolic_blood_pressure) + '/' + str(diastolic_blood_pressure)
-
-                measures_list = [create_at, cardiac_frequency, respiratory_frequency, blood_pressure, glucose, spO2, celcius_axillary_temperature, pain]
+                measures_list, professional = self.get_measures_list(date_object=date_object, measure=measur)
 
                 for value in measures_list:
                     if value == None:
@@ -234,7 +269,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
 
             # Add new resonsible name to docs
             self.set_font('Roboto-Mono', 8)
-            self.add_morelines_text(text=all_responsible_names, initial_pos=(428, 66), decrease_ypos=13, camp_name='All professionals names in measures', len_max=406, char_per_lines=80)
+            self.add_morelines_text(text=all_responsible_names, initial_pos=(428, 66), decrease_ypos=8, camp_name='All professionals names in measures', len_max=4060, char_per_lines=80)
 
             return None
         except Exception as error:
