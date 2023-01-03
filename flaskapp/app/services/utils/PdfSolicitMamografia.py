@@ -116,10 +116,13 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
 
     def get_patient_age(self, birthdate):
         try:
-            today = datetime.datetime.now()
+            # brazillian timezone UTC-3
+            timezone = datetime.timezone(offset=datetime.timedelta(hours=-3))
+            today = datetime.datetime.now(tz=timezone)
             age = datetime.datetime.strptime(birthdate, '%d/%m/%Y')
+
             return today.year - age.year - ((today.month, today.day) < (age.month, age.day))
-        except Exception:
+        except Exception as error:
             raise Exception(f'A data de nascimento do paciente nao corresponde ao formato dd/mm/yyyy')
 
     def add_radiotherapy_before(self, radiotherapy_before:list):

@@ -145,7 +145,7 @@ type_defs = gql(
         motherName: String
         "Sexo biológico binário `male` ou `female`"
         sex:String,
-        "Data de aniversário no formato `yyyy-mm-dd`"
+        "Data de nascimento no formato `yyyy-mm-dd`"
         birthdate: String
         "Apenas dígitos, para fins de testes pode gerar [nesse link](https://geradornv.com.br/gerador-cpf/)"
         cpf:String, 
