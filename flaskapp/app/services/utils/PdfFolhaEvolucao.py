@@ -42,12 +42,13 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         
 
     
-    def create_professional_info(self, professional:dict, date:str) -> str:
+    def create_professional_info(self, professional:dict, date:str, abbreviated:bool=False) -> str:
         """Create professional info merging name, document and date
 
         Args:
             professional (dict): _description_
             date (str): _description_
+            abbreviated (str): abbreviate professioanl name
 
         Raises:
             Exception: _description_
@@ -73,6 +74,9 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
             doc_type = 'COREM '
         else:
             raise Exception(f'A categoria de profissional {category} nao existe, envie "e" ou "M", sendo "e" para emfermeiros e "m" para medicos')
+
+        if abbreviated:
+            name = self.get_abbrevitate_name(name=name)
 
         professional_info = f"{str(name).strip()} " + doc_type + str(document) + ' Criado em: ' + str_date
 
@@ -265,7 +269,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 y_pos -= 12
                 global_cont += 1
                 # Add new responsible names to document
-                all_responsible_names += self.create_professional_info(professional=professional, date=complete_time) + '| '
+                all_responsible_names += self.create_professional_info(professional=professional, date=complete_time, abbreviated=True) + '| '
 
             # Add new responsible name to docs
             self.set_font('Roboto-Mono', 8)
