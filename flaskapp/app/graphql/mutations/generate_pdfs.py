@@ -15,6 +15,7 @@ from app.services.functions.pdfs.func_generate_pdf_relatorio_alta import func_ge
 from app.services.functions.pdfs.func_generate_pdf_solicit_mamografia import func_generate_pdf_solicit_mamografia
 from app.services.functions.pdfs.func_generate_pdf_folha_prescricao import func_generate_pdf_folha_prescricao
 from app.services.functions.pdfs.func_generate_pdf_folha_evolucao import func_generate_pdf_folha_evolucao
+from app.services.functions.pdfs.func_generate_pdf_balanco_hidrico import func_generate_pdf_balanco_hidrico
 
 
 @mutation.field('generatePdf_AihSus')
@@ -68,3 +69,9 @@ def generate_pdf_folha_prescricao(_, info, **kwargs):
 #@token_authorization
 def generate_pdf_folha_evolucao(_, info, **kwargs):
     return func_generate_pdf_folha_evolucao(**kwargs)
+
+@mutation.field('generatePdf_BalancoHidrico')
+@convert_kwargs_to_snake_case
+#@token_authorization
+def generate_pdf_balanco_hidrico(_, info, **kwargs):
+    return func_generate_pdf_balanco_hidrico(**kwargs)

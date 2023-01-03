@@ -47,7 +47,11 @@ pdfs_schema_type_defs = gql(
     }
 
     input FluidBalanceInput{
+        "Data da criacao. String no formato de dd/mm/aaaa hh:mm"
+        createdAt: String!
+        "Valor em mililitros (ml), esse valor pode ser negativo ou positivo"
         value: Int!
+        "Descricao"
         description: String!
     }
 
@@ -101,8 +105,12 @@ pdfs_schema_type_defs = gql(
 
         "Gerando página de evolução, sendo que na primeira página sempre mostra a tabela de evolução"
         generatePdf_BalancoHidrico(
-            timestampStart: String!
-            timestampEnding: String!
+            "Data da criacao. String no formato de dd/mm/aaaa"
+            createdAt: String!
+            "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
+            patientName: String!
+            "Peso do paciente em kg"
+            patientWeight: Int!
             fluidBalance: [FluidBalanceInput]
         ): GeneratedPdf
         
