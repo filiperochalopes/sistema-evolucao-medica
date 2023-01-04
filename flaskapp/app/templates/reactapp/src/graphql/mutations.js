@@ -88,6 +88,22 @@ export const CREATE_PENDING = gql`
   }
 `;
 
+export const CREATE_FLUID_BALANCE = gql`
+  mutation createFluidBalance(
+    $internmentId: Int!
+    $volumeMl: Int
+    $description: String
+  ) {
+    createFluidBalance(
+      internmentId: $internmentId
+      volumeMl: $volumeMl
+      description: $description
+    ) {
+      id
+    }
+  }
+`;
+
 export const CREATE_MEASURE = gql`
   mutation createMeasure(
     $internmentId: Int!

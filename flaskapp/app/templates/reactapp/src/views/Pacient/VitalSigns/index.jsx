@@ -3,13 +3,18 @@ import Container, { Inputs } from "./styles";
 import Button from "components/Button";
 import Input from "components/Input";
 import { useFormik } from "formik";
-import { useMutation } from "@apollo/client";
-import { CREATE_MEASURE } from "graphql/mutations";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { CREATE_FLUID_BALANCE, CREATE_MEASURE } from "graphql/mutations";
 import { useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import { GET_SINALS } from "graphql/queries";
+import { useEffect } from "react";
+import schema from "./schema";
 
 const VitalSign = () => {
   const [createMeasure] = useMutation(CREATE_MEASURE);
+  const [createFluidBalance] = useMutation(CREATE_FLUID_BALANCE);
+  const [getSinals, { data }] = useLazyQuery(GET_SINALS);
   const { enqueueSnackbar } = useSnackbar();
   const params = useParams();
   const formik = useFormik({
@@ -23,32 +28,48 @@ const VitalSign = () => {
       celciusAxillaryTemperature: null,
       glucose: null,
       fetalCardiacFrequency: null,
+      volumeMl: null,
+      descriptionVolumeMl: "",
     },
+    validationSchema: schema,
     onSubmit: async (values) => {
       try {
+        const variables = {
+          internmentId: Number(params.id),
+          spO2: values.spO2 > 0 ? Number(values.spO2) : null,
+          pain: Number(values.pain),
+          systolicBloodPressure: Number(values.systolicBloodPressure),
+          diastolicBloodPressure: Number(values.diastolicBloodPressure),
+          cardiacFrequency: Number(values.cardiacFrequency),
+          respiratoryFrequency: Number(values.respiratoryFrequency),
+          celciusAxillaryTemperature: Number(values.celciusAxillaryTemperature),
+          glucose: Number(values.glucose),
+          fetalCardiacFrequency: Number(values.fetalCardiacFrequency),
+        };
         await createMeasure({
+          variables,
+        });
+        await createFluidBalance({
           variables: {
             internmentId: Number(params.id),
-            spO2: Number(values.spO2),
-            pain: Number(values.pain),
-            systolicBloodPressure: Number(values.systolicBloodPressure),
-            diastolicBloodPressure: Number(values.diastolicBloodPressure),
-            cardiacFrequency: Number(values.cardiacFrequency),
-            respiratoryFrequency: Number(values.respiratoryFrequency),
-            celciusAxillaryTemperature: Number(
-              values.celciusAxillaryTemperature
-            ),
-            glucose: Number(values.glucose),
-            fetalCardiacFrequency: Number(values.fetalCardiacFrequency),
+            volumeMl: Number(values.volumeMl),
+            description: values.descriptionVolumeMl,
           },
         });
-
         enqueueSnackbar("Prescrição Cadastrada", { variant: "success" });
       } catch {
         enqueueSnackbar("Error: Tente novamente", { variant: "error" });
       }
     },
   });
+
+  useEffect(() => {
+    getSinals({
+      variables: {
+        internment: params.id,
+      },
+    });
+  }, []);
 
   return (
     <Container onSubmit={formik.handleSubmit}>
@@ -111,12 +132,22 @@ const VitalSign = () => {
       <div className="input">
         <p>PRESSÃO ARTERIAL:</p>
         <Inputs>
-          <Input
-            className="small"
-            name="cardiacFrequency"
-            value={formik.values.cardiacFrequency}
-            onChange={formik.handleChange}
-          />
+          <div>
+            <Input
+              className="small"
+              name="systolicBloodPressure"
+              value={formik.values.systolicBloodPressure}
+              onChange={formik.handleChange}
+            />
+          </div>
+          <div>
+            <Input
+              className="small"
+              name="diastolicBloodPressure"
+              value={formik.values.diastolicBloodPressure}
+              onChange={formik.handleChange}
+            />
+          </div>
         </Inputs>
       </div>
       <div className="input">
@@ -125,8 +156,8 @@ const VitalSign = () => {
           <div>
             <Input
               className="small"
-              name="cardiacFrequency"
-              value={formik.values.cardiacFrequency}
+              name="volumeMl"
+              value={formik.values.volumeMl}
               onChange={formik.handleChange}
             />
             <p>ML</p>
@@ -134,7 +165,8 @@ const VitalSign = () => {
           <Input
             placeholder="DESCRIÇÃO"
             onChange={formik.handleChange}
-            disabled
+            name="descriptionVolumeMl"
+            value={formik.values.descriptionVolumeMl}
           />
         </Inputs>
       </div>

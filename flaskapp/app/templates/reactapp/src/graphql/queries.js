@@ -178,3 +178,28 @@ export const GET_INTERNMENT = gql`
     }
   }
 `;
+
+export const GET_SINALS = gql`
+  query internment($internment: ID!) {
+    internment(id: $internment) {
+      fluidBalance {
+        id
+        volumeMl
+        description {
+          value
+        }
+      }
+      measures {
+        spO2
+        pain
+        systolicBloodPressure
+        diastolicBloodPressure
+        cardiacFrequency
+        respiratoryFrequency
+        celciusAxillaryTemperature
+        glucose
+        fetalCardiacFrequency
+      }
+    }
+  }
+`;
