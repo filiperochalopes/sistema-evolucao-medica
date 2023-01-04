@@ -764,7 +764,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_datetime(self, date:str, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='') -> None:
+    def add_datetime(self, date:str, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='', centralized:bool=False) -> None:
         """Add datetime to canvas
 
         Args:
@@ -777,6 +777,7 @@ class ReportLabCanvasUtils():
             formated (bool, optional): format (add '/' and ':'). Defaults to True.
             interval (str, optional): add interval between  day, month, year, hour, min, sec. Defaults to ''.
             interval_between_numbers (str, optional): add interval between  every number. Defaults to ''.
+            centralized (bool, optional): centralize the date in document
         Returns:
             None
             
@@ -786,7 +787,7 @@ class ReportLabCanvasUtils():
                 if date == None:
                     return None
             
-            self.validate_func_args(function_to_verify=self.add_datetime, variables_to_verify={'date':date, 'pos':pos, 'camp_name':camp_name, 'hours':hours, 'nullable':nullable, 'formated':formated, 'interval':interval, 'interval_between_numbers':interval_between_numbers})
+            self.validate_func_args(function_to_verify=self.add_datetime, variables_to_verify={'date':date, 'pos':pos, 'camp_name':camp_name, 'hours':hours, 'nullable':nullable, 'formated':formated, 'interval':interval, 'interval_between_numbers':interval_between_numbers, 'centralized':centralized})
 
 
             #Add to respective fields
@@ -811,7 +812,8 @@ class ReportLabCanvasUtils():
                 if not formated:
                     str_date = str_date.replace('/', interval)
                 str_date = self.add_interval_to_data(data=str_date, interval=interval_between_numbers)
-            self.add_data(data=str_date, pos=pos)
+            #self.add_data(data=str_date, pos=pos)
+            self.add_oneline_text(text=str_date, pos=pos, camp_name=camp_name, len_max=50, centralized=centralized)
             return None
 
         except Exception as error:
