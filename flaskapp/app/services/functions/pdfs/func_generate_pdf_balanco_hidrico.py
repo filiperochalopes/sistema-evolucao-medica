@@ -20,7 +20,7 @@ def func_generate_pdf_balanco_hidrico(created_at:str, patient_name:str, patient_
             pdf.add_datetime(date=created_at, pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
 
 
-            pdf.set_font('Roboto-Mono', 12)
+            pdf.set_font('Roboto-Mono', 11)
             pdf.add_oneline_text(text=f'{patient_weight}kg', pos=(531, 256), camp_name='Peso do Paciente', len_max=8)
 
             pdf.add_fluid_balance(balances=fluid_balance)

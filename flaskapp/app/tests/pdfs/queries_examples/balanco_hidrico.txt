@@ -19,7 +19,67 @@ mutation{
         createdAt: "09/04/2022 8:54",
         value: -300,
         description: "Dreno de Tórax"
-      }
+      },
+      {
+        createdAt: "20/12/2022 10:35",
+        value: -600,
+        description: "diurese"
+      },
+      {
+        createdAt: "28/06/2022 3:10",
+        value: 600,
+        description: "Antibiótico"
+      },
+      {
+        createdAt: "09/04/2022 8:54",
+        value: -300,
+        description: "Dreno de Tórax"
+      },
+      {
+        createdAt: "20/12/2022 10:35",
+        value: -600,
+        description: "diurese"
+      },
+      {
+        createdAt: "28/06/2022 3:10",
+        value: 600,
+        description: "Antibiótico"
+      },
+      {
+        createdAt: "09/04/2022 8:54",
+        value: -300,
+        description: "Dreno de Tórax"
+      },
+      {
+        createdAt: "20/12/2022 10:35",
+        value: -600,
+        description: "diurese"
+      },
+      {
+        createdAt: "28/06/2022 3:10",
+        value: 600,
+        description: "Antibiótico"
+      },
+      {
+        createdAt: "09/04/2022 8:54",
+        value: -300,
+        description: "Dreno de Tórax"
+      },
+      {
+        createdAt: "20/12/2022 10:35",
+        value: -600,
+        description: "diurese"
+      },
+      {
+        createdAt: "28/06/2022 3:10",
+        value: 600,
+        description: "Antibiótico"
+      },
+      {
+        createdAt: "09/04/2022 8:54",
+        value: -300,
+        description: "Dreno de Tórax"
+      },
     ]
 	){base64Pdf}
 }
