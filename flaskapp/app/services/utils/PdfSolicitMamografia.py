@@ -35,6 +35,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
 
     def get_output(self) -> PdfWriter:
         """Return a PdfWriter Object to output a file"""
+        
         self.can_1.save()
         self.can_2.save()
         self.packet_1.seek(0)

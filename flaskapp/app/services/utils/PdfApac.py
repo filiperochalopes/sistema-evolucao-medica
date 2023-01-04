@@ -15,18 +15,7 @@ class PdfApac(ReportLabCanvasUtils):
     
 
     def get_output(self) -> PdfWriter:
-        """Return a PdfWriter Object to output a file"""
-        self.can.save()
-        self.packet.seek(0)
-        new_pdf = PdfReader(self.packet)
-        # read the template pdf 
-        template_pdf = PdfReader(open(self.TEMPLATE_DIRECTORY, "rb"))
-        output = PdfWriter()
-        # add the "watermark" (which is the new pdf) on the existing page
-        page = template_pdf.pages[0]
-        page.merge_page(new_pdf.pages[0])
-        output.add_page(page)
-        return output
+        return super().get_output()
 
     def add_procedure(self, procedure:dict, code_pos:tuple, name_pos:tuple, quant_pos:tuple, camp_name:str) -> None:
         """Add procedure to canvas

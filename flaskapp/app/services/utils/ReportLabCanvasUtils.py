@@ -1,7 +1,7 @@
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from PyPDF2 import PdfWriter, PdfReader
 import io
 import re
 import datetime
@@ -13,7 +13,7 @@ from app.env import FONT_DIRECTORY, BOLD_FONT_DIRECTORY
 
 class ReportLabCanvasUtils():
 
-    def __init__(self, canvas_pagesize):
+    def __init__(self, canvas_pagesize) -> None:
         self.packet = io.BytesIO()
         # Create canvas and add data
         self.can = canvas.Canvas(self.packet, pagesize=canvas_pagesize)
@@ -21,7 +21,20 @@ class ReportLabCanvasUtils():
         # this is also changed in the document to some especific fields
         pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
         pdfmetrics.registerFont(TTFont('Roboto-Condensed-Bold', BOLD_FONT_DIRECTORY))
-        
+    
+    
+    def get_output(self) -> PdfWriter:
+        self.can.save()
+        self.packet.seek(0)
+        new_pdf = PdfReader(self.packet)
+        # read the template pdf 
+        template_pdf = PdfReader(open(self.TEMPLATE_DIRECTORY, "rb"))
+        output = PdfWriter()
+        # add the "watermark" (which is the new pdf) on the existing page
+        page = template_pdf.pages[0]
+        page.merge_page(new_pdf.pages[0])
+        output.add_page(page)
+        return output
     
     def validate_func_args(self, function_to_verify, variables_to_verify:dict, nullable_variables:list=[]) -> None:
         """validate all args with the type needed or default values
