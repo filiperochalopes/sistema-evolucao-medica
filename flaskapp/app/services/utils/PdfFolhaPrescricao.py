@@ -18,22 +18,6 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
 
     def get_output(self) -> PdfWriter:
         return super().get_output()
-        
-
-    def add_rect_prescription_background(self, pos:tuple,width:int=789, height:int=28) -> None:
-        """Add the gray rectangle in prescription background
-
-        Args:
-            pos (tuple): position (x, y)
-            width (int): rectangle width
-            height (int): rectangle height
-        """
-        #Change fill color do draw rect
-        self.can.setFillColorRGB(.9215, .9215, .9215, 1)
-        self.can.rect(pos[0], pos[1], width=width, height=height, stroke=0, fill=1)
-        #Change fill color to black
-        self.can.setFillColorRGB(0, 0, 0, 1)
-        return None
 
 
     def add_prescriptions(self, prescriptions:list):
@@ -59,7 +43,7 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
                 rect_height = DEFAULT_RECT_HEIGHT + (break_lines_quant * DEFAULT_DECREASE_Y_POS)
                 rect_y_pos = int(y_text_pos - 11) - int(break_lines_quant * DEFAULT_DECREASE_Y_POS)
                 if cont % 2 != 0:
-                    self.add_rect_prescription_background(pos=(24, rect_y_pos), height=rect_height)
+                    self.add_rectangle(pos=(24, rect_y_pos), height=rect_height, width=789)
                 self.add_morelines_text(text=prescription_text, initial_pos=(28, y_text_pos), decrease_ypos=DEFAULT_DECREASE_Y_POS, camp_name=f'{cont} Prescription', len_max=4032, char_per_lines=CHAR_PER_LINES)
 
                 # New y pos

@@ -17,3 +17,14 @@ class PdfBalancoHidrico(ReportLabCanvasUtils):
 
     def get_output(self) -> PdfWriter:
         return super().get_output()
+
+    
+    def add_fluid_balance(self, balances:list) -> None:
+        
+        #maximum balances in first collum
+        FIRST_COLLUM_LIMIT = 13
+
+        self.add_rect_date_background(pos=(24, 502))
+        
+
+        return None
