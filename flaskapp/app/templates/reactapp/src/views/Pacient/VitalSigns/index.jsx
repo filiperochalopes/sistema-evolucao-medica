@@ -11,6 +11,20 @@ import { GET_SINALS } from "graphql/queries";
 import { useEffect } from "react";
 import schema from "./schema";
 
+const initialValues = {
+  spO2: null,
+  pain: null,
+  systolicBloodPressure: null,
+  diastolicBloodPressure: null,
+  cardiacFrequency: null,
+  respiratoryFrequency: null,
+  celciusAxillaryTemperature: null,
+  glucose: null,
+  fetalCardiacFrequency: null,
+  volumeMl: null,
+  descriptionVolumeMl: "",
+};
+
 const VitalSign = () => {
   const [createMeasure] = useMutation(CREATE_MEASURE);
   const [createFluidBalance] = useMutation(CREATE_FLUID_BALANCE);
@@ -18,19 +32,7 @@ const VitalSign = () => {
   const { enqueueSnackbar } = useSnackbar();
   const params = useParams();
   const formik = useFormik({
-    initialValues: {
-      spO2: null,
-      pain: null,
-      systolicBloodPressure: null,
-      diastolicBloodPressure: null,
-      cardiacFrequency: null,
-      respiratoryFrequency: null,
-      celciusAxillaryTemperature: null,
-      glucose: null,
-      fetalCardiacFrequency: null,
-      volumeMl: null,
-      descriptionVolumeMl: "",
-    },
+    initialValues,
     validationSchema: schema,
     onSubmit: async (values) => {
       try {
@@ -62,6 +64,35 @@ const VitalSign = () => {
       }
     },
   });
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    let object = initialValues;
+    if (data.internment?.measures?.length > 0) {
+      const measure = data.internment.measures[0];
+      object = {
+        cardiacFrequency: measure.cardiacFrequency,
+        celciusAxillaryTemperature: measure.celciusAxillaryTemperature,
+        diastolicBloodPressure: measure.diastolicBloodPressure,
+        fetalCardiacFrequency: measure.fetalCardiacFrequency,
+        glucose: measure.glucose,
+        pain: measure.pain,
+        respiratoryFrequency: measure.respiratoryFrequency,
+        systolicBloodPressure: measure.systolicBloodPressure,
+        spO2: measure.spO2,
+        descriptionVolumeMl: "",
+        volumeMl: 0,
+      };
+    }
+    if (data.internment?.fluidBalance?.length > 0) {
+      const fluidBalance = data.internment.fluidBalance[0];
+      object.volumeMl = fluidBalance.volumeMl;
+      object.descriptionVolumeMl = fluidBalance?.description?.value;
+    }
+    formik.setValues(object);
+  }, [data]);
 
   useEffect(() => {
     getSinals({

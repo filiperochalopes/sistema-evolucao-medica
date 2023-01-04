@@ -203,3 +203,67 @@ export const GET_SINALS = gql`
     }
   }
 `;
+
+export const GET_ALL_INTERNMENT = gql`
+  query internment($internment: ID!) {
+    internment(id: $internment) {
+      justification
+      cid10 {
+        code
+        description
+      }
+      evolutions {
+        text
+        professional {
+          name
+        }
+        createdAt
+      }
+      prescriptions {
+        id
+        restingActivity {
+          name
+        }
+        diet {
+          name
+        }
+        drugPrescriptions {
+          id
+          drug {
+            name
+          }
+          dosage
+          route
+          kind
+          initialDate
+          endingDate
+        }
+        nursingActivities {
+          name
+        }
+      }
+
+      pendings {
+        text
+      }
+      fluidBalance {
+        id
+        volumeMl
+        description {
+          value
+        }
+      }
+      measures {
+        spO2
+        pain
+        systolicBloodPressure
+        diastolicBloodPressure
+        cardiacFrequency
+        respiratoryFrequency
+        celciusAxillaryTemperature
+        glucose
+        fetalCardiacFrequency
+      }
+    }
+  }
+`;
