@@ -31,7 +31,7 @@ def data_to_use(client, datetime_to_use,
     patient_mother_name='Patient Mother Name',
     patient_birthday=None,
     solicitation_datetime=None,
-    prof_solicitor_name='Professional Name',
+    professional_solicitor_name='Professional Name',
     nodule_lump='NAO',
     high_risk='NAOSABE',
     examinated_before='NAOSABE',
@@ -150,7 +150,7 @@ indusaoImplantes: [null]
     healthUnitCityIbgeCode: "{health_unit_city_ibge_code}",
     documentChartNumber: "{document_chart_number}",
     patientEthnicity: {patient_ethnicity},
-    profSolicitorName: "{prof_solicitor_name}",
+    professionalSolicitorName: "{professional_solicitor_name}",
     solicitationDatetime: "{solicitation_datetime}",
     examNumber: "{exam_number}",
     trackingMammogram: "{tracking_mammogram}",
@@ -199,7 +199,7 @@ def test_awnser_with_only_required_data(client):
     noduleLump: "NAO",
     highRisk: "NAOSABE",
     examinatedBefore: "NUNCA",
-    profSolicitorName: "Professional Soliciame",
+    professionalSolicitorName: "Professional Soliciame",
     solicitationDatetime: "10/10/2012"
     """
     

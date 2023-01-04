@@ -25,7 +25,7 @@ def client():
     return Client(transport=transport, fetch_schema_from_transport=True)
 
 
-def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes="1234567",establishment_exec_name='Establshment Exec Name',establishment_exec_cnes="7654321",patient_name='Patient Name',patient_cns="928976954930007",patient_birthday=None,patient_sex='F',patient_mother_name='Patient Mother Name',patient_address='Patient Adress street neighobourd',patient_address_city='Patient City',patient_address_city_ibge_code='1234567', patient_address_uf='SP',patient_address_cep='12345678',main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnostic='Patient Initial Diagnostic',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', prof_solicitor_document='{cns: "928976954930007", cpf: null, rg: null}', prof_solicitor_name='Profissional Solicit Name', solicitation_datetime=None, prof_autorization_name='Autorization professional name', emission_org_code='OrgCode2022', autorizaton_prof_document='{cns: null, cpf: "28445400070", rg: null}', autorizaton_datetime=None,hospitalization_autorization_number='1234567890',exam_results='Xray tibia broken',chart_number='1234',patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber='5613248546', patient_responsible_phonenumber='8564721598', secondary_cid_10='A01',cid_10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj='37549670000171', insurance_company_ticket_number='123450123456', insurance_company_series='Insurn',company_cnpj='37549670000171', company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
+def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes="1234567",establishment_exec_name='Establshment Exec Name',establishment_exec_cnes="7654321",patient_name='Patient Name',patient_cns="928976954930007",patient_birthday=None,patient_sex='F',patient_mother_name='Patient Mother Name',patient_address='Patient Adress street neighobourd',patient_address_city='Patient City',patient_address_city_ibge_code='1234567', patient_address_uf='SP',patient_address_cep='12345678',main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnostic='Patient Initial Diagnostic',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', professional_solicitor_document='{cns: "928976954930007", cpf: null, rg: null}', professional_solicitor_name='Profissional Solicit Name', solicitation_datetime=None, professional_autorization_name='Autorization professional name', emission_org_code='OrgCode2022', autorizaton_professional_document='{cns: null, cpf: "28445400070", rg: null}', autorizaton_datetime=None,hospitalization_autorization_number='1234567890',exam_results='Xray tibia broken',chart_number='1234',patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber='5613248546', patient_responsible_phonenumber='8564721598', secondary_cid_10='A01',cid_10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj='37549670000171', insurance_company_ticket_number='123450123456', insurance_company_series='Insurn',company_cnpj='37549670000171', company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
@@ -59,12 +59,12 @@ def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishmen
     procedureCode: "{procedure_code}",
     clinic: "{clinic}",
     internationCarater: "{internation_carater}",
-    profSolicitorDocument: {prof_solicitor_document},
-    profSolicitorName: "{prof_solicitor_name}",
+    professionalSolicitorDocument: {professional_solicitor_document},
+    professionalSolicitorName: "{professional_solicitor_name}",
     solicitationDatetime: "{solicitation_datetime}",
-    profAutorizationName: "{prof_autorization_name}",
+    professionalAutorizationName: "{professional_autorization_name}",
     emissionOrgCode: "{emission_org_code}",
-    autorizatonProfDocument: {autorizaton_prof_document}
+    autorizatonProfessionalDocument: {autorizaton_professional_document}
     autorizatonDatetime: "{autorizaton_datetime}",
     hospitalizationAutorizationNumber: "{hospitalization_autorization_number}",
     examResults: "{exam_results}",
@@ -121,12 +121,12 @@ def test_awnser_with_only_required_data(client):
     procedureCode: "1234567890",
     clinic: "'Clinic Name",
     internationCarater: "Internation Carater",
-    profSolicitorDocument: {cns: "928976954930007", cpf: null, rg: null},
-    profSolicitorName: "Profissional Solicit Name",
+    professionalSolicitorDocument: {cns: "928976954930007", cpf: null, rg: null},
+    professionalSolicitorName: "Profissional Solicit Name",
     solicitationDatetime: "10/10/2021",
-    profAutorizationName: "Autorization professional name",
+    professionalAutorizationName: "Autorization professional name",
     emissionOrgCode: "OrgCode2022",
-    autorizatonProfDocument: {cns: null, cpf: "28445400070", rg: null},
+    autorizatonProfessionalDocument: {cns: null, cpf: "28445400070", rg: null},
     autorizatonDatetime: "17/01/2008",
     hospitalizationAutorizationNumber: "1234567890",
     """

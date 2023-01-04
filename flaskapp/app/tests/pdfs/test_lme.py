@@ -39,9 +39,9 @@ patient_weight=142,
 patient_height=180,
 cid_10='A123',
 anamnese="Anamnese",
-prof_solicitor_name="Professional Solicitor Name",
+professional_solicitor_name="Professional Solicitor Name",
 solicitation_datetime=None,
-prof_solicitor_document='{cpf:"28445400070"}',
+professional_solicitor_document='{cpf:"28445400070"}',
 capacity_attest='["nao", "Responsible Name"]',
 filled_by='''["MEDICO", "Other name", "{'cpf':'28445400070'}"]''',
 patient_ethnicity='["SEMINFO", "Patient Ethnicity"]',
@@ -76,9 +76,9 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
         patientHeight: {patient_height},
         cid10: "{cid_10}",
         anamnese: "{anamnese}",
-        profSolicitorName: "{prof_solicitor_name}",
+        professionalSolicitorName: "{professional_solicitor_name}",
         solicitationDatetime: "{solicitation_datetime}",
-        profSolicitorDocument: {prof_solicitor_document},
+        professionalSolicitorDocument: {professional_solicitor_document},
         capacityAttest: {capacity_attest},
         filledBy: {filled_by},
         patientEthnicity: {patient_ethnicity},
@@ -132,9 +132,9 @@ def test_awnser_with_only_required_data(client):
         patientHeight: 140,
         cid10: "A123",
         anamnese: "Anamnese",
-        profSolicitorName: "Professional Solic Name",
+        professionalSolicitorName: "Professional Solic Name",
         solicitationDatetime: "12/10/2022",
-        profSolicitorDocument: {cpf:"28445400070"},
+        professionalSolicitorDocument: {cpf:"28445400070"},
         capacityAttest: ["nao", "Responsible Name"],
         filledBy: ["MEDICO", "Other name", "{'cpf':'28445400070'}"],
         patientEthnicity: ["SEMINFO", "Patient Ethnicity"],
@@ -164,7 +164,7 @@ def test_awnser_with_only_required_data(client):
 # patient_name
 # patient_mother_name
 # cappacity attest [patient_responsible_name]
-# prof_solicitor_name
+# professional_solicitor_name
 # !!!!!!! TESTING !!!!!!!
 # Name empty
 # Name with space
@@ -210,16 +210,16 @@ def test_wrongtype_patient_mother_name(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, patient_mother_name=123124) == False
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_prof_solicitor_name(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, prof_solicitor_name=test_input) == False
+def test_empty_value_professional_solicitor_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, professional_solicitor_name=test_input) == False
 
 @pytest.mark.parametrize("test_input", [50, 1])
-def test_text_prof_solicitor_name(test_input, client, datetime_to_use, lenght_test):
+def test_text_professional_solicitor_name(test_input, client, datetime_to_use, lenght_test):
     text = lenght_test[:test_input]
-    assert data_to_use(client, datetime_to_use, prof_solicitor_name=text) == False
+    assert data_to_use(client, datetime_to_use, professional_solicitor_name=text) == False
 
-def test_wrongtype_prof_solicitor_name(client, datetime_to_use):    
-    assert data_to_use(client, datetime_to_use, prof_solicitor_name=123124) == False
+def test_wrongtype_professional_solicitor_name(client, datetime_to_use):    
+    assert data_to_use(client, datetime_to_use, professional_solicitor_name=123124) == False
 
 @pytest.mark.parametrize("test_input", ['["sim", ""]', '["sim", " "]', f'["sim", "{lenght_test_parametrize[:50]}"]', 'aa'])
 def test_text_capacity_attest_responsible_name(test_input, client, datetime_to_use):
@@ -506,7 +506,7 @@ def test_contacts_phonenumbers(test_input, client, datetime_to_use):
 
 #################################################################
 # TEST DOCUMENTS CNS AND CPF
-# prof_solicitor_document
+# professional_solicitor_document
 # patient_document
 # wrong type
 # invalid cns
@@ -520,9 +520,9 @@ def test_contacts_phonenumbers(test_input, client, datetime_to_use):
     '{cpf:"284123312123", rg: null, cns: null}',
     '{cpf:null, rg: null, cns: null}'
 ])
-def test_prof_solicitor_document(test_input, client, datetime_to_use):
+def test_professional_solicitor_document(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(client, datetime_to_use, prof_solicitor_document=test_input) == False
+    assert data_to_use(client, datetime_to_use, professional_solicitor_document=test_input) == False
 
 @pytest.mark.parametrize("test_input", [
     "284123312123"

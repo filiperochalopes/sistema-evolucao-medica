@@ -24,7 +24,7 @@ def client():
     # Create a GraphQL client using the defined transport
     return Client(transport=transport, fetch_schema_from_transport=True)
 
-def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns='928976954930007', patient_birthday=None,patient_address="Patient Adress",exams="Exames tests with a text",solicitation_reason="Solicitation Reason",prof_solicitor_name="Professional Solicitor",prof_authorized_name="Professional Authorized",solicitation_datetime=None,autorization_datetime=None, document_pacient_date=None,document_pacient_name='Document pacient name'):
+def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns='928976954930007', patient_birthday=None,patient_address="Patient Adress",exams="Exames tests with a text",solicitation_reason="Solicitation Reason",professional_solicitor_name="Professional Solicitor",professional_authorized_name="Professional Authorized",solicitation_datetime=None,autorization_datetime=None, document_pacient_date=None,document_pacient_name='Document pacient name'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
@@ -46,10 +46,10 @@ def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns
     campos_string = f"""
     patient: {patient},
     solicitationReason: "{solicitation_reason}",
-    profSolicitorName: "{prof_solicitor_name}",
+    professionalSolicitorName: "{professional_solicitor_name}",
     solicitationDatetime: "{solicitation_datetime}",
     exams: "{exams}",
-    profAuthorizedName: "{prof_authorized_name}", 
+    professionalAuthorizedName: "{professional_authorized_name}", 
     documentPacientName: "{document_pacient_name}",
     autorizationDatetime: "{autorization_datetime}",
     documentPacientDate: "{document_pacient_date}"
@@ -91,7 +91,7 @@ def test_awnser_with_only_required_data(client, datetime_to_use):
             uf:"SP", 
             city: "City"},},
     solicitationReason: "Solicitation reason",
-    profSolicitorName: "Professional solicitor Name",
+    professionalSolicitorName: "Professional solicitor Name",
     solicitationDatetime: "10/10/2014",
     exams: "Required exams"
     """
@@ -116,8 +116,8 @@ def test_awnser_with_only_required_data(client, datetime_to_use):
 ##############################################################
 # ERRORS IN NAMES CAMPS
 # patientName
-# prof_authorized_name
-# prof_solicitor_name
+# professional_authorized_name
+# professional_solicitor_name
 # document_pacient_name
 # Name empty
 # Name with space
@@ -127,8 +127,8 @@ def test_awnser_with_only_required_data(client, datetime_to_use):
 
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_prof_authorized_name(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, prof_authorized_name=test_input) == True
+def test_empty_value_professional_authorized_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, professional_authorized_name=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
 def test_empty_value_document_pacient_name(test_input, client, datetime_to_use):
