@@ -138,17 +138,17 @@ pdfs_schema_type_defs = gql(
             "Carater da internacao, max:19 min:6 caracteres"
             internationCarater: String!, 
             "Documento do profissional solicitante, cns ou cpf, utilize o input DocumentInput"
-            profSolicitorDocument: DocumentInput!, 
+            professionalSolicitorDocument: DocumentInput!, 
             "Nome do profissional solicitante, max:48 min:8 caracteres"
-            profSolicitorName: String!,
+            professionalSolicitorName: String!,
             "Data e hora da solicitacao, somente dia/mes/ano"
             solicitationDatetime: String!,
             "Nome do profissional autorizador, max:48 min:8 caracteres" 
-            profAutorizationName: String!,
+            professionalAutorizationName: String!,
             "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:17 min:2 caracteres"
             emissionOrgCode: String!, 
             "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
-            autorizatonProfDocument: DocumentInput!,
+            autorizatonProfessionalDocument: DocumentInput!,
             "Data e hora da autorizacao, somente dia/mes/ano"
             autorizatonDatetime: String!,
             "Numero da autorizacao de internacao hospitalar, no maximo 18 digitos"

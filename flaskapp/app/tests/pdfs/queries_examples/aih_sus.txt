@@ -32,16 +32,16 @@ mutation{
     procedureCode: "1234567890",
     clinic: "Clinic Name",
     internationCarater: "TYriste",
-    profSolicitorDocument: {
+    professionalSolicitorDocument: {
     cns: "928976954930007",
     cpf: null,
     rg: null
     },
-    profSolicitorName: "Professional Solicitor Name",
+    professionalSolicitorName: "Professional Solicitor Name",
     solicitationDatetime: "10/02/2021",
-    profAutorizationName: "Professional Autorizator Name",
+    professionalAutorizationName: "Professional Autorizator Name",
     emissionOrgCode: "12aass",
-    autorizatonProfDocument: {
+    autorizatonProfessionalDocument: {
     cpf: "28445400070",
     cns: null,
     rg: null
