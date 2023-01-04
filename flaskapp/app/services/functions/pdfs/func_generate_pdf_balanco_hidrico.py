@@ -15,6 +15,8 @@ def func_generate_pdf_balanco_hidrico(created_at:str, patient_name:str, patient_
         try:
             pdf.add_abbreviated_name(name=patient_name, pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
 
+            pdf.set_font('Roboto-Mono', 11)
+            pdf.add_oneline_text(text=f'{patient_weight}kg', pos=(531, 255), camp_name='Peso do Paciente', len_max=6)
 
         except Exception as error:
             return error

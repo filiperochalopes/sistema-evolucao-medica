@@ -800,7 +800,7 @@ class ReportLabCanvasUtils():
                 if hours:
                     raise Exception(f'A data nao corresponde ao formato dd/mm/yyyy HH:MM')
                 raise Exception(f'A data nao corresponde ao formato dd/mm/yyyy')
-            str_date = str('%02d/%02d/%d %02d:%02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute, date_object.second)
+            str_date = str('%02d/%02d/%d %02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute)
             if hours:  
                 if not formated:
                     str_date = self.add_interval_to_data(data=str_date, interval=interval_between_numbers)
