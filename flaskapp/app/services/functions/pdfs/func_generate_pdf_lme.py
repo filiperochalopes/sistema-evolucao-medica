@@ -2,7 +2,7 @@ import datetime
 from app.services.utils.PdfLme import PdfLme
 
 
-def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_weight:int, patient_height:int, cid_10:str, anamnese:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> str:
+def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_weight:int, patient_height:int, cid_10:str, anamnese:str, professional_solicitor_name:str, solicitation_datetime:datetime.datetime, professional_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> str:
     """fill pdf lme (laudo de solicitacao, avaliacao e autorizacao e documentos)
 
     Args:
@@ -12,9 +12,9 @@ def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_weigh
         patient_height (int): patient_height
         cid_10 (str): cid_10
         anamnese (str): anamnese
-        prof_solicitor_name (str): prof_solicitor_name
+        professional_solicitor_name (str): professional_solicitor_name
         solicitation_datetime (datetime.datetime): solicitation_datetime
-        prof_solicitor_document (dict): prof_solicitor_document
+        professional_solicitor_document (dict): professional_solicitor_document
         capacity_attest (list): list with option and text, eg: ['nao', 'Responsible Name']
         filled_by (list): lits with option name and document, eg ['MEDICO', 'Other name', {'CPF':28445400070}],
         patient_ethnicity (list): list with options and text (if others options is) eg ['SEMINFO', 'Patient Ethnicity']
@@ -38,7 +38,7 @@ def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_weigh
             pdf.add_oneline_intnumber(number=patient_height, pos=(485, 602), camp_name='Patient Height', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
             pdf.add_oneline_text(text=cid_10, pos=(34, 455), camp_name='cid_10', len_max=4, len_min=3, interval='  ')
             pdf.add_datetime(date=solicitation_datetime, pos=(292, 222), camp_name='Solicitation Datetime', hours=False, interval='   ', formated=False)
-            pdf.add_document_cns_cpf_rg(document=prof_solicitor_document, pos_square_cpf=(41, 195), pos_square_cns=(84,194), pos_cns=(129, 195), pos_cpf=(129, 195),camp_name='Professional Solicitor Document', interval='  ', square_size=(5, 8))
+            pdf.add_document_cns_cpf_rg(document=professional_solicitor_document, pos_square_cpf=(41, 195), pos_square_cns=(84,194), pos_cns=(129, 195), pos_cpf=(129, 195),camp_name='Professional Solicitor Document', interval='  ', square_size=(5, 8))
 
 
             pdf.set_font('Roboto-Mono', 9)
@@ -46,7 +46,7 @@ def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_weigh
             pdf.add_oneline_text(text=patient['name'], pos=(36, 628), camp_name='Patient Name', len_max=79, len_min=7)
             pdf.add_oneline_text(text=patient['mother_name'], pos=(36, 602), camp_name='Patient Mother Name', len_max=79, len_min=7)
             pdf.add_morelines_text(text=anamnese, initial_pos=(36, 430), decrease_ypos= 10, camp_name='Anamnese', len_max=485, char_per_lines=97, len_min=5)
-            pdf.add_oneline_text(text=prof_solicitor_name, pos=(36, 224), camp_name='Professional Solicitor Name', len_max=45, len_min=8)
+            pdf.add_oneline_text(text=professional_solicitor_name, pos=(36, 224), camp_name='Professional Solicitor Name', len_max=45, len_min=8)
             if type(capacity_attest) != type(list()) or len(capacity_attest) > 2:
                 raise Exception('Cappacity Attest deve ser uma lista com 2 itens')
             pdf.add_markable_square_and_onelinetext(option=capacity_attest[0], valid_options=['SIM','NAO'], text_options=['SIM'], text_pos=(308, 268), options_positions=((79, 271), (42,270)), camp_name='Capacity Attest', len_max=46, text=capacity_attest[1], len_min=5, square_size=(5, 8))

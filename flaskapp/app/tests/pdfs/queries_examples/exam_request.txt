@@ -12,10 +12,10 @@ mutation{
       },
     },
     solicitationReason: "Solicitation reason",
-    profSolicitorName: "Professional solicitor Name",
+    professionalSolicitorName: "Professional solicitor Name",
     solicitationDatetime: "10/10/2014",
     exams: "Exames Solicitados",
-    profAuthorizedName: "Prof Autorization Name", 
+    professionalAuthorizedName: "Prof Autorization Name", 
     documentPacientName: "Document Pacient NAme",
     autorizationDatetime: "10/10/2021",
     documentPacientDate: "10/08/2021"

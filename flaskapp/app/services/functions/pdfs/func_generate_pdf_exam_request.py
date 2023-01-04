@@ -3,16 +3,16 @@ from app.services.utils.PdfExamRequest import PdfExamRequest
 
 
 def func_generate_pdf_exam_request(patient:dict, solicitation_reason:str,
-exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, prof_authorized_name:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> str:
+exams:str, professional_solicitor_name:str, solicitation_datetime:datetime.datetime, professional_authorized_name:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> str:
     """fill pdf exam request (Solicitacao de exames e procedimentos)
 
     Args:
         patient (dict): patient info
         solicitation_reason (str): solicitation_reason
         exams (str): text with exams, this is what extends pdf size to fill all exams
-        prof_solicitor_name (str): prof_solicitor_name
+        professional_solicitor_name (str): professional_solicitor_name
         solicitation_datetime (datetime.datetime): solicitation_datetime
-        prof_authorized_name (str, optional): prof_authorized_name. Defaults to None.
+        professional_authorized_name (str, optional): professional_authorized_name. Defaults to None.
         autorization_datetime (datetime.datetime, optional): autorization_datetime. Defaults to None.
         document_pacient_date (datetime.datetime, optional): document_pacient_date. Defaults to None.
         document_pacient_name (str, optional): document_pacient_name. Defaults to None.
@@ -37,14 +37,14 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, pro
             solicitation_datetime_ypos = 572
             patient_adress_ypos = 734
             solicitation_reason_ypos = 690
-            prof_solicitor_ypos = 595
+            professional_solicitor_ypos = 595
             for x in range(pdf.pags_quant):
                 pdf.add_oneline_text(text=patient['name'], pos=(7, patient_name_ypos), camp_name='Patient Name', len_max=70, len_min=7)
                 pdf.add_cns(cns=patient['cns'], pos=(450, patient_cns_ypos), camp_name='Patient CNS',formated=True)
                 pdf.add_datetime(date=patient['birthdate'], pos=(441, patient_birthday_ypos), camp_name='Patient Birthday', hours=False, formated=True)
                 pdf.add_morelines_text(text=f"{patient['address']['street']}, {patient['address']['city']} - {patient['address']['uf']}", initial_pos=(7, patient_adress_ypos), decrease_ypos=10, camp_name='Patient Adress', len_max=216, len_min=7, char_per_lines=108)
                 pdf.add_morelines_text(text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, camp_name='Solicitation Reason', len_max=216, len_min=7, char_per_lines=108)
-                pdf.add_oneline_text(text=prof_solicitor_name, pos=(7, prof_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
+                pdf.add_oneline_text(text=professional_solicitor_name, pos=(7, professional_solicitor_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
                 pdf.add_datetime(date=solicitation_datetime, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True)
 
                 #Decrese ypos in all lines to complete the page
@@ -53,7 +53,7 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, pro
                 patient_birthday_ypos -= decreaseYpos
                 patient_adress_ypos -= decreaseYpos
                 solicitation_reason_ypos -= decreaseYpos
-                prof_solicitor_ypos -= decreaseYpos
+                professional_solicitor_ypos -= decreaseYpos
                 solicitation_datetime_ypos -= decreaseYpos
 
 
@@ -64,17 +64,17 @@ exams:str, prof_solicitor_name:str, solicitation_datetime:datetime.datetime, pro
 
         #Adding data that can be null
         try:
-            prof_authorized_ypos = 595
+            professional_authorized_ypos = 595
             document_pacient_name_ypos = 605
             autorization_datetime_ypos = 572
             document_pacient_date_ypos = 572
             for x in range(pdf.pags_quant):
-                pdf.add_oneline_text(text=prof_authorized_name, pos=(174, prof_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
+                pdf.add_oneline_text(text=professional_authorized_name, pos=(174, professional_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
                 pdf.add_oneline_text(text=document_pacient_name, pos=(340, document_pacient_name_ypos), camp_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
                 pdf.add_datetime(date=autorization_datetime, pos=(195, autorization_datetime_ypos), camp_name='Authorization Datetime', hours=False, formated=True, nullable=True)
                 pdf.add_datetime(date=document_pacient_date, pos=(362, document_pacient_date_ypos), camp_name='Document Pacient Datetime', hours=False, formated=True, nullable=True)
 
-                prof_authorized_ypos -= decreaseYpos
+                professional_authorized_ypos -= decreaseYpos
                 document_pacient_name_ypos -= decreaseYpos
                 autorization_datetime_ypos -= decreaseYpos
                 document_pacient_date_ypos -= decreaseYpos

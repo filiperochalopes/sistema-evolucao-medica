@@ -231,17 +231,17 @@ pdfs_schema_type_defs = gql(
             "Observacoes do diagnostico, max: 776 min: 5 caracteres"  
             procedureJustificationComments: String,
             "Documento do profissional solicitante, cns ou cpf, utilize o input DocumentInput"
-            profSolicitorDocument: DocumentInput, 
+            professionalSolicitorDocument: DocumentInput, 
             "Nome do profissional solicitante, max:48 min:5 caracteres"
-            profSolicitorName: String,
+            professionalSolicitorName: String,
             "Data da solicitacao, somente dia/mes/ano"
             solicitationDatetime: String,
             "Nome do profissional autorizador, max:46 min:5 caracteres" 
-            profAutorizationName:String,
+            professionalAutorizationName:String,
             "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:16 min:2 caracteres"
             emissionOrgCode: String, 
             "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
-            autorizatonProfDocument: DocumentInput,
+            autorizatonProfessionalDocument: DocumentInput,
             "Data da autorizacao, somente dia/mes/ano"
             autorizatonDatetime: String,
             "Data da Assinatura, somente DD/MM/YYYY"
@@ -305,11 +305,11 @@ pdfs_schema_type_defs = gql(
             "Anamnese, max:485 min: 5 caracteres"
             anamnese: String!,
             "Nome do profissional solicitante, max:45 min:8 caracteres"
-            profSolicitorName: String!,
+            professionalSolicitorName: String!,
             "Data da solicitacao no formato DD/MM/YYYY"
             solicitationDatetime: String!,
             "Documento do profissional solicitante, CNS ou CPF, utilize o DocumentInput"
-            profSolicitorDocument: DocumentInput!,
+            professionalSolicitorDocument: DocumentInput!,
             """
             Atestado de capacidade, envie como uma list com 2 opcoes. ['Sim'/'Nao', 'Nome do responsavel]. 
             Nome do responsavel deve ter no max:46 min:5(caso a opcao seja Sim) caracteres
@@ -365,13 +365,13 @@ pdfs_schema_type_defs = gql(
             "Motivo da Solicitacao, max: 216 min:7 caracteres"
             solicitationReason: String!,
             "Nome do profissional Solicitante, max:29 min:7 caracteres"
-            profSolicitorName: String!,
+            professionalSolicitorName: String!,
             "Data da Solicitacao no formato DD/MM/YYYY"
             solicitationDatetime: String!,
             "Exames solicitados"
             exams: String!,
             "Nome do profissional autorizador, max:29 min:7 caracteres"
-            profAuthorizedName: String,
+            professionalAuthorizedName: String,
             "Nome do paciente no final do documento, esse campo fica no fim do documento e tem um tamanho maximo diferente. max:46 min:7 caracteres"
             documentPacientName: String,
             "Data da Autorizacao no formato DD/MM/YYYY"
@@ -459,7 +459,7 @@ pdfs_schema_type_defs = gql(
             """
             patientEthnicity: [String],
             "Nome do Profissional Solicitante, max: 23 min:7 caracteres"
-            profSolicitorName: String!,
+            professionalSolicitorName: String!,
             "Data da Solicitacao no formato DD/MM/YYYY"
             solicitationDatetime: String!,
             "Numero do exame, max: 16 caracteres"

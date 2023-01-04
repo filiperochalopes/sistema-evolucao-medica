@@ -51,16 +51,16 @@ mutation{
 		procedureJustificationSecCid10: "A31",
 		procedureJustificationAssociatedCauseCid10: "B435",
 		procedureJustificationComments: "Procedure Justification Comments",
-		profSolicitorDocument: {
+		professionalSolicitorDocument: {
 		cns: "928976954930007",
 		cpf: null,
 		rg: null
 		},
-		profSolicitorName: "Professional Solicitator",
+		professionalSolicitorName: "Professional Solicitator",
 		solicitationDatetime: "10/11/2021",
-		profAutorizationName: "Professional Autorizaton",
+		professionalAutorizationName: "Professional Autorizaton",
 		emissionOrgCode: "Cod121234",
-		autorizatonProfDocument: {
+		autorizatonProfessionalDocument: {
 		cns: "928976954930007",
 		cpf: null,
 		rg: null
