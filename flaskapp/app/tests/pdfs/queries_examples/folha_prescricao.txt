@@ -76,7 +76,5 @@ mutation{
         endingDate: "21/11/2022"      
       }
     ]
-    
-
 ){base64Pdf}
 }

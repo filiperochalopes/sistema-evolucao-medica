@@ -241,8 +241,6 @@ mutation{
           document: "4512788"
         }
       }
-    ]
-    
-
-){base64Pdf}
+    ])
+{base64Pdf}
 }

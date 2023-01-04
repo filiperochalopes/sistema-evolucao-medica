@@ -25,6 +25,19 @@ mutation{
     diagnostic: "Diagnostic",
     patientEmail: "patietemail@gmail.com",
     contactsPhonenumbers: ["1254875652", "4578456598"],
-    medicines: [{medicineName: "nome do Medicamneto", quant1month:"20 comp",        quant2month: "15 comp", quant3month: "5 comp"},{medicineName: "nome do Medicamneto", quant1month:"20 comp", quant2month: "15 comp", quant3month: "5 comp"}]
+    medicines: [
+      {
+        medicineName: "nome do Medicamneto",
+        quant1month:"20 comp",        
+        quant2month: "15 comp", 
+        quant3month: "5 comp"
+        },
+      {
+        medicineName: "nome do Medicamneto", 
+        quant1month:"20 comp", 
+        quant2month: "15 comp", 
+        quant3month: "5 comp"
+        }
+    ]
 ){base64Pdf}
 }
