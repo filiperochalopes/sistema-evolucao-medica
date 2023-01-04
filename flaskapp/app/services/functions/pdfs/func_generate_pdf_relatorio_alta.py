@@ -22,7 +22,7 @@ def func_generate_pdf_relatorio_alta(document_datetime:str, patient:dict, evolut
         # not null data
         try:
             
-            pdf.add_datetime(date=document_datetime, pos=(410, 740), camp_name='Document Datetime', hours=True, formated=True)
+            pdf.add_datetime(date=document_datetime, pos=(490, 740), camp_name='Document Datetime', hours=True, formated=True,centralized=True)
             
             # change font size to normal            
             pdf.set_font('Roboto-Mono', 9)            

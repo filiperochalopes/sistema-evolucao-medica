@@ -27,7 +27,7 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
         # not null data
         try:
             # change font size to datetime            
-            pdf.add_datetime(date=document_datetime, pos=(480, 740), camp_name='Document Datetime', hours=True, formated=True, centralized=True)
+            pdf.add_datetime(date=document_datetime, pos=(475, 740), camp_name='Document Datetime', hours=True, formated=True, centralized=True)
             
             pdf.set_font('Roboto-Mono', 9)
             #Normal font size
