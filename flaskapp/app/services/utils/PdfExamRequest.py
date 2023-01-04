@@ -1,10 +1,6 @@
-from app.env import FONT_DIRECTORY, TEMPLATE_EXAM_REQUEST_DIRECTORY, WRITE_EXAM_REQUEST_DIRECTORY
+from app.env import TEMPLATE_EXAM_REQUEST_DIRECTORY, WRITE_EXAM_REQUEST_DIRECTORY
 from app.services.utils.ReportLabCanvasUtils import ReportLabCanvasUtils
-import io
-from reportlab.pdfgen import canvas
-from reportlab.pdfbase import pdfmetrics
 from reportlab.lib.pagesizes import letter
-from reportlab.pdfbase.ttfonts import TTFont
 from PyPDF2 import PdfWriter, PdfReader
 from math import ceil
 
@@ -15,13 +11,7 @@ class PdfExamRequest(ReportLabCanvasUtils):
     WRITE_DIRECTORY = WRITE_EXAM_REQUEST_DIRECTORY
 
     def __init__(self) -> None:
-
-        self.packet = io.BytesIO()
-        # Create canvas and add data
-        self.can = canvas.Canvas(self.packet, pagesize=letter)
-        # Change canvas font to mach with the document
-        # this is also changed in the document to some especific fields
-        pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
+        super().__init__(canvas_pagesize=letter)
         self.can.setFont('Roboto-Mono', 10)
     
 

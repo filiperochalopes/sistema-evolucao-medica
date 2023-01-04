@@ -17,6 +17,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
 
     def __init__(self) -> None:
 
+        super().__init__(canvas_pagesize=letter)
         self.packet_1 = io.BytesIO()
         # Create canvas and add data
         self.can_1 = canvas.Canvas(self.packet_1, pagesize=letter)

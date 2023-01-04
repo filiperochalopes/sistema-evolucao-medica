@@ -1,9 +1,5 @@
-from app.env import FONT_DIRECTORY, BOLD_FONT_DIRECTORY,TEMPLATE_FOLHA_EVOLUCAO_DIRECTORY, WRITE_FOLHA_EVOLUCAO_DIRECTORY
+from app.env import TEMPLATE_FOLHA_EVOLUCAO_DIRECTORY, WRITE_FOLHA_EVOLUCAO_DIRECTORY
 from app.services.utils.ReportLabCanvasUtils import ReportLabCanvasUtils
-import io
-from reportlab.pdfgen import canvas
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
 from PyPDF2 import PdfWriter, PdfReader
 import datetime
 
@@ -14,15 +10,9 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
     WRITE_DIRECTORY = WRITE_FOLHA_EVOLUCAO_DIRECTORY
 
     def __init__(self) -> None:
-
-        self.packet = io.BytesIO()
         # Create canvas and add data
         page_size_points = (842, 595)
-        self.can = canvas.Canvas(self.packet, pagesize=page_size_points)
-        # Change canvas font to mach with the document
-        # this is also changed in the document to some especific fields
-        pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
-        pdfmetrics.registerFont(TTFont('Roboto-Condensed-Bold', BOLD_FONT_DIRECTORY))
+        super().__init__(canvas_pagesize=page_size_points)
         self.can.setFont('Roboto-Condensed-Bold', 20)
     
 
