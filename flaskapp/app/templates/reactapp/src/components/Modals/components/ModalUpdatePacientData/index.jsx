@@ -11,10 +11,15 @@ import getCepApiAdapter from "services/getCepApiAdapter";
 import Select from "components/Select";
 import { UPDATE_PATIENT } from "graphql/mutations";
 
+const GENERS = [
+  { label: "Masculino", value: "male" },
+  { label: "Feminino", value: "fema" },
+];
+
 const ModalUpdatePacientData = ({ id }) => {
   const { data: allergiesData } = useQuery(ALLERGIES);
   const { data: comorbiditiesData } = useQuery(COMORBIDITIES);
-  const [getPatientData] = useLazyQuery(GET_PATIENT);
+  const [getPatientData, { data }] = useLazyQuery(GET_PATIENT);
   const [updatePatient] = useMutation(UPDATE_PATIENT);
   const { data: statesData } = useQuery(STATES);
 
@@ -65,7 +70,33 @@ const ModalUpdatePacientData = ({ id }) => {
         id: id,
       },
     });
-  }, []);
+  }, [id, getPatientData]);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    formik.setValues({
+      allergies: data.patient.allergies,
+      address: {
+        zipcode: "",
+        street: "dd",
+        complement: "",
+        number: "32",
+        city: "",
+        uf: "",
+      },
+      birthdate: data.patient.birthdate,
+      cns: data.patient.cns,
+      comorbidities: data.patient.comorbidities,
+      cpf: data.patient.cpf,
+      name: data.patient.name,
+      rg: data.patient.rg,
+      sex: GENERS.find((gener) => gener.value === data.patient.sex),
+      weightKg: data.patient.weightKg,
+    });
+  }, [data]);
 
   useEffect(() => {
     async function getCep() {
@@ -101,6 +132,7 @@ const ModalUpdatePacientData = ({ id }) => {
           placeholder="Data de Nascimento"
           onChange={formik.handleChange}
           type="date"
+          value={formik.values.birthdate}
           name="birthdate"
         />
         <Select
@@ -110,10 +142,7 @@ const ModalUpdatePacientData = ({ id }) => {
           value={formik.values.sex}
           placeholder="Sexo"
           className="small"
-          options={[
-            { label: "Masculino", value: "male" },
-            { label: "Feminino", value: "fema" },
-          ]}
+          options={GENERS}
         />
       </div>
       <div className="row">
@@ -171,6 +200,7 @@ const ModalUpdatePacientData = ({ id }) => {
           placeholder="CNS"
           onChange={formik.handleChange}
           name="cns"
+          value={formik.values.cns}
         />
         <Input
           className="normal"

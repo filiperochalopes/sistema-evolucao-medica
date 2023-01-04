@@ -9,8 +9,11 @@ import { useNavigate } from "react-router-dom";
 import loginSchema from "schemas/loginSchema";
 import { useMutation } from "@apollo/client";
 import { SIGNING } from "graphql/mutations";
+import { useEffect } from "react";
+import { useSnackbar } from "notistack";
 
 function Login() {
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [signing] = useMutation(SIGNING);
 
@@ -26,10 +29,20 @@ function Login() {
         localStorage.setItem("token", response.data.signin.token);
         navigate("/pacientes");
       } catch {
-        alert("error,tente novamente");
+        enqueueSnackbar("Erro, tente novamente", { variant: "error" });
       }
     },
   });
+
+  useEffect(() => {
+    const getToken = localStorage.getItem("token");
+    if (getToken) {
+      navigate("/pacientes", {
+        replace: true,
+      });
+    }
+  }, [navigate]);
+
   return (
     <Container onSubmit={formik.handleSubmit}>
       <h2>Realizar Login</h2>

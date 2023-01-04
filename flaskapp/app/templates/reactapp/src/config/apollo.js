@@ -1,6 +1,11 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+  ApolloLink,
+} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-
+import { onError } from "@apollo/client/link/error";
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_API_URL,
 });
@@ -15,8 +20,18 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const logoutLink = onError(({ response }) => {
+  console.log("response", response);
+  if (
+    response.errors.find((error) => error.message === "Signature has expired")
+  ) {
+    localStorage.removeItem("token");
+    window.location.href("/");
+  }
+});
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: ApolloLink.from([logoutLink, authLink, httpLink]),
   cache: new InMemoryCache(),
 });
 export default client;
