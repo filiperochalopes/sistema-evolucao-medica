@@ -151,7 +151,7 @@ class ReportLabCanvasUtils():
             raise Exception("Erro desconhecido enquanto adicionava um quadrado (opcoes de marcar) no documento com o canvas")
 
 
-    def add_rectangle(self, pos:tuple, width:int, height:int, color:tuple=(.9215, .9215, .9215), alpha:float=1,stroke:int=0, fill:int=1) -> None:
+    def add_rectangle(self, pos:tuple, width:int, height:int, color:tuple=(.9215, .9215, .9215), alpha:float=1.0,stroke:int=0, fill:int=1) -> None:
         """Add the rectangle in document
 
         Args:
@@ -164,14 +164,15 @@ class ReportLabCanvasUtils():
             fill (int): fill all rectangle with color, 0 - False or 1 - True. Defaults to 1. 
         """
         try:
+            self.validate_func_args(function_to_verify=self.add_rectangle, variables_to_verify={'pos':pos,'width':width,'height':height,'color':color,'alpha':alpha,'stroke':stroke,'fill':fill,})
             #Change fill color do draw rect
             try:
-                r = color[0]
-                g = color[1] 
-                b = color[2]
+                r = float(color[0])
+                g = float(color[1])
+                b = float(color[2])
             except:
                 raise Exception("Voce precisa adiconar a cor do retangulo no formato (r, g, b)")
-            self.can.setFillColorRGB(r=r, g=g, b=b, alpha=alpha)
+            self.can.setFillColorRGB(r=r, g=g, b=b, alpha=float(alpha))
             self.can.rect(pos[0], pos[1], width=width, height=height, stroke=stroke, fill=fill)
             #Change fill color to black again to write text
             self.can.setFillColorRGB(0, 0, 0, 1)

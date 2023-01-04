@@ -21,10 +21,16 @@ class PdfBalancoHidrico(ReportLabCanvasUtils):
     
     def add_fluid_balance(self, balances:list) -> None:
         
+        self.validate_func_args(function_to_verify=self.add_fluid_balance, variables_to_verify={'balances':balances})
         #maximum balances in first collum
         FIRST_COLLUM_LIMIT = 13
+        y_rectangle_pos = 500
 
-        self.add_rect_date_background(pos=(24, 502))
+        for balan in balances:
+
+            self.add_rectangle(pos=(25, y_rectangle_pos), width=118, height=25)
+            y_rectangle_pos -= 30
+        
         
 
         return None
