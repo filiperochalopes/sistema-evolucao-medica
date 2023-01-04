@@ -6,3 +6,4 @@ import app.graphql.queries.internments
 import app.graphql.queries.internment
 import app.graphql.queries.procedures
 import app.graphql.queries.my_user
+import app.graphql.queries.fluid_balance_descriptions
