@@ -60,7 +60,7 @@ const routers = createBrowserRouter([
         ),
       },
       {
-        path: "/prontuario",
+        path: "/prontuario/:id",
         element: (
           <PrivateRouter>
             <Chart />

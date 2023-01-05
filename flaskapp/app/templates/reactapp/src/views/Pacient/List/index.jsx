@@ -35,7 +35,7 @@ const List = () => {
                     {pacient.patient.age}
                   </p>
                   <div className="container_buttons">
-                    <Link to="/prontuario">
+                    <Link to={`/prontuario/${pacient.id}`}>
                       <Button
                         type="button"
                         className="add_new_pacient"
