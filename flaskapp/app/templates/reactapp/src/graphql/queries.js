@@ -204,14 +204,9 @@ export const GET_SINALS = gql`
   }
 `;
 
-export const GET_ALL_INTERNMENT = gql`
+export const GET_ALL_CHART = gql`
   query internment($internment: ID!) {
     internment(id: $internment) {
-      justification
-      cid10 {
-        code
-        description
-      }
       evolutions {
         text
         professional {
@@ -241,6 +236,7 @@ export const GET_ALL_INTERNMENT = gql`
         nursingActivities {
           name
         }
+        createdAt
       }
 
       pendings {
@@ -252,6 +248,7 @@ export const GET_ALL_INTERNMENT = gql`
         description {
           value
         }
+        createdAt
       }
       measures {
         spO2
@@ -263,6 +260,7 @@ export const GET_ALL_INTERNMENT = gql`
         celciusAxillaryTemperature
         glucose
         fetalCardiacFrequency
+        createdAt
       }
     }
   }

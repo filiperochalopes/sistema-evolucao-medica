@@ -26,7 +26,7 @@ const logoutLink = onError(({ response }) => {
     response.errors.find((error) => error.message === "Signature has expired")
   ) {
     localStorage.removeItem("token");
-    window.location.href("/");
+    window.location.href = "/";
   }
 });
 
