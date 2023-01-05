@@ -21,15 +21,18 @@ def func_generate_pdf_balanco_hidrico(created_at:str, patient_name:str, patient_
 
 
             pdf.set_font('Roboto-Mono', 11)
-            pdf.add_oneline_text(text=f'{patient_weight}kg', pos=(531, 256), camp_name='Peso do Paciente', len_max=8)
-
             pdf.add_fluid_balance(balances=fluid_balance)
+
+            pdf.set_font('Roboto-Mono', 13)
+            pdf.add_oneline_text(text=f'{patient_weight}kg', pos=(531, 256), camp_name='Peso do Paciente', len_max=8)
+            # Add metrics in pdf
+            pdf.add_metrics()
+            pdf.add_morelines_text(text=pdf.diurese_info, initial_pos=(417, 149), camp_name='Metricas da diurese', char_per_lines=46, len_max=80, decrease_ypos=15)
 
         except Exception as error:
             return error
         except:
             return Exception('Erro desconhecido enquanto adicionava dados obrigatorios')
-
 
         #Get pdf base64
         pdf_base64_enconded = pdf.get_base64()

@@ -10,6 +10,9 @@ class PdfBalancoHidrico(ReportLabCanvasUtils):
     WRITE_DIRECTORY = WRITE_BALANCO_HIDRICO_DIRECTORY
 
     def __init__(self) -> None:
+
+        # Info about diurese values
+        self.diurese_info = "(VN para peso, adulto: 850mL/24h - 0,5mL/kg/h; neonato: 1700mL/24h - 1mL/kg/h)"
         page_size_points = (842, 595)
         super().__init__(canvas_pagesize=page_size_points)
         self.can.setFont('Roboto-Condensed-Bold', 20)
@@ -17,6 +20,21 @@ class PdfBalancoHidrico(ReportLabCanvasUtils):
 
     def get_output(self) -> PdfWriter:
         return super().get_output()
+
+
+    def get_value_text(self, value:int) -> str:
+        """Return value with + or - 
+
+        Args:
+            value (int): value
+        """        
+
+        if value > 0:
+            start = '+'
+        else:
+            start = ''
+        
+        return f'{start}{value}'
 
 
     def get_description_values(self, value:int, description:str) -> str:
@@ -31,18 +49,32 @@ class PdfBalancoHidrico(ReportLabCanvasUtils):
         """ 
 
         if value > 0:
-            start = '+'
             self.administrated_fluids += int(value)
         else:
-            start = ''
-            self.losts += int(value)
+            # use abs to get absolut value to sum
+            self.losts += abs(int(value))
+
+        value = self.get_value_text(value=value)
 
         description = str(description).upper().strip()
         if description == 'DIURESE':
-            self.diurese += int(value)
+            # Use absolut value
+            self.diurese += abs(int(value))
         
-        return f'{start}{value}ml ({description})'
+        return f'{value}ml ({description})'
 
+
+    def add_metrics(self):
+        """Add Adminstrated fluids, losts and diurese to document
+        """        
+        # Transform metrics in string with + or - signal
+        total_balance = self.administrated_fluids - self.losts
+        total_balance = self.get_value_text(value=total_balance)
+
+        self.add_oneline_text(text=f'{self.administrated_fluids}mL', pos=(604, 226), camp_name='Fluidos Administrados', len_max=30)
+        self.add_oneline_text(text=f'{self.losts}mL', pos=(503, 210), camp_name='Perdas', len_max=30)
+        self.add_oneline_text(text=f'{total_balance}mL', pos=(518, 195), camp_name='Balanco Total', len_max=30)
+        self.add_oneline_text(text=f'{self.diurese}mL', pos=(518, 166), camp_name='Diurese em 24hrs', len_max=30)
 
     def add_description(self, description:str, pos:tuple, camp_name:str) -> None:
         """Function to add description, change color
