@@ -120,7 +120,7 @@ const Evolution = () => {
         drugs: prescription.drugPrescriptions.map((drug) => ({
           drugName: drug.drug.name,
           drugKind: drug.kind,
-          dosage: drug.drug.usualDosage,
+          dosage: drug.drug.dosage,
           route: drug.route,
           initialDate: drug.initialDate,
           endingDate: drug.finalDate,
@@ -335,7 +335,12 @@ const Evolution = () => {
                       onClick={() =>
                         addModal(
                           deletePrescription({
-                            confirmButtonAction: () => console.log("oi"),
+                            confirmButtonAction: () => {
+                              const filterDrugs = formik.values.drugs.filter(
+                                (value) => value.drugName !== drug.drugName
+                              );
+                              formik.setFieldValue("drugs", filterDrugs);
+                            },
                           })
                         )
                       }
