@@ -38,7 +38,6 @@ const prescriptionTypesStrategies = {
         setDataDrugsRoutesInObject(transformDrugsRoutesInObject);
       }
     }, [drugRoutesData]);
-    console.log(formik);
     return (
       <>
         <Input
@@ -73,7 +72,7 @@ const prescriptionTypesStrategies = {
               onChange={formik.handleChange}
               value={formik.values.drug.initialDate}
               name="drug.initialDate"
-              type="date"
+              type="datetime-local"
               className="medium_size"
               placeholder="Data de início"
             />
@@ -81,7 +80,7 @@ const prescriptionTypesStrategies = {
               value={formik.values.drug.finalDate}
               name="drug.finalDate"
               onChange={formik.handleChange}
-              type="date"
+              type="datetime-local"
               className="medium_size"
               placeholder="Data de fim"
             />
