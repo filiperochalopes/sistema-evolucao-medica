@@ -111,6 +111,21 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         blue_rectangle_height = 2 * DECREASE_Y_POS
 
         self.add_rectangle(pos=(blue_rectangle_x_pos, blue_rectangle_y_pos), width=blue_rectangle_width, height=blue_rectangle_height, color=(0, .33, .62), stroke=0, fill=1)
+        responsible_category = responsible.get('category')
+        if responsible_category.lower() == 'm':
+            title = 'EVOLUÇÃO MÉDICA'
+        elif responsible_category.lower() == 'e':
+            title = 'EVOLUÇÃO DE ENFERMAGEM'
+        else:
+            raise Exception('Erro inesperado enquanto criava o titulo da evolucao')
+
+        self.set_font('Roboto-Condensed-Bold', 15)
+        self.can.setFillColorRGB(1, 1, 1, 1)
+        
+        title_y_pos = evolution_initial_pos[1] + DECREASE_Y_POS + (DECREASE_Y_POS/2)
+        self.add_oneline_text(text=title, pos=(evolution_initial_pos[0], title_y_pos), camp_name='Titulo da Evolucao', len_max=40)
+        #Change fill color to black again to write text
+        self.can.setFillColorRGB(0, 0, 0, 1)
 
 
         total_y_decrease += int(len(professional_info)/CHAR_PER_LINES) * DECREASE_Y_POS
