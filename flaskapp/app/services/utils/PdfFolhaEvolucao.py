@@ -62,7 +62,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         return professional_info
 
 
-    def add_medical_nursing_evolution(self, evolution_description:str, responsible:dict, date:str, evolution_initial_pos:tuple, responsible_initial_pos:tuple, camp_name:str) -> None:
+    def add_medical_nursing_evolution(self, evolution_description:str, responsible:dict, date:str, evolution_initial_pos:tuple, camp_name:str) -> None:
         """Add a medical and nursing evolution to the pdf, this function only works to the 2 big squares with data, in order, the first and third square, the other 2 minor nursing evolution will be created by another function
 
         Args:
@@ -76,15 +76,27 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         Returns:
             None
         """
-        self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'responsible_initial_pos':responsible_initial_pos, 'evolution_initial_pos':evolution_initial_pos, 'camp_name':camp_name, 'date':date})
+        self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'evolution_initial_pos':evolution_initial_pos, 'camp_name':camp_name, 'date':date})
+
+        CHAR_PER_LINES = 58
+        DECREASE_Y_POS = 13
 
         professional_info = self.create_professional_info(professional=responsible, date=date)
 
-        self.add_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=13, camp_name=f'Descricao evolucao {camp_name}', len_max=406, char_per_lines=58)
+        self.add_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Descricao evolucao {camp_name}', len_max=1000, char_per_lines=CHAR_PER_LINES)
 
-        self.add_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=13, camp_name=f'Informacao do responsavel na evolucao {camp_name}', len_max=99, char_per_lines=49, max_lines_amount=3)
+        total_y_decrease = int(len(evolution_description)/CHAR_PER_LINES) * DECREASE_Y_POS + DECREASE_Y_POS
+
+        responsible_y_pos = evolution_initial_pos[1] - total_y_decrease
+
+        responsible_initial_pos = (evolution_initial_pos[0], responsible_y_pos)
+
+        self.add_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Informacao do responsavel na evolucao {camp_name}', len_max=99, char_per_lines=CHAR_PER_LINES, max_lines_amount=3)
+
+        total_y_decrease += int(len(professional_info)/CHAR_PER_LINES) * DECREASE_Y_POS - DECREASE_Y_POS
         
-        return None
+        return total_y_decrease
+
 
     def add_evolutions(self, evolutions:list) -> None:
         """Add evolutions to pdf
@@ -101,8 +113,26 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
 
         self.validate_func_args(function_to_verify=self.add_evolutions, variables_to_verify={'evolutions':evolutions})
 
+        evolution_initial_x_pos = 30
+        evolution_initial_y_pos = 498
+        y_limit = 60
+        cont = 1
+        second_collum = False
         for evo in evolutions:
-            self.add_medical_nursing_evolution(evolution_description=evo['description'], responsible=evo['professional'], date=evo['created_at'], evolution_initial_pos=(30, 224), responsible_initial_pos=(90, 126), camp_name='de Enfermagem - bloco 2')
+            total_y_decrease = self.add_medical_nursing_evolution(evolution_description=evo['description'], responsible=evo['professional'], date=evo['created_at'], evolution_initial_pos=(evolution_initial_x_pos, evolution_initial_y_pos), camp_name=f'{cont} evolucao medica')
+
+            evolution_initial_y_pos -= total_y_decrease
+
+            cont += 1
+
+            if evolution_initial_y_pos < y_limit:
+                if second_collum:
+                    raise Exception('Voce atingiu o limite do documento')
+                evolution_initial_x_pos = 440
+                evolution_initial_y_pos = 498
+                y_limit = 283
+                second_collum = True
+
 
         return None
         
