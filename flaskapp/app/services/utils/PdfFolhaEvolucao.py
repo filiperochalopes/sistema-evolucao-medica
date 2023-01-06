@@ -175,7 +175,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         for evo in evolutions:
             total_y_decrease = self.add_medical_nursing_evolution(evolution_description=evo['description'], responsible=evo['professional'], date=evo['created_at'], evolution_initial_pos=(evolution_x_pos, evolution_y_pos), camp_name=f'{cont} evolucao medica', CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE, DECREASE_Y_POS=DECREASE_Y_POS)
             
-            evolution_y_pos -= total_y_decrease - int(DECREASE_Y_POS * 2)
+            evolution_y_pos -= total_y_decrease + int(DECREASE_Y_POS * 6)
 
             if evolution_y_pos < y_limit:
                 if second_collum:
