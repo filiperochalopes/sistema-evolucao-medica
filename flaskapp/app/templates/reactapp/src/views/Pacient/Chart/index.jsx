@@ -8,15 +8,21 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { format, parseISO } from "date-fns";
 import ptBR from "date-fns/esm/locale/pt-BR";
+import React from "react";
+import Strategies from "./Strategies";
+import updatePacientData from "helpers/updatePacientData";
+import { useModalContext } from "services/ModalContext";
+
 const Chart = () => {
   const [getInternment, { data }] = useLazyQuery(GET_ALL_CHART);
   const [newestChart, setNewestChart] = useState({
     prescriptions: [],
-    sinals: [],
+    sinals: {},
     textEvolution: "",
   });
   const [oldCharts, setOldCharts] = useState([]);
   const params = useParams();
+  const { addModal } = useModalContext();
 
   const formatPrescription = (prescription) => {
     const array = [];
@@ -68,7 +74,6 @@ const Chart = () => {
       )[0];
       const prescriptionFormated = formatPrescription(prescription);
       array.prescriptions.push(...prescriptionFormated);
-      console.log(prescription);
       const prescriptionsFormated = [];
       prescriptions.forEach((prescription) => {
         const prescriptionFormated = formatPrescription(prescription);
@@ -127,6 +132,20 @@ const Chart = () => {
 
       oldChards = [...oldChards, ...evolutionsWithDateFormat];
     }
+    if (data.internment.pendings.length > 0) {
+      const pendingsWithDateFormat = data.internment.pendings.map((pending) => {
+        const dateFormated = format(
+          parseISO(pending.createdAt),
+          "dd/MM/yyyy HH:mm:ss",
+          {
+            locale: ptBR,
+          }
+        );
+        return { ...pending, dateFormated };
+      });
+
+      oldChards = [...oldChards, ...pendingsWithDateFormat];
+    }
     oldChards.sort((chartA, chartB) => {
       const dataChartA = new Date(chartA.createdAt);
       const dataChartB = new Date(chartB.createdAt);
@@ -153,7 +172,12 @@ const Chart = () => {
     <Container>
       <div className="header">
         <h2>Evoluir Paciente (João Miguel dos Santos Polenta, 83 anos)</h2>
-        <Button>Atualizar Dados do Paciente</Button>
+        <Button
+          type="button"
+          onClick={() => addModal(updatePacientData(params.id))}
+        >
+          Atualizar Dados do Paciente
+        </Button>
       </div>
       <h2>Admissão</h2>
       <p>{newestChart.textEvolution}</p>
@@ -179,40 +203,7 @@ const Chart = () => {
       <h2>Demais Evoluções</h2>
       {oldCharts.map((oldChart) => (
         <div>
-          {oldChart.__typename === "Prescription" && (
-            <>
-              <h2>Prescrições {oldChart.dateFormated}</h2>
-              <ol>
-                {oldChart.items.map((item) => (
-                  <li key={item.id}>{item.value}</li>
-                ))}
-              </ol>
-            </>
-          )}
-          {oldChart.__typename === "Evolution" && (
-            <>
-              <h2>Evolução {oldChart.dateFormated}</h2>
-              <p>{oldChart.text} </p>
-            </>
-          )}
-          {oldChart.__typename === "Measure" && (
-            <>
-              <h2 className="secondary">
-                Sinais Vitais {oldChart.dateFormated}
-              </h2>
-              <ul>
-                <li>FC {oldChart.cardiacFrequency}bpm </li>
-                <li>FCF {oldChart.fetalCardiacFrequency}bpm</li>
-                <li>HGT 110 </li>
-                <li>FR 110 </li>
-                <li>TEMP AXILAR {oldChart.celciusAxillaryTemperature}</li>
-                <li>
-                  BALANÇO HÍDRICO <strong>TOTAL -500</strong> 110 - COPO COM
-                  ÁGUA (17/07/2022 5:30)
-                </li>
-              </ul>
-            </>
-          )}
+          <Strategies oldChart={oldChart} />
         </div>
       ))}
     </Container>

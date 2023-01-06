@@ -25,6 +25,7 @@ import { useParams } from "react-router-dom";
 import { CID10, GET_INTERNMENT } from "graphql/queries";
 import { useSnackbar } from "notistack";
 import { useEffect } from "react";
+import addMedicamentGroup from "helpers/addMedicamentGroup";
 
 const Evolution = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -385,7 +386,17 @@ const Evolution = () => {
           ÚLTIMA PRESCRIÇÃO ATUALIZADA EM DD/MM/AAAA HH:DD
         </p>
         <div className="buttons">
-          <Button className="button_add_prescription">
+          <Button
+            className="button_add_prescription"
+            type="button"
+            onClick={() =>
+              addModal(
+                addMedicamentGroup({
+                  confirmButtonAction: (values) => console.log(values),
+                })
+              )
+            }
+          >
             Adicionar medicações sintomáticas
           </Button>
           <Button
