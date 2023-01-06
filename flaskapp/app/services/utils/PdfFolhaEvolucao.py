@@ -181,7 +181,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 if second_collum:
                     raise Exception('Voce atingiu o limite do documento')
                 evolution_x_pos = 440
-                evolution_y_pos = 498
+                evolution_y_pos = 490
                 y_limit = 283
                 second_collum = True
 
