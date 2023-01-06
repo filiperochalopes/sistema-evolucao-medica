@@ -103,6 +103,15 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         black_rectangle_height = total_y_decrease + (DECREASE_Y_POS * 4)
 
         self.add_rectangle(pos=(black_rectangle_x_pos, black_rectangle_y_pos), width=black_rectangle_width, height=black_rectangle_height, color=(0, 0, 0), stroke=1, fill=0)
+        
+        # draw blue rectangle
+        blue_rectangle_x_pos = black_rectangle_x_pos
+        blue_rectangle_y_pos = evolution_initial_pos[1] + DECREASE_Y_POS
+        blue_rectangle_width = black_rectangle_width
+        blue_rectangle_height = 2 * DECREASE_Y_POS
+
+        self.add_rectangle(pos=(blue_rectangle_x_pos, blue_rectangle_y_pos), width=blue_rectangle_width, height=blue_rectangle_height, color=(0, .33, .62), stroke=0, fill=1)
+
 
         total_y_decrease += int(len(professional_info)/CHAR_PER_LINES) * DECREASE_Y_POS
         
