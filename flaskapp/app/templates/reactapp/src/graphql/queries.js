@@ -204,6 +204,22 @@ export const GET_SINALS = gql`
   }
 `;
 
+export const DRUG_PRESETS = gql`
+  query drugPresets {
+    drugPreset {
+      name
+      label
+      drugs {
+        id
+        name
+        usualDosage
+        comment
+        kind
+      }
+    }
+  }
+`;
+
 export const GET_ALL_CHART = gql`
   query internment($internment: ID!) {
     internment(id: $internment) {
@@ -241,6 +257,7 @@ export const GET_ALL_CHART = gql`
 
       pendings {
         text
+        createdAt
       }
       fluidBalance {
         id
