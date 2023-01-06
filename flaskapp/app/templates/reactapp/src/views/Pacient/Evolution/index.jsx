@@ -186,6 +186,7 @@ const Evolution = () => {
   }
 
   function chainHandleSetRestingActivity(values) {
+    console.log(values.type);
     if (values.type.name === "restingActivity") {
       formik.setFieldValue("restingActivity", values.medicament.name);
       return true;
@@ -275,6 +276,33 @@ const Evolution = () => {
                           deletePrescription({
                             confirmButtonAction: () =>
                               formik.setFieldValue("diet", ""),
+                          })
+                        )
+                      }
+                    >
+                      <img src={trash} alt="remover" />
+                    </button>
+                  </div>
+                </ContainerListOption>
+              </ListOption>
+            </li>
+          )}
+          {formik.values.restingActivity && (
+            <li>
+              <ListOption>
+                <ContainerListOption>
+                  <p>{formik.values.restingActivity}</p>{" "}
+                  <div>
+                    <button type="button">
+                      <MdModeEdit size={18} color={theme.colors.blue} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        addModal(
+                          deletePrescription({
+                            confirmButtonAction: () =>
+                              formik.setFieldValue("restingActivity", ""),
                           })
                         )
                       }

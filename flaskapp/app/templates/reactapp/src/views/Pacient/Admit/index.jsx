@@ -21,6 +21,7 @@ import getCepApiAdapter from "services/getCepApiAdapter";
 import schema from "./schema";
 import maskCpf from "utils/maskCpf";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const Admit = () => {
   const [createInternment] = useMutation(CREATE_INTERNMENT);
@@ -30,6 +31,7 @@ const Admit = () => {
   const { data: cid10Data } = useQuery(CID10);
   const [getPatient] = useLazyQuery(GET_PATIENT);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const formik = useFormik({
     initialValues: {
       addPacient: false,
@@ -92,9 +94,10 @@ const Admit = () => {
             cid10Code: cid10Code.code,
           },
         });
-        navigate.navigate("/");
+        enqueueSnackbar("Pendencia Cadastrada", { variant: "success" });
+        navigate("/");
       } catch {
-        console.log("error");
+        enqueueSnackbar("Error: Tente novamente", { variant: "error" });
       }
     },
     validationSchema: schema,
@@ -222,7 +225,7 @@ const Admit = () => {
                 getOptionValue={(option) => option.uf}
                 value={formik.values.patient.address.uf}
                 placeholder="Estado"
-                options={statesData.state || []}
+                options={statesData?.state || []}
               />
               <Input
                 onChange={formik.handleChange}

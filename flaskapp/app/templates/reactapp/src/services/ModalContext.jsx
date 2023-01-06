@@ -17,6 +17,7 @@ const ModalContextProvider = ({ children }) => {
       modalRoot.appendChild(rootElemRef.current);
     }
     return function removeElement() {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       rootElemRef.current.remove();
     };
   }, []);
