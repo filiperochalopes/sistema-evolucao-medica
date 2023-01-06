@@ -15,38 +15,38 @@ mutation{
           document: "12345/BA"
         }
       },
-      {
-        createdAt: "10/10/2022 20:10",
-        category: "E1",
-        description: "Testign M1312ASD78YGayudsgAIUYG",
-        professional:
-        {
-          name: "Another Professional Name",
-          category: "e",
-          document: "1234534"
-        }
-      },
-      {
-        createdAt: "10/10/2022 20:10",
-        category: "E2",
-        description: "Testign M E2 aooo ",
-        professional:{
-          name: "Professional aaaa Name",
-          category: "m",
-          document: "54321/BA"
-        }
-      },
-      {
-        createdAt: "10/10/2022 20:10",
-        category: "E3",
-        description: "Testign M E3 asuidhauidhaudhaos ",
-        professional:
-        {
-          name: "Last Professional Name",
-          category: "e",
-          document: "987654"
-        }
-      },
+      #{
+      #  createdAt: "10/10/2022 20:10",
+      #  category: "E1",
+      #  description: "Testign M1312ASD78YGayudsgAIUYG",
+      #  professional:
+      #  {
+      #    name: "Another Professional Name",
+      #    category: "e",
+      #    document: "1234534"
+      #  }
+      #},
+      #{
+      #  createdAt: "10/10/2022 20:10",
+      #  category: "E2",
+      #  description: "Testign M E2 aooo ",
+      #  professional:{
+      #    name: "Professional aaaa Name",
+      #    category: "m",
+      #    document: "54321/BA"
+      #  }
+      #},
+      #{
+      #  createdAt: "10/10/2022 20:10",
+      #  category: "E3",
+      #  description: "Testign M E3 asuidhauidhaudhaos ",
+      #  professional:
+      #  {
+      #    name: "Last Professional Name",
+      #    category: "e",
+      #    document: "987654"
+      #  }
+      #},
     ]
     measures: [
       {

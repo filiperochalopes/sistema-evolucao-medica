@@ -20,7 +20,6 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         return super().get_output()
         
 
-    
     def create_professional_info(self, professional:dict, date:str, abbreviated:bool=False) -> str:
         """Create professional info merging name, document and date
 
@@ -59,7 +58,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
 
         professional_info = f"{str(name).strip()} " + doc_type + str(document) + ' Criado em: ' + str_date
 
-        return professional_info
+        return str(professional_info)
 
 
     def add_medical_nursing_evolution(self, evolution_description:str, responsible:dict, date:str, evolution_initial_pos:tuple, camp_name:str) -> None:
@@ -79,21 +78,33 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'evolution_initial_pos':evolution_initial_pos, 'camp_name':camp_name, 'date':date})
 
         CHAR_PER_LINES = 58
+        # Char size in points
+        CHAR_POINT_SIZE = 6.6
         DECREASE_Y_POS = 13
 
-        professional_info = self.create_professional_info(professional=responsible, date=date)
-
+        professional_info = 'Responsável: ' + self.create_professional_info(professional=responsible, date=date)
+        
+        self.set_font('Roboto-Mono', 11)
         self.add_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Descricao evolucao {camp_name}', len_max=1000, char_per_lines=CHAR_PER_LINES)
 
-        total_y_decrease = int(len(evolution_description)/CHAR_PER_LINES) * DECREASE_Y_POS + DECREASE_Y_POS
+        total_y_decrease = int(len(evolution_description)/CHAR_PER_LINES) * DECREASE_Y_POS 
 
-        responsible_y_pos = evolution_initial_pos[1] - total_y_decrease
+        responsible_y_pos = evolution_initial_pos[1] - total_y_decrease - int(DECREASE_Y_POS * 2)
 
         responsible_initial_pos = (evolution_initial_pos[0], responsible_y_pos)
 
+        self.set_font('Roboto-Mono', 9)
         self.add_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Informacao do responsavel na evolucao {camp_name}', len_max=99, char_per_lines=CHAR_PER_LINES, max_lines_amount=3)
 
-        total_y_decrease += int(len(professional_info)/CHAR_PER_LINES) * DECREASE_Y_POS - DECREASE_Y_POS
+        # draw black rectangle
+        black_rectangle_x_pos = evolution_initial_pos[0] - 8
+        black_rectangle_y_pos = evolution_initial_pos[1] - total_y_decrease - DECREASE_Y_POS
+        black_rectangle_width = int(CHAR_PER_LINES * CHAR_POINT_SIZE) + 16 # 16 to add 8 extra points in right and left
+        black_rectangle_height = total_y_decrease + (DECREASE_Y_POS * 4)
+
+        self.add_rectangle(pos=(black_rectangle_x_pos, black_rectangle_y_pos), width=black_rectangle_width, height=black_rectangle_height, color=(0, 0, 0), stroke=1, fill=0)
+
+        total_y_decrease += int(len(professional_info)/CHAR_PER_LINES) * DECREASE_Y_POS
         
         return total_y_decrease
 
