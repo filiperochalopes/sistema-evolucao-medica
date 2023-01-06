@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 24a0124aec13
+Revision ID: bfc28c18be49
 Revises: 
-Create Date: 2022-12-20 17:22:02.337175
+Create Date: 2023-01-06 01:59:25.628344
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '24a0124aec13'
+revision = 'bfc28c18be49'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -57,7 +57,7 @@ def upgrade():
     op.create_table('auto_resting_activities',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('cid10',
@@ -80,7 +80,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('label', sa.String(), nullable=True),
     sa.Column('name', sa.String(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('drugs',
@@ -122,7 +122,7 @@ def upgrade():
     sa.Column('professional_document_uf', sa.String(), nullable=True),
     sa.Column('professional_document_number', sa.String(), nullable=True),
     sa.Column('is_active', sa.Boolean(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('cns'),
@@ -146,7 +146,7 @@ def upgrade():
     sa.Column('rg', sa.String(), nullable=True),
     sa.Column('weight_kg', sa.Float(), nullable=True),
     sa.Column('address_id', sa.Integer(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['address_id'], ['address.id'], ),
     sa.PrimaryKeyConstraint('id'),
@@ -178,10 +178,12 @@ def upgrade():
     sa.Column('patient_id', sa.Integer(), nullable=True),
     sa.Column('professional_id', sa.Integer(), nullable=True),
     sa.Column('cid10_code', sa.String(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('finished_at', sa.DateTime(timezone=True), nullable=True),
+    sa.Column('finished_by_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['cid10_code'], ['cid10.code'], ),
+    sa.ForeignKeyConstraint(['finished_by_id'], ['users.id'], ),
     sa.ForeignKeyConstraint(['patient_id'], ['patients.id'], ),
     sa.ForeignKeyConstraint(['professional_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -192,7 +194,7 @@ def upgrade():
     sa.Column('professional_id', sa.Integer(), nullable=True),
     sa.Column('internment_id', sa.Integer(), nullable=True),
     sa.Column('cid10_code', sa.String(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['cid10_code'], ['cid10.code'], ),
     sa.ForeignKeyConstraint(['internment_id'], ['internments.id'], ),
     sa.ForeignKeyConstraint(['professional_id'], ['users.id'], ),
@@ -202,7 +204,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('value', sa.Integer(), nullable=True),
     sa.Column('description_id', sa.Integer(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('professional_id', sa.Integer(), nullable=True),
     sa.Column('internment_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['description_id'], ['fluid_balance_description.id'], ),
@@ -221,7 +223,7 @@ def upgrade():
     sa.Column('celcius_axillary_temperature', sa.Integer(), nullable=True),
     sa.Column('glucose', sa.Integer(), nullable=True),
     sa.Column('fetal_cardiac_freq', sa.Integer(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('professional_id', sa.Integer(), nullable=True),
     sa.Column('internment_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['internment_id'], ['internments.id'], ),
@@ -233,6 +235,7 @@ def upgrade():
     sa.Column('text', sa.Text(), nullable=True, comment='Evolução do paciente com exame físico e sinais vitais'),
     sa.Column('professional_id', sa.Integer(), nullable=True),
     sa.Column('internment_id', sa.Integer(), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['internment_id'], ['internments.id'], ),
     sa.ForeignKeyConstraint(['professional_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -243,7 +246,7 @@ def upgrade():
     sa.Column('diet_id', sa.Integer(), nullable=True),
     sa.Column('professional_id', sa.Integer(), nullable=True),
     sa.Column('internment_id', sa.Integer(), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['diet_id'], ['diets.id'], ),
     sa.ForeignKeyConstraint(['internment_id'], ['internments.id'], ),
     sa.ForeignKeyConstraint(['professional_id'], ['users.id'], ),
@@ -253,7 +256,7 @@ def upgrade():
     op.create_table('_nursing_activity_prescription',
     sa.Column('nursing_activity_id', sa.Integer(), nullable=False),
     sa.Column('prescription_id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['nursing_activity_id'], ['auto_nursing_activities.id'], ),
     sa.ForeignKeyConstraint(['prescription_id'], ['prescriptions.id'], ),
     sa.PrimaryKeyConstraint('nursing_activity_id', 'prescription_id')

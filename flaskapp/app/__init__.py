@@ -1,6 +1,6 @@
 import sys
 from unicodedata import name
-from app.env import InstitutionData
+from app.env import InstitutionData, DatabaseSettings
 from .graphql import query, type_defs, mutation
 from flask import Flask, request, jsonify, send_from_directory
 from flask_migrate import Migrate
@@ -15,16 +15,16 @@ from flask import Blueprint, render_template
 import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///local.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DatabaseSettings.USER}:{DatabaseSettings.PASSWORD}@db:5432/{DatabaseSettings.NAME}'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config['AUTOCRUD_METADATA_ENABLED'] = True
 app.secret_key = os.getenv('SECRET_KEY')
 
 db.init_app(app)
 ma.init_app(app)
 CORS(app)
 
-migrate = Migrate(app, db, render_as_batch=True)
+
+migrate = Migrate(app, db)
 Scss(app, static_dir='app/static/css', asset_dir='app/assets/scss')
 
 

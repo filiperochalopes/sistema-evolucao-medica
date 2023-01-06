@@ -310,6 +310,7 @@ type_defs = gql('''
 
     type Pending{
         text: String
+        createdAt: String
     }
 
     type Measure{

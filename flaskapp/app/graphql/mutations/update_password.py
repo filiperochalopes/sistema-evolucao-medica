@@ -11,8 +11,7 @@ from app.serializers import UserSchema
 @token_authorization
 def update_password(_, info, password:str, current_user:dict):
     user = db.session.query(User).get(current_user['id'])
-    encrypted_password = bcrypt.hashpw(
-        password.encode('utf-8'), bcrypt.gensalt())
+    encrypted_password = User.generate_password(password)
     user.password = encrypted_password
     db.session.commit()
     

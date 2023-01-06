@@ -13,8 +13,7 @@ from app.serializers import UserSchema
 def reset_password(_, info, master_key:str, cns:str):
     if master_key == MASTER_KEY:
         user = db.session.query(User).filter(User.cns == cns).one()
-        encrypted_password = bcrypt.hashpw(
-            user['password'].encode('utf-8'), bcrypt.gensalt())
+        encrypted_password = User.generate_password(user['password'])
         user.password = encrypted_password
         db.session.commit()
     else:

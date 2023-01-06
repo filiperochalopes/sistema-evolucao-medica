@@ -20,8 +20,7 @@ def create_user(_, info, master_key: str, user: dict):
     print(MASTER_KEY, file=sys.stderr)
     if master_key == MASTER_KEY:
         # Cria um usuário em model
-        encrypted_password = bcrypt.hashpw(
-            user['password'].encode('utf-8'), bcrypt.gensalt())
+        encrypted_password = User.generate_password(user['password'])
         # Verifica o preenchimento de cpf ou cns, um dos dois devem estar preenchidos
         if not user['cpf'] and not user['cns']:
             raise Exception(

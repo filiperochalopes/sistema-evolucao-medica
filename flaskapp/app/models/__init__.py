@@ -57,7 +57,11 @@ class User(db.Model):
 
     @password.setter
     def password(self, password):
-        self.password_hash = bcrypt.hashpw(password, bcrypt.gensalt())
+        self.password_hash = bcrypt.hashpw(password, bcrypt.gensalt()).decode()
+    
+    @staticmethod
+    def generate_password(password:str):
+        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode()
 
     def verify_password(self, password):
         return bcrypt.checkpw(password, self.password_hash)
@@ -404,6 +408,9 @@ class Pending(db.Model):
 
     internment_id = db.Column(db.Integer, ForeignKey('internments.id'))
     internment = relationship('Internment', back_populates='pendings')
+
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+
 
 class HighComplexityProcedure(db.Model):
     __tablename__ = 'high_complexity_procedures'

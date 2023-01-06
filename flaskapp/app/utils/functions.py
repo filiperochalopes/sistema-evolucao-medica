@@ -10,7 +10,7 @@ from validate_docbr import CPF, CNS
 cpf_validator = CPF()
 cns_validator = CNS()
 
-def generate_token(email, password) -> dict:
+def generate_token(email:str, password:str) -> dict:
     '''
     Gera o token de autenticação dado o email e senha do usuário
     '''
@@ -21,7 +21,7 @@ def generate_token(email, password) -> dict:
         raise Exception(f'{e} Não existe usuário com esse email')
 
     # Cria um usuário em model
-    if(bcrypt.checkpw(password.encode('utf-8'), user.password_hash)):
+    if(bcrypt.checkpw(password.encode('utf-8'), user.password_hash.encode('utf-8'))):
         encoded_jwt = jwt.encode({
             'sub': user.id,
             'scope': user.professional_category.name,
