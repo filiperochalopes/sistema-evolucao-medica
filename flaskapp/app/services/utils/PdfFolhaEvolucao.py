@@ -61,6 +61,57 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         return str(professional_info)
 
 
+    def add_responsible_evolution(self, evolution_initial_pos:tuple, total_y_decrease:int, DECREASE_Y_POS:int, professional_info:str, evolution_camp_name:str, CHAR_PER_LINES:int) -> None:
+        responsible_y_pos = evolution_initial_pos[1] - total_y_decrease - int(DECREASE_Y_POS * 2)
+
+        responsible_initial_pos = (evolution_initial_pos[0], responsible_y_pos)
+
+        self.set_font('Roboto-Mono', 9)
+        self.add_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Informacao do responsavel na evolucao {evolution_camp_name}', len_max=99, char_per_lines=CHAR_PER_LINES, max_lines_amount=3)
+
+        return None
+
+
+    def add_evolution_rectangles(self, evolution_initial_pos:tuple, total_y_decrease:int, DECREASE_Y_POS:int, CHAR_PER_LINES:int,CHAR_POINT_SIZE:float) -> None:
+        # draw black rectangle
+        black_rectangle_x_pos = evolution_initial_pos[0] - 8
+        black_rectangle_y_pos = evolution_initial_pos[1] - total_y_decrease - DECREASE_Y_POS
+        black_rectangle_width = int(CHAR_PER_LINES * CHAR_POINT_SIZE) + 16 # 16 to add 8 extra points in right and left
+        black_rectangle_height = total_y_decrease + (DECREASE_Y_POS * 4)
+
+        self.add_rectangle(pos=(black_rectangle_x_pos, black_rectangle_y_pos), width=black_rectangle_width, height=black_rectangle_height, color=(0, 0, 0), stroke=1, fill=0)
+        
+        # draw blue rectangle
+        blue_rectangle_x_pos = black_rectangle_x_pos
+        blue_rectangle_y_pos = evolution_initial_pos[1] + DECREASE_Y_POS
+        blue_rectangle_width = black_rectangle_width
+        blue_rectangle_height = 2 * DECREASE_Y_POS
+
+        self.add_rectangle(pos=(blue_rectangle_x_pos, blue_rectangle_y_pos), width=blue_rectangle_width, height=blue_rectangle_height, color=(0, .33, .62), stroke=0, fill=1)
+
+        return None
+
+
+    def add_evolution_responsible(self, responsible:dict, evolution_initial_pos:tuple, DECREASE_Y_POS:int) -> None:
+        responsible_category = responsible.get('category')
+        if responsible_category.lower() == 'm':
+            title = 'EVOLUÇÃO MÉDICA'
+        elif responsible_category.lower() == 'e':
+            title = 'EVOLUÇÃO DE ENFERMAGEM'
+        else:
+            raise Exception('Erro inesperado enquanto criava o titulo da evolucao')
+
+        self.set_font('Roboto-Condensed-Bold', 15)
+        self.can.setFillColorRGB(1, 1, 1, 1)
+        
+        title_y_pos = evolution_initial_pos[1] + DECREASE_Y_POS + (DECREASE_Y_POS/2)
+        self.add_oneline_text(text=title, pos=(evolution_initial_pos[0], title_y_pos), camp_name='Titulo da Evolucao', len_max=40)
+        #Change fill color to black again to write text
+        self.can.setFillColorRGB(0, 0, 0, 1)
+
+        return None
+
+
     def add_medical_nursing_evolution(self, evolution_description:str, responsible:dict, date:str, evolution_initial_pos:tuple, camp_name:str) -> None:
         """Add a medical and nursing evolution to the pdf, this function only works to the 2 big squares with data, in order, the first and third square, the other 2 minor nursing evolution will be created by another function
 
@@ -82,51 +133,19 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         CHAR_POINT_SIZE = 6.6
         DECREASE_Y_POS = 13
 
-        professional_info = 'Responsável: ' + self.create_professional_info(professional=responsible, date=date)
         
         self.set_font('Roboto-Mono', 11)
         self.add_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Descricao evolucao {camp_name}', len_max=1000, char_per_lines=CHAR_PER_LINES)
 
         total_y_decrease = int(len(evolution_description)/CHAR_PER_LINES) * DECREASE_Y_POS 
 
-        responsible_y_pos = evolution_initial_pos[1] - total_y_decrease - int(DECREASE_Y_POS * 2)
-
-        responsible_initial_pos = (evolution_initial_pos[0], responsible_y_pos)
-
-        self.set_font('Roboto-Mono', 9)
-        self.add_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Informacao do responsavel na evolucao {camp_name}', len_max=99, char_per_lines=CHAR_PER_LINES, max_lines_amount=3)
-
-        # draw black rectangle
-        black_rectangle_x_pos = evolution_initial_pos[0] - 8
-        black_rectangle_y_pos = evolution_initial_pos[1] - total_y_decrease - DECREASE_Y_POS
-        black_rectangle_width = int(CHAR_PER_LINES * CHAR_POINT_SIZE) + 16 # 16 to add 8 extra points in right and left
-        black_rectangle_height = total_y_decrease + (DECREASE_Y_POS * 4)
-
-        self.add_rectangle(pos=(black_rectangle_x_pos, black_rectangle_y_pos), width=black_rectangle_width, height=black_rectangle_height, color=(0, 0, 0), stroke=1, fill=0)
+        professional_info = 'Responsável: ' + self.create_professional_info(professional=responsible, date=date)
         
-        # draw blue rectangle
-        blue_rectangle_x_pos = black_rectangle_x_pos
-        blue_rectangle_y_pos = evolution_initial_pos[1] + DECREASE_Y_POS
-        blue_rectangle_width = black_rectangle_width
-        blue_rectangle_height = 2 * DECREASE_Y_POS
-
-        self.add_rectangle(pos=(blue_rectangle_x_pos, blue_rectangle_y_pos), width=blue_rectangle_width, height=blue_rectangle_height, color=(0, .33, .62), stroke=0, fill=1)
-        responsible_category = responsible.get('category')
-        if responsible_category.lower() == 'm':
-            title = 'EVOLUÇÃO MÉDICA'
-        elif responsible_category.lower() == 'e':
-            title = 'EVOLUÇÃO DE ENFERMAGEM'
-        else:
-            raise Exception('Erro inesperado enquanto criava o titulo da evolucao')
-
-        self.set_font('Roboto-Condensed-Bold', 15)
-        self.can.setFillColorRGB(1, 1, 1, 1)
+        self.add_responsible_evolution(evolution_initial_pos=evolution_initial_pos, total_y_decrease=total_y_decrease, DECREASE_Y_POS=DECREASE_Y_POS, professional_info=professional_info, evolution_camp_name=f'Descricao evolucao {camp_name}', CHAR_PER_LINES=CHAR_PER_LINES)
         
-        title_y_pos = evolution_initial_pos[1] + DECREASE_Y_POS + (DECREASE_Y_POS/2)
-        self.add_oneline_text(text=title, pos=(evolution_initial_pos[0], title_y_pos), camp_name='Titulo da Evolucao', len_max=40)
-        #Change fill color to black again to write text
-        self.can.setFillColorRGB(0, 0, 0, 1)
+        self.add_evolution_rectangles(evolution_initial_pos=evolution_initial_pos, total_y_decrease=total_y_decrease, DECREASE_Y_POS=DECREASE_Y_POS, CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE)
 
+        self.add_evolution_responsible(responsible=responsible, evolution_initial_pos=evolution_initial_pos, DECREASE_Y_POS=DECREASE_Y_POS)
 
         total_y_decrease += int(len(professional_info)/CHAR_PER_LINES) * DECREASE_Y_POS
         
@@ -148,8 +167,8 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
 
         self.validate_func_args(function_to_verify=self.add_evolutions, variables_to_verify={'evolutions':evolutions})
 
-        evolution_initial_x_pos = 30
-        evolution_initial_y_pos = 498
+        evolution_initial_x_pos = 20
+        evolution_initial_y_pos = 490
         y_limit = 60
         cont = 1
         second_collum = False
