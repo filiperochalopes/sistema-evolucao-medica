@@ -235,7 +235,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         
         self.add_evolution_rectangles(evolution_initial_pos=new_initial_pos, total_y_decrease=rectangle_responsible_y_decrease, old_initial_position=evolution_initial_pos, DECREASE_Y_POS=DECREASE_Y_POS, CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE, changed_collum=changed_collum, first_collum_y_decrease=first_collum_y_decrease, second_collum_y_decrease=second_collum_y_decrease)
 
-        self.add_evolution_responsible(responsible=responsible, evolution_initial_pos=evolution_initial_pos, DECREASE_Y_POS=total_y_decrease)
+        self.add_evolution_responsible(responsible=responsible, evolution_initial_pos=evolution_initial_pos, DECREASE_Y_POS=DECREASE_Y_POS)
         
 
         return total_y_decrease, changed_collum, new_initial_pos
