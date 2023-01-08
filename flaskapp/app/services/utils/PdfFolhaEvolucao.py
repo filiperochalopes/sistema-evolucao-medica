@@ -212,7 +212,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
 
         self.add_evolution_responsible(responsible=responsible, evolution_initial_pos=evolution_initial_pos, DECREASE_Y_POS=DECREASE_Y_POS)
 
-        return total_y_decrease
+        return total_y_decrease, changed_collum, new_initial_pos
 
 
     def add_evolutions(self, evolutions:list) -> None:
@@ -242,11 +242,15 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         cont = 1
         second_collum = False
         for evo in evolutions:
-            total_y_decrease = self.add_medical_nursing_evolution(evolution_description=evo['description'], responsible=evo['professional'], date=evo['created_at'], evolution_initial_pos=(evolution_x_pos, evolution_y_pos), camp_name=f'{cont} evolucao medica', CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE, DECREASE_Y_POS=DECREASE_Y_POS)
-            
+            total_y_decrease, changed_collum, new_evolution_pos = self.add_medical_nursing_evolution(evolution_description=evo['description'], responsible=evo['professional'], date=evo['created_at'], evolution_initial_pos=(evolution_x_pos, evolution_y_pos), camp_name=f'{cont} evolucao medica', CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE, DECREASE_Y_POS=DECREASE_Y_POS)
+
+            evolution_x_pos = new_evolution_pos[0]
+            evolution_y_pos = new_evolution_pos[1]
+
+            #Calculate new evolution
             evolution_y_pos -= total_y_decrease + int(DECREASE_Y_POS * 6)
 
-            if evolution_y_pos < y_limit:
+            if evolution_y_pos < y_limit and not changed_collum:
                 if second_collum:
                     raise Exception('Voce atingiu o limite do documento')
                 evolution_x_pos = 440

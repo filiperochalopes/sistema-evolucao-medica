@@ -43,16 +43,16 @@ mutation{
           document: "987654"
         }
       },
-      #{
-      #  createdAt: "10/10/2022 20:10",
-      #  description: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id. Nulla pretium, massa nec aliquet mattis, erat felis egestas massa, eu lacinia ipsum ligula eu sapien. Mae",
-      #  professional:
-      #  {
-      #    name: "Last Professional Name",
-      #    category: "e",
-      #    document: "987654"
-      #  }
-      #},
+      {
+        createdAt: "10/10/2022 20:10",
+        description: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id. Nulla pretium, massa nec aliquet mattis, erat felis egestas massa, eu lacinia ipsum ligula eu sapien. Mae",
+        professional:
+        {
+          name: "Last Professional Name",
+          category: "e",
+          document: "987654"
+        }
+      },
     ]
     measures: [
       {
