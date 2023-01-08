@@ -150,9 +150,11 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         if changed_collum:
             # draw black rectangle to first colum
             black_rectangle_x_pos = old_initial_position[0] - 8
-            black_rectangle_y_pos = old_initial_position[1] - first_collum_y_decrease - DECREASE_Y_POS
+            # 5 its just to put rectangle closer to text
+            black_rectangle_y_pos = old_initial_position[1] - first_collum_y_decrease + 7 #- DECREASE_Y_POS
             black_rectangle_width = int(CHAR_PER_LINES * CHAR_POINT_SIZE) + 16 # 16 to add 8 extra points in right and left
-            black_rectangle_height = first_collum_y_decrease + (DECREASE_Y_POS * 4)
+            #5 is just to test a rectangle creation
+            black_rectangle_height = first_collum_y_decrease + (DECREASE_Y_POS * 2) + 5
 
             self.add_rectangle(pos=(black_rectangle_x_pos, black_rectangle_y_pos), width=black_rectangle_width, height=black_rectangle_height, color=(0, 0, 0), stroke=1, fill=0)
 
