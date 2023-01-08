@@ -231,7 +231,12 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         self.set_font('Roboto-Mono', 11)
         new_initial_pos, changed_collum, first_collum_y_decrease, second_collum_y_decrease = self.add_evolution_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Descricao evolucao {camp_name}', len_max=1000, char_per_lines=CHAR_PER_LINES)
         
-        self.add_responsible_evolution(evolution_initial_pos=new_initial_pos, total_y_decrease=rectangle_responsible_y_decrease, DECREASE_Y_POS=DECREASE_Y_POS, professional_info=professional_info, evolution_camp_name=f'Descricao evolucao {camp_name}', CHAR_PER_LINES=CHAR_PER_LINES)
+        if changed_collum:
+            #Recude 2 lines
+            y_decrease_to_use = second_collum_y_decrease - int(DECREASE_Y_POS)
+            self.add_responsible_evolution(evolution_initial_pos=new_initial_pos, total_y_decrease=y_decrease_to_use, DECREASE_Y_POS=DECREASE_Y_POS, professional_info=professional_info, evolution_camp_name=f'Descricao evolucao {camp_name}', CHAR_PER_LINES=CHAR_PER_LINES)
+        else:
+            self.add_responsible_evolution(evolution_initial_pos=new_initial_pos, total_y_decrease=rectangle_responsible_y_decrease, DECREASE_Y_POS=DECREASE_Y_POS, professional_info=professional_info, evolution_camp_name=f'Descricao evolucao {camp_name}', CHAR_PER_LINES=CHAR_PER_LINES)
         
         self.add_evolution_rectangles(evolution_initial_pos=new_initial_pos, total_y_decrease=rectangle_responsible_y_decrease, old_initial_position=evolution_initial_pos, DECREASE_Y_POS=DECREASE_Y_POS, CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE, changed_collum=changed_collum, first_collum_y_decrease=first_collum_y_decrease, second_collum_y_decrease=second_collum_y_decrease)
 
