@@ -105,6 +105,8 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 # Making the line break whem has max charater limiti reached in a line
                 total_lines = broke_lines_times + 1
                 changed_collum_positon = False
+                first_collum_y_decrease = 0
+                second_collum_y_decrease = 0
                 while broke_lines_times >= 0:
                     str_to_line = text[last_line:current_line]
                     if ypos < 60:
@@ -117,9 +119,14 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                     current_line += char_per_lines
                     broke_lines_times -= 1
                     ypos -= decrease_ypos
+                    if changed_collum_positon:
+                        second_collum_y_decrease += decrease_ypos
+                    else:
+                        first_collum_y_decrease += decrease_ypos
                 if changed_collum_positon:
-                    return new_position, True
-                return initial_pos, False
+                    return new_position, True, first_collum_y_decrease, second_collum_y_decrease
+                second_collum_y_decrease = decrease_ypos
+                return initial_pos, False, first_collum_y_decrease, second_collum_y_decrease
             else:
                 raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
 
@@ -138,14 +145,32 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         return self.add_evolution_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Informacao do responsavel na evolucao {evolution_camp_name}', len_max=99, char_per_lines=CHAR_PER_LINES, max_lines_amount=3)
 
 
-    def add_evolution_rectangles(self, evolution_initial_pos:tuple, old_initial_position:tuple, total_y_decrease:int, DECREASE_Y_POS:int, CHAR_PER_LINES:int,CHAR_POINT_SIZE:float) -> None:
-        # draw black rectangle
-        black_rectangle_x_pos = evolution_initial_pos[0] - 8
-        black_rectangle_y_pos = evolution_initial_pos[1] - total_y_decrease - DECREASE_Y_POS
-        black_rectangle_width = int(CHAR_PER_LINES * CHAR_POINT_SIZE) + 16 # 16 to add 8 extra points in right and left
-        black_rectangle_height = total_y_decrease + (DECREASE_Y_POS * 4)
+    def add_evolution_rectangles(self, evolution_initial_pos:tuple, old_initial_position:tuple, total_y_decrease:int, DECREASE_Y_POS:int, CHAR_PER_LINES:int,CHAR_POINT_SIZE:float, changed_collum:bool, second_collum_y_decrease:int, first_collum_y_decrease:int) -> None:
 
-        self.add_rectangle(pos=(black_rectangle_x_pos, black_rectangle_y_pos), width=black_rectangle_width, height=black_rectangle_height, color=(0, 0, 0), stroke=1, fill=0)
+        if changed_collum:
+            # draw black rectangle to first colum
+            black_rectangle_x_pos = old_initial_position[0] - 8
+            black_rectangle_y_pos = old_initial_position[1] - first_collum_y_decrease - DECREASE_Y_POS
+            black_rectangle_width = int(CHAR_PER_LINES * CHAR_POINT_SIZE) + 16 # 16 to add 8 extra points in right and left
+            black_rectangle_height = first_collum_y_decrease + (DECREASE_Y_POS * 4)
+
+            self.add_rectangle(pos=(black_rectangle_x_pos, black_rectangle_y_pos), width=black_rectangle_width, height=black_rectangle_height, color=(0, 0, 0), stroke=1, fill=0)
+
+            # draw black rectangle to second collum
+            black_rectangle_x_pos = evolution_initial_pos[0] - 8
+            black_rectangle_y_pos = evolution_initial_pos[1] - second_collum_y_decrease #- DECREASE_Y_POS
+            black_rectangle_width = int(CHAR_PER_LINES * CHAR_POINT_SIZE) + 16 # 16 to add 8 extra points in right and left
+            black_rectangle_height = second_collum_y_decrease + DECREASE_Y_POS
+
+            self.add_rectangle(pos=(black_rectangle_x_pos, black_rectangle_y_pos), width=black_rectangle_width, height=black_rectangle_height, color=(0, 0, 0), stroke=1, fill=0)
+        else:
+            # draw black rectangle
+            black_rectangle_x_pos = evolution_initial_pos[0] - 8
+            black_rectangle_y_pos = evolution_initial_pos[1] - total_y_decrease - DECREASE_Y_POS
+            black_rectangle_width = int(CHAR_PER_LINES * CHAR_POINT_SIZE) + 16 # 16 to add 8 extra points in right and left
+            black_rectangle_height = total_y_decrease + (DECREASE_Y_POS * 4)
+
+            self.add_rectangle(pos=(black_rectangle_x_pos, black_rectangle_y_pos), width=black_rectangle_width, height=black_rectangle_height, color=(0, 0, 0), stroke=1, fill=0)
         
         # draw blue rectangle
         blue_rectangle_x_pos = old_initial_position[0] - 8
@@ -204,13 +229,14 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         total_y_decrease += int(len(professional_info)/CHAR_PER_LINES) * DECREASE_Y_POS
 
         self.set_font('Roboto-Mono', 11)
-        new_initial_pos, changed_collum = self.add_evolution_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Descricao evolucao {camp_name}', len_max=1000, char_per_lines=CHAR_PER_LINES)
+        new_initial_pos, changed_collum, first_collum_y_decrease, second_collum_y_decrease = self.add_evolution_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Descricao evolucao {camp_name}', len_max=1000, char_per_lines=CHAR_PER_LINES)
         
         self.add_responsible_evolution(evolution_initial_pos=new_initial_pos, total_y_decrease=rectangle_responsible_y_decrease, DECREASE_Y_POS=DECREASE_Y_POS, professional_info=professional_info, evolution_camp_name=f'Descricao evolucao {camp_name}', CHAR_PER_LINES=CHAR_PER_LINES)
         
-        self.add_evolution_rectangles(evolution_initial_pos=new_initial_pos, total_y_decrease=rectangle_responsible_y_decrease, old_initial_position=evolution_initial_pos, DECREASE_Y_POS=DECREASE_Y_POS, CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE)
+        self.add_evolution_rectangles(evolution_initial_pos=new_initial_pos, total_y_decrease=rectangle_responsible_y_decrease, old_initial_position=evolution_initial_pos, DECREASE_Y_POS=DECREASE_Y_POS, CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE, changed_collum=changed_collum, first_collum_y_decrease=first_collum_y_decrease, second_collum_y_decrease=second_collum_y_decrease)
 
-        self.add_evolution_responsible(responsible=responsible, evolution_initial_pos=evolution_initial_pos, DECREASE_Y_POS=DECREASE_Y_POS)
+        self.add_evolution_responsible(responsible=responsible, evolution_initial_pos=evolution_initial_pos, DECREASE_Y_POS=total_y_decrease)
+        
 
         return total_y_decrease, changed_collum, new_initial_pos
 
