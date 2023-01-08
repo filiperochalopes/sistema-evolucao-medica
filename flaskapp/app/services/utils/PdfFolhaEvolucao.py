@@ -61,13 +61,74 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         return str(professional_info)
 
 
+    def add_evolution_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='') -> None:
+        """Add text that is fill in one line
+
+        Args:
+            text (str): text value
+            initial_pos (tuple): initial position in canvas
+            decrease_ypos (int): decrease y value to break lines
+            camp_name (str): Camp name, this is used when return Responses
+            len_max (int): maximum text lenght
+            char_per_lines (int): char amount for every lines
+            max_lines_amount (int, optional): maximum lines amount . Defaults to None.
+            nullable (bool, optional): Data can me None. Defaults to False.
+            len_min (int, optional): Minimum text lenght. Defaults to 0.
+            interval (str): interval to add between every char
+        Returns:
+            None
+        """    
+        try:
+            if nullable:
+                if text == None or len(str(text).strip()) == 0:
+                    return None
+            self.validate_func_args(function_to_verify=self.add_evolution_morelines_text, variables_to_verify={'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'camp_name':camp_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval}, nullable_variables=['max_lines_amount'])
+
+
+            if not nullable:
+                text = text.strip()
+                if len(text) == 0:
+                    raise Exception(f'{camp_name} nao pode ser vazio')
+            # verify if text is in the need lenght
+            text = text.strip()
+            if len_min <= len(text) <= len_max:
+                text = self.add_interval_to_data(data=text, interval=interval)
+                str_to_line = ''
+                broke_lines_times = int(len(text)/char_per_lines)
+                if max_lines_amount != None and broke_lines_times + 1 > max_lines_amount:
+                    raise Exception(f'Nao foi possivel adicionar {camp_name} pois a quantidade de linhas necessrias e maior que {max_lines_amount}')
+                current_line = char_per_lines
+                last_line = 0
+                xpos = initial_pos[0]
+                ypos = initial_pos[1]
+                # Making the line break whem has max charater limiti reached in a line
+                total_lines = broke_lines_times + 1
+
+                while broke_lines_times >= 0:
+                    str_to_line = text[last_line:current_line]
+                    self.add_data(data=str_to_line, pos=(xpos, ypos))
+                    last_line = current_line
+                    current_line += char_per_lines
+                    broke_lines_times -= 1
+                    ypos -= decrease_ypos
+
+                return None
+            else:
+                raise Exception(f"Nao foi possivel adicionar {camp_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
+
+        except Exception as error:
+            raise error
+        except:
+            raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
+
+
     def add_responsible_evolution(self, evolution_initial_pos:tuple, total_y_decrease:int, DECREASE_Y_POS:int, professional_info:str, evolution_camp_name:str, CHAR_PER_LINES:int) -> None:
         responsible_y_pos = evolution_initial_pos[1] - total_y_decrease - int(DECREASE_Y_POS * 2)
 
         responsible_initial_pos = (evolution_initial_pos[0], responsible_y_pos)
 
         self.set_font('Roboto-Mono', 9)
-        self.add_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Informacao do responsavel na evolucao {evolution_camp_name}', len_max=99, char_per_lines=CHAR_PER_LINES, max_lines_amount=3)
+        self.add_evolution_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Informacao do responsavel na evolucao {evolution_camp_name}', len_max=99, char_per_lines=CHAR_PER_LINES, max_lines_amount=3)
 
         return None
 
@@ -128,21 +189,24 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         """
         self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'evolution_initial_pos':evolution_initial_pos, 'camp_name':camp_name, 'date':date, 'CHAR_PER_LINES':CHAR_PER_LINES, 'CHAR_POINT_SIZE':CHAR_POINT_SIZE, 'DECREASE_Y_POS':DECREASE_Y_POS})
 
-        self.set_font('Roboto-Mono', 11)
-        self.add_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Descricao evolucao {camp_name}', len_max=1000, char_per_lines=CHAR_PER_LINES)
-
-        total_y_decrease = int(len(evolution_description)/CHAR_PER_LINES) * DECREASE_Y_POS 
-
+        # get professional info text
         professional_info = 'Responsável: ' + self.create_professional_info(professional=responsible, date=date)
+        # Evolution decrease pos
+        total_y_decrease = int(len(evolution_description)/CHAR_PER_LINES) * DECREASE_Y_POS
+        # get rectangle y decrease
+        rectangle_responsible_y_decrease = total_y_decrease
+        # Continue total y decrease calculum
+        total_y_decrease += int(len(professional_info)/CHAR_PER_LINES) * DECREASE_Y_POS
+
+        self.set_font('Roboto-Mono', 11)
+        self.add_evolution_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Descricao evolucao {camp_name}', len_max=1000, char_per_lines=CHAR_PER_LINES)
         
-        self.add_responsible_evolution(evolution_initial_pos=evolution_initial_pos, total_y_decrease=total_y_decrease, DECREASE_Y_POS=DECREASE_Y_POS, professional_info=professional_info, evolution_camp_name=f'Descricao evolucao {camp_name}', CHAR_PER_LINES=CHAR_PER_LINES)
+        self.add_responsible_evolution(evolution_initial_pos=evolution_initial_pos, total_y_decrease=rectangle_responsible_y_decrease, DECREASE_Y_POS=DECREASE_Y_POS, professional_info=professional_info, evolution_camp_name=f'Descricao evolucao {camp_name}', CHAR_PER_LINES=CHAR_PER_LINES)
         
-        self.add_evolution_rectangles(evolution_initial_pos=evolution_initial_pos, total_y_decrease=total_y_decrease, DECREASE_Y_POS=DECREASE_Y_POS, CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE)
+        self.add_evolution_rectangles(evolution_initial_pos=evolution_initial_pos, total_y_decrease=rectangle_responsible_y_decrease, DECREASE_Y_POS=DECREASE_Y_POS, CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE)
 
         self.add_evolution_responsible(responsible=responsible, evolution_initial_pos=evolution_initial_pos, DECREASE_Y_POS=DECREASE_Y_POS)
 
-        total_y_decrease += int(len(professional_info)/CHAR_PER_LINES) * DECREASE_Y_POS
-        
         return total_y_decrease
 
 
