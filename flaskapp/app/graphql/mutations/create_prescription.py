@@ -12,6 +12,10 @@ from app.utils.decorators import token_authorization
 @convert_kwargs_to_snake_case
 @token_authorization
 def create_prescription(_, info, internment_id:int, resting_activity: str, diet: str, drugs: list, nursing_activities: list, current_user: dict):
+    '''
+    Cria uma prescrição para um determidado internamento com a marca de data. Importante notar estrutura de drugs, vide `DrugPrescriptionInput` em graphql schema
+    '''
+
     # Determinando profissional que está registrando
     professional = current_user
 
@@ -52,8 +56,8 @@ def create_prescription(_, info, internment_id:int, resting_activity: str, diet:
         if drug.kind == DrugKindEnum.atb:
             try:
                 timestamp = {
-                    'initial_date': datetime.strptime(drug_prescription['initial_date'], '%Y-%m-%d %H:%M:%S'),
-                    'ending_date': datetime.strptime(drug_prescription['ending_date'], '%Y-%m-%d %H:%M:%S'),
+                    'initial_date': datetime.strptime(drug_prescription['initial_date'], '%Y-%m-%dT%H:%M:%S'),
+                    'ending_date': datetime.strptime(drug_prescription['ending_date'], '%Y-%m-%dT%H:%M:%S'),
                 }
             except Exception as e:
                 raise Exception(f'É obrigatório colocar a data inicial e de previsão de término em uso de antibióticos, {e}')

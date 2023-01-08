@@ -171,9 +171,9 @@ type_defs = gql('''
         dosage: String
         "Via de administração"
         route: String
-        "No formato %Y-%m-%d %H:%M:%S"
+        "No formato ISO %Y-%m-%dT%H:%M:%S"
         initialDate: String
-        "No formato %Y-%m-%d %H:%M:%S"
+        "No formato ISO %Y-%m-%dT%H:%M:%S"
         endingDate: String
     }
 
@@ -373,7 +373,6 @@ type_defs = gql('''
         drug: Drug
         dosage: String
         route: String
-        kind: String
         initialDate: String
         endingDate: String
     }
