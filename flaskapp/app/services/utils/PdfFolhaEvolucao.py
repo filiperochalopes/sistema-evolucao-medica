@@ -244,8 +244,12 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
 
         self.add_evolution_responsible(responsible=responsible, evolution_initial_pos=evolution_initial_pos, DECREASE_Y_POS=DECREASE_Y_POS)
         
-
-        return total_y_decrease, changed_collum, new_initial_pos
+        if changed_collum:
+            # Add one more line to y decrease
+            y_decrease_to_use += DECREASE_Y_POS
+            return y_decrease_to_use, changed_collum, new_initial_pos
+        else:
+            return total_y_decrease, changed_collum, new_initial_pos
 
 
     def add_evolutions(self, evolutions:list) -> None:
