@@ -61,7 +61,7 @@ def data_to_use(client, datetime_to_use, created_at=None, printed_at=None, patie
     except:
         return False 
 
-#Testing Aih SUS
+#Testing folha prescricao
 def test_with_data_in_function(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use) == True
 
