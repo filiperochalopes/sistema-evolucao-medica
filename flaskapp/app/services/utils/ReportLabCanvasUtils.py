@@ -830,8 +830,8 @@ class ReportLabCanvasUtils():
                     date_object = datetime.datetime.strptime(date, '%d/%m/%Y')
             except:
                 if hours:
-                    raise Exception(f'A data nao corresponde ao formato dd/mm/yyyy HH:MM')
-                raise Exception(f'A data nao corresponde ao formato dd/mm/yyyy')
+                    raise Exception(f'{camp_name}- A data nao corresponde ao formato dd/mm/yyyy HH:MM')
+                raise Exception(f'{camp_name}- A data nao corresponde ao formato dd/mm/yyyy')
             str_date = str('%02d/%02d/%d %02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute)
             if hours:  
                 if not formated:

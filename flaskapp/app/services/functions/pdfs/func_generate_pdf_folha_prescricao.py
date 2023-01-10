@@ -30,7 +30,7 @@ def func_generate_pdf_folha_prescricao(created_at:str, patient_name:str, prescri
             pdf.add_abbreviated_name(name=patient_name, pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
 
             pdf.set_font('Roboto-Mono', 16)
-            pdf.add_datetime(date=created_at[:-6], pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
+            pdf.add_datetime(date=created_at[:-6], pos=(717, 556), camp_name="Document created date (upper position), voce deve enviar esse dado no formato dd/mm/yyyy HH:MM", hours=False)
 
             pdf.set_font('Roboto-Mono', 12)
             pdf.add_prescriptions(prescriptions=prescriptions)
