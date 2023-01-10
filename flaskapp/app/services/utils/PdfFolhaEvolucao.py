@@ -61,7 +61,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         return str(professional_info)
 
 
-    def add_evolution_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='', return_lines_used:bool=False) -> None:
+    def add_evolution_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, camp_name:str, len_max:int, char_per_lines:int, Y_LIMIT_FIRST_COLLUM:int=None, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='', return_lines_used:bool=False) -> None:
         """Add text that is fill in one line
 
         Args:
@@ -82,7 +82,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
             if nullable:
                 if text == None or len(str(text).strip()) == 0:
                     return None
-            self.validate_func_args(function_to_verify=self.add_evolution_morelines_text, variables_to_verify={'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'camp_name':camp_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'return_lines_used':return_lines_used}, nullable_variables=['max_lines_amount'])
+            self.validate_func_args(function_to_verify=self.add_evolution_morelines_text, variables_to_verify={'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'camp_name':camp_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'return_lines_used':return_lines_used, 'Y_LIMIT_FIRST_COLLUM':Y_LIMIT_FIRST_COLLUM}, nullable_variables=['max_lines_amount', 'Y_LIMIT_FIRST_COLLUM'])
 
 
             if not nullable:
@@ -109,7 +109,12 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 second_collum_y_decrease = 0
                 while broke_lines_times >= 0:
                     str_to_line = text[last_line:current_line]
-                    if ypos < 73:
+                    # Get the text limit 1 line above from limit 
+                    if Y_LIMIT_FIRST_COLLUM == None:
+                        text_limit_in_first_collum = decrease_ypos
+                    else:
+                        text_limit_in_first_collum = Y_LIMIT_FIRST_COLLUM + decrease_ypos
+                    if ypos < text_limit_in_first_collum:
                         ypos = 490 + (2 * decrease_ypos)
                         xpos = 440
                         new_position = (xpos, ypos)
@@ -144,7 +149,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         responsible_initial_pos = (evolution_initial_pos[0], responsible_y_pos)
 
         self.set_font('Roboto-Mono', 9)
-        total_used_lines = self.add_evolution_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Informacao do responsavel na evolucao {evolution_camp_name}', len_max=99, char_per_lines=CHAR_PER_LINES, max_lines_amount=3, return_lines_used=True)
+        total_used_lines = self.add_evolution_morelines_text(text=professional_info, initial_pos=responsible_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Informacao do responsavel na evolucao {evolution_camp_name}', len_max=99, char_per_lines=CHAR_PER_LINES, max_lines_amount=3, return_lines_used=True, Y_LIMIT_FIRST_COLLUM=None)
 
         responsible_y_pos -= total_used_lines * DECREASE_Y_POS
 
@@ -214,7 +219,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         return None
 
 
-    def add_medical_nursing_evolution(self, evolution_description:str, responsible:dict, date:str, evolution_initial_pos:tuple, camp_name:str, CHAR_PER_LINES:int, CHAR_POINT_SIZE:float, DECREASE_Y_POS:int,Y_LIMIT_SECOND_COLLUM:int, is_in_second_collum:bool) -> None:
+    def add_medical_nursing_evolution(self, evolution_description:str, responsible:dict, date:str, evolution_initial_pos:tuple, camp_name:str, CHAR_PER_LINES:int, CHAR_POINT_SIZE:float, DECREASE_Y_POS:int,Y_LIMIT_SECOND_COLLUM:int, Y_LIMIT_FIRST_COLLUM:int,is_in_second_collum:bool) -> None:
         """Add a medical and nursing evolution to the pdf, this function only works to the 2 big squares with data, in order, the first and third square, the other 2 minor nursing evolution will be created by another function
 
         Args:
@@ -228,7 +233,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         Returns:
             None
         """
-        self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'evolution_initial_pos':evolution_initial_pos, 'camp_name':camp_name, 'date':date, 'CHAR_PER_LINES':CHAR_PER_LINES, 'CHAR_POINT_SIZE':CHAR_POINT_SIZE, 'DECREASE_Y_POS':DECREASE_Y_POS, 'Y_LIMIT_SECOND_COLLUM':Y_LIMIT_SECOND_COLLUM,'is_in_second_collum':is_in_second_collum})
+        self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'evolution_initial_pos':evolution_initial_pos, 'camp_name':camp_name, 'date':date, 'CHAR_PER_LINES':CHAR_PER_LINES, 'CHAR_POINT_SIZE':CHAR_POINT_SIZE, 'DECREASE_Y_POS':DECREASE_Y_POS, 'Y_LIMIT_SECOND_COLLUM':Y_LIMIT_SECOND_COLLUM,'is_in_second_collum':is_in_second_collum, 'Y_LIMIT_FIRST_COLLUM':Y_LIMIT_FIRST_COLLUM})
 
         # get professional info text
         professional_info = 'Responsável: ' + self.create_professional_info(professional=responsible, date=date)
@@ -240,7 +245,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         total_y_decrease += int(len(professional_info)/CHAR_PER_LINES) * DECREASE_Y_POS
 
         self.set_font('Roboto-Mono', 11)
-        new_initial_pos, changed_collum, first_collum_y_decrease, second_collum_y_decrease = self.add_evolution_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Descricao evolucao {camp_name}', len_max=5000, char_per_lines=CHAR_PER_LINES)
+        new_initial_pos, changed_collum, first_collum_y_decrease, second_collum_y_decrease = self.add_evolution_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=DECREASE_Y_POS, camp_name=f'Descricao evolucao {camp_name}', len_max=5000, char_per_lines=CHAR_PER_LINES, Y_LIMIT_FIRST_COLLUM=Y_LIMIT_FIRST_COLLUM)
         
         if changed_collum:
             #Recude 2 lines
@@ -284,12 +289,13 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
 
         evolution_x_pos = 20
         evolution_y_pos = 490
-        y_limit = 60
+        Y_LIMIT_FIRST_COLLUM = 60
         Y_LIMIT_SECOND_COLLUM = 283
+        y_limit = Y_LIMIT_FIRST_COLLUM
         cont = 1
         second_collum = False
         for evo in evolutions:
-            total_y_decrease, changed_collum, new_evolution_pos = self.add_medical_nursing_evolution(evolution_description=evo['description'], responsible=evo['professional'], date=evo['created_at'], evolution_initial_pos=(evolution_x_pos, evolution_y_pos), camp_name=f'{cont} evolucao medica', CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE, DECREASE_Y_POS=DECREASE_Y_POS, Y_LIMIT_SECOND_COLLUM=Y_LIMIT_SECOND_COLLUM, is_in_second_collum=second_collum)
+            total_y_decrease, changed_collum, new_evolution_pos = self.add_medical_nursing_evolution(evolution_description=evo['description'], responsible=evo['professional'], date=evo['created_at'], evolution_initial_pos=(evolution_x_pos, evolution_y_pos), camp_name=f'{cont} evolucao medica', CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE, DECREASE_Y_POS=DECREASE_Y_POS, Y_LIMIT_SECOND_COLLUM=Y_LIMIT_SECOND_COLLUM, is_in_second_collum=second_collum, Y_LIMIT_FIRST_COLLUM=Y_LIMIT_FIRST_COLLUM)
 
             evolution_x_pos = new_evolution_pos[0]
             evolution_y_pos = new_evolution_pos[1]
