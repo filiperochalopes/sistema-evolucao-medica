@@ -109,7 +109,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 second_collum_y_decrease = 0
                 while broke_lines_times >= 0:
                     str_to_line = text[last_line:current_line]
-                    if ypos < 60:
+                    if ypos < 73:
                         ypos = 490 + (2 * decrease_ypos)
                         xpos = 440
                         new_position = (xpos, ypos)
