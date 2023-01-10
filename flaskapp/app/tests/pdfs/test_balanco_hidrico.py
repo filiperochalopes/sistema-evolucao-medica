@@ -61,3 +61,51 @@ def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient 
 #Testing Aih SUS
 def test_with_data_in_function(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use) == True
+
+def test_answer_with_all_fields(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use) == True
+
+##############################################################
+# ERRORS IN NAMES CAMPS
+
+@pytest.mark.parametrize("test_input", ['    ', ''])
+def test_empty_value_patient_name(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_name=test_input) == False
+
+#################################################################
+# TEST DATETIMES VARIABLES
+
+def test_valid_created_at(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, created_at=datetime_to_use) == True
+
+def test_invalid_created_at(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, created_at='10:10:24 - 1245') == False
+
+
+#################################################################
+# TEST WEIGHT
+
+@pytest.mark.parametrize("test_input", [10, 1, 5, 50, 120])
+def test_valid_patient_weight(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_weight=test_input) == True
+
+
+
+##################################################################
+# TEST FLUID BALANCES
+
+@pytest.mark.parametrize("test_input", [
+    [{'created_at': "20/12/2022 10:35",'value': -600,'description': "diurese"}],
+    [{'created_at': "20/12/2022 10:35",'value': 600,'description': "diurese"}],
+])
+def test_valid_fluid_balance(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, fluid_balances=test_input) == True
+
+
+@pytest.mark.parametrize("test_input", [
+    [{'created_at': "20/12/2022",'value': -600,'description': "diurese"}],
+    [{'created_at': "20/12/2022 10:35",'value': 600,'description': "diuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediurese"}],
+    [{'created_at': "20/12/2022 10:35",'value': -0.45,'description': "diurese"}],
+])
+def test_invalid_fluid_balance(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, fluid_balances=test_input) == False
