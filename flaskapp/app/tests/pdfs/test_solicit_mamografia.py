@@ -15,7 +15,8 @@ def lenght_test():
 @pytest.fixture
 def datetime_to_use():
     """get current datetime to test"""
-    return datetime.datetime.now().strftime('%d/%m/%Y')
+    timezone = datetime.timezone(offset=datetime.timedelta(hours=-3))
+    return datetime.datetime.now(tz=timezone).strftime('%d/%m/%Y')
 
 @pytest.fixture
 def client():
@@ -36,7 +37,6 @@ def data_to_use(client, datetime_to_use,
     high_risk='NAOSABE',
     examinated_before='NAOSABE',
     mammogram_before='["NAO", "2020"]',
-    patient_age=23,
     health_unit_adress_uf='SP',
     health_unit_cnes=1234567,
     health_unit_name="Health Unit Name",

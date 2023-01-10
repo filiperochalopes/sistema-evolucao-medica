@@ -123,7 +123,10 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
             today = datetime.datetime.now(tz=timezone)
             age = datetime.datetime.strptime(birthdate, '%d/%m/%Y')
 
-            return today.year - age.year - ((today.month, today.day) < (age.month, age.day))
+            patient_age = today.year - age.year - ((today.month, today.day) < (age.month, age.day))
+            if patient_age < 0:
+                raise Exception(f'O calculo de idade do paciente retornou um numero negativo -> {patient_age}, lembre-se de utilizar o fuso-horario do brasil GMT-3')
+            return patient_age
         except Exception as error:
             raise Exception(f'A data de nascimento do paciente nao corresponde ao formato dd/mm/yyyy')
 

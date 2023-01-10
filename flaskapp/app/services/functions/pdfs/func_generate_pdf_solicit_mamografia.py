@@ -94,7 +94,7 @@ def func_generate_pdf_solicit_mamografia(patient:dict, nodule_lump:str, high_ris
             
             pdf.add_markable_square_and_onelinetext(option=mammogram_before[0], valid_options=['SIM', 'NAO', 'NAOSABE'], text_options=['SIM'], options_positions=((51,64), (51,52), (51, 40)), camp_name='Has made mamogram before', square_size=(15,9), len_max=4, len_min=4, text=mammogram_before[1], text_pos=(200, 68), interval=' ')
             patient_age = pdf.get_patient_age(birthdate=patient['birthdate'])
-            pdf.add_oneline_intnumber(number=patient_age, pos=(217, 563), camp_name='Patient Birthday', len_max=2, len_min=1,value_min=0, value_max=130, interval=' ')
+            pdf.add_oneline_intnumber(number=patient_age, pos=(217, 563), camp_name='Patient Age', len_max=2, len_min=1,value_min=0, value_max=130, interval=' ')
             pdf.set_font('Roboto-Mono', 13)
             pdf.add_morelines_text(text=patient['name'], initial_pos=(47, 653), decrease_ypos=18, camp_name='Patient Name', len_max=42, len_min=7, interval=' ', char_per_lines=87)
             pdf.add_oneline_text(text=patient['mother_name'], pos=(47, 612), camp_name='Patient Mother Name', len_max=42, len_min=7, interval=' ')
