@@ -8,9 +8,9 @@ from app.models import Address, Internment, Patient, SexEnum, db
 from app.serializers import InternmentSchema
 from app.graphql import mutation
 from app.models import Internment
-from app.utils.decorators import token_authorization
-from app.utils.functions import cpf_validator, cns_validator
-from app.utils.create_comorbities_and_allergies import create_comorbidities_and_allergies
+from app.services.utils.decorators import token_authorization
+from app.services.utils.auth import cpf_validator, cns_validator
+from app.services.utils.create_comorbities_and_allergies import create_comorbidities_and_allergies
 
 @mutation.field('createInternment')
 @convert_kwargs_to_snake_case

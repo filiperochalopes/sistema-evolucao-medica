@@ -1,7 +1,8 @@
 from ariadne import gql, QueryType, MutationType
 
 # Define type definitions (schema) using SDL
-type_defs = gql('''
+type_defs = gql(
+    '''
     type Query {
        users: [User]
        cid10: [Cid10!]
@@ -178,13 +179,64 @@ type_defs = gql('''
     }
 
     input AddressInput{
+        "CEP do endereco"
         zipCode: String
+        "Nome da Rua"
         street:String
-        number:String
-        neighborhood:String
+        "Complemento"
         complement:String
+        "Bairro do endereco"
+        neighborhood:String
+        "Numero do endereco"
+        number:String
+        "Nome da Cidade"
         city: String!
+        "Codigo IGBE do municipio"
+        ibgeCityCode: String
+        "Sigla do estado"
         uf: String!
+        "Pontos de Referencia"
+        reference: String
+    }
+
+    input ProcedimentoInput{
+        "Nome do procedimento, max:50 min: 7 caracteres"
+        name: String!
+        "Codigo do procedimento, deve ter 10 caracteres"
+        code: String!,
+        "Quantidade do procedimento, max: 8 digitos"
+        quant: Int!
+    }
+
+    input SurgeryBeforeInput{
+        "Nao fez nenhuma Cirurgia nas mamas, marque TRUE caso ela nunca tenha feito nenhuma cirugia, isso faz todos os outros serem descartados. Caso contario marque FALSE"
+        didNot: String!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        biopsiaInsinonal: [String]!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        biopsiaExcisional: [String]!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        centraledomia: [String]!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        segmentectomia: [String]!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        dutectomia: [String]!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        mastectomia: [String]!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        mastectomiaPoupadoraPele: [String]!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        mastectomiaPoupadoraPeleComplexoAreolo: [String]!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        linfadenectomiaAxilar: [String]!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        biopsiaLinfonodo: [String]!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        reconstrucaoMamaria: [String]!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        mastoplastiaRedutora: [String]!,
+        """Lista com 2 anos, o primeiro para o lado esquerdo e o segundo para o lado direito, null para casa nao tenha cirugia. Ex: ["2020", null] ou somente [null]"""
+        indusaoImplantes: [String]!
     }
 
     input UserInput{
@@ -211,23 +263,110 @@ type_defs = gql('''
     }
 
     input PatientInput{
+        "Nome completo do paciente"
         name:String,
+        "Nome completo da mãe do paciente"
+        motherName: String
         "Sexo biológico binário `male` ou `female`"
         sex:String,
         "Dado muito relevante para cáculos, peso em quilos"
         weightKg: Float!
-        "Data de aniversário no formato `yyyy-mm-dd`"
+        "Data de nascimento no formato `yyyy-mm-dd`"
         birthdate: String
         "Apenas dígitos, para fins de testes pode gerar [nesse link](https://geradornv.com.br/gerador-cpf/)"
         cpf:String, 
         "Apenas dígitos, para fins de testes, pode gerar [nesse link](https://geradornv.com.br/gerador-cns/)"
         cns:String!, 
+        "Apenas dígito do Documento de Registro Geral"
         rg: String
+        "Nacionalidade do Paciente"
+        nationality: String
+        "Etnia do Paciente"
+        ethnicity: String
         "Lista de doenças do paciente"
         comorbidities: [String]
         "Alergias"
         allergies: [String]
+        "Dados de endereço"
         address: AddressInput
+    }
+
+    input PrescriptionInput{
+        "Nome do medicamento, ele e o amount nao podem ser maiores que 61 caracteres juntos. Exemplo: Dipirona 500mg"
+        medicineName: String
+        "quantidade do medicamento, isso e medicineName nao podem ser maiores que 61 caracteres juntos. Exemplo: 4 comprimidos"
+        amount: String
+        "Modo de uso, max: 244 caracteres"
+        useMode: String
+    }
+
+    input MedicineInput{
+        "Nome do medicamento, max: 65 min:4 caracteres"
+        medicineName: String
+        "quantidade do medicamento no primeiro mes, max: 9 carateres, min:1"
+        quant1month: String
+        "quantidade do medicamento no segundo mes, max: 9 carateres, min:1"
+        quant2month: String
+        "quantidade do medicamento no terceiro mes, max: 8 carateres, min:1"
+        quant3month: String
+    }
+
+    input DiagnosticMamogramInput{
+        "Exame clinico, utilize o input ExameClinicoOpcoesMamasInput"
+        exameClinico: ExameClinicoOpcoesMamasInput,
+        """
+        Controle Radiologico, utilize o input OpcoesMamasInput, as opcoes sao
+        'nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'
+        """
+        controleRadiologico: OpcoesMamasInput,
+        """
+        Lesao Diagnostico, utilize o input OpcoesMamasInput, as opcoes sao:
+        'nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'
+        """
+        lesaoDiagnostico: OpcoesMamasInput,
+        "Avaliacao da Resposta de QT, envie uma lista de String com Direito e Esquerda, Exemplos: ['direita', 'esquerda']  / [null, 'esquerda'] / [null, null]"
+        avaliacaoResposta: [String],
+        "Revisao de mamogramafia com lesao, opcoes: '0', '3', '4', '5'"
+        revisaoMamografiaLesao: OpcoesMamasInput,
+        "Controle de lesao apos biopsia de fragmento, opcoes: 'nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'"
+        controleLesao: OpcoesMamasInput
+
+    }
+
+    input OpcoesMamasInput{
+        "Lista com as opcoes da mama direita"
+        direta: [String]!,
+        "Lista com as opcoes da mama esquerda"
+        esquerda: [String]!
+    }
+
+    input ExameClinicoOpcoesMamasInput{
+        "Lista com as opcoes da mama direita"
+        direta: ExameClinicoInput!,
+        "Lista com as opcoes da mama esquerda"
+        esquerda: ExameClinicoInput!
+    }
+
+    input ExameClinicoInput{
+        "Lesao Papilar"
+        papilar: Boolean,
+        "Descarga papilar, as opcoes: 'CRISTALINA', 'HEMORRAGICA'"
+        descargaPapilar: [String],
+        "Nodulo localizacao opcoes: 'QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'"
+        nodulo: [String],
+        "Espessamento localizacao, opcoes: 'QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'"
+        espessamento: [String],
+        "Linfonodo palpavel, opcoes: 'AXILAR', 'SUPRACLAVICULAR'"
+        linfonodoPalpavel: [String]
+    }
+    
+    input DocumentInput{
+        "CPF do Paciente sem formatacao, apenas numeros. Exemplo: xxxxxxxxxxx"
+        cpf: String
+        "RG do Paciente sem formatacao, apenas os numeros XXXXXXXXXXXX"
+        rg: String
+        "CNS do Paciente sem formatacao, apenas numeros. Exemplo: xxxxxxxxxxxxxxx"
+        cns: String
     }
 
     type User {
@@ -383,14 +522,12 @@ type_defs = gql('''
         restingActivity: NamedObject
         "Note que a dieta é única"
         diet: NamedObject
+        "Prescrições de medicamentos"
         drugPrescriptions: [DrugPrescription]
+        "Atividades de enfermagem"
         nursingActivities: [NamedObject]
+        "Timestamp ISO de criação da prescrição"
         createdAt: String
-    }
-
-    type PrescriptionUnit{
-        type: String,
-        name: String
     }
 
     type Cid10 {

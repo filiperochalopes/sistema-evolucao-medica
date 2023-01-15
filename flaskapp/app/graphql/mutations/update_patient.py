@@ -2,9 +2,9 @@ from ariadne import convert_kwargs_to_snake_case
 
 from app.graphql import mutation
 from app.models import db, Patient, Address
-from app.utils.decorators import token_authorization
+from app.services.utils.decorators import token_authorization
 from app.serializers import PatientSchema
-from app.utils.create_comorbities_and_allergies import create_comorbidities_and_allergies
+from app.services.utils.create_comorbities_and_allergies import create_comorbidities_and_allergies
 
 @mutation.field('updatePatient')
 @convert_kwargs_to_snake_case

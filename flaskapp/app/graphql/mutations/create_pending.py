@@ -2,7 +2,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 from app.graphql import mutation
 from app.models import db, Internment, Pending
-from app.utils.decorators import token_authorization
+from app.services.utils.decorators import token_authorization
 
 @mutation.field('createPending')
 @convert_kwargs_to_snake_case

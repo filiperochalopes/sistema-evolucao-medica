@@ -1,5 +1,5 @@
 from app.graphql import query
-from app.utils.decorators import token_authorization
+from app.services.utils.decorators import token_authorization
 
 @query.field('myUser')
 @token_authorization

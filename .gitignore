@@ -1,4 +1,6 @@
 __pycache__
 .env
-*.db
 data
+.idea
+*.db
+flaskapp/app/tests/files/tmp/*.pdf

@@ -1,10 +1,58 @@
 import os
 
+# Dados de autenticação
 SECRET = os.getenv('SECRET_KEY')
 MASTER_KEY = os.getenv('MASTER_KEY')
 TOKEN_HOUR_EXPIRATION = os.getenv('TOKEN_HOUR_EXPIRATION', 6)
 
-# Dados iniciais da instituição para cadastro do mesmo pelo `flask seed` para preenchimento de dados iniciais
+# Dados para criação de pdfs
+FONT_DIRECTORY = "/app/app/assets/pdfs_templates/Roboto-Mono.ttf"
+BOLD_FONT_DIRECTORY = "/app/app/assets/pdfs_templates/Roboto-Condensed-Bold.ttf"
+GRAPHQL_MUTATION_QUERY_URL = "http://localhost:5000/api/v1/graphql"
+
+# Templates Directorys
+TEMPLATE_BASE_URL = "/app/app/assets/pdfs_templates/"
+TEMPLATE_AIH_SUS_DIRECTORY              = f"{TEMPLATE_BASE_URL}aih_sus.pdf"
+TEMPLATE_APAC_DIRECTORY                 = f"{TEMPLATE_BASE_URL}apac.pdf"
+TEMPLATE_EXAM_REQUEST_DIRECTORY         = [f"{TEMPLATE_BASE_URL}one_exam_request.pdf", f"{TEMPLATE_BASE_URL}two_exam_request.pdf", f"{TEMPLATE_BASE_URL}three_exam_request.pdf"]
+TEMPLATE_FICHA_INTERN_DIRECTORY         = f"{TEMPLATE_BASE_URL}ficha_de_internamento_hmlem.pdf"
+TEMPLATE_LME_DIRECTORY                  = f"{TEMPLATE_BASE_URL}lme.pdf"
+TEMPLATE_PRESCRICAO_MEDICA_DIRECTORY    = f"{TEMPLATE_BASE_URL}two_pages_precricao_medica_template.pdf"
+TEMPLATE_RELATORIO_ALTA_DIRECTORY       = f"{TEMPLATE_BASE_URL}relatorio_de_alta.pdf"
+TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY   = f"{TEMPLATE_BASE_URL}solicitacao_mamografia.pdf"
+TEMPLATE_FOLHA_EVOLUCAO_DIRECTORY       = f"{TEMPLATE_BASE_URL}folha_evolucao.pdf"
+TEMPLATE_BALANCO_HIDRICO_DIRECTORY      = f"{TEMPLATE_BASE_URL}balanco_hidrico.pdf"
+TEMPLATE_FOLHA_PRESCRICAO_DIRECTORY     = f"{TEMPLATE_BASE_URL}folha_prescricao.pdf"
+
+# Write directories when creating pdf that will be enconded to base64
+WRITE_BASE_URL = "/app/app/tests/files/tmp/"
+WRITE_AIH_SUS_DIRECTORY             = f"{WRITE_BASE_URL}aih_sus_teste.pdf"
+WRITE_APAC_DIRECTORY                = f"{WRITE_BASE_URL}apac_teste.pdf"
+WRITE_EXAM_REQUEST_DIRECTORY        = f"{WRITE_BASE_URL}exam_request_teste.pdf"
+WRITE_FICHA_INTERN_DIRECTORY        = f"{WRITE_BASE_URL}ficha_teste.pdf"
+WRITE_LME_DIRECTORY                 = f"{WRITE_BASE_URL}lme_teste.pdf"
+WRITE_PRESCRICAO_MEDICA_DIRECTORY   = f"{WRITE_BASE_URL}prescricao_medica_teste.pdf"
+WRITE_RELATORIO_ALTA_DIRECTORY      = f"{WRITE_BASE_URL}relatorio_alta_teste.pdf"
+WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY  = f"{WRITE_BASE_URL}solicit_mamografia_teste.pdf"
+WRITE_FOLHA_EVOLUCAO_DIRECTORY      = f"{WRITE_BASE_URL}folha_evolucao_teste.pdf"
+WRITE_BALANCO_HIDRICO_DIRECTORY     = f"{WRITE_BASE_URL}balanco_hidrico_teste.pdf"
+WRITE_FOLHA_PRESCRICAO_DIRECTORY    = f"{WRITE_BASE_URL}folha_prescricao_teste.pdf"
+
+# Write directires that tests will use to decode pdfs from base64 
+WRITE_DECODE_BASE_URL = "/app/app/tests/files/tmp/"
+WRITE_DECODE_AIH_SUS_DIRECTORY             = f"{WRITE_DECODE_BASE_URL}aih_sus_decoded_teste.tmp.pdf"
+WRITE_DECODE_APAC_DIRECTORY                = f"{WRITE_DECODE_BASE_URL}apac_decoded_teste.tmp.pdf"
+WRITE_DECODE_EXAM_REQUEST_DIRECTORY        = f"{WRITE_DECODE_BASE_URL}exam_request_decoded_teste.tmp.pdf"
+WRITE_DECODE_EXAM_REQUEST_2_PAGES_DIRECTORY        = f"{WRITE_DECODE_BASE_URL}exam_request_2_pages_decoded_teste.tmp.pdf"
+WRITE_DECODE_EXAM_REQUEST_3_PAGES_DIRECTORY        = f"{WRITE_DECODE_BASE_URL}exam_request_3_pages_decoded_teste.tmp.pdf"
+WRITE_DECODE_FICHA_INTERN_DIRECTORY        = f"{WRITE_DECODE_BASE_URL}ficha_decoded_teste.tmp.pdf"
+WRITE_DECODE_LME_DIRECTORY                 = f"{WRITE_DECODE_BASE_URL}lme_decoded_teste.tmp.pdf"
+WRITE_DECODE_PRESCRICAO_MEDICA_DIRECTORY   = f"{WRITE_DECODE_BASE_URL}prescricao_medica_decoded_teste.tmp.pdf"
+WRITE_DECODE_RELATORIO_ALTA_DIRECTORY      = f"{WRITE_DECODE_BASE_URL}relatorio_alta_decoded_teste.tmp.pdf"
+WRITE_DECODE_SOLICIT_MAMOGRAFIA_DIRECTORY  = f"{WRITE_DECODE_BASE_URL}solicit_mamografia_decoded_teste.tmp.pdf"
+WRITE_DECODE_FOLHA_EVOLUCAO_DIRECTORY       = f"{WRITE_DECODE_BASE_URL}folha_evolucao_decoded_teste.tmp.pdf"
+WRITE_DECODE_BALANCO_HIDRICO_DIRECTORY      = f"{WRITE_DECODE_BASE_URL}balanco_hidrico_decoded_teste.tmp.pdf"
+WRITE_DECODE_FOLHA_PRESCRICAO_DIRECTORY     = f"{WRITE_DECODE_BASE_URL}folha_prescricao_decoded_teste.tmp.pdf"
 
 class InstitutionData:
     NAME = os.getenv('INSTITUTION_NAME', 'Hospital Maternidade Luís Eduardo Magalhães')

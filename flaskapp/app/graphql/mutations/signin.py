@@ -3,7 +3,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 from app.graphql import mutation
 from app.serializers import UserSchema
-from app.utils.functions import generate_token
+from app.services.utils.auth import generate_token
 
 
 @mutation.field('signin')

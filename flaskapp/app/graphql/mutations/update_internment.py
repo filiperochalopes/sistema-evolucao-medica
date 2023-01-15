@@ -6,7 +6,7 @@ from app.models import Internment, db
 from app.serializers import InternmentSchema
 from app.graphql import mutation
 from app.models import Internment
-from app.utils.decorators import token_authorization
+from app.services.utils.decorators import token_authorization
 
 @mutation.field('updateInternment')
 @convert_kwargs_to_snake_case

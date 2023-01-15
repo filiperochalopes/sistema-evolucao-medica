@@ -3,7 +3,7 @@ import bcrypt
 
 from app.graphql import mutation
 from app.models import db, User
-from app.utils.decorators import token_authorization
+from app.services.utils.decorators import token_authorization
 from app.serializers import UserSchema
 
 @mutation.field('updatePassword')

@@ -6,7 +6,7 @@ from ariadne import convert_kwargs_to_snake_case
 from app.serializers import PrescriptionSchema, EvolutionSchema
 from app.graphql import mutation
 from app.models import db, Internment, Evolution, RestingActivity, Diet, Drug, DrugKindEnum, DrugPrescription, Prescription, NursingActivity, Pending
-from app.utils.decorators import token_authorization
+from app.services.utils.decorators import token_authorization
 
 @mutation.field('createPrescription')
 @convert_kwargs_to_snake_case

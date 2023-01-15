@@ -1,0 +1,95 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_SolicitMamografia(
+      patient: {
+      	name: "Pacient Name",
+        cns: "928976954930007",
+        birthdate: "10/10/2000",
+        motherName: "Paciente Mother Name",
+        cpf: "28445400070",
+        sex: "M",
+        nationality: "Brasileiro",
+        address:{
+          street: "Patient Adress",
+          uf: "SP",
+          neighborhood: "Adress Neubr",
+          city: "Jau",
+          complement: "Patient Adjunct",
+          zipCode: "12345678",
+          reference: "Reference"
+          number: "123",
+          ibgeCityCode: "1234567",
+        },
+        
+      }
+      mammogramBefore: ["SIM", "2020"],
+      noduleLump: "SIMDIR",
+      highRisk: "SIM",
+      examinatedBefore: "NUNCA",
+      healthUnitName: "heath Unit Name",
+      patientSurname: "Lero",
+      patientPhonenumber: "4212345678",
+      radiotherapyBefore: ["NAO", null],
+      breastSurgeryBefore: {
+      didNot: "false",
+      biopsiaInsinonal: ["2020", null],
+      biopsiaLinfonodo: [null],
+      biopsiaExcisional: [null],
+      centraledomia: [null], 
+      segmentectomia: ["2021", "2010"],
+      dutectomia: [null],
+      mastectomia: [null],
+      mastectomiaPoupadoraPele: [null],
+      mastectomiaPoupadoraPeleComplexoAreolo: [null],
+      linfadenectomiaAxilar: [null],
+      reconstrucaoMamaria: [null],
+      mastoplastiaRedutora: [null],
+      indusaoImplantes: [null]
+      },
+      healthUnitCnes: 1234567,
+      protocolNumber: "1233",
+      healthUnitCityIbgeCode: "1234567",
+      documentChartNumber: "142",
+      patientEthnicity: ["BRANCA", null],
+      professionalSolicitorName: "Professional Soliciame",
+      solicitationDatetime: "10/10/2012",
+      examNumber: "4124",
+      trackingMammogram: "POPALVO",
+      diagnosticMammogram: {
+      exameClinico:{
+          direta: {
+          papilar: true,
+          descargaPapilar: ["CRISTALINA", "HEMORRAGICA"],
+          nodulo: ["QSL", "QIL", "QSM", "QIM"],
+          espessamento: ["QSL", "QIL", "QSM", "QIM"],
+          linfonodoPalpavel: ["AXILAR", "SUPRACLAVICULAR"]
+          },
+          esquerda:{
+          papilar: true,
+          descargaPapilar: ["CRISTALINA", "HEMORRAGICA"],
+          nodulo: ["QSL", "QIL", "QSM", "QIM"],
+          espessamento: ["QSL", "QIL", "QSM", "QIM"],
+          linfonodoPalpavel: ["AXILAR", "SUPRACLAVICULAR"]
+          }
+      },
+      controleRadiologico:{
+          direta: ["nodulo", "microca", "assimetria_focal"],
+          esquerda: ["nodulo", "microca", "assimetria_focal"]
+      },
+      lesaoDiagnostico: {
+          direta: ["nodulo", "microca", "assimetria_focal"],
+          esquerda: ["nodulo", "microca", "assimetria_focal"] 
+      },
+      avaliacaoResposta: ["direita", "esquerda"],
+      revisaoMamografiaLesao: {
+          direta: ["0", "3", "4", "5"],
+          esquerda: ["0", "3", "4", "5"]
+      },
+      controleLesao: {
+          direta: ["nodulo", "microca", "assimetria_focal"],
+          esquerda: ["nodulo", "microca", "assimetria_focal"]
+      }
+
+      }
+){base64Pdf}
+}

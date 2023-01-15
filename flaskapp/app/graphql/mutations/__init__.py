@@ -9,3 +9,6 @@ import app.graphql.mutations.create_measure
 import app.graphql.mutations.update_password
 import app.graphql.mutations.update_patient
 import app.graphql.mutations.update_internment
+import app.graphql.mutations.generate_pdfs
+
+

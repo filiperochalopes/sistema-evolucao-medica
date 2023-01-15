@@ -2,6 +2,7 @@ import sys
 from unicodedata import name
 from app.env import InstitutionData, DatabaseSettings
 from .graphql import query, type_defs, mutation
+from .graphql.pdfs_schema import pdfs_schema_type_defs
 from flask import Flask, request, jsonify, send_from_directory
 from flask_migrate import Migrate
 from ariadne import graphql_sync, make_executable_schema
@@ -40,8 +41,7 @@ def send_report(path):
 def index(path):
     return render_template('reactapp/build/index.html')
 
-
-schema = make_executable_schema(type_defs, [query, mutation])
+schema = make_executable_schema([type_defs, pdfs_schema_type_defs], [query, mutation])
 
 
 @app.route("/api/v1/graphql", methods=["GET"])
@@ -119,7 +119,7 @@ def seed():
         Drug(name='Diclofenaco 25mg/ml 3m', usual_dosage='75mg (1 ampola) no momento', usual_route='Intramuscular', kind=DrugKindEnum.oth),
         Drug(name='Dexametasona 4mg/2,5ml', usual_dosage='10mg (1 ampola) no momento', usual_route='Intramuscular', kind=DrugKindEnum.oth),
         Drug(name='Nebulização 1ml de adrenalina + 5ml de SF 0,9% + 10 gotas de Ipratrópio 0,25 mg/mL', usual_dosage='1g (1 ampola) no momento', usual_route='Inalatória por via nasal', comment='Zhang L, Sanguebsche LS. The safety of nebulization with 3 to 5 ML of adrenaline (1:1000) in children: An evidence based review. Jornal de Pediatria. 2005;81(3):193–7.  ', kind=DrugKindEnum.oth),
-        Drug(name='Ceftriaxona 1g', usual_dosage='1g 12/12h', usual_route='Endovenosa', comment='Dose pediátrica usual: (50mg/kg/dose) 12/12h', kind=DrugKindEnum.atb),
+        Drug(name='Ceftriaxona 1g', usual_dosage='1g 12/12h', usual_route='Endovenoso', comment='Dose pediátrica usual: (50mg/kg/dose) 12/12h', kind=DrugKindEnum.atb),
         Drug(name='Oxigênio', usual_dosage='Cateter nasal 3L/min se SpO2 < 92%', usual_route='Nasal', kind=DrugKindEnum.oth),
         Drug(name='Oxigênio', usual_dosage='Cateter nasal 3L/min', usual_route='Nasal', kind=DrugKindEnum.oth),
     ]
@@ -136,7 +136,6 @@ def seed():
         RestingActivity(name='Repouso absoluto, cabeceira elevada 30°, atenção para lesões por pressão. Variar decúbito a cada 2h'),
         RestingActivity(name='Repouso relativo'),
     ]
-    db.session.bulk_save_objects(resting_activities)
     # Adicionndo alguns tipos de dieta
     diets = [
         Diet(name='Dieta livre'),
@@ -147,7 +146,6 @@ def seed():
         Diet(name='Dieta líquida'),
         Diet(name='Dieta zero')
     ]
-    db.session.bulk_save_objects(diets)
     # Adicionndo algumas descrições de Balanço hídrico
     fluid_balance_descriptions = [
         FluidBalanceDescription(value='Medicação'),

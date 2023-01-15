@@ -1,0 +1,74 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_Apac(
+		establishmentSolitc: {
+        name: "Establishmente Solict Name",
+        cnes: "1234567"
+      },
+    establishmentExec: {
+      name:"Establishment exec Name",
+      cnes: "1234567"
+    },
+    patient: {
+        name: "Patient Patient Name",
+        cns: "928976954930007",
+        birthdate: "10/10/2022",
+        sex: "M",
+        ethnicity: "Etnia",
+        motherName: "Patient Mother Name",
+        address: {
+          street: "Patient Adress",
+          city: "Jau",
+          ibgeCityCode: "1234567",
+          uf: "SP",
+          zipCode: "12345678"
+        },
+    },
+		mainProcedure: {
+      name: "teste procedimento",
+      code: "hkmaug347s",
+      quant: 1
+      },
+      secondariesProcedures:[
+      {
+      name: "teste procedimento",
+      code: "hkmaug347s",
+      quant: 1
+      },
+      {
+      name: "segundo procedimento",
+      code: "hkmhsa3s23",
+      quant: 4
+      }
+		],
+		patientMotherPhonenumber: "3412344321",
+		patientResponsibleName: "Patient Responsible Name",
+		patientResponsiblePhonenumber: "5425415864",
+		patientColor: "BRANCA",
+		documentChartNumber: "12345",
+		procedureJustificationDescription: "Procedure Justification Description",
+		procedureJustificationMainCid10: "A123",
+		procedureJustificationSecCid10: "A31",
+		procedureJustificationAssociatedCauseCid10: "B435",
+		procedureJustificationComments: "Procedure Justification Comments",
+		professionalSolicitorDocument: {
+		cns: "928976954930007",
+		cpf: null,
+		rg: null
+		},
+		professionalSolicitorName: "Professional Solicitator",
+		solicitationDatetime: "10/11/2021",
+		professionalAutorizationName: "Professional Autorizaton",
+		emissionOrgCode: "Cod121234",
+		autorizatonProfessionalDocument: {
+		cns: "928976954930007",
+		cpf: null,
+		rg: null
+		},
+		autorizatonDatetime: "10/10/2022",
+		signatureDatetime: "15/10/2022",
+		validityPeriodStart: "15/10/2022",
+		validityPeriodEnd: "15/11/2022"
+		)
+{base64Pdf}
+}
