@@ -50,7 +50,7 @@ mutation{
 		procedureJustificationMainCid10: "A123",
 		procedureJustificationSecCid10: "A31",
 		procedureJustificationAssociatedCauseCid10: "B435",
-		procedureJustificationComments: "Procedure Justification Comments",
+		procedureJustificationComments: "Procedure Justification Comments ---- Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n Mauris blandit fringilla libero id pellentesque. Nam ligula est, mattis ac mi id, hendrerit consequat justo. Mauris placerat ipsum ut nulla vehicula ornare. Phasellus lacus sem, pellentesque ut sem vitae, posuere feugiat ante. Praesent quis porttitor risus, sit amet faucibus quam. Sed consequat purus quis arcu auctor faucibus. Pellentesque quis est leo. Etiam pellentesque elit id magna tempor efficitur. Fusce lobortis ut mi feugiat maximus. Praesent at pretium lorem. Morbi eget ex mattis, gravida tortor cursus, pharetra neque. Aenean cursus dui ac lorem faucibus, sit amet gravida purus tincidunt.",
 		professionalSolicitorDocument: {
 		cns: "928976954930007",
 		cpf: null,

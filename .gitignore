@@ -4,3 +4,5 @@ __pycache__
 instance/
 *.db
 flaskapp/app/tests/files/tmp/*.pdf
+data
+.DS_Store

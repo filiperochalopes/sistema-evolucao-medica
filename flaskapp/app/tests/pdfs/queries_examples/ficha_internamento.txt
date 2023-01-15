@@ -22,7 +22,7 @@ mutation{
       comorbidities: ["Patient", "Commorbidites"],
       allergies: ["Patient", "Drug", "Allergies"],
     }
-    currentIllnessHistory: "Current Illness History",
+    currentIllnessHistory: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam interdum ligula nulla, eu fermentum risus egestas vitae. Duis eu urna scelerisque, ultrices metus et, commodo erat. Quisque tincidunt venenatis magna, nec placerat magna. Aenean vitae sodales sapien. Ut porttitor placerat fringilla. Pellentesque suscipit fringilla consectetur. Sed semper mollis bibendum.",
     patientPhonenumber: "10123456789",
     hasAdditionalHealthInsurance: "SIM",
     initialDiagnosticSuspicion: "Initial Suspiction",
