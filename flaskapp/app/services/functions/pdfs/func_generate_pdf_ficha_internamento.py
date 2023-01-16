@@ -2,7 +2,7 @@ import datetime
 from app.services.utils.PdfFichaInternamento import PdfFichaInternamento
 
 
-def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, patient:dict, patient_phonenumber:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:str, doctor_crm:str, patient_estimate_weight:int=None, has_additional_health_insurance:bool=None) -> str:
+def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, patient:dict, patient_phonenumber:str, current_illness_history:str, initial_diagnostic_suspicion:str, doctor_name:str, doctor_cns:str, doctor_crm:str, has_additional_health_insurance:bool=None) -> str:
     """fill pdf ficha internamento
 
     Args:
@@ -13,7 +13,6 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
         doctor_name (str): doctor_name
         doctor_cns (int): doctor_cns
         doctor_crm (str): doctor_crm
-        patient_estimate_weight (int, optional): patient_estimate_weight. Defaults to None.
         has_additional_health_insurance (bool, optional): has_additional_health_insurance. Defaults to None.
 
     Returns:
@@ -61,7 +60,10 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
             pdf.add_UF(uf=patient['address'].get('uf'), pos=(444, 580), camp_name='Patient Adress UF', nullable=True)
             pdf.add_CEP(cep=patient['address'].get('zip_code'), pos=(483, 580), camp_name='Patient Adress CEP', nullable=True, formated=True)
             pdf.add_oneline_text(text=patient.get('nationality'), pos=(27, 547), camp_name='Patient nationality', len_max=25, len_min=3, nullable=True)
-            pdf.add_oneline_intnumber(number=patient_estimate_weight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, value_min=1, value_max=500, nullable=True)
+            patient_weight = patient.get('weight_kg')
+            if patient_weight != None:
+                patient_weight = int(patient_weight)
+            pdf.add_oneline_intnumber(number=patient_weight, pos=(507, 547), camp_name='Patient Estimate Weight', len_max=6, len_min=1, value_min=1, value_max=500, nullable=True)
             if has_additional_health_insurance != None:
                 pdf.add_markable_square(option=str(has_additional_health_insurance), valid_options=['SIM','NAO'], options_positions=((419, 544), (380, 544)), camp_name='Has additional Healt insurance', nullable=False)
 

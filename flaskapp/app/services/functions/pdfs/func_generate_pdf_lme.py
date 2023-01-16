@@ -2,13 +2,12 @@ import datetime
 from app.services.utils.PdfLme import PdfLme
 
 
-def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_weight:int, patient_height:int, cid_10:str, anamnese:str, professional_solicitor_name:str, solicitation_datetime:datetime.datetime, professional_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> str:
+def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_height:int, cid_10:str, anamnese:str, professional_solicitor_name:str, solicitation_datetime:datetime.datetime, professional_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> str:
     """fill pdf lme (laudo de solicitacao, avaliacao e autorizacao e documentos)
 
     Args:
         establishment_solitc_name (dict): establishment_solitc info
         patient (dict): patient info
-        patient_weight (int): patient_weight
         patient_height (int): patient_height
         cid_10 (str): cid_10
         anamnese (str): anamnese
@@ -34,6 +33,7 @@ def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_weigh
 
         try:
             pdf.add_oneline_text(text=establishment_solitc['cnes'], pos=(38, 658), camp_name='Establishment Solict CNES', len_max=7, len_min=7,interval='   ')
+            patient_weight = int(patient['weight_kg'])
             pdf.add_oneline_intnumber(number=patient_weight, pos=(485, 628), camp_name='Patient Weight', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
             pdf.add_oneline_intnumber(number=patient_height, pos=(485, 602), camp_name='Patient Height', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
             pdf.add_oneline_text(text=cid_10, pos=(34, 455), camp_name='cid_10', len_max=4, len_min=3, interval='  ')

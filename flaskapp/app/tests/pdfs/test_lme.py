@@ -128,7 +128,6 @@ def test_awnser_with_only_required_data(client):
             cns: "928976954930007",
             weightKg: 123,
         },
-        patientWeight: 180,
         patientHeight: 140,
         cid10: "A123",
         anamnese: "Anamnese",

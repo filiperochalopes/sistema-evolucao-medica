@@ -42,7 +42,7 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
 
     patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"{patient_address_city}"' + ', number: ' + f'"{patient_address_number}"' + ', uf:' + f'"{patient_address_uf}"' + ', zipCode: ' + f'"{patient_address_cep}"' + ', neighborhood: ' + f'"{patient_address_neigh}"' + '}'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', cpf: ' + f'"{patient_cpf}"' + ', rg: ' + f'"{patient_rg}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', nationality: ' + f'"{patient_nationality}"' + ',weightKg:' + '123' + ', address: ' + f'{patient_address}' + ', comorbidities: ['+ patient_comorbidities + ']' + ', allergies: ['+ patient_drug_allergies + ']'  + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', cpf: ' + f'"{patient_cpf}"' + ', rg: ' + f'"{patient_rg}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', nationality: ' + f'"{patient_nationality}"' + ',weightKg:' + f'{patient_estimate_weight}' + ', address: ' + f'{patient_address}' + ', comorbidities: ['+ patient_comorbidities + ']' + ', allergies: ['+ patient_drug_allergies + ']'  + '}'
 
     request_string = """
         mutation{
@@ -58,7 +58,6 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
     doctorName: "{doctor_name}",
     doctorCns: "{doctor_cns}",
     doctorCrm: "{doctor_crm}",
-    patientEstimateWeight: {patient_estimate_weight}
     """
 
     final_string = """
@@ -72,6 +71,7 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
         client.execute(query)
         return True
     except:
+        print(all_string)
         return False 
 
 

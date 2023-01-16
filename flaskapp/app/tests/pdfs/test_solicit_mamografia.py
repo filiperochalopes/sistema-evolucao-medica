@@ -125,7 +125,7 @@ indusaoImplantes: [null]
 
     patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"{patient_address_city}"' + ',reference: ' + f'"{patient_address_reference}"' + 'neighborhood: ' + f'"{patient_address_neighborhood}"' +', complement: ' + f'"{patient_address_adjunct}"' + ',number: ' + f'"{patient_address_number}"'  + ', ibgeCityCode: ' + f'"{patient_address_city_ibge_code}"' + ', uf:' + f'"{patient_address_uf}"' + ', zipCode: ' + f'"{patient_address_cep}"' + '},'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ',cpf: ' + str(patient_document_cpf) + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + 'nationality:' + f'"{patient_nationality}"' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ',cpf: ' + str(patient_document_cpf) + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ',weightKg:' + '123' + ', address: ' + f'{patient_address}' + 'nationality:' + f'"{patient_nationality}"' + '}'
 
     request_string = """
         mutation{
@@ -169,7 +169,6 @@ indusaoImplantes: [null]
         client.execute(query)
         return True
     except:
-        print(all_string)
         return False 
     
     
@@ -190,6 +189,7 @@ def test_awnser_with_only_required_data(client):
         cns: "928976954930007",
         birthdate: "10/10/2000",
         motherName: "Paciente Mother Name",
+        weightKg: 123,
         address:{
             uf: "SP",
             city: "Jau"
