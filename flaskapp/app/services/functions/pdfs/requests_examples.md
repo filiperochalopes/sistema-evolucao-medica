@@ -373,6 +373,11 @@ mutation{
 mutation{
 	generatePdf_PrescricaoMedica(
     documentDatetime: "17/11/2022",
+    professional:{
+      name: "Professional Name",
+      category: "m",
+      document: "12345/BA"
+    },
     patient: {
       name: "Pacient Name Name",
       cns: "928976954930007",
@@ -383,7 +388,12 @@ mutation{
         medicineName:"Dipirona 500mg", 
         amount:"4 comprimidos", 
         useMode:"1 comprimido, via oral, de 6/6h por 3 dias"
-      }
+      },
+      {
+        medicineName:"Dipirona 500mg", 
+        amount:"4 comprimidos", 
+        useMode:"1 comprimido, via oral, de 6/6h por 3 dias"
+      },
     ]
 ){base64Pdf}
 }

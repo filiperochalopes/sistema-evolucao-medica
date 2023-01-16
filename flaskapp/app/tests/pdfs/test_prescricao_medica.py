@@ -30,6 +30,9 @@ def client():
     return Client(transport=transport, fetch_schema_from_transport=True)
 
 def data_to_use(client, datetime_to_use, document_datetime=None,
+        professional_name='Professional Name', 
+        professional_category='m', 
+        professional_document='12345/BA',
         patient_name='Pacient Name',
         prescription='{medicineName:"Dipirona 500mg", amount:"4 comprimidos", useMode:"1 comprimido, via oral, de 6/6h por 3 dias"}'):
         
@@ -38,6 +41,8 @@ def data_to_use(client, datetime_to_use, document_datetime=None,
 
         patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + '123' + '}'
 
+        professional = '{' + 'name:' + f'"{professional_name}"' + ',category:' + f'"{professional_category}"' + ",document:" f'"{professional_document}"' + '}'
+
         request_string = """
         mutation{
             generatePdf_PrescricaoMedica("""
@@ -45,6 +50,7 @@ def data_to_use(client, datetime_to_use, document_datetime=None,
         campos_string = f"""
             documentDatetime: "{document_datetime}",
             patient: {patient},
+            professional: {professional},
             prescription: [{prescription}]
         """
 
@@ -71,6 +77,10 @@ def test_answer_with_all_fields(client, datetime_to_use):
 ##############################################################
 # ERRORS IN NAMES CAMPS
 # patient_name
+# professional_name
+
+
+
 @pytest.mark.parametrize("test_input", ['    ', '','11113', 123124])
 def test_patient_name(client, datetime_to_use, test_input):
     assert data_to_use(client, datetime_to_use, patient_name=test_input) == False
@@ -78,6 +88,10 @@ def test_patient_name(client, datetime_to_use, test_input):
 def test_lenght_patient_name(client, datetime_to_use, lenght_test):
     text = lenght_test[:36]
     assert data_to_use(client, datetime_to_use, patient_name=text) == False
+
+def test_lenght_professional_name(client, datetime_to_use, lenght_test):
+    text = lenght_test[:100]
+    assert data_to_use(client, datetime_to_use, professional_name=text) == False
 
 #################################################################
 # TEST DATETIMES VARIABLES
