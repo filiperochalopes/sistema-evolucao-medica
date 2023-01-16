@@ -71,14 +71,12 @@ def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient 
     """
     all_string = request_string + campos_string + final_string
     
-    print(all_string)
     query = gql(all_string)
     try:
         #When some exception is created in grphql he return a error
         client.execute(query)
         return True
     except:
-        print(all_string)
         return False
 
 #Testing Folha evolucao

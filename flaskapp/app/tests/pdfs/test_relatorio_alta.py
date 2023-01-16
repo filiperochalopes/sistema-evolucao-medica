@@ -45,7 +45,7 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
 
     patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"City"' + ', uf:' + f'"SP"' + ', neighborhood: ' + '"Neigh"' + ', number: ' + '"1"' + '},'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', cpf: ' + str(patient_cpf) + ', rg: ' + f'"{patient_rg}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', cpf: ' + str(patient_cpf) + ', rg: ' + f'"{patient_rg}"' + ', sex: ' + f'"{patient_sex}"' + ',weightKg:' + '123' + ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
 
     request_string = """
         mutation{
@@ -96,6 +96,7 @@ def test_awnser_with_only_required_data(client, datetime_to_use, document_dateti
             birthdate: "17/11/2022",
             sex: "F",
             motherName: "Patient Mother Name",
+            weightKg: 123,
             cpf: "28445400070",
             rg: null,
             address: {

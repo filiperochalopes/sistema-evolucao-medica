@@ -41,7 +41,7 @@ def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishmen
 
     patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"{patient_address_city}"' + ', ibgeCityCode: ' + f'"{patient_address_city_ibge_code}"' + ', uf:' + f'"{patient_address_uf}"' + ', zipCode: ' + f'"{patient_address_cep}"' + '},'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + 'ethnicity: ' + f'"{patient_ethnicity}"'+ ', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + 'ethnicity: ' + f'"{patient_ethnicity}"'+ ',weightKg:' + '123' +', motherName: ' + f'"{patient_mother_name}"' + ', address: ' + f'{patient_address}' + '}'
 
     request_string = """
         mutation{
@@ -112,7 +112,7 @@ def test_awnser_with_only_required_data(client):
     campos_string = """
     establishmentSolitc: {name: "Establishment Solicit Name", cnes: "1234567"},
     establishmentExec: {name: "Establshment Exec Name", cnes: "7654321"},
-    patient: {name: "Patient Name", cns: "928976954930007", birthdate: "29/12/2022", sex: "F", motherName: "Patient Mother Name", address: {street: "Patient Adress street neighobourd", city: "Patient City", ibgeCityCode: "1234567", uf:"SP", zipCode: "12345678"},},
+    patient: {name: "Patient Name", cns: "928976954930007", birthdate: "29/12/2022", sex: "F", motherName: "Patient Mother Name", weightKg: 123, address: {street: "Patient Adress street neighobourd", city: "Patient City", ibgeCityCode: "1234567", uf:"SP", zipCode: "12345678"},},
     mainClinicalSignsSymptoms: "Patient main clinical signs sysmpthoms",
     conditionsJustifyHospitalization: "'Patient Conditions justify hiospitalizaiton",
     initialDiagnostic: "Patient Initial Diagnostic",

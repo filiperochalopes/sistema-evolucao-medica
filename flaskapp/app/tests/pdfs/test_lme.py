@@ -62,7 +62,7 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
     establishment_solitc = '{name: ' + f'"{establishment_solitc_name}"' + ', cnes: ' + f'"{establishment_solitc_cnes}"' + '}'
 
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', cpf: ' + f'"{patient_cpf}"' + ', motherName: ' + f'"{patient_mother_name}"' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', cpf: ' + f'"{patient_cpf}"' + ',weightKg:' + f'{patient_weight}' + ', motherName: ' + f'"{patient_mother_name}"' + '}'
     
 
     request_string = """
@@ -72,7 +72,6 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
     campos_string = f"""
         establishmentSolitc: {establishment_solitc},
         patient: {patient},
-        patientWeight: {patient_weight},
         patientHeight: {patient_height},
         cid10: "{cid_10}",
         anamnese: "{anamnese}",
@@ -126,7 +125,8 @@ def test_awnser_with_only_required_data(client):
         patient: {
             name: "Patient Name Name",
             motherName:"Patient Mother Name",
-            cns: "928976954930007"
+            cns: "928976954930007",
+            weightKg: 123,
         },
         patientWeight: 180,
         patientHeight: 140,

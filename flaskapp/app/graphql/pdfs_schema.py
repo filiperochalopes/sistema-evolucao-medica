@@ -284,14 +284,8 @@ pdfs_schema_type_defs = gql(
         generatePdf_Lme(
             "Dados do Estabelecimento Solicitante"
             establishmentSolitc: EstablishmentInput!,
-            "Dados do Paciente"
+            "Dados do Paciente, IMPORTANTE: o peso do paciente, será tranformado em numero inteiro de no maximo 3 digitos"
             patient: PatientInput!
-            """
-            Peso do paciente, numero inteiro no maximo 3 digitos, sera entendido como um valor total.
-            Exemplo:
-                patientWeight: 54  // sera entedido como 54kg
-            """
-            patientWeight: Int!,
             """
             Altura do paciente, numero inteiro no maximo 3 digitos (e inteiro pois sera formatado com espacos e virgula depois no pdf)
             Exemplo: 
@@ -477,7 +471,7 @@ pdfs_schema_type_defs = gql(
         generatePdf_FichaInternamento(
             "Data Hora do documento no formato DD/MM/YYYY HH:mm"
             documentDatetime: String!,
-            "Dados do Paciente"
+            "Dados do Paciente, IMPORTANTE: o peso do paciente, será tranformado em numero inteiro de no maximo 3 digitos"
             patient: PatientInput
             "Numero de telefone do paciente, envie somente os numeros sem formatacao, ex: XXXXXXXXXX, 10 ou 11 caracteres"
             patientPhonenumber: String!,
@@ -493,12 +487,6 @@ pdfs_schema_type_defs = gql(
             doctorCrm: String!,
             "Possui convenio suplementar, opcoes: 'SIM','NAO'"
             hasAdditionalHealthInsurance: String,
-            """
-            Peso estimado do paciente, numero inteiro no maximo 3 digitos, sera entendido como um valor total.
-            Exemplo:
-                patientEstimateWeight: 54  // sera entedido como 54kg
-            """
-            patientEstimateWeight: Int
         ): GeneratedPdf
     }
 ''')

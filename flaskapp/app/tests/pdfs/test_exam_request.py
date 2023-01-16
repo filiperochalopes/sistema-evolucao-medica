@@ -37,7 +37,7 @@ def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns
 
     patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', uf:' + '"SP"' + ', city: ' + '"City"' + '},'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', address: ' + f'{patient_address}' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ',weightKg:' + '123' + ', address: ' + f'{patient_address}' + '}'
 
     request_string = """
         mutation{
@@ -66,7 +66,6 @@ def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns
         client.execute(query)
         return True
     except:
-        print(all_string)
         return False 
 
 #Testing Ficha Internamento
@@ -85,7 +84,8 @@ def test_awnser_with_only_required_data(client, datetime_to_use):
     patient: {
         name: "Patient Name", 
         cns: "928976954930007", 
-        birthdate: "29/12/2022", 
+        birthdate: "29/12/2022",
+        weightKg: 123,
         address: {
             street: "Patient Adress", 
             uf:"SP", 
