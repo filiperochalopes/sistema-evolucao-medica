@@ -16,6 +16,7 @@ mutation{
         sex: "M",
         ethnicity: "Etnia",
         motherName: "Patient Mother Name",
+        weightKg: 123.00,
         address: {
           street: "Patient Adress",
           city: "Jau",

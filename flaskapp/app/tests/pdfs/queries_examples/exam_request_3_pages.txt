@@ -5,6 +5,7 @@ mutation{
       name: "Patient NAme",
       cns: "928976954930007",
       birthdate: "10/10/2021",
+      weightKg: 123.00,
       address: {
         street: "Patient Adress",
         city: "City",

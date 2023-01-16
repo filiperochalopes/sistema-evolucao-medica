@@ -8,6 +8,7 @@ mutation{
         motherName: "Paciente Mother Name",
         cpf: "28445400070",
         sex: "M",
+        weightKg: 123,
         nationality: "Brasileiro",
         address:{
           street: "Patient Adress",

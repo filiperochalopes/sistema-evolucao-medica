@@ -10,6 +10,7 @@ mutation{
       birthdate: "10/10/2021",
       nationality: "Brasileira",
       sex: "M",
+      weightKg: 123.00,
       motherName: "Patient Mother Name",
       address: {
         street: "Patient Adress",
@@ -29,7 +30,6 @@ mutation{
     doctorName: "Doctor Name",
     doctorCns: "928976954930007",
     doctorCrm: "CRM/UF 123456",
-    patientEstimateWeight: 140
   )
 {base64Pdf}
 }

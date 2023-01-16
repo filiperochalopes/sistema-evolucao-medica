@@ -2,8 +2,11 @@
 mutation{
 	generatePdf_BalancoHidrico(
     createdAt: "10/10/2020",
-    patientName: "Patient Test Name",
-    patientWeight: 52,
+    patient: {
+      name: "Patient Test Name",
+      cns: "928976954930007",
+      weightKg: 123.00,
+    },
     fluidBalance:[
       {
         createdAt: "20/12/2022 10:35",

@@ -9,9 +9,9 @@ mutation{
       name: "Patient Name Name",
       motherName:"Patient Mother Name",
       cns: "928976954930007",
-      cpf: null
+      cpf: null,
+      weightKg: 123,
     }
-    patientWeight: 142,
     patientHeight: 180,
     cid10: "A123",
     anamnese: "Anamnese",

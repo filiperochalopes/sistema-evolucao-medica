@@ -3,7 +3,11 @@ mutation{
 	generatePdf_FolhaPrescricao(
     createdAt: "10/10/2022 10:21",
     printedAt: "10/10/2022 10:21",
-    patientName: "Nome do Paciente",
+    patient: {
+      name: "Patient Test Name",
+      cns: "928976954930007",
+      weightKg: 123.00,
+    },
     prescriptions: [
       {
         type: "Repouso",

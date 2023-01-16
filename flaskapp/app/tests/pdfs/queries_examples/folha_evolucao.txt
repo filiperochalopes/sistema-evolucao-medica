@@ -2,7 +2,11 @@
 mutation{
 	generatePdf_FolhaEvolucao(
     createdAt: "10/10/2022 20:10",
-    patientName: "Patient test Name",
+    patient: {
+      name: "Patient Test Name",
+      cns: "928976954930007",
+      weightKg: 123.00,
+    },
     evolutions:[
       {
         createdAt: "10/10/2022 20:10",
