@@ -254,6 +254,8 @@ pdfs_schema_type_defs = gql(
             documentDatetime: String!,
             "Dados do Paciente, somente o nome e cns sao necessarios"
             patient: PatientInput!,
+            "Profissional responsavel"
+            professional: ProfessionalInput!
             """
             List de precicoes enviadas pelo medico, voce pode adicionar mais de uma utilizando uma lista de PrescriptionInput, veja as docs do input PrescriptionInput para mais informações"
             """

@@ -95,3 +95,38 @@ class PdfPrescricaoMedica(ReportLabCanvasUtils):
         del(yposition)
         return None
 
+    def create_professional_info(self, professional:dict, abbreviated:bool=False) -> str:
+        """Create professional info merging name, document and date
+
+        Args:
+            professional (dict): _description_
+            abbreviated (str): abbreviate professioanl name
+
+        Raises:
+            Exception: _description_
+
+        Returns:
+            _type_: _description_
+        """        
+        # getting data
+        name = professional.get('name')
+        document = professional.get('document')
+        category = professional.get('category')
+
+        for camp in [name, document, category]:
+            if camp == None:
+                raise Exception('Algum campo do profissional está faltando, o documento precisa do nome, document e category')
+
+        if category.lower() == 'm':
+            doc_type = 'CRM '
+        elif category.lower() == 'e':
+            doc_type = 'COREM '
+        else:
+            raise Exception(f'A categoria de profissional {category} nao existe, envie "e" ou "M", sendo "e" para emfermeiros e "m" para medicos')
+
+        if abbreviated:
+            name = self.get_abbrevitate_name(name=name)
+
+        professional_info = f"{str(name).strip()} " + doc_type + str(document)
+
+        return str(professional_info)

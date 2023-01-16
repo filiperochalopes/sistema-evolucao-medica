@@ -1,7 +1,7 @@
 from app.services.utils.PdfPrescricaoMedica import PdfPrescricaoMedica
 
 
-def func_generate_pdf_prescricao_medica(document_datetime:str, patient:dict, prescription:list) -> str:
+def func_generate_pdf_prescricao_medica(document_datetime:str, patient:dict, professional:dict, prescription:list) -> str:
     """fill pdf prescricao medica with 2 pages 
 
     Args:
@@ -20,11 +20,14 @@ def func_generate_pdf_prescricao_medica(document_datetime:str, patient:dict, pre
 
             initial_date_X_pos = 294
             initial_name_X_pos = 120
+            initial_professional_X_pos = 190
             for x in range(0, 2):
                 pdf.add_datetime(date=document_datetime, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
                 pdf.add_oneline_text(text=patient['name'], pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
+                pdf.add_oneline_text(text=pdf.create_professional_info(professional=professional), pos=(initial_professional_X_pos, 60), len_max=800, centralized=True, camp_name='Professional Info') 
                 initial_date_X_pos += 450
                 initial_name_X_pos += 451
+                initial_professional_X_pos += 451
 
             pdf.set_font('Roboto-Mono', 10)
             pdf.add_prescription(prescription=prescription)

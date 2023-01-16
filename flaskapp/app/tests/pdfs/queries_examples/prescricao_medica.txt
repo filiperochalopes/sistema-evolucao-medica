@@ -2,6 +2,11 @@
 mutation{
 	generatePdf_PrescricaoMedica(
     documentDatetime: "17/11/2022",
+    professional:{
+      name: "Professional Name",
+      category: "m",
+      document: "12345/BA"
+    },
     patient: {
       name: "Pacient Name Name",
       cns: "928976954930007",
