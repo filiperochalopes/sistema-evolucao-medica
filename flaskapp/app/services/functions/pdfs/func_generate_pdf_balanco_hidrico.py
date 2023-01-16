@@ -1,7 +1,7 @@
 from app.services.utils.PdfBalancoHidrico import PdfBalancoHidrico
 
 
-def func_generate_pdf_balanco_hidrico(created_at:str, patient_name:str, patient_weight, fluid_balance:list,
+def func_generate_pdf_balanco_hidrico(created_at:str, patient:dict, fluid_balance:list,
 #current_user: dict
 ) -> str:
 
@@ -13,7 +13,7 @@ def func_generate_pdf_balanco_hidrico(created_at:str, patient_name:str, patient_
         # not null data
 
         try:
-            pdf.add_abbreviated_name(name=patient_name, pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
+            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
 
             pdf.set_font('Roboto-Mono', 16)
             
@@ -24,6 +24,7 @@ def func_generate_pdf_balanco_hidrico(created_at:str, patient_name:str, patient_
             pdf.add_fluid_balance(balances=fluid_balance)
 
             pdf.set_font('Roboto-Mono', 13)
+            patient_weight = int(patient['weight_kg'])
             pdf.add_oneline_text(text=f'{patient_weight}kg', pos=(531, 256), camp_name='Peso do Paciente', len_max=8)
             # Add metrics in pdf
             pdf.add_metrics()

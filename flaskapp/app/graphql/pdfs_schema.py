@@ -83,7 +83,7 @@ pdfs_schema_type_defs = gql(
             "Data da criacao. String no formato de dd/mm/aaaa"
             createdAt: String!
             "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
-            patientName: String!
+            patient: PatientInput!
             "Evolucoes, no maximo 4"
             evolutions: [EvolutionInput]
             "Medicoes"
@@ -97,7 +97,7 @@ pdfs_schema_type_defs = gql(
             "Data da impressao. String no formato de dd/mm/aaaa hh:mm"
             printedAt: String
             "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
-            patientName: String!
+            patient: PatientInput!
             prescriptions: [PrescriptionItemInput]
         ): GeneratedPdf
 
@@ -106,9 +106,7 @@ pdfs_schema_type_defs = gql(
             "Data da criacao. String no formato de dd/mm/aaaa"
             createdAt: String!
             "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
-            patientName: String!
-            "Peso do paciente em kg"
-            patientWeight: Int!
+            patient: PatientInput!
             fluidBalance: [FluidBalanceInput]
         ): GeneratedPdf
         

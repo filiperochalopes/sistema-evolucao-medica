@@ -33,6 +33,9 @@ def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient 
     all_balance = ''
     for balance in fluid_balances:
         all_balance += '{createdAt:' + f'"{balance["created_at"]}"' + ',value:' + f'{balance["value"]}' + ',description:' + f'"{balance["description"]}"' + '},'
+    
+        patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + f'{patient_weight}' + '}'
+
 
     request_string = """
     mutation{
@@ -40,8 +43,7 @@ def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient 
 
     campos_string = f"""
     createdAt: "{created_at}",
-    patientName: "{patient_name}",
-    patientWeight: {patient_weight},
+    patient: {patient}
     fluidBalance:[{all_balance}]
     """
 
