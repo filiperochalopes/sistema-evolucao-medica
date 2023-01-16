@@ -1,7 +1,7 @@
 from app.services.utils.PdfFolhaEvolucao import PdfFolhaEvolucao
 
 
-def func_generate_pdf_folha_evolucao(created_at:str, patient_name:str, evolutions:list, measures:list, 
+def func_generate_pdf_folha_evolucao(created_at:str, patient:dict, evolutions:list, measures:list, 
 #current_user: dict
 ) -> str:
 
@@ -13,7 +13,7 @@ def func_generate_pdf_folha_evolucao(created_at:str, patient_name:str, evolution
         # not null data
 
         try:
-            pdf.add_abbreviated_name(name=patient_name, pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
+            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
 
             pdf.set_font('Roboto-Mono', 16)
             

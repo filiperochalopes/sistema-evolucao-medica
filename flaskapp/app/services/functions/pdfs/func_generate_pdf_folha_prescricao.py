@@ -2,7 +2,7 @@ from app.services.utils.PdfFolhaPrescricao import PdfFolhaPrescricao
 import datetime
 
 
-def func_generate_pdf_folha_prescricao(created_at:str, patient_name:str, prescriptions:list, printed_at:str=None, 
+def func_generate_pdf_folha_prescricao(created_at:str, patient:dict, prescriptions:list, printed_at:str=None, 
 #current_user:dict=None
 ) -> str:
     """Fill pdf folha prescricao
@@ -10,7 +10,6 @@ def func_generate_pdf_folha_prescricao(created_at:str, patient_name:str, prescri
     Args:
         created_at (str): created date
         printed_at (str): Printed date
-        patient_name (str): Patient Name
         prescriptions (list): prescriptions
         current_user (dict): Professional info
 
@@ -27,7 +26,7 @@ def func_generate_pdf_folha_prescricao(created_at:str, patient_name:str, prescri
         current_user = {'name': 'Professioanl Info', 'professional_document_uf': 'BA', 'professional_document_number':'12457'}
 
         try:
-            pdf.add_abbreviated_name(name=patient_name, pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
+            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
 
             pdf.set_font('Roboto-Mono', 16)
             pdf.add_datetime(date=created_at[:-6], pos=(717, 556), camp_name="Document created date (upper position), voce deve enviar esse dado no formato dd/mm/yyyy HH:MM", hours=False)

@@ -36,6 +36,7 @@ def data_to_use(client, datetime_to_use, created_at=None, printed_at=None, patie
     for presc in prescriptions:
         all_prescriptions += '{type:' + f'"{presc["type"]}"' + ',description:' + f'"{presc["description"]}"' + ',route:' + f'"{presc["route"]}"' + ',startDate:' + f'"{presc["start_date"]}"' + ',endingDate:' + f'"{presc["ending_date"]}"' + '},'
 
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + '123' + '}'
 
     request_string = """
         mutation{
@@ -44,7 +45,7 @@ def data_to_use(client, datetime_to_use, created_at=None, printed_at=None, patie
     campos_string = f"""
     createdAt: "{created_at}",
     printedAt: "{printed_at}",
-    patientName: "{patient_name}",
+    patient: {patient},
     prescriptions: [{all_prescriptions}]
     """
 
