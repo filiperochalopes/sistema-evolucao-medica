@@ -57,8 +57,8 @@ class PdfPrescricaoMedica(ReportLabCanvasUtils):
             #calculate the total lenght of use_mode
             totalChar += len(presc['use_mode'].strip())
         # Verify if user_mode total lenght and the 2 line that every medicine and amount need isnt bigger than the total of de document
-        if totalChar + (61 * len(prescription)) == 2623:
-            raise Exception('O total do docmuento nao pode ultrapassar 2623 caracteres. Lembre-se que 1 linha inteira (61 caracteres) sao destinadas ao nome do medicamento e a quantidade')
+        if totalChar + (61 * len(prescription)) == 2501:
+            raise Exception('O total do docmuento nao pode ultrapassar 2501 caracteres. Lembre-se que 1 linha inteira (61 caracteres) sao destinadas ao nome do medicamento e a quantidade')
 
         yposition = 475
         for presc in prescription:
@@ -79,6 +79,8 @@ class PdfPrescricaoMedica(ReportLabCanvasUtils):
             yposition -= 10
             # Making the line break whem has 61 charater in a line
             while broke_lines_times >= 0:
+                if yposition <= 70:
+                    raise Exception('Voce chegou ao limite do documento, reduza o numero de prescricoes')
                 str_use_mode = use_mode[last_line:current_line]
                 self.add_data(data=str_use_mode, pos=(22, yposition))
                 self.add_data(data=str_use_mode, pos=(472, yposition))
@@ -94,6 +96,7 @@ class PdfPrescricaoMedica(ReportLabCanvasUtils):
         del(last_line)
         del(yposition)
         return None
+
 
     def create_professional_info(self, professional:dict, abbreviated:bool=False) -> str:
         """Create professional info merging name, document and date
