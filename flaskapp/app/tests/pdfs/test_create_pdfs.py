@@ -32,7 +32,7 @@ def test_decode_base64(request_string, decode_directory, mutation_name, client):
     query = gql(request_string)
     created = False
     try:
-        #When some exception is created in grphql he return a error
+        # When some exception is created in graphql he return a error
         result = client.execute(query)
         generated_pdf_b64 = b64decode(result[mutation_name]['base64Pdf'], validate=True)
 

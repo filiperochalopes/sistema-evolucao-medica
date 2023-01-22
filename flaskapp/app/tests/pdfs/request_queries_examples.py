@@ -1,10 +1,9 @@
-QUERIES_DIRECTORY = '/app/app/tests/pdfs/queries_examples/'
+from app.env import PDF_QUERIES_DIRECTORY
 
 def get_request_from_txt(filename:str):
     """Return as string with a request"""
-    with open(f'{QUERIES_DIRECTORY}{filename}', 'r') as file:
+    with open(f'{PDF_QUERIES_DIRECTORY}/{filename}', 'r') as file:
         request = file.read()
-    file.close()
     return request
 
 

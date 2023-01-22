@@ -1,142 +1,52 @@
-from collections.abc import Mapping
-
+from gql import Client
+from gql.transport.aiohttp import AIOHTTPTransport
+from datetime import datetime
+from base64 import b64decode
+from app.env import GRAPHQL_MUTATION_QUERY_URL, QUERIES_DIRECTORY, TMP_FILES_FOLDER
 import pytest
-from graphql.validation.rules import ValidationRule
-
-from ariadne import (
-    MutationType,
-    QueryType,
-    SubscriptionType,
-    make_executable_schema,
-    upload_scalar,
-)
 
 
 @pytest.fixture
-def type_defs():
-    return """
-        scalar Upload
-        type Query {
-            hello(name: String): String
-            status: Boolean
-            testContext: String
-            testRoot: String
-            testError: Boolean
-        }
-        type Mutation {
-            upload(file: Upload!): String
-        }
-        type Subscription {
-            ping: String!
-            resolverError: Boolean
-            sourceError: Boolean
-            testContext: String
-            testRoot: String
-        }
-    """
-
-
-def resolve_hello(*_, name):
-    return "Hello, %s!" % name
-
-
-def resolve_status(*_):
-    return True
-
-
-def resolve_test_context(_, info):
-    return info.context.get("test")
-
-
-def resolve_test_root(root, *_):
-    return root.get("test")
-
-
-def resolve_error(*_):
-    raise Exception("Test exception")
+def client():
+    # Select your transport with ag graphql url endpoint
+    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+    # Create a GraphQL client using the defined transport
+    return Client(transport=transport, fetch_schema_from_transport=True)
 
 
 @pytest.fixture
-def resolvers():
-    query = QueryType()
-    query.set_field("hello", resolve_hello)
-    query.set_field("status", resolve_status)
-    query.set_field("testContext", resolve_test_context)
-    query.set_field("testRoot", resolve_test_root)
-    query.set_field("testError", resolve_error)
-    return query
+def get_query_from_txt(request):
+    '''
+    Retorna o texto de uma querie armazenada em txt
 
-
-def resolve_upload(*_, file):
-    if file is not None:
-        return type(file).__name__
-    return None
+    request.param deve ser o nome do arquivo a ser buscado
+    '''
+    with open(f'{QUERIES_DIRECTORY}/{request.param}.txt', 'r') as file:
+        request = file.read()
+    return request
 
 
 @pytest.fixture
-def mutations():
-    mutation = MutationType()
-    mutation.set_field("upload", resolve_upload)
-    return mutation
+def download_pdf(request):
+    '''
+    Converte string em base64 para um arquivo pdf temporário
+    lembrando sempre de excluir os dados mais antigos que um 
+    dia.
 
+    request.param deve ser uma tupla (label, base64string)
+    '''
+    created = False
+    try:
+        generated_pdf_b64 = b64decode(request.param[1], validate=True)
 
-async def ping_generator(*_):
-    yield {"ping": "pong"}
-
-
-async def error_generator(*_):
-    raise Exception("Test exception")
-    yield 1  # pylint: disable=unreachable
-
-
-async def test_context_generator(_, info):
-    yield {"testContext": info.context.get("test")}
-
-
-async def test_root_generator(root, *_):
-    yield {"testRoot": root.get("test")}
-
-
-@pytest.fixture
-def subscriptions():
-    subscription = SubscriptionType()
-    subscription.set_source("ping", ping_generator)
-    subscription.set_source("resolverError", ping_generator)
-    subscription.set_field("resolverError", resolve_error)
-    subscription.set_source("sourceError", error_generator)
-    subscription.set_source("testContext", test_context_generator)
-    subscription.set_source("testRoot", test_root_generator)
-    return subscription
-
-
-@pytest.fixture
-def schema(type_defs, resolvers, mutations, subscriptions):
-    return make_executable_schema(
-        type_defs, [resolvers, mutations, subscriptions, upload_scalar]
-    )
-
-
-@pytest.fixture
-def validation_rule():
-    class NoopRule(ValidationRule):
-        pass
-
-    return NoopRule
-
-
-@pytest.fixture
-def fake_mapping():
-    class FakeMapping(Mapping):
-        def __init__(self, **kwargs):
-            self._dummy = {**kwargs}
-
-        def __getitem__(self, key):
-            return self._dummy[key]
-
-        def __iter__(self):
-            return iter(self._dummy)
-
-        def __len__(self):
-            return len(self._dummy.keys())
-
-    return FakeMapping
+        now = datetime.now()
+        f = open(
+            f"{TMP_FILES_FOLDER}/{request.param[0]}__{now.strftime('%Y_ %m_%d_%H_%M_%S')}.pdf", 'wb')
+        f.write(generated_pdf_b64)
+        f.close()
+        created = True
+    except:
+        created = False
+    
+    return created
+    

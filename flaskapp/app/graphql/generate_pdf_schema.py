@@ -1,6 +1,6 @@
 from ariadne import gql
 
-pdfs_schema_type_defs = gql(
+generate_pdf_type_defs = gql(
     '''
     input ProfessionalInput{
         name: String!
@@ -118,11 +118,12 @@ pdfs_schema_type_defs = gql(
             establishmentExec: EstablishmentInput, 
             "Dados do Paciente"
             patient: PatientInput!
+            "Sinais e sintomas do quadro clínico principal"
             mainClinicalSignsSymptoms: String!,
             "Condicoes que justificam a internacao, max:403 min:5 caracteres"
             conditionsJustifyHospitalization: String!,
             "Diagnostico inicial, max:44 min:5 caracteres"
-            initialDiagnostic: String!,
+            initialDiagnosis: String!,
             "Cid 10 princical, usando o formato padrao de CID, max:4 min:3 caracteres"
             principalCid10: String!, 
             "Procedimento solicitado, max:65 min:6 caracteres"
@@ -478,7 +479,7 @@ pdfs_schema_type_defs = gql(
             "Historia da doenca atual/Exame fisico, max: 1600 min:10 caracteres"
             currentIllnessHistory: String!,
             "Supeita diagnostica Inicial (CID), max:100 min:5 caracteres"
-            initialDiagnosticSuspicion: String!,
+            initialDiagnosisSuspicion: String!,
             "Nome do Medico, max: 49 min:7 caracteres"
             doctorName: String!,
             "CNS do Medico, envie somente numeros"

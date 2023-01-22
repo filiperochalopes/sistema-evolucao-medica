@@ -28,6 +28,8 @@ type_defs = gql(
        comorbidities: [ValueObject]
        "ValueObject Procedimentos de Alta Complexidade"
        highComplexityProcedures: [Procedure]
+       "Query para fins de teste"
+       hello: String
     }
 
     type Mutation {
@@ -179,24 +181,24 @@ type_defs = gql(
     }
 
     input AddressInput{
-        "CEP do endereco"
-        zipCode: String
-        "Nome da Rua"
-        street:String
-        "Complemento"
-        complement:String
-        "Bairro do endereco"
-        neighborhood:String
-        "Numero do endereco"
-        number:String
-        "Nome da Cidade"
-        city: String!
-        "Codigo IGBE do municipio"
-        ibgeCityCode: String
-        "Sigla do estado"
-        uf: String!
-        "Pontos de Referencia"
-        reference: String
+            "CEP do endereco"
+            zipCode: String
+            "Nome da Rua"
+            street:String
+            "Complemento"
+            complement:String
+            "Bairro do endereco"
+            neighborhood:String
+            "Numero do endereco"
+            number:String
+            "Nome da Cidade"
+            city: String!
+            "Codigo IGBE do municipio"
+            ibgeCityCode: String
+            "Sigla do estado"
+            uf: String!
+            "Pontos de Referencia"
+            reference: String
     }
 
     input ProcedimentoInput{
@@ -531,7 +533,9 @@ type_defs = gql(
     }
 
     type Cid10 {
+        "Cid 10, usando o formato padrao de CID, max:4 min:3 caracteres"
         code: String!
+        "Descrição da doença, max:44 min:5 caracteres"
         description: String!
     }
 ''')

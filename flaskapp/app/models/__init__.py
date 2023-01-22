@@ -148,6 +148,7 @@ class Patient(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
+    mother_name = db.Column(db.String, nullable=True)
     sex = db.Column(db.Enum(SexEnum), nullable=False)
     birthdate = db.Column(db.Date, nullable=False)
     cpf = db.Column(db.String, unique=True)

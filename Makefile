@@ -19,8 +19,10 @@ makemigrations:
 	docker exec -it evolucao_hospitalar_app bash -c ' \
 		chmod -R 777 /app/migrations && \
 		flask db migrate -m "$(m)"'
-test:
+test_all:
 	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s'
+test_flow:
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_hello'
 clean_db:
 	docker compose rm -s -v -f db
 	sudo rm -rf data

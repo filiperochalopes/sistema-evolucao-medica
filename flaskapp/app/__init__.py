@@ -2,7 +2,8 @@ import sys
 from unicodedata import name
 from app.env import InstitutionData, DatabaseSettings
 from .graphql import query, type_defs, mutation
-from .graphql.pdfs_schema import pdfs_schema_type_defs
+from .graphql.generate_pdf_schema import generate_pdf_type_defs
+from .graphql.print_pdf_schema import print_pdf_type_defs
 from flask import Flask, request, jsonify, send_from_directory
 from flask_migrate import Migrate
 from ariadne import graphql_sync, make_executable_schema
@@ -41,7 +42,7 @@ def send_report(path):
 def index(path):
     return render_template('reactapp/build/index.html')
 
-schema = make_executable_schema([type_defs, pdfs_schema_type_defs], [query, mutation])
+schema = make_executable_schema([type_defs, generate_pdf_type_defs, print_pdf_type_defs], [query, mutation])
 
 
 @app.route("/api/v1/graphql", methods=["GET"])

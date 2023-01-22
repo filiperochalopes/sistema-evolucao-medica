@@ -54,7 +54,7 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
     patientPhonenumber: "{patient_phonenumber}",
     currentIllnessHistory: "{current_illness_history}",
     hasAdditionalHealthInsurance: "{has_additional_health_insurance}",
-    initialDiagnosticSuspicion: "{initial_diagnostic_suspicion}",
+    initialDiagnosisSuspicion: "{initial_diagnostic_suspicion}",
     doctorName: "{doctor_name}",
     doctorCns: "{doctor_cns}",
     doctorCrm: "{doctor_crm}",
@@ -108,7 +108,7 @@ def test_awnser_with_only_required_data(client, datetime_to_use, document_dateti
     },
     patientPhonenumber: "10123456789",
     currentIllnessHistory: "Current Illness History",
-    initialDiagnosticSuspicion: "Initial Suspiction",
+    initialDiagnosisSuspicion: "Initial Suspiction",
     doctorName: "Doctor Name",
     doctorCns: "928976954930007",
     doctorCrm: "CRM/UF 123456"

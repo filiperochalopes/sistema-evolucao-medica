@@ -80,7 +80,7 @@ def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient 
     except:
         return False
 
-#Testing Folha evolucao
+# Testing Folha evolucao
 def test_with_data_in_function(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use) == True
 

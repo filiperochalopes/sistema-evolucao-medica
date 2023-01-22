@@ -27,7 +27,7 @@ mutation{
     },
     mainClinicalSignsSymptoms: "Patient main clinical signs sysmpthoms",
     conditionsJustifyHospitalization: "Patient Conditions justify hiospitalizaiton",
-    initialDiagnostic: "initial Siagnostic",
+    initialDiagnosis: "initial Siagnostic",
     principalCid10: "A12",
     procedureSolicited: "Procedurew Solicited",
     procedureCode: "1234567890",
