@@ -1,6 +1,4 @@
-from gql import gql, Client
-from gql.transport.aiohttp import AIOHTTPTransport
-import datetime
+from gql import gql
 import pytest
 
 
