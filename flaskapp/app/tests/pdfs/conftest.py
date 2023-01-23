@@ -18,6 +18,12 @@ def datetime_to_use():
     return datetime.datetime.now().strftime('%d/%m/%Y')
 
 @pytest.fixture
+def datetime_with_timezone_to_use():
+    """get current datetime to test"""
+    timezone = datetime.timezone(offset=datetime.timedelta(hours=-3))
+    return datetime.datetime.now(tz=timezone).strftime('%d/%m/%Y')
+
+@pytest.fixture
 def document_datetime_to_use():
     """get current datetime with hours and minutes to test"""
     return datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
