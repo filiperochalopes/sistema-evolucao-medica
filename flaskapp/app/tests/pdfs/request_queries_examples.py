@@ -20,6 +20,7 @@ exam_request_3_pages_request_string = get_request_from_txt('exam_request_3_pages
 ficha_internamento_request_string = get_request_from_txt('ficha_internamento.txt')
 
 aih_sus_request_string = get_request_from_txt('aih_sus.txt')
+aih_sus_required_data_request_string = get_request_from_txt('aih_sus_required_data.txt')
 
 lme_request_string = get_request_from_txt('lme.txt')
 

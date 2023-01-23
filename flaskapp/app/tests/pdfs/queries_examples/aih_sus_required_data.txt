@@ -1,0 +1,23 @@
+mutation{
+    generatePdf_AihSus(
+        establishmentSolitc: {name: "Establishment Solicit Name", cnes: "1234567"},
+        establishmentExec: {name: "Establshment Exec Name", cnes: "7654321"},
+        patient: {name: "Patient Name", cns: "928976954930007", birthdate: "29/12/2022", sex: "F", motherName: "Patient Mother Name", weightKg: 123, address: {street: "Patient Adress street neighobourd", city: "Patient City", ibgeCityCode: "1234567", uf:"SP", zipCode: "12345678"},},
+        mainClinicalSignsSymptoms: "Patient main clinical signs sysmpthoms",
+        conditionsJustifyHospitalization: "'Patient Conditions justify hiospitalizaiton",
+        initialDiagnostic: "Patient Initial Diagnostic",
+        principalCid10: "A00",
+        procedureSolicited: "Procedure Solicited",
+        procedureCode: "1234567890",
+        clinic: "'Clinic Name",
+        internationCarater: "Internation Carater",
+        professionalSolicitorDocument: {cns: "928976954930007", cpf: null, rg: null},
+        professionalSolicitorName: "Profissional Solicit Name",
+        solicitationDatetime: "10/10/2021",
+        professionalAutorizationName: "Autorization professional name",
+        emissionOrgCode: "OrgCode2022",
+        autorizatonProfessionalDocument: {cns: null, cpf: "28445400070", rg: null},
+        autorizatonDatetime: "17/01/2008",
+        hospitalizationAutorizationNumber: "1234567890",
+    ){base64Pdf}
+}
