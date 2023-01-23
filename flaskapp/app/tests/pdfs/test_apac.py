@@ -1,28 +1,5 @@
-from gql import gql, Client
-from gql.transport.aiohttp import AIOHTTPTransport
-import datetime
-from app.env import GRAPHQL_MUTATION_QUERY_URL
+from gql import gql
 import pytest
-
-@pytest.fixture
-def lenght_test():
-    """generate a string with data with charactes to test lenght"""
-    lenght_test = ''
-    for x in range(0, 1100):
-        lenght_test += str(x)
-    return lenght_test
-
-@pytest.fixture
-def datetime_to_use():
-    """get current datetime to test"""
-    return datetime.datetime.now().strftime('%d/%m/%Y')
-
-@pytest.fixture
-def client():
-    # Select your transport with ag graphql url endpoint
-    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
-    # Create a GraphQL client using the defined transport
-    return Client(transport=transport, fetch_schema_from_transport=True)
 
 
 def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,patient_name='Patient Name',patient_cns="928976954930007",patient_sex='M',patient_birthday=None, patient_address_city='Patient Adress City',main_procedure='{name: "teste procedimento",code: "hkmaug347s",quant: 1}',patient_mother_name='Patient Mother Name',patient_mother_phonenumber='5286758957', patient_responsible_name='Patient Responsible Name', patient_responsible_phonenumber='5465981345', patient_address='Patient Adress',patient_color='Branca',patient_ethnicity='Indigena',patient_address_uf='BA',patient_address_cep='86425910', document_chart_number='12345',patient_address_city_ibge_code=4528765,procedure_justification_description='Procedure Justification Description', prodedure_justification_main_cid_10='A98', prodedure_justification_sec_cid_10='A01', procedure_justification_associated_cause_cid_10='A45',procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', establishment_exec_cnes=7654321,professional_solicitor_document='{cns: "928976954930007",cpf: null,rg: null}', professional_solicitor_name='Profissional Solicit Name',solicitation_datetime=None,signature_datetime=None,validity_period_start=None,validity_period_end=None,autorization_professional_name='Autorization Professional Name', emission_org_code='Cod121234',autorizaton_professional_document='{cns: "928976954930007",cpf: null,rg: null}', autorizaton_datetime=None,secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "segundo",code: "hkmhsa3s23",quant: 4}]'):

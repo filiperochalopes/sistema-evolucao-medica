@@ -18,6 +18,11 @@ def datetime_to_use():
     return datetime.datetime.now().strftime('%d/%m/%Y')
 
 @pytest.fixture
+def document_datetime_to_use():
+    """get current datetime with hours and minutes to test"""
+    return datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
+
+@pytest.fixture
 def client():
     # Select your transport with ag graphql url endpoint
     transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)

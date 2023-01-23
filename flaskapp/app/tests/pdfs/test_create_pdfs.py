@@ -1,16 +1,8 @@
-from gql import gql, Client
-from gql.transport.aiohttp import AIOHTTPTransport
+from gql import gql
 from base64 import b64decode
 from app.env import GRAPHQL_MUTATION_QUERY_URL, WRITE_DECODE_AIH_SUS_DIRECTORY, WRITE_DECODE_APAC_DIRECTORY,WRITE_DECODE_EXAM_REQUEST_DIRECTORY,WRITE_DECODE_FICHA_INTERN_DIRECTORY, WRITE_DECODE_LME_DIRECTORY, WRITE_DECODE_PRESCRICAO_MEDICA_DIRECTORY, WRITE_DECODE_RELATORIO_ALTA_DIRECTORY, WRITE_DECODE_SOLICIT_MAMOGRAFIA_DIRECTORY, WRITE_DECODE_EXAM_REQUEST_2_PAGES_DIRECTORY, WRITE_DECODE_EXAM_REQUEST_3_PAGES_DIRECTORY, WRITE_DECODE_FOLHA_PRESCRICAO_DIRECTORY, WRITE_DECODE_FOLHA_EVOLUCAO_DIRECTORY,WRITE_DECODE_BALANCO_HIDRICO_DIRECTORY
 import pytest
 from app.tests.pdfs.request_queries_examples import aih_sus_request_string, apac_request_string, exam_request_request_string, ficha_internamento_request_string, prescricao_medica_request_string, lme_request_string, solicit_mamografia_request_string, relatorio_alta_request_string, exam_request_2_pages_request_string, exam_request_3_pages_request_string, folha_prescricao_request_string, folha_evolucao_request_string, balanco_hidrico_request_string
-
-@pytest.fixture
-def client():
-    # Select your transport with ag graphql url endpoint
-    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
-    # Create a GraphQL client using the defined transport
-    return Client(transport=transport, fetch_schema_from_transport=True)
 
 
 @pytest.mark.parametrize("request_string", [aih_sus_request_string, apac_request_string, exam_request_request_string, ficha_internamento_request_string, prescricao_medica_request_string, lme_request_string, solicit_mamografia_request_string, relatorio_alta_request_string, exam_request_2_pages_request_string, exam_request_3_pages_request_string, folha_prescricao_request_string, folha_evolucao_request_string, balanco_hidrico_request_string])
