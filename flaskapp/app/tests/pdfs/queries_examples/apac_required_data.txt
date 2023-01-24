@@ -1,0 +1,25 @@
+mutation{
+    generatePdf_Apac(
+              establishmentSolitc: {
+        name: "Establishmente Solict Name",
+        cnes: "1234567"
+    },
+    establishmentExec: {
+        name:"Establishment exec Name",
+        cnes: "1234567"
+    },
+    patient: {
+        name: "Patient Patient Name",
+        cns: "928976954930007",
+        birthdate: "10/10/2022",
+        sex: "M",
+        weightKg: 123,
+        address: {
+            city: "Jau",
+            ibgeCityCode: "1234567",
+            uf: "SP",
+        }
+    },
+    mainProcedure: {name: "teste procedimento",code: "hkmaug347s",quant: 1}
+  ){base64Pdf}
+}

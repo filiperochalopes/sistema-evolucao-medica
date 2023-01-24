@@ -1,6 +1,6 @@
 from gql import gql
 import pytest
-
+from app.tests.pdfs.request_queries_examples import exam_request_required_data_request_string
 
 def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns='928976954930007', patient_birthday=None,patient_address="Patient Adress",exams="Exames tests with a text",solicitation_reason="Solicitation Reason",professional_solicitor_name="Professional Solicitor",professional_authorized_name="Professional Authorized",solicitation_datetime=None,autorization_datetime=None, document_pacient_date=None,document_pacient_name='Document pacient name'):
 
@@ -54,32 +54,8 @@ def test_answer_with_all_fields(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use) == True
 
 def test_awnser_with_only_required_data(client, datetime_to_use):
-    request_string = """
-        mutation{
-            generatePdf_SolicitExames("""
-
-    campos_string = """
-    patient: {
-        name: "Patient Name", 
-        cns: "928976954930007", 
-        birthdate: "29/12/2022",
-        weightKg: 123,
-        address: {
-            street: "Patient Adress", 
-            uf:"SP", 
-            city: "City"},},
-    solicitationReason: "Solicitation reason",
-    professionalSolicitorName: "Professional solicitor Name",
-    solicitationDatetime: "10/10/2014",
-    exams: "Required exams"
-    """
-
-    final_string = """
-    ){base64Pdf}
-    }
-    """
-    all_string = request_string + campos_string + final_string
-    query = gql(all_string)
+    
+    query = gql(exam_request_required_data_request_string)
     result = False
     try:
         #When some exception is created in grphql he return a error

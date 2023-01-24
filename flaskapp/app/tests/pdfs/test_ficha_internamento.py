@@ -1,6 +1,6 @@
 from gql import gql
 import pytest
-
+from app.tests.pdfs.request_queries_examples import ficha_internamento_required_data_request_string
 
 def data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime=None, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=None,patient_sex='F',patient_mother_name="Patient Mother Name",patient_cpf="28445400070", patient_rg='null',patient_address='pacient street, 43, paciten, USA',patient_phonenumber='44387694628', patient_drug_allergies='"Penicillin", "Aspirin", "Ibuprofen", "Anticonvulsants"', patient_comorbidities='"Heart disease", "High blood pressure", "Diabetes", "Cerebrovascular disease"',current_illness_history='Current illnes hsitoryaaaaaaaaaaa',initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',patient_address_number=123456,patient_address_neigh='Patient Neighborhood',patient_address_city='Patient city',patient_address_uf='sp',patient_address_cep='12345678',patient_nationality='Brasileira',patient_estimate_weight=123,has_additional_health_insurance='SIM'):
 
@@ -51,44 +51,8 @@ def test_answer_with_all_fields(client, datetime_to_use, document_datetime_to_us
 
 
 def test_awnser_with_only_required_data(client, datetime_to_use, document_datetime_to_use):
-    request_string = """
-        mutation{
-            generatePdf_FichaInternamento("""
 
-    campos_string = """
-    documentDatetime: "10/10/2014 10:12",
-    patient: {
-        name: "Patient Name",
-        cns: "928976954930007",
-        cpf: "14383811744",
-        rg: null,
-        birthdate: "10/10/2021",
-        nationality: "Brasileira",
-        sex: "M",
-        weightKg: 123,
-        motherName: "Patient Mother Name",
-        comorbidities: ["Patient", "Commorbidites"],
-        allergies: ["Patient", "Drug", "Allergies"],
-        address: {
-            street: "Patient Adress",
-            city: "City",
-            uf: "SP",
-        },
-    },
-    patientPhonenumber: "10123456789",
-    currentIllnessHistory: "Current Illness History",
-    initialDiagnosticSuspicion: "Initial Suspiction",
-    doctorName: "Doctor Name",
-    doctorCns: "928976954930007",
-    doctorCrm: "CRM/UF 123456"
-    """
-
-    final_string = """
-    ){base64Pdf}
-    }
-    """
-    all_string = request_string + campos_string + final_string
-    query = gql(all_string)
+    query = gql(ficha_internamento_required_data_request_string)
     result = False
     try:
         #When some exception is created in grphql he return a error

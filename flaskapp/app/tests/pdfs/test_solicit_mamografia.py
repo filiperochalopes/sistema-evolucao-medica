@@ -1,6 +1,6 @@
 from gql import gql
 import pytest
-
+from app.tests.pdfs.request_queries_examples import solicit_mamografia_required_data_request_string
 
 def data_to_use(client, datetime_with_timezone_to_use, 
     patient_name='Patient Name',
@@ -155,43 +155,16 @@ def test_answer_with_all_fields(client, datetime_with_timezone_to_use):
     assert data_to_use(client, datetime_with_timezone_to_use) == True
 
 def test_awnser_with_only_required_data(client):
-    request_string = """
-        mutation{
-            generatePdf_SolicitMamografia("""
 
-    campos_string = """
-    patient: {
-        name: "Pacient Name",
-        cns: "928976954930007",
-        birthdate: "10/10/2000",
-        motherName: "Paciente Mother Name",
-        weightKg: 123,
-        address:{
-            uf: "SP",
-            city: "Jau"
-        }
-    },
-    mammogramBefore: ["NAO", "2020"],
-    noduleLump: "NAO",
-    highRisk: "NAOSABE",
-    examinatedBefore: "NUNCA",
-    professionalSolicitorName: "Professional Soliciame",
-    solicitationDatetime: "10/10/2012"
-    """
-    
-
-    final_string = """
-    ){base64Pdf}
-    }
-    """
-    all_string = request_string + campos_string + final_string
-    query = gql(all_string)
+    query = gql(solicit_mamografia_required_data_request_string)
+    result = False 
     try:
         #When some exception is created in grphql he return a error
         client.execute(query)
-        return True
+        result = True 
     except:
-        return False 
+        result = False 
+    assert result == True
 
 
 #################################################################

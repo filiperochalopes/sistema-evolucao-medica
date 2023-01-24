@@ -1,0 +1,37 @@
+mutation{
+            generatePdf_Lme(
+establishmentSolitc: {
+            name: "Establishment Solicit Name",
+            cnes: "1234567"
+        },
+        patient: {
+            name: "Patient Name Name",
+            motherName:"Patient Mother Name",
+            cns: "928976954930007",
+            weightKg: 123,
+        },
+        patientHeight: 140,
+        cid10: "A123",
+        anamnese: "Anamnese",
+        professionalSolicitorName: "Professional Solic Name",
+        solicitationDatetime: "12/10/2022",
+        professionalSolicitorDocument: {cpf:"28445400070"},
+        capacityAttest: ["nao", "Responsible Name"],
+        filledBy: ["MEDICO", "Other name", "{'cpf':'28445400070'}"],
+        patientEthnicity: ["SEMINFO", "Patient Ethnicity"],
+        previousTreatment: ["SIM", "Previout Theatment"]
+){base64Pdf}
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+

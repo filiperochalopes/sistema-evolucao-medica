@@ -1,5 +1,6 @@
 from gql import gql
 import pytest
+from app.tests.pdfs.request_queries_examples import lme_required_data_request_string
 
 # Variable to parametrize 
 global lenght_test_parametrize
@@ -90,41 +91,9 @@ def test_answer_with_all_fields(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use) == True
 
 def test_awnser_with_only_required_data(client):
+
+    query = gql(lme_required_data_request_string)
     result = False
-    request_string = """
-        mutation{
-            generatePdf_Lme("""
-
-    campos_string = """
-        establishmentSolitc: {
-            name: "Establishment Solicit Name",
-            cnes: "1234567"
-        },
-        patient: {
-            name: "Patient Name Name",
-            motherName:"Patient Mother Name",
-            cns: "928976954930007",
-            weightKg: 123,
-        },
-        patientHeight: 140,
-        cid10: "A123",
-        anamnese: "Anamnese",
-        professionalSolicitorName: "Professional Solic Name",
-        solicitationDatetime: "12/10/2022",
-        professionalSolicitorDocument: {cpf:"28445400070"},
-        capacityAttest: ["nao", "Responsible Name"],
-        filledBy: ["MEDICO", "Other name", "{'cpf':'28445400070'}"],
-        patientEthnicity: ["SEMINFO", "Patient Ethnicity"],
-        previousTreatment: ["SIM", "Previout Theatment"]
-    """
-
-    final_string = """
-    ){base64Pdf}
-    }
-    """
-
-    all_string = request_string + campos_string + final_string
-    query = gql(all_string)
     try:
         #When some exception is created in grphql he return a error
         client.execute(query)

@@ -116,12 +116,12 @@ def func_generate_pdf_solicit_mamografia(patient:dict, nodule_lump:str, high_ris
             pdf.add_oneline_text(text=health_unit_name, pos=(47, 741), camp_name='Health Unit Name', len_max=42, len_min=7, interval=' ', nullable=True)
             pdf.add_oneline_text(text=health_unit_adress_city, pos=(168, 720), camp_name='Health Unit Adress City', len_max=14, len_min=3, interval=' ', nullable=True)
             pdf.add_oneline_text(text=patient_surname, pos=(288, 635), camp_name='Patient Surname', len_max=18, len_min=4, interval=' ', nullable=True)
-            pdf.add_oneline_text(text=patient['address']['street'], pos=(47, 529), camp_name='Patient Adress', len_max=42, len_min=7, interval=' ', nullable=True)
-            pdf.add_oneline_text(text=patient['address']['complement'], pos=(168, 507), camp_name='Patient Adress Adjunct', len_max=25, len_min=7, interval=' ', nullable=True)
-            pdf.add_oneline_text(text=patient['address']['neighborhood'], pos=(292, 484), camp_name='Patient Adress Neighborhood', len_max=14, len_min=7, interval=' ', nullable=True)
-            pdf.add_oneline_text(text=patient['address']['reference'], pos=(47, 413), camp_name='Patient Adress Reference', len_max=33, len_min=4, interval=' ', nullable=True)
-            pdf.add_oneline_text(text=patient['address']['city'], pos=(167, 461), camp_name='Patient Adress City', len_max=15, len_min=3, interval=' ', nullable=True)
-            pdf.add_patient_adress_cep(number=patient['address']['zip_code'])            
+            pdf.add_oneline_text(text=patient['address'].get('street'), pos=(47, 529), camp_name='Patient Adress', len_max=42, len_min=7, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('complement'), pos=(168, 507), camp_name='Patient Adress Adjunct', len_max=25, len_min=7, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('neighborhood'), pos=(292, 484), camp_name='Patient Adress Neighborhood', len_max=14, len_min=7, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('reference'), pos=(47, 413), camp_name='Patient Adress Reference', len_max=33, len_min=4, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('city'), pos=(167, 461), camp_name='Patient Adress City', len_max=15, len_min=3, interval=' ', nullable=True)
+            pdf.add_patient_adress_cep(number=patient['address'].get('zip_code'))
             pdf.add_patient_phonenumber(number=patient_phonenumber)            
             pdf.add_radiotherapy_before(radiotherapy_before=radiotherapy_before)
             pdf.add_breast_surgery_before(breast_surgery_before=breast_surgery_before)
@@ -129,17 +129,18 @@ def func_generate_pdf_solicit_mamografia(patient:dict, nodule_lump:str, high_ris
             pdf.set_font('Roboto-Mono', 12)
             pdf.add_oneline_intnumber(number=health_unit_cnes, pos=(178, 761), camp_name='Health Unit CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval=' ', nullable=True)
             pdf.add_oneline_text(text=protocol_number, pos=(406, 768), camp_name='Protocol Number', len_max=23, len_min=1, nullable=True)
-            pdf.add_document_cns_cpf_rg(document={'cpf':patient['cpf']}, pos_cpf=(52, 589),camp_name='Patient Document CPF', interval=' ', nullable=True)
-            pdf.add_oneline_text(text=patient['address']['number'], pos=(52, 506), camp_name='Patient Adress Number', len_max=6, len_min=1, interval=' ', nullable=True)
-            pdf.add_UF(uf=patient['address']['uf'], pos=(535, 484), camp_name='Patient Adress UF', nullable=True, interval=' ')
+            if patient.get('cpf') != None:
+                pdf.add_document_cns_cpf_rg(document={'cpf':patient.get('cpf')}, pos_cpf=(52, 589),camp_name='Patient Document CPF', interval=' ', nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('number'), pos=(52, 506), camp_name='Patient Adress Number', len_max=6, len_min=1, interval=' ', nullable=True)
+            pdf.add_UF(uf=patient['address'].get('uf'), pos=(535, 484), camp_name='Patient Adress UF', nullable=True, interval=' ')
 
 
             pdf.set_font('Roboto-Mono', 9)
             pdf.add_oneline_text(text=health_unit_city_ibge_code, pos=(47, 720), camp_name='Health Unit City IBGE code', len_max=7, len_min=7, nullable=True, interval='  ')
             pdf.add_oneline_text(text=document_chart_number, pos=(410, 720), camp_name='Document Chart Number', len_max=10, len_min=1, nullable=True, interval='  ')
-            pdf.add_sex_square(sex=patient['sex'], pos_male=(291, 672), pos_fem=(338, 672), camp_name='Patient Sex', square_size=(11,9), nullable=True)
-            pdf.add_oneline_text(text=patient['nationality'], pos=(278, 587), camp_name='Patient Nationality', len_max=32, len_min=3, nullable=True)
-            pdf.add_oneline_text(text=patient['address']['ibge_city_code'], pos=(47, 461), camp_name='Patient City IBGE code', len_max=7, len_min=7, nullable=True, interval='  ')
+            pdf.add_sex_square(sex=patient.get('sex'), pos_male=(291, 672), pos_fem=(338, 672), camp_name='Patient Sex', square_size=(11,9), nullable=True)
+            pdf.add_oneline_text(text=patient.get('nationality'), pos=(278, 587), camp_name='Patient Nationality', len_max=32, len_min=3, nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('ibge_city_code'), pos=(47, 461), camp_name='Patient City IBGE code', len_max=7, len_min=7, nullable=True, interval='  ')
             if patient_ethnicity == None:
                 patient_ethnicity = [None, None]
             if type(patient_ethnicity) != type(list()):

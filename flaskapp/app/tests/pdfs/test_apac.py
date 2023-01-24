@@ -1,5 +1,6 @@
 from gql import gql
 import pytest
+from app.tests.pdfs.request_queries_examples import apac_required_data_request_string
 
 
 def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,patient_name='Patient Name',patient_cns="928976954930007",patient_sex='M',patient_birthday=None, patient_address_city='Patient Adress City',main_procedure='{name: "teste procedimento",code: "hkmaug347s",quant: 1}',patient_mother_name='Patient Mother Name',patient_mother_phonenumber='5286758957', patient_responsible_name='Patient Responsible Name', patient_responsible_phonenumber='5465981345', patient_address='Patient Adress',patient_color='Branca',patient_ethnicity='Indigena',patient_address_uf='BA',patient_address_cep='86425910', document_chart_number='12345',patient_address_city_ibge_code=4528765,procedure_justification_description='Procedure Justification Description', prodedure_justification_main_cid_10='A98', prodedure_justification_sec_cid_10='A01', procedure_justification_associated_cause_cid_10='A45',procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', establishment_exec_cnes=7654321,professional_solicitor_document='{cns: "928976954930007",cpf: null,rg: null}', professional_solicitor_name='Profissional Solicit Name',solicitation_datetime=None,signature_datetime=None,validity_period_start=None,validity_period_end=None,autorization_professional_name='Autorization Professional Name', emission_org_code='Cod121234',autorizaton_professional_document='{cns: "928976954930007",cpf: null,rg: null}', autorizaton_datetime=None,secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "segundo",code: "hkmhsa3s23",quant: 4}]'):
@@ -79,40 +80,8 @@ def test_answer_with_all_fields(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use) == True
 
 def test_awnser_with_only_required_data(client):
-    request_string = """
-        mutation{
-            generatePdf_Apac("""
 
-    campos_string = """
-    establishmentSolitc: {
-        name: "Establishmente Solict Name",
-        cnes: "1234567"
-    },
-    establishmentExec: {
-        name:"Establishment exec Name",
-        cnes: "1234567"
-    },
-    patient: {
-        name: "Patient Patient Name",
-        cns: "928976954930007",
-        birthdate: "10/10/2022",
-        sex: "M",
-        weightKg: 123,
-        address: {
-            city: "Jau",
-            ibgeCityCode: "1234567",
-            uf: "SP",
-        }
-    },
-    mainProcedure: {name: "teste procedimento",code: "hkmaug347s",quant: 1}
-    """
-
-    final_string = """
-    ){base64Pdf}
-    }
-    """
-    all_string = request_string + campos_string + final_string
-    query = gql(all_string)
+    query = gql(apac_required_data_request_string)
     result = False
     try:
         #When some exception is created in grphql he return a error

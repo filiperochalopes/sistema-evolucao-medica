@@ -1,5 +1,6 @@
 from gql import gql
 import pytest
+from app.tests.pdfs.request_queries_examples import relatorio_alta_required_data_request_string
 
 # Variable to parametrize 
 global lenght_test_parametrize
@@ -54,45 +55,9 @@ def test_answer_with_all_fields(client, datetime_to_use, document_datetime_to_us
     assert data_to_use(client, datetime_to_use, document_datetime_to_use) == True
 
 def test_awnser_with_only_required_data(client, datetime_to_use, document_datetime_to_use):
-    result = False
     
-    request_string = """
-        mutation{
-            generatePdf_RelatorioAlta("""
-
-
-    campos_string = """
-        documentDatetime: "17/11/2022 03:23",
-        patient: {
-            name:"Patient Namme",
-            cns: "928976954930007",
-            birthdate: "17/11/2022",
-            sex: "F",
-            motherName: "Patient Mother Name",
-            weightKg: 123,
-            cpf: "28445400070",
-            rg: null,
-            address: {
-                street: "pacient street",
-                city: "City",
-                neighborhood: "neighborhood",
-                number: "41",
-                uf: "SP"
-            }
-        }
-        evolution: "Current illnes hsitoryaaaaaaaaaaaedqeqa",
-        doctorName: "Doctor Name",
-        doctorCns: "928976954930007",
-        doctorCrm: "CRM/UF 123456"
-    """
-
-    final_string = """
-    ){base64Pdf}
-    }
-    """
-
-    all_string = request_string + campos_string + final_string
-    query = gql(all_string)
+    query = gql(relatorio_alta_required_data_request_string)
+    result = False
     try:
         #When some exception is created in grphql he return a error
         client.execute(query)
