@@ -1,0 +1,9 @@
+mutation {
+  createEvolution(
+    internmentId: 1,
+    text: "Cras euismod pellentesque pretium. Duis ex libero, gravida varius dignissim ut, fringilla sit amet mi. Suspendisse sit amet interdum libero. Cras eleifend varius volutpat. Suspendisse mi eros, eleifend ut dignissim vel, placerat sed lorem. Mauris ut est sodales, egestas elit a, gravida ligula. Nullam egestas venenatis dui, eget egestas neque tempor et. Ut accumsan malesuada nisi, quis elementum enim elementum pretium."
+    cid10Code: "I209"
+  ){
+   id
+  }
+}

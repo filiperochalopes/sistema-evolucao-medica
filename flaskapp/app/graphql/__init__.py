@@ -18,6 +18,7 @@ type_defs = gql(
        patient(id:ID, queryNameCnsCpf:String): Patient
        patients(queryNameCnsCpf:String): [Patient]
        internment(id:ID!): Internment
+       alembicVersion: AlembicVersion
        internments(active:Boolean, cns:String): [Internment]
        myUser: User
        "ValueObject Descrição de registro de Balanço Hídrico"
@@ -146,7 +147,7 @@ type_defs = gql(
             "Frequencia respiratória, dois dígitos"
             respiratoryFrequency: Int
             "Temperatura axilar em graus celcius, dois dígitos"
-            celciusAxillaryTemperature: Int
+            celciusAxillaryTemperature: Float
             "Medida de glicemia no padrão mg/dL, chamada também de HGT ou glicemia periférica"
             glucose: Int
             "Batimentos cardíacos fetais, para uso em gestantes. De dois a três dígitos"
@@ -371,6 +372,10 @@ type_defs = gql(
         cns: String
     }
 
+    type AlembicVersion{
+        version: String
+    }
+
     type User {
         id: ID!
         email: String
@@ -462,7 +467,7 @@ type_defs = gql(
         diastolicBloodPressure: Int
         cardiacFrequency: Int
         respiratoryFrequency: Int
-        celciusAxillaryTemperature: Int
+        celciusAxillaryTemperature: Float
         glucose: Int
         fetalCardiacFrequency: Int
         professional: User

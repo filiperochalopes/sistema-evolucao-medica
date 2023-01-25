@@ -29,8 +29,10 @@ class ProfessionalCategoryEnum(enum.Enum):
 
 db = SQLAlchemy()
 
+class BaseModel(db.Model):
+    __abstract__ = True
 
-class User(db.Model):
+class User(BaseModel):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -76,7 +78,7 @@ class User(db.Model):
         return not(self.is_authenticated())
 
 
-class Config(db.Model):
+class Config(BaseModel):
     '''
     Model para configurações de ambiente, principalmente para cadastro de
     informações referentes à unidade central do sistema, no caso o Hospital
@@ -88,13 +90,13 @@ class Config(db.Model):
     value = db.Column(db.Text)
 
 
-class Cid10(db.Model):
+class Cid10(BaseModel):
     __tablename__ = 'cid10'
 
     code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String)
 
-class Address(db.Model):
+class Address(BaseModel):
     __tablename__ = 'address'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -110,7 +112,7 @@ class Address(db.Model):
 Models que vão ser populados por meio de registro de inputs médicos prévios
 ExternalDrug, Comorbidity, Allergy, NursingActivity, RestingActivity
 """
-class ExternalDrug(db.Model):
+class ExternalDrug(BaseModel):
     '''Medicações prescritas para pacientes na hora da alta, prescrição externa, salvar para resuso'''
 
     __tablename__ = 'auto_external_drugs'
@@ -119,14 +121,14 @@ class ExternalDrug(db.Model):
     name = db.Column(db.String, unique=True)
     dosage = db.Column(db.String)
 
-class Comorbidity(db.Model):
+class Comorbidity(BaseModel):
     __tablename__ = 'auto_comorbidities'
 
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String, unique=True)
 
 
-class Allergy(db.Model):
+class Allergy(BaseModel):
     __tablename__ = 'auto_allergies'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -134,16 +136,16 @@ class Allergy(db.Model):
 
 
 PatientComorbidity  = Table('_patient_comorbidity', 
-    db.Model.metadata,
+    BaseModel.metadata,
     db.Column('patient_id', db.Integer, ForeignKey('patients.id'), primary_key=True),
     db.Column('comorbidity_id', db.Integer, ForeignKey('auto_comorbidities.id'), primary_key=True))
 
 PatientAllergy  = Table('_patient_allergy',
-    db.Model.metadata,
+    BaseModel.metadata,
     db.Column('patient_id', db.Integer, ForeignKey('patients.id'), primary_key=True),
     db.Column('allergy_id', db.Integer, ForeignKey('auto_allergies.id'), primary_key=True))
 
-class Patient(db.Model):
+class Patient(BaseModel):
     __tablename__ = 'patients'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -171,12 +173,12 @@ class Patient(db.Model):
 
 
 DrugDrugGroupPreset = Table('_drug_group_preset',
-    db.Model.metadata,
+    BaseModel.metadata,
     db.Column('drug_group_preset_id', db.Integer, ForeignKey('drug_group_presets.id'), primary_key=True),
     db.Column('drug_id', db.Integer, ForeignKey('drugs.id'), primary_key=True))
 
 
-class Drug(db.Model):
+class Drug(BaseModel):
     __tablename__ = 'drugs'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -189,7 +191,7 @@ class Drug(db.Model):
     drug_group_presets = relationship('DrugGroupPreset', secondary=DrugDrugGroupPreset, back_populates='drugs')
 
 
-class DrugPrescription(db.Model):
+class DrugPrescription(BaseModel):
     __tablename__ = 'drug_prescriptions'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -203,14 +205,14 @@ class DrugPrescription(db.Model):
     prescription_id = db.Column(db.Integer, ForeignKey("prescriptions.id"))
 
 
-class Diet(db.Model):
+class Diet(BaseModel):
     __tablename__ = 'diets'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
 
-class State(db.Model):
+class State(BaseModel):
     __tablename__ = 'states'
 
     ibge_code = db.Column(db.Integer, primary_key=True)
@@ -218,7 +220,7 @@ class State(db.Model):
     uf = db.Column(db.String)
 
 
-class RestingActivity(db.Model):
+class RestingActivity(BaseModel):
     # Determinar qual o grau de atividade/repouso do paciente
     __tablename__ = 'auto_resting_activities'
 
@@ -229,13 +231,13 @@ class RestingActivity(db.Model):
 
 
 NursingActivityPrescription = Table('_nursing_activity_prescription',
-    db.Model.metadata,
+    BaseModel.metadata,
     db.Column('nursing_activity_id', db.Integer, ForeignKey('auto_nursing_activities.id'), primary_key=True),
     db.Column('prescription_id', db.Integer, ForeignKey('prescriptions.id'), primary_key=True),
     db.Column('created_at', db.DateTime(timezone=True), server_default=func.now()))
 
 
-class NursingActivity(db.Model):
+class NursingActivity(BaseModel):
     # Atividades de enfermagem como aferição de sinais vitais, checagem de FCF...
     __tablename__ = 'auto_nursing_activities'
 
@@ -246,7 +248,7 @@ class NursingActivity(db.Model):
     prescriptions = relationship('Prescription', secondary=NursingActivityPrescription, back_populates='nursing_activities')
 
 
-class Internment(db.Model):
+class Internment(BaseModel):
     __tablename__ = 'internments'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -286,7 +288,7 @@ class Internment(db.Model):
     finished_by = relationship('User', foreign_keys=finished_by_id)
 
 
-class Prescription(db.Model):
+class Prescription(BaseModel):
     __tablename__ = 'prescriptions'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -311,7 +313,7 @@ class Prescription(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
 
-class DrugGroupPreset(db.Model):
+class DrugGroupPreset(BaseModel):
     __tablename__ = 'drug_group_presets'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -320,7 +322,7 @@ class DrugGroupPreset(db.Model):
     drugs = relationship('Drug', secondary=DrugDrugGroupPreset, back_populates='drug_group_presets')
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
-class Measure(db.Model):
+class Measure(BaseModel):
     __tablename__ = 'measures'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -330,7 +332,7 @@ class Measure(db.Model):
     diastolic_bp = db.Column(db.Integer)
     cardiac_freq = db.Column(db.Integer)
     respiratory_freq = db.Column(db.Integer)
-    celcius_axillary_temperature = db.Column(db.Integer)
+    celcius_axillary_temperature = db.Column(db.Float)
     glucose = db.Column(db.Integer)
     fetal_cardiac_freq = db.Column(db.Integer)
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
@@ -355,18 +357,18 @@ class Measure(db.Model):
             raise ValueError("Pressão arterial diastólica deve ser preenchida")
         return value
 
-class FluidBalanceDescription(db.Model):
+class FluidBalanceDescription(BaseModel):
     __tablename__ = 'fluid_balance_description'
 
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String)
 
 
-class FluidBalance(db.Model):
+class FluidBalance(BaseModel):
     __tablename__ = 'fluid_balance'
 
     id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.Integer)
+    volume_ml = db.Column(db.Integer)
     description_id = db.Column(db.Integer, ForeignKey('fluid_balance_description.id'))
     description = relationship('FluidBalanceDescription')
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
@@ -378,7 +380,7 @@ class FluidBalance(db.Model):
     internment = relationship('Internment', back_populates='fluid_balance')
 
 
-class Evolution(db.Model):
+class Evolution(BaseModel):
     __tablename__ = 'evolutions'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -397,7 +399,7 @@ class Evolution(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
 
-class Pending(db.Model):
+class Pending(BaseModel):
     __tablename__ = 'pendings'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -413,7 +415,7 @@ class Pending(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
 
-class HighComplexityProcedure(db.Model):
+class HighComplexityProcedure(BaseModel):
     __tablename__ = 'high_complexity_procedures'
 
     id = db.Column(db.Integer, primary_key=True)

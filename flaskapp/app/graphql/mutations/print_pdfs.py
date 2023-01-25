@@ -26,32 +26,28 @@ def print_pdf_aih_sus(_, info, internment_id: int, secondary_cid_10: str):
         'name': InstitutionData.NAME,
         'cnes': InstitutionData.CNES
     }, patient={
-        'name': internment.,
-        "Nome completo da mãe do paciente"
-        motherName: String
-        "Sexo biológico binário `male` ou `female`"
-        sex:String,
-        "Dado muito relevante para cáculos, peso em quilos"
-        weightKg: Float!
-        "Data de nascimento no formato `yyyy-mm-dd`"
-        birthdate: String
-        "Apenas dígitos, para fins de testes pode gerar [nesse link](https://geradornv.com.br/gerador-cpf/)"
-        cpf:String, 
-        "Apenas dígitos, para fins de testes, pode gerar [nesse link](https://geradornv.com.br/gerador-cns/)"
-        cns:String!, 
-        "Apenas dígito do Documento de Registro Geral"
-        rg: String
-        "Nacionalidade do Paciente"
-        nationality: String
-        "Etnia do Paciente"
-        ethnicity: String
-        "Lista de doenças do paciente"
-        comorbidities: [String]
-        "Alergias"
-        allergies: [String]
-        "Dados de endereço"
-        address: AddressInput
-    })
+        'name': internment.patient.name,
+        'motherName': internment.patient.mother_name,
+        'sex': internment.patient.sex,
+        'weightKg': internment.patient.weight_kg,
+        'birthdate': internment.patient.birthdate,
+        'cpf': internment.patient.cpf,
+        'cns': internment.patient.cns,
+        'rg': internment.patient.rg,
+        'nationality': 'brasileiro(a)',
+        'ethnicity': None,
+        'comorbidities': [c.value for c in internment.patient.comorbidities],
+        'allergies': [a.value for a in internment.patient.allergies],
+        'address': {
+            'street': internment.patient.address.street,
+            'complement': internment.patient.address.street,
+            'number': internment.patient.address.number,
+            'zip_code': internment.patient.address.zip_code,
+            'neighborhood': internment.patient.address.neighborhood,
+            'uf': internment.patient.address.uf,
+            'city': internment.patient.address.city
+        }
+    }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=)
 
 
 @mutation.field('printPdf_FichaInternamento')

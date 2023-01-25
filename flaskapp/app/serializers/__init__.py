@@ -156,8 +156,16 @@ class Cid10Schema(CamelCaseSchema):
 
 
 class MeasureSchema(CamelCaseSchema):
+    diastolic_blood_pressure = fields.Integer(attribute="diastolic_bp")
+    systolic_blood_pressure = fields.Integer(attribute="systolic_bp")
+    fetal_cardiac_frequency = fields.Integer(attribute="fetal_cardiac_freq")
+    cardiac_frequency = fields.Integer(attribute="cardiac_freq")
+    respiratory_frequency = fields.Integer(attribute="respiratory_freq")
     class Meta:
         model = Measure
+        exclude = ['diastolic_bp', 'systolic_bp', 'fetal_cardiac_freq', 'cardiac_freq', 'respiratory_freq']
+
+    
 
 
 class PendingSchema(CamelCaseSchema):

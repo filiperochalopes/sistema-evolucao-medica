@@ -1,0 +1,36 @@
+mutation {
+  createInternment(
+    admissionDatetime: "2026-11-21 15:22"
+    patient: {
+      name: "Dart Vader"
+      sex: "male"
+      birthdate: "1995-12-01"
+      cns: "105118227480000"
+      cpf: "33131763990"
+      weightKg: 65.5
+      comorbidities: [
+        "Hipertensão Arterial Sistêmica (HAS)"
+        "Diabetes Mellitus (DM)"
+      ]
+      allergies: ["Dipirona", "Amoxicilina", "latex"]
+      address: {
+        street: "Rua Orlando Flórida"
+        zipCode: "40440360"
+        complement: "Edf Deathstar"
+        city: "Água Fria"
+        uf: "BA"
+      }
+    }
+    hpi: "lorem ipsum"
+    justification: "lorem ipsum"
+    cid10Code: "I201"
+  ) {
+    id
+    hpi
+    patient {
+      id
+      name
+      cns
+    }
+  }
+}

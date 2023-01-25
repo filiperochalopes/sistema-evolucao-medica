@@ -65,6 +65,15 @@ class InstitutionData:
     CNES = os.getenv('INSTITUTION_CNES', '2602202')
 
 class DatabaseSettings:
-    NAME = os.getenv('POSTGRES_NAME', 'hmlem')
-    USER = os.getenv('POSTGRES_USER', 'postgres')
-    PASSWORD = os.getenv('POSTGRES_PASS', '7xyed8uDyi0=')
+    def __init__(self, env='production') -> None:
+        if env == 'production':
+            self.HOST = 'db'
+            self.PORT = 5432
+        elif env == 'testing':
+            self.HOST = 'db_test'
+            self.PORT = 5433
+        
+        self.NAME = os.getenv('POSTGRES_NAME', 'hmlem')
+        self.USER = os.getenv('POSTGRES_USER', 'postgres')
+        self.PASSWORD = os.getenv('POSTGRES_PASS', '7xyed8uDyi0=')
+        self.URL = f'postgresql://{self.USER}:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.NAME}'

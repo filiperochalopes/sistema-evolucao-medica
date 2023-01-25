@@ -12,6 +12,17 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASS}
     ports:
       - "${POSTGRES_PORT}:5432"
+  db_test:
+    container_name: evolucao_hospitalar_db_test
+    restart: always
+    image: postgres:13.9-alpine
+    environment:
+      - POSTGRES_DB=${POSTGRES_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+    ports:
+      - "${POSTGRES_TEST_PORT}:5433"
+    command: -p 5433
   app:
     container_name: evolucao_hospitalar_app
     restart: always
