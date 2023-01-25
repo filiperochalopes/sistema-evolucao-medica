@@ -53,6 +53,13 @@ WRITE_DECODE_SOLICIT_MAMOGRAFIA_DIRECTORY  = f"{WRITE_DECODE_BASE_URL}solicit_ma
 WRITE_DECODE_FOLHA_EVOLUCAO_DIRECTORY       = f"{WRITE_DECODE_BASE_URL}folha_evolucao_decoded_teste.tmp.pdf"
 WRITE_DECODE_BALANCO_HIDRICO_DIRECTORY      = f"{WRITE_DECODE_BASE_URL}balanco_hidrico_decoded_teste.tmp.pdf"
 WRITE_DECODE_FOLHA_PRESCRICAO_DIRECTORY     = f"{WRITE_DECODE_BASE_URL}folha_prescricao_decoded_teste.tmp.pdf"
+WRITE_DECODE_APAC_REQUIRED_DATA_DIRECTORY     = f"{WRITE_DECODE_BASE_URL}apac_required_decoded_teste.tmp.pdf"
+WRITE_DECODE_EXAM_REQUEST_REQUIRED_DATA_DIRECTORY     = f"{WRITE_DECODE_BASE_URL}exam_request_required_decoded_teste.tmp.pdf"
+WRITE_DECODE_FICHA_INTERN_REQUIRED_DATA_DIRECTORY     = f"{WRITE_DECODE_BASE_URL}ficha_intern_required_decoded_teste.tmp.pdf"
+WRITE_DECODE_AIH_SUS_REQUIRED_DATA_DIRECTORY     = f"{WRITE_DECODE_BASE_URL}aih_sus_required_decoded_teste.tmp.pdf"
+WRITE_DECODE_LME_REQUIRED_DATA_DIRECTORY     = f"{WRITE_DECODE_BASE_URL}lme_required_decoded_teste.tmp.pdf"
+WRITE_DECODE_RELATORIO_ALTA_REQUIRED_DATA_DIRECTORY     = f"{WRITE_DECODE_BASE_URL}relatorio_alta_required_decoded_teste.tmp.pdf"
+WRITE_DECODE_SOLICIT_MAMOGRAFIA_REQUIRED_DATA     = f"{WRITE_DECODE_BASE_URL}solicit_mamogram_required_decoded_teste.tmp.pdf"
 
 class InstitutionData:
     NAME = os.getenv('INSTITUTION_NAME', 'Hospital Maternidade Luís Eduardo Magalhães')
