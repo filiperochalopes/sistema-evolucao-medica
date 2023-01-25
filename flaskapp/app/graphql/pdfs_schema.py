@@ -144,9 +144,9 @@ pdfs_schema_type_defs = gql(
             "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:17 min:2 caracteres"
             emissionOrgCode: String!, 
             "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
-            autorizatonProfessionalDocument: DocumentInput!,
+            autorizationProfessionalDocument: DocumentInput!,
             "Data e hora da autorizacao, somente dia/mes/ano"
-            autorizatonDatetime: String!,
+            autorizationDatetime: String!,
             "Numero da autorizacao de internacao hospitalar, no maximo 18 digitos"
             hospitalizationAutorizationNumber: String!,
             "Resultados de exames, max: 403 min:5 caracteres"
@@ -237,9 +237,9 @@ pdfs_schema_type_defs = gql(
             "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:16 min:2 caracteres"
             emissionOrgCode: String, 
             "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
-            autorizatonProfessionalDocument: DocumentInput,
+            autorizationProfessionalDocument: DocumentInput,
             "Data da autorizacao, somente dia/mes/ano"
-            autorizatonDatetime: String,
+            autorizationDatetime: String,
             "Data da Assinatura, somente DD/MM/YYYY"
             signatureDatetime: String,
             "Data do inicio do periodo de Validade da APAC, utilize a data no formato DD/MM/YYYY"

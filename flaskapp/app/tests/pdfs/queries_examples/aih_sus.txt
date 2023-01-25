@@ -42,12 +42,12 @@ mutation{
     solicitationDatetime: "10/02/2021",
     professionalAutorizationName: "Professional Autorizator Name",
     emissionOrgCode: "12aass",
-    autorizatonProfessionalDocument: {
+    autorizationProfessionalDocument: {
     cpf: "28445400070",
     cns: null,
     rg: null
     }
-    autorizatonDatetime: "21/10/2022",
+    autorizationDatetime: "21/10/2022",
     hospitalizationAutorizationNumber: "1212",
     examResults: "Exam Results",
     chartNumber: "124",

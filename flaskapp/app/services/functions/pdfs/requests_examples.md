@@ -46,12 +46,12 @@ mutation{
     solicitationDatetime: "10/02/2021",
     professionalAutorizationName: "Professional Autorizator Name",
     emissionOrgCode: "12aass",
-    autorizatonProfessionalDocument: {
+    autorizationProfessionalDocument: {
     cpf: "28445400070",
     cns: null,
     rg: null
     }
-    autorizatonDatetime: "21/10/2022",
+    autorizationDatetime: "21/10/2022",
     hospitalizationAutorizationNumber: "1212",
     examResults: "Exam Results",
     chartNumber: "124",
@@ -136,14 +136,14 @@ mutation{
 		},
 		professionalSolicitorName: "Professional Solicitator",
 		solicitationDatetime: "10/11/2021",
-		professionalAutorizationName: "Professional Autorizaton",
+		professionalAutorizationName: "Professional autorization",
 		emissionOrgCode: "Cod121234",
-		autorizatonProfessionalDocument: {
+		autorizationProfessionalDocument: {
 		cns: "928976954930007",
 		cpf: null,
 		rg: null
 		},
-		autorizatonDatetime: "10/10/2022",
+		autorizationDatetime: "10/10/2022",
 		signatureDatetime: "15/10/2022",
 		validityPeriodStart: "15/10/2022",
 		validityPeriodEnd: "15/11/2022"
