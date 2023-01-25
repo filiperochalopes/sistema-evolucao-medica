@@ -14,10 +14,5 @@ mutation{
         professionalSolicitorDocument: {cns: "928976954930007", cpf: null, rg: null},
         professionalSolicitorName: "Profissional Solicit Name",
         solicitationDatetime: "10/10/2021",
-        professionalAutorizationName: "Autorization professional name",
-        emissionOrgCode: "OrgCode2022",
-        autorizationProfessionalDocument: {cns: null, cpf: "28445400070", rg: null},
-        autorizationDatetime: "17/01/2008",
-        hospitalizationAutorizationNumber: "1234567890",
     ){base64Pdf}
 }
