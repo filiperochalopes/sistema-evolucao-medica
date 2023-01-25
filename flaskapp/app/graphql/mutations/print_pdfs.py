@@ -1,3 +1,4 @@
+import sys
 from ariadne import convert_kwargs_to_snake_case
 from app.graphql import mutation
 from app.env import InstitutionData
@@ -19,8 +20,9 @@ from app.services.functions.pdfs.func_generate_pdf_balanco_hidrico import func_g
 @mutation.field('printPdf_AihSus')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_aih_sus(_, info, internment_id: int, secondary_cid_10: str):
+def print_pdf_aih_sus(_, info, internment_id: int, extra: dict=None, current_user=dict):
     internment = db.session.query(Internment).get(internment_id)
+    print(internment.patient.__dict__, file=sys.stderr)
 
     return func_generate_pdf_aih_sus(establishment_solitc={
         'name': InstitutionData.NAME,
@@ -40,14 +42,14 @@ def print_pdf_aih_sus(_, info, internment_id: int, secondary_cid_10: str):
         'allergies': [a.value for a in internment.patient.allergies],
         'address': {
             'street': internment.patient.address.street,
-            'complement': internment.patient.address.street,
+            'complement': internment.patient.address.complement,
             'number': internment.patient.address.number,
             'zip_code': internment.patient.address.zip_code,
             'neighborhood': internment.patient.address.neighborhood,
             'uf': internment.patient.address.uf,
             'city': internment.patient.address.city
         }
-    }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=)
+    }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=internment.cid10.code, procedure_code='', procedure_solicited='', clinic='', internation_carater='', professional_solicitor_name=current_user.name, professional_solicitor_document=current_user.professional_document_number, solicitation_datetime=internment.admission_datetime)
 
 
 @mutation.field('printPdf_FichaInternamento')

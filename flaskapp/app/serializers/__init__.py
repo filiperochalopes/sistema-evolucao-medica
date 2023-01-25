@@ -100,7 +100,6 @@ class UserSchema(CamelCaseSchema):
 
     class Meta:
         model = User
-        include_fk = True
 
 class AllergySchema(CamelCaseSchema):
     class Meta:

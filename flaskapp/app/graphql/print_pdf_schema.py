@@ -31,7 +31,7 @@ print_pdf_type_defs = gql(
 
         O profissional solicitante é capturado por meio do usuário logado e os demais dados por meio do número de internamento.
         """
-        printePdf_FichaInternamento(
+        printPdf_FichaInternamento(
             "Id do internamento do referência"
             internmentId: Int!
         ): GeneratedPdf
