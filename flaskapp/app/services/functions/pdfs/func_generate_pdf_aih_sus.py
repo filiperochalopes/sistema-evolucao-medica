@@ -3,7 +3,7 @@ from app.services.utils.PdfAihSus import PdfAihSus
 
 
 
-def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnostic:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, professional_solicitor_document:dict, professional_solicitor_name:str, solicitation_datetime:datetime.datetime,  emission_org_code:str=None, hospitalization_autorization_number:str=None, autorization_professional_document:dict=None, autorization_datetime:datetime.datetime=None, professional_autorization_name:str=None, exam_results:str=None, chart_number:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> str:
+def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnosis:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, professional_solicitor_document:dict, professional_solicitor_name:str, solicitation_datetime:datetime.datetime,  emission_org_code:str=None, hospitalization_autorization_number:str=None, autorization_professional_document:dict=None, autorization_datetime:datetime.datetime=None, professional_autorization_name:str=None, exam_results:str=None, chart_number:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> str:
     """fill pdf aih sus 
 
     Args:
@@ -12,7 +12,7 @@ def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict
         patient (dict): Patient info
         main_clinical_signs_symptoms (str): main_clinical_signs_symptoms
         conditions_justify_hospitalization (str): conditions_justify_hospitalization
-        initial_diagnostic (str): initial_diagnostic
+        initial_diagnosis (str): initial_diagnosis
         principal_cid_10 (str): principal_cid_10
         procedure_solicited (str): procedure_solicited
         procedure_code (str): procedure_code
@@ -72,7 +72,7 @@ def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict
             pdf.add_UF(uf=patient['address']['uf'], pos=(450, 566), camp_name='Patient Adress UF', interval='  ')
             pdf.add_morelines_text(text=main_clinical_signs_symptoms, initial_pos=(25, 530), decrease_ypos= 10, camp_name='Main Clinical Signs Symptoms', len_max=1009, char_per_lines=101, len_min=5)
             pdf.add_morelines_text(text=conditions_justify_hospitalization, initial_pos=(25, 422), decrease_ypos= 10, camp_name='Conditions that Justify hospitalization', len_max=403, char_per_lines=101, len_min=5)
-            pdf.add_oneline_text(text=initial_diagnostic, pos=(25, 314), camp_name='Initial Diagnostic', len_max=44, len_min=5)
+            pdf.add_oneline_text(text=initial_diagnosis, pos=(25, 314), camp_name='Initial Diagnostic', len_max=44, len_min=5)
             pdf.add_oneline_text(text=principal_cid_10, pos=(306, 314), camp_name='Principal Cid10', len_max=4, len_min=3)
             pdf.add_oneline_text(text=procedure_solicited, pos=(25, 269), camp_name='Procedure Solicited', len_max=65, len_min=6)
             pdf.add_oneline_text(text=clinic, pos=(25, 246), camp_name='Clinic', len_max=18, len_min=6)

@@ -202,7 +202,7 @@ def upgrade():
     )
     op.create_table('fluid_balance',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('value', sa.Integer(), nullable=True),
+    sa.Column('volume_ml', sa.Integer(), nullable=True),
     sa.Column('description_id', sa.Integer(), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('professional_id', sa.Integer(), nullable=True),
@@ -220,7 +220,7 @@ def upgrade():
     sa.Column('diastolic_bp', sa.Integer(), nullable=True),
     sa.Column('cardiac_freq', sa.Integer(), nullable=True),
     sa.Column('respiratory_freq', sa.Integer(), nullable=True),
-    sa.Column('celcius_axillary_temperature', sa.Integer(), nullable=True),
+    sa.Column('celcius_axillary_temperature', sa.Float(), nullable=True),
     sa.Column('glucose', sa.Integer(), nullable=True),
     sa.Column('fetal_cardiac_freq', sa.Integer(), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),

@@ -18,6 +18,7 @@ type_defs = gql(
        patient(id:ID, queryNameCnsCpf:String): Patient
        patients(queryNameCnsCpf:String): [Patient]
        internment(id:ID!): Internment
+       alembicVersion: AlembicVersion
        internments(active:Boolean, cns:String): [Internment]
        myUser: User
        "ValueObject Descrição de registro de Balanço Hídrico"
@@ -28,6 +29,8 @@ type_defs = gql(
        comorbidities: [ValueObject]
        "ValueObject Procedimentos de Alta Complexidade"
        highComplexityProcedures: [Procedure]
+       "Query para fins de teste"
+       hello: String
     }
 
     type Mutation {
@@ -144,7 +147,7 @@ type_defs = gql(
             "Frequencia respiratória, dois dígitos"
             respiratoryFrequency: Int
             "Temperatura axilar em graus celcius, dois dígitos"
-            celciusAxillaryTemperature: Int
+            celciusAxillaryTemperature: Float
             "Medida de glicemia no padrão mg/dL, chamada também de HGT ou glicemia periférica"
             glucose: Int
             "Batimentos cardíacos fetais, para uso em gestantes. De dois a três dígitos"
@@ -179,24 +182,24 @@ type_defs = gql(
     }
 
     input AddressInput{
-        "CEP do endereco"
-        zipCode: String
-        "Nome da Rua"
-        street:String
-        "Complemento"
-        complement:String
-        "Bairro do endereco"
-        neighborhood:String
-        "Numero do endereco"
-        number:String
-        "Nome da Cidade"
-        city: String!
-        "Codigo IGBE do municipio"
-        ibgeCityCode: String
-        "Sigla do estado"
-        uf: String!
-        "Pontos de Referencia"
-        reference: String
+            "CEP do endereco"
+            zipCode: String
+            "Nome da Rua"
+            street:String
+            "Complemento"
+            complement:String
+            "Bairro do endereco"
+            neighborhood:String
+            "Numero do endereco"
+            number:String
+            "Nome da Cidade"
+            city: String!
+            "Codigo IGBE do municipio"
+            ibgeCityCode: String
+            "Sigla do estado"
+            uf: String!
+            "Pontos de Referencia"
+            reference: String
     }
 
     input ProcedimentoInput{
@@ -369,6 +372,10 @@ type_defs = gql(
         cns: String
     }
 
+    type AlembicVersion{
+        version: String
+    }
+
     type User {
         id: ID!
         email: String
@@ -460,7 +467,7 @@ type_defs = gql(
         diastolicBloodPressure: Int
         cardiacFrequency: Int
         respiratoryFrequency: Int
-        celciusAxillaryTemperature: Int
+        celciusAxillaryTemperature: Float
         glucose: Int
         fetalCardiacFrequency: Int
         professional: User
@@ -531,7 +538,9 @@ type_defs = gql(
     }
 
     type Cid10 {
+        "Cid 10, usando o formato padrao de CID, max:4 min:3 caracteres"
         code: String!
+        "Descrição da doença, max:44 min:5 caracteres"
         description: String!
     }
 ''')

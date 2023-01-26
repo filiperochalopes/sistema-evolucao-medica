@@ -1,0 +1,13 @@
+mutation {
+  createFluidBalance(
+    internmentId:1
+    volumeMl: 250
+    description: "Medicação"
+  ){
+    id
+    description{
+      value
+    }
+    volumeMl
+  }
+}

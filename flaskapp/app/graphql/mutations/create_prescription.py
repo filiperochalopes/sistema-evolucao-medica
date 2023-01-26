@@ -11,7 +11,7 @@ from app.services.utils.decorators import token_authorization
 @mutation.field('createPrescription')
 @convert_kwargs_to_snake_case
 @token_authorization
-def create_prescription(_, info, internment_id:int, resting_activity: str, diet: str, drugs: list, nursing_activities: list, current_user: dict):
+def create_prescription(_, info, current_user: dict, internment_id:int, resting_activity: str=None, diet: str=None, drugs: list=[], nursing_activities: list=[]):
     '''
     Cria uma prescrição para um determidado internamento com a marca de data. Importante notar estrutura de drugs, vide `DrugPrescriptionInput` em graphql schema
     '''

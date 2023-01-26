@@ -5,6 +5,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 from app.graphql import mutation
 from app.models import db, Internment, Measure
+from app.serializers import MeasureSchema
 from app.services.utils.decorators import token_authorization
 
 
@@ -23,4 +24,6 @@ def create_measure(_, info, internment_id: int, sp_o_2: int = None, pain: int = 
     db.session.add(measure)
     db.session.commit()
 
-    return measure
+    schema = MeasureSchema()
+
+    return schema.dump(measure)

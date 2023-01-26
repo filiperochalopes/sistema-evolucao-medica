@@ -21,7 +21,7 @@ documentDatetime: "10/10/2014 10:12",
     },
     patientPhonenumber: "10123456789",
     currentIllnessHistory: "Current Illness History",
-    initialDiagnosticSuspicion: "Initial Suspiction",
+    initialDiagnosisSuspicion: "Initial Suspiction",
     doctorName: "Doctor Name",
     doctorCns: "928976954930007",
     doctorCrm: "CRM/UF 123456"

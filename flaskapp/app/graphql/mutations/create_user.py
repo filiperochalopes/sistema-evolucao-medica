@@ -48,7 +48,6 @@ def create_user(_, info, master_key: str, user: dict):
         )
         db.session.add(new_user)
         db.session.commit()
-        print(new_user.__dict__, file=sys.stderr)
     else:
         raise Exception(
             'Você não tem permissões para entrar nessa rota, entre com uma masterKey correta')

@@ -26,7 +26,7 @@ mutation{
     currentIllnessHistory: "Current Illness History",
     patientPhonenumber: "10123456789",
     hasAdditionalHealthInsurance: "SIM",
-    initialDiagnosticSuspicion: "Initial Suspiction",
+    initialDiagnosisSuspicion: "Initial Suspiction",
     doctorName: "Doctor Name",
     doctorCns: "928976954930007",
     doctorCrm: "CRM/UF 123456",

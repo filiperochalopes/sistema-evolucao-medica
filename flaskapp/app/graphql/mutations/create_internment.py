@@ -63,6 +63,7 @@ def create_internment(_, info, hpi: str, justification: str, patient: dict, cid_
         patient_model = Patient(**patient)
         patient_model.comorbidities.extend(comorbidities)
         patient_model.allergies.extend(allergies)
+        patient_model.address = new_address
         db.session.add(patient_model)
     
     db.session.commit()

@@ -2,6 +2,7 @@ from ariadne import convert_kwargs_to_snake_case
 
 from app.graphql import mutation
 from app.models import db, Internment, FluidBalance, FluidBalanceDescription
+from app.serializers import FluidBalanceSchema
 from app.services.utils.decorators import token_authorization
 
 @mutation.field('createFluidBalance')
@@ -14,7 +15,7 @@ def create_fluid_balance(_, info, internment_id: int, volume_ml: int, descriptio
     professional = current_user
 
     # Cria o registro de balanço hídrico
-    fluid_balance = FluidBalance(value=volume_ml, professional_id=professional.id, internment_id=internment.id)
+    fluid_balance = FluidBalance(volume_ml=volume_ml, professional_id=professional.id, internment_id=internment.id)
     db.session.add(fluid_balance)
     
     # Cria ou seleciona a descrição de balanço hídrico
@@ -28,4 +29,6 @@ def create_fluid_balance(_, info, internment_id: int, volume_ml: int, descriptio
     fluid_balance.description = fluid_balance_description
     db.session.commit()
     
-    return fluid_balance
+    schema = FluidBalanceSchema()
+
+    return schema.dump(fluid_balance)

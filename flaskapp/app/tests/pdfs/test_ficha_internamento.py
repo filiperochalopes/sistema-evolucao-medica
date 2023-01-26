@@ -2,7 +2,7 @@ from gql import gql
 import pytest
 from app.tests.pdfs.request_queries_examples import ficha_internamento_required_data_request_string
 
-def data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime=None, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=None,patient_sex='F',patient_mother_name="Patient Mother Name",patient_cpf="28445400070", patient_rg='null',patient_address='pacient street, 43, paciten, USA',patient_phonenumber='44387694628', patient_drug_allergies='"Penicillin", "Aspirin", "Ibuprofen", "Anticonvulsants"', patient_comorbidities='"Heart disease", "High blood pressure", "Diabetes", "Cerebrovascular disease"',current_illness_history='Current illnes hsitoryaaaaaaaaaaa',initial_diagnostic_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',patient_address_number=123456,patient_address_neigh='Patient Neighborhood',patient_address_city='Patient city',patient_address_uf='sp',patient_address_cep='12345678',patient_nationality='Brasileira',patient_estimate_weight=123,has_additional_health_insurance='SIM'):
+def data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime=None, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=None,patient_sex='F',patient_mother_name="Patient Mother Name",patient_cpf="28445400070", patient_rg='null',patient_address='pacient street, 43, paciten, USA',patient_phonenumber='44387694628', patient_drug_allergies='"Penicillin", "Aspirin", "Ibuprofen", "Anticonvulsants"', patient_comorbidities='"Heart disease", "High blood pressure", "Diabetes", "Cerebrovascular disease"',current_illness_history='Current illnes hsitoryaaaaaaaaaaa',initial_diagnosis_suspicion='Diagnostic suspicion and referral bias in studies of venous thromboembolism and oral',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',patient_address_number=123456,patient_address_neigh='Patient Neighborhood',patient_address_city='Patient city',patient_address_uf='sp',patient_address_cep='12345678',patient_nationality='Brasileira',patient_estimate_weight=123,has_additional_health_insurance='SIM'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
@@ -24,7 +24,7 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
     patientPhonenumber: "{patient_phonenumber}",
     currentIllnessHistory: "{current_illness_history}",
     hasAdditionalHealthInsurance: "{has_additional_health_insurance}",
-    initialDiagnosticSuspicion: "{initial_diagnostic_suspicion}",
+    initialDiagnosisSuspicion: "{initial_diagnosis_suspicion}",
     doctorName: "{doctor_name}",
     doctorCns: "{doctor_cns}",
     doctorCrm: "{doctor_crm}",
