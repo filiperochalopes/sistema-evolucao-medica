@@ -1,6 +1,6 @@
 from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from base64 import b64decode
 from app.env import DatabaseSettings
 from sqlalchemy import create_engine
@@ -114,8 +114,8 @@ def datetime_to_use():
 @pytest.fixture
 def datetime_with_timezone_to_use():
     """get current datetime to test"""
-    timezone = timezone(offset=datetime.timedelta(hours=-3))
-    return datetime.now(tz=timezone).strftime('%d/%m/%Y')
+    tmz = timezone(offset=timedelta(hours=-3))
+    return datetime.now(tz=tmz).strftime('%d/%m/%Y')
 
 @pytest.fixture
 def document_datetime_to_use():
