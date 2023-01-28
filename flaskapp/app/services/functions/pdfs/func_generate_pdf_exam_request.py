@@ -3,7 +3,7 @@ from app.services.utils.PdfExamRequest import PdfExamRequest
 
 
 def func_generate_pdf_exam_request(patient:dict, solicitation_reason:str,
-exams:str, professional_solicitor_name:str, solicitation_datetime:datetime.datetime, professional_authorized_name:str=None, autorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> str:
+exams:str, professional_solicitor_name:str, solicitation_datetime:datetime.datetime, professional_authorized_name:str=None, authorization_datetime:datetime.datetime=None, document_pacient_date:datetime.datetime=None, document_pacient_name:str=None) -> str:
     """fill pdf exam request (Solicitacao de exames e procedimentos)
 
     Args:
@@ -13,7 +13,7 @@ exams:str, professional_solicitor_name:str, solicitation_datetime:datetime.datet
         professional_solicitor_name (str): professional_solicitor_name
         solicitation_datetime (datetime.datetime): solicitation_datetime
         professional_authorized_name (str, optional): professional_authorized_name. Defaults to None.
-        autorization_datetime (datetime.datetime, optional): autorization_datetime. Defaults to None.
+        authorization_datetime (datetime.datetime, optional): authorization_datetime. Defaults to None.
         document_pacient_date (datetime.datetime, optional): document_pacient_date. Defaults to None.
         document_pacient_name (str, optional): document_pacient_name. Defaults to None.
 
@@ -66,17 +66,17 @@ exams:str, professional_solicitor_name:str, solicitation_datetime:datetime.datet
         try:
             professional_authorized_ypos = 595
             document_pacient_name_ypos = 605
-            autorization_datetime_ypos = 572
+            authorization_datetime_ypos = 572
             document_pacient_date_ypos = 572
             for x in range(pdf.pags_quant):
                 pdf.add_oneline_text(text=professional_authorized_name, pos=(174, professional_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
                 pdf.add_oneline_text(text=document_pacient_name, pos=(340, document_pacient_name_ypos), camp_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
-                pdf.add_datetime(date=autorization_datetime, pos=(195, autorization_datetime_ypos), camp_name='Authorization Datetime', hours=False, formated=True, nullable=True)
+                pdf.add_datetime(date=authorization_datetime, pos=(195, authorization_datetime_ypos), camp_name='Authorization Datetime', hours=False, formated=True, nullable=True)
                 pdf.add_datetime(date=document_pacient_date, pos=(362, document_pacient_date_ypos), camp_name='Document Pacient Datetime', hours=False, formated=True, nullable=True)
 
                 professional_authorized_ypos -= decreaseYpos
                 document_pacient_name_ypos -= decreaseYpos
-                autorization_datetime_ypos -= decreaseYpos
+                authorization_datetime_ypos -= decreaseYpos
                 document_pacient_date_ypos -= decreaseYpos
 
         except Exception as error:

@@ -3,7 +3,7 @@ import pytest
 from app.tests.pdfs.request_queries_examples import apac_required_data_request_string
 
 
-def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,patient_name='Patient Name',patient_cns="928976954930007",patient_sex='M',patient_birthday=None, patient_address_city='Patient Adress City',main_procedure='{name: "teste procedimento",code: "hkmaug347s",quant: 1}',patient_mother_name='Patient Mother Name',patient_mother_phonenumber='5286758957', patient_responsible_name='Patient Responsible Name', patient_responsible_phonenumber='5465981345', patient_address='Patient Adress',patient_color='Branca',patient_ethnicity='Indigena',patient_address_uf='BA',patient_address_cep='86425910', document_chart_number='12345',patient_address_city_ibge_code=4528765,procedure_justification_description='Procedure Justification Description', prodedure_justification_main_cid_10='A98', prodedure_justification_sec_cid_10='A01', procedure_justification_associated_cause_cid_10='A45',procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', establishment_exec_cnes=7654321,professional_solicitor_document='{cns: "928976954930007",cpf: null,rg: null}', professional_solicitor_name='Profissional Solicit Name',solicitation_datetime=None,signature_datetime=None,validity_period_start=None,validity_period_end=None,autorization_professional_name='Autorization Professional Name', emission_org_code='Cod121234',autorization_professional_document='{cns: "928976954930007",cpf: null,rg: null}', autorization_datetime=None,secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "segundo",code: "hkmhsa3s23",quant: 4}]'):
+def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes=1234567,patient_name='Patient Name',patient_cns="928976954930007",patient_sex='M',patient_birthday=None, patient_address_city='Patient Adress City',main_procedure='{name: "teste procedimento",code: "hkmaug347s",quant: 1}',patient_mother_name='Patient Mother Name',patient_mother_phonenumber='5286758957', patient_responsible_name='Patient Responsible Name', patient_responsible_phonenumber='5465981345', patient_address='Patient Adress',patient_color='Branca',patient_ethnicity='Indigena',patient_address_uf='BA',patient_address_cep='86425910', document_chart_number='12345',patient_address_city_ibge_code=4528765,procedure_justification_description='Procedure Justification Description', prodedure_justification_main_cid_10='A98', prodedure_justification_sec_cid_10='A01', procedure_justification_associated_cause_cid_10='A45',procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', establishment_exec_cnes=7654321,professional_solicitor_document='{cns: "928976954930007",cpf: null,rg: null}', professional_solicitor_name='Profissional Solicit Name',solicitation_datetime=None,signature_datetime=None,validity_period_start=None,validity_period_end=None,authorization_professional_name='Authorization Professional Name', emission_org_code='Cod121234',authorization_professional_document='{cns: "928976954930007",cpf: null,rg: null}', authorization_datetime=None,secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quant: 1},{name: "segundo",code: "hkmhsa3s23",quant: 4}]'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
@@ -15,8 +15,8 @@ def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishmen
         validity_period_end = datetime_to_use
     if signature_datetime == None:
         signature_datetime = datetime_to_use
-    if autorization_datetime == None:
-        autorization_datetime = datetime_to_use
+    if authorization_datetime == None:
+        authorization_datetime = datetime_to_use
 
 
     # Creating inputs
@@ -50,10 +50,10 @@ def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishmen
     professionalSolicitorDocument: {professional_solicitor_document},
     professionalSolicitorName: "{professional_solicitor_name}",
     solicitationDatetime: "{solicitation_datetime}",
-    professionalAutorizationName: "{autorization_professional_name}",
+    professionalAuthorizationName: "{authorization_professional_name}",
     emissionOrgCode: "{emission_org_code}",
-    autorizationProfessionalDocument: {autorization_professional_document},
-    autorizationDatetime: "{autorization_datetime}",
+    authorizationProfessionalDocument: {authorization_professional_document},
+    authorizationDatetime: "{authorization_datetime}",
     signatureDatetime: "{signature_datetime}",
     validityPeriodStart: "{validity_period_start}",
     validityPeriodEnd: "{validity_period_end}"
@@ -100,7 +100,7 @@ def test_awnser_with_only_required_data(client):
 # patient_responsible_name
 # establishment_exec_name
 # professional_solicitor_name
-# autorization_professional_name
+# authorization_professional_name
 # !!!!!!! TESTING !!!!!!!
 # Name empty
 # Name with space
@@ -122,8 +122,8 @@ def test_empty_value_professional_solicitor_name(test_input, client, datetime_to
     assert data_to_use(client, datetime_to_use, professional_solicitor_name=test_input) == True
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_autorization_professional_name(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, autorization_professional_name=test_input) == True
+def test_empty_value_authorization_professional_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, authorization_professional_name=test_input) == True
 
 
 
@@ -131,7 +131,7 @@ def test_empty_value_autorization_professional_name(test_input, client, datetime
 # TEST DATETIMES VARIABLES
 # patient_birthday
 # solicitation_datetime
-# autorization_datetime
+# authorization_datetime
 # signature_datetime
 # validity_period_end 
 # validity_period_start
@@ -144,8 +144,8 @@ def test_valid_patient_birthday(client, datetime_to_use):
 def test_valid_solicitation_datetime(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, solicitation_datetime=datetime_to_use) == True
 
-def test_valid_autorization_datetime(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, autorization_datetime=datetime_to_use) == True
+def test_valid_authorization_datetime(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, authorization_datetime=datetime_to_use) == True
 
 def test_valid_signature_datetime(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, signature_datetime=datetime_to_use) == True

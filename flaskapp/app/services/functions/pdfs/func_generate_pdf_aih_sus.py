@@ -3,7 +3,7 @@ from app.services.utils.PdfAihSus import PdfAihSus
 
 
 
-def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnosis:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, professional_solicitor_document:dict, professional_solicitor_name:str, solicitation_datetime:datetime.datetime,  emission_org_code:str=None, hospitalization_autorization_number:str=None, autorization_professional_document:dict=None, autorization_datetime:datetime.datetime=None, professional_autorization_name:str=None, exam_results:str=None, chart_number:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> str:
+def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnosis:str, principal_cid_10:str, procedure_solicited:str, procedure_code:str, clinic:str, internation_carater:str, professional_solicitor_document:dict, professional_solicitor_name:str, solicitation_datetime:datetime.datetime,  emission_org_code:str=None, hospitalization_authorization_number:str=None, authorization_professional_document:dict=None, authorization_datetime:datetime.datetime=None, professional_authorization_name:str=None, exam_results:str=None, chart_number:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> str:
     """fill pdf aih sus 
 
     Args:
@@ -21,11 +21,11 @@ def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict
         professional_solicitor_document (dict): dict professional_solicitor_document
         professional_solicitor_name (str): professional_solicitor_name
         solicitation_datetime (datetime.datetime): solicitation_datetime
-        professional_autorization_name (str): professional_autorization_name
+        professional_authorization_name (str): professional_authorization_name
         emission_org_code (str): emission_org_code
-        autorization_professional_document (dict): autorization_professional_document
-        autorization_datetime (datetime.datetime): autorization_datetime
-        hospitalization_autorization_number (str): hospitalization_autorization_number
+        authorization_professional_document (dict): authorization_professional_document
+        authorization_datetime (datetime.datetime): authorization_datetime
+        hospitalization_authorization_number (str): hospitalization_authorization_number
         exam_results (str, optional): exam_results. Defaults to None.
         chart_number (str, optional): chart_number. Defaults to None.
         patient_responsible_name (str, optional): patient_responsible_name. Defaults to None.
@@ -101,7 +101,7 @@ def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict
             pdf.add_markable_square(option=acident_type, valid_options=['TRAFFIC', 'WORK', 'WORK_PATH'], options_positions=((38,184),(38,170), (38,156)), square_size=(9,9), camp_name='Acident Type', nullable=True)
 
             pdf.set_font('Roboto-Mono', 16)       
-            pdf.add_oneline_text(text=hospitalization_autorization_number, pos=(480, 66), camp_name='Hospitalization autorization Number', len_max=18, len_min=1, centralized=True, nullable=True)
+            pdf.add_oneline_text(text=hospitalization_authorization_number, pos=(480, 66), camp_name='Hospitalization authorization Number', len_max=18, len_min=1, centralized=True, nullable=True)
             
             #Data that change Font Size
             pdf.set_font('Roboto-Mono', 10)
@@ -116,9 +116,9 @@ def func_generate_pdf_aih_sus(establishment_solitc:dict, establishment_exec:dict
             pdf.add_cbor(cbor=company_cbor, pos=(529, 156), camp_name='Company CBOR', nullable=True, formated=True)
             pdf.add_markable_square(option=pension_status, valid_options=['WORKER', 'EMPLOYER', 'AUTONOMOUS', 'UNEMPLOYED', 'RETIRED', 'NOT_INSURED'], options_positions=((33,131),(124,131),(219,131),(305,131),(408,131),(500,131),), square_size=(9,9), camp_name='Pension Status', nullable=True)
             pdf.add_oneline_text(text=emission_org_code, pos=(292, 93), camp_name='Emission Organization Code', len_max=17, len_min=2, nullable=True)
-            pdf.add_oneline_text(text=professional_autorization_name, pos=(25, 93), camp_name='Professional Authorizator Name', len_max=48, len_min=8, nullable=True)
-            pdf.add_document_cns_cpf_rg(document=autorization_professional_document, pos_square_cpf=(95, 66), pos_square_cns=(41,66), pos_cns=(146, 66), pos_cpf=(146, 66),camp_name='Professional Authorizator Document', interval='  ', nullable=True)
-            pdf.add_datetime(date=autorization_datetime, pos=(30, 30), camp_name='Authorization Datetime', hours=False, interval='  ', formated=False, nullable=True)
+            pdf.add_oneline_text(text=professional_authorization_name, pos=(25, 93), camp_name='Professional Authorizator Name', len_max=48, len_min=8, nullable=True)
+            pdf.add_document_cns_cpf_rg(document=authorization_professional_document, pos_square_cpf=(95, 66), pos_square_cns=(41,66), pos_cns=(146, 66), pos_cpf=(146, 66),camp_name='Professional Authorizator Document', interval='  ', nullable=True)
+            pdf.add_datetime(date=authorization_datetime, pos=(30, 30), camp_name='Authorization Datetime', hours=False, interval='  ', formated=False, nullable=True)
             
 
         except Exception as error:

@@ -1,6 +1,6 @@
 from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
-from datetime import datetime
+from datetime import datetime, timezone
 from base64 import b64decode
 from app.env import DatabaseSettings
 from sqlalchemy import create_engine
@@ -109,18 +109,18 @@ def lenght_test():
 @pytest.fixture
 def datetime_to_use():
     """get current datetime to test"""
-    return datetime.datetime.now().strftime('%d/%m/%Y')
+    return datetime.now().strftime('%d/%m/%Y')
 
 @pytest.fixture
 def datetime_with_timezone_to_use():
     """get current datetime to test"""
-    timezone = datetime.timezone(offset=datetime.timedelta(hours=-3))
-    return datetime.datetime.now(tz=timezone).strftime('%d/%m/%Y')
+    timezone = timezone(offset=datetime.timedelta(hours=-3))
+    return datetime.now(tz=timezone).strftime('%d/%m/%Y')
 
 @pytest.fixture
 def document_datetime_to_use():
     """get current datetime with hours and minutes to test"""
-    return datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
+    return datetime.now().strftime('%d/%m/%Y %H:%M')
 
 @pytest.fixture
 def client():

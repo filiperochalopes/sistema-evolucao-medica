@@ -74,7 +74,7 @@ def test_validcpf_patient_document(client, datetime_to_use, document_datetime_to
 # TEST DATETIMES VARIABLES
 # documentDatetime
 # patient_birthday
-# autorizaton_datetime
+# authorizaton_datetime
 # test wrong type
 
 def test_valid_documentDatetime(client, datetime_to_use, document_datetime_to_use):

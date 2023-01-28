@@ -141,15 +141,15 @@ generate_pdf_type_defs = gql(
             "Data e hora da solicitacao, somente dia/mes/ano"
             solicitationDatetime: String!,
             "Nome do profissional autorizador, max:48 min:8 caracteres" 
-            professionalAutorizationName: String,
+            professionalAuthorizationName: String,
             "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:17 min:2 caracteres"
             emissionOrgCode: String, 
             "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
-            autorizationProfessionalDocument: DocumentInput,
+            authorizationProfessionalDocument: DocumentInput,
             "Data e hora da autorizacao, somente dia/mes/ano"
-            autorizationDatetime: String,
+            authorizationDatetime: String,
             "Numero da autorizacao de internacao hospitalar, no maximo 18 digitos"
-            hospitalizationAutorizationNumber: String,
+            hospitalizationAuthorizationNumber: String,
             "Resultados de exames, max: 403 min:5 caracteres"
             examResults: String,
             "Numero do Prontuario, max:20 min:1 caracteres"
@@ -234,13 +234,13 @@ generate_pdf_type_defs = gql(
             "Data da solicitacao, somente dia/mes/ano"
             solicitationDatetime: String,
             "Nome do profissional autorizador, max:46 min:5 caracteres" 
-            professionalAutorizationName:String,
+            professionalAuthorizationName:String,
             "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:16 min:2 caracteres"
             emissionOrgCode: String, 
             "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
-            autorizationProfessionalDocument: DocumentInput,
+            authorizationProfessionalDocument: DocumentInput,
             "Data da autorizacao, somente dia/mes/ano"
-            autorizationDatetime: String,
+            authorizationDatetime: String,
             "Data da Assinatura, somente DD/MM/YYYY"
             signatureDatetime: String,
             "Data do inicio do periodo de Validade da APAC, utilize a data no formato DD/MM/YYYY"
@@ -368,7 +368,7 @@ generate_pdf_type_defs = gql(
             "Nome do paciente no final do documento, esse campo fica no fim do documento e tem um tamanho maximo diferente. max:46 min:7 caracteres"
             documentPacientName: String,
             "Data da Autorizacao no formato DD/MM/YYYY"
-            autorizationDatetime: String,
+            authorizationDatetime: String,
             "Data do paciente, tambem no campo inferior no formato DD/MM/YYYY"
             documentPacientDate: String,
         ): GeneratedPdf

@@ -147,7 +147,7 @@ def test_true_patient_rg(client, datetime_to_use, document_datetime_to_use, test
 # TEST DATETIMES VARIABLES
 # document_datetime
 # patient_birthday
-# autorizaton_datetime
+# authorizaton_datetime
 # test wrong type
 
 def test_wrongtype_document_datetime(client, datetime_to_use, document_datetime_to_use):

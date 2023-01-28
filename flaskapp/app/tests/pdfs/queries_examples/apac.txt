@@ -59,14 +59,14 @@ mutation{
 		},
 		professionalSolicitorName: "Professional Solicitator",
 		solicitationDatetime: "10/11/2021",
-		professionalAutorizationName: "Professional autorization",
+		professionalAuthorizationName: "Professional authorization",
 		emissionOrgCode: "Cod121234",
-		autorizationProfessionalDocument: {
+		authorizationProfessionalDocument: {
 		cns: "928976954930007",
 		cpf: null,
 		rg: null
 		},
-		autorizationDatetime: "10/10/2022",
+		authorizationDatetime: "10/10/2022",
 		signatureDatetime: "15/10/2022",
 		validityPeriodStart: "15/10/2022",
 		validityPeriodEnd: "15/11/2022"

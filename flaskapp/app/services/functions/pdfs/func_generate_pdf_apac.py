@@ -2,7 +2,7 @@ import datetime
 from app.services.utils.PdfApac import PdfApac
 
 
-def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_procedure:dict, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_color:str=None, document_chart_number:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None,professional_solicitor_document:dict=None, professional_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, professional_autorization_name:str=None, emission_org_code:str=None, autorization_professional_document:dict=None, autorization_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
+def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_procedure:dict, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_color:str=None, document_chart_number:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None,professional_solicitor_document:dict=None, professional_solicitor_name:str=None, solicitation_datetime:datetime.datetime=None, professional_authorization_name:str=None, emission_org_code:str=None, authorization_professional_document:dict=None, authorization_datetime:datetime.datetime=None, signature_datetime:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
     """fill pdf apac
 
     Args:
@@ -23,10 +23,10 @@ def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, p
         professional_solicitor_document (dict, optional): professional_solicitor_document. Defaults to None.
         professional_solicitor_name (str, optional): professional_solicitor_name. Defaults to None.
         solicitation_datetime (datetime.datetime, optional): solicitation_datetime. Defaults to None.
-        professional_autorization_name (str, optional): professional_autorization_name. Defaults to None.
+        professional_authorization_name (str, optional): professional_authorization_name. Defaults to None.
         emission_org_code (str, optional): emission_org_code. Defaults to None.
-        autorization_professional_document (dict, optional): autorization_professional_document. Defaults to None.
-        autorization_datetime (datetime.datetime, optional): autorization_datetime. Defaults to None.
+        authorization_professional_document (dict, optional): authorization_professional_document. Defaults to None.
+        authorization_datetime (datetime.datetime, optional): authorization_datetime. Defaults to None.
         signature_datetime (datetime.datetime, optional): signature_datetime. Defaults to None.
         validity_period_start (datetime.datetime, optional): validity_period_start. Defaults to None.
         validity_period_end (datetime.datetime, optional): validity_period_end. Defaults to None.
@@ -81,17 +81,17 @@ def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, p
             pdf.add_oneline_text(text=procedure_justification_sec_cid_10, pos=(420, 344), camp_name='Procedure Justification secondary CID10', len_max=4, len_min=3, nullable=True)
             pdf.add_oneline_text(text=procedure_justification_associated_cause_cid_10, pos=(505, 344), camp_name='Procedure Justification Associated Causes CID10', len_max=4, len_min=3, nullable=True)
             pdf.add_oneline_text(text=professional_solicitor_name, pos=(36, 204), camp_name='Profissional Solicitor Name', len_max=48, len_min=5, nullable=True)
-            pdf.add_oneline_text(text=professional_autorization_name, pos=(36, 136), camp_name='Profissional Authorizator Name', len_max=46, len_min=5, nullable=True)
+            pdf.add_oneline_text(text=professional_authorization_name, pos=(36, 136), camp_name='Profissional Authorizator Name', len_max=46, len_min=5, nullable=True)
             pdf.add_oneline_text(text=emission_org_code, pos=(290, 136), camp_name='Emission Org Code', len_max=16, len_min=2, nullable=True)
             pdf.add_datetime(date=solicitation_datetime, pos=(310, 204), camp_name='Solicitation Datetime', hours=False, interval='  ', formated=False, nullable=True)
-            pdf.add_datetime(date=autorization_datetime, pos=(36, 68), camp_name='Authorization Datetime', hours=False,formated=True, nullable=True)
+            pdf.add_datetime(date=authorization_datetime, pos=(36, 68), camp_name='Authorization Datetime', hours=False,formated=True, nullable=True)
             pdf.add_datetime(date=signature_datetime, pos=(154, 68), camp_name='Signature Datetime', hours=False, interval='  ', formated=False, nullable=True)
             pdf.add_datetime(date=validity_period_start, pos=(402, 66), camp_name='Validity Period Start', hours=False, interval='  ', formated=False, nullable=True)
             pdf.add_datetime(date=validity_period_end, pos=(492, 66), camp_name='Validity Period End', hours=False, interval='  ', formated=False, nullable=True)
             pdf.add_secondary_procedures(procedures=secondaries_procedures)
             pdf.add_morelines_text(text=procedure_justification_comments, initial_pos=(36, 318), decrease_ypos= 10, camp_name='Procedura justification Comments', len_max=776, char_per_lines=97, len_min=5, nullable=True)
             pdf.add_document_cns_cpf_rg(document=professional_solicitor_document, pos_square_cpf=(103, 180), pos_square_cns=(51,180), pos_cns=(151, 181), pos_cpf=(151, 181),camp_name='Professional Solicitor Document', interval='  ',nullable=True)
-            pdf.add_document_cns_cpf_rg(document=autorization_professional_document, pos_square_cpf=(103, 104), pos_square_cns=(51,104), pos_cns=(149, 105), pos_cpf=(151, 105),camp_name='Professional Authorizator Document', interval='  ',nullable=True)
+            pdf.add_document_cns_cpf_rg(document=authorization_professional_document, pos_square_cpf=(103, 104), pos_square_cns=(51,104), pos_cns=(149, 105), pos_cpf=(151, 105),camp_name='Professional Authorizator Document', interval='  ',nullable=True)
         except Exception as error:
             return error
         except:
