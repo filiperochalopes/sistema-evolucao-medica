@@ -53,7 +53,7 @@ mutation{
       documentChartNumber: "142",
       patientEthnicity: ["BRANCA", null],
       professionalSolicitorName: "Professional Soliciame",
-      solicitationDatetime: "10/10/2012",
+      solicitationDate: "10/10/2012",
       examNumber: "4124",
       trackingMammogram: "POPALVO",
       diagnosticMammogram: {

@@ -2,7 +2,7 @@ import datetime
 from app.services.utils.PdfSolicitMamografia import PdfSolicitMamografia
 
 
-def func_generate_pdf_solicit_mamografia(patient:dict, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, solicitation_datetime:datetime.datetime, professional_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:str=None, protocol_number:str=None, patient_surname:str=None,  patient_ethnicity:list=None, patient_schooling:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:str=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> str:
+def func_generate_pdf_solicit_mamografia(patient:dict, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, solicitation_date:datetime.datetime, professional_solicitor_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:str=None, protocol_number:str=None, patient_surname:str=None,  patient_ethnicity:list=None, patient_schooling:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:str=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> str:
     """Fill solicitacion mamografia (Solicitacao de Mamografia) 
     Args:
         patient (dict): Patient info
@@ -10,7 +10,7 @@ def func_generate_pdf_solicit_mamografia(patient:dict, nodule_lump:str, high_ris
         high_risk (str): high_risk
         examinated_before (str): examinated_before
         mammogram_before (list): list with option and year, ['SIM', '2020']
-        solicitation_datetime (datetime.datetime): solicitation_datetime
+        solicitation_date (datetime.datetime): solicitation_date
         professional_solicitor_name (str): professional_solicitor_name
         health_unit_adress_uf (str, optional): health_unit_adress_uf. Defaults to None.
         health_unit_cnes (int, optional): health_unit_cnes. Defaults to None.
@@ -161,7 +161,7 @@ def func_generate_pdf_solicit_mamografia(patient:dict, nodule_lump:str, high_ris
             pdf.add_oneline_text(text=professional_solicitor_name, pos=(206, 346), camp_name='Professional Solicitor Name', len_max=23, len_min=7, interval=' ')
 
             pdf.set_font('Roboto-Mono', 12)
-            pdf.add_datetime(date=solicitation_datetime, pos=(48, 346), camp_name='Solicitation Datetime', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
+            pdf.add_datetime(date=solicitation_date, pos=(48, 346), camp_name='Solicitation Datetime', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
             pdf.add_oneline_text(text=exam_number, pos=(114, 324), camp_name='Exam number', len_max=16, len_min=1, nullable=True, interval=' ')
             pdf.set_font('Roboto-Mono', 9)
             pdf.add_markable_square(option=tracking_mammogram, valid_options=['POPALVO', 'RISCOELEVADO', 'JATRATADO'], options_positions=((56, 374), (152, 374), (328, 374)), camp_name='Tracking Mammogram', square_size=(11,10), nullable=True)

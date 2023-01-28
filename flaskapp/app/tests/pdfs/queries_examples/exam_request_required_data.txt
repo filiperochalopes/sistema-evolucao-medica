@@ -11,7 +11,7 @@ mutation{
             city: "City"},},
     solicitationReason: "Solicitation reason",
     professionalSolicitorName: "Professional solicitor Name",
-    solicitationDatetime: "10/10/2014",
+    solicitationDate: "10/10/2014",
     exams: "Required exams"
 ){base64Pdf}
     }

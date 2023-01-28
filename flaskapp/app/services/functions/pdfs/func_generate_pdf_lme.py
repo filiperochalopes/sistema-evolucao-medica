@@ -2,7 +2,7 @@ import datetime
 from app.services.utils.PdfLme import PdfLme
 
 
-def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_height:int, cid_10:str, anamnese:str, professional_solicitor_name:str, solicitation_datetime:datetime.datetime, professional_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> str:
+def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_height:int, cid_10:str, anamnese:str, professional_solicitor_name:str, solicitation_date:datetime.datetime, professional_solicitor_document:dict, capacity_attest:list, filled_by:list, patient_ethnicity:list, previous_treatment:list, diagnostic:str=None, patient_email:str=None, contacts_phonenumbers:list=None, medicines:list=None) -> str:
     """fill pdf lme (laudo de solicitacao, avaliacao e autorizacao e documentos)
 
     Args:
@@ -12,7 +12,7 @@ def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_heigh
         cid_10 (str): cid_10
         anamnese (str): anamnese
         professional_solicitor_name (str): professional_solicitor_name
-        solicitation_datetime (datetime.datetime): solicitation_datetime
+        solicitation_date (datetime.datetime): solicitation_date
         professional_solicitor_document (dict): professional_solicitor_document
         capacity_attest (list): list with option and text, eg: ['nao', 'Responsible Name']
         filled_by (list): lits with option name and document, eg ['MEDICO', 'Other name', {'CPF':28445400070}],
@@ -37,7 +37,7 @@ def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_heigh
             pdf.add_oneline_intnumber(number=patient_weight, pos=(485, 628), camp_name='Patient Weight', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
             pdf.add_oneline_intnumber(number=patient_height, pos=(485, 602), camp_name='Patient Height', len_max=3, len_min=1,value_min=1, value_max=999, interval='   ')
             pdf.add_oneline_text(text=cid_10, pos=(34, 455), camp_name='cid_10', len_max=4, len_min=3, interval='  ')
-            pdf.add_datetime(date=solicitation_datetime, pos=(292, 222), camp_name='Solicitation Datetime', hours=False, interval='   ', formated=False)
+            pdf.add_datetime(date=solicitation_date, pos=(292, 222), camp_name='Solicitation Datetime', hours=False, interval='   ', formated=False)
             pdf.add_document_cns_cpf_rg(document=professional_solicitor_document, pos_square_cpf=(41, 195), pos_square_cns=(84,194), pos_cns=(129, 195), pos_cpf=(129, 195),camp_name='Professional Solicitor Document', interval='  ', square_size=(5, 8))
 
 

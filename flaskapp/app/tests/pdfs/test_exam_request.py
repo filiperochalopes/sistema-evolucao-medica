@@ -2,16 +2,16 @@ from gql import gql
 import pytest
 from app.tests.pdfs.request_queries_examples import exam_request_required_data_request_string
 
-def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns='928976954930007', patient_birthday=None,patient_address="Patient Adress",exams="Exames tests with a text",solicitation_reason="Solicitation Reason",professional_solicitor_name="Professional Solicitor",professional_authorized_name="Professional Authorized",solicitation_datetime=None,authorization_datetime=None, document_pacient_date=None,document_pacient_name='Document pacient name'):
+def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns='928976954930007', patient_birthday=None,patient_address="Patient Adress",exams="Exames tests with a text",solicitation_reason="Solicitation Reason",professional_solicitor_name="Professional Solicitor",professional_authorized_name="Professional Authorized",solicitation_date=None,authorization_date=None, document_pacient_date=None,document_pacient_name='Document pacient name'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
-    if solicitation_datetime == None:
-        solicitation_datetime = datetime_to_use
+    if solicitation_date == None:
+        solicitation_date = datetime_to_use
     if document_pacient_date == None:
         document_pacient_date = datetime_to_use
-    if authorization_datetime == None:
-        authorization_datetime = datetime_to_use
+    if authorization_date == None:
+        authorization_date = datetime_to_use
 
     patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', uf:' + '"SP"' + ', city: ' + '"City"' + '},'
 
@@ -25,11 +25,11 @@ def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns
     patient: {patient},
     solicitationReason: "{solicitation_reason}",
     professionalSolicitorName: "{professional_solicitor_name}",
-    solicitationDatetime: "{solicitation_datetime}",
+    solicitationDate: "{solicitation_date}",
     exams: "{exams}",
     professionalAuthorizedName: "{professional_authorized_name}", 
     documentPacientName: "{document_pacient_name}",
-    authorizationDatetime: "{authorization_datetime}",
+    authorizationDate: "{authorization_date}",
     documentPacientDate: "{document_pacient_date}"
     """
 
@@ -92,8 +92,8 @@ def test_empty_value_document_pacient_name(test_input, client, datetime_to_use):
 #################################################################
 # TEST DATETIMES VARIABLES
 # patient_birthday
-# solicitation_datetime
-# authorization_datetime
+# solicitation_date
+# authorization_date
 # document_pacient_date
 # test wrong type
 # test valid datetime
@@ -101,11 +101,11 @@ def test_empty_value_document_pacient_name(test_input, client, datetime_to_use):
 def test_valid_patient_birthday(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use,patient_birthday=datetime_to_use) == True
 
-def test_valid_solicitation_datetime(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use,solicitation_datetime=datetime_to_use) == True
+def test_valid_solicitation_date(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use,solicitation_date=datetime_to_use) == True
 
-def test_valid_authorization_datetime(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use,authorization_datetime=datetime_to_use) == True
+def test_valid_authorization_date(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use,authorization_date=datetime_to_use) == True
 
 def test_valid_document_pacient_date(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use,document_pacient_date=datetime_to_use) == True

@@ -39,7 +39,7 @@ mutation{
     rg: null
     },
     professionalSolicitorName: "Professional Solicitor Name",
-    solicitationDatetime: "10/02/2021",
+    solicitationDate: "10/02/2021",
     professionalAuthorizationName: "Professional Authorizator Name",
     emissionOrgCode: "12aass",
     authorizationProfessionalDocument: {
@@ -47,7 +47,7 @@ mutation{
     cns: null,
     rg: null
     }
-    authorizationDatetime: "21/10/2022",
+    authorizationDate: "21/10/2022",
     hospitalizationAuthorizationNumber: "1212",
     examResults: "Exam Results",
     chartNumber: "124",

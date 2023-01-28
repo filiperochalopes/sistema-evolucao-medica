@@ -7,15 +7,15 @@ for x in range(0, 1100):
     lenght_test_parametrize += str(x)
 
 
-def data_to_use(client, datetime_to_use, document_datetime=None,
+def data_to_use(client, datetime_to_use, document_date=None,
         professional_name='Professional Name', 
         professional_category='m', 
         professional_document='12345/BA',
         patient_name='Pacient Name',
         prescription='{medicineName:"Dipirona 500mg", amount:"4 comprimidos", useMode:"1 comprimido, via oral, de 6/6h por 3 dias"}'):
         
-        if document_datetime == None:
-            document_datetime = datetime_to_use
+        if document_date == None:
+            document_date = datetime_to_use
 
         patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + '123' + '}'
 
@@ -26,7 +26,7 @@ def data_to_use(client, datetime_to_use, document_datetime=None,
             generatePdf_PrescricaoMedica("""
 
         campos_string = f"""
-            documentDatetime: "{document_datetime}",
+            documentDate: "{document_date}",
             patient: {patient},
             professional: {professional},
             prescription: [{prescription}]
@@ -73,13 +73,13 @@ def test_lenght_professional_name(client, datetime_to_use, lenght_test):
 
 #################################################################
 # TEST DATETIMES VARIABLES
-# document_datetime
+# document_date
 
-def test_wrongtype_document_datetime(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, document_datetime='bahabah') == False
+def test_wrongtype_document_date(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, document_date='bahabah') == False
 
-def test_valid_document_datetime(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, document_datetime=datetime_to_use) == True
+def test_valid_document_date(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, document_date=datetime_to_use) == True
 
 #################################################################
 # TEST prescriptions

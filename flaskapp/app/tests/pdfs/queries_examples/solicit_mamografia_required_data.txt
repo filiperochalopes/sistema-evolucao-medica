@@ -16,7 +16,7 @@ patient: {
     highRisk: "NAOSABE",
     examinatedBefore: "NUNCA",
     professionalSolicitorName: "Professional Soliciame",
-    solicitationDatetime: "10/10/2012"
+    solicitationDate: "10/10/2012"
 
 ){base64Pdf}
     }

@@ -3,14 +3,14 @@ import pytest
 from app.tests.pdfs.request_queries_examples import aih_sus_required_data_request_string
 
 
-def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes="1234567",establishment_exec_name='Establshment Exec Name',establishment_exec_cnes="7654321",patient_name='Patient Name',patient_cns="928976954930007",patient_birthday=None,patient_sex='F',patient_mother_name='Patient Mother Name',patient_address='Patient Adress street neighobourd',patient_address_city='Patient City',patient_address_city_ibge_code='1234567', patient_address_uf='SP',patient_address_cep='12345678',main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnosis='Patient Initial diagnosis',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', professional_solicitor_document='{cns: "928976954930007", cpf: null, rg: null}', professional_solicitor_name='Profissional Solicit Name', solicitation_datetime=None, professional_authorization_name='Authorization professional name', emission_org_code='OrgCode2022', authorization_professional_document='{cns: null, cpf: "28445400070", rg: null}', authorization_datetime=None,hospitalization_authorization_number='1234567890',exam_results='Xray tibia broken',chart_number='1234',patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber='5613248546', patient_responsible_phonenumber='8564721598', secondary_cid_10='A01',cid_10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj='37549670000171', insurance_company_ticket_number='123450123456', insurance_company_series='Insurn',company_cnpj='37549670000171', company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
+def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes="1234567",establishment_exec_name='Establshment Exec Name',establishment_exec_cnes="7654321",patient_name='Patient Name',patient_cns="928976954930007",patient_birthday=None,patient_sex='F',patient_mother_name='Patient Mother Name',patient_address='Patient Adress street neighobourd',patient_address_city='Patient City',patient_address_city_ibge_code='1234567', patient_address_uf='SP',patient_address_cep='12345678',main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnosis='Patient Initial diagnosis',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', professional_solicitor_document='{cns: "928976954930007", cpf: null, rg: null}', professional_solicitor_name='Profissional Solicit Name', solicitation_date=None, professional_authorization_name='Authorization professional name', emission_org_code='OrgCode2022', authorization_professional_document='{cns: null, cpf: "28445400070", rg: null}', authorization_date=None,hospitalization_authorization_number='1234567890',exam_results='Xray tibia broken',chart_number='1234',patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber='5613248546', patient_responsible_phonenumber='8564721598', secondary_cid_10='A01',cid_10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj='37549670000171', insurance_company_ticket_number='123450123456', insurance_company_series='Insurn',company_cnpj='37549670000171', company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
-    if solicitation_datetime == None:
-        solicitation_datetime = datetime_to_use
-    if authorization_datetime == None:
-        authorization_datetime = datetime_to_use
+    if solicitation_date == None:
+        solicitation_date = datetime_to_use
+    if authorization_date == None:
+        authorization_date = datetime_to_use
 
 
     # Creating inputs
@@ -39,11 +39,11 @@ def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishmen
     internationCarater: "{internation_carater}",
     professionalSolicitorDocument: {professional_solicitor_document},
     professionalSolicitorName: "{professional_solicitor_name}",
-    solicitationDatetime: "{solicitation_datetime}",
+    solicitationDate: "{solicitation_date}",
     professionalAuthorizationName: "{professional_authorization_name}",
     emissionOrgCode: "{emission_org_code}",
     authorizationProfessionalDocument: {authorization_professional_document}
-    authorizationDatetime: "{authorization_datetime}",
+    authorizationDate: "{authorization_date}",
     hospitalizationAuthorizationNumber: "{hospitalization_authorization_number}",
     examResults: "{exam_results}",
     chartNumber: "{chart_number}",
@@ -106,19 +106,19 @@ def test_empty_value_patient_responsible_name(client, datetime_to_use, test_inpu
 #################################################################
 # TEST DATETIMES VARIABLES
 # patient_birthday
-# solicitation_datetime
-# authorization_datetime
+# solicitation_date
+# authorization_date
 # test wrong type
 # test valid datetime
 
 def test_valid_patient_birthday(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, patient_birthday=datetime_to_use) == True
 
-def test_valid_solicitation_datetime(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, solicitation_datetime=datetime_to_use) == True
+def test_valid_solicitation_date(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, solicitation_date=datetime_to_use) == True
 
-def test_valid_authorization_datetime(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, authorization_datetime=datetime_to_use) == True
+def test_valid_authorization_date(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, authorization_date=datetime_to_use) == True
 
 ##################################################################
 # TEST MARKABLE OPTIONS

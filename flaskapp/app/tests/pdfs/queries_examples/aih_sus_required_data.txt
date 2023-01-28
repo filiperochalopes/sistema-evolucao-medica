@@ -13,6 +13,6 @@ mutation{
         internationCarater: "Internation Carater",
         professionalSolicitorDocument: {cns: "928976954930007", cpf: null, rg: null},
         professionalSolicitorName: "Profissional Solicit Name",
-        solicitationDatetime: "10/10/2021",
+        solicitationDate: "10/10/2021",
     ){base64Pdf}
 }

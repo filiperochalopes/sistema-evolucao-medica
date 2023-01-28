@@ -7,7 +7,7 @@ def data_to_use(client, datetime_with_timezone_to_use,
     patient_cns='928976954930007',
     patient_mother_name='Patient Mother Name',
     patient_birthday=None,
-    solicitation_datetime=None,
+    solicitation_date=None,
     professional_solicitor_name='Professional Name',
     nodule_lump='NAO',
     high_risk='NAOSABE',
@@ -93,8 +93,8 @@ indusaoImplantes: [null]
 }'''
 ):
 
-    if solicitation_datetime == None:
-        solicitation_datetime = datetime_with_timezone_to_use
+    if solicitation_date == None:
+        solicitation_date = datetime_with_timezone_to_use
     if patient_birthday == None:
         patient_birthday = datetime_with_timezone_to_use
     
@@ -127,7 +127,7 @@ indusaoImplantes: [null]
     documentChartNumber: "{document_chart_number}",
     patientEthnicity: {patient_ethnicity},
     professionalSolicitorName: "{professional_solicitor_name}",
-    solicitationDatetime: "{solicitation_datetime}",
+    solicitationDate: "{solicitation_date}",
     examNumber: "{exam_number}",
     trackingMammogram: "{tracking_mammogram}",
     diagnosticMammogram: {diagnostic_mammogram}
@@ -170,7 +170,7 @@ def test_awnser_with_only_required_data(client):
 #################################################################
 # TEST DATETIMES VARIABLES
 # patient_birthday
-# solicitation_datetime
+# solicitation_date
 # test wrong type
 # test valid datetime
 
@@ -178,8 +178,8 @@ def test_awnser_with_only_required_data(client):
 def test_valid_patient_birthday(client, datetime_with_timezone_to_use):
     assert data_to_use(client, datetime_with_timezone_to_use, patient_birthday=datetime_with_timezone_to_use) == True
 
-def test_valid_solicitation_datetime(client, datetime_with_timezone_to_use):
-    assert data_to_use(client, datetime_with_timezone_to_use, solicitation_datetime=datetime_with_timezone_to_use) == True
+def test_valid_solicitation_date(client, datetime_with_timezone_to_use):
+    assert data_to_use(client, datetime_with_timezone_to_use, solicitation_date=datetime_with_timezone_to_use) == True
 
 ##################################################################
 # TEST MARKABLE OPTIONS

@@ -19,7 +19,7 @@ patient_height=180,
 cid_10='A123',
 anamnese="Anamnese",
 professional_solicitor_name="Professional Solicitor Name",
-solicitation_datetime=None,
+solicitation_date=None,
 professional_solicitor_document='{cpf:"28445400070"}',
 capacity_attest='["nao", "Responsible Name"]',
 filled_by='''["MEDICO", "Other name", "{'cpf':'28445400070'}"]''',
@@ -33,8 +33,8 @@ contacts_phonenumbers='["1254875652", "4578456598"]',
 medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        quant2month: "15 comp", quant3month: "5 comp"},{medicineName: "nome do Medicamneto", quant1month:"20 comp", quant2month: "15 comp", quant3month: "5 comp"}]'
     ):
 
-    if solicitation_datetime == None:
-        solicitation_datetime = datetime_to_use
+    if solicitation_date == None:
+        solicitation_date = datetime_to_use
 
 
     # Creating inputs
@@ -55,7 +55,7 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
         cid10: "{cid_10}",
         anamnese: "{anamnese}",
         professionalSolicitorName: "{professional_solicitor_name}",
-        solicitationDatetime: "{solicitation_datetime}",
+        solicitationDate: "{solicitation_date}",
         professionalSolicitorDocument: {professional_solicitor_document},
         capacityAttest: {capacity_attest},
         filledBy: {filled_by},
@@ -190,15 +190,15 @@ def test_wrongtype_invalid_establishment_solitc_cnes(test_input, client, datetim
 
 #################################################################
 # TEST DATETIMES VARIABLES
-# solicitation_datetime
+# solicitation_date
 # test wrong type
 # test valid datetime
 
-def test_wrongtype_solicitation_datetime(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, solicitation_datetime='bahabah') == False
+def test_wrongtype_solicitation_date(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, solicitation_date='bahabah') == False
 
-def test_valid_solicitation_datetime(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, solicitation_datetime=datetime_to_use) == True
+def test_valid_solicitation_date(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, solicitation_date=datetime_to_use) == True
 
 
 ##################################################################
