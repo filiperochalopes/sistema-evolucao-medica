@@ -1,6 +1,6 @@
 mutation{
-            generatePdf_RelatorioAlta(
-documentDatetime: "17/11/2022 03:23",
+    generatePdf_RelatorioAlta(
+        documentDatetime: "17/11/2022 03:23",
         patient: {
             name:"Patient Namme",
             cns: "928976954930007",
