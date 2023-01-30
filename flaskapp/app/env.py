@@ -61,7 +61,6 @@ WRITE_DECODE_LME_REQUIRED_DATA_DIRECTORY     = f"{TMP_FILES_FOLDER}/lme_required
 WRITE_DECODE_RELATORIO_ALTA_REQUIRED_DATA_DIRECTORY     = f"{TMP_FILES_FOLDER}/relatorio_alta_required_decoded_teste.tmp.pdf"
 WRITE_DECODE_SOLICIT_MAMOGRAFIA_REQUIRED_DATA     = f"{TMP_FILES_FOLDER}/solicit_mamogram_required_decoded_teste.tmp.pdf"
 
-PDF_QUERIES_DIRECTORY = '/app/app/tests/pdfs/queries_examples'
 QUERIES_DIRECTORY = '/app/app/tests/queries'
 
 class InstitutionData:
