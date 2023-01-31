@@ -14,11 +14,11 @@ mutation{
     },
     solicitationReason: "Solicitation reason",
     professionalSolicitorName: "Professional solicitor Name",
-    solicitationDatetime: "10/10/2014",
+    solicitationDate: "10/10/2014",
     exams: "Exames Solicitados",
-    professionalAuthorizedName: "Prof Autorization Name", 
+    professionalAuthorizedName: "Prof Authorization Name", 
     documentPacientName: "Document Pacient NAme",
-    autorizationDatetime: "10/10/2021",
+    authorizationDate: "10/10/2021",
     documentPacientDate: "10/08/2021"
   )
 {base64Pdf}

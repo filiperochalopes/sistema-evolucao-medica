@@ -1,30 +1,8 @@
-from gql import gql, Client
-from gql.transport.aiohttp import AIOHTTPTransport
-import datetime
-from app.env import GRAPHQL_MUTATION_QUERY_URL
+from gql import gql
 import pytest
 
-@pytest.fixture
-def lenght_test():
-    """generate a string with data with charactes to test lenght"""
-    lenght_test = ''
-    for x in range(0, 1100):
-        lenght_test += str(x)
-    return lenght_test
 
-@pytest.fixture
-def datetime_to_use():
-    """get current datetime to test"""
-    return datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
-
-@pytest.fixture
-def client():
-    # Select your transport with ag graphql url endpoint
-    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
-    # Create a GraphQL client using the defined transport
-    return Client(transport=transport, fetch_schema_from_transport=True)
-
-def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient Name',
+def data_to_use(client, document_datetime_to_use, created_at=None, patient_name='Patient Name',
         evolutions=[{
         'created_at': "10/10/2022 20:10",
         'description': "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.",
@@ -43,7 +21,7 @@ def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient 
         },]):
 
     if created_at == None:
-        created_at = datetime_to_use
+        created_at = document_datetime_to_use
 
     all_evolutions = ''
     for evo in evolutions:
@@ -80,25 +58,25 @@ def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient 
     except:
         return False
 
-# Testing Folha evolucao
-def test_with_data_in_function(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use) == True
+#Testing Folha evolucao
+def test_with_data_in_function(client, document_datetime_to_use):
+    assert data_to_use(client, document_datetime_to_use) == True
 
 ##############################################################
 # ERRORS IN NAMES CAMPS
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_patient_name(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, patient_name=test_input) == False
+def test_empty_value_patient_name(client, document_datetime_to_use, test_input):
+    assert data_to_use(client, document_datetime_to_use, patient_name=test_input) == False
 
 #################################################################
 # TEST DATETIMES VARIABLES
 
-def test_valid_created_at(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, created_at=datetime_to_use) == True
+def test_valid_created_at(client, document_datetime_to_use):
+    assert data_to_use(client, document_datetime_to_use, created_at=document_datetime_to_use) == True
 
-def test_invalid_created_at(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, created_at='10:10:24 - 1245') == False
+def test_invalid_created_at(client, document_datetime_to_use):
+    assert data_to_use(client, document_datetime_to_use, created_at='10:10:24 - 1245') == False
 
 ##################################################################
 # TEST EVOLUTIONS
@@ -113,8 +91,8 @@ def test_invalid_created_at(client, datetime_to_use):
         'description': "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.",
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'}],
 ])
-def test_valid_evolutions(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, evolutions=test_input) == True
+def test_valid_evolutions(client, document_datetime_to_use, test_input):
+    assert data_to_use(client, document_datetime_to_use, evolutions=test_input) == True
 
 @pytest.mark.parametrize("test_input", [
     [{
@@ -126,8 +104,8 @@ def test_valid_evolutions(client, datetime_to_use, test_input):
         'description': "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.",
         'professional':'{name: "Professional Name",category: "m",document: "11331/BA"}'}],
 ])
-def test_invalid_evolutions(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, evolutions=test_input) == False
+def test_invalid_evolutions(client, document_datetime_to_use, test_input):
+    assert data_to_use(client, document_datetime_to_use, evolutions=test_input) == False
 
 
 ##################################################################
@@ -147,8 +125,8 @@ def test_invalid_evolutions(client, datetime_to_use, test_input):
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'
         },],
 ])
-def test_valid_measures(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, measures=test_input) == True
+def test_valid_measures(client, document_datetime_to_use, test_input):
+    assert data_to_use(client, document_datetime_to_use, measures=test_input) == True
 
 @pytest.mark.parametrize("test_input", [
     [{
@@ -224,8 +202,8 @@ def test_valid_measures(client, datetime_to_use, test_input):
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'
         },],
 ])
-def test_invalid_measures(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, measures=test_input) == False
+def test_invalid_measures(client, document_datetime_to_use, test_input):
+    assert data_to_use(client, document_datetime_to_use, measures=test_input) == False
 
 
 

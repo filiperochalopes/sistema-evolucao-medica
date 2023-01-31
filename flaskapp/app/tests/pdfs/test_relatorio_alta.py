@@ -1,8 +1,6 @@
-from gql import gql, Client
-from gql.transport.aiohttp import AIOHTTPTransport
-import datetime
-from app.env import GRAPHQL_MUTATION_QUERY_URL
+from gql import gql
 import pytest
+from app.tests.pdfs.request_queries_examples import relatorio_alta_required_data_request_string
 
 # Variable to parametrize 
 global lenght_test_parametrize
@@ -10,30 +8,6 @@ lenght_test_parametrize = ''
 for x in range(0, 1100):
     lenght_test_parametrize += str(x)
 
-@pytest.fixture
-def lenght_test():
-    """generate a string with data with charactes to test lenght"""
-    lenght_test = ''
-    for x in range(0, 1100):
-        lenght_test += str(x)
-    return lenght_test
-
-@pytest.fixture
-def datetime_to_use():
-    """get current datetime to test"""
-    return datetime.datetime.now().strftime('%d/%m/%Y')
-
-@pytest.fixture
-def document_datetime_to_use():
-    """get current datetime with hours and minutes to test"""
-    return datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
-
-@pytest.fixture
-def client():
-    # Select your transport with ag graphql url endpoint
-    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
-    # Create a GraphQL client using the defined transport
-    return Client(transport=transport, fetch_schema_from_transport=True)
 
 def data_to_use(client, datetime_to_use, document_datetime_to_use, document_datetime=None, patient_name="Patient Name",patient_cns='928976954930007',patient_birthday=None,patient_sex='F',patient_mother_name="Patient Mother Name",patient_cpf='"28445400070"', patient_rg='null',patient_address='pacient street, 43, paciten, USA',evolution='Current illnes hsitoryaaaaaaaaaaaedqeqa',doctor_name='Doctor Name',doctor_cns='928976954930007',doctor_crm='CRM/UF 123456',orientations='Do not jump'):
 
@@ -81,45 +55,9 @@ def test_answer_with_all_fields(client, datetime_to_use, document_datetime_to_us
     assert data_to_use(client, datetime_to_use, document_datetime_to_use) == True
 
 def test_awnser_with_only_required_data(client, datetime_to_use, document_datetime_to_use):
-    result = False
     
-    request_string = """
-        mutation{
-            generatePdf_RelatorioAlta("""
-
-
-    campos_string = """
-        documentDatetime: "17/11/2022 03:23",
-        patient: {
-            name:"Patient Namme",
-            cns: "928976954930007",
-            birthdate: "17/11/2022",
-            sex: "F",
-            motherName: "Patient Mother Name",
-            weightKg: 123,
-            cpf: "28445400070",
-            rg: null,
-            address: {
-                street: "pacient street",
-                city: "City",
-                neighborhood: "neighborhood",
-                number: "41",
-                uf: "SP"
-            }
-        }
-        evolution: "Current illnes hsitoryaaaaaaaaaaaedqeqa",
-        doctorName: "Doctor Name",
-        doctorCns: "928976954930007",
-        doctorCrm: "CRM/UF 123456"
-    """
-
-    final_string = """
-    ){base64Pdf}
-    }
-    """
-
-    all_string = request_string + campos_string + final_string
-    query = gql(all_string)
+    query = gql(relatorio_alta_required_data_request_string)
+    result = False
     try:
         #When some exception is created in grphql he return a error
         client.execute(query)
@@ -209,7 +147,7 @@ def test_true_patient_rg(client, datetime_to_use, document_datetime_to_use, test
 # TEST DATETIMES VARIABLES
 # document_datetime
 # patient_birthday
-# autorizaton_datetime
+# authorizaton_datetime
 # test wrong type
 
 def test_wrongtype_document_datetime(client, datetime_to_use, document_datetime_to_use):

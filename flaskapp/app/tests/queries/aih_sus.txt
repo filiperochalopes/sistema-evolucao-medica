@@ -39,16 +39,16 @@ mutation{
     rg: null
     },
     professionalSolicitorName: "Professional Solicitor Name",
-    solicitationDatetime: "10/02/2021",
-    professionalAutorizationName: "Professional Autorizator Name",
+    solicitationDate: "10/02/2021",
+    professionalAuthorizationName: "Professional Authorizator Name",
     emissionOrgCode: "12aass",
-    autorizatonProfessionalDocument: {
+    authorizationProfessionalDocument: {
     cpf: "28445400070",
     cns: null,
     rg: null
     }
-    autorizatonDatetime: "21/10/2022",
-    hospitalizationAutorizationNumber: "1212",
+    authorizationDate: "21/10/2022",
+    hospitalizationAuthorizationNumber: "1212",
     examResults: "Exam Results",
     chartNumber: "124",
     patientResponsibleName: "Responsible NAme",

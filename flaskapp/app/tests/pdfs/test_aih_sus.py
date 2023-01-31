@@ -1,38 +1,16 @@
-from gql import gql, Client
-from gql.transport.aiohttp import AIOHTTPTransport
-import datetime
-from app.env import GRAPHQL_MUTATION_QUERY_URL
+from gql import gql
 import pytest
-
-@pytest.fixture
-def lenght_test():
-    """generate a string with data with charactes to test lenght"""
-    lenght_test = ''
-    for x in range(0, 1100):
-        lenght_test += str(x)
-    return lenght_test
-
-@pytest.fixture
-def datetime_to_use():
-    """get current datetime to test"""
-    return datetime.datetime.now().strftime('%d/%m/%Y')
-
-@pytest.fixture
-def client():
-    # Select your transport with ag graphql url endpoint
-    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
-    # Create a GraphQL client using the defined transport
-    return Client(transport=transport, fetch_schema_from_transport=True)
+from app.tests.pdfs.request_queries_examples import aih_sus_required_data_request_string
 
 
-def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes="1234567",establishment_exec_name='Establshment Exec Name',establishment_exec_cnes="7654321",patient_name='Patient Name',patient_cns="928976954930007",patient_birthday=None,patient_sex='F',patient_mother_name='Patient Mother Name',patient_address='Patient Adress street neighobourd',patient_address_city='Patient City',patient_address_city_ibge_code='1234567', patient_address_uf='SP',patient_address_cep='12345678',main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnosis='Patient Initial Diagnostic',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', professional_solicitor_document='{cns: "928976954930007", cpf: null, rg: null}', professional_solicitor_name='Profissional Solicit Name', solicitation_datetime=None, professional_autorization_name='Autorization professional name', emission_org_code='OrgCode2022', autorizaton_professional_document='{cns: null, cpf: "28445400070", rg: null}', autorizaton_datetime=None,hospitalization_autorization_number='1234567890',exam_results='Xray tibia broken',chart_number='1234',patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber='5613248546', patient_responsible_phonenumber='8564721598', secondary_cid_10='A01',cid_10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj='37549670000171', insurance_company_ticket_number='123450123456', insurance_company_series='Insurn',company_cnpj='37549670000171', company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
+def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',establishment_solitc_cnes="1234567",establishment_exec_name='Establshment Exec Name',establishment_exec_cnes="7654321",patient_name='Patient Name',patient_cns="928976954930007",patient_birthday=None,patient_sex='F',patient_mother_name='Patient Mother Name',patient_address='Patient Adress street neighobourd',patient_address_city='Patient City',patient_address_city_ibge_code='1234567', patient_address_uf='SP',patient_address_cep='12345678',main_clinical_signs_symptoms="Patient main clinical signs sysmpthoms",conditions_justify_hospitalization='Patient Conditions justify hiospitalizaiton',initial_diagnosis='Patient Initial diagnosis',principal_cid_10="A00",procedure_solicited='Procedure Solicited',procedure_code='1234567890', clinic='Clinic Name', internation_carater='Internation Carater', professional_solicitor_document='{cns: "928976954930007", cpf: null, rg: null}', professional_solicitor_name='Profissional Solicit Name', solicitation_date=None, professional_authorization_name='Authorization professional name', emission_org_code='OrgCode2022', authorization_professional_document='{cns: null, cpf: "28445400070", rg: null}', authorization_date=None,hospitalization_authorization_number='1234567890',exam_results='Xray tibia broken',chart_number='1234',patient_ethnicity='Preta', patient_responsible_name='Patient Responsible Name', patient_mother_phonenumber='5613248546', patient_responsible_phonenumber='8564721598', secondary_cid_10='A01',cid_10_associated_causes='A02',acident_type='work_path', insurance_company_cnpj='37549670000171', insurance_company_ticket_number='123450123456', insurance_company_series='Insurn',company_cnpj='37549670000171', company_cnae=5310501, company_cbor=123456, pension_status='not_insured'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
-    if solicitation_datetime == None:
-        solicitation_datetime = datetime_to_use
-    if autorizaton_datetime == None:
-        autorizaton_datetime = datetime_to_use
+    if solicitation_date == None:
+        solicitation_date = datetime_to_use
+    if authorization_date == None:
+        authorization_date = datetime_to_use
 
 
     # Creating inputs
@@ -61,12 +39,12 @@ def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishmen
     internationCarater: "{internation_carater}",
     professionalSolicitorDocument: {professional_solicitor_document},
     professionalSolicitorName: "{professional_solicitor_name}",
-    solicitationDatetime: "{solicitation_datetime}",
-    professionalAutorizationName: "{professional_autorization_name}",
+    solicitationDate: "{solicitation_date}",
+    professionalAuthorizationName: "{professional_authorization_name}",
     emissionOrgCode: "{emission_org_code}",
-    autorizatonProfessionalDocument: {autorizaton_professional_document}
-    autorizatonDatetime: "{autorizaton_datetime}",
-    hospitalizationAutorizationNumber: "{hospitalization_autorization_number}",
+    authorizationProfessionalDocument: {authorization_professional_document}
+    authorizationDate: "{authorization_date}",
+    hospitalizationAuthorizationNumber: "{hospitalization_authorization_number}",
     examResults: "{exam_results}",
     chartNumber: "{chart_number}",
     patientResponsibleName: "{patient_responsible_name}",
@@ -105,38 +83,8 @@ def test_answer_with_all_fields(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use) == True
 
 def test_awnser_with_only_required_data(client):
-    request_string = """
-        mutation{
-            generatePdf_AihSus("""
 
-    campos_string = """
-    establishmentSolitc: {name: "Establishment Solicit Name", cnes: "1234567"},
-    establishmentExec: {name: "Establshment Exec Name", cnes: "7654321"},
-    patient: {name: "Patient Name", cns: "928976954930007", birthdate: "29/12/2022", sex: "F", motherName: "Patient Mother Name", weightKg: 123, address: {street: "Patient Adress street Bairro", city: "Patient City", ibgeCityCode: "1234567", uf:"SP", zipCode: "12345678"},},
-    mainClinicalSignsSymptoms: "Patient main clinical signs sysmpthoms",
-    conditionsJustifyHospitalization: "'Patient Conditions justify hiospitalizaiton",
-    initialDiagnosis: "Patient Initial Diagnostic",
-    principalCid10: "A00",
-    procedureSolicited: "Procedure Solicited",
-    procedureCode: "1234567890",
-    clinic: "'Clinic Name",
-    internationCarater: "Internation Carater",
-    professionalSolicitorDocument: {cns: "928976954930007", cpf: null, rg: null},
-    professionalSolicitorName: "Profissional Solicit Name",
-    solicitationDatetime: "10/10/2021",
-    professionalAutorizationName: "Autorization professional name",
-    emissionOrgCode: "OrgCode2022",
-    autorizatonProfessionalDocument: {cns: null, cpf: "28445400070", rg: null},
-    autorizatonDatetime: "17/01/2008",
-    hospitalizationAutorizationNumber: "1234567890",
-    """
-
-    final_string = """
-    ){base64Pdf}
-    }
-    """
-    all_string = request_string + campos_string + final_string
-    query = gql(all_string)
+    query = gql(aih_sus_required_data_request_string)
     result = False
     try:
         #When some exception is created in grphql he return a error
@@ -158,19 +106,19 @@ def test_empty_value_patient_responsible_name(client, datetime_to_use, test_inpu
 #################################################################
 # TEST DATETIMES VARIABLES
 # patient_birthday
-# solicitation_datetime
-# autorizaton_datetime
+# solicitation_date
+# authorization_date
 # test wrong type
 # test valid datetime
 
 def test_valid_patient_birthday(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, patient_birthday=datetime_to_use) == True
 
-def test_valid_solicitation_datetime(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, solicitation_datetime=datetime_to_use) == True
+def test_valid_solicitation_date(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, solicitation_date=datetime_to_use) == True
 
-def test_valid_autorizaton_datetime(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, autorizaton_datetime=datetime_to_use) == True
+def test_valid_authorization_date(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, authorization_date=datetime_to_use) == True
 
 ##################################################################
 # TEST MARKABLE OPTIONS
@@ -205,7 +153,7 @@ def test_ufs(client, datetime_to_use, test_input):
 
 #################################################################################
 # TEST INT VARIABLES CAN/CANNOT BE NULL
-# hospitalization_autorization_number
+# hospitalization_authorization_number
 # chart_number
 # patient_mother_phonenumber
 # patient_responsible_phonenumber

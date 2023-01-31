@@ -1,0 +1,19 @@
+mutation{
+    generatePdf_SolicitExames(
+        patient: {
+            name: "Patient Name", 
+            cns: "928976954930007", 
+            birthdate: "29/12/2022",
+            weightKg: 123,
+            address: {
+                street: "Patient Adress", 
+                uf:"SP", 
+                city: "City"
+                },
+            },
+        solicitationReason: "Solicitation reason",
+        professionalSolicitorName: "Professional solicitor Name",
+        solicitationDate: "10/10/2014",
+        exams: "Required exams"
+    ){base64Pdf}
+}

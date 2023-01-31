@@ -44,15 +44,15 @@ mutation{
     },
     professionalSolicitorName: "Professional Solicitor Name",
     solicitationDatetime: "10/02/2021",
-    professionalAutorizationName: "Professional Autorizator Name",
+    professionalAuthorizationName: "Professional Authorizator Name",
     emissionOrgCode: "12aass",
-    autorizatonProfessionalDocument: {
+    authorizationProfessionalDocument: {
     cpf: "28445400070",
     cns: null,
     rg: null
     }
-    autorizatonDatetime: "21/10/2022",
-    hospitalizationAutorizationNumber: "1212",
+    authorizationDatetime: "21/10/2022",
+    hospitalizationAuthorizationNumber: "1212",
     examResults: "Exam Results",
     chartNumber: "124",
     patientResponsibleName: "Responsible NAme",
@@ -136,14 +136,14 @@ mutation{
 		},
 		professionalSolicitorName: "Professional Solicitator",
 		solicitationDatetime: "10/11/2021",
-		professionalAutorizationName: "Professional Autorizaton",
+		professionalAuthorizationName: "Professional authorization",
 		emissionOrgCode: "Cod121234",
-		autorizatonProfessionalDocument: {
+		authorizationProfessionalDocument: {
 		cns: "928976954930007",
 		cpf: null,
 		rg: null
 		},
-		autorizatonDatetime: "10/10/2022",
+		authorizationDatetime: "10/10/2022",
 		signatureDatetime: "15/10/2022",
 		validityPeriodStart: "15/10/2022",
 		validityPeriodEnd: "15/11/2022"
@@ -272,9 +272,9 @@ mutation{
     professionalSolicitorName: "Professional solicitor Name",
     solicitationDatetime: "10/10/2014",
     exams: "Exames Solicitados",
-    professionalAuthorizedName: "Prof Autorization Name", 
+    professionalAuthorizedName: "Prof Authorization Name", 
     documentPacientName: "Document Pacient NAme",
-    autorizationDatetime: "10/10/2021",
+    authorizationDatetime: "10/10/2021",
     documentPacientDate: "10/08/2021"
   )
 {base64Pdf}
