@@ -60,7 +60,6 @@ class TestInternmentFlow:
     
     def test_add_fluid_balance_input(self, auth_client):
         result = auth_client.execute(self.create_fluid_balance_query_1)
-        print(result)
         assert int(result['createFluidBalance']['id']) > 0
         result = auth_client.execute(self.create_fluid_balance_query_2)
         assert int(result['createFluidBalance']['id']) > 0

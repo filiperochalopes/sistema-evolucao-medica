@@ -24,7 +24,8 @@ def print_pdf_aih_sus(_, info, internment_id: int, extra: dict=None, current_use
     internment = db.session.query(Internment).get(internment_id)
     print(internment.patient.__dict__, file=sys.stderr)
 
-    return func_generate_pdf_aih_sus(establishment_solitc={
+    return func_generate_pdf_aih_sus(
+    establishment_solitc={
         'name': InstitutionData.NAME,
         'cnes': InstitutionData.CNES
     }, patient={
@@ -49,7 +50,7 @@ def print_pdf_aih_sus(_, info, internment_id: int, extra: dict=None, current_use
             'uf': internment.patient.address.uf,
             'city': internment.patient.address.city
         }
-    }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=internment.cid10.code, professional_solicitor_name=current_user.name, professional_solicitor_document=current_user.professional_document_number, solicitation_datetime=internment.admission_datetime)
+    }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=internment.cid10.code, professional_solicitor_name=current_user.name, professional_solicitor_document=current_user.professional_document_number, solicitation_date=internment.admission_datetime)
 
 
 @mutation.field('printPdf_FichaInternamento')

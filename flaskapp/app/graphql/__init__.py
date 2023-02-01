@@ -494,6 +494,7 @@ type_defs = gql(
         id: ID!
         name: String
         usualDosage: String
+        usualRoute: String
         comment: String
         kind: String
     }
