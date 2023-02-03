@@ -183,7 +183,6 @@ const Evolution = () => {
     }
     throw new Error("tratamento não existe");
   }
-  console.log(formik);
 
   function chainHandleSetNursingActivity(values) {
     console.log(values);
@@ -282,9 +281,23 @@ const Evolution = () => {
                       onClick={() => {
                         addModal(
                           addPrescription({
+                            confirmButtonAction: (values) => {
+                              console.log(values);
+                              formik.setFieldValue(
+                                "diet",
+                                values.medicament.name
+                              );
+                            },
+                            notChangeType: true,
                             currentMedicament: {
-                              type: "diet",
-                              medicament: formik.values.diet,
+                              type: {
+                                label: "Dieta",
+                                name: "diet",
+                              },
+                              medicament: {
+                                name: formik.values.diet,
+                                id: formik.values.diet,
+                              },
                               drug: {
                                 useMode: "",
                                 routeAdministration: "",
@@ -324,7 +337,43 @@ const Evolution = () => {
                 <ContainerListOption>
                   <p>{formik.values.restingActivity}</p>{" "}
                   <div>
-                    <button type="button">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        addModal(
+                          addPrescription({
+                            notChangeType: true,
+                            drugs: formik.values.drugs,
+                            nursingActivities: formik.values.nursingActivities,
+                            confirmButtonAction: (values) => {
+                              console.log(values);
+                              formik.setFieldValue(
+                                "restingActivity",
+                                values.medicament.name
+                              );
+                            },
+                            currentMedicament: {
+                              type: {
+                                label: "Atividades de descanso",
+                                name: "restingActivity",
+                              },
+                              medicament: {
+                                name: formik.values.restingActivity,
+                                id: formik.values.restingActivity,
+                              },
+                              drug: {
+                                useMode: "",
+                                routeAdministration: "",
+                                isAntibiotic: "oth",
+                                initialDate: "",
+                                finalDate: "",
+                              },
+                              routeAdministration: undefined,
+                            },
+                          })
+                        );
+                      }}
+                    >
                       <MdModeEdit size={18} color={theme.colors.blue} />
                     </button>
                     <button
@@ -356,6 +405,7 @@ const Evolution = () => {
                       onClick={() => {
                         addModal(
                           addPrescription({
+                            notChangeType: true,
                             drugs: formik.values.drugs,
 
                             nursingActivities: formik.values.nursingActivities,
@@ -426,7 +476,9 @@ const Evolution = () => {
                       onClick={() => {
                         addModal(
                           addPrescription({
+                            notChangeType: true,
                             drugs: formik.values.drugs,
+                            nursingActivities: formik.values.nursingActivities,
                             confirmButtonAction: (values) => {
                               console.log(values);
                               formik.setFieldValue(`drugs[${index}]`, {

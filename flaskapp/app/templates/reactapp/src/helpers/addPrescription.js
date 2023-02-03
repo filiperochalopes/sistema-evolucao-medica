@@ -5,6 +5,8 @@ const addPrescription = ({
   drugs,
   nursingActivities,
   currentMedicament,
+
+  notChangeType = false,
 }) => ({
   confirmButtonAction: confirmButtonAction,
   content: (
@@ -12,10 +14,11 @@ const addPrescription = ({
       drugs={drugs}
       nursingActivities={nursingActivities}
       currentMedicament={currentMedicament}
+      notChangeType={notChangeType}
     />
   ),
   returnButtonAction: () => {},
-  title: "Adicionar Nova Linha",
+  title: notChangeType ? "Atualizar Linha" : "Adicionar Nova Linha",
 });
 
 export default addPrescription;

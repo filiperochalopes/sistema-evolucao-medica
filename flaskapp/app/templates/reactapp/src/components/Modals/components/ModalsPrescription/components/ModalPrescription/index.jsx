@@ -101,13 +101,25 @@ const ModalAddPrescription = ({
   nursingActivities,
   drugs,
   currentMedicament,
+  notChangeType,
 }) => {
-  const [customMedicament, setCustomMedicament] = useState();
   const { data: prescriptionTypesData } = useQuery(PRESCRIPTION_TYPES);
-  const [getDrugs] = useLazyQuery(DRUGS);
-  const [getRestingActivities] = useLazyQuery(RESTING_ACTIVITIES);
-  const [getDiets] = useLazyQuery(DIETS);
-  const [getNusingActivities] = useLazyQuery(NURSING_ACTIVITIES);
+  const [getDrugs] = useLazyQuery(DRUGS, {
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "network-only",
+  });
+  const [getRestingActivities] = useLazyQuery(RESTING_ACTIVITIES, {
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "network-only",
+  });
+  const [getDiets] = useLazyQuery(DIETS, {
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "network-only",
+  });
+  const [getNusingActivities] = useLazyQuery(NURSING_ACTIVITIES, {
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "network-only",
+  });
 
   const [medicaments, setMedicaments] = useState([]);
   const formik = useFormik({
@@ -142,6 +154,7 @@ const ModalAddPrescription = ({
     if (!formik.values.type?.name) {
       return;
     }
+    console.log("formik.values.type?.namee", formik.values.type?.name);
 
     if (formik.values.type.name === "drug") {
       request = getDrugs;
@@ -158,6 +171,7 @@ const ModalAddPrescription = ({
     }
 
     request().then((response) => {
+      console.log("formik.values.type", response.data);
       let newMedicaments =
         response.data[medicamentsAdapter[formik.values.type.name]];
 
@@ -174,6 +188,7 @@ const ModalAddPrescription = ({
               (nursingActivitie) => nursingActivitie === medicament.name
             ) || medicament.name === currentMedicament?.medicament.name
         );
+        console.log("medicaments", newMedicaments);
       }
       setMedicaments(
         newMedicaments.map((medicament) => ({
@@ -197,10 +212,10 @@ const ModalAddPrescription = ({
   const PrescriptionComponent =
     prescriptionTypesStrategies[formik.values.type?.name || ""] ||
     prescriptionTypesStrategies.default;
-
   return (
     <Container onSubmit={formik.handleSubmit}>
       <Select
+        isDisabled={notChangeType}
         getOptionLabel={(option) => option.label}
         getOptionValue={(option) => option.name}
         options={prescriptionTypesData?.prescriptionTypes || []}
@@ -252,7 +267,9 @@ const ModalAddPrescription = ({
         />
         <PrescriptionComponent formik={formik} />
       </div>
-      <Button className="medium_size">Adicionar Linha</Button>
+      <Button className="medium_size">
+        {notChangeType ? "Atualizar Linha" : "Adicionar Linha"}
+      </Button>
     </Container>
   );
 };
