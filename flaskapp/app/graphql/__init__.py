@@ -282,6 +282,8 @@ type_defs = gql(
         cns:String!, 
         "Apenas dígito do Documento de Registro Geral"
         rg: String
+        "Telefone de contato do paciente, de preferência WhatsApp"
+        phone: String
         "Nacionalidade do Paciente"
         nationality: String
         "Etnia do Paciente"
@@ -410,6 +412,7 @@ type_defs = gql(
         cns: String
         rg: String
         cpf: String
+        phone: String
         weightKg: Float
         comorbidities: [ValueObject]
         allergies: [ValueObject]

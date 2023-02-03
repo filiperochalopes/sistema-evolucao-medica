@@ -20,41 +20,70 @@ from app.services.functions.pdfs.func_generate_pdf_balanco_hidrico import func_g
 @mutation.field('printPdf_AihSus')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_aih_sus(_, info, internment_id: int, extra: dict=None, current_user=dict):
+def print_pdf_aih_sus(_, info, internment_id: int, current_user:dict, extra: dict=None):
     internment = db.session.query(Internment).get(internment_id)
-    print(internment.patient.__dict__, file=sys.stderr)
 
     return func_generate_pdf_aih_sus(
-    establishment_solitc={
-        'name': InstitutionData.NAME,
-        'cnes': InstitutionData.CNES
-    }, patient={
-        'name': internment.patient.name,
-        'motherName': internment.patient.mother_name,
-        'sex': internment.patient.sex,
-        'weightKg': internment.patient.weight_kg,
-        'birthdate': internment.patient.birthdate,
-        'cpf': internment.patient.cpf,
-        'cns': internment.patient.cns,
-        'rg': internment.patient.rg,
-        'nationality': 'brasileiro(a)',
-        'ethnicity': None,
-        'comorbidities': [c.value for c in internment.patient.comorbidities],
-        'allergies': [a.value for a in internment.patient.allergies],
-        'address': {
-            'street': internment.patient.address.street,
-            'complement': internment.patient.address.complement,
-            'number': internment.patient.address.number,
-            'zip_code': internment.patient.address.zip_code,
-            'neighborhood': internment.patient.address.neighborhood,
-            'uf': internment.patient.address.uf,
-            'city': internment.patient.address.city
-        }
-    }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=internment.cid10.code, professional_solicitor_name=current_user.name, professional_solicitor_document=current_user.professional_document_number, solicitation_date=internment.admission_datetime)
+        establishment_solitc={
+            'name': InstitutionData.NAME,
+            'cnes': InstitutionData.CNES
+        }, patient={
+            'name': internment.patient.name,
+            'motherName': internment.patient.mother_name,
+            'sex': internment.patient.sex,
+            'weightKg': internment.patient.weight_kg,
+            'phone': internment.patient.phone,
+            'birthdate': internment.patient.birthdate,
+            'cpf': internment.patient.cpf,
+            'cns': internment.patient.cns,
+            'rg': internment.patient.rg,
+            'nationality': 'brasileiro(a)',
+            'ethnicity': None,
+            'comorbidities': [c.value for c in internment.patient.comorbidities],
+            'allergies': [a.value for a in internment.patient.allergies],
+            'address': {
+                'street': internment.patient.address.street,
+                'complement': internment.patient.address.complement,
+                'number': internment.patient.address.number,
+                'zip_code': internment.patient.address.zip_code,
+                'neighborhood': internment.patient.address.neighborhood,
+                'uf': internment.patient.address.uf,
+                'city': internment.patient.address.city
+            }
+        }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=internment.cid10.code, professional_solicitor_name=internment.professional.name, professional_solicitor_document=internment.professional.professional_document_number, solicitation_date=internment.admission_datetime)
 
 
 @mutation.field('printPdf_FichaInternamento')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_ficha_internamento(_, info, **kwargs):
-    return func_generate_pdf_ficha_internamento(**kwargs)
+def print_pdf_ficha_internamento(_, info, internment_id: int, current_user:dict, extra:dict=None):
+    internment = db.session.query(Internment).get(internment_id)
+
+    return func_generate_pdf_ficha_internamento(
+        document_datetime=internment.admission_datetime,
+        patient={
+            'name': internment.patient.name,
+            'motherName': internment.patient.mother_name,
+            'sex': internment.patient.sex,
+            'weightKg': internment.patient.weight_kg,
+            'phone': internment.patient.phone,
+            'birthdate': internment.patient.birthdate,
+            'cpf': internment.patient.cpf,
+            'cns': internment.patient.cns,
+            'rg': internment.patient.rg,
+            'nationality': 'brasileiro(a)',
+            'ethnicity': None,
+            'comorbidities': [c.value for c in internment.patient.comorbidities],
+            'allergies': [a.value for a in internment.patient.allergies],
+            'address': {
+                'street': internment.patient.address.street,
+                'complement': internment.patient.address.complement,
+                'number': internment.patient.address.number,
+                'zip_code': internment.patient.address.zip_code,
+                'neighborhood': internment.patient.address.neighborhood,
+                'uf': internment.patient.address.uf,
+                'city': internment.patient.address.city
+            }
+        }, current_illness_history=internment.hpi,
+        initial_diagnosis_suspicion=f'{internment.cid10.code} - {internment.cid10.description}',
+        doctor_name=internment.professional.name, doctor_cns=internment.professional.csn, doctor_crm=internment.professional.professional_document_number, has_additional_health_insurance=extra.has_additional_health_insurance if hasattr(extra, 'has_additional_health_insurance') else None)
