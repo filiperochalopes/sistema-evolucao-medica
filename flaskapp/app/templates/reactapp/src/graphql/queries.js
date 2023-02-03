@@ -174,10 +174,12 @@ export const GET_INTERNMENT = gql`
         nursingActivities {
           name
         }
+        createdAt
       }
 
       pendings {
         text
+        createdAt
       }
     }
   }

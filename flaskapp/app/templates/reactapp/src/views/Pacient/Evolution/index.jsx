@@ -26,6 +26,8 @@ import { CID10, GET_INTERNMENT } from "graphql/queries";
 import { useSnackbar } from "notistack";
 import { useEffect } from "react";
 import addMedicamentGroup from "helpers/addMedicamentGroup";
+import { format, parseISO } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
 
 const Evolution = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -134,6 +136,13 @@ const Evolution = () => {
           (nursingActivity) => nursingActivity.name
         ),
         restingActivity: prescription.restingActivity?.name || "",
+        dateFormat: format(
+          parseISO(prescription.createdAt),
+          "'ÚLTIMA PRESCRIÇÃO ATUALIZADA EM' dd/MM/yyyy HH:mm:ss",
+          {
+            locale: ptBR,
+          }
+        ),
       });
     }
 
@@ -141,13 +150,16 @@ const Evolution = () => {
       formikPending.setValues({
         text: data.internment.pendings[data.internment?.pendings?.length - 1]
           .text,
-      });
-    }
-
-    if (data.internment?.pendings?.length > 0) {
-      formikPending.setValues({
-        text: data.internment.pendings[data.internment?.pendings?.length - 1]
-          .text,
+        dateFormat: format(
+          parseISO(
+            data.internment.pendings[data.internment?.pendings?.length - 1]
+              .createdAt
+          ),
+          "'ÚLTIMA EVOLUÇÃO ATUALIZADA EM' dd/MM/yyyy HH:mm:ss",
+          {
+            locale: ptBR,
+          }
+        ),
       });
     }
     if (data.internment?.evolutions?.length > 0) {
@@ -156,6 +168,19 @@ const Evolution = () => {
         text: data.internment.evolutions[
           data.internment?.evolutions?.length - 1
         ].text,
+        dateFormat: format(
+          parseISO(
+            data.internment.evolutions[data.internment?.evolutions?.length - 1]
+              .createdAt
+          ),
+          `'ÚLTIMA EVOLUÇÃO ATUALIZADA por ${
+            data.internment.evolutions[data.internment?.evolutions?.length - 1]
+              .professional.name
+          }' EM' dd/MM/yyyy HH:mm:ss`,
+          {
+            locale: ptBR,
+          }
+        ),
       });
     }
   }, [data]);
@@ -260,9 +285,7 @@ const Evolution = () => {
             value={formikEvolution.values.cid10Code}
             placeholder="CID - SUSPEITA INICIAL"
           />
-          <p className="legend">
-            ÚLTIMA EVOLUÇÃO ATUALIZADA POR FULANO EM DD/MM/AAAA HH:DD
-          </p>
+          <p className="legend">{formikEvolution.values.dateFormat}</p>
         </div>
 
         <Button className="evolution_button">Evoluir</Button>
@@ -545,9 +568,7 @@ const Evolution = () => {
             </li>
           ))}
         </ol>
-        <p className="legend">
-          ÚLTIMA PRESCRIÇÃO ATUALIZADA EM DD/MM/AAAA HH:DD
-        </p>
+        <p className="legend">{formik.values.dateFormat}</p>
         <div className="buttons">
           <Button
             className="button_add_prescription"
@@ -555,7 +576,12 @@ const Evolution = () => {
             onClick={() =>
               addModal(
                 addMedicamentGroup({
-                  confirmButtonAction: (values) => console.log(values),
+                  confirmButtonAction: (values) => {
+                    formik.setFieldValue("drugs", [
+                      ...formik.values.drugs,
+                      ...values,
+                    ]);
+                  },
                 })
               )
             }
@@ -600,9 +626,7 @@ const Evolution = () => {
           value={formikPending.values.text}
           placeholder="AQUI SEGUE UM TEXTO COM AS PENDÊNCIAS"
         ></TextArea>
-        <p className="legend">
-          ÚLTIMA PENDÊNCIA ATUALIZADA EM DD/MM/AAAA HH:DD
-        </p>
+        <p className="legend">{formikPending.values.dateFormat}</p>
         <Button className="button_normal button-update_pendencies">
           Atualizar Pendências
         </Button>

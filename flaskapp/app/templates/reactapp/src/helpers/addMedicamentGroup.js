@@ -1,6 +1,9 @@
 import ModalMedicamentGroup from "components/Modals/components/ModalsPrescription/components/ModalMedicamentsGroup";
 
-const addMedicamentGroup = ({ confirmButtonAction, currentMedicament }) => ({
+const addMedicamentGroup = ({
+  confirmButtonAction,
+  currentMedicament = [],
+}) => ({
   confirmButtonAction: confirmButtonAction,
   content: <ModalMedicamentGroup currentMedicament={currentMedicament} />,
   returnButtonAction: () => {},

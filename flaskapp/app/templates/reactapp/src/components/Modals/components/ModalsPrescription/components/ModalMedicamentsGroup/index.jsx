@@ -60,7 +60,7 @@ const ModalMedicamentGroup = ({ confirmButton, currentMedicament }) => {
         type="button"
         onClick={() => {
           const filterMedicaments = [];
-          presets?.drugPresets.map((drug) => {
+          presets?.drugPresets.forEach((drug) => {
             if (!drug.active) {
               return;
             }
@@ -71,9 +71,19 @@ const ModalMedicamentGroup = ({ confirmButton, currentMedicament }) => {
               if (findCurrentDrug) {
                 return;
               }
-              filterMedicaments.push(drug);
+              filterMedicaments.push({
+                block: true,
+                id: drug.id,
+                drugName: drug.name,
+                drugKind: drug.kind,
+                dosage: drug.usualDosage,
+                route: drug.usualRoute,
+                initialDate: undefined,
+                endingDate: undefined,
+              });
             });
           });
+          confirmButton(filterMedicaments);
         }}
       >
         Adicionar Linha
