@@ -21,7 +21,6 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const logoutLink = onError(({ response }) => {
-  console.log("response", response);
   if (
     response.errors.find((error) => error.message === "Signature has expired")
   ) {

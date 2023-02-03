@@ -55,13 +55,32 @@ const Chart = () => {
     return array;
   };
 
+  function templateFormatedData(data, handler) {
+    return data.map((prescription, index) => {
+      const handleFormated = handler
+        ? handler(prescription, index)
+        : prescription;
+      const dateFormated = format(
+        parseISO(prescription.createdAt),
+        "dd/MM/yyyy HH:mm:ss",
+        {
+          locale: ptBR,
+        }
+      );
+      return {
+        ...handleFormated,
+        dateFormated,
+      };
+    });
+  }
+
   useEffect(() => {
     if (!data) {
       return;
     }
     const array = {
       prescriptions: [],
-      sinals: [],
+      sinals: {},
       textEvolution: "",
     };
     let oldChards = [];
@@ -74,42 +93,52 @@ const Chart = () => {
       )[0];
       const prescriptionFormated = formatPrescription(prescription);
       array.prescriptions.push(...prescriptionFormated);
-      const prescriptionsFormated = [];
-      prescriptions.forEach((prescription) => {
-        const prescriptionFormated = formatPrescription(prescription);
-        const dateFormated = format(
-          parseISO(prescription.createdAt),
-          "dd/MM/yyyy HH:mm:ss",
-          {
-            locale: ptBR,
-          }
-        );
-        prescriptionsFormated.push({
-          items: prescriptionFormated,
-          createdAt: prescription.createdAt,
-          dateFormated,
+      const prescriptionsFormated = templateFormatedData(
+        prescriptions,
+        (prescription) => ({
+          items: formatPrescription(prescription),
           __typename: prescription.__typename,
-        });
-      });
+        })
+      );
+
       oldChards = [...oldChards, ...prescriptionsFormated];
     }
     if (data.internment.measures.length > 0) {
       const measures = [...data.internment.measures];
+      const fluidBalances = [...data.internment.fluidBalance];
       const measure = measures.splice(
         data.internment.measures.length - 1,
         1
       )[0];
-      const measuresWithDateFormat = measures.map((measure) => {
-        const dateFormated = format(
-          parseISO(measure.createdAt),
-          "dd/MM/yyyy HH:mm:ss",
-          {
-            locale: ptBR,
-          }
-        );
-        return { ...measure, dateFormated };
-      });
-
+      const fluidBalance = fluidBalances.splice(
+        data.internment.measures.length - 1,
+        1
+      )[0];
+      array.sinals = {
+        cardiacFrequency: measure.cardiacFrequency,
+        fetalCardiacFrequency: measure.fetalCardiacFrequency,
+        celciusAxillaryTemperature: measure.celciusAxillaryTemperature,
+        createdAt: measure.createdAt,
+        diastolicBloodPressure: measure.diastolicBloodPressure,
+        glucose: measure.glucose,
+        pain: measure.pain,
+        respiratoryFrequency: measure.respiratoryFrequency,
+        spO2: measure.spO2,
+        systolicBloodPressure: measure.systolicBloodPressure,
+        volumeMl: fluidBalance.volumeMl,
+        descriptionVolumeMl: fluidBalance.description.value,
+      };
+      const measuresWithDateFormat = templateFormatedData(
+        measures,
+        (measure, index) => {
+          const fluidBalance = fluidBalances[index];
+          return {
+            ...measure,
+            volumeMl: fluidBalance.volumeMl,
+            descriptionVolumeMl: fluidBalance.description.value,
+          };
+        }
+      );
       oldChards = [...oldChards, ...measuresWithDateFormat];
     }
     if (data.internment.evolutions.length > 0) {
@@ -119,31 +148,13 @@ const Chart = () => {
         1
       )[0];
       array.textEvolution = evolution.text;
-      const evolutionsWithDateFormat = evolutions.map((evolution) => {
-        const dateFormated = format(
-          parseISO(evolution.createdAt),
-          "dd/MM/yyyy HH:mm:ss",
-          {
-            locale: ptBR,
-          }
-        );
-        return { ...evolution, dateFormated };
-      });
-
+      const evolutionsWithDateFormat = templateFormatedData(evolutions);
       oldChards = [...oldChards, ...evolutionsWithDateFormat];
     }
     if (data.internment.pendings.length > 0) {
-      const pendingsWithDateFormat = data.internment.pendings.map((pending) => {
-        const dateFormated = format(
-          parseISO(pending.createdAt),
-          "dd/MM/yyyy HH:mm:ss",
-          {
-            locale: ptBR,
-          }
-        );
-        return { ...pending, dateFormated };
-      });
-
+      const pendingsWithDateFormat = templateFormatedData(
+        data.internment.pendings
+      );
       oldChards = [...oldChards, ...pendingsWithDateFormat];
     }
     oldChards.sort((chartA, chartB) => {
@@ -154,9 +165,7 @@ const Chart = () => {
       }
       return 1;
     });
-    console.log(oldChards);
     setOldCharts(oldChards);
-
     setNewestChart(array);
   }, [data]);
 
@@ -191,13 +200,13 @@ const Chart = () => {
       </ol>
       <h2 className="secondary">Sinais Vitais</h2>
       <ul>
-        <li>FC 50bpm (17/07/2022 5:30) 60bpm (17/07/2022 8:30)</li>
-        <li>HGT 110 (17/07/2022 5:30)</li>
-        <li>FR 110 (17/07/2022 5:30)</li>
-        <li>TEMP AXILAR 110 (17/07/2022 5:30)</li>
+        <li>FC {newestChart.sinals?.cardiacFrequency}bpm </li>
+        <li>FCF {newestChart.sinals?.fetalCardiacFrequency}bpm </li>
+        <li>HGT 110 </li>
+        <li>FR {newestChart.respiratoryFrequency} </li>
+        <li>TEMP AXILAR {newestChart.celciusAxillaryTemperature} </li>
         <li>
           BALANÇO HÍDRICO <strong>TOTAL -500</strong> 110 - COPO COM ÁGUA
-          (17/07/2022 5:30)
         </li>
       </ul>
       <h2>Demais Evoluções</h2>

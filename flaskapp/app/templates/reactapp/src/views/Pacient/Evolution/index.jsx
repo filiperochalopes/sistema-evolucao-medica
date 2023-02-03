@@ -55,8 +55,10 @@ const Evolution = () => {
     },
     onSubmit: async (values) => {
       try {
+        const newValues = { ...values };
+        newValues.drugs = newValues.drugs.map(({ id, block, ...rest }) => rest);
         await createPrescription({
-          variables: { ...values, internmentId: Number(params.id) },
+          variables: { ...newValues, internmentId: Number(params.id) },
         });
         enqueueSnackbar("Prescrição Cadastrada", { variant: "success" });
       } catch {
@@ -119,12 +121,14 @@ const Evolution = () => {
       formik.setValues({
         diet: prescription?.diet?.name || "",
         drugs: prescription.drugPrescriptions.map((drug) => ({
+          id: drug.id,
           drugName: drug.drug.name,
-          drugKind: drug.kind,
-          dosage: drug.drug.dosage,
+          drugKind: drug.drug.kind,
+          dosage: drug.dosage,
           route: drug.route,
-          initialDate: drug.initialDate,
-          endingDate: drug.finalDate,
+          initialDate: drug.initialDate ? `${drug.initialDate}` : undefined,
+          endingDate: drug.initialDate ? `${drug.endingDate}` : undefined,
+          block: true,
         })),
         nursingActivities: prescription.nursingActivities.map(
           (nursingActivity) => nursingActivity.name
@@ -161,18 +165,25 @@ const Evolution = () => {
       formik.setFieldValue("drugs", [
         ...formik.values.drugs,
         {
+          block: values.block,
+          id: values.medicament.id,
           drugName: values.medicament.name,
           drugKind: values.drug.isAntibiotic,
           dosage: values.drug.useMode,
           route: values.drug.routeAdministration.value,
-          initialDate: values.drug.initialDate,
-          endingDate: values.drug.finalDate,
+          initialDate: values.drug.initialDate
+            ? `${values.drug.initialDate}`
+            : undefined,
+          endingDate: values.drug.finalDate
+            ? `${values.drug.finalDate}`
+            : undefined,
         },
       ]);
       return true;
     }
     throw new Error("tratamento não existe");
   }
+  console.log(formik);
 
   function chainHandleSetNursingActivity(values) {
     console.log(values);
@@ -267,7 +278,26 @@ const Evolution = () => {
                 <ContainerListOption>
                   <p>{formik.values.diet}</p>{" "}
                   <div>
-                    <button type="button">
+                    <button
+                      onClick={() => {
+                        addModal(
+                          addPrescription({
+                            currentMedicament: {
+                              type: "diet",
+                              medicament: formik.values.diet,
+                              drug: {
+                                useMode: "",
+                                routeAdministration: "",
+                                isAntibiotic: "oth",
+                                initialDate: "",
+                                finalDate: "",
+                              },
+                            },
+                          })
+                        );
+                      }}
+                      type="button"
+                    >
                       <MdModeEdit size={18} color={theme.colors.blue} />
                     </button>
                     <button
@@ -315,13 +345,49 @@ const Evolution = () => {
               </ListOption>
             </li>
           )}
-          {formik.values.nursingActivities.map((nursingActivity) => (
+          {formik.values.nursingActivities.map((nursingActivity, index) => (
             <li key={nursingActivity}>
               <ListOption>
                 <ContainerListOption>
                   <p>{nursingActivity}</p>
                   <div>
-                    <button type="button">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        addModal(
+                          addPrescription({
+                            drugs: formik.values.drugs,
+
+                            nursingActivities: formik.values.nursingActivities,
+                            confirmButtonAction: (values) => {
+                              console.log(values);
+                              formik.setFieldValue(
+                                `nursingActivities[${index}]`,
+                                values.medicament.name
+                              );
+                            },
+                            currentMedicament: {
+                              type: {
+                                label: "Atividades de enfermagem",
+                                name: "nursingActivity",
+                              },
+                              medicament: {
+                                name: nursingActivity,
+                                id: nursingActivity,
+                              },
+                              drug: {
+                                useMode: "",
+                                routeAdministration: "",
+                                isAntibiotic: "oth",
+                                initialDate: "",
+                                finalDate: "",
+                              },
+                              routeAdministration: undefined,
+                            },
+                          })
+                        );
+                      }}
+                    >
                       <MdModeEdit size={18} color={theme.colors.blue} />
                     </button>
                     <button
@@ -350,13 +416,58 @@ const Evolution = () => {
               </ListOption>
             </li>
           ))}
-          {formik.values.drugs.map((drug) => (
+          {formik.values.drugs.map((drug, index) => (
             <li key={drug.drugName}>
               <ListOption>
                 <ContainerListOption>
                   <p>{drug.drugName}</p>
                   <div>
-                    <button type="button">
+                    <button
+                      onClick={() => {
+                        addModal(
+                          addPrescription({
+                            drugs: formik.values.drugs,
+                            confirmButtonAction: (values) => {
+                              console.log(values);
+                              formik.setFieldValue(`drugs[${index}]`, {
+                                id: values.medicament.id,
+                                drugName: values.medicament.name,
+                                drugKind: values.drug.isAntibiotic,
+                                dosage: values.drug.useMode,
+                                route: values.drug.routeAdministration.value,
+                                initialDate: values.drug.initialDate
+                                  ? `${values.drug.initialDate}`
+                                  : undefined,
+                                endingDate: values.drug.finalDate
+                                  ? `${values.drug.finalDate}`
+                                  : undefined,
+                                block: values.block,
+                              });
+                            },
+                            currentMedicament: {
+                              block: drug.block,
+                              type: {
+                                label: "Medicação",
+                                name: "drug",
+                              },
+                              medicament: { name: drug.drugName, id: drug.id },
+                              drug: {
+                                useMode: drug.dosage,
+                                routeAdministration: drug.route,
+                                isAntibiotic: drug.drugKind,
+                                initialDate: drug.initialDate,
+                                finalDate: drug.endingDate,
+                              },
+                              routeAdministration: {
+                                label: drug.route,
+                                value: drug.route,
+                              },
+                            },
+                          })
+                        );
+                      }}
+                      type="button"
+                    >
                       <MdModeEdit size={18} color={theme.colors.blue} />
                     </button>
                     <button
@@ -408,6 +519,7 @@ const Evolution = () => {
                   drugs: formik.values.drugs,
                   nursingActivities: formik.values.nursingActivities,
                   confirmButtonAction: (values) => {
+                    console.log(values);
                     chainHandleSetDiet(values);
                   },
                 })

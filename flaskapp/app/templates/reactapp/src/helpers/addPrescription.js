@@ -4,10 +4,15 @@ const addPrescription = ({
   confirmButtonAction,
   drugs,
   nursingActivities,
+  currentMedicament,
 }) => ({
   confirmButtonAction: confirmButtonAction,
   content: (
-    <ModalAddPrescription drugs={drugs} nursingActivities={nursingActivities} />
+    <ModalAddPrescription
+      drugs={drugs}
+      nursingActivities={nursingActivities}
+      currentMedicament={currentMedicament}
+    />
   ),
   returnButtonAction: () => {},
   title: "Adicionar Nova Linha",

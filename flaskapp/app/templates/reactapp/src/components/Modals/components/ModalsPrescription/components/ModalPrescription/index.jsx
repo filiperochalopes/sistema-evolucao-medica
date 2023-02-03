@@ -13,7 +13,7 @@ import {
   DRUG_ROUTES,
   NURSING_ACTIVITIES,
 } from "graphql/queries";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Container from "./styles";
 import { v4 as uuidv4 } from "uuid";
 import schema from "./schema";
@@ -51,6 +51,7 @@ const prescriptionTypesStrategies = {
           className="medium_size"
           value={formik.values.drug.routeAdministration}
           placeholder="Via de Administração"
+          isDisabled={formik.values.block}
           onChange={(e) => formik.setFieldValue("drug.routeAdministration", e)}
         />
         <div className="container_checkbox">
@@ -58,6 +59,7 @@ const prescriptionTypesStrategies = {
             checked={formik.values.drug.isAntibiotic === "atb"}
             id="checkbox"
             onClick={() =>
+              !formik.values.block &&
               formik.setFieldValue(
                 "drug.isAntibiotic",
                 formik.values.drug.isAntibiotic === "atb" ? "oth" : "atb"
@@ -94,7 +96,13 @@ const prescriptionTypesStrategies = {
   },
 };
 
-const ModalAddPrescription = ({ confirmButton, nursingActivities, drugs }) => {
+const ModalAddPrescription = ({
+  confirmButton,
+  nursingActivities,
+  drugs,
+  currentMedicament,
+}) => {
+  const [customMedicament, setCustomMedicament] = useState();
   const { data: prescriptionTypesData } = useQuery(PRESCRIPTION_TYPES);
   const [getDrugs] = useLazyQuery(DRUGS);
   const [getRestingActivities] = useLazyQuery(RESTING_ACTIVITIES);
@@ -119,12 +127,22 @@ const ModalAddPrescription = ({ confirmButton, nursingActivities, drugs }) => {
     },
     validationSchema: schema,
   });
+  console.log(formik);
+
+  useEffect(() => {
+    if (!currentMedicament) {
+      return;
+    }
+
+    formik.setValues(currentMedicament);
+  }, [currentMedicament]);
 
   useEffect(() => {
     let request = null;
     if (!formik.values.type?.name) {
       return;
     }
+
     if (formik.values.type.name === "drug") {
       request = getDrugs;
     } else if (formik.values.type.name === "diet") {
@@ -134,26 +152,36 @@ const ModalAddPrescription = ({ confirmButton, nursingActivities, drugs }) => {
     } else if (formik.values.type.name === "nursingActivity") {
       request = getNusingActivities;
     }
+
     if (!request) {
       return;
     }
+
     request().then((response) => {
       let newMedicaments =
         response.data[medicamentsAdapter[formik.values.type.name]];
+
       if (formik.values.type.name === "drug") {
         newMedicaments = newMedicaments.filter(
           (medicament) =>
-            !drugs.find((drug) => drug.drugName === medicament.name)
+            !drugs.find((drug) => drug.drugName === medicament.name) ||
+            medicament.name === currentMedicament?.medicament.name
         );
       } else if (formik.values.type.name === "nursingActivity") {
         newMedicaments = newMedicaments.filter(
           (medicament) =>
             !nursingActivities.find(
               (nursingActivitie) => nursingActivitie === medicament.name
-            )
+            ) || medicament.name === currentMedicament?.medicament.name
         );
       }
-      setMedicaments(newMedicaments);
+      setMedicaments(
+        newMedicaments.map((medicament) => ({
+          ...medicament,
+          label: medicament.name,
+          value: medicament.id,
+        }))
+      );
     });
   }, [
     getDiets,
@@ -163,6 +191,7 @@ const ModalAddPrescription = ({ confirmButton, nursingActivities, drugs }) => {
     formik.values.type,
     drugs,
     nursingActivities,
+    currentMedicament,
   ]);
 
   const PrescriptionComponent =
@@ -182,12 +211,44 @@ const ModalAddPrescription = ({ confirmButton, nursingActivities, drugs }) => {
       />
       <div className="container_medicaments">
         <Select
-          getOptionLabel={(option) => option.name}
-          getOptionValue={(option) => option.id}
           options={medicaments}
-          onChange={(e) => formik.setFieldValue("medicament", e)}
+          created
+          onChange={(e) => {
+            if (!e.usualDosage) {
+              formik.setFieldValue("medicament", {
+                ...e,
+                name: e.label,
+                id: e.value,
+              });
+
+              formik.setFieldValue("block", false);
+              return;
+            }
+            formik.setValues({
+              ...formik.values,
+              drug: {
+                finalDate: "",
+                initialDate: "",
+                isAntibiotic: e.kind,
+                routeAdministration: {
+                  label: e.usualRoute,
+                  value: e.usualRoute,
+                },
+                useMode: e.usualDosage,
+              },
+              block: true,
+              medicament: e,
+            });
+          }}
           placeholder="Campo que seleciona um ou adiciona novo"
-          values={formik.values.medicament}
+          value={
+            formik.values.medicament.name
+              ? {
+                  label: formik.values.medicament.name,
+                  value: formik.values.medicament.id,
+                }
+              : null
+          }
         />
         <PrescriptionComponent formik={formik} />
       </div>

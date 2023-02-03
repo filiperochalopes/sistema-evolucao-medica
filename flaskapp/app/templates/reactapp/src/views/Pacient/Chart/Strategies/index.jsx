@@ -12,11 +12,10 @@ const MeasureStrategy = (value) => (
       <li>FC {value.cardiacFrequency}bpm </li>
       <li>FCF {value.fetalCardiacFrequency}bpm</li>
       <li>HGT 110 </li>
-      <li>FR 110 </li>
+      <li>FR {value.respiratoryFrequency} </li>
       <li>TEMP AXILAR {value.celciusAxillaryTemperature}</li>
       <li>
         BALANÇO HÍDRICO <strong>TOTAL -500</strong> 110 - COPO COM ÁGUA
-        (17/07/2022 5:30)
       </li>
     </ul>
   </>
@@ -31,7 +30,7 @@ const EvolutionStrategy = (value) => (
 
 const PrescriptionStrategy = (value) => (
   <>
-    <h2>Prescrições {value.dateFormated}</h2>
+    <h2 className="secondary">Prescrições {value.dateFormated}</h2>
     <ol>
       {value.items.map((item) => (
         <li key={item.id}>{item.value}</li>

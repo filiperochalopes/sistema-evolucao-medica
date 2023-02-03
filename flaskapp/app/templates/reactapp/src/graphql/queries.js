@@ -55,6 +55,10 @@ export const DRUGS = gql`
     drugs {
       name
       id
+      usualDosage
+      comment
+      usualRoute
+      kind
     }
   }
 `;
@@ -160,10 +164,10 @@ export const GET_INTERNMENT = gql`
           id
           drug {
             name
+            kind
           }
           dosage
           route
-          kind
           initialDate
           endingDate
         }
@@ -206,7 +210,7 @@ export const GET_SINALS = gql`
 
 export const DRUG_PRESETS = gql`
   query drugPresets {
-    drugPreset {
+    drugPresets {
       name
       label
       drugs {
@@ -215,6 +219,7 @@ export const DRUG_PRESETS = gql`
         usualDosage
         comment
         kind
+        usualRoute
       }
     }
   }
@@ -241,11 +246,11 @@ export const GET_ALL_CHART = gql`
         drugPrescriptions {
           id
           drug {
+            kind
             name
           }
           dosage
           route
-          kind
           initialDate
           endingDate
         }
