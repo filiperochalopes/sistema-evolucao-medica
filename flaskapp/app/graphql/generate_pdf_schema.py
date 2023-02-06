@@ -474,8 +474,6 @@ generate_pdf_type_defs = gql(
             documentDatetime: String!,
             "Dados do Paciente, IMPORTANTE: o peso do paciente, será tranformado em numero inteiro de no maximo 3 digitos"
             patient: PatientInput
-            "Numero de telefone do paciente, envie somente os numeros sem formatacao, ex: XXXXXXXXXX, 10 ou 11 caracteres"
-            patientPhonenumber: String!,
             "Historia da doenca atual/Exame fisico, max: 1600 min:10 caracteres"
             currentIllnessHistory: String!,
             "Supeita diagnostica Inicial (CID), max:100 min:5 caracteres"

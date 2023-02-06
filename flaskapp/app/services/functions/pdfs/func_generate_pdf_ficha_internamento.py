@@ -2,7 +2,7 @@ import datetime
 from app.services.utils.PdfFichaInternamento import PdfFichaInternamento
 
 
-def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, patient:dict, patient_phonenumber:str, current_illness_history:str, initial_diagnosis_suspicion:str, doctor_name:str, doctor_cns:str, doctor_crm:str, has_additional_health_insurance:bool=None) -> str:
+def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, patient:dict, current_illness_history:str, initial_diagnosis_suspicion:str, doctor_name:str, doctor_cns:str, doctor_crm:str, has_additional_health_insurance:bool=None) -> str:
     """fill pdf ficha internamento
 
     Args:
@@ -38,7 +38,7 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
             pdf.add_oneline_text(text=patient['mother_name'], pos=(194, 642), camp_name='Patient Mother Name', len_max=69, len_min=7)
             pdf.add_document_cns_cpf_rg(document={'cpf': patient['cpf'], 'rg': patient['rg']}, pos_square_cpf=(24, 608), pos_square_rg=(58,608), pos_rg=(92, 610), pos_cpf=(92, 610),camp_name='Pacient Document', formated=True)
             pdf.add_oneline_text(text=patient['address']['street'], pos=(230, 610), camp_name='Patient Adress', len_max=63, len_min=7)
-            pdf.add_phonenumber(number=patient_phonenumber, pos=(173, 547), camp_name='Patient phone number', formated=True)
+            pdf.add_phonenumber(number=patient['phone'], pos=(173, 547), camp_name='Patient phone number', formated=True)
             pdf.add_oneline_text(text=str(patient['allergies']).replace('[', '').replace(']', ''), pos=(26, 481), camp_name='Patient Drugs Allergies', len_max=100, len_min=5)
             pdf.add_oneline_text(text=str(patient['comorbidities']).replace('[', '').replace(']', ''), pos=(26, 449), camp_name='Patient Commorbidites', len_max=100, len_min=5)
             pdf.add_morelines_text(text=current_illness_history, initial_pos=(26, 418), decrease_ypos= 10, camp_name='Current Illness History', len_max=1600, char_per_lines=100, len_min=10)

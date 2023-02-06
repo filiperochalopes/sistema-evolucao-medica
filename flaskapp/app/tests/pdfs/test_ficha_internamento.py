@@ -12,7 +12,7 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
 
     patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"{patient_address_city}"' + ', number: ' + f'"{patient_address_number}"' + ', uf:' + f'"{patient_address_uf}"' + ', zipCode: ' + f'"{patient_address_cep}"' + ', neighborhood: ' + f'"{patient_address_neigh}"' + '}'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', cpf: ' + f'"{patient_cpf}"' + ', rg: ' + f'"{patient_rg}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', nationality: ' + f'"{patient_nationality}"' + ',weightKg:' + f'{patient_estimate_weight}' + ', address: ' + f'{patient_address}' + ', comorbidities: ['+ patient_comorbidities + ']' + ', allergies: ['+ patient_drug_allergies + ']'  + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', cpf: ' + f'"{patient_cpf}"' + ', rg: ' + f'"{patient_rg}"' + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', phone:' + f'"{patient_phonenumber}"' + ', motherName: ' + f'"{patient_mother_name}"' + ', nationality: ' + f'"{patient_nationality}"' + ',weightKg:' + f'{patient_estimate_weight}' + ', address: ' + f'{patient_address}' + ', comorbidities: ['+ patient_comorbidities + ']' + ', allergies: ['+ patient_drug_allergies + ']'  + '}'
 
     request_string = """
         mutation{
@@ -21,7 +21,6 @@ def data_to_use(client, datetime_to_use, document_datetime_to_use, document_date
     campos_string = f"""
     documentDatetime: "{document_datetime}",
     patient: {patient}
-    patientPhonenumber: "{patient_phonenumber}",
     currentIllnessHistory: "{current_illness_history}",
     hasAdditionalHealthInsurance: "{has_additional_health_insurance}",
     initialDiagnosisSuspicion: "{initial_diagnosis_suspicion}",

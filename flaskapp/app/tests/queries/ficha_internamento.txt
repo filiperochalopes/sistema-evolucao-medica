@@ -11,6 +11,7 @@ mutation{
       nationality: "Brasileira",
       sex: "M",
       weightKg: 123.00,
+      phone: "10123456789",
       motherName: "Patient Mother Name",
       address: {
         street: "Patient Adress",
@@ -24,7 +25,6 @@ mutation{
       allergies: ["Patient", "Drug", "Allergies"],
     }
     currentIllnessHistory: "Current Illness History",
-    patientPhonenumber: "10123456789",
     hasAdditionalHealthInsurance: "SIM",
     initialDiagnosisSuspicion: "Initial Suspiction",
     doctorName: "Doctor Name",
