@@ -66,7 +66,9 @@ const ModalMedicamentGroup = ({ confirmButton, currentMedicament }) => {
             }
             drug.drugs.forEach((drug) => {
               const findCurrentDrug = currentMedicament.find(
-                (medicament) => medicament.id === drug.id
+                (medicament) =>
+                  medicament.drugName === drug.name &&
+                  drug.usualRoute === medicament.route
               );
               if (findCurrentDrug) {
                 return;

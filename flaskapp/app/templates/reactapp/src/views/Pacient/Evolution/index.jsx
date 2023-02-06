@@ -503,7 +503,6 @@ const Evolution = () => {
                             drugs: formik.values.drugs,
                             nursingActivities: formik.values.nursingActivities,
                             confirmButtonAction: (values) => {
-                              console.log(values);
                               formik.setFieldValue(`drugs[${index}]`, {
                                 id: values.medicament.id,
                                 drugName: values.medicament.name,
@@ -528,14 +527,13 @@ const Evolution = () => {
                               medicament: { name: drug.drugName, id: drug.id },
                               drug: {
                                 useMode: drug.dosage,
-                                routeAdministration: drug.route,
+                                routeAdministration: {
+                                  label: drug.route,
+                                  value: drug.route,
+                                },
                                 isAntibiotic: drug.drugKind,
                                 initialDate: drug.initialDate,
                                 finalDate: drug.endingDate,
-                              },
-                              routeAdministration: {
-                                label: drug.route,
-                                value: drug.route,
                               },
                             },
                           })
@@ -576,6 +574,7 @@ const Evolution = () => {
             onClick={() =>
               addModal(
                 addMedicamentGroup({
+                  currentMedicament: formik.values.drugs,
                   confirmButtonAction: (values) => {
                     formik.setFieldValue("drugs", [
                       ...formik.values.drugs,

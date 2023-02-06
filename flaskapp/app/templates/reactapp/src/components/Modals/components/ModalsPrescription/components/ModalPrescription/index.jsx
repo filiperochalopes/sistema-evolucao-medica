@@ -135,6 +135,18 @@ const ModalAddPrescription = ({
       },
     },
     onSubmit: (values) => {
+      let existMedicament = undefined;
+      if (values.type.name === "drug") {
+        existMedicament = drugs.find(
+          (drug) =>
+            drug.drugName === values.medicament.name &&
+            drug.routeAdministration === values.drug.routeAdministration.value
+        );
+      }
+
+      if (existMedicament) {
+        return;
+      }
       confirmButton({ id: uuidv4(), ...values });
     },
     validationSchema: schema,
@@ -174,14 +186,7 @@ const ModalAddPrescription = ({
       console.log("formik.values.type", response.data);
       let newMedicaments =
         response.data[medicamentsAdapter[formik.values.type.name]];
-
-      if (formik.values.type.name === "drug") {
-        newMedicaments = newMedicaments.filter(
-          (medicament) =>
-            !drugs.find((drug) => drug.drugName === medicament.name) ||
-            medicament.name === currentMedicament?.medicament.name
-        );
-      } else if (formik.values.type.name === "nursingActivity") {
+      if (formik.values.type.name === "nursingActivity") {
         newMedicaments = newMedicaments.filter(
           (medicament) =>
             !nursingActivities.find(
