@@ -113,7 +113,7 @@ generate_pdf_type_defs = gql(
         "Criação de documento de AIH"
         generatePdf_AihSus(
             "Dados do Estabelecimento Solicitante"
-            establishmentSolitc: EstablishmentInput!,
+            requestingEstablishment: EstablishmentInput!,
             "Dados do Estabelecimento Executante"
             establishmentExec: EstablishmentInput, 
             "Dados do Paciente"
@@ -127,7 +127,7 @@ generate_pdf_type_defs = gql(
             "Cid 10 princical, usando o formato padrao de CID, max:4 min:3 caracteres"
             principalCid10: String!, 
             "Procedimento solicitado, max:65 min:6 caracteres"
-            procedureSolicited: String,
+            requestedProcedure: String,
             "Codigo do procedimento solicitado, deve ter exatamente 10 caracteres"
             procedureCode: String,
             "Nome da clinica, max:18 min:6 caracteres"
@@ -135,11 +135,11 @@ generate_pdf_type_defs = gql(
             "Carater da internacao, max:19 min:6 caracteres"
             internationCarater: String, 
             "Documento do profissional solicitante, cns ou cpf, utilize o input DocumentInput"
-            professionalSolicitorDocument: DocumentInput!, 
+            requestingProfessionalDocument: DocumentInput!, 
             "Nome do profissional solicitante, max:48 min:8 caracteres"
-            professionalSolicitorName: String!,
+            requestingProfessionalName: String!,
             "Data e hora da solicitacao, somente dia/mes/ano"
-            solicitationDate: String!,
+            requestDate: String!,
             "Nome do profissional autorizador, max:48 min:8 caracteres" 
             professionalAuthorizationName: String,
             "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:17 min:2 caracteres"

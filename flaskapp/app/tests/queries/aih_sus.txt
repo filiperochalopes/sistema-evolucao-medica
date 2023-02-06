@@ -1,7 +1,7 @@
 # Write your query or mutation here
 mutation{
 	generatePdf_AihSus(
-    establishmentSolitc: {
+    requestingEstablishment: {
       name: "Establishmente Solict Name",
       cnes: "1234567"
     },
@@ -29,17 +29,17 @@ mutation{
     conditionsJustifyHospitalization: "Patient Conditions justify hiospitalizaiton",
     initialDiagnosis: "initial Siagnostic",
     principalCid10: "A12",
-    procedureSolicited: "Procedurew Solicited",
+    requestedProcedure: "Procedurew Solicited",
     procedureCode: "1234567890",
     clinic: "Clinic Name",
     internationCarater: "TYriste",
-    professionalSolicitorDocument: {
+    requestingProfessionalDocument: {
     cns: "928976954930007",
     cpf: null,
     rg: null
     },
-    professionalSolicitorName: "Professional Solicitor Name",
-    solicitationDate: "10/02/2021",
+    requestingProfessionalName: "Professional Solicitor Name",
+    requestDate: "10/02/2021",
     professionalAuthorizationName: "Professional Authorizator Name",
     emissionOrgCode: "12aass",
     authorizationProfessionalDocument: {

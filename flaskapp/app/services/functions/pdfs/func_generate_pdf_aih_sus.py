@@ -3,24 +3,24 @@ from app.services.utils.PdfAihSus import PdfAihSus
 
 
 
-def func_generate_pdf_aih_sus(establishment_solitc:dict, patient:dict, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnosis:str, principal_cid_10:str, professional_solicitor_document:dict, professional_solicitor_name:str, solicitation_date:datetime.datetime, establishment_exec:dict=None,procedure_solicited:str=None, procedure_code:str=None, clinic:str=None, internation_carater:str=None, emission_org_code:str=None, hospitalization_authorization_number:str=None, authorization_professional_document:dict=None, authorization_date:datetime.datetime=None, professional_authorization_name:str=None, exam_results:str=None, chart_number:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> str:
+def func_generate_pdf_aih_sus(requesting_establishment:dict, patient:dict, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnosis:str, principal_cid_10:str, requesting_professional_document:dict, requesting_professional_name:str, request_date:datetime.datetime, establishment_exec:dict=None,requested_procedure:str=None, procedure_code:str=None, clinic:str=None, internation_carater:str=None, emission_org_code:str=None, hospitalization_authorization_number:str=None, authorization_professional_document:dict=None, authorization_date:datetime.datetime=None, professional_authorization_name:str=None, exam_results:str=None, chart_number:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> str:
     """fill pdf aih sus 
 
     Args:
-        establishment_solitc (dict): establishment_solitc
+        requesting_establishment (dict): requesting_establishment
         establishment_exec (dict): establishment_exec
         patient (dict): Patient info
         main_clinical_signs_symptoms (str): main_clinical_signs_symptoms
         conditions_justify_hospitalization (str): conditions_justify_hospitalization
         initial_diagnosis (str): initial_diagnosis
         principal_cid_10 (str): principal_cid_10
-        procedure_solicited (str): procedure_solicited
+        requested_procedure (str): requested_procedure
         procedure_code (str): procedure_code
         clinic (str): clinic
         internation_carater (str): internation_carater
-        professional_solicitor_document (dict): dict professional_solicitor_document
-        professional_solicitor_name (str): professional_solicitor_name
-        solicitation_date (datetime.datetime): solicitation_date
+        requesting_professional_document (dict): dict requesting_professional_document
+        requesting_professional_name (str): requesting_professional_name
+        request_date (datetime.datetime): request_date
         professional_authorization_name (str): professional_authorization_name
         emission_org_code (str): emission_org_code
         authorization_professional_document (dict): authorization_professional_document
@@ -50,8 +50,8 @@ def func_generate_pdf_aih_sus(establishment_solitc:dict, patient:dict, main_clin
         # Writing all data in respective fields
         # not null data
         try:     
-            pdf.add_oneline_text(text=establishment_solitc['name'], pos=(25, 750), camp_name='Establishment Solicit Name', len_max=82, len_min=8)
-            pdf.add_oneline_text(text=establishment_solitc['cnes'], pos=(470, 750), camp_name='Establishment Solict CNES', len_max=7, len_min=7,interval='  ')
+            pdf.add_oneline_text(text=requesting_establishment['name'], pos=(25, 750), camp_name='Establishment Solicit Name', len_max=82, len_min=8)
+            pdf.add_oneline_text(text=requesting_establishment['cnes'], pos=(470, 750), camp_name='Establishment Solict CNES', len_max=7, len_min=7,interval='  ')
             pdf.add_oneline_text(text=patient['name'], pos=(25, 683), camp_name='Patient Name', len_max=79, len_min=7)
             #Data that change Font Size
 
@@ -71,9 +71,9 @@ def func_generate_pdf_aih_sus(establishment_solitc:dict, patient:dict, main_clin
             pdf.add_morelines_text(text=conditions_justify_hospitalization, initial_pos=(25, 422), decrease_ypos= 10, camp_name='Conditions that Justify hospitalization', len_max=403, char_per_lines=101, len_min=5)
             pdf.add_oneline_text(text=initial_diagnosis, pos=(25, 314), camp_name='Initial Diagnostic', len_max=44, len_min=5)
             pdf.add_oneline_text(text=principal_cid_10, pos=(306, 314), camp_name='Principal Cid10', len_max=4, len_min=3)
-            pdf.add_document_cns_cpf_rg(document=professional_solicitor_document, pos_square_cpf=(290, 244), pos_square_cns=(247,244), pos_cns=(335, 246), pos_cpf=(335, 246),camp_name='Professional Solicitor Document', interval='  ')
-            pdf.add_oneline_text(text=professional_solicitor_name, pos=(25, 222), camp_name='Professional Solicitor Name', len_max=48, len_min=8)
-            pdf.add_datetime(date=solicitation_date, pos=(300, 222), camp_name='Solicitation Datetime', hours=False, interval='  ', formated=False)   
+            pdf.add_document_cns_cpf_rg(document=requesting_professional_document, pos_square_cpf=(290, 244), pos_square_cns=(247,244), pos_cns=(335, 246), pos_cpf=(335, 246),camp_name='Professional Solicitor Document', interval='  ')
+            pdf.add_oneline_text(text=requesting_professional_name, pos=(25, 222), camp_name='Professional Solicitor Name', len_max=48, len_min=8)
+            pdf.add_datetime(date=request_date, pos=(300, 222), camp_name='Solicitation Datetime', hours=False, interval='  ', formated=False)   
 
             
         except Exception as error:
@@ -84,7 +84,7 @@ def func_generate_pdf_aih_sus(establishment_solitc:dict, patient:dict, main_clin
 
         #Adding data that can be null
         try:
-            pdf.add_oneline_text(text=procedure_solicited, pos=(25, 269), camp_name='Procedure Solicited', len_max=65, len_min=6, nullable=True)
+            pdf.add_oneline_text(text=requested_procedure, pos=(25, 269), camp_name='Procedure Solicited', len_max=65, len_min=6, nullable=True)
             pdf.add_oneline_text(text=procedure_code, pos=(404, 269), camp_name='Procedure Code', len_max=10, len_min=10, interval='  ', nullable=True)
             pdf.add_oneline_text(text=clinic, pos=(25, 246), camp_name='Clinic', len_max=18, len_min=6, nullable=True)
             pdf.add_oneline_text(text=internation_carater, pos=(128, 246), camp_name='Internation Caracter', len_max=19, len_min=6, nullable=True)
