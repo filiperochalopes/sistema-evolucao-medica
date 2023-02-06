@@ -14,6 +14,11 @@ print_pdf_type_defs = gql(
         secondaryDiagnosis: Cid10Input
     }
 
+    input PrintFichaInternamentoExtraInput {
+        "Tem seguro/plano de saúde outro além do SUS"
+        hasAdditionalHealthInsurance: Boolean
+    }
+
     extend type Mutation {
         """
         Gera PDF para impressão, por meio de dados em banco da aplicação, de documento de AIH
@@ -34,6 +39,7 @@ print_pdf_type_defs = gql(
         printPdf_FichaInternamento(
             "Id do internamento do referência"
             internmentId: Int!
+            extra: PrintFichaInternamentoExtraInput
         ): GeneratedPdf
     }
 ''')

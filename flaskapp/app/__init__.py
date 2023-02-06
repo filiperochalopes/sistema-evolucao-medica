@@ -137,6 +137,7 @@ def seed():
         RestingActivity(name='Repouso absoluto, cabeceira elevada 30°, atenção para lesões por pressão. Variar decúbito a cada 2h'),
         RestingActivity(name='Repouso relativo'),
     ]
+    db.session.bulk_save_objects(resting_activities)
     # Adicionndo alguns tipos de dieta
     diets = [
         Diet(name='Dieta livre'),
@@ -147,6 +148,7 @@ def seed():
         Diet(name='Dieta líquida'),
         Diet(name='Dieta zero')
     ]
+    db.session.bulk_save_objects(diets)
     # Adicionndo algumas descrições de Balanço hídrico
     fluid_balance_descriptions = [
         FluidBalanceDescription(value='Medicação'),
