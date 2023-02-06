@@ -127,13 +127,13 @@ generate_pdf_type_defs = gql(
             "Cid 10 princical, usando o formato padrao de CID, max:4 min:3 caracteres"
             principalCid10: String!, 
             "Procedimento solicitado, max:65 min:6 caracteres"
-            procedureSolicited: String!,
+            procedureSolicited: String,
             "Codigo do procedimento solicitado, deve ter exatamente 10 caracteres"
-            procedureCode: String!,
+            procedureCode: String,
             "Nome da clinica, max:18 min:6 caracteres"
-            clinic: String!, 
+            clinic: String, 
             "Carater da internacao, max:19 min:6 caracteres"
-            internationCarater: String!, 
+            internationCarater: String, 
             "Documento do profissional solicitante, cns ou cpf, utilize o input DocumentInput"
             professionalSolicitorDocument: DocumentInput!, 
             "Nome do profissional solicitante, max:48 min:8 caracteres"
