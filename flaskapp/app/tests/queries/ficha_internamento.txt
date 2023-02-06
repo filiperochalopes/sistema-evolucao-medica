@@ -24,7 +24,7 @@ mutation{
       comorbidities: ["Patient", "Commorbidites"],
       allergies: ["Patient", "Drug", "Allergies"],
     }
-    currentIllnessHistory: "Current Illness History",
+    historyOfPresentIllness: "Current Illness History",
     hasAdditionalHealthInsurance: "SIM",
     initialDiagnosisSuspicion: "Initial Suspiction",
     doctorName: "Doctor Name",

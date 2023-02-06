@@ -475,7 +475,7 @@ generate_pdf_type_defs = gql(
             "Dados do Paciente, IMPORTANTE: o peso do paciente, será tranformado em numero inteiro de no maximo 3 digitos"
             patient: PatientInput
             "Historia da doenca atual/Exame fisico, max: 1600 min:10 caracteres"
-            currentIllnessHistory: String!,
+            historyOfPresentIllness: String!,
             "Supeita diagnostica Inicial (CID), max:100 min:5 caracteres"
             initialDiagnosisSuspicion: String!,
             "Nome do Medico, max: 49 min:7 caracteres"

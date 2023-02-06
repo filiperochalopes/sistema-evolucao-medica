@@ -20,7 +20,7 @@ mutation{
                 uf: "SP",
             },
         },
-        currentIllnessHistory: "Current Illness History",
+        historyOfPresentIllness: "Current Illness History",
         initialDiagnosisSuspicion: "Initial Suspiction",
         doctorName: "Doctor Name",
         doctorCns: "928976954930007",

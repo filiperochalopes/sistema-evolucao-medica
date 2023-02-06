@@ -2,13 +2,13 @@ import datetime
 from app.services.utils.PdfFichaInternamento import PdfFichaInternamento
 
 
-def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, patient:dict, current_illness_history:str, initial_diagnosis_suspicion:str, doctor_name:str, doctor_cns:str, doctor_crm:str, has_additional_health_insurance:bool=None) -> str:
+def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, patient:dict, history_of_present_illness:str, initial_diagnosis_suspicion:str, doctor_name:str, doctor_cns:str, doctor_crm:str, has_additional_health_insurance:bool=None) -> str:
     """fill pdf ficha internamento
 
     Args:
         document_datetime (datetime.datetime): document_datetime
         patient (dict): patient info
-        current_illness_history (str): current_illness_history
+        history_of_present_illness (str): history_of_present_illness
         initial_diagnosis_suspicion (str): initial_diagnosis_suspicion
         doctor_name (str): doctor_name
         doctor_cns (int): doctor_cns
@@ -41,7 +41,7 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
             pdf.add_phonenumber(number=patient['phone'], pos=(173, 547), camp_name='Patient phone number', formated=True)
             pdf.add_oneline_text(text=str(patient['allergies']).replace('[', '').replace(']', ''), pos=(26, 481), camp_name='Patient Drugs Allergies', len_max=100, len_min=5)
             pdf.add_oneline_text(text=str(patient['comorbidities']).replace('[', '').replace(']', ''), pos=(26, 449), camp_name='Patient Commorbidites', len_max=100, len_min=5)
-            pdf.add_morelines_text(text=current_illness_history, initial_pos=(26, 418), decrease_ypos= 10, camp_name='Current Illness History', len_max=1600, char_per_lines=100, len_min=10)
+            pdf.add_morelines_text(text=history_of_present_illness, initial_pos=(26, 418), decrease_ypos= 10, camp_name='Current Illness History', len_max=1600, char_per_lines=100, len_min=10)
             pdf.add_oneline_text(text=initial_diagnosis_suspicion, pos=(26, 244), camp_name='Initial Diagnostic Suspicion', len_max=100, len_min=5)
             pdf.add_oneline_text(text=doctor_name, pos=(304, 195), camp_name='Doctor Name', len_max=49, len_min=7)
             pdf.add_cns(cns=doctor_cns, pos=(304, 163), camp_name='Doctor CNS', formated=True)
