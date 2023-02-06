@@ -26,20 +26,20 @@ def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishmen
             generatePdf_AihSus("""
 
     campos_string = f"""
-    establishmentSolitc: {establishment_solitc},
+    requestingEstablishment: {establishment_solitc},
     establishmentExec: {establishment_exec},
     patient: {patient},
     mainClinicalSignsSymptoms: "{main_clinical_signs_symptoms}",
     conditionsJustifyHospitalization: "{conditions_justify_hospitalization}",
     initialDiagnosis: "{initial_diagnosis}",
     principalCid10: "{principal_cid_10}",
-    procedureSolicited: "{procedure_solicited}",
+    requestedProcedure: "{procedure_solicited}",
     procedureCode: "{procedure_code}",
     clinic: "{clinic}",
     internationCarater: "{internation_carater}",
-    professionalSolicitorDocument: {professional_solicitor_document},
-    professionalSolicitorName: "{professional_solicitor_name}",
-    solicitationDate: "{solicitation_date}",
+    requestingProfessionalDocument: {professional_solicitor_document},
+    requestingProfessionalName: "{professional_solicitor_name}",
+    requestDate: "{solicitation_date}",
     professionalAuthorizationName: "{professional_authorization_name}",
     emissionOrgCode: "{emission_org_code}",
     authorizationProfessionalDocument: {authorization_professional_document}
