@@ -33,6 +33,7 @@ test_flow:
 	docker exec -it evolucao_hospitalar_db bash -c 'psql -U postgres -c "\set AUTOCOMMIT on" -c "DROP DATABASE hmlem WITH (FORCE)" -c "CREATE DATABASE hmlem"'
 	docker exec -it evolucao_hospitalar_app bash -c 'flask db upgrade && flask seed'
 	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k TestInternmentFlow'
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k TestPrintPdfs'
 fix-folder-permission:
 	docker exec -it evolucao_hospitalar_app bash -c ' \
 		chmod -R 777 /app/migrations'

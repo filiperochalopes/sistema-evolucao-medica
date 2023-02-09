@@ -1,0 +1,11 @@
+mutation printPdf_FolhaPrescricao ($startDatetimeISOString: String!, $endingDatetimeISOString: String!) {
+  printPdf_FolhaPrescricao(
+    internmentId: 1
+    extra: {
+      startDatetimeStamp: $startDatetimeISOString
+      endingDatetimeStamp: $endingDatetimeISOString
+    }
+  ) {
+    base64Pdf
+  }
+}

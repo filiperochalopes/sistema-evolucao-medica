@@ -1,0 +1,10 @@
+mutation{
+  printPdf_FichaInternamento(
+    internmentId:1
+    extra: {
+      hasAdditionalHealthInsurance: true
+    }
+  ){
+    base64Pdf
+  }
+}
