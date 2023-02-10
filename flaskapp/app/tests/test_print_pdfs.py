@@ -11,6 +11,10 @@ class TestPrintPdfs:
     print_pdf_relatorio_alta_with_extra_query = gql(get_query_from_txt('print_pdf_relatorio_alta_with_extra'))
     print_pdf_relatorio_alta_without_extra_query = gql(get_query_from_txt('print_pdf_relatorio_alta_without_extra'))
     print_pdf_folha_prescricao_with_extra_query = gql(get_query_from_txt('print_pdf_folha_prescricao_with_extra'))
+    print_pdf_folha_prescricao_without_extra_query = gql(get_query_from_txt('print_pdf_folha_prescricao_without_extra'))
+    print_pdf_folha_evolucao_without_extra_query = gql(get_query_from_txt('print_pdf_folha_evolucao_without_extra'))
+    print_pdf_apac_with_extra_query = gql(get_query_from_txt('print_pdf_apac_with_extra'))
+    print_pdf_balanco_hidrico_without_extra_query = gql(get_query_from_txt('print_pdf_balanco_hidrico_without_extra'))
 
     def test_print_pdf_aih_sus_with_extra(self, auth_client):
         result = auth_client.execute(self.print_pdf_aih_sus_with_extra_query)
@@ -47,3 +51,15 @@ class TestPrintPdfs:
 
         result = auth_client.execute(self.print_pdf_folha_prescricao_with_extra_query, variable_values=params)
         assert type(result['printPdf_FolhaPrescricao']['base64Pdf']) == 'string'
+
+    def test_print_pdf_folha_evolucao_without_extra(self, auth_client):
+        result = auth_client.execute(self.print_pdf_folha_evolucao_without_extra_query)
+        assert type(result['printPdf_FolhaEvolucao']['base64Pdf']) == 'string'
+
+    def test_print_pdf_apac_with_extra(self, auth_client):
+        result = auth_client.execute(self.print_pdf_apac_with_extra_query)
+        assert type(result['printPdf_Apac']['base64Pdf']) == 'string'
+
+    def test_print_pdf_balanco_hidrico_without_extra(self, auth_client):
+        result = auth_client.execute(self.print_pdf_balanco_hidrico_without_extra_query)
+        assert type(result['printPdf_BalancoHidrico']['base64Pdf']) == 'string'
