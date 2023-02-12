@@ -101,8 +101,6 @@ generate_pdf_type_defs = gql(
 
         "Gerando página de evolução, sendo que na primeira página sempre mostra a tabela de evolução"
         generatePdf_BalancoHidrico(
-            "Data da criacao. String no formato de dd/mm/aaaa"
-            createdAt: String!
             "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
             patient: PatientInput!
             fluidBalance: [FluidBalanceInput]

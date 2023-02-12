@@ -2,10 +2,8 @@ from gql import gql
 import pytest
 
 
-def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient Name', patient_weight=52, fluid_balances=[{'created_at': "20/12/2022 10:35",'value': -600,'description': "diurese"}]):
+def data_to_use(client, datetime_to_use, patient_name='Patient Name', patient_weight=52, fluid_balances=[{'created_at': "20/12/2022 10:35",'value': -600,'description': "diurese"}]):
 
-    if created_at == None:
-        created_at = datetime_to_use
 
     all_balance = ''
     for balance in fluid_balances:
@@ -19,7 +17,6 @@ def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient 
         generatePdf_BalancoHidrico("""
 
     campos_string = f"""
-    createdAt: "{created_at}",
     patient: {patient}
     fluidBalance:[{all_balance}]
     """
@@ -35,6 +32,7 @@ def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient 
         client.execute(query)
         return True
     except:
+        print(all_string)
         return False
 
 #Testing balanco hidrico
@@ -50,15 +48,6 @@ def test_answer_with_all_fields(client, datetime_to_use):
 @pytest.mark.parametrize("test_input", ['    ', ''])
 def test_empty_value_patient_name(client, datetime_to_use, test_input):
     assert data_to_use(client, datetime_to_use, patient_name=test_input) == False
-
-#################################################################
-# TEST DATETIMES VARIABLES
-
-def test_valid_created_at(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, created_at=datetime_to_use) == True
-
-def test_invalid_created_at(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, created_at='10:10:24 - 1245') == False
 
 
 #################################################################
