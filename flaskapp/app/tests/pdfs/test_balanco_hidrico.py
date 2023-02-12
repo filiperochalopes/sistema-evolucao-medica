@@ -2,12 +2,12 @@ from gql import gql
 import pytest
 
 
-def data_to_use(client, datetime_to_use, patient_name='Patient Name', patient_weight=52, fluid_balances=[{'created_at': "20/12/2022 10:35",'value': -600,'description': "diurese"}]):
+def data_to_use(client, datetime_to_use, patient_name='Patient Name', patient_weight=52, fluid_balances=[{'created_at': "20/12/2022 10:35",'volumeMl': -600,'description': "diurese"}]):
 
 
     all_balance = ''
     for balance in fluid_balances:
-        all_balance += '{createdAt:' + f'"{balance["created_at"]}"' + ',value:' + f'{balance["value"]}' + ',description:' + f'"{balance["description"]}"' + '},'
+        all_balance += '{createdAt:' + f'"{balance["created_at"]}"' + ',volumeMl:' + f'{balance["volumeMl"]}' + ',description:' + f'"{balance["description"]}"' + '},'
     
         patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + f'{patient_weight}' + '}'
 
@@ -63,17 +63,17 @@ def test_valid_patient_weight(client, datetime_to_use, test_input):
 # TEST FLUID BALANCES
 
 @pytest.mark.parametrize("test_input", [
-    [{'created_at': "20/12/2022 10:35",'value': -600,'description': "diurese"}],
-    [{'created_at': "20/12/2022 10:35",'value': 600,'description': "diurese"}],
+    [{'created_at': "20/12/2022 10:35",'volumeMl': -600,'description': "diurese"}],
+    [{'created_at': "20/12/2022 10:35",'volumeMl': 600,'description': "diurese"}],
 ])
 def test_valid_fluid_balance(client, datetime_to_use, test_input):
     assert data_to_use(client, datetime_to_use, fluid_balances=test_input) == True
 
 
 @pytest.mark.parametrize("test_input", [
-    [{'created_at': "20/12/2022",'value': -600,'description': "diurese"}],
-    [{'created_at': "20/12/2022 10:35",'value': 600,'description': "diuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediurese"}],
-    [{'created_at': "20/12/2022 10:35",'value': -0.45,'description': "diurese"}],
+    [{'created_at': "20/12/2022",'volumeMl': -600,'description': "diurese"}],
+    [{'created_at': "20/12/2022 10:35",'volumeMl': 600,'description': "diuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediuresediurese"}],
+    [{'created_at': "20/12/2022 10:35",'volumeMl': -0.45,'description': "diurese"}],
 ])
 def test_invalid_fluid_balance(client, datetime_to_use, test_input):
     assert data_to_use(client, datetime_to_use, fluid_balances=test_input) == False

@@ -136,7 +136,7 @@ class PdfBalancoHidrico(ReportLabCanvasUtils):
             # Add data
             self.add_rectangle(pos=(rectangle_x_pos, rectangle_y_pos), width=RECTANGLE_WIDTH, height=RECTANGLE_HEIGHT)
             self.add_datetime(date=balan['created_at'], pos=(date_x_pos, date_y_pos), camp_name=f'{cont} balance creation date (createdAt)', centralized=True)
-            description_str = self.get_description_values(value=balan['value'],description=balan['description'])
+            description_str = self.get_description_values(value=balan['volume_ml'],description=balan['description'])
             self.add_description(description=description_str, pos=(description_x_pos, description_y_pos), camp_name=f'{cont} fluid balance description')
 
             # Update positions

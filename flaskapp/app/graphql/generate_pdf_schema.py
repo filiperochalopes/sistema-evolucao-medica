@@ -48,7 +48,7 @@ generate_pdf_type_defs = gql(
         "Data da criacao. String no formato de dd/mm/aaaa hh:mm"
         createdAt: String!
         "Valor em mililitros (ml), esse valor pode ser negativo ou positivo"
-        value: Int!
+        volumeMl: Int!
         "Descricao"
         description: String!
     }

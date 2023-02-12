@@ -24,7 +24,6 @@ def func_generate_pdf_balanco_hidrico(patient:dict, fluid_balance:list,
             created_at = created_at[:-5].strip()
             pdf.add_datetime(date=created_at, pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
 
-
             pdf.set_font('Roboto-Mono', 11)
             pdf.add_fluid_balance(balances=fluid_balance)
 
