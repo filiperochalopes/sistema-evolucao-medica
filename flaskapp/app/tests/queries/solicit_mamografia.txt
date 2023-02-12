@@ -52,7 +52,7 @@ mutation{
       healthUnitCityIbgeCode: "1234567",
       documentChartNumber: "142",
       patientEthnicity: ["BRANCA", null],
-      professionalSolicitorName: "Professional Soliciame",
+      requestingProfessionalName: "Professional Soliciame",
       solicitationDate: "10/10/2012",
       examNumber: "4124",
       trackingMammogram: "POPALVO",

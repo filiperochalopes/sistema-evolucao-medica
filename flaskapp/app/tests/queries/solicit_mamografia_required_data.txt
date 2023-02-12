@@ -15,7 +15,7 @@ mutation{
         noduleLump: "NAO",
         highRisk: "NAOSABE",
         examinatedBefore: "NUNCA",
-        professionalSolicitorName: "Professional Soliciame",
+        requestingProfessionalName: "Professional Soliciame",
         solicitationDate: "10/10/2012"
 ){base64Pdf}
     }
