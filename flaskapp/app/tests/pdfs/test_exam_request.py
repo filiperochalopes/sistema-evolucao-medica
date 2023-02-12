@@ -2,7 +2,7 @@ from gql import gql
 import pytest
 from app.tests.pdfs.request_queries_examples import exam_request_required_data_request_string
 
-def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns='928976954930007', patient_birthday=None,patient_address="Patient Adress",exams="Exames tests with a text",solicitation_reason="Solicitation Reason",professional_solicitor_name="Professional Solicitor",professional_authorized_name="Professional Authorized",solicitation_date=None,authorization_date=None, document_pacient_date=None,document_pacient_name='Document pacient name'):
+def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns='928976954930007', patient_birthday=None,patient_address="Patient Adress",exams="Exames tests with a text",solicitation_reason="Solicitation Reason",requesting_professional_name="Professional Solicitor",professional_authorized_name="Professional Authorized",solicitation_date=None,authorization_date=None, document_pacient_date=None,document_pacient_name='Document pacient name'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
@@ -24,7 +24,7 @@ def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns
     campos_string = f"""
     patient: {patient},
     solicitationReason: "{solicitation_reason}",
-    professionalSolicitorName: "{professional_solicitor_name}",
+    requestingProfessionalName: "{requesting_professional_name}",
     solicitationDate: "{solicitation_date}",
     exams: "{exams}",
     professionalAuthorizedName: "{professional_authorized_name}", 
@@ -71,7 +71,7 @@ def test_awnser_with_only_required_data(client, datetime_to_use):
 # ERRORS IN NAMES CAMPS
 # patientName
 # professional_authorized_name
-# professional_solicitor_name
+# requesting_professional_name
 # document_pacient_name
 # Name empty
 # Name with space

@@ -13,7 +13,7 @@ mutation{
       },
     },
     solicitationReason: "Solicitation reason",
-    professionalSolicitorName: "Professional solicitor Name",
+    requestingProfessionalName: "Professional solicitor Name",
     solicitationDate: "10/10/2014",
     exams: "Exames Solicitados",
     professionalAuthorizedName: "Prof Authorization Name", 
