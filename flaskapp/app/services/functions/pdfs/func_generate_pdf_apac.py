@@ -2,11 +2,11 @@ import datetime
 from app.services.utils.PdfApac import PdfApac
 
 
-def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, patient:dict, main_procedure:dict, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_color:str=None, document_chart_number:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None,professional_solicitor_document:dict=None, professional_solicitor_name:str=None, solicitation_date:datetime.datetime=None, professional_authorization_name:str=None, emission_org_code:str=None, authorization_professional_document:dict=None, authorization_date:datetime.datetime=None, signature_date:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
+def func_generate_pdf_apac(requesting_establishment:dict, establishment_exec:dict, patient:dict, main_procedure:dict, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_color:str=None, document_chart_number:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None,requesting_professional_document:dict=None, requesting_professional_name:str=None, solicitation_date:datetime.datetime=None, professional_authorization_name:str=None, emission_org_code:str=None, authorization_professional_document:dict=None, authorization_date:datetime.datetime=None, signature_date:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
     """fill pdf apac
 
     Args:
-        establishment_solitc (dict): establishment_solitc
+        requesting_establishment (dict): requesting_establishment
         establishment_exec (dict): establishment_exec
         patient (dict): info
         main_procedure (dict): dict with name, code and quat of main procedure
@@ -20,8 +20,8 @@ def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, p
         procedure_justification_sec_cid_10 (str, optional): procedure_justification_sec_cid_10. Defaults to None.
         procedure_justification_associated_cause_cid_10 (str, optional): procedure_justification_associated_cause_cid_10. Defaults to None.
         procedure_justification_comments (str, optional): procedure_justification_comments. Defaults to None.
-        professional_solicitor_document (dict, optional): professional_solicitor_document. Defaults to None.
-        professional_solicitor_name (str, optional): professional_solicitor_name. Defaults to None.
+        requesting_professional_document (dict, optional): requesting_professional_document. Defaults to None.
+        requesting_professional_name (str, optional): requesting_professional_name. Defaults to None.
         solicitation_date (datetime.datetime, optional): solicitation_date. Defaults to None.
         professional_authorization_name (str, optional): professional_authorization_name. Defaults to None.
         emission_org_code (str, optional): emission_org_code. Defaults to None.
@@ -47,12 +47,12 @@ def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, p
             pdf.add_procedure(procedure=main_procedure, code_pos=(36,542), name_pos=(220, 542), quant_pos=(508, 542), camp_name='Main Procedure')
 
             pdf.set_font('Roboto-Mono', 9)
-            pdf.add_oneline_text(text=establishment_solitc['name'], pos=(36, 742), camp_name='Establishment Solict Name', len_max=77, len_min=7)
+            pdf.add_oneline_text(text=requesting_establishment['name'], pos=(36, 742), camp_name='Establishment Solict Name', len_max=77, len_min=7)
             pdf.add_oneline_text(text=patient['name'], pos=(36, 702), camp_name='Patient Name', len_max=67, len_min=7)
             pdf.add_sex_square(sex=patient['sex'], pos_male=(423, 699), pos_fem=(456, 699), camp_name='Patient Sex', square_size=(9,9))
             pdf.add_datetime(date=patient['birthdate'], pos=(315, 678), camp_name='Patient Birthday', hours=False, interval='  ', formated=False)
             pdf.add_oneline_text(text=patient['address']['city'], pos=(36, 584), camp_name='Patient Adress City', len_max=58, len_min=3)
-            pdf.add_oneline_text(text=establishment_solitc['cnes'], pos=(468, 742), camp_name='Establishment Solict CNES', len_max=7, len_min=7)
+            pdf.add_oneline_text(text=requesting_establishment['cnes'], pos=(468, 742), camp_name='Establishment Solict CNES', len_max=7, len_min=7)
         
         except Exception as error:
             return error
@@ -80,7 +80,7 @@ def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, p
             pdf.add_oneline_text(text=procedure_justification_main_cid_10, pos=(352, 344), camp_name='Procedure Justification main CID10', len_max=4, len_min=3, nullable=True)
             pdf.add_oneline_text(text=procedure_justification_sec_cid_10, pos=(420, 344), camp_name='Procedure Justification secondary CID10', len_max=4, len_min=3, nullable=True)
             pdf.add_oneline_text(text=procedure_justification_associated_cause_cid_10, pos=(505, 344), camp_name='Procedure Justification Associated Causes CID10', len_max=4, len_min=3, nullable=True)
-            pdf.add_oneline_text(text=professional_solicitor_name, pos=(36, 204), camp_name='Profissional Solicitor Name', len_max=48, len_min=5, nullable=True)
+            pdf.add_oneline_text(text=requesting_professional_name, pos=(36, 204), camp_name='Profissional Solicitor Name', len_max=48, len_min=5, nullable=True)
             pdf.add_oneline_text(text=professional_authorization_name, pos=(36, 136), camp_name='Profissional Authorizator Name', len_max=46, len_min=5, nullable=True)
             pdf.add_oneline_text(text=emission_org_code, pos=(290, 136), camp_name='Emission Org Code', len_max=16, len_min=2, nullable=True)
             pdf.add_datetime(date=solicitation_date, pos=(310, 204), camp_name='Solicitation Datetime', hours=False, interval='  ', formated=False, nullable=True)
@@ -90,7 +90,7 @@ def func_generate_pdf_apac(establishment_solitc:dict, establishment_exec:dict, p
             pdf.add_datetime(date=validity_period_end, pos=(492, 66), camp_name='Validity Period End', hours=False, interval='  ', formated=False, nullable=True)
             pdf.add_secondary_procedures(procedures=secondaries_procedures)
             pdf.add_morelines_text(text=procedure_justification_comments, initial_pos=(36, 318), decrease_ypos= 10, camp_name='Procedura justification Comments', len_max=776, char_per_lines=97, len_min=5, nullable=True)
-            pdf.add_document_cns_cpf_rg(document=professional_solicitor_document, pos_square_cpf=(103, 180), pos_square_cns=(51,180), pos_cns=(151, 181), pos_cpf=(151, 181),camp_name='Professional Solicitor Document', interval='  ',nullable=True)
+            pdf.add_document_cns_cpf_rg(document=requesting_professional_document, pos_square_cpf=(103, 180), pos_square_cns=(51,180), pos_cns=(151, 181), pos_cpf=(151, 181),camp_name='Professional Solicitor Document', interval='  ',nullable=True)
             pdf.add_document_cns_cpf_rg(document=authorization_professional_document, pos_square_cpf=(103, 104), pos_square_cns=(51,104), pos_cns=(149, 105), pos_cpf=(151, 105),camp_name='Professional Authorizator Document', interval='  ',nullable=True)
         except Exception as error:
             return error

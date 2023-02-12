@@ -1,7 +1,7 @@
 # Write your query or mutation here
 mutation{
 	generatePdf_Apac(
-		establishmentSolitc: {
+		requestingEstablishment: {
         name: "Establishmente Solict Name",
         cnes: "1234567"
       },
@@ -52,12 +52,12 @@ mutation{
 		procedureJustificationSecCid10: "A31",
 		procedureJustificationAssociatedCauseCid10: "B435",
 		procedureJustificationComments: "Procedure Justification Comments",
-		professionalSolicitorDocument: {
+		requestingProfessionalDocument: {
 		cns: "928976954930007",
 		cpf: null,
 		rg: null
 		},
-		professionalSolicitorName: "Professional Solicitator",
+		requestingProfessionalName: "Professional Solicitator",
 		solicitationDate: "10/11/2021",
 		professionalAuthorizationName: "Professional authorization",
 		emissionOrgCode: "Cod121234",

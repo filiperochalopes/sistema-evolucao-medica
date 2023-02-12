@@ -1,6 +1,6 @@
 mutation{
     generatePdf_Apac(
-        establishmentSolitc: {
+        requestingEstablishment: {
             name: "Establishmente Solict Name",
             cnes: "1234567"
         },

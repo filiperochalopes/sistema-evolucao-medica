@@ -194,7 +194,7 @@ generate_pdf_type_defs = gql(
         "Criação de documento de APAC"
         generatePdf_Apac(
             "Dados do Estabelecimento Solicitante"
-            establishmentSolitc: EstablishmentInput!,
+            requestingEstablishment: EstablishmentInput!,
             "Dados do Estabelecimento Executante"
             establishmentExec: EstablishmentInput, 
             "Dados do Paciente"
@@ -224,9 +224,9 @@ generate_pdf_type_defs = gql(
             "Observacoes do diagnostico, max: 776 min: 5 caracteres"  
             procedureJustificationComments: String,
             "Documento do profissional solicitante, cns ou cpf, utilize o input DocumentInput"
-            professionalSolicitorDocument: DocumentInput, 
+            requestingProfessionalDocument: DocumentInput, 
             "Nome do profissional solicitante, max:48 min:5 caracteres"
-            professionalSolicitorName: String,
+            requestingProfessionalName: String,
             "Data da solicitacao, somente dia/mes/ano"
             solicitationDate: String,
             "Nome do profissional autorizador, max:46 min:5 caracteres" 
@@ -280,7 +280,7 @@ generate_pdf_type_defs = gql(
         "Criação de documento de LME"
         generatePdf_Lme(
             "Dados do Estabelecimento Solicitante"
-            establishmentSolitc: EstablishmentInput!,
+            requestingEstablishment: EstablishmentInput!,
             "Dados do Paciente, IMPORTANTE: o peso do paciente, será tranformado em numero inteiro de no maximo 3 digitos"
             patient: PatientInput!
             """
@@ -294,11 +294,11 @@ generate_pdf_type_defs = gql(
             "Anamnese, max:485 min: 5 caracteres"
             anamnese: String!,
             "Nome do profissional solicitante, max:45 min:8 caracteres"
-            professionalSolicitorName: String!,
+            requestingProfessionalName: String!,
             "Data da solicitacao no formato DD/MM/YYYY"
             solicitationDate: String!,
             "Documento do profissional solicitante, CNS ou CPF, utilize o DocumentInput"
-            professionalSolicitorDocument: DocumentInput!,
+            requestingProfessionalDocument: DocumentInput!,
             """
             Atestado de capacidade, envie como uma list com 2 opcoes. ['Sim'/'Nao', 'Nome do responsavel]. 
             Nome do responsavel deve ter no max:46 min:5(caso a opcao seja Sim) caracteres
@@ -354,7 +354,7 @@ generate_pdf_type_defs = gql(
             "Motivo da Solicitacao, max: 216 min:7 caracteres"
             solicitationReason: String!,
             "Nome do profissional Solicitante, max:29 min:7 caracteres"
-            professionalSolicitorName: String!,
+            requestingProfessionalName: String!,
             "Data da Solicitacao no formato DD/MM/YYYY"
             solicitationDate: String!,
             "Exames solicitados"
@@ -448,7 +448,7 @@ generate_pdf_type_defs = gql(
             """
             patientEthnicity: [String],
             "Nome do Profissional Solicitante, max: 23 min:7 caracteres"
-            professionalSolicitorName: String!,
+            requestingProfessionalName: String!,
             "Data da Solicitacao no formato DD/MM/YYYY"
             solicitationDate: String!,
             "Numero do exame, max: 16 caracteres"
