@@ -2,7 +2,7 @@ from gql import gql
 import pytest
 
 
-def data_to_use(client, document_datetime_to_use, created_at=None, patient_name='Patient Name',
+def data_to_use(client, document_datetime_to_use, patient_name='Patient Name',
         evolutions=[{
         'created_at': "10/10/2022 20:10",
         'description': "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.",
@@ -20,9 +20,6 @@ def data_to_use(client, document_datetime_to_use, created_at=None, patient_name=
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'
         },]):
 
-    if created_at == None:
-        created_at = document_datetime_to_use
-
     all_evolutions = ''
     for evo in evolutions:
         all_evolutions += '{createdAt:' + f'"{evo["created_at"]}"' + ',description:' + f'"{evo["description"]}",' + 'professional:' + f'{evo["professional"]}' +'},'
@@ -38,7 +35,6 @@ def data_to_use(client, document_datetime_to_use, created_at=None, patient_name=
 	generatePdf_FolhaEvolucao("""
 
     campos_string = f"""
-    createdAt: "{created_at}",
     patient: {patient},
     evolutions:[{all_evolutions}],
     measures: [{all_measures}],
@@ -69,14 +65,6 @@ def test_with_data_in_function(client, document_datetime_to_use):
 def test_empty_value_patient_name(client, document_datetime_to_use, test_input):
     assert data_to_use(client, document_datetime_to_use, patient_name=test_input) == False
 
-#################################################################
-# TEST DATETIMES VARIABLES
-
-def test_valid_created_at(client, document_datetime_to_use):
-    assert data_to_use(client, document_datetime_to_use, created_at=document_datetime_to_use) == True
-
-def test_invalid_created_at(client, document_datetime_to_use):
-    assert data_to_use(client, document_datetime_to_use, created_at='10:10:24 - 1245') == False
 
 ##################################################################
 # TEST EVOLUTIONS

@@ -1,7 +1,7 @@
 from app.services.utils.PdfFolhaEvolucao import PdfFolhaEvolucao
 
 
-def func_generate_pdf_folha_evolucao(created_at:str, patient:dict, evolutions:list, measures:list, 
+def func_generate_pdf_folha_evolucao(patient:dict, evolutions:list, measures:list, 
 #current_user: dict
 ) -> str:
 
@@ -17,7 +17,12 @@ def func_generate_pdf_folha_evolucao(created_at:str, patient:dict, evolutions:li
 
             pdf.set_font('Roboto-Mono', 16)
             
-            pdf.add_datetime(date=created_at[:-6], pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
+            # get last evolution date and add in pdf
+            created_at = evolutions[-1].get('created_at')
+            if created_at is None:
+                raise Exception('Data de criação da ultima evolução não encontrada pode ser vazia')
+            created_at = created_at[:-6]
+            pdf.add_datetime(date=created_at, pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
 
             pdf.set_font('Roboto-Mono', 11)
 
