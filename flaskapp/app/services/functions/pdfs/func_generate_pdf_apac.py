@@ -71,9 +71,12 @@ def func_generate_pdf_apac(requesting_establishment:dict, establishment_exec:dic
             pdf.add_UF(uf=patient['address']['uf'], pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
             pdf.add_oneline_text(text=establishment_exec.get('name'), pos=(36, 30), camp_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
             pdf.add_oneline_text(text=str(procedure_justification_description).upper(), pos=(36, 344), camp_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
-            pdf.add_phonenumber(number=patient_mother_phonenumber, pos=(409, 650), camp_name='Patient Mother Phone Number', nullable=True, interval='  ')
             pdf.add_oneline_text(text=patient_responsible_name, pos=(36, 630), camp_name='Patient Responsible Name', len_max=67, len_min=7, nullable=True)
-            pdf.add_phonenumber(number=patient_responsible_phonenumber, pos=(409, 626), camp_name='Patient Responsible Phone Number', nullable=True, interval='  ')
+
+            # pdf.add_phonenumber(number=patient_mother_phonenumber, pos=(409, 650), camp_name='Patient Mother Phone Number', nullable=True, interval='  ')
+            # pdf.add_phonenumber(number=patient_responsible_phonenumber, pos=(409, 626), camp_name='Patient Responsible Phone Number', nullable=True, interval='  ')
+            pdf.add_contat_phonenumbers(phonenumbers=[patient_mother_phonenumber, patient_responsible_phonenumber], pos=(409, 650), interval='  ', y_decrease=24, nullable=True)
+
             pdf.add_oneline_text(text=patient_color, pos=(404, 678), camp_name='Patient Color', len_max=10, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient.get('ethnicity'), pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)
             pdf.add_oneline_text(text=document_chart_number, pos=(483, 702), camp_name='Document Chart Number', len_max=14, len_min=1, nullable=True)
