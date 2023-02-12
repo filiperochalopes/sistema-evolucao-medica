@@ -2,8 +2,6 @@ from gql import gql
 import jwt
 from app.env import SECRET
 from app.tests.conftest import get_query_from_txt
-from app.models import User
-from app.services.utils.auth import check_token
 
 
 class TestInternmentFlow:
@@ -17,6 +15,7 @@ class TestInternmentFlow:
     create_measure_query = gql(get_query_from_txt('create_measure'))
     create_fluid_balance_query_1 = gql(get_query_from_txt('create_fluid_balance_1'))
     create_fluid_balance_query_2 = gql(get_query_from_txt('create_fluid_balance_2'))
+    create_pending_query = gql(get_query_from_txt('create_pending'))
 
     def test_graphql_query(self, client):
         '''Verifica se a API está funcional'''
@@ -63,3 +62,7 @@ class TestInternmentFlow:
         assert int(result['createFluidBalance']['id']) > 0
         result = auth_client.execute(self.create_fluid_balance_query_2)
         assert int(result['createFluidBalance']['id']) > 0
+
+    def test_write_a_pending_message(self, auth_client):
+        result = auth_client.execute(self.create_pending_query)
+        assert int(result['createPending']['id']) > 0

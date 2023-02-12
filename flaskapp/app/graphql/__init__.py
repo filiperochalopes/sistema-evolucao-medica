@@ -458,6 +458,7 @@ type_defs = gql(
     }
 
     type Pending{
+        id: ID!
         text: String
         createdAt: String
     }

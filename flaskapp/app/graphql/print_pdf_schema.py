@@ -19,6 +19,59 @@ print_pdf_type_defs = gql(
         hasAdditionalHealthInsurance: Boolean
     }
 
+    input PrintRelatorioAltaExtraInput {
+        "Orientações de Alta"
+        orientations: String
+        "No formato ISO %Y-%m-%dT%H:%M:%S"
+        datetimeStamp: String
+    }
+
+    input TimestampExtraInput{
+        "No formato ISO %Y-%m-%dT%H:%M:%S"
+        startDatetimeStamp: String!
+        "No formato ISO %Y-%m-%dT%H:%M:%S"
+        endingDatetimeStamp: String!
+    }
+
+    input PrintFolhaPrescricaoExtraInput{
+        "Intervalo de exibição dos dados"
+        interval: TimestampExtraInput
+    }
+
+    input PrintFolhaEvolucaoExtraInput{
+        "Intervalo de exibição dos dados"
+        interval: TimestampExtraInput
+    }
+
+    input PrintBalancoHidricoExtraInput{
+        "Intervalo de exibição dos dados"
+        interval: TimestampExtraInput
+    }
+
+    input ProcedureApacInput{
+        "Código do procedimento"
+        code: String!
+        "Nome do procedimento"
+        name: String!
+        "Quantidade do procedimento solicitado, default 1"
+        quantity: Int
+    }
+
+    input PrintApacExtraInput{
+        "Procedimento de Alta Complexidade para seleção da lista"
+        procedure: ProcedureApacInput!
+        "Opcional: Lista de procedimentos secundários"
+        secondaryProcedures: [ProcedureApacInput]
+        "Opcional: Diagnóstico que motiva o exame, em caso de não preenchimento será utilizado o da última evolução com CID"
+        diagnosis: Cid10Input
+        "Opcional: Diagnóstico secundário"
+        secondaryDiagnosis: Cid10Input
+        "Opcional: Causa associada"
+        ssociatedCause: Cid10Input
+        "Opcional: Observações, em caso de não preenchimento será preenchido com História da Doença Atual"
+        observations: Cid10Input
+    }
+
     extend type Mutation {
         """
         Gera PDF para impressão, por meio de dados em banco da aplicação, de documento de AIH
@@ -40,6 +93,51 @@ print_pdf_type_defs = gql(
             "Id do internamento do referência"
             internmentId: Int!
             extra: PrintFichaInternamentoExtraInput
+        ): GeneratedPdf
+
+        """
+        Gera PDF para impressão, por meio de dados em banco da aplicação, de documento de Relatório de Alta
+        """
+        printPdf_RelatorioAlta(
+            "Id do internamento do referência"
+            internmentId: Int!
+            extra: PrintRelatorioAltaExtraInput
+        ): GeneratedPdf
+
+        """
+        Gera PDF para impressão, documento de Prescrição Médica
+        """
+        printPdf_FolhaPrescricao(
+            "Id do internamento do referência"
+            internmentId: Int!
+            extra: PrintFolhaPrescricaoExtraInput
+        ): GeneratedPdf
+
+        """
+        Gera PDF para impressão, documento de Prescrição Médica
+        """
+        printPdf_FolhaEvolucao(
+            "Id do internamento do referência"
+            internmentId: Int!
+            extra: PrintFolhaEvolucaoExtraInput
+        ): GeneratedPdf
+
+        """
+        Gera PDF para impressão, documento de Prescrição Médica
+        """
+        printPdf_BalancoHidrico(
+            "Id do internamento do referência"
+            internmentId: Int!
+            extra: PrintBalancoHidricoExtraInput
+        ): GeneratedPdf
+
+        """
+        Gera PDF para impressão, documento de Prescrição Médica
+        """
+        printPdf_Apac(
+            "Id do internamento do referência"
+            internmentId: Int!
+            extra: PrintApacExtraInput!
         ): GeneratedPdf
     }
 ''')
