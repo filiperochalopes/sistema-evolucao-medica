@@ -71,7 +71,7 @@ def func_generate_pdf_lme(establishment_solitc:dict, patient:dict, patient_heigh
             pdf.add_document_cns_cpf_rg(document={'cpf': patient.get('cpf'), 'cns': patient.get('cns')}, pos_square_cpf=(40, 66), pos_square_cns=(84,66), pos_cns=(129, 66), pos_cpf=(129, 66),camp_name='Patient Document', interval='  ', nullable=True, square_size=(5, 8))
             pdf.add_oneline_text(text=diagnostic, pos=(105, 455), camp_name='Diagnostic', len_max=84, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient_email, pos=(36, 42), camp_name='Patient Email', len_max=62, len_min=8, nullable=True)
-            pdf.add_contat_phonenumbers(phonenumbers=contacts_phonenumbers, pos=(384, 116), interval='  ')
+            pdf.add_contact_phonenumbers(phonenumbers=contacts_phonenumbers, pos=(384, 116), interval='  ')
             pdf.add_medicines(medicines=medicines)
 
         except Exception as error:

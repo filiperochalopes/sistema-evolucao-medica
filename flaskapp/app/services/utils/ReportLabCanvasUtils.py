@@ -522,7 +522,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {camp_name}')
 
 
-    def add_contat_phonenumbers(self, phonenumbers:list, pos:tuple, interval:str, y_decrease:int=20, formated:bool=False, nullable:bool=False) -> None:
+    def add_contact_phonenumbers(self, phone_numbers:list, pos:tuple, interval:str, y_decrease:int=20, formated:bool=False, nullable:bool=False) -> None:
         """Add contact numbers
 
         Args:
@@ -535,23 +535,23 @@ class ReportLabCanvasUtils():
         """    
             
         try:
-            if phonenumbers == None:
+            if phone_numbers == None:
                 return None
-            elif type(phonenumbers) != type(list()):
+            elif type(phone_numbers) != type(list()):
                 raise Exception('Numeros de telefone de contatos (contacts phonenumbers) deve ser uma lista')
-            elif len(phonenumbers) > 2:
+            elif len(phone_numbers) > 2:
                 raise Exception('A lista de Numeros de telefone de contatos (contacts phonenumbers) pode ter no maximo 2 numeros')
 
             #Verify if all numbers are str and has 10 digits
-            for number in phonenumbers:
+            for number in phone_numbers:
                 if type(number) != type(str()):
                     raise Exception('Numeros de telefone de contatos devem ser string')
                 elif len(number) != 10:
                     raise Exception('Numeros de telefone de contatos devem ter 10 digitos')
 
             cont = 1
-            for number in phonenumbers:
-                self.add_phonenumber(number=number, pos=pos, camp_name=f'Numero de telefone de contato {cont}', len_max=11, len_min=10, nullable=nullable, interval=interval, formated=formated)
+            for number in phone_numbers:
+                self.add_phonenumber(number=number, pos=pos, camp_name=f'Numero de telefone de contato {cont}', nullable=nullable, interval=interval, formated=formated)
                 #self.add_oneline_text(text=formated_number, pos=(pos[0], pos[1]), camp_name=f'Numero de telefone de contato {cont}', len_max=11, len_min=11, nullable=nullable, interval=interval)
                 cont += 1
                 pos = (pos[0], pos[1]-y_decrease)

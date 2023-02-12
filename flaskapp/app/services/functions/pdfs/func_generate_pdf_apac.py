@@ -75,7 +75,7 @@ def func_generate_pdf_apac(requesting_establishment:dict, establishment_exec:dic
 
             # pdf.add_phonenumber(number=patient_mother_phonenumber, pos=(409, 650), camp_name='Patient Mother Phone Number', nullable=True, interval='  ')
             # pdf.add_phonenumber(number=patient_responsible_phonenumber, pos=(409, 626), camp_name='Patient Responsible Phone Number', nullable=True, interval='  ')
-            pdf.add_contat_phonenumbers(phonenumbers=[patient_mother_phonenumber, patient_responsible_phonenumber], pos=(409, 650), interval='  ', y_decrease=24, nullable=True)
+            pdf.add_contact_phonenumbers(phone_numbers=[patient_mother_phonenumber, patient_responsible_phonenumber], pos=(409, 650), interval='  ', y_decrease=24, nullable=True)
 
             pdf.add_oneline_text(text=patient_color, pos=(404, 678), camp_name='Patient Color', len_max=10, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient.get('ethnicity'), pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)

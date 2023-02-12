@@ -35,7 +35,7 @@ class PdfLme(ReportLabCanvasUtils):
         return None
 
         
-    def add_contat_phonenumbers(self, phonenumbers:list, pos:tuple, interval:str) -> None:
+    def add_contact_phonenumbers(self, phonenumbers:list, pos:tuple, interval:str) -> None:
         """Add contact numbers
 
         Args:
