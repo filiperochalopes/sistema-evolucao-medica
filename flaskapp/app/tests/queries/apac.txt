@@ -42,9 +42,8 @@ mutation{
       quantity: 4
       }
 		],
-		patientMotherPhonenumber: "3412344321",
+    contactsPhonenumbers: ["5425415864","3412344321"]
 		patientResponsibleName: "Patient Responsible Name",
-		patientResponsiblePhonenumber: "5425415864",
 		patientColor: "BRANCA",
 		documentChartNumber: "12345",
 		procedureJustificationDescription: "Procedure Justification Description",

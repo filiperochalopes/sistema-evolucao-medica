@@ -2,7 +2,7 @@ import datetime
 from app.services.utils.PdfApac import PdfApac
 
 
-def func_generate_pdf_apac(requesting_establishment:dict, establishment_exec:dict, patient:dict, main_procedure:dict, patient_mother_phonenumber:str=None, patient_responsible_name:str=None, patient_responsible_phonenumber:str=None, patient_color:str=None, document_chart_number:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None,requesting_professional_document:dict=None, requesting_professional_name:str=None, solicitation_date:datetime.datetime=None, professional_authorization_name:str=None, emission_org_code:str=None, authorization_professional_document:dict=None, authorization_date:datetime.datetime=None, signature_date:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
+def func_generate_pdf_apac(requesting_establishment:dict, establishment_exec:dict, patient:dict, main_procedure:dict,patient_responsible_name:str=None, patient_color:str=None, document_chart_number:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_comments:str=None,requesting_professional_document:dict=None, requesting_professional_name:str=None, contacts_phonenumbers:list=None,solicitation_date:datetime.datetime=None, professional_authorization_name:str=None, emission_org_code:str=None, authorization_professional_document:dict=None, authorization_date:datetime.datetime=None, signature_date:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
     """fill pdf apac
 
     Args:
@@ -73,9 +73,7 @@ def func_generate_pdf_apac(requesting_establishment:dict, establishment_exec:dic
             pdf.add_oneline_text(text=str(procedure_justification_description).upper(), pos=(36, 344), camp_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient_responsible_name, pos=(36, 630), camp_name='Patient Responsible Name', len_max=67, len_min=7, nullable=True)
 
-            # pdf.add_phonenumber(number=patient_mother_phonenumber, pos=(409, 650), camp_name='Patient Mother Phone Number', nullable=True, interval='  ')
-            # pdf.add_phonenumber(number=patient_responsible_phonenumber, pos=(409, 626), camp_name='Patient Responsible Phone Number', nullable=True, interval='  ')
-            pdf.add_contact_phonenumbers(phone_numbers=[patient_mother_phonenumber, patient_responsible_phonenumber], pos=(409, 650), interval='  ', y_decrease=24, nullable=True)
+            pdf.add_contact_phonenumbers(phone_numbers=contacts_phonenumbers, pos=(409, 650), interval='  ', y_decrease=24, nullable=True)
 
             pdf.add_oneline_text(text=patient_color, pos=(404, 678), camp_name='Patient Color', len_max=10, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient.get('ethnicity'), pos=(470, 678), camp_name='Patient Ehinicity', len_max=17, len_min=4, nullable=True)

@@ -203,12 +203,10 @@ generate_pdf_type_defs = gql(
             mainProcedure: ProcedureApacInput!,
             "Procedimentos Secundarios, no maximo 5, envie uma lista de ProcedureApacInput"
             secondariesProcedures: [ProcedureApacInput],
-            "Numero de telefone da mae do paciente, envie somente numeros, 10 ou 11 digitos"
-            patientMotherPhonenumber: String, 
             "Nome do responsavel do paciente, max:67 min:7 caracteres"
             patientResponsibleName: String, 
-            "Numero de telefone do Responsavel do paciente, envie somente numeros, 10 ou 11 digitos"
-            patientResponsiblePhonenumber: String,
+            "Numeros de telefone de contato, no maximo 2 numeros, somente 10 digitos (DDD + Numero)"
+            contactsPhonenumbers: [String],
             "Cor do Paciente, max:10 min:4 caracteres"
             patientColor: String, 
             "Numero do Prontuario, max:14 min:1 caracteres"
