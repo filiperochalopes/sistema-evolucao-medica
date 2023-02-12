@@ -51,10 +51,10 @@ class PdfApac(ReportLabCanvasUtils):
             ## Add to canvas
             # Change size to add Code
             self.set_font('Roboto-Mono', 10)
-            self.add_oneline_text(text=procedure['code'], pos=code_pos, camp_name=f'{camp_name} Procedure Code', len_max=10, len_min=10, interval='  ')
+            self.add_oneline_text(text=str(procedure['code']).upper(), pos=code_pos, camp_name=f'{camp_name} Procedure Code', len_max=10, len_min=10, interval='  ')
             #Change size to add Code and Name
             self.set_font('Roboto-Mono', 9)
-            self.add_oneline_text(text=procedure['name'], pos=name_pos, camp_name=f'{camp_name} Procedure Name', len_max=50, len_min=7)
+            self.add_oneline_text(text=str(procedure['name']).upper(), pos=name_pos, camp_name=f'{camp_name} Procedure Name', len_max=50, len_min=7)
             self.add_oneline_intnumber(number=procedure['quantity'], pos=quant_pos, camp_name=f'{camp_name} Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
 
             return None
