@@ -200,9 +200,9 @@ generate_pdf_type_defs = gql(
             "Dados do Paciente"
             patient: PatientInput!
             "Procedimento Solicitado, utilize o input ProcedimentoInput"
-            mainProcedure: ProcedimentoInput!,
-            "Procedimentos Secundarios, no maximo 5, envie uma lista de ProcedimentoInput"
-            secondariesProcedures: [ProcedimentoInput],
+            mainProcedure: ProcedureApacInput!,
+            "Procedimentos Secundarios, no maximo 5, envie uma lista de ProcedureApacInput"
+            secondariesProcedures: [ProcedureApacInput],
             "Numero de telefone da mae do paciente, envie somente numeros, 10 ou 11 digitos"
             patientMotherPhonenumber: String, 
             "Nome do responsavel do paciente, max:67 min:7 caracteres"

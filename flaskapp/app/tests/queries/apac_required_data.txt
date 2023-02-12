@@ -20,6 +20,6 @@ mutation{
                 uf: "SP",
             }
         },
-        mainProcedure: {name: "teste procedimento",code: "hkmaug347s",quant: 1}
+        mainProcedure: {name: "teste procedimento",code: "hkmaug347s",quantity: 1}
     ){base64Pdf}
 }

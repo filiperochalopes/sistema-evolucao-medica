@@ -35,18 +35,18 @@ class PdfApac(ReportLabCanvasUtils):
             if procedure == None:
                 return None
             if type(procedure) != type(dict()):
-                raise Exception('procedure deve ser um dicionario, exemplo: {"name":"Procedure Name", "code":"cod124235", "quant":5}')
-            necessaryKeys = ["name", "code", "quant"]
+                raise Exception('procedure deve ser um dicionario, exemplo: {"name":"Procedure Name", "code":"cod124235", "quantity":5}')
+            necessaryKeys = ["name", "code", "quantity"]
             #Verify if the necessary keys are in the dict
-            if 'name' not in procedure.keys() or 'code' not in procedure.keys() or "quant" not in procedure.keys():
-                raise Exception('Algumas chaves do dicionario estao faltando, o dicionario deve ter as chaves "name", "code", "quant"')
+            if 'name' not in procedure.keys() or 'code' not in procedure.keys() or "quantity" not in procedure.keys():
+                raise Exception('Algumas chaves do dicionario estao faltando, o dicionario deve ter as chaves "name", "code", "quantity"')
             #Verify if the value in the dics is the needed
-            elif type(procedure['name']) != type(str()) or type(procedure['code']) != type(str()) or type(procedure["quant"]) != type(int()):
-                raise Exception('Os valores das chaves "name", "code" devem ser string e "quant" deve ser um numero inteiro')
+            elif type(procedure['name']) != type(str()) or type(procedure['code']) != type(str()) or type(procedure["quantity"]) != type(int()):
+                raise Exception('Os valores das chaves "name", "code" devem ser string e "quantity" deve ser um numero inteiro')
             #Verify if the dict has more keys than the needed
             for key in procedure.keys():
                 if key not in necessaryKeys:
-                    raise Exception('O dicionario deve ter somente 3 chaves, sendo elas: "name", "code", "quant"')
+                    raise Exception('O dicionario deve ter somente 3 chaves, sendo elas: "name", "code", "quantity"')
             
             ## Add to canvas
             # Change size to add Code
@@ -55,7 +55,7 @@ class PdfApac(ReportLabCanvasUtils):
             #Change size to add Code and Name
             self.set_font('Roboto-Mono', 9)
             self.add_oneline_text(text=procedure['name'], pos=name_pos, camp_name=f'{camp_name} Procedure Name', len_max=50, len_min=7)
-            self.add_oneline_intnumber(number=procedure['quant'], pos=quant_pos, camp_name=f'{camp_name} Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
+            self.add_oneline_intnumber(number=procedure['quantity'], pos=quant_pos, camp_name=f'{camp_name} Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
 
             return None
         
@@ -80,7 +80,7 @@ class PdfApac(ReportLabCanvasUtils):
             if procedures == None:
                 return None
             if type(procedures) != type(list()):
-                raise Exception('procedimentos (procedures) devem ser uma lista de dicionarios, exemplo: [{"name":"Procedure Name", "code":"cod124235", "quant":5}, {"name":"Another Procedure", "code":"another12", "quant":1}]')
+                raise Exception('procedimentos (procedures) devem ser uma lista de dicionarios, exemplo: [{"name":"Procedure Name", "code":"cod124235", "quantity":5}, {"name":"Another Procedure", "code":"another12", "quantity":1}]')
             if len(procedures) > 5:
                 raise Exception('Voce nao pode adicionar mais que 5 procedimentos secundarios')
             

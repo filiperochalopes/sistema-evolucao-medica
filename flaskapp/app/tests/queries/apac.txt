@@ -28,18 +28,18 @@ mutation{
 		mainProcedure: {
       name: "teste procedimento",
       code: "hkmaug347s",
-      quant: 1
+      quantity: 1
       },
       secondariesProcedures:[
       {
       name: "teste procedimento",
       code: "hkmaug347s",
-      quant: 1
+      quantity: 1
       },
       {
       name: "segundo procedimento",
       code: "hkmhsa3s23",
-      quant: 4
+      quantity: 4
       }
 		],
 		patientMotherPhonenumber: "3412344321",
