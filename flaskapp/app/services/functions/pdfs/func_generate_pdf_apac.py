@@ -2,7 +2,7 @@ import datetime
 from app.services.utils.PdfApac import PdfApac
 
 
-def func_generate_pdf_apac(requesting_establishment:dict, establishment_exec:dict, patient:dict, main_procedure:dict,patient_responsible_name:str=None, patient_color:str=None, document_chart_number:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_observations:str=None,requesting_professional_document:dict=None, requesting_professional_name:str=None, contacts_phonenumbers:list=None,solicitation_date:datetime.datetime=None, professional_authorization_name:str=None, emission_org_code:str=None, authorization_professional_document:dict=None, authorization_date:datetime.datetime=None, signature_date:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
+def func_generate_pdf_apac(requesting_establishment:dict, patient:dict, main_procedure:dict,patient_responsible_name:str=None, patient_color:str=None, document_chart_number:str=None, procedure_justification_description:str=None, procedure_justification_main_cid_10:str=None, procedure_justification_sec_cid_10:str=None, procedure_justification_associated_cause_cid_10:str=None, procedure_justification_observations:str=None,requesting_professional_document:dict=None, requesting_professional_name:str=None, establishment_exec:dict=None, contacts_phonenumbers:list=None,solicitation_date:datetime.datetime=None, professional_authorization_name:str=None, emission_org_code:str=None, authorization_professional_document:dict=None, authorization_date:datetime.datetime=None, signature_date:datetime.datetime=None, validity_period_start:datetime.datetime=None, validity_period_end:datetime.datetime=None, secondaries_procedures:list=None) -> str:
     """fill pdf apac
 
     Args:
@@ -62,14 +62,17 @@ def func_generate_pdf_apac(requesting_establishment:dict, establishment_exec:dic
         #Adding data that can be null
         try:
             pdf.set_font('Roboto-Mono', 11)
+            if establishment_exec is None:
+                # Create empty dict
+                establishment_exec = {'':''}
             pdf.add_oneline_text(text=establishment_exec.get('cnes'), pos=(450, 28), camp_name='Establishment Exec CNES', len_max=7, len_min=7,interval=' ', nullable=True)
             pdf.set_font('Roboto-Mono', 9)
             pdf.add_oneline_text(text=patient.get('mother_name'), pos=(36, 654), camp_name='Patient Mother Name', len_max=67, len_min=7, nullable=True)
             pdf.add_oneline_text(text=patient['address'].get('street'), pos=(36, 608), camp_name='Patient Adress', len_max=97, len_min=7, nullable=True)
             pdf.add_oneline_text(text=patient['address'].get('zip_code'), pos=(476, 582), camp_name='Patient Adress CEP', len_max=8, len_min=8, nullable=True, interval=' ')
             pdf.add_oneline_text(text=patient['address'].get('ibge_city_code'), pos=(370, 582), camp_name='Patient Adress City IBGE code', len_max=7, len_min=7, nullable=True)
-            pdf.add_UF(uf=patient['address']['uf'], pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
             pdf.add_oneline_text(text=establishment_exec.get('name'), pos=(36, 30), camp_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
+            pdf.add_UF(uf=patient['address']['uf'], pos=(443, 582), camp_name='Patient Adress UF', nullable=True, interval='  ')
             pdf.add_oneline_text(text=str(procedure_justification_description).upper(), pos=(36, 344), camp_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient_responsible_name, pos=(36, 630), camp_name='Patient Responsible Name', len_max=67, len_min=7, nullable=True)
 

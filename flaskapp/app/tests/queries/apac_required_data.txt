@@ -4,10 +4,6 @@ mutation{
             name: "Establishmente Solict Name",
             cnes: "1234567"
         },
-        establishmentExec: {
-            name:"Establishment exec Name",
-            cnes: "1234567"
-        },
         patient: {
             name: "Patient Patient Name",
             cns: "928976954930007",
