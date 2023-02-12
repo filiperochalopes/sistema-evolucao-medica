@@ -9,8 +9,8 @@ for x in range(0, 1100):
     lenght_test_parametrize += str(x)
 
 
-def data_to_use(client, datetime_to_use, establishment_solitc_name='Establishment Solicit Name',
-establishment_solitc_cnes=1234567,
+def data_to_use(client, datetime_to_use, requesting_establishment_name='Establishment Solicit Name',
+requesting_establishment_cnes=1234567,
 patient_name='Patient Name',
 patient_cns='928976954930007',
 patient_mother_name='Patient Mother Name',
@@ -18,9 +18,9 @@ patient_weight=142,
 patient_height=180,
 cid_10='A123',
 anamnese="Anamnese",
-professional_solicitor_name="Professional Solicitor Name",
+requesting_professional_name="Professional Solicitor Name",
 solicitation_date=None,
-professional_solicitor_document='{cpf:"28445400070"}',
+requesting_professional_document='{cpf:"28445400070"}',
 capacity_attest='["nao", "Responsible Name"]',
 filled_by='''["MEDICO", "Other name", "{'cpf':'28445400070'}"]''',
 patient_ethnicity='["SEMINFO", "Patient Ethnicity"]',
@@ -38,7 +38,7 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
 
 
     # Creating inputs
-    establishment_solitc = '{name: ' + f'"{establishment_solitc_name}"' + ', cnes: ' + f'"{establishment_solitc_cnes}"' + '}'
+    requesting_establishment = '{name: ' + f'"{requesting_establishment_name}"' + ', cnes: ' + f'"{requesting_establishment_cnes}"' + '}'
 
 
     patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', cpf: ' + f'"{patient_cpf}"' + ',weightKg:' + f'{patient_weight}' + ', motherName: ' + f'"{patient_mother_name}"' + '}'
@@ -49,14 +49,14 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
             generatePdf_Lme("""
 
     campos_string = f"""
-        establishmentSolitc: {establishment_solitc},
+        requestingEstablishment: {requesting_establishment},
         patient: {patient},
         patientHeight: {patient_height},
         cid10: "{cid_10}",
         anamnese: "{anamnese}",
-        professionalSolicitorName: "{professional_solicitor_name}",
+        requestingProfessionalName: "{requesting_professional_name}",
         solicitationDate: "{solicitation_date}",
-        professionalSolicitorDocument: {professional_solicitor_document},
+        requestingProfessionalDocument: {requesting_professional_document},
         capacityAttest: {capacity_attest},
         filledBy: {filled_by},
         patientEthnicity: {patient_ethnicity},
@@ -106,11 +106,11 @@ def test_awnser_with_only_required_data(client):
 
 ##############################################################
 # ERRORS IN NAMES CAMPS
-# establishment_solitc_name
+# requesting_establishment_name
 # patient_name
 # patient_mother_name
 # cappacity attest [patient_responsible_name]
-# professional_solicitor_name
+# requesting_professional_name
 # !!!!!!! TESTING !!!!!!!
 # Name empty
 # Name with space
@@ -120,16 +120,16 @@ def test_awnser_with_only_required_data(client):
 
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_establishment_solitc_name(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, establishment_solitc_name=test_input) == False
+def test_empty_value_requesting_establishment_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, requesting_establishment_name=test_input) == False
 
 @pytest.mark.parametrize("test_input", [70, 1])
-def test_text_establishment_solitc_name(test_input, client, datetime_to_use, lenght_test):
+def test_text_requesting_establishment_name(test_input, client, datetime_to_use, lenght_test):
     text = lenght_test[:test_input]
-    assert data_to_use(client, datetime_to_use, establishment_solitc_name=text) == False
+    assert data_to_use(client, datetime_to_use, requesting_establishment_name=text) == False
 
-def test_wrongtype_establishment_solitc_name(client, datetime_to_use):    
-    assert data_to_use(client, datetime_to_use, establishment_solitc_name=123124) == False
+def test_wrongtype_requesting_establishment_name(client, datetime_to_use):    
+    assert data_to_use(client, datetime_to_use, requesting_establishment_name=123124) == False
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
 def test_empty_value_patient_name(test_input, client, datetime_to_use):
@@ -156,16 +156,16 @@ def test_wrongtype_patient_mother_name(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, patient_mother_name=123124) == False
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_professional_solicitor_name(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, professional_solicitor_name=test_input) == False
+def test_empty_value_requesting_professional_name(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, requesting_professional_name=test_input) == False
 
 @pytest.mark.parametrize("test_input", [50, 1])
-def test_text_professional_solicitor_name(test_input, client, datetime_to_use, lenght_test):
+def test_text_requesting_professional_name(test_input, client, datetime_to_use, lenght_test):
     text = lenght_test[:test_input]
-    assert data_to_use(client, datetime_to_use, professional_solicitor_name=text) == False
+    assert data_to_use(client, datetime_to_use, requesting_professional_name=text) == False
 
-def test_wrongtype_professional_solicitor_name(client, datetime_to_use):    
-    assert data_to_use(client, datetime_to_use, professional_solicitor_name=123124) == False
+def test_wrongtype_requesting_professional_name(client, datetime_to_use):    
+    assert data_to_use(client, datetime_to_use, requesting_professional_name=123124) == False
 
 @pytest.mark.parametrize("test_input", ['["sim", ""]', '["sim", " "]', f'["sim", "{lenght_test_parametrize[:50]}"]', 'aa'])
 def test_text_capacity_attest_responsible_name(test_input, client, datetime_to_use):
@@ -178,13 +178,13 @@ def test_wrongtype_capacity_attest_responsible_name(client, datetime_to_use):
 
 ####################################################################
 # TEST CNES 
-# establishment_solitc_cnes
+# requesting_establishment_cnes
 # wrong type
 # invalid cnes
 
 @pytest.mark.parametrize("test_input", ['1adsadad', '451236548'])
-def test_wrongtype_invalid_establishment_solitc_cnes(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, establishment_solitc_cnes=test_input) == False
+def test_wrongtype_invalid_requesting_establishment_cnes(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, requesting_establishment_cnes=test_input) == False
 
 
 
@@ -452,7 +452,7 @@ def test_contacts_phonenumbers(test_input, client, datetime_to_use):
 
 #################################################################
 # TEST DOCUMENTS CNS AND CPF
-# professional_solicitor_document
+# requesting_professional_document
 # patient_document
 # wrong type
 # invalid cns
@@ -466,9 +466,9 @@ def test_contacts_phonenumbers(test_input, client, datetime_to_use):
     '{cpf:"284123312123", rg: null, cns: null}',
     '{cpf:null, rg: null, cns: null}'
 ])
-def test_professional_solicitor_document(test_input, client, datetime_to_use):
+def test_requesting_professional_document(test_input, client, datetime_to_use):
     # All options that had to be success
-    assert data_to_use(client, datetime_to_use, professional_solicitor_document=test_input) == False
+    assert data_to_use(client, datetime_to_use, requesting_professional_document=test_input) == False
 
 @pytest.mark.parametrize("test_input", [
     "284123312123"

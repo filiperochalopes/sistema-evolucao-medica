@@ -1,6 +1,6 @@
 mutation{
     generatePdf_Lme(
-        establishmentSolitc: {
+        requestingEstablishment: {
             name: "Establishment Solicit Name",
             cnes: "1234567"
         },
@@ -13,9 +13,9 @@ mutation{
         patientHeight: 140,
         cid10: "A123",
         anamnese: "Anamnese",
-        professionalSolicitorName: "Professional Solic Name",
+        requestingProfessionalName: "Professional Solic Name",
         solicitationDate: "12/10/2022",
-        professionalSolicitorDocument: {cpf:"28445400070"},
+        requestingProfessionalDocument: {cpf:"28445400070"},
         capacityAttest: ["nao", "Responsible Name"],
         filledBy: ["MEDICO", "Other name", "{'cpf':'28445400070'}"],
         patientEthnicity: ["SEMINFO", "Patient Ethnicity"],
