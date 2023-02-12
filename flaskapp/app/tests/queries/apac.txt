@@ -50,7 +50,7 @@ mutation{
 		procedureJustificationMainCid10: "A123",
 		procedureJustificationSecCid10: "A31",
 		procedureJustificationAssociatedCauseCid10: "B435",
-		procedureJustificationComments: "Procedure Justification Comments",
+		procedureJustificationObservations: "Procedure Justification Observations",
 		requestingProfessionalDocument: {
 		cns: "928976954930007",
 		cpf: null,

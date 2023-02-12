@@ -220,7 +220,7 @@ generate_pdf_type_defs = gql(
             "Cid 10 de causas associadas do diagnostico"
             procedureJustificationAssociatedCauseCid10: String,
             "Observacoes do diagnostico, max: 776 min: 5 caracteres"  
-            procedureJustificationComments: String,
+            procedureJustificationObservations: String,
             "Documento do profissional solicitante, cns ou cpf, utilize o input DocumentInput"
             requestingProfessionalDocument: DocumentInput, 
             "Nome do profissional solicitante, max:48 min:5 caracteres"

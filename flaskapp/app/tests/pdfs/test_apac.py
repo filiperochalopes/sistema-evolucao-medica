@@ -3,7 +3,7 @@ import pytest
 from app.tests.pdfs.request_queries_examples import apac_required_data_request_string
 
 
-def data_to_use(client, datetime_to_use, requesting_establishment_name='Establishment Solicit Name',requesting_establishment_cnes=1234567,patient_name='Patient Name',patient_cns="928976954930007",patient_sex='M',patient_birthday=None, patient_address_city='Patient Adress City',main_procedure='{name: "teste procedimento",code: "hkmaug347s",quantity: 1}',patient_mother_name='Patient Mother Name',contacts_phonenumbers='["5286758957", "5465981345"]', patient_responsible_name='Patient Responsible Name', patient_address='Patient Adress',patient_color='Branca',patient_ethnicity='Indigena',patient_address_uf='BA',patient_address_cep='86425910', document_chart_number='12345',patient_address_city_ibge_code=4528765,procedure_justification_description='Procedure Justification Description', prodedure_justification_main_cid_10='A98', prodedure_justification_sec_cid_10='A01', procedure_justification_associated_cause_cid_10='A45',procedure_justification_comments='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', establishment_exec_cnes=7654321,requesting_professional_document='{cns: "928976954930007",cpf: null,rg: null}', requesting_professional_name='Profissional Solicit Name',solicitation_date=None,signature_date=None,validity_period_start=None,validity_period_end=None,authorization_professional_name='Authorization Professional Name', emission_org_code='Cod121234',authorization_professional_document='{cns: "928976954930007",cpf: null,rg: null}', authorization_date=None,secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quantity: 1},{name: "segundo",code: "hkmhsa3s23",quantity: 4}]'):
+def data_to_use(client, datetime_to_use, requesting_establishment_name='Establishment Solicit Name',requesting_establishment_cnes=1234567,patient_name='Patient Name',patient_cns="928976954930007",patient_sex='M',patient_birthday=None, patient_address_city='Patient Adress City',main_procedure='{name: "teste procedimento",code: "hkmaug347s",quantity: 1}',patient_mother_name='Patient Mother Name',contacts_phonenumbers='["5286758957", "5465981345"]', patient_responsible_name='Patient Responsible Name', patient_address='Patient Adress',patient_color='Branca',patient_ethnicity='Indigena',patient_address_uf='BA',patient_address_cep='86425910', document_chart_number='12345',patient_address_city_ibge_code=4528765,procedure_justification_description='Procedure Justification Description', prodedure_justification_main_cid_10='A98', prodedure_justification_sec_cid_10='A01', procedure_justification_associated_cause_cid_10='A45',procedure_justification_observations='Procedure Justification Comments',establishment_exec_name='Establishment Exec Name', establishment_exec_cnes=7654321,requesting_professional_document='{cns: "928976954930007",cpf: null,rg: null}', requesting_professional_name='Profissional Solicit Name',solicitation_date=None,signature_date=None,validity_period_start=None,validity_period_end=None,authorization_professional_name='Authorization Professional Name', emission_org_code='Cod121234',authorization_professional_document='{cns: "928976954930007",cpf: null,rg: null}', authorization_date=None,secondaries_procedures='[{name: "teste procedimento",code: "hkmaug347s",quantity: 1},{name: "segundo",code: "hkmhsa3s23",quantity: 4}]'):
 
     if patient_birthday == None:
         patient_birthday = datetime_to_use
@@ -44,7 +44,7 @@ def data_to_use(client, datetime_to_use, requesting_establishment_name='Establis
     procedureJustificationMainCid10: "{prodedure_justification_main_cid_10}",
     procedureJustificationSecCid10: "{prodedure_justification_sec_cid_10}",
     procedureJustificationAssociatedCauseCid10: "{procedure_justification_associated_cause_cid_10}",
-    procedureJustificationComments: "{procedure_justification_comments}",
+    procedureJustificationObservations: "{procedure_justification_observations}",
     establishmentExec: {establishment_exec},
     requestingProfessionalDocument: {requesting_professional_document},
     requestingProfessionalName: "{requesting_professional_name}",
@@ -200,7 +200,7 @@ def test_empty_value_patient_address(test_input, client, datetime_to_use):
 
 #############################################################################
 # TEST BIG TEXT WITH LINE BRAKES
-# procedure_justification_comments
+# procedure_justification_observations
 # test wrong type
 # test empty value
 # test empty spaces 
@@ -209,13 +209,13 @@ def test_empty_value_patient_address(test_input, client, datetime_to_use):
 
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_procedure_justification_comments(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, procedure_justification_comments=test_input) == True
+def test_empty_value_procedure_justification_observations(test_input, client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use, procedure_justification_observations=test_input) == True
 
 @pytest.mark.parametrize("test_input", [1, 1090])
-def test_text_lenght_procedure_justification_comments(test_input, client, datetime_to_use, lenght_test):
+def test_text_lenght_procedure_justification_observations(test_input, client, datetime_to_use, lenght_test):
     text = lenght_test[:test_input]
-    assert data_to_use(client, datetime_to_use, procedure_justification_comments=text) == False
+    assert data_to_use(client, datetime_to_use, procedure_justification_observations=text) == False
 
 
 
