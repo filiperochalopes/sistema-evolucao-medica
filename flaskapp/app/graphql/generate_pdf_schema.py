@@ -241,7 +241,7 @@ generate_pdf_type_defs = gql(
 
         "Criação de documento de Precricao medica"
         generatePdf_PrescricaoMedica(
-            "Data do documento no formato DD/MM/YYYY"
+            "Data do documento no formato iso yyyy-mm-dd"
             documentDate: String!,
             "Dados do Paciente, somente o nome e cns sao necessarios"
             patient: PatientInput!,
