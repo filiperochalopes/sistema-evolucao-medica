@@ -52,8 +52,7 @@ mutation{
     examResults: "Exam Results",
     chartNumber: "124",
     patientResponsibleName: "Responsible NAme",
-    patientMotherPhonenumber: "4212344321",
-    patientResponsiblePhonenumber: "1245875421",
+    contactsPhonenumbers: ["5425415864","3412344321"]
     secondaryCid10: "S32",
     cid10AssociatedCauses: "A213",
     acidentType: "WORK",

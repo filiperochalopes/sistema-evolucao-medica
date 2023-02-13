@@ -152,10 +152,8 @@ generate_pdf_type_defs = gql(
             chartNumber: String, 
             "Nome do responsavel do paciente, max:70 min:7 caracteres"
             patientResponsibleName: String, 
-            "Numero de telefone da mae do paciente, envie somente numeros, 10 ou 11 digitos"
-            patientMotherPhonenumber: String, 
-            "Numero de telefone do Responsavel do paciente, envie somente numeros, 10 ou 11 digitos"
-            patientResponsiblePhonenumber: String,
+            "Numeros de telefone de contato, no maximo 2 numeros, somente 10 digitos (DDD + Numero)"
+            contactsPhonenumbers: [String],
             "CID10 secundario"
             secondaryCid10: String,
             "CID10 causas associadas"

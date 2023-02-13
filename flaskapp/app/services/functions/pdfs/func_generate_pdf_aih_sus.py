@@ -3,7 +3,7 @@ from app.services.utils.PdfAihSus import PdfAihSus
 
 
 
-def func_generate_pdf_aih_sus(requesting_establishment:dict, patient:dict, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnosis:str, principal_cid_10:str, requesting_professional_document:dict, requesting_professional_name:str, request_date:datetime.datetime, establishment_exec:dict=None,requested_procedure:str=None, procedure_code:str=None, clinic:str=None, internation_carater:str=None, emission_org_code:str=None, hospitalization_authorization_number:str=None, authorization_professional_document:dict=None, authorization_date:datetime.datetime=None, professional_authorization_name:str=None, exam_results:str=None, chart_number:str=None, patient_responsible_name:str=None, patient_mother_phonenumber:str=None, patient_responsible_phonenumber:str=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> str:
+def func_generate_pdf_aih_sus(requesting_establishment:dict, patient:dict, main_clinical_signs_symptoms:str, conditions_justify_hospitalization:str, initial_diagnosis:str, principal_cid_10:str, requesting_professional_document:dict, requesting_professional_name:str, request_date:datetime.datetime, establishment_exec:dict=None,requested_procedure:str=None, procedure_code:str=None, clinic:str=None, internation_carater:str=None, emission_org_code:str=None, hospitalization_authorization_number:str=None, authorization_professional_document:dict=None, authorization_date:datetime.datetime=None, professional_authorization_name:str=None, exam_results:str=None, chart_number:str=None, patient_responsible_name:str=None, contacts_phonenumbers:list=None, secondary_cid_10:str=None, cid_10_associated_causes:str=None, acident_type:str=None, insurance_company_cnpj:str=None, insurance_company_ticket_number:str=None, insurance_company_series:str=None,company_cnpj:str=None, company_cnae:int=None, company_cbor:int=None, pension_status:str=None) -> str:
     """fill pdf aih sus 
 
     Args:
@@ -95,8 +95,7 @@ def func_generate_pdf_aih_sus(requesting_establishment:dict, patient:dict, main_
             pdf.add_oneline_text(text=chart_number, pos=(466, 683), camp_name='Chart Number', len_max=20, len_min=1,nullable=True)            
             pdf.add_oneline_text(text=patient.get('ethnicity'), pos=(510, 658), camp_name='Patient Ehinicity', len_max=11, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient_responsible_name, pos=(25, 612), camp_name='Patient Responsible Name', len_max=70, len_min=7, nullable=True)        
-            pdf.add_phonenumber(number=patient_mother_phonenumber, pos=(415, 631), camp_name='Patient Mother phone number', nullable=True, interval='  ')
-            pdf.add_phonenumber(number=patient_responsible_phonenumber, pos=(415, 608), camp_name='Patient responsible phone number', nullable=True, interval='  ')
+            pdf.add_contact_phonenumbers(phone_numbers=contacts_phonenumbers, pos=(415, 631), interval='  ', y_decrease=23, nullable=True)
             pdf.add_oneline_text(text=secondary_cid_10, pos=(406, 314), camp_name='Secondary Cid10', len_max=4, len_min=3, nullable=True)
             pdf.add_oneline_text(text=cid_10_associated_causes, pos=(512, 314), camp_name='Associated causes Cid10', len_max=4, len_min=3, nullable=True)
             pdf.add_markable_square(option=acident_type, valid_options=['TRAFFIC', 'WORK', 'WORK_PATH'], options_positions=((38,184),(38,170), (38,156)), square_size=(9,9), camp_name='Acident Type', nullable=True)
