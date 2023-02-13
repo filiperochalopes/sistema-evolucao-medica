@@ -39,13 +39,13 @@ exams:str, requesting_professional_name:str, solicitation_date:datetime.datetime
             solicitation_reason_ypos = 690
             requesting_professional_ypos = 595
             for x in range(pdf.pags_quant):
-                pdf.add_oneline_text(text=patient['name'], pos=(7, patient_name_ypos), camp_name='Patient Name', len_max=70, len_min=7)
-                pdf.add_cns(cns=patient['cns'], pos=(450, patient_cns_ypos), camp_name='Patient CNS',formated=True)
-                pdf.add_datetime(date=patient['birthdate'], pos=(441, patient_birthday_ypos), camp_name='Patient Birthday', hours=False, formated=True)
-                pdf.add_morelines_text(text=f"{patient['address']['street']}, {patient['address']['city']} - {patient['address']['uf']}", initial_pos=(7, patient_adress_ypos), decrease_ypos=10, camp_name='Patient Adress', len_max=216, len_min=7, char_per_lines=108)
-                pdf.add_morelines_text(text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, camp_name='Solicitation Reason', len_max=216, len_min=7, char_per_lines=108)
-                pdf.add_oneline_text(text=requesting_professional_name, pos=(7, requesting_professional_ypos), camp_name='Professional Solicitor Name', len_max=29, len_min=7)
-                pdf.add_datetime(date=solicitation_date, pos=(30, solicitation_datetime_ypos), camp_name='Solicitation Datetime', hours=False, formated=True)
+                pdf.add_oneline_text(text=patient['name'], pos=(7, patient_name_ypos), field_name='Patient Name', len_max=70, len_min=7)
+                pdf.add_cns(cns=patient['cns'], pos=(450, patient_cns_ypos), field_name='Patient CNS',formated=True)
+                pdf.add_datetime(date=patient['birthdate'], pos=(441, patient_birthday_ypos), field_name='Patient Birthday', hours=False, formated=True)
+                pdf.add_morelines_text(text=f"{patient['address']['street']}, {patient['address']['city']} - {patient['address']['uf']}", initial_pos=(7, patient_adress_ypos), decrease_ypos=10, field_name='Patient Adress', len_max=216, len_min=7, char_per_lines=108)
+                pdf.add_morelines_text(text=solicitation_reason, initial_pos=(7, solicitation_reason_ypos), decrease_ypos=10, field_name='Solicitation Reason', len_max=216, len_min=7, char_per_lines=108)
+                pdf.add_oneline_text(text=requesting_professional_name, pos=(7, requesting_professional_ypos), field_name='Professional Solicitor Name', len_max=29, len_min=7)
+                pdf.add_datetime(date=solicitation_date, pos=(30, solicitation_datetime_ypos), field_name='Solicitation Datetime', hours=False, formated=True)
 
                 #Decrese ypos in all lines to complete the page
                 patient_name_ypos -= decreaseYpos
@@ -69,10 +69,10 @@ exams:str, requesting_professional_name:str, solicitation_date:datetime.datetime
             authorization_datetime_ypos = 572
             document_pacient_date_ypos = 572
             for x in range(pdf.pags_quant):
-                pdf.add_oneline_text(text=professional_authorized_name, pos=(174, professional_authorized_ypos), camp_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
-                pdf.add_oneline_text(text=document_pacient_name, pos=(340, document_pacient_name_ypos), camp_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
-                pdf.add_datetime(date=authorization_date, pos=(195, authorization_datetime_ypos), camp_name='Authorization Datetime', hours=False, formated=True, nullable=True)
-                pdf.add_datetime(date=document_pacient_date, pos=(362, document_pacient_date_ypos), camp_name='Document Pacient Datetime', hours=False, formated=True, nullable=True)
+                pdf.add_oneline_text(text=professional_authorized_name, pos=(174, professional_authorized_ypos), field_name='Professional Authorized Name', len_max=29, len_min=7, nullable=True)
+                pdf.add_oneline_text(text=document_pacient_name, pos=(340, document_pacient_name_ypos), field_name='Document Pacient Name', len_max=46, len_min=7, nullable=True)
+                pdf.add_datetime(date=authorization_date, pos=(195, authorization_datetime_ypos), field_name='Authorization Datetime', hours=False, formated=True, nullable=True)
+                pdf.add_datetime(date=document_pacient_date, pos=(362, document_pacient_date_ypos), field_name='Document Pacient Datetime', hours=False, formated=True, nullable=True)
 
                 professional_authorized_ypos -= decreaseYpos
                 document_pacient_name_ypos -= decreaseYpos

@@ -22,9 +22,9 @@ def func_generate_pdf_prescricao_medica(document_date:str, patient:dict, profess
             initial_name_X_pos = 120
             initial_professional_X_pos = 190
             for x in range(0, 2):
-                pdf.add_datetime(date=document_date, pos=(initial_date_X_pos, 38), camp_name='Document Datetime', hours=False, interval='  ', formated=False)
-                pdf.add_oneline_text(text=patient['name'], pos=(initial_name_X_pos, 505), camp_name='Patient Name', len_max=34, len_min=7)
-                pdf.add_oneline_text(text=pdf.create_professional_info(professional=professional, abbreviated=True), pos=(initial_professional_X_pos, 55), len_max=60, centralized=True, camp_name='Professional Info') 
+                pdf.add_datetime(date=document_date, pos=(initial_date_X_pos, 38), field_name='Document Datetime', hours=False, interval='  ', formated=False)
+                pdf.add_oneline_text(text=patient['name'], pos=(initial_name_X_pos, 505), field_name='Patient Name', len_max=34, len_min=7)
+                pdf.add_oneline_text(text=pdf.create_professional_info(professional=professional, abbreviated=True), pos=(initial_professional_X_pos, 55), len_max=60, centralized=True, field_name='Professional Info') 
                 initial_date_X_pos += 450
                 initial_name_X_pos += 451
                 initial_professional_X_pos += 451

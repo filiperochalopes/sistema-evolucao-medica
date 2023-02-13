@@ -71,25 +71,25 @@ class PdfBalancoHidrico(ReportLabCanvasUtils):
         total_balance = self.administrated_fluids - self.losts
         total_balance = self.get_value_text(value=total_balance)
 
-        self.add_oneline_text(text=f'{self.administrated_fluids}mL', pos=(604, 226), camp_name='Fluidos Administrados', len_max=30)
-        self.add_oneline_text(text=f'{self.losts}mL', pos=(503, 210), camp_name='Perdas', len_max=30)
-        self.add_oneline_text(text=f'{total_balance}mL', pos=(518, 195), camp_name='Balanco Total', len_max=30)
-        self.add_oneline_text(text=f'{self.diurese}mL', pos=(518, 166), camp_name='Diurese em 24hrs', len_max=30)
+        self.add_oneline_text(text=f'{self.administrated_fluids}mL', pos=(604, 226), field_name='Fluidos Administrados', len_max=30)
+        self.add_oneline_text(text=f'{self.losts}mL', pos=(503, 210), field_name='Perdas', len_max=30)
+        self.add_oneline_text(text=f'{total_balance}mL', pos=(518, 195), field_name='Balanco Total', len_max=30)
+        self.add_oneline_text(text=f'{self.diurese}mL', pos=(518, 166), field_name='Diurese em 24hrs', len_max=30)
 
-    def add_description(self, description:str, pos:tuple, camp_name:str) -> None:
+    def add_description(self, description:str, pos:tuple, field_name:str) -> None:
         """Function to add description, change color
 
         Args:
             description (str): _description_
             pos (tuple): _description_
-            camp_name (str): _description_
+            field_name (str): _description_
         """
         # Change color
         if description[0] == '-':
             self.can.setFillColorRGB(r=.7, g=0, b=0, alpha=1)
         else:
             self.can.setFillColorRGB(r=0, g=.7, b=0, alpha=1)
-        self.add_oneline_text(text=description, pos=pos, camp_name=camp_name, len_max=40)
+        self.add_oneline_text(text=description, pos=pos, field_name=field_name, len_max=40)
         # Change back to black
         self.can.setFillColorRGB(r=0, g=0, b=0, alpha=1)
 
@@ -135,9 +135,9 @@ class PdfBalancoHidrico(ReportLabCanvasUtils):
             
             # Add data
             self.add_rectangle(pos=(rectangle_x_pos, rectangle_y_pos), width=RECTANGLE_WIDTH, height=RECTANGLE_HEIGHT)
-            self.add_datetime(date=balan['created_at'], pos=(date_x_pos, date_y_pos), camp_name=f'{cont} balance creation date (createdAt)', centralized=True)
+            self.add_datetime(date=balan['created_at'], pos=(date_x_pos, date_y_pos), field_name=f'{cont} balance creation date (createdAt)', centralized=True)
             description_str = self.get_description_values(value=balan['volume_ml'],description=balan['description'])
-            self.add_description(description=description_str, pos=(description_x_pos, description_y_pos), camp_name=f'{cont} fluid balance description')
+            self.add_description(description=description_str, pos=(description_x_pos, description_y_pos), field_name=f'{cont} fluid balance description')
 
             # Update positions
             rectangle_y_pos -= 30

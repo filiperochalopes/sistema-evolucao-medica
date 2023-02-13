@@ -45,8 +45,10 @@ class TestPrintPdfs:
         timestamp_interval = get_default_timestamp_interval()
 
         params = {
-            'startDatetimeISOString': timestamp_interval['start_datetime_ISO_string'], 
-            'endingDatetimeISOString': timestamp_interval['ending_datetime_ISO_string']
+            'interval':{
+                'startDatetimeISOString': timestamp_interval.start_datetime_ISO_string, 
+                'endingDatetimeISOString': timestamp_interval.ending_datetime_ISO_string
+            }
         }
 
         result = auth_client.execute(self.print_pdf_folha_prescricao_with_extra_query, variable_values=params)

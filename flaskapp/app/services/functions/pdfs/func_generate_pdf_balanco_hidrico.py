@@ -13,7 +13,7 @@ def func_generate_pdf_balanco_hidrico(patient:dict, fluid_balance:list,
         # not null data
 
         try:
-            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
+            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), field_name='Patient Name', len_max=26, centralized=True, uppered=True)
 
             pdf.set_font('Roboto-Mono', 16)
             
@@ -22,17 +22,17 @@ def func_generate_pdf_balanco_hidrico(patient:dict, fluid_balance:list,
             if created_at is None:
                 raise Exception('Data de criação do ultimo balanco hidrico não  pode ser vazia')
             created_at = created_at[:-5].strip()
-            pdf.add_datetime(date=created_at, pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
+            pdf.add_datetime(date=created_at, pos=(717, 556), field_name="Document created date (upper position)", hours=False)
 
             pdf.set_font('Roboto-Mono', 11)
             pdf.add_fluid_balance(balances=fluid_balance)
 
             pdf.set_font('Roboto-Mono', 13)
             patient_weight = int(patient['weight_kg'])
-            pdf.add_oneline_text(text=f'{patient_weight}kg', pos=(531, 256), camp_name='Peso do Paciente', len_max=8)
+            pdf.add_oneline_text(text=f'{patient_weight}kg', pos=(531, 256), field_name='Peso do Paciente', len_max=8)
             # Add metrics in pdf
             pdf.add_metrics()
-            pdf.add_morelines_text(text=pdf.diurese_info, initial_pos=(417, 149), camp_name='Metricas da diurese', char_per_lines=46, len_max=80, decrease_ypos=15)
+            pdf.add_morelines_text(text=pdf.diurese_info, initial_pos=(417, 149), field_name='Metricas da diurese', char_per_lines=46, len_max=80, decrease_ypos=15)
 
         except Exception as error:
             return error

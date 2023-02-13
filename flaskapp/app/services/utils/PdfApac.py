@@ -17,7 +17,7 @@ class PdfApac(ReportLabCanvasUtils):
     def get_output(self) -> PdfWriter:
         return super().get_output()
 
-    def add_procedure(self, procedure:dict, code_pos:tuple, name_pos:tuple, quant_pos:tuple, camp_name:str) -> None:
+    def add_procedure(self, procedure:dict, code_pos:tuple, name_pos:tuple, quant_pos:tuple, field_name:str) -> None:
         """Add procedure to canvas
 
         Args:
@@ -26,7 +26,7 @@ class PdfApac(ReportLabCanvasUtils):
             code_pos (tuple): position of code
             name_pos (tuple): position of name
             quant_pos (tuple): position of quant
-            camp_name (str): camp name
+            field_name (str): camp name
 
         Returns:
             None
@@ -51,11 +51,11 @@ class PdfApac(ReportLabCanvasUtils):
             ## Add to canvas
             # Change size to add Code
             self.set_font('Roboto-Mono', 10)
-            self.add_oneline_text(text=str(procedure['code']).upper(), pos=code_pos, camp_name=f'{camp_name} Procedure Code', len_max=10, len_min=10, interval='  ')
+            self.add_oneline_text(text=str(procedure['code']).upper(), pos=code_pos, field_name=f'{field_name} Procedure Code', len_max=10, len_min=10, interval='  ')
             #Change size to add Code and Name
             self.set_font('Roboto-Mono', 9)
-            self.add_oneline_text(text=str(procedure['name']).upper(), pos=name_pos, camp_name=f'{camp_name} Procedure Name', len_max=50, len_min=7)
-            self.add_oneline_intnumber(number=procedure['quantity'], pos=quant_pos, camp_name=f'{camp_name} Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
+            self.add_oneline_text(text=str(procedure['name']).upper(), pos=name_pos, field_name=f'{field_name} Procedure Name', len_max=50, len_min=7)
+            self.add_oneline_intnumber(number=procedure['quantity'], pos=quant_pos, field_name=f'{field_name} Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
 
             return None
         
@@ -95,7 +95,7 @@ class PdfApac(ReportLabCanvasUtils):
             self.set_font('Roboto-Mono', 10)
             # Add all procedures
             for proc in procedures:
-                self.add_procedure(procedure=proc, code_pos=(CODE_X_POS, ypos), name_pos=(NAME_X_POS, ypos), quant_pos=(QUANT_X_POS, ypos), camp_name=f'({cont}) second procedures')
+                self.add_procedure(procedure=proc, code_pos=(CODE_X_POS, ypos), name_pos=(NAME_X_POS, ypos), quant_pos=(QUANT_X_POS, ypos), field_name=f'({cont}) second procedures')
                 ypos -= REDUCE_Y
 
             return None

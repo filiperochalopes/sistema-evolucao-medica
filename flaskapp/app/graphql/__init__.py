@@ -269,9 +269,9 @@ type_defs = gql(
         "Nome completo do paciente"
         name:String,
         "Nome completo da mãe do paciente"
-        motherName: String
+        motherName: String!
         "Sexo biológico binário `male` ou `female`"
-        sex:String,
+        sex:String!,
         "Dado muito relevante para cáculos, peso em quilos"
         weightKg: Float!
         "Data de nascimento no formato `yyyy-mm-dd`"
@@ -283,7 +283,7 @@ type_defs = gql(
         "Apenas dígito do Documento de Registro Geral"
         rg: String
         "Telefone de contato do paciente, de preferência WhatsApp"
-        phone: String
+        phone: String!
         "Nacionalidade do Paciente"
         nationality: String
         "Etnia do Paciente"

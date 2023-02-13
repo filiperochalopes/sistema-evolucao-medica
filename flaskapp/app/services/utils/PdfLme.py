@@ -28,10 +28,10 @@ class PdfLme(ReportLabCanvasUtils):
         Returns:
             None
         """    
-        self.add_markable_square_and_onelinetext(option=filled_by[0], valid_options=['PACIENTE','MAE', 'RESPONSAVEL', 'MEDICO','OUTRO'], text_options=['OUTRO'], text_pos=(128, 152), options_positions=((227, 166), (277, 166), (354, 166), (486, 166), (40, 152)), camp_name='Filled By option and Name', len_max=42, text=filled_by[1], len_min=5, square_size=(5, 8))
+        self.add_markable_square_and_onelinetext(option=filled_by[0], valid_options=['PACIENTE','MAE', 'RESPONSAVEL', 'MEDICO','OUTRO'], text_options=['OUTRO'], text_pos=(128, 152), options_positions=((227, 166), (277, 166), (354, 166), (486, 166), (40, 152)), field_name='Filled By option and Name', len_max=42, text=filled_by[1], len_min=5, square_size=(5, 8))
         if filled_by[0].upper() == 'OUTRO':
             filled_by_document = literal_eval(filled_by[2])
-            self.add_document_cns_cpf_rg(document=filled_by_document, pos_cpf=(388, 152),camp_name='Filled by', interval='  ')
+            self.add_document_cns_cpf_rg(document=filled_by_document, pos_cpf=(388, 152),field_name='Filled by', interval='  ')
         return None
 
         
@@ -65,7 +65,7 @@ class PdfLme(ReportLabCanvasUtils):
             cont = 1
             for number in phonenumbers:
                 formated_number = number[:2] + ' ' + number[2:]
-                self.add_oneline_text(text=formated_number, pos=(pos[0], pos[1]), camp_name=f'Numero de telefone de contato {cont}', len_max=11, len_min=11, nullable=True, interval=interval)
+                self.add_oneline_text(text=formated_number, pos=(pos[0], pos[1]), field_name=f'Numero de telefone de contato {cont}', len_max=11, len_min=11, nullable=True, interval=interval)
                 cont += 1
                 pos = (pos[0], pos[1]-20)
 
@@ -120,10 +120,10 @@ class PdfLme(ReportLabCanvasUtils):
                 REDUCE_Y = 18
 
                 for med in medicines:
-                    self.add_oneline_text(text=med['medicine_name'], pos=(NAME_X_POS, ypos), camp_name=f'{cont} Medicine name', len_max=65, len_min=4)
-                    self.add_oneline_text(text=med['quant_1_month'], pos=(MONTH1_X_POS, ypos), camp_name=f'{cont} Medicine month1 quant', len_max=9, len_min=1)
-                    self.add_oneline_text(text=med['quant_2_month'], pos=(MONTH2_X_POS, ypos), camp_name=f'{cont} Medicine month2 quant', len_max=9, len_min=1)
-                    self.add_oneline_text(text=med['quant_3_month'], pos=(MONTH3_X_POS, ypos), camp_name=f'{cont} Medicine month3 quant', len_max=8, len_min=1)
+                    self.add_oneline_text(text=med['medicine_name'], pos=(NAME_X_POS, ypos), field_name=f'{cont} Medicine name', len_max=65, len_min=4)
+                    self.add_oneline_text(text=med['quant_1_month'], pos=(MONTH1_X_POS, ypos), field_name=f'{cont} Medicine month1 quant', len_max=9, len_min=1)
+                    self.add_oneline_text(text=med['quant_2_month'], pos=(MONTH2_X_POS, ypos), field_name=f'{cont} Medicine month2 quant', len_max=9, len_min=1)
+                    self.add_oneline_text(text=med['quant_3_month'], pos=(MONTH3_X_POS, ypos), field_name=f'{cont} Medicine month3 quant', len_max=8, len_min=1)
 
                     ypos -= REDUCE_Y
                 return None

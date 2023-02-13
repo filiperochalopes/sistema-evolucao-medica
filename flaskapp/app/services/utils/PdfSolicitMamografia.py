@@ -78,8 +78,8 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
                 raise Exception('Endereco de CEP do paciente (Patient Adress CEP) deve ser um string')
             number = str(number).strip()
             if len(number) == 8:
-                self.add_oneline_text(text=number[:5], pos=(47, 438), camp_name='Patient Adress CEP', len_max=5, len_min=5, interval=' ', nullable=True)
-                self.add_oneline_text(text=number[5:], pos=(138, 438), camp_name='Patient Adress CEP', len_max=3, len_min=3, interval=' ', nullable=True)
+                self.add_oneline_text(text=number[:5], pos=(47, 438), field_name='Patient Adress CEP', len_max=5, len_min=5, interval=' ', nullable=True)
+                self.add_oneline_text(text=number[5:], pos=(138, 438), field_name='Patient Adress CEP', len_max=3, len_min=3, interval=' ', nullable=True)
                 return None
             else:
                 raise Exception("Nao foi possivel adicionar o Endereco de CEP do paciente (Patient Adress CEP) porque deve ter somente 8 caracteres")
@@ -105,9 +105,9 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
                 raise Exception('Numero de Telefone do paciente deve ser uma string')
             number = str(number).strip()
             if len(number) == 10:
-                self.add_oneline_text(text=number[:2], pos=(227, 438), camp_name='Patient Phonenumber', len_max=2, len_min=2, interval=' ', nullable=True)
-                self.add_oneline_text(text=number[2:6], pos=(288, 438), camp_name='Patient Phonenumber', len_max=4, len_min=4, interval=' ', nullable=True)
-                self.add_oneline_text(text=number[6:], pos=(365, 438), camp_name='Patient Phonenumber', len_max=4, len_min=4, interval=' ', nullable=True)
+                self.add_oneline_text(text=number[:2], pos=(227, 438), field_name='Patient Phonenumber', len_max=2, len_min=2, interval=' ', nullable=True)
+                self.add_oneline_text(text=number[2:6], pos=(288, 438), field_name='Patient Phonenumber', len_max=4, len_min=4, interval=' ', nullable=True)
+                self.add_oneline_text(text=number[6:], pos=(365, 438), field_name='Patient Phonenumber', len_max=4, len_min=4, interval=' ', nullable=True)
                 return None
             else:
                 raise Exception("Nao foi possivel adicionar o Numero de Telefone do paciente porque deve ter somente 10 caracteres")
@@ -145,9 +145,9 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
                 return None
             if type(radiotherapy_before) != type(list()):
                 raise Exception('radiotherapy_before deve ser uma lista (list)')
-            self.add_markable_square_and_onelinetext(option=radiotherapy_before[0], valid_options=['SIMDIR', 'SIMESQ', 'NAO', 'NAOSABE'], text_options=['SIMDIR'], options_positions=((336,332), (336,319), (336, 307), (336, 294)), camp_name='Has made radiotherapy before', square_size=(15,9), len_max=4, len_min=4, text=radiotherapy_before[1], text_pos=(420, 334), interval=' ', nullable=True)
+            self.add_markable_square_and_onelinetext(option=radiotherapy_before[0], valid_options=['SIMDIR', 'SIMESQ', 'NAO', 'NAOSABE'], text_options=['SIMDIR'], options_positions=((336,332), (336,319), (336, 307), (336, 294)), field_name='Has made radiotherapy before', square_size=(15,9), len_max=4, len_min=4, text=radiotherapy_before[1], text_pos=(420, 334), interval=' ', nullable=True)
             if radiotherapy_before[0].upper() == 'SIMESQ':
-                self.add_oneline_text(text=radiotherapy_before[1], pos=(420, 321), camp_name='Has made radiotherapy before', len_max=4, len_min=4, interval=' ', nullable=True)
+                self.add_oneline_text(text=radiotherapy_before[1], pos=(420, 321), field_name='Has made radiotherapy before', len_max=4, len_min=4, interval=' ', nullable=True)
             return None
 
         except Exception as error:
@@ -202,7 +202,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
                 cont = 0 
                 for year in current_surgery:
                     # Add year in right position
-                    self.add_oneline_text(text=year, pos=necessary_keys_positions[surgery][cont], camp_name=f'{surgery} year', len_max=4, len_min=4, nullable=True, interval=' ')
+                    self.add_oneline_text(text=year, pos=necessary_keys_positions[surgery][cont], field_name=f'{surgery} year', len_max=4, len_min=4, nullable=True, interval=' ')
                     cont = 1
                 
                 
@@ -259,7 +259,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
             for section in sections_keys:
                 if section in diagnostic_mammogram.keys():
                     # Mark sections options in mamografia diagnostica
-                    self.add_markable_square(option=section, valid_options=['EXAME_CLINICO', 'CONTROLE_RADIOLOGICO', 'LESAO_DIAGNOSTICO', 'AVALIACAO_RESPOSTA', 'REVISAO_MAMOGRAFIA_LESAO', 'CONTROLE_LESAO'], options_positions=((56, 762), (55, 590), (226, 590),(402, 589),(55, 487),(312, 489),), camp_name='Diagnostic Mammogram Section', square_size=(11,10))
+                    self.add_markable_square(option=section, valid_options=['EXAME_CLINICO', 'CONTROLE_RADIOLOGICO', 'LESAO_DIAGNOSTICO', 'AVALIACAO_RESPOSTA', 'REVISAO_MAMOGRAFIA_LESAO', 'CONTROLE_LESAO'], options_positions=((56, 762), (55, 590), (226, 590),(402, 589),(55, 487),(312, 489),), field_name='Diagnostic Mammogram Section', square_size=(11,10))
                     current_options = diagnostic_mammogram[section]
                     if section == 'exame_clinico':
                         if type(current_options) != type(dict()):
@@ -307,7 +307,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
                             raise Exception('avaliacao_resposta deve ser um dicionario, exemplo: "avaliacao_resposta":["direita", "esquerda"]')
                         # See all itens in list
                         for breast in current_options:
-                            self.add_markable_square(option=breast, valid_options=['DIREITA', 'ESQUERDA'], options_positions=((401, 562), (401, 547)), camp_name='avaliacao_resposta breastS', square_size=(11,10), nullable=True)
+                            self.add_markable_square(option=breast, valid_options=['DIREITA', 'ESQUERDA'], options_positions=((401, 562), (401, 547)), field_name='avaliacao_resposta breastS', square_size=(11,10), nullable=True)
                             
 
                     if section == 'revisao_mamografia_lesao':
@@ -371,19 +371,19 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
 
             if 'descarga_papilar' in item_keys:
                 for option in current_options['descarga_papilar']:
-                    self.add_markable_square(option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((496, 737), (496, 723)), camp_name='descarga_capilar options in direita breast', square_size=(15,9), nullable=True)
+                    self.add_markable_square(option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((496, 737), (496, 723)), field_name='descarga_capilar options in direita breast', square_size=(15,9), nullable=True)
             
             if 'nodulo' in item_keys:
                 for option in current_options['nodulo']:
-                    self.add_markable_square(option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((312, 696), (361, 696), (412, 696), (466, 696), (512, 696), (312, 683), (361, 683), (412, 683), (466, 683), (512, 683)), camp_name='nodulo options in direita breast', square_size=(15,9), nullable=True)
+                    self.add_markable_square(option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((312, 696), (361, 696), (412, 696), (466, 696), (512, 696), (312, 683), (361, 683), (412, 683), (466, 683), (512, 683)), field_name='nodulo options in direita breast', square_size=(15,9), nullable=True)
 
             if 'espessamento' in item_keys:
                 for option in current_options['espessamento']:
-                    self.add_markable_square(option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((313, 650), (362, 650), (413, 650), (467, 650), (513, 650), (313, 637), (362, 637), (413, 637), (467, 637), (513, 637)), camp_name='espessamento options in direita breast', square_size=(15,9), nullable=True)
+                    self.add_markable_square(option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((313, 650), (362, 650), (413, 650), (467, 650), (513, 650), (313, 637), (362, 637), (413, 637), (467, 637), (513, 637)), field_name='espessamento options in direita breast', square_size=(15,9), nullable=True)
 
             if 'linfonodo_palpavel' in item_keys:
                 for option in current_options['linfonodo_palpavel']:
-                    self.add_markable_square(option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((380, 615), (420, 615)), camp_name='linfonodo_palpavel options in direita breast', square_size=(15,9), nullable=True)
+                    self.add_markable_square(option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((380, 615), (420, 615)), field_name='linfonodo_palpavel options in direita breast', square_size=(15,9), nullable=True)
             return None
 
         except Exception as error:
@@ -413,19 +413,19 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
                     self.add_square(pos=(314, 732), size=(15, 9))
             if 'descarga_papilar' in item_keys:
                 for option in current_options['descarga_papilar']:
-                    self.add_markable_square(option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((238, 737), (238, 725)), camp_name='descarga_capilar options in esquerda breast', square_size=(15,9), nullable=True)
+                    self.add_markable_square(option=option, valid_options=['CRISTALINA', 'HEMORRAGICA'], options_positions=((238, 737), (238, 725)), field_name='descarga_capilar options in esquerda breast', square_size=(15,9), nullable=True)
             
             if 'nodulo' in item_keys:
                 for option in current_options['nodulo']:
-                    self.add_markable_square(option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((54, 696), (103, 696), (154, 696), (208, 696), (254, 696), (54, 683), (103, 683), (154, 683), (208, 683), (254, 683)), camp_name='nodulo options in esquerda breast', square_size=(15,9), nullable=True)
+                    self.add_markable_square(option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((54, 696), (103, 696), (154, 696), (208, 696), (254, 696), (54, 683), (103, 683), (154, 683), (208, 683), (254, 683)), field_name='nodulo options in esquerda breast', square_size=(15,9), nullable=True)
 
             if 'espessamento' in item_keys:
                 for option in current_options['espessamento']:
-                    self.add_markable_square(option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((55, 650), (104, 650), (155, 650), (209, 650), (255, 650), (55, 637), (104, 637), (155, 637), (209, 637), (255, 637)), camp_name='espessamento options in esquerda breast', square_size=(15,9), nullable=True)
+                    self.add_markable_square(option=option, valid_options=['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'], options_positions=((55, 650), (104, 650), (155, 650), (209, 650), (255, 650), (55, 637), (104, 637), (155, 637), (209, 637), (255, 637)), field_name='espessamento options in esquerda breast', square_size=(15,9), nullable=True)
 
             if 'linfonodo_palpavel' in item_keys:
                 for option in current_options['linfonodo_palpavel']:
-                    self.add_markable_square(option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((121, 615), (162, 616)), camp_name='linfonodo_palpavel options in esquerda breast', square_size=(15,9), nullable=True)
+                    self.add_markable_square(option=option, valid_options=['AXILAR', 'SUPRACLAVICULAR'], options_positions=((121, 615), (162, 616)), field_name='linfonodo_palpavel options in esquerda breast', square_size=(15,9), nullable=True)
             return None
         
         except Exception as error:
@@ -446,7 +446,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
         """
         try:
             for option in current_options:    
-                self.add_markable_square(option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((61, 571), (61, 560), (61, 550), (61, 539), (61, 528), (61, 517), (61, 506)), camp_name='controle_radiologico_direita options in right breast', square_size=(10,5), nullable=True)
+                self.add_markable_square(option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((61, 571), (61, 560), (61, 550), (61, 539), (61, 528), (61, 517), (61, 506)), field_name='controle_radiologico_direita options in right breast', square_size=(10,5), nullable=True)
 
             return None
         except:
@@ -465,7 +465,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
         """
         try:
             for option in current_options:    
-                self.add_markable_square(option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((161, 571), (161, 560), (161, 548), (161, 538), (161, 528), (161, 517), (161, 505)), camp_name='controle_radiologico_esquerda options in right breast', square_size=(10,5), nullable=True)
+                self.add_markable_square(option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((161, 571), (161, 560), (161, 548), (161, 538), (161, 528), (161, 517), (161, 505)), field_name='controle_radiologico_esquerda options in right breast', square_size=(10,5), nullable=True)
 
             return None
         except:
@@ -484,7 +484,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
         """
         try:
             for option in current_options:    
-                self.add_markable_square(option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((243, 571), (243, 560), (243, 549), (243, 539), (243, 528), (243, 517), (243, 506)), camp_name='lesao_diagnostico_direita options in right breast', square_size=(10,5), nullable=True)
+                self.add_markable_square(option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((243, 571), (243, 560), (243, 549), (243, 539), (243, 528), (243, 517), (243, 506)), field_name='lesao_diagnostico_direita options in right breast', square_size=(10,5), nullable=True)
 
             return None
         except:
@@ -503,7 +503,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
         """
         try:
             for option in current_options:    
-                self.add_markable_square(option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((341, 571), (341, 560), (341, 550), (341, 539), (341, 528), (341, 517), (341, 506)), camp_name='lesao_diagnostico_esquerda options in right breast', square_size=(10,5), nullable=True)
+                self.add_markable_square(option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((341, 571), (341, 560), (341, 550), (341, 539), (341, 528), (341, 517), (341, 506)), field_name='lesao_diagnostico_esquerda options in right breast', square_size=(10,5), nullable=True)
 
             return None
         except:
@@ -522,7 +522,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
         """
         try:
             for option in current_options:    
-                self.add_markable_square(option=option, valid_options=['0', '3', '4', '5'], options_positions=((64, 469), (64, 458), (64, 448), (64, 437)), camp_name='mamografia_lesao_direita options in right breast', square_size=(10,5), nullable=True)
+                self.add_markable_square(option=option, valid_options=['0', '3', '4', '5'], options_positions=((64, 469), (64, 458), (64, 448), (64, 437)), field_name='mamografia_lesao_direita options in right breast', square_size=(10,5), nullable=True)
 
             return None
         except:
@@ -541,7 +541,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
         """
         try:
             for option in current_options:    
-                self.add_markable_square(option=option, valid_options=['0', '3', '4', '5'], options_positions=((164, 469), (164, 458), (164, 446), (164, 436)), camp_name='mamografia_lesao_esquerda options in right breast', square_size=(10,5), nullable=True)
+                self.add_markable_square(option=option, valid_options=['0', '3', '4', '5'], options_positions=((164, 469), (164, 458), (164, 446), (164, 436)), field_name='mamografia_lesao_esquerda options in right breast', square_size=(10,5), nullable=True)
             return None
         except:
             raise Exception('Erro desconhecido enquanto adicionava mamografia_lesao_esquerda')
@@ -559,7 +559,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
         """
         try:
             for option in current_options:    
-                self.add_markable_square(option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((329, 469), (329, 459), (329, 447), (329, 437), (329, 426), (329, 415), (329, 404)), camp_name='controle_lesao_direita options in right breast', square_size=(10,5), nullable=True)
+                self.add_markable_square(option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((329, 469), (329, 459), (329, 447), (329, 437), (329, 426), (329, 415), (329, 404)), field_name='controle_lesao_direita options in right breast', square_size=(10,5), nullable=True)
 
             return None
         except:
@@ -578,7 +578,7 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
         """
         try:
             for option in current_options:    
-                self.add_markable_square(option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((427, 469), (427, 458), (427, 448), (427, 437), (427, 426), (427, 415), (427, 404)), camp_name='controle_lesao_esquerda options in right breast', square_size=(10,5), nullable=True)
+                self.add_markable_square(option=option, valid_options=['NODULO', 'MICROCA', 'ASSIMETRIA_FOCAL', 'ASSIMETRIA_DIFUSA', 'AREA_DENSA', 'DISTORCAO', 'LINFONODO'], options_positions=((427, 469), (427, 458), (427, 448), (427, 437), (427, 426), (427, 415), (427, 404)), field_name='controle_lesao_esquerda options in right breast', square_size=(10,5), nullable=True)
 
             return None
         except:

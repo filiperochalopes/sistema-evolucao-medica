@@ -44,7 +44,7 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
                 rect_y_pos = int(y_text_pos - 11) - int(break_lines_quant * DEFAULT_DECREASE_Y_POS)
                 if cont % 2 != 0:
                     self.add_rectangle(pos=(24, rect_y_pos), height=rect_height, width=789)
-                self.add_morelines_text(text=prescription_text, initial_pos=(28, y_text_pos), decrease_ypos=DEFAULT_DECREASE_Y_POS, camp_name=f'{cont} Prescription', len_max=4032, char_per_lines=CHAR_PER_LINES)
+                self.add_morelines_text(text=prescription_text, initial_pos=(28, y_text_pos), decrease_ypos=DEFAULT_DECREASE_Y_POS, field_name=f'{cont} Prescription', len_max=4032, char_per_lines=CHAR_PER_LINES)
 
                 # New y pos
                 y_text_pos = rect_y_pos - 20

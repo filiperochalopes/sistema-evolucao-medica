@@ -26,22 +26,22 @@ def func_generate_pdf_folha_prescricao(created_at:str, patient:dict, prescriptio
         current_user = {'name': 'Professioanl Info', 'professional_document_uf': 'BA', 'professional_document_number':'12457'}
 
         try:
-            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
+            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), field_name='Patient Name', len_max=26, centralized=True, uppered=True)
 
             pdf.set_font('Roboto-Mono', 16)
-            pdf.add_datetime(date=created_at, pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
+            pdf.add_datetime(date=created_at, pos=(717, 556), field_name="Document created date (upper position)", hours=False)
 
             pdf.set_font('Roboto-Mono', 12)
             pdf.add_prescriptions(prescriptions=prescriptions)
 
             tmz = timezone(offset=timedelta(hours=-3))
             printed_at = datetime.now(tz=tmz).isoformat()
-            pdf.add_datetime(date=printed_at, pos=(673, 34), camp_name="Document printed date (Bottom position)", nullable=True)
-            pdf.add_datetime(date=created_at, pos=(692, 20), camp_name="Document created date (Bottom position)")
+            pdf.add_datetime(date=printed_at, pos=(673, 34), field_name="Document printed date (Bottom position)", nullable=True)
+            pdf.add_datetime(date=created_at, pos=(692, 20), field_name="Document created date (Bottom position)")
 
             pdf.set_font('Roboto-Mono', 11)
             current_user_info = pdf.create_professional_info_text(professional=current_user, nullable=False)
-            pdf.add_oneline_text(text=current_user_info, pos=(812, 50), camp_name='Professional Info', len_max=67, right_align=True)
+            pdf.add_oneline_text(text=current_user_info, pos=(812, 50), field_name='Professional Info', len_max=67, right_align=True)
         except Exception as error:
             return error
         except:

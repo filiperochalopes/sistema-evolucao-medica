@@ -27,16 +27,15 @@ def print_pdf_aih_sus(_, info, internment_id: int, current_user: dict, extra: di
     internment = db.session.query(Internment).get(internment_id)
 
     return func_generate_pdf_aih_sus(
-        establishment_solitc={
+        requesting_establishment={
             'name': InstitutionData.NAME,
             'cnes': InstitutionData.CNES
         }, patient={
             'name': internment.patient.name,
-            'motherName': internment.patient.mother_name,
-            'sex': internment.patient.sex,
-            'weightKg': internment.patient.weight_kg,
+            'mother_name': internment.patient.mother_name,
+            'sex': 'M' if internment.patient.sex.value == 'Masculino' else 'F',
             'phone': internment.patient.phone,
-            'birthdate': internment.patient.birthdate,
+            'birthdate': datetime.strftime(internment.patient.birthdate, '%Y-%m-%d'),
             'cpf': internment.patient.cpf,
             'cns': internment.patient.cns,
             'rg': internment.patient.rg,
@@ -53,7 +52,7 @@ def print_pdf_aih_sus(_, info, internment_id: int, current_user: dict, extra: di
                 'uf': internment.patient.address.uf,
                 'city': internment.patient.address.city
             }
-        }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=internment.cid10.code, professional_solicitor_name=internment.professional.name, professional_solicitor_document=internment.professional.professional_document_number, solicitation_date=internment.admission_datetime)
+        }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=internment.cid10.code, requesting_professional_name=internment.professional.name, requesting_professional_document=internment.professional.professional_document_number, request_date=internment.admission_datetime)
 
 
 @mutation.field('printPdf_FichaInternamento')
@@ -63,14 +62,13 @@ def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict
     internment = db.session.query(Internment).get(internment_id)
 
     return func_generate_pdf_ficha_internamento(
-        document_datetime=internment.admission_datetime,
+        document_datetime=datetime.strftime(internment.admission_datetime, '%Y-%m-%dT%H:%M:%S'),
         patient={
             'name': internment.patient.name,
-            'motherName': internment.patient.mother_name,
-            'sex': internment.patient.sex,
-            'weightKg': internment.patient.weight_kg,
+            'mother_name': internment.patient.mother_name,
+            'sex': 'M' if internment.patient.sex.value == 'Masculino' else 'F',
             'phone': internment.patient.phone,
-            'birthdate': internment.patient.birthdate,
+            'birthdate': datetime.strftime(internment.patient.birthdate, '%Y-%m-%d'),
             'cpf': internment.patient.cpf,
             'cns': internment.patient.cns,
             'rg': internment.patient.rg,
@@ -87,7 +85,7 @@ def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict
                 'uf': internment.patient.address.uf,
                 'city': internment.patient.address.city
             }
-        }, current_illness_history=internment.hpi,
+        }, history_of_present_illness=internment.hpi,
         initial_diagnosis_suspicion=f'{internment.cid10.code} - {internment.cid10.description}',
         doctor_name=internment.professional.name, doctor_cns=internment.professional.cns, doctor_crm=internment.professional.professional_document_number, has_additional_health_insurance=extra.has_additional_health_insurance if hasattr(extra, 'has_additional_health_insurance') else None)
 
@@ -95,18 +93,18 @@ def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict
 @mutation.field('printPdf_RelatorioAlta')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict, extra: dict = None):
+def print_pdf_relatorio_alta(_, info, internment_id: int, current_user: dict, extra: dict = None):
     internment = db.session.query(Internment).get(internment_id)
 
     # TODO Gerar resumo da história por meio de NLP https://spacedata.com.br/resumo-de-texto-em-python/
 
     evolution = ''
     # Captura a história de admissão
-    history_present_ilness = internment.hpi
+    history_of_present_illness = internment.hpi
     # Captura a última evolução médica para capturar quem fez a alta
     last_medical_evolution = db.session.query(Evolution).filter(Evolution.internment_id == internment.id).order_by(Evolution.created_at.desc()).first()
     evolution = f'''
-    {history_present_ilness}
+    {history_of_present_illness}
 
     {last_medical_evolution.text}
     '''
@@ -114,11 +112,10 @@ def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict
     return func_generate_pdf_relatorio_alta(
         patient={
             'name': internment.patient.name,
-            'motherName': internment.patient.mother_name,
-            'sex': internment.patient.sex,
-            'weightKg': internment.patient.weight_kg,
+            'mother_name': internment.patient.mother_name,
+            'sex': 'M' if internment.patient.sex.value == 'Masculino' else 'F',
             'phone': internment.patient.phone,
-            'birthdate': internment.patient.birthdate,
+            'birthdate': datetime.strftime(internment.patient.birthdate, '%Y-%m-%d'),
             'cpf': internment.patient.cpf,
             'cns': internment.patient.cns,
             'rg': internment.patient.rg,
@@ -154,8 +151,8 @@ def print_pdf_folha_prescricao(_, info, internment_id: int, current_user: dict, 
     return func_generate_pdf_folha_prescricao(
         patient={
             'name': internment.patient.name,
-            'weightKg': internment.patient.weight_kg,
-            'birthdate': internment.patient.birthdate,
+            'weight_kg': internment.patient.weight_kg,
+            'birthdate': datetime.strftime(internment.patient.birthdate, '%Y-%m-%d'),
         }, created_at=datetime.strftime(prescriptions_by_interval[0].created_at, '%Y-%m-%dT%H:%M:%S'), prescriptions=prescriptions_by_interval)
 
 @mutation.field('printPdf_FolhaEvolucao')
@@ -175,9 +172,9 @@ def print_pdf_folha_evolucao(_, info, internment_id: int, current_user: dict, ex
 
     return func_generate_pdf_folha_evolucao(patient={
             'name': internment.patient.name,
-            'weightKg': internment.patient.weight_kg,
-            'birthdate': internment.patient.birthdate,
-        }, evolutions=evolutions_by_interval, measures=measures_by_interval, )
+            'weight_kg': internment.patient.weight_kg,
+            'birthdate': datetime.strftime(internment.patient.birthdate, '%Y-%m-%d'),
+        }, evolutions=evolutions_by_interval, measures=measures_by_interval)
     
 
 @mutation.field('printPdf_BalancoHidrico')
@@ -198,8 +195,8 @@ def print_pdf_balanco_hidrico(_, info, internment_id: int, current_user: dict, e
         'description': f.description.value
         } for f in fluid_balance_by_interval], patient={
             'name': internment.patient.name,
-            'weightKg': internment.patient.weight_kg,
-            'birthdate': internment.patient.birthdate,
+            'weight_kg': internment.patient.weight_kg,
+            'birthdate': datetime.strftime(internment.patient.birthdate, '%Y-%m-%d'),
         })
 
 @mutation.field('printPdf_Apac')
@@ -211,11 +208,10 @@ def print_pdf_apac(_, info, internment_id: int, current_user: dict, extra: dict)
     return func_generate_pdf_apac(
         patient={
             'name': internment.patient.name,
-            'motherName': internment.patient.mother_name,
-            'sex': internment.patient.sex,
-            'weightKg': internment.patient.weight_kg,
+            'mother_name': internment.patient.mother_name,
+            'sex': 'M' if internment.patient.sex.value == 'Masculino' else 'F',
             'phone': internment.patient.phone,
-            'birthdate': internment.patient.birthdate,
+            'birthdate': datetime.strftime(internment.patient.birthdate, '%Y-%m-%d'),
             'cpf': internment.patient.cpf,
             'cns': internment.patient.cns,
             'rg': internment.patient.rg,
@@ -232,14 +228,14 @@ def print_pdf_apac(_, info, internment_id: int, current_user: dict, extra: dict)
                 'uf': internment.patient.address.uf,
                 'city': internment.patient.address.city
             }
-        }, establishment_solitc={
+        }, requesting_establishment={
             'name': env.InstitutionData.NAME,
             'cnes': env.InstitutionData.CNES
         }, main_procedure={
             'code': extra['procedure']['code'],
             'name': extra['procedure']['name'],
             'quantity': extra['procedure']['quantity'] if (hasattr(extra, 'procedure') and hasattr(extra['procedure'], 'quantity')) else 1
-        }, secondaries_procedures=extra['secondary_procedures'] if hasattr(extra, 'secondary_procedures') else None, procedure_justification_main_cid_10=extra['diagnosis']['code'] if (hasattr(extra, 'diagnosis') and hasattr(extra['diagnosis'], 'code')) else internment.cid10.code, procedure_justification_description=extra['diagnosis']['description'] if (hasattr(extra, 'diagnosis') and hasattr(extra['diagnosis'], 'description')) else internment.cid10.description,  procedure_justification_sec_cid_10=extra['secondary_diagnosis']['code'] if (hasattr(extra, 'secondary_diagnosis') and hasattr(extra['secondary_diagnosis'], 'code')) else None, procedure_justification_comments=extra['observations'] if hasattr(extra, 'observatinos') else internment.hpi, procedure_justification_associated_cause_cid_10= extra['associated_cause']['code'] if (hasattr(extra, 'associated_cause') and hasattr(extra['associated_cause'], 'code')) else None, professional_solicitor_name=current_user.name, professional_solicitor_document={
+        }, secondaries_procedures=extra['secondary_procedures'] if hasattr(extra, 'secondary_procedures') else None, procedure_justification_main_cid_10=extra['diagnosis']['code'] if (hasattr(extra, 'diagnosis') and hasattr(extra['diagnosis'], 'code')) else internment.cid10.code, procedure_justification_description=extra['diagnosis']['description'] if (hasattr(extra, 'diagnosis') and hasattr(extra['diagnosis'], 'description')) else internment.cid10.description,  procedure_justification_sec_cid_10=extra['secondary_diagnosis']['code'] if (hasattr(extra, 'secondary_diagnosis') and hasattr(extra['secondary_diagnosis'], 'code')) else None, procedure_justification_comments=extra['observations'] if hasattr(extra, 'observatinos') else internment.hpi, procedure_justification_associated_cause_cid_10= extra['associated_cause']['code'] if (hasattr(extra, 'associated_cause') and hasattr(extra['associated_cause'], 'code')) else None, requesting_professional_name=current_user.name, requesting_professional_document={
             'cpf': current_user.cpf,
             'cns': current_user.cns
         })

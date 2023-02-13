@@ -13,7 +13,7 @@ def func_generate_pdf_folha_evolucao(patient:dict, evolutions:list, measures:lis
         # not null data
 
         try:
-            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), camp_name='Patient Name', len_max=26, centralized=True, uppered=True)
+            pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), field_name='Patient Name', len_max=26, centralized=True, uppered=True)
 
             pdf.set_font('Roboto-Mono', 16)
             
@@ -21,7 +21,7 @@ def func_generate_pdf_folha_evolucao(patient:dict, evolutions:list, measures:lis
             created_at = evolutions[-1].get('created_at')
             if created_at is None:
                 raise Exception('Data de criação da ultima evolução não pode ser vazia')
-            pdf.add_datetime(date=created_at, pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
+            pdf.add_datetime(date=created_at, pos=(717, 556), field_name="Document created date (upper position)", hours=False)
 
             pdf.set_font('Roboto-Mono', 11)
 

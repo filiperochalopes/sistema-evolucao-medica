@@ -22,23 +22,23 @@ def func_generate_pdf_relatorio_alta(document_datetime:str, patient:dict, evolut
         # not null data
         try:
             
-            pdf.add_datetime(date=document_datetime, pos=(490, 740), camp_name='Document Datetime', hours=True, formated=True,centralized=True)
+            pdf.add_datetime(date=document_datetime, pos=(490, 740), field_name='Document Datetime', hours=True, formated=True,centralized=True)
             
             # change font size to normal            
             pdf.set_font('Roboto-Mono', 9)            
-            pdf.add_oneline_text(text=patient['name'], pos=(27, 674), camp_name='Patient Name', len_max=64, len_min=7)
+            pdf.add_oneline_text(text=patient['name'], pos=(27, 674), field_name='Patient Name', len_max=64, len_min=7)
             # verify if c is a error at some point
-            pdf.add_cns(cns=patient['cns'], pos=(393, 674), camp_name='Patient CNS', formated=True)
-            pdf.add_datetime(date=patient['birthdate'], pos=(27, 642), camp_name='Patient Birthday', hours=False, formated=True)
-            pdf.add_sex_square(sex=patient['sex'], pos_male=(117, 640), pos_fem=(147, 640), camp_name='Patient Sex', square_size=(9,9))
-            pdf.add_oneline_text(text=patient['mother_name'], pos=(194, 642), camp_name='Patient Mother Name', len_max=69, len_min=7)
-            pdf.add_document_cns_cpf_rg(document={'cpf': patient['cpf'], 'rg': patient['rg']}, pos_square_cpf=(24, 608), pos_square_rg=(58,608), pos_rg=(92, 610), pos_cpf=(92, 610),camp_name='Pacient Document', formated=True)
+            pdf.add_cns(cns=patient['cns'], pos=(393, 674), field_name='Patient CNS', formated=True)
+            pdf.add_datetime(date=patient['birthdate'], pos=(27, 642), field_name='Patient Birthday', hours=False, formated=True)
+            pdf.add_sex_square(sex=patient['sex'], pos_male=(117, 640), pos_fem=(147, 640), field_name='Patient Sex', square_size=(9,9))
+            pdf.add_oneline_text(text=patient['mother_name'], pos=(194, 642), field_name='Patient Mother Name', len_max=69, len_min=7)
+            pdf.add_document_cns_cpf_rg(document={'cpf': patient['cpf'], 'rg': patient['rg']}, pos_square_cpf=(24, 608), pos_square_rg=(58,608), pos_rg=(92, 610), pos_cpf=(92, 610),field_name='Pacient Document', formated=True)
             formated_address = f"{patient['address']['street']}, {patient['address']['neighborhood']}, {patient['address']['number']}, {patient['address']['city']}, {patient['address']['uf']}"
-            pdf.add_oneline_text(text=formated_address, pos=(230, 610), camp_name='Patient Adress', len_max=63, len_min=7)
-            pdf.add_oneline_text(text=doctor_name, pos=(304, 195), camp_name='Doctor Name', len_max=49, len_min=7)
-            pdf.add_cns(cns=doctor_cns, pos=(304, 163), camp_name='Doctor CNS', formated=True)
-            pdf.add_oneline_text(text=doctor_crm, pos=(304, 131), camp_name='Doctor CRM', len_max=13, len_min=11)
-            pdf.add_morelines_text(text=evolution, initial_pos=(26, 540), decrease_ypos=10, camp_name='Evolution Resume', len_max=2100, len_min=10, char_per_lines=100)
+            pdf.add_oneline_text(text=formated_address, pos=(230, 610), field_name='Patient Adress', len_max=63, len_min=7)
+            pdf.add_oneline_text(text=doctor_name, pos=(304, 195), field_name='Doctor Name', len_max=49, len_min=7)
+            pdf.add_cns(cns=doctor_cns, pos=(304, 163), field_name='Doctor CNS', formated=True)
+            pdf.add_oneline_text(text=doctor_crm, pos=(304, 131), field_name='Doctor CRM', len_max=13, len_min=11)
+            pdf.add_morelines_text(text=evolution, initial_pos=(26, 540), decrease_ypos=10, field_name='Evolution Resume', len_max=2100, len_min=10, char_per_lines=100)
         
         except Exception as error:
             return error
@@ -47,7 +47,7 @@ def func_generate_pdf_relatorio_alta(document_datetime:str, patient:dict, evolut
             
         #Adding data that can be null
         try:
-            pdf.add_morelines_text(text=orientations, initial_pos=(26, 312), decrease_ypos=10, camp_name='Orientations', len_max=800, len_min=10, char_per_lines=100, nullable=True)
+            pdf.add_morelines_text(text=orientations, initial_pos=(26, 312), decrease_ypos=10, field_name='Orientations', len_max=800, len_min=10, char_per_lines=100, nullable=True)
         
         except Exception as error:
             return error

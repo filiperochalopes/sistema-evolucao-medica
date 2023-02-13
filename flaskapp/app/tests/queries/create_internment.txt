@@ -3,6 +3,8 @@ mutation {
     admissionDatetime: "2026-11-21 15:22"
     patient: {
       name: "Dart Vader"
+      motherName: "No Mother"
+      phone: "71992540735"
       sex: "male"
       birthdate: "1995-12-01"
       cns: "105118227480000"
