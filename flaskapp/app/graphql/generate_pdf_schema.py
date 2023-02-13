@@ -443,7 +443,7 @@ generate_pdf_type_defs = gql(
             patientEthnicity: [String],
             "Nome do Profissional Solicitante, max: 23 min:7 caracteres"
             requestingProfessionalName: String!,
-            "Data da Solicitacao no formato DD/MM/YYYY"
+            "Data da Solicitacao no formato iso yyyy-mm-dd"
             solicitationDate: String!,
             "Numero do exame, max: 16 caracteres"
             examNumber: String,
