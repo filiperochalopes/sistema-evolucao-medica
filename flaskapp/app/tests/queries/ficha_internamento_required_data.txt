@@ -1,12 +1,12 @@
 mutation{
     generatePdf_FichaInternamento(
-        documentDatetime: "10/10/2014 10:12",
+        documentDatetime: "2023-02-13T01:17:20.624559",
         patient: {
             name: "Patient Name",
             cns: "928976954930007",
             cpf: "14383811744",
             rg: null,
-            birthdate: "10/10/2021",
+            birthdate: "2022-11-10",
             nationality: "Brasileira",
             sex: "M",
             weightKg: 123,

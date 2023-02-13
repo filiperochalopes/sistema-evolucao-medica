@@ -460,7 +460,7 @@ generate_pdf_type_defs = gql(
 
         "Criação de documento de Solicitacao de Mamografia"
         generatePdf_FichaInternamento(
-            "Data Hora do documento no formato DD/MM/YYYY HH:mm"
+            "Data Hora do documento no formato iso yyyy-mm-dd"
             documentDatetime: String!,
             "Dados do Paciente, IMPORTANTE: o peso do paciente, será tranformado em numero inteiro de no maximo 3 digitos"
             patient: PatientInput
