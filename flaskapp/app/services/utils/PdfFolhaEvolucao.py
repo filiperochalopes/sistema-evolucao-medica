@@ -2,7 +2,7 @@ from app.env import TEMPLATE_FOLHA_EVOLUCAO_DIRECTORY, WRITE_FOLHA_EVOLUCAO_DIRE
 from app.services.utils.ReportLabCanvasUtils import ReportLabCanvasUtils
 from PyPDF2 import PdfWriter, PdfReader
 import datetime
-
+from dateutil.parser import isoparse
 
 class PdfFolhaEvolucao(ReportLabCanvasUtils):
 
@@ -43,7 +43,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
             if camp == None:
                 raise Exception('Algum campo do profissional está faltando, o documento precisa do nome, document e category')
 
-        date_object = datetime.datetime.strptime(date, '%d/%m/%Y %H:%M')
+        date_object = isoparse(date)
         str_date = str('%02d/%02d/%d %02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute)
 
         if category.lower() == 'm':
@@ -409,9 +409,9 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
 
                 # Transform create_at to datetime object
                 try:
-                    date_object = datetime.datetime.strptime(complete_time, '%d/%m/%Y %H:%M')
+                    date_object = isoparse(complete_time)
                 except:
-                    raise Exception(f'A data nao corresponde ao formato dd/mm/yyyy HH:MM')
+                    raise Exception(f'A data nao corresponde ao formato ISO %Y-%m-%dT%H:%M:%S')
                 
                 #Reset x_pos_cont
                 x_pos_cont = 0

@@ -2,13 +2,13 @@ from gql import gql
 import pytest
 
 
-def data_to_use(client, document_datetime_to_use, patient_name='Patient Name',
+def data_to_use(client, datetime_to_use, patient_name='Patient Name',
         evolutions=[{
-        'created_at': "10/10/2022 20:10",
+        'created_at': "2023-02-13T01:17:20.624559",
         'description': "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.",
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'}],
         measures=[{
-        'created_at': "10/10/2022 20:10",
+        'created_at': "2023-02-13T01:17:20.624559",
         'cardiac_frequency': 54,
         'respiratory_frequency': 15,
         'sistolic_blood_pressure': 152,
@@ -55,15 +55,15 @@ def data_to_use(client, document_datetime_to_use, patient_name='Patient Name',
         return False
 
 #Testing Folha evolucao
-def test_with_data_in_function(client, document_datetime_to_use):
-    assert data_to_use(client, document_datetime_to_use) == True
+def test_with_data_in_function(client, datetime_to_use):
+    assert data_to_use(client, datetime_to_use) == True
 
 ##############################################################
 # ERRORS IN NAMES CAMPS
 
 @pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_patient_name(client, document_datetime_to_use, test_input):
-    assert data_to_use(client, document_datetime_to_use, patient_name=test_input) == False
+def test_empty_value_patient_name(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, patient_name=test_input) == False
 
 
 ##################################################################
@@ -71,20 +71,20 @@ def test_empty_value_patient_name(client, document_datetime_to_use, test_input):
 
 @pytest.mark.parametrize("test_input", [
     [{
-        'created_at': "10/10/2022 20:10",
+        'created_at': "2023-02-13T01:17:20.624559",
         'description': "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.",
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'}],
     [{
-        'created_at': "10/10/2022 20:10",
+        'created_at': "2023-02-13T01:17:20.624559",
         'description': "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.",
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'}],
 ])
-def test_valid_evolutions(client, document_datetime_to_use, test_input):
-    assert data_to_use(client, document_datetime_to_use, evolutions=test_input) == True
+def test_valid_evolutions(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, evolutions=test_input) == True
 
 @pytest.mark.parametrize("test_input", [
     [{
-        'created_at': "10/10/2022",
+        'created_at': "2023-32-13T01:17:20.624559",
         'description': "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.",
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'}],
     [{
@@ -92,8 +92,8 @@ def test_valid_evolutions(client, document_datetime_to_use, test_input):
         'description': "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.",
         'professional':'{name: "Professional Name",category: "m",document: "11331/BA"}'}],
 ])
-def test_invalid_evolutions(client, document_datetime_to_use, test_input):
-    assert data_to_use(client, document_datetime_to_use, evolutions=test_input) == False
+def test_invalid_evolutions(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, evolutions=test_input) == False
 
 
 ##################################################################
@@ -101,7 +101,7 @@ def test_invalid_evolutions(client, document_datetime_to_use, test_input):
 
 @pytest.mark.parametrize("test_input", [
     [{
-        'created_at': "10/10/2022 20:10",
+        'created_at': "2023-02-13T01:17:20.624559",
         'cardiac_frequency': 54,
         'respiratory_frequency': 15,
         'sistolic_blood_pressure': 152,
@@ -113,8 +113,8 @@ def test_invalid_evolutions(client, document_datetime_to_use, test_input):
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'
         },],
 ])
-def test_valid_measures(client, document_datetime_to_use, test_input):
-    assert data_to_use(client, document_datetime_to_use, measures=test_input) == True
+def test_valid_measures(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, measures=test_input) == True
 
 @pytest.mark.parametrize("test_input", [
     [{
@@ -130,7 +130,7 @@ def test_valid_measures(client, document_datetime_to_use, test_input):
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'
         },],
     [{
-        'created_at': "10/10/2022 20:10",
+        'created_at': "2023-02-13T01:17:20.624559",
         'cardiac_frequency': '"54"',
         'respiratory_frequency': 15,
         'sistolic_blood_pressure': 152,
@@ -154,7 +154,7 @@ def test_valid_measures(client, document_datetime_to_use, test_input):
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'
         },],
     [{
-        'created_at': "10/10/2022 20:10",
+        'created_at': "2023-02-13T01:17:20.624559",
         'cardiac_frequency': 54,
         'respiratory_frequency': 15,
         'sistolic_blood_pressure': 152,
@@ -166,7 +166,7 @@ def test_valid_measures(client, document_datetime_to_use, test_input):
         'professional':'{name: 1,category: "m",document: "12345/BA"}'
         },],
     [{
-        'created_at': "10/10/2022 20:10",
+        'created_at': "2023-02-13T01:17:20.624559",
         'cardiac_frequency': 54,
         'respiratory_frequency': 15,
         'sistolic_blood_pressure': '"152"',
@@ -178,7 +178,7 @@ def test_valid_measures(client, document_datetime_to_use, test_input):
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'
         },],
     [{
-        'created_at': "10/10/2022 20:10",
+        'created_at': "2023-02-13T01:17:20.624559",
         'cardiac_frequency': 54,
         'respiratory_frequency': 15,
         'sistolic_blood_pressure': 152,
@@ -190,8 +190,8 @@ def test_valid_measures(client, document_datetime_to_use, test_input):
         'professional':'{name: "Professional Name",category: "m",document: "12345/BA"}'
         },],
 ])
-def test_invalid_measures(client, document_datetime_to_use, test_input):
-    assert data_to_use(client, document_datetime_to_use, measures=test_input) == False
+def test_invalid_measures(client, datetime_to_use, test_input):
+    assert data_to_use(client, datetime_to_use, measures=test_input) == False
 
 
 

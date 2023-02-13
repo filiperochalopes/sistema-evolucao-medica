@@ -11,7 +11,7 @@ generate_pdf_type_defs = gql(
     }
 
     input EvolutionInput{
-        "Data da criacao. String no formato de dd/mm/aaaa hh:mm"
+        "Data da criacao. String no formato ISO %Y-%m-%dT%H:%M:%S"
         createdAt: String!
         "Descricao da evolucao"
         description: String!
@@ -38,14 +38,14 @@ generate_pdf_type_defs = gql(
         glucose: String
         "Frequencia cardiaca fetal"
         fetalCardiacFrequency: Int
-        "Data da criacao. String no formato de dd/mm/aaaa hh:mm"
+        "Data da criacao. String no formato ISO %Y-%m-%dT%H:%M:%S"
         createdAt: String!
         "Profissional responsavel"
         professional: ProfessionalInput!
     }
 
     input FluidBalanceInput{
-        "Data da criacao. String no formato de dd/mm/aaaa hh:mm"
+        "Data da criacao. String no formato ISO %Y-%m-%dT%H:%M:%S"
         createdAt: String!
         "Valor em mililitros (ml), esse valor pode ser negativo ou positivo"
         volumeMl: Int!

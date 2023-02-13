@@ -21,7 +21,6 @@ def func_generate_pdf_folha_evolucao(patient:dict, evolutions:list, measures:lis
             created_at = evolutions[-1].get('created_at')
             if created_at is None:
                 raise Exception('Data de criação da ultima evolução não pode ser vazia')
-            created_at = created_at[:-6].strip()
             pdf.add_datetime(date=created_at, pos=(717, 556), camp_name="Document created date (upper position)", hours=False)
 
             pdf.set_font('Roboto-Mono', 11)
