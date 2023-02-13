@@ -7,7 +7,7 @@ mutation{
         patient: {
             name: "Patient Patient Name",
             cns: "928976954930007",
-            birthdate: "10/10/2022",
+            birthdate: "2022-11-10",
             sex: "M",
             weightKg: 123,
             address: {

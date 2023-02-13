@@ -12,7 +12,7 @@ mutation{
     patient: {
         name: "Patient Patient Name",
         cns: "928976954930007",
-        birthdate: "10/10/2022",
+        birthdate: "2022-11-10",
         sex: "M",
         ethnicity: "Etnia",
         motherName: "Patient Mother Name",
@@ -57,7 +57,7 @@ mutation{
 		rg: null
 		},
 		requestingProfessionalName: "Professional Solicitator",
-		solicitationDate: "10/11/2021",
+		solicitationDate: "2022-11-10",
 		professionalAuthorizationName: "Professional authorization",
 		emissionOrgCode: "Cod121234",
 		authorizationProfessionalDocument: {
@@ -65,10 +65,10 @@ mutation{
 		cpf: null,
 		rg: null
 		},
-		authorizationDate: "10/10/2022",
-		signatureDate: "15/10/2022",
-		validityPeriodStart: "15/10/2022",
-		validityPeriodEnd: "15/11/2022"
+		authorizationDate: "2022-11-10",
+		signatureDate: "2022-11-10",
+		validityPeriodStart: "2022-11-10",
+		validityPeriodEnd: "2022-11-10"
 		)
 {base64Pdf}
 }

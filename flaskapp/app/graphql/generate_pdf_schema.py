@@ -132,7 +132,7 @@ generate_pdf_type_defs = gql(
             requestingProfessionalDocument: DocumentInput!, 
             "Nome do profissional solicitante, max:48 min:8 caracteres"
             requestingProfessionalName: String!,
-            "Data da solicitacao, no format iso yyyy-mm-dd"
+            "Data da solicitacao, no formato iso yyyy-mm-dd"
             requestDate: String!,
             "Nome do profissional autorizador, max:48 min:8 caracteres" 
             professionalAuthorizationName: String,
@@ -140,7 +140,7 @@ generate_pdf_type_defs = gql(
             emissionOrgCode: String, 
             "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
             authorizationProfessionalDocument: DocumentInput,
-            "Data da autorizacao, no format iso yyyy-mm-dd"
+            "Data da autorizacao, no formato iso yyyy-mm-dd"
             authorizationDate: String,
             "Numero da autorizacao de internacao hospitalar, no maximo 18 digitos"
             hospitalizationAuthorizationNumber: String,
@@ -221,7 +221,7 @@ generate_pdf_type_defs = gql(
             requestingProfessionalDocument: DocumentInput, 
             "Nome do profissional solicitante, max:48 min:5 caracteres"
             requestingProfessionalName: String,
-            "Data da solicitacao, somente dia/mes/ano"
+            "Data da solicitacao,  formato iso yyyy-mm-dd"
             solicitationDate: String,
             "Nome do profissional autorizador, max:46 min:5 caracteres" 
             professionalAuthorizationName:String,
@@ -229,13 +229,13 @@ generate_pdf_type_defs = gql(
             emissionOrgCode: String, 
             "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
             authorizationProfessionalDocument: DocumentInput,
-            "Data da autorizacao, somente dia/mes/ano"
+            "Data da autorizacao, formato iso yyyy-mm-dd"
             authorizationDate: String,
-            "Data da Assinatura, somente DD/MM/YYYY"
+            "Data da Assinatura, formato iso yyyy-mm-dd"
             signatureDate: String,
-            "Data do inicio do periodo de Validade da APAC, utilize a data no formato DD/MM/YYYY"
+            "Data do inicio do periodo de Validade da APAC, utilize a data no formato iso yyyy-mm-dd"
             validityPeriodStart: String,
-            "Data do fim do periodo de Validade da APAC, utilize a data no formato DD/MM/YYYY"
+            "Data do fim do periodo de Validade da APAC, utilize a data no formato iso yyyy-mm-dd"
             validityPeriodEnd: String
         ): GeneratedPdf
 
