@@ -2,7 +2,7 @@ from gql import gql
 import pytest
 
 
-def data_to_use(client, datetime_to_use, patient_name='Patient Name', patient_weight=52, fluid_balances=[{'created_at': "20/12/2022 10:35",'volumeMl': -600,'description': "diurese"}]):
+def data_to_use(client, datetime_to_use, patient_name='Patient Name', patient_weight=52, fluid_balances=[{'created_at': "2023-02-08T01:17:20.624559",'volumeMl': -600,'description': "diurese"}]):
 
 
     all_balance = ''
@@ -63,8 +63,8 @@ def test_valid_patient_weight(client, datetime_to_use, test_input):
 # TEST FLUID BALANCES
 
 @pytest.mark.parametrize("test_input", [
-    [{'created_at': "20/12/2022 10:35",'volumeMl': -600,'description': "diurese"}],
-    [{'created_at': "20/12/2022 10:35",'volumeMl': 600,'description': "diurese"}],
+    [{'created_at': "2023-02-08T01:17:20.624559",'volumeMl': -600,'description': "diurese"}],
+    [{'created_at': "2023-02-08T01:17:20.624559",'volumeMl': 600,'description': "diurese"}],
 ])
 def test_valid_fluid_balance(client, datetime_to_use, test_input):
     assert data_to_use(client, datetime_to_use, fluid_balances=test_input) == True
