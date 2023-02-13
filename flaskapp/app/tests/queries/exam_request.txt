@@ -4,7 +4,7 @@ mutation{
     patient: {
       name: "Patient NAme",
       cns: "928976954930007",
-      birthdate: "10/10/2021",
+      birthdate: "2022-11-10",
       weightKg: 123.00,
       address: {
         street: "Patient Adress",
@@ -14,12 +14,12 @@ mutation{
     },
     solicitationReason: "Solicitation reason",
     requestingProfessionalName: "Professional solicitor Name",
-    solicitationDate: "10/10/2014",
+    solicitationDate: "2014-11-10",
     exams: "Exames Solicitados",
     professionalAuthorizedName: "Prof Authorization Name", 
     documentPacientName: "Document Pacient NAme",
-    authorizationDate: "10/10/2021",
-    documentPacientDate: "10/08/2021"
+    authorizationDate: "2022-11-10",
+    documentPacientDate: "2022-11-10"
   )
 {base64Pdf}
 }

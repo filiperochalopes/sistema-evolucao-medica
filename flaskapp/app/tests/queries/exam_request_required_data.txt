@@ -3,7 +3,7 @@ mutation{
         patient: {
             name: "Patient Name", 
             cns: "928976954930007", 
-            birthdate: "29/12/2022",
+            birthdate: "2022-11-10",
             weightKg: 123,
             address: {
                 street: "Patient Adress", 
@@ -13,7 +13,7 @@ mutation{
             },
         solicitationReason: "Solicitation reason",
         requestingProfessionalName: "Professional solicitor Name",
-        solicitationDate: "10/10/2014",
+        solicitationDate: "2014-11-10",
         exams: "Required exams"
     ){base64Pdf}
 }
