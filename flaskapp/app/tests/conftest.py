@@ -109,18 +109,13 @@ def lenght_test():
 @pytest.fixture
 def datetime_to_use():
     """get current datetime to test"""
-    return datetime.now().strftime('%d/%m/%Y')
+    return datetime.now().isoformat()
 
 @pytest.fixture
 def datetime_with_timezone_to_use():
     """get current datetime to test"""
     tmz = timezone(offset=timedelta(hours=-3))
-    return datetime.now(tz=tmz).strftime('%d/%m/%Y')
-
-@pytest.fixture
-def document_datetime_to_use():
-    """get current datetime with hours and minutes to test"""
-    return datetime.now().strftime('%d/%m/%Y %H:%M')
+    return datetime.now(tz=tmz).isoformat()
 
 @pytest.fixture
 def client():

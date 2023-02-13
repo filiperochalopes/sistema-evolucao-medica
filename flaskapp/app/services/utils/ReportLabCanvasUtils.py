@@ -5,6 +5,7 @@ from PyPDF2 import PdfWriter, PdfReader
 import io
 import re
 import datetime
+from dateutil.parser import isoparse
 from inspect import getfullargspec
 from validate_docbr import CNS, CPF, CNPJ
 import base64
@@ -838,7 +839,7 @@ class ReportLabCanvasUtils():
 
 
     def add_datetime(self, date:str, pos:tuple, camp_name:str, hours:bool=True, nullable:bool=False, formated:bool=True, interval:str='', interval_between_numbers:str='', centralized:bool=False) -> None:
-        """Add datetime to canvas
+        """Add datetime to canvas from ISO FORMAT
 
         Args:
             
@@ -866,14 +867,9 @@ class ReportLabCanvasUtils():
             #Add to respective fields
             try:
                 #Create a datetimeobject just to makesure the date is valid
-                if hours:
-                    date_object = datetime.datetime.strptime(date, '%d/%m/%Y %H:%M')
-                else:
-                    date_object = datetime.datetime.strptime(date, '%d/%m/%Y')
+                date_object = isoparse(date)
             except:
-                if hours:
-                    raise Exception(f'{camp_name}- A data nao corresponde ao formato dd/mm/yyyy HH:MM')
-                raise Exception(f'{camp_name}- A data nao corresponde ao formato dd/mm/yyyy')
+                raise Exception(f'{camp_name}- A data nao corresponde ao formato ISO %Y-%m-%dT%H:%M:%S')
             str_date = str('%02d/%02d/%d %02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute)
             if hours:  
                 if not formated:
