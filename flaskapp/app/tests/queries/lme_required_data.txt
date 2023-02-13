@@ -14,7 +14,7 @@ mutation{
         cid10: "A123",
         anamnese: "Anamnese",
         requestingProfessionalName: "Professional Solic Name",
-        solicitationDate: "12/10/2022",
+        solicitationDate: "2022-11-10",
         requestingProfessionalDocument: {cpf:"28445400070"},
         capacityAttest: ["nao", "Responsible Name"],
         filledBy: ["MEDICO", "Other name", "{'cpf':'28445400070'}"],

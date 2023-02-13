@@ -289,7 +289,7 @@ generate_pdf_type_defs = gql(
             anamnese: String!,
             "Nome do profissional solicitante, max:45 min:8 caracteres"
             requestingProfessionalName: String!,
-            "Data da solicitacao no formato DD/MM/YYYY"
+            "Data da solicitacao no formato iso yyyy-mm-dd"
             solicitationDate: String!,
             "Documento do profissional solicitante, CNS ou CPF, utilize o DocumentInput"
             requestingProfessionalDocument: DocumentInput!,
@@ -349,7 +349,7 @@ generate_pdf_type_defs = gql(
             solicitationReason: String!,
             "Nome do profissional Solicitante, max:29 min:7 caracteres"
             requestingProfessionalName: String!,
-            "Data da Solicitacao no formato DD/MM/YYYY"
+            "Data da Solicitacao no formato iso yyyy-mm-dd"
             solicitationDate: String!,
             "Exames solicitados"
             exams: String!,
@@ -357,9 +357,9 @@ generate_pdf_type_defs = gql(
             professionalAuthorizedName: String,
             "Nome do paciente no final do documento, esse campo fica no fim do documento e tem um tamanho maximo diferente. max:46 min:7 caracteres"
             documentPacientName: String,
-            "Data da Autorizacao no formato DD/MM/YYYY"
+            "Data da Autorizacao no formato iso yyyy-mm-dd"
             authorizationDate: String,
-            "Data do paciente, tambem no campo inferior no formato DD/MM/YYYY"
+            "Data do paciente, tambem no campo inferior no formato iso yyyy-mm-dd"
             documentPacientDate: String,
         ): GeneratedPdf
 
