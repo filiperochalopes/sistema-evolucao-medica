@@ -255,7 +255,7 @@ generate_pdf_type_defs = gql(
 
         "Criação de documento de Relatorio de Alta"
         generatePdf_RelatorioAlta(
-            "Data do documento no formato DD/MM/YYYY HH:mm"
+            "Data do documento no formato ISO %Y-%m-%dT%H:%M:%S"
             documentDatetime: String!,
             "Dados do Paciente"
             patient: PatientInput!
