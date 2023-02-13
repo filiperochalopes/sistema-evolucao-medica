@@ -12,7 +12,7 @@ mutation{
     patient: {
       name: "Patient Name",
       cns: "928976954930007",
-      birthdate: "10/10/2022",
+      birthdate: "2022-11-10",
       sex: "M",
       ethnicity: "Etnia",
       weightKg: 123,
@@ -39,7 +39,7 @@ mutation{
     rg: null
     },
     requestingProfessionalName: "Professional Solicitor Name",
-    requestDate: "10/02/2021",
+    requestDate: "2021-02-10",
     professionalAuthorizationName: "Professional Authorizator Name",
     emissionOrgCode: "12aass",
     authorizationProfessionalDocument: {
@@ -47,7 +47,7 @@ mutation{
     cns: null,
     rg: null
     }
-    authorizationDate: "21/10/2022",
+    authorizationDate: "2022-10-21",
     hospitalizationAuthorizationNumber: "1212",
     examResults: "Exam Results",
     chartNumber: "124",

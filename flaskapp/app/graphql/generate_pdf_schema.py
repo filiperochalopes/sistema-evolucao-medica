@@ -132,7 +132,7 @@ generate_pdf_type_defs = gql(
             requestingProfessionalDocument: DocumentInput!, 
             "Nome do profissional solicitante, max:48 min:8 caracteres"
             requestingProfessionalName: String!,
-            "Data e hora da solicitacao, somente dia/mes/ano"
+            "Data da solicitacao, no format iso yyyy-mm-dd"
             requestDate: String!,
             "Nome do profissional autorizador, max:48 min:8 caracteres" 
             professionalAuthorizationName: String,
@@ -140,7 +140,7 @@ generate_pdf_type_defs = gql(
             emissionOrgCode: String, 
             "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
             authorizationProfessionalDocument: DocumentInput,
-            "Data e hora da autorizacao, somente dia/mes/ano"
+            "Data da autorizacao, no format iso yyyy-mm-dd"
             authorizationDate: String,
             "Numero da autorizacao de internacao hospitalar, no maximo 18 digitos"
             hospitalizationAuthorizationNumber: String,
