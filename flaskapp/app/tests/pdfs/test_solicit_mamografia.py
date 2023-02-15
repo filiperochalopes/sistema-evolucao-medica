@@ -101,7 +101,7 @@ indusaoImplantes: [null]
 
     patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', city: ' + f'"{patient_address_city}"' + ',reference: ' + f'"{patient_address_reference}"' + 'neighborhood: ' + f'"{patient_address_neighborhood}"' +', complement: ' + f'"{patient_address_adjunct}"' + ',number: ' + f'"{patient_address_number}"'  + ', ibgeCityCode: ' + f'"{patient_address_city_ibge_code}"' + ', uf:' + f'"{patient_address_uf}"' + ', zipCode: ' + f'"{patient_address_cep}"' + '},'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ',cpf: ' + str(patient_document_cpf) + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ',weightKg:' + '123' + ', address: ' + f'{patient_address}' + 'nationality:' + f'"{patient_nationality}"' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ',cpf: ' + str(patient_document_cpf) + ', birthdate: ' + f'"{patient_birthday}"' + ', sex: ' + f'"{patient_sex}"' + ', motherName: ' + f'"{patient_mother_name}"' + ',phone: "10123456789",' + ',weightKg:' + '123' + ', address: ' + f'{patient_address}' + 'nationality:' + f'"{patient_nationality}"' + '}'
 
     request_string = """
         mutation{
