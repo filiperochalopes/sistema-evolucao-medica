@@ -14,7 +14,6 @@ mutation{
             address: {
                 street: "Patient Adress street neighobourd", 
                 city: "Patient City", 
-                ibgeCityCode: "1234567", 
                 uf:"SP", 
                 zipCode: "12345678"
             },

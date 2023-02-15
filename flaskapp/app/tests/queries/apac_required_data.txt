@@ -12,7 +12,6 @@ mutation{
             weightKg: 123,
             address: {
                 city: "Jau",
-                ibgeCityCode: "1234567",
                 uf: "SP",
             }
         },
