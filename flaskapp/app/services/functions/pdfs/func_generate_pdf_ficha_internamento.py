@@ -45,7 +45,7 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
             pdf.add_oneline_text(text=initial_diagnosis_suspicion, pos=(26, 244), field_name='Initial Diagnostic Suspicion', len_max=100, len_min=5)
             pdf.add_oneline_text(text=doctor_name, pos=(304, 195), field_name='Doctor Name', len_max=49, len_min=7)
             pdf.add_cns(cns=doctor_cns, pos=(304, 163), field_name='Doctor CNS', formated=True)
-            pdf.add_oneline_text(text=doctor_crm, pos=(304, 131), field_name='Doctor CRM', len_max=13, len_min=4)
+            pdf.add_oneline_text(text=doctor_crm, pos=(304, 131), field_name='Doctor CRM', len_max=14, len_min=4)
         except Exception as error:
             return error
         except:

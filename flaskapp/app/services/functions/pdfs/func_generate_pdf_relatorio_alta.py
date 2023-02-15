@@ -37,7 +37,7 @@ def func_generate_pdf_relatorio_alta(document_datetime:str, patient:dict, evolut
             pdf.add_oneline_text(text=formated_address, pos=(230, 610), field_name='Patient Adress', len_max=63, len_min=7)
             pdf.add_oneline_text(text=doctor_name, pos=(304, 195), field_name='Doctor Name', len_max=49, len_min=7)
             pdf.add_cns(cns=doctor_cns, pos=(304, 163), field_name='Doctor CNS', formated=True)
-            pdf.add_oneline_text(text=doctor_crm, pos=(304, 131), field_name='Doctor CRM', len_max=13, len_min=4)
+            pdf.add_oneline_text(text=doctor_crm, pos=(304, 131), field_name='Doctor CRM', len_max=14, len_min=4)
             pdf.add_morelines_text(text=evolution, initial_pos=(26, 540), decrease_ypos=10, field_name='Evolution Resume', len_max=2100, len_min=10, char_per_lines=100)
         
         except Exception as error:

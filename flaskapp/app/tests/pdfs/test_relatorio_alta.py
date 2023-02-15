@@ -143,6 +143,14 @@ def test_false_patient_rg(client, datetime_to_use, test_input):
 def test_true_patient_rg(client, datetime_to_use, test_input):
     assert data_to_use(client, datetime_to_use, patient_rg=test_input, patient_cpf='null') == True
 
+@pytest.mark.parametrize("crm", ['123456', 'CRM/UF 123456', '12345678'])
+def test_valid_doctor_crm(client, datetime_to_use, crm):
+    assert data_to_use(client, datetime_to_use, doctor_crm=crm) == True
+
+@pytest.mark.parametrize("crm", ['123', 'CRM/UF 12345231126'])
+def test_invalid_doctor_crm(client, datetime_to_use, crm):
+    assert data_to_use(client, datetime_to_use, doctor_crm=crm) == False
+    
 #################################################################
 # TEST DATETIMES VARIABLES
 # document_datetime
