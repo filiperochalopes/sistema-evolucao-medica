@@ -137,6 +137,14 @@ def test_valid_patient_cns(client, datetime_to_use):
 def test_valid_doctor_cns(client, datetime_to_use):
     assert data_to_use(client, datetime_to_use, doctor_cns='928976954930007') == True
 
+@pytest.mark.parametrize("crm", ['123456', 'CRM/UF 123456', '12345678'])
+def test_valid_doctor_crm(client, datetime_to_use, crm):
+    assert data_to_use(client, datetime_to_use, doctor_crm=crm) == True
+
+@pytest.mark.parametrize("crm", ['123', 'CRM/UF 12345231126'])
+def test_invalid_doctor_crm(client, datetime_to_use, crm):
+    assert data_to_use(client, datetime_to_use, doctor_crm=crm) == False
+
 #################################################################################
 # TEST NUMBER VARIABLES CAN/CANNOT BE NULL
 # patient_phonenumber
