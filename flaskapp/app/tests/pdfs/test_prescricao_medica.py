@@ -17,7 +17,7 @@ def data_to_use(client, datetime_to_use, document_date=None,
         if document_date == None:
             document_date = datetime_to_use
 
-        patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + '123' + '}'
+        patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + '123' + ',sex: "F", phone: "10123456789",motherName: "Patient Mother Name", ' + '}'
 
         professional = '{' + 'name:' + f'"{professional_name}"' + ',category:' + f'"{professional_category}"' + ",document:" f'"{professional_document}"' + '}'
 
