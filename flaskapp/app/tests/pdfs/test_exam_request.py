@@ -15,7 +15,7 @@ def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns
 
     patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', uf:' + '"SP"' + ', city: ' + '"City"' + '},'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + ',weightKg:' + '123' + ', address: ' + f'{patient_address}' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + 'sex: "M",motherName: "Patient Mother Name",' + 'phone: ' + f'"10123456789"' + ',weightKg:' + '123' + ', address: ' + f'{patient_address}' + '}'
 
     request_string = """
         mutation{

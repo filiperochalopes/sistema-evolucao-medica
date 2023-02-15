@@ -32,7 +32,6 @@ def data_to_use(client, datetime_to_use, patient_name='Patient Name', patient_we
         client.execute(query)
         return True
     except:
-        print(all_string)
         return False
 
 #Testing balanco hidrico

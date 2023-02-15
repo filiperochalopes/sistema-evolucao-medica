@@ -6,6 +6,8 @@ mutation{
       cns: "928976954930007",
       birthdate: "2022-11-10",
       phone: "10123456789",
+      sex: "M",
+      motherName: "Patient Mother Name",
       weightKg: 123.00,
       address: {
         street: "Patient Adress",
