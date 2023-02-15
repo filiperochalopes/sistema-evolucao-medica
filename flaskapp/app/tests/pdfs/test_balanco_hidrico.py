@@ -9,7 +9,7 @@ def data_to_use(client, datetime_to_use, patient_name='Patient Name', patient_we
     for balance in fluid_balances:
         all_balance += '{createdAt:' + f'"{balance["created_at"]}"' + ',volumeMl:' + f'{balance["volumeMl"]}' + ',description:' + f'"{balance["description"]}"' + '},'
     
-        patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + f'{patient_weight}' + '}'
+        patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',motherName: "Patient Mother Name"' + ',sex: "M"' + ',phone: ' + f'"10123456789"' + ',weightKg:' + f'{patient_weight}' + '}'
 
 
     request_string = """
@@ -32,6 +32,7 @@ def data_to_use(client, datetime_to_use, patient_name='Patient Name', patient_we
         client.execute(query)
         return True
     except:
+        print(all_string)
         return False
 
 #Testing balanco hidrico
