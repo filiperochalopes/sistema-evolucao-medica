@@ -41,7 +41,7 @@ medicines='[{medicineName: "nome do Medicamneto", quant1month:"20 comp",        
     requesting_establishment = '{name: ' + f'"{requesting_establishment_name}"' + ', cnes: ' + f'"{requesting_establishment_cnes}"' + '}'
 
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', cpf: ' + f'"{patient_cpf}"' + ',weightKg:' + f'{patient_weight}' + ', motherName: ' + f'"{patient_mother_name}"' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', cpf: ' + f'"{patient_cpf}"' + ',weightKg:' + f'{patient_weight}' + ', motherName: ' + f'"{patient_mother_name}"' + 'sex: "F", phone: "10123456789",' + '}'
     
 
     request_string = """
