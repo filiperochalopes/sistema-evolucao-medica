@@ -11,6 +11,7 @@ mutation{
       name: "Pacient Name Name",
       cns: "928976954930007",
       weightKg: 123,
+      phone: "10123456789",
     },
     prescription: [
       {

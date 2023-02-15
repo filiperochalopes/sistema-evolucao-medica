@@ -6,6 +6,7 @@ mutation{
             birthdate: "2022-11-10",
             motherName: "Paciente Mother Name",
             weightKg: 123,
+            phone: "10123456789",
             address:{
                 uf: "SP",
                 city: "Jau"

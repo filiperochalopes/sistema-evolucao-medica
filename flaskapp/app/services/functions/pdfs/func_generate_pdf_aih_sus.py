@@ -111,7 +111,7 @@ def func_generate_pdf_aih_sus(requesting_establishment:dict, patient:dict, main_
             pdf.set_font('Roboto-Mono', 9)
             pdf.add_oneline_text(text=insurance_company_ticket_number, pos=(465, 183), field_name='Insurance company ticket number', len_max=16, len_min=1,nullable=True, centralized=True)           
             pdf.add_oneline_text(text=insurance_company_series, pos=(543, 183), field_name='Insurance Company Series', len_max=10, len_min=1, nullable=True, centralized=True)           
-            pdf.add_oneline_text(text=patient['address'].get('ibge_city_code'), pos=(388, 566), field_name='Patient Adress City IBGE code', len_max=7, len_min=7)
+            pdf.add_oneline_text(text=patient['address'].get('ibge_city_code'), pos=(388, 566), field_name='Patient Adress City IBGE code', len_max=7, len_min=7, nullable=True)
             pdf.add_cnae(cnae=company_cnae, pos=(434, 156), field_name='Company CNAE', nullable=True, formated=True)
             pdf.add_cbor(cbor=company_cbor, pos=(529, 156), field_name='Company CBOR', nullable=True, formated=True)
             pdf.add_markable_square(option=pension_status, valid_options=['WORKER', 'EMPLOYER', 'AUTONOMOUS', 'UNEMPLOYED', 'RETIRED', 'NOT_INSURED'], options_positions=((33,131),(124,131),(219,131),(305,131),(408,131),(500,131),), square_size=(9,9), field_name='Pension Status', nullable=True)

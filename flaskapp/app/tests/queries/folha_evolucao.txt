@@ -4,6 +4,7 @@ mutation{
     patient: {
       name: "Patient Test Name",
       cns: "928976954930007",
+      phone: "10123456789",
       weightKg: 123.00,
     },
     evolutions:[

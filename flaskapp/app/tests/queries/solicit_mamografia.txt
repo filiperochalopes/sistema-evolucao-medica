@@ -8,6 +8,7 @@ mutation{
         motherName: "Paciente Mother Name",
         cpf: "28445400070",
         sex: "M",
+        phone: "10123456789",
         weightKg: 123,
         nationality: "Brasileiro",
         address:{
@@ -29,7 +30,6 @@ mutation{
       examinatedBefore: "NUNCA",
       healthUnitName: "heath Unit Name",
       patientSurname: "Lero",
-      patientPhonenumber: "4212345678",
       radiotherapyBefore: ["NAO", null],
       breastSurgeryBefore: {
       didNot: "false",

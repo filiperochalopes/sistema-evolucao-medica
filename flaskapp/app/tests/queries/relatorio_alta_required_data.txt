@@ -8,6 +8,7 @@ mutation{
             sex: "F",
             motherName: "Patient Mother Name",
             weightKg: 123,
+            phone: "10123456789",
             cpf: "28445400070",
             rg: null,
             address: {

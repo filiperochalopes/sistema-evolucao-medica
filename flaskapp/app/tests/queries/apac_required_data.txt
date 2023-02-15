@@ -10,6 +10,7 @@ mutation{
             birthdate: "2022-11-10",
             sex: "M",
             weightKg: 123,
+            phone: "10123456789",
             address: {
                 city: "Jau",
                 uf: "SP",
