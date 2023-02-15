@@ -10,7 +10,7 @@ def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient 
     for presc in prescriptions:
         all_prescriptions += '{type:' + f'"{presc["type"]}"' + ',description:' + f'"{presc["description"]}"' + ',route:' + f'"{presc["route"]}"' + ',startDate:' + f'"{presc["start_date"]}"' + ',endingDate:' + f'"{presc["ending_date"]}"' + '},'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + '123' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + '123' + ',sex: "F", phone: "10123456789", motherName: "Patient Mother Name"' + '}'
 
     request_string = """
         mutation{

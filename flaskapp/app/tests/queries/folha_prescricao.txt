@@ -7,6 +7,9 @@ mutation{
       cns: "928976954930007",
       weightKg: 123.00,
       phone: "10123456789",
+      sex: "F", 
+      phone: "10123456789",
+      motherName: "Patient Mother Name", 
     },
     prescriptions: [
       {
