@@ -283,7 +283,7 @@ type_defs = gql(
         "Apenas dígito do Documento de Registro Geral"
         rg: String
         "Telefone de contato do paciente, de preferência WhatsApp"
-        phone: String
+        phone: String!
         "Nacionalidade do Paciente"
         nationality: String
         "Etnia do Paciente"
