@@ -28,7 +28,7 @@ def data_to_use(client, datetime_to_use, patient_name='Patient Name',
     for evo in measures:
         all_measures += '{createdAt:' + f'"{evo["created_at"]}"' + ',cardiacFrequency:' + f'{evo["cardiac_frequency"]}' + ',respiratoryFrequency:' + f'{evo["respiratory_frequency"]}' + ',sistolicBloodPressure:' + f'{evo["sistolic_blood_pressure"]}' + ',diastolicBloodPressure:' + f'{evo["diastolic_blood_pressure"]}' + ',glucose:' + f'"{evo["glucose"]}"' + ',spO2:' + f'{evo["spO2"]}' + ',celciusAxillaryTemperature:' + f'{evo["celcius_axillary_temperature"]}' + ',pain:' + f'{evo["pain"]}' + ',professional:' + f'{evo["professional"]}' +'},'
 
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + '123' + '}'
+    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + '123' + ',sex: "F", phone: "10123456789", motherName: "Patient Mother Name"' '}'
 
     request_string = """
     mutation{
