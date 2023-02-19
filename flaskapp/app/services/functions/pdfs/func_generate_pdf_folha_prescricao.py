@@ -3,7 +3,7 @@ from datetime import datetime, timezone, timedelta
 
 
 def func_generate_pdf_folha_prescricao(created_at:str, patient:dict, prescriptions:list, 
-#current_user:dict=None
+current_user:dict=None
 ) -> str:
     """Fill pdf folha prescricao
 
@@ -20,11 +20,7 @@ def func_generate_pdf_folha_prescricao(created_at:str, patient:dict, prescriptio
     try:
         pdf = PdfFolhaPrescricao()
         # Writing all data in respective fields
-        # not null data
-
-        # Provisory data to test
-        current_user = {'name': 'Professioanl Info', 'professional_document_uf': 'BA', 'professional_document_number':'12457'}
-
+        # not null data        
         try:
             pdf.add_abbreviated_name(name=patient['name'], pos=(535, 550), field_name='Patient Name', len_max=26, centralized=True, uppered=True)
 

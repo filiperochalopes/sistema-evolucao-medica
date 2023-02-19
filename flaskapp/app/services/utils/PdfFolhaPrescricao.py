@@ -34,9 +34,9 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
             DEFAULT_RECT_HEIGHT = 28
             DEFAULT_DECREASE_Y_POS = 12
             y_text_pos = 511
-            for presc in prescriptions:
+            for p in prescriptions:
                 # Create text
-                prescription_text = f'{cont}.{presc["type"]} {presc["description"]} ({presc["route"]})'.strip()
+                prescription_text = f'{cont}.{p["type"]} {p["description"]} ({p["route"]})'.strip()
                 # Get quant of lines
                 break_lines_quant = int(len(prescription_text)/CHAR_PER_LINES)
                 # Get rect heigt with the total lines will need

@@ -2,8 +2,10 @@ mutation printPdf_FolhaPrescricao ($startDatetimeISOString: String!, $endingDate
   printPdf_FolhaPrescricao(
     internmentId: 1
     extra: {
-      startDatetimeStamp: $startDatetimeISOString
-      endingDatetimeStamp: $endingDatetimeISOString
+      interval: {
+        startDatetimeStamp: $startDatetimeISOString
+        endingDatetimeStamp: $endingDatetimeISOString
+      }
     }
   ) {
     base64Pdf

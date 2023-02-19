@@ -3,6 +3,7 @@ from app.services.utils.ReportLabCanvasUtils import ReportLabCanvasUtils
 from PyPDF2 import PdfWriter, PdfReader
 import datetime
 from dateutil.parser import isoparse
+import sys
 
 class PdfFolhaEvolucao(ReportLabCanvasUtils):
 
@@ -38,10 +39,11 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         name = professional.get('name')
         document = professional.get('document')
         category = professional.get('category')
-
+        print('============ PROFESSIONAL ============', file=sys.stderr)
+        print([name, document, category], file=sys.stderr)
         for camp in [name, document, category]:
             if camp == None:
-                raise Exception('Algum campo do profissional está faltando, o documento precisa do nome, document e category')
+                raise Exception('Algum campo do profissional está faltando, o documento precisa do name, document e category')
 
         date_object = isoparse(date)
         str_date = str('%02d/%02d/%d %02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute)
@@ -219,11 +221,11 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         return None
 
 
-    def add_medical_nursing_evolution(self, evolution_description:str, responsible:dict, date:str, evolution_initial_pos:tuple, field_name:str, CHAR_PER_LINES:int, CHAR_POINT_SIZE:float, DECREASE_Y_POS:int,Y_LIMIT_SECOND_COLLUM:int, Y_LIMIT_FIRST_COLLUM:int,is_in_second_collum:bool) -> None:
+    def add_medical_nursing_evolution(self, evolution_text:str, responsible:dict, date:str, evolution_initial_pos:tuple, field_name:str, CHAR_PER_LINES:int, CHAR_POINT_SIZE:float, DECREASE_Y_POS:int,Y_LIMIT_SECOND_COLLUM:int, Y_LIMIT_FIRST_COLLUM:int,is_in_second_collum:bool) -> None:
         """Add a medical and nursing evolution to the pdf, this function only works to the 2 big squares with data, in order, the first and third square, the other 2 minor nursing evolution will be created by another function
 
         Args:
-            evolution_description (str): evolution description
+            evolution_text (str): evolution description
             responsible (dict): Responsible info 
             date (str): date of the evolution with format DD/MM/YYYY HH:mm
             evolution_initial_pos (tuple): initial evolution description position in pdf
@@ -233,19 +235,19 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         Returns:
             None
         """
-        self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution, variables_to_verify={'evolution_description':evolution_description, 'responsible':responsible, 'evolution_initial_pos':evolution_initial_pos, 'field_name':field_name, 'date':date, 'CHAR_PER_LINES':CHAR_PER_LINES, 'CHAR_POINT_SIZE':CHAR_POINT_SIZE, 'DECREASE_Y_POS':DECREASE_Y_POS, 'Y_LIMIT_SECOND_COLLUM':Y_LIMIT_SECOND_COLLUM,'is_in_second_collum':is_in_second_collum, 'Y_LIMIT_FIRST_COLLUM':Y_LIMIT_FIRST_COLLUM})
+        self.validate_func_args(function_to_verify=self.add_medical_nursing_evolution, variables_to_verify={'evolution_text':evolution_text, 'responsible':responsible, 'evolution_initial_pos':evolution_initial_pos, 'field_name':field_name, 'date':date, 'CHAR_PER_LINES':CHAR_PER_LINES, 'CHAR_POINT_SIZE':CHAR_POINT_SIZE, 'DECREASE_Y_POS':DECREASE_Y_POS, 'Y_LIMIT_SECOND_COLLUM':Y_LIMIT_SECOND_COLLUM,'is_in_second_collum':is_in_second_collum, 'Y_LIMIT_FIRST_COLLUM':Y_LIMIT_FIRST_COLLUM})
 
         # get professional info text
         professional_info = 'Responsável: ' + self.create_professional_info(professional=responsible, date=date)
         # Evolution decrease pos
-        total_y_decrease = int(len(evolution_description)/CHAR_PER_LINES) * DECREASE_Y_POS
+        total_y_decrease = int(len(evolution_text)/CHAR_PER_LINES) * DECREASE_Y_POS
         # get rectangle y decrease
         rectangle_responsible_y_decrease = total_y_decrease
         # Continue total y decrease calculum
         total_y_decrease += int(len(professional_info)/CHAR_PER_LINES) * DECREASE_Y_POS
 
         self.set_font('Roboto-Mono', 11)
-        new_initial_pos, changed_collum, first_collum_y_decrease, second_collum_y_decrease = self.add_evolution_morelines_text(text=evolution_description, initial_pos=evolution_initial_pos, decrease_ypos=DECREASE_Y_POS, field_name=f'Descricao evolucao {field_name}', len_max=5000, char_per_lines=CHAR_PER_LINES, Y_LIMIT_FIRST_COLLUM=Y_LIMIT_FIRST_COLLUM)
+        new_initial_pos, changed_collum, first_collum_y_decrease, second_collum_y_decrease = self.add_evolution_morelines_text(text=evolution_text, initial_pos=evolution_initial_pos, decrease_ypos=DECREASE_Y_POS, field_name=f'Descricao evolucao {field_name}', len_max=5000, char_per_lines=CHAR_PER_LINES, Y_LIMIT_FIRST_COLLUM=Y_LIMIT_FIRST_COLLUM)
         
         if changed_collum:
             #Recude 2 lines
@@ -294,8 +296,8 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         y_limit = Y_LIMIT_FIRST_COLLUM
         cont = 1
         second_collum = False
-        for evo in evolutions:
-            total_y_decrease, changed_collum, new_evolution_pos = self.add_medical_nursing_evolution(evolution_description=evo['description'], responsible=evo['professional'], date=evo['created_at'], evolution_initial_pos=(evolution_x_pos, evolution_y_pos), field_name=f'{cont} evolucao medica', CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE, DECREASE_Y_POS=DECREASE_Y_POS, Y_LIMIT_SECOND_COLLUM=Y_LIMIT_SECOND_COLLUM, is_in_second_collum=second_collum, Y_LIMIT_FIRST_COLLUM=Y_LIMIT_FIRST_COLLUM)
+        for e in evolutions:
+            total_y_decrease, changed_collum, new_evolution_pos = self.add_medical_nursing_evolution(evolution_text=e['text'], responsible=e['professional'], date=e['created_at'], evolution_initial_pos=(evolution_x_pos, evolution_y_pos), field_name=f'{cont} evolucao medica', CHAR_PER_LINES=CHAR_PER_LINES, CHAR_POINT_SIZE=CHAR_POINT_SIZE, DECREASE_Y_POS=DECREASE_Y_POS, Y_LIMIT_SECOND_COLLUM=Y_LIMIT_SECOND_COLLUM, is_in_second_collum=second_collum, Y_LIMIT_FIRST_COLLUM=Y_LIMIT_FIRST_COLLUM)
 
             evolution_x_pos = new_evolution_pos[0]
             evolution_y_pos = new_evolution_pos[1]
@@ -331,8 +333,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         Returns:
             _type_: _description_
         """        
-        
-        create_at = str('%02d:%02d') % (date_object.hour, date_object.minute)
+        created_at = str('%02d:%02d') % (date_object.hour, date_object.minute)
         cardiac_frequency = measure.get('cardiac_frequency')
         respiratory_frequency = measure.get('respiratory_frequency')
         sistolic_blood_pressure = measure.get('sistolic_blood_pressure')
@@ -347,7 +348,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         # Creating blood plesure
         blood_pressure = str(sistolic_blood_pressure) + '/' + str(diastolic_blood_pressure)
 
-        measures_list = [create_at, cardiac_frequency, respiratory_frequency, blood_pressure, glucose, spO2, celcius_axillary_temperature, pain]
+        measures_list = [created_at, cardiac_frequency, respiratory_frequency, blood_pressure, glucose, spO2, celcius_axillary_temperature, pain]
 
         return measures_list, professional
 
@@ -402,8 +403,10 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
             all_responsible_names = 'Responsaveis:' #get all responsible names to add in bottom
             
 
-            for measur in measures:
-                complete_time = measur.get('created_at')
+            for m in measures:
+                complete_time = m.get('created_at')
+                print('=============== MEASURE ===============', file=sys.stderr)
+                print(m, file=sys.stderr)
                 if complete_time == None:
                     raise Exception('create_at cannot be null')
 
@@ -413,10 +416,12 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 except:
                     raise Exception(f'A data nao corresponde ao formato ISO %Y-%m-%dT%H:%M:%S')
                 
-                #Reset x_pos_cont
+                # Reset x_pos_cont
                 x_pos_cont = 0
 
-                measures_list, professional = self.get_measures_list(date_object=date_object, measure=measur)
+                measures_list, professional = self.get_measures_list(date_object=date_object, measure=m)
+
+                print('=============== MEASURE =============== Checkpoint 2', file=sys.stderr)
 
                 for value in measures_list:
                     if value == None:
@@ -432,6 +437,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 # Update count variables
                 y_pos -= 12
                 global_cont += 1
+                print('=============== MEASURE =============== Checkpoint 3', file=sys.stderr)
                 # Add new responsible names to document
                 all_responsible_names += self.create_professional_info(professional=professional, date=complete_time, abbreviated=True) + '| '
 

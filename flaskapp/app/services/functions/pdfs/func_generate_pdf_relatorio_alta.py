@@ -1,11 +1,11 @@
 from app.services.utils.PdfRelatorioAlta import PdfRelatorioAlta
-
+import sys
 
 def func_generate_pdf_relatorio_alta(document_datetime:str, patient:dict, evolution:str, doctor_name:str, doctor_cns:str, doctor_crm:str, orientations:str=None) -> str:
     """fill pdf relatorio alta
     
     Args:
-        document_datetime (datetime.datetime): document_datetime
+        document_datetime (str): document_datetime
         patient (dict): patient indo
         evolution (str): evolution
         doctor_name (str): doctor_name
@@ -21,8 +21,6 @@ def func_generate_pdf_relatorio_alta(document_datetime:str, patient:dict, evolut
         # Writing all data in respective fields
         # not null data
         try:
-            
-            pdf.add_datetime(date=document_datetime, pos=(490, 740), field_name='Document Datetime', hours=True, formated=True,centralized=True)
             
             # change font size to normal            
             pdf.set_font('Roboto-Mono', 9)            

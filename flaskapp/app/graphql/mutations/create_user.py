@@ -32,8 +32,6 @@ def create_user(_, info, master_key: str, user: dict):
             if cpf_validator.validate(user['cpf']) is False:
                 raise Exception('Número de CPF inválido')
 
-        pprint(user)
-        print(ProfessionalCategoryEnum['doc'], file=sys.stderr)
         new_user = User(
             name=user['name'], 
             email=user['email'], 

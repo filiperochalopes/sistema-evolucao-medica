@@ -13,8 +13,8 @@ generate_pdf_type_defs = gql(
     input EvolutionInput{
         "Data da criacao. String no formato ISO %Y-%m-%dT%H:%M:%S"
         createdAt: String!
-        "Descricao da evolucao"
-        description: String!
+        "Texto da evolucao"
+        text: String!
         "Profissional responsavel"
         professional: ProfessionalInput!
     }

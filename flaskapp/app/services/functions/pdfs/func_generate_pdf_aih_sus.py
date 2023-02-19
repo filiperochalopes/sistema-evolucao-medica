@@ -70,7 +70,7 @@ def func_generate_pdf_aih_sus(requesting_establishment:dict, patient:dict, main_
             pdf.add_morelines_text(text=conditions_justify_hospitalization, initial_pos=(25, 422), decrease_ypos= 10, field_name='Conditions that Justify hospitalization', len_max=403, char_per_lines=101, len_min=5)
             pdf.add_oneline_text(text=initial_diagnosis, pos=(25, 314), field_name='Initial Diagnostic', len_max=44, len_min=5)
             pdf.add_oneline_text(text=principal_cid_10, pos=(306, 314), field_name='Principal Cid10', len_max=4, len_min=3)
-            pdf.add_document_cns_cpf_rg(document=requesting_professional_document, pos_square_cpf=(290, 244), pos_square_cns=(247,244), pos_cns=(335, 246), pos_cpf=(335, 246),field_name='Professional Solicitor Document', interval='  ')
+            pdf.add_document_cns_cpf_rg(document=requesting_professional_document, pos_square_cpf=(290, 244), pos_square_cns=(247,244), pos_cns=(335, 246), pos_cpf=(335, 246),field_name='Requesting Professional Document', interval='  ')
             pdf.add_oneline_text(text=requesting_professional_name, pos=(25, 222), field_name='Professional Solicitor Name', len_max=48, len_min=8)
             pdf.add_datetime(date=request_date, pos=(300, 222), field_name='Solicitation Datetime', hours=False, interval='  ', formated=False)   
 

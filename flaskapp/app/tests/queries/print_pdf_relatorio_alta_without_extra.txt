@@ -1,9 +1,6 @@
 mutation{
-  printPdf_FichaInternamento(
-    internmentId:1
-    extra: {
-      hasAdditionalHealthInsurance: true
-    }
+  printPdf_RelatorioAlta(
+    internmentId: 1
   ){
     base64Pdf
   }

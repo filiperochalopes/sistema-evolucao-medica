@@ -1,5 +1,5 @@
 from app.services.utils.PdfBalancoHidrico import PdfBalancoHidrico
-
+from datetime import datetime
 
 def func_generate_pdf_balanco_hidrico(patient:dict, fluid_balance:list,
 #current_user: dict
@@ -18,7 +18,7 @@ def func_generate_pdf_balanco_hidrico(patient:dict, fluid_balance:list,
             pdf.set_font('Roboto-Mono', 16)
             
             # get last fluid balance  date and add in pdf
-            created_at = fluid_balance[-1].get('created_at')
+            created_at = datetime.strftime(fluid_balance[-1]['created_at'], '%Y-%m-%dT%H:%M:%S')
             if created_at is None:
                 raise Exception('Data de criação do ultimo balanco hidrico não  pode ser vazia')
             created_at = created_at[:-5].strip()
