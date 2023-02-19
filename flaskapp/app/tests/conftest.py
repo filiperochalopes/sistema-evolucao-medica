@@ -67,7 +67,7 @@ def download_pdf(request):
 
 @pytest.fixture(scope="session")
 def engine():
-    print(DatabaseSettings(env='production').URL)
+    print(f"Conectando ao banco de dados {DatabaseSettings(env='production').URL}...")
     return create_engine(DatabaseSettings(env='production').URL)
 
 

@@ -15,9 +15,6 @@ from app.services.utils.auth import cpf_validator, cns_validator
 @mutation.field('createUser')
 @convert_kwargs_to_snake_case
 def create_user(_, info, master_key: str, user: dict):
-    print('Hello World', file=sys.stderr)
-    print(master_key, file=sys.stderr)
-    print(MASTER_KEY, file=sys.stderr)
     if master_key == MASTER_KEY:
         # Cria um usuário em model
         encrypted_password = User.generate_password(user['password'])

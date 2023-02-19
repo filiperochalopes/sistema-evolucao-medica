@@ -70,7 +70,7 @@ class ReportLabCanvasUtils():
                 elif arg_to_validate in defaults_types and variables_keys in nullable_variables:
                     continue
                 else:
-                    raise Exception(f'Erro de Tipo. TypeError: \"{variables_keys}\" em \"{variables_to_verify["field_name"]}\" está com o tipo errado, deve ser {right_type}')
+                    raise Exception(f'Erro de Tipo. TypeError: \"{variables_keys}\" em \"{variables_to_verify["field_name"] if hasattr(variables_to_verify, "field_name") else "Sem FieldName"}\" está com o tipo errado, deve ser {right_type}')
             return None
         except Exception as error:
             raise error

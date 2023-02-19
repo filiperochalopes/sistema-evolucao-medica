@@ -39,8 +39,6 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
         name = professional.get('name')
         document = professional.get('document')
         category = professional.get('category')
-        print('============ PROFESSIONAL ============', file=sys.stderr)
-        print([name, document, category], file=sys.stderr)
         for camp in [name, document, category]:
             if camp == None:
                 raise Exception('Algum campo do profissional está faltando, o documento precisa do name, document e category')

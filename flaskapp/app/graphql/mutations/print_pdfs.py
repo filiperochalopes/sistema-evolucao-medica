@@ -5,7 +5,7 @@ from app.utils import get_default_timestamp_interval
 from ariadne import convert_kwargs_to_snake_case
 from app.graphql import mutation
 from app.env import InstitutionData
-from app.models import db, Internment, Evolution, Prescription, Measure, FluidBalance
+from app.models import db, Internment, Evolution, Prescription, Measure, FluidBalance, ProfessionalCategoryEnum
 from app.services.utils.decorators import token_authorization
 from app.services.functions.pdfs.func_generate_pdf_aih_sus import func_generate_pdf_aih_sus
 from app.services.functions.pdfs.func_generate_pdf_apac import func_generate_pdf_apac
@@ -143,6 +143,10 @@ def print_pdf_relatorio_alta(_, info, internment_id: int, current_user: dict, ex
 @convert_kwargs_to_snake_case
 @token_authorization
 def print_pdf_folha_prescricao(_, info, internment_id: int, current_user: dict, extra: dict = None):
+    # Verifica se o usuário que vai imprimir é um médico
+    if current_user.professional_category != ProfessionalCategoryEnum.doc:
+        raise Exception('Apenas um médico pode imprimir uma prescrição')
+
     internment = db.session.query(Internment).get(internment_id)
 
     timestamp_interval = get_default_timestamp_interval()
@@ -152,14 +156,45 @@ def print_pdf_folha_prescricao(_, info, internment_id: int, current_user: dict, 
     # Capturando todas as prescrições no horário determinado e ordenando por data, para capturar a última prescrição como data da prescrição atualizada
     prescriptions_by_interval = db.session.query(Prescription).filter(Prescription.internment_id==internment_id).filter(Prescription.created_at>=start_datetime_stamp).filter(Prescription.created_at<=ending_datetime_stamp).order_by(Prescription.created_at.desc()).all()
 
+    # Trnasformando em forma legível para função generate pdf ADAPTER
+    prescriptions_by_interval_by_item = []
+    for p in prescriptions_by_interval:
+        # Capturando tipo Repouso
+        prescriptions_by_interval_by_item.append({
+            'type': 'Repouso',
+            'description': p.resting_activity.name,
+        })
+        # Capturando tipo Dieta
+        prescriptions_by_interval_by_item.append({
+            'type': 'Dieta',
+            'description': p.diet.name,
+        })
+        # Capturando tipo Cuidados de Enfermagem
+        for na in p.nursing_activities:
+            prescriptions_by_interval_by_item.append({
+                'type': 'Cuidados de Enfermagem',
+                'description': na.name,
+            })
+        # Capturando tipo Medicação
+        for dp in p.drug_prescriptions:
+            prescriptions_by_interval_by_item.append({
+                'type': 'Medicação',
+                'description': f'{dp.drug.name} | {dp.dosage}',
+                'route': dp.route,
+                'start_date': dp.initial_date,
+                'ending_date': dp.ending_date,
+            })
+
     return func_generate_pdf_folha_prescricao(
         patient={
             'name': internment.patient.name,
             'weight_kg': internment.patient.weight_kg,
             'birthdate': datetime.strftime(internment.patient.birthdate, '%Y-%m-%d'),
-        }, created_at=datetime.strftime(prescriptions_by_interval[0].created_at, '%Y-%m-%dT%H:%M:%S'), prescriptions=[{
-            **p.__dict__
-        } for p in prescriptions_by_interval])
+        },professional={
+            'name': current_user.name,
+            'professional_document_number': current_user.professional_document_number,
+            'professional_document_uf': current_user.professional_document_uf
+        }, created_at=datetime.strftime(prescriptions_by_interval[0].created_at, '%Y-%m-%dT%H:%M:%S'), prescriptions=prescriptions_by_interval_by_item)
 
 @mutation.field('printPdf_FolhaEvolucao')
 @convert_kwargs_to_snake_case

@@ -11,7 +11,6 @@ def calculate_age(birthdate:date):
     age_month = (birthdate.month + today.month) if birthday_not_passed else (birthdate.month - today.month)
     age_day = (birthdate.day + today.day) if birthday_not_passed else (today.day - birthdate.day)
     age_string = ''
-    print(age_year, age_month, age_day, file=sys.stderr)
     if age_year > 1:
         age_string += f'{age_year} anos'
     elif age_year == 1:

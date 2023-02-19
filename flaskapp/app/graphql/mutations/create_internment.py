@@ -16,8 +16,6 @@ from app.services.utils.create_comorbities_and_allergies import create_comorbidi
 @convert_kwargs_to_snake_case
 @token_authorization
 def create_internment(_, info, hpi: str, justification: str, patient: dict, cid_10_code: str, admission_datetime:str, current_user: dict):
-    print('current_user', file=sys.stderr)
-    print(current_user.__dict__, file=sys.stderr)
     patient['birthdate'] = datetime.datetime.strptime(patient['birthdate'], '%Y-%m-%d')
     patient['sex'] = SexEnum[patient['sex']]
     # Verifica se já existe o paciente pelos campos únicos: `cpf`, `cns` e `rg`

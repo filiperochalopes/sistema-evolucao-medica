@@ -36,9 +36,7 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
             y_text_pos = 511
             for p in prescriptions:
                 # Create text
-                print('============== PRESCRIPTION ==============', file=sys.stderr)
-                print(p, file=sys.stderr)
-                prescription_text = f'{cont}.{p["type"]} {p["description"]} ({p["route"]})'.strip()
+                prescription_text = f'{cont}.{p["type"]} {p["description"]} {({p["route"]}) if hasattr(p, "route") else ""}'.strip()
                 # Get quant of lines
                 break_lines_quant = int(len(prescription_text)/CHAR_PER_LINES)
                 # Get rect heigt with the total lines will need

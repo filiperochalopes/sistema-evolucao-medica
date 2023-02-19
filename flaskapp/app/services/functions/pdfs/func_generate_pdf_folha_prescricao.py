@@ -1,9 +1,9 @@
 from app.services.utils.PdfFolhaPrescricao import PdfFolhaPrescricao
 from datetime import datetime, timezone, timedelta
-
+import sys
 
 def func_generate_pdf_folha_prescricao(created_at:str, patient:dict, prescriptions:list, 
-current_user:dict=None
+professional:dict=None
 ) -> str:
     """Fill pdf folha prescricao
 
@@ -11,7 +11,7 @@ current_user:dict=None
         created_at (str): created date
         printed_at (str): Printed date
         prescriptions (list): prescriptions
-        current_user (dict): Professional info
+        professional (dict): Professional info
 
     Returns:
         str: Request with pdf in base64
@@ -36,7 +36,7 @@ current_user:dict=None
             pdf.add_datetime(date=created_at, pos=(692, 20), field_name="Document created date (Bottom position)")
 
             pdf.set_font('Roboto-Mono', 11)
-            current_user_info = pdf.create_professional_info_text(professional=current_user, nullable=False)
+            current_user_info = pdf.create_professional_info_text(professional=professional, nullable=False)
             pdf.add_oneline_text(text=current_user_info, pos=(812, 50), field_name='Professional Info', len_max=67, right_align=True)
         except Exception as error:
             return error

@@ -24,5 +24,4 @@ def internments(*_, active=True, cns=None):
         query = query.filter(Internment.patient.has(Patient.cns == cns))
 
     schema = InternmentSchema(many=True)
-    print(schema.dump(query.all()), file=sys.stderr)
     return schema.dump(query.all())
