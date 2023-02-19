@@ -246,7 +246,6 @@ def print_pdf_folha_evolucao(_, info, internment_id: int, current_user: dict, ex
 @token_authorization
 def print_pdf_balanco_hidrico(_, info, internment_id: int, current_user: dict, extra: dict = None):
     internment = db.session.query(Internment).get(internment_id)
-
     timestamp_interval = get_default_timestamp_interval()
     start_datetime_stamp = extra['interval']['start_datetime_stamp'] if (hasattr(extra, 'interval') and hasattr(extra['interval'], 'start_datetime_stamp')) else datetime.strptime(timestamp_interval.start_datetime_ISO_string, '%Y-%m-%dT%H:%M:%S')
     ending_datetime_stamp = extra['interval']['ending_datetime_stamp'] if (hasattr(extra, 'interval') and hasattr(extra['interval'], 'ending_datetime_stamp')) else datetime.strptime(timestamp_interval.ending_datetime_ISO_string, '%Y-%m-%dT%H:%M:%S')
