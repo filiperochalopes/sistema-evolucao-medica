@@ -405,8 +405,6 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
 
             for m in measures:
                 complete_time = m.get('created_at')
-                print('=============== MEASURE ===============', file=sys.stderr)
-                print(m, file=sys.stderr)
                 if complete_time == None:
                     raise Exception('create_at cannot be null')
 
@@ -420,8 +418,6 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 x_pos_cont = 0
 
                 measures_list, professional = self.get_measures_list(date_object=date_object, measure=m)
-
-                print('=============== MEASURE =============== Checkpoint 2', file=sys.stderr)
 
                 for value in measures_list:
                     if value == None:
@@ -437,7 +433,7 @@ class PdfFolhaEvolucao(ReportLabCanvasUtils):
                 # Update count variables
                 y_pos -= 12
                 global_cont += 1
-                print('=============== MEASURE =============== Checkpoint 3', file=sys.stderr)
+        
                 # Add new responsible names to document
                 all_responsible_names += self.create_professional_info(professional=professional, date=complete_time, abbreviated=True) + '| '
 

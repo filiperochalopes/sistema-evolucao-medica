@@ -157,7 +157,9 @@ def print_pdf_folha_prescricao(_, info, internment_id: int, current_user: dict, 
             'name': internment.patient.name,
             'weight_kg': internment.patient.weight_kg,
             'birthdate': datetime.strftime(internment.patient.birthdate, '%Y-%m-%d'),
-        }, created_at=datetime.strftime(prescriptions_by_interval[0].created_at, '%Y-%m-%dT%H:%M:%S'), prescriptions=[p.__dict__ for p in prescriptions_by_interval])
+        }, created_at=datetime.strftime(prescriptions_by_interval[0].created_at, '%Y-%m-%dT%H:%M:%S'), prescriptions=[{
+            **p.__dict__
+        } for p in prescriptions_by_interval])
 
 @mutation.field('printPdf_FolhaEvolucao')
 @convert_kwargs_to_snake_case

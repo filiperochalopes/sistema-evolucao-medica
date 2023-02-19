@@ -1,7 +1,7 @@
 from app.env import TEMPLATE_FOLHA_PRESCRICAO_DIRECTORY, WRITE_FOLHA_PRESCRICAO_DIRECTORY
 from app.services.utils.ReportLabCanvasUtils import ReportLabCanvasUtils
 from PyPDF2 import PdfWriter, PdfReader
-
+import sys
 
 class PdfFolhaPrescricao(ReportLabCanvasUtils):
 
@@ -36,6 +36,8 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
             y_text_pos = 511
             for p in prescriptions:
                 # Create text
+                print('============== PRESCRIPTION ==============', file=sys.stderr)
+                print(p, file=sys.stderr)
                 prescription_text = f'{cont}.{p["type"]} {p["description"]} ({p["route"]})'.strip()
                 # Get quant of lines
                 break_lines_quant = int(len(prescription_text)/CHAR_PER_LINES)
