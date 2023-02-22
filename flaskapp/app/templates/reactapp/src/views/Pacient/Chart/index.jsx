@@ -1,12 +1,12 @@
 import Container from "./styles";
 
 import Button from "components/Button";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { GET_ALL_CHART } from "graphql/queries";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
-import { format, parseISO } from "date-fns";
+import { format, intervalToDuration, parseISO } from "date-fns";
 import ptBR from "date-fns/esm/locale/pt-BR";
 import React from "react";
 import Strategies from "./Strategies";
@@ -114,6 +114,24 @@ const Chart = () => {
         data.internment.measures.length - 1,
         1
       )[0];
+      let total = 0;
+      const fluids = [];
+      console.log("measure", fluidBalances);
+      const date = new Date();
+      fluidBalances.forEach((fluidBalance) => {
+        const response = intervalToDuration({
+          start: parseISO(measure.createdAt),
+          end: date,
+        });
+        if (response.days <= 1) {
+          total += fluidBalance.volumeMl;
+          fluids.push({
+            volumeMl: fluidBalance.volumeMl,
+            descriptionVolumeMl: fluidBalance.description.value,
+          });
+        }
+      });
+
       array.sinals = {
         cardiacFrequency: measure.cardiacFrequency,
         fetalCardiacFrequency: measure.fetalCardiacFrequency,
@@ -125,8 +143,8 @@ const Chart = () => {
         respiratoryFrequency: measure.respiratoryFrequency,
         spO2: measure.spO2,
         systolicBloodPressure: measure.systolicBloodPressure,
-        volumeMl: fluidBalance.volumeMl,
-        descriptionVolumeMl: fluidBalance.description.value,
+        fluids: fluids,
+        totalFluids: total,
       };
       const measuresWithDateFormat = templateFormatedData(
         measures,
@@ -151,12 +169,14 @@ const Chart = () => {
       const evolutionsWithDateFormat = templateFormatedData(evolutions);
       oldChards = [...oldChards, ...evolutionsWithDateFormat];
     }
+
     if (data.internment.pendings.length > 0) {
       const pendingsWithDateFormat = templateFormatedData(
         data.internment.pendings
       );
       oldChards = [...oldChards, ...pendingsWithDateFormat];
     }
+
     oldChards.sort((chartA, chartB) => {
       const dataChartA = new Date(chartA.createdAt);
       const dataChartB = new Date(chartB.createdAt);
@@ -202,11 +222,18 @@ const Chart = () => {
       <ul>
         <li>FC {newestChart.sinals?.cardiacFrequency}bpm </li>
         <li>FCF {newestChart.sinals?.fetalCardiacFrequency}bpm </li>
-        <li>HGT 110 </li>
-        <li>FR {newestChart.respiratoryFrequency} </li>
-        <li>TEMP AXILAR {newestChart.celciusAxillaryTemperature} </li>
+        <li>HGT {newestChart.sinals?.glucose} mg/ml</li>
+        <li>FR {newestChart.sinals?.respiratoryFrequency} </li>
+        <li>TEMP AXILAR {newestChart.sinals?.celciusAxillaryTemperature} </li>
         <li>
-          BALANÇO HÍDRICO <strong>TOTAL -500</strong> 110 - COPO COM ÁGUA
+          BALANÇO HÍDRICO{" "}
+          <strong>TOTAL {newestChart.sinals?.totalFluids}</strong> |
+          {(newestChart.sinals?.fluids || []).map(
+            (fluid) => `${fluid.volumeMl}ml - ${fluid.descriptionVolumeMl}`
+          )}
+          <button>
+            para ter uma visão geral do balanço hídrico acesse esse link
+          </button>
         </li>
       </ul>
       <h2>Demais Evoluções</h2>

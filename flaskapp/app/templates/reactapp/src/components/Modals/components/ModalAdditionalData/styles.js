@@ -14,3 +14,14 @@ export const ButtonContainer = styled.div`
   align-self: flex-end;
   margin-top: 1rem;
 `;
+
+export const CheckBoxContainer = styled.div`
+  display: flex;
+  column-gap: 1rem;
+`;
+
+export const CheckBoxsContainer = styled.div`
+  display: flex;
+  margin-top: 1rem;
+  column-gap: 1rem;
+`;

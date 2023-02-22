@@ -133,3 +133,21 @@ export const CREATE_MEASURE = gql`
     }
   }
 `;
+
+export const GENERATE_PDF = gql`
+  mutation generatePDF($internmentId: Int!) {
+    printPdf_FichaInternamento(internmentId: $internmentId) {
+      base64Pdf
+    }
+  }
+`;
+export const GENERATE_PDF_FICHA_INTERNAMENTO = gql`
+  mutation printPdf_FichaInternamento(
+    $internmentId: Int!
+    $extra: PrintFichaInternamentoExtraInput
+  ) {
+    printPdf_FichaInternamento(internmentId: $internmentId, extra: $extra) {
+      base64Pdf
+    }
+  }
+`;

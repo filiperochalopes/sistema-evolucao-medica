@@ -1,10 +1,10 @@
 import ModalPrintData from "components/Modals/components/ModalPrintData";
 
-const printScreen = {
+const printScreen = (id) => ({
   confirmButtonAction: () => {},
-  content: <ModalPrintData />,
+  content: <ModalPrintData id={id} />,
   returnButtonAction: () => {},
   title: "Impressão de Documentos",
-};
+});
 
 export default printScreen;

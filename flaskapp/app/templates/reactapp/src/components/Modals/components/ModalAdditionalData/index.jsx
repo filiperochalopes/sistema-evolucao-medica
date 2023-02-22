@@ -1,4 +1,8 @@
-import Container, { ButtonContainer } from "./styles";
+import Container, {
+  ButtonContainer,
+  CheckBoxContainer,
+  CheckBoxsContainer,
+} from "./styles";
 
 import React from "styled-components";
 import TextArea from "components/TextArea";
@@ -7,19 +11,44 @@ import Select from "components/Select";
 import Input from "components/Input";
 import { useFormik } from "formik";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { GENERATE_PDF_FICHA_INTERNAMENTO } from "graphql/mutations";
+import { useMutation } from "@apollo/client";
 
 /* Strategy pattern */
 
 const strategies = {
-  hospitalAdmissionForm: ({ formik }) => (
+  printPdf_FichaInternamento: ({ formik }) => (
     <>
-      <TextArea
-        value={formik.values.examResults}
-        onChange={formik.handleChange}
-        placeholder="Resultados de exames solicitados"
-        name="examResults"
-      />
-      <Select />
+      <p>Tem seguro/plano de saúde outro além do SUS?</p>
+      <CheckBoxsContainer>
+        <CheckBoxContainer>
+          <label htmlFor="checkbox_true">Sim</label>
+          <input
+            id="checkbox_true"
+            type="checkbox"
+            value={formik.values.extra.hasAdditionalHealthInsurance}
+            onChange={() =>
+              formik.setFieldValue("extra", {
+                hasAdditionalHealthInsurance: true,
+              })
+            }
+          />
+        </CheckBoxContainer>
+        <CheckBoxContainer>
+          <label htmlFor="checkbox_false">Não</label>
+          <input
+            id="checkbox_false"
+            type="checkbox"
+            value={!formik.values.extra.hasAdditionalHealthInsurance}
+            onChange={() =>
+              formik.setFieldValue("extra", {
+                hasAdditionalHealthInsurance: false,
+              })
+            }
+          />
+        </CheckBoxContainer>
+      </CheckBoxsContainer>
       <ButtonContainer>
         <Button type="submit">Confirmar</Button>
       </ButtonContainer>
@@ -122,9 +151,10 @@ const strategies = {
 };
 
 const initialValuesStrategies = {
-  hospitalAdmissionForm: {
-    examResults: "",
-    cid: "",
+  printPdf_FichaInternamento: {
+    extra: {
+      hasAdditionalHealthInsurance: true,
+    },
   },
   EvolutionForm: {
     initialDate: "",
@@ -142,12 +172,58 @@ const initialValuesStrategies = {
   },
 };
 
-const ModalAdditionalData = ({ type, confirmButton, ...rest }) => {
+const b64toBlob = (b64Data, contentType = "", sliceSize = 512) => {
+  const byteCharacters = atob(b64Data);
+  const byteArrays = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  const blob = new Blob(byteArrays, { type: contentType });
+  return blob;
+};
+
+const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
+  const [getPDFFicha] = useMutation(GENERATE_PDF_FICHA_INTERNAMENTO);
   const Strategy = strategies[type];
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: initialValuesStrategies[type],
-    onSubmit(values) {
-      console.log(values);
+    async onSubmit(values) {
+      let request = undefined;
+      if (type === "printPdf_FichaInternamento") {
+        request = getPDFFicha;
+      }
+      if (!request) {
+        return;
+      }
+      const response = await request({
+        variables: {
+          internmentId: Number(id),
+          extra: values.extra,
+        },
+      });
+      console.log("response.data.data.printPdf_FichaInternamento.base64Pdf");
+      console.log(response.data.printPdf_FichaInternamento);
+      const link = document.createElement("a");
+      const file = b64toBlob(
+        response.data.printPdf_FichaInternamento.base64Pdf,
+        "application/pdf"
+      );
+      const url = URL.createObjectURL(file);
+      link.href = url;
+      link.setAttribute("target", "_blank");
+      link.click();
     },
   });
   return (

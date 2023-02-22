@@ -47,7 +47,7 @@ const List = () => {
                     <EvolutionButton id={pacient.id} />
                     <Button
                       onClick={() => {
-                        addModal(printScreen);
+                        addModal(printScreen(pacient.id));
                       }}
                       className="add_new_pacient"
                       customType="gray"

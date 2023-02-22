@@ -6,14 +6,16 @@ import { useModalContext } from "services/ModalContext";
 import React from "styled-components";
 import additionalDataScreen from "helpers/additionalDataScreen";
 
-const ModalPrintData = ({ confirmButton }) => {
+const ModalPrintData = ({ confirmButton, id }) => {
   const { addModal } = useModalContext();
 
   return (
     <Container>
       <Button
         onClick={() =>
-          addModal(additionalDataScreen({ type: "hospitalAdmissionForm" }))
+          addModal(
+            additionalDataScreen({ type: "printPdf_FichaInternamento", id })
+          )
         }
         customType="gray-300"
         type="button"
