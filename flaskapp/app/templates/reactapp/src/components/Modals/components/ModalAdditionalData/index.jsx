@@ -12,7 +12,10 @@ import Input from "components/Input";
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GENERATE_PDF_FICHA_INTERNAMENTO } from "graphql/mutations";
+import {
+  GENERATE_PDF_FICHA_INTERNAMENTO,
+  GENERATE_PDF_FOLHA_EVOLUCAO,
+} from "graphql/mutations";
 import { useMutation } from "@apollo/client";
 
 /* Strategy pattern */
@@ -54,7 +57,8 @@ const strategies = {
       </ButtonContainer>
     </>
   ),
-  EvolutionForm: ({ formik }) => {
+  printPdf_FolhaEvolucao: ({ formik }) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       const initialDate = new Date();
       initialDate.setDate(initialDate.getDate() - 1);
@@ -65,25 +69,33 @@ const strategies = {
       const initalDateFormat = `${
         initialDate.toISOString().split("T")[0]
       }T07:00`;
+      console.log({
+        startDatetimeStamp: initalDateFormat,
+        endingDatetimeStamp: finalDateFormat,
+      });
       formik.setValues({
-        initialDate: initalDateFormat,
-        finalDate: finalDateFormat,
+        extra: {
+          interval: {
+            startDatetimeStamp: initalDateFormat,
+            endingDatetimeStamp: finalDateFormat,
+          },
+        },
       });
     }, []);
 
     return (
       <>
         <Input
-          type="date"
-          value={formik.values.initialDate}
+          type="datetime-local"
+          value={formik.values.extra.interval.startDatetimeStamp}
           onChange={formik.handleChange}
-          name="initialDate"
+          name="extra.interval.startDatetimeStamp"
         />
         <Input
-          type="date"
-          value={formik.values.finalDate}
+          type="datetime-local"
+          value={formik.values.extra.interval.endingDatetimeStamp}
           onChange={formik.handleChange}
-          name="finalDate"
+          name="extra.interval.endingDatetimeStamp"
         />
         <ButtonContainer>
           <Button type="submit">Confirmar</Button>
@@ -156,9 +168,13 @@ const initialValuesStrategies = {
       hasAdditionalHealthInsurance: true,
     },
   },
-  EvolutionForm: {
-    initialDate: "",
-    finalDate: "",
+  printPdf_FolhaEvolucao: {
+    extra: {
+      interval: {
+        startDatetimeStamp: "",
+        endingDatetimeStamp: "",
+      },
+    },
   },
   APAC: {
     examRequest: "",
@@ -194,15 +210,27 @@ const b64toBlob = (b64Data, contentType = "", sliceSize = 512) => {
 
 const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
   const [getPDFFicha] = useMutation(GENERATE_PDF_FICHA_INTERNAMENTO);
+  const [getPDFFolhaEvolucao] = useMutation(GENERATE_PDF_FOLHA_EVOLUCAO);
   const Strategy = strategies[type];
   const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: initialValuesStrategies[type],
     async onSubmit(values) {
+      const newValues = { ...values, extra: { ...values.extra } };
       let request = undefined;
       if (type === "printPdf_FichaInternamento") {
         request = getPDFFicha;
+      }
+      if (type === "printPdf_FolhaEvolucao") {
+        console.log(newValues.extra.interval);
+        const initialDate =
+          newValues.extra.interval.startDatetimeStamp.split("T");
+        const finalDate =
+          newValues.extra.interval.endingDatetimeStamp.split("T");
+        newValues.extra.interval.startDatetimeStamp = `${initialDate[0]}T${initialDate[1]}:00`;
+        newValues.extra.interval.endingDatetimeStamp = `${finalDate[0]}T${finalDate[1]}:00`;
+        request = getPDFFolhaEvolucao;
       }
       if (!request) {
         return;
@@ -210,16 +238,11 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
       const response = await request({
         variables: {
           internmentId: Number(id),
-          extra: values.extra,
+          extra: newValues.extra,
         },
       });
-      console.log("response.data.data.printPdf_FichaInternamento.base64Pdf");
-      console.log(response.data.printPdf_FichaInternamento);
       const link = document.createElement("a");
-      const file = b64toBlob(
-        response.data.printPdf_FichaInternamento.base64Pdf,
-        "application/pdf"
-      );
+      const file = b64toBlob(response.data[type].base64Pdf, "application/pdf");
       const url = URL.createObjectURL(file);
       link.href = url;
       link.setAttribute("target", "_blank");

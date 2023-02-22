@@ -29,7 +29,7 @@ const ModalPrintData = ({ confirmButton, id }) => {
         customType="gray-300"
         type="button"
         onClick={() =>
-          addModal(additionalDataScreen({ type: "EvolutionForm" }))
+          addModal(additionalDataScreen({ type: "printPdf_FolhaEvolucao", id }))
         }
       >
         Folha de Evolução

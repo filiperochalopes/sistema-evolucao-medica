@@ -151,3 +151,14 @@ export const GENERATE_PDF_FICHA_INTERNAMENTO = gql`
     }
   }
 `;
+
+export const GENERATE_PDF_FOLHA_EVOLUCAO = gql`
+  mutation printPdf_FichaInternamento(
+    $internmentId: Int!
+    $extra: PrintFolhaEvolucaoExtraInput
+  ) {
+    printPdf_FolhaEvolucao(internmentId: $internmentId, extra: $extra) {
+      base64Pdf
+    }
+  }
+`;
