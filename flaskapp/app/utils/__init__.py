@@ -47,3 +47,10 @@ def get_default_timestamp_interval():
         ending_datetime_ISO_string = _ending_datetime_ISO_string
 
     return DatetimeISOStringInterval
+
+def get_default_timestamp_interval_with_extra_interval_options(extra:dict):
+    timestamp_interval = get_default_timestamp_interval()
+    start_datetime_stamp = extra['interval']['start_datetime_stamp'] if 'interval' in extra and 'start_datetime_stamp' in extra['interval'] else datetime.strptime(timestamp_interval.start_datetime_ISO_string, '%Y-%m-%dT%H:%M:%S')
+    ending_datetime_stamp = extra['interval']['ending_datetime_stamp'] if 'interval' in extra and 'ending_datetime_stamp' in extra['interval'] else datetime.strptime(timestamp_interval.ending_datetime_ISO_string, '%Y-%m-%dT%H:%M:%S')
+
+    return (start_datetime_stamp, ending_datetime_stamp)

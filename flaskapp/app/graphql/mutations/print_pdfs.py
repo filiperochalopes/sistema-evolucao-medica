@@ -1,7 +1,7 @@
 import sys
 from app import env
 from datetime import datetime
-from app.utils import get_default_timestamp_interval
+from app.utils import get_default_timestamp_interval_with_extra_interval_options
 from ariadne import convert_kwargs_to_snake_case
 from app.graphql import mutation
 from app.env import InstitutionData
@@ -9,12 +9,8 @@ from app.models import db, Internment, Evolution, Prescription, Measure, FluidBa
 from app.services.utils.decorators import token_authorization
 from app.services.functions.pdfs.func_generate_pdf_aih_sus import func_generate_pdf_aih_sus
 from app.services.functions.pdfs.func_generate_pdf_apac import func_generate_pdf_apac
-from app.services.functions.pdfs.func_generate_pdf_exam_request import func_generate_pdf_exam_request
 from app.services.functions.pdfs.func_generate_pdf_ficha_internamento import func_generate_pdf_ficha_internamento
-from app.services.functions.pdfs.func_generate_pdf_lme import func_generate_pdf_lme
-from app.services.functions.pdfs.func_generate_pdf_prescricao_medica import func_generate_pdf_prescricao_medica
 from app.services.functions.pdfs.func_generate_pdf_relatorio_alta import func_generate_pdf_relatorio_alta
-from app.services.functions.pdfs.func_generate_pdf_solicit_mamografia import func_generate_pdf_solicit_mamografia
 from app.services.functions.pdfs.func_generate_pdf_folha_prescricao import func_generate_pdf_folha_prescricao
 from app.services.functions.pdfs.func_generate_pdf_folha_evolucao import func_generate_pdf_folha_evolucao
 from app.services.functions.pdfs.func_generate_pdf_balanco_hidrico import func_generate_pdf_balanco_hidrico
@@ -149,9 +145,7 @@ def print_pdf_folha_prescricao(_, info, internment_id: int, current_user: dict, 
 
     internment = db.session.query(Internment).get(internment_id)
 
-    timestamp_interval = get_default_timestamp_interval()
-    start_datetime_stamp = extra['interval']['start_datetime_stamp'] if (hasattr(extra, 'interval') and hasattr(extra['interval'], 'start_datetime_stamp')) else datetime.strptime(timestamp_interval.start_datetime_ISO_string, '%Y-%m-%dT%H:%M:%S')
-    ending_datetime_stamp = extra['interval']['ending_datetime_stamp'] if (hasattr(extra, 'interval') and hasattr(extra['interval'], 'ending_datetime_stamp')) else datetime.strptime(timestamp_interval.ending_datetime_ISO_string, '%Y-%m-%dT%H:%M:%S')
+    start_datetime_stamp, ending_datetime_stamp = get_default_timestamp_interval_with_extra_interval_options(extra)
 
     # Capturando todas as prescrições no horário determinado e ordenando por data, para capturar a última prescrição como data da prescrição atualizada
     prescriptions_by_interval = db.session.query(Prescription).filter(Prescription.internment_id==internment_id).filter(Prescription.created_at>=start_datetime_stamp).filter(Prescription.created_at<=ending_datetime_stamp).order_by(Prescription.created_at.desc()).all()
@@ -202,11 +196,7 @@ def print_pdf_folha_prescricao(_, info, internment_id: int, current_user: dict, 
 def print_pdf_folha_evolucao(_, info, internment_id: int, current_user: dict, extra: dict = None):
     internment = db.session.query(Internment).get(internment_id)
 
-    timestamp_interval = get_default_timestamp_interval()
-    # ! Trecho repetido
-    # TODO Sintetizar com decorator?
-    start_datetime_stamp = extra['interval']['start_datetime_stamp'] if (hasattr(extra, 'interval') and hasattr(extra['interval'], 'start_datetime_stamp')) else datetime.strptime(timestamp_interval.start_datetime_ISO_string, '%Y-%m-%dT%H:%M:%S')
-    ending_datetime_stamp = extra['interval']['ending_datetime_stamp'] if (hasattr(extra, 'interval') and hasattr(extra['interval'], 'ending_datetime_stamp')) else datetime.strptime(timestamp_interval.ending_datetime_ISO_string, '%Y-%m-%dT%H:%M:%S')
+    start_datetime_stamp, ending_datetime_stamp = get_default_timestamp_interval_with_extra_interval_options(extra)
     
     evolutions_by_interval = db.session.query(Evolution).filter(Evolution.internment_id==internment_id).filter(Evolution.created_at>=start_datetime_stamp).filter(Evolution.created_at<=ending_datetime_stamp).order_by(Evolution.created_at.desc()).all()
     measures_by_interval = db.session.query(Measure).filter(Measure.internment_id==internment_id).filter(Measure.created_at>=start_datetime_stamp).filter(Measure.created_at<=ending_datetime_stamp).order_by(Measure.created_at.desc()).all()
@@ -246,12 +236,10 @@ def print_pdf_folha_evolucao(_, info, internment_id: int, current_user: dict, ex
 @token_authorization
 def print_pdf_balanco_hidrico(_, info, internment_id: int, current_user: dict, extra: dict = None):
     internment = db.session.query(Internment).get(internment_id)
-    timestamp_interval = get_default_timestamp_interval()
-    start_datetime_stamp = extra['interval']['start_datetime_stamp'] if (hasattr(extra, 'interval') and hasattr(extra['interval'], 'start_datetime_stamp')) else datetime.strptime(timestamp_interval.start_datetime_ISO_string, '%Y-%m-%dT%H:%M:%S')
-    ending_datetime_stamp = extra['interval']['ending_datetime_stamp'] if (hasattr(extra, 'interval') and hasattr(extra['interval'], 'ending_datetime_stamp')) else datetime.strptime(timestamp_interval.ending_datetime_ISO_string, '%Y-%m-%dT%H:%M:%S')
+    start_datetime_stamp, ending_datetime_stamp = get_default_timestamp_interval_with_extra_interval_options(extra)
 
     fluid_balance_by_interval = db.session.query(FluidBalance).filter(FluidBalance.internment_id==internment_id).filter(FluidBalance.created_at>=start_datetime_stamp).filter(FluidBalance.created_at<=ending_datetime_stamp).order_by(FluidBalance.created_at.desc()).all()
-
+    
     return func_generate_pdf_balanco_hidrico(fluid_balance=[{
         'created_at': datetime.strftime(f.created_at, '%Y-%m-%dT%H:%M:%S'),
         'volume_ml': f.volume_ml,
