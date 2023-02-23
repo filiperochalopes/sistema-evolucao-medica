@@ -69,7 +69,7 @@ print_pdf_type_defs = gql(
         "Opcional: Causa associada"
         ssociatedCause: Cid10Input
         "Opcional: Observações, em caso de não preenchimento será preenchido com História da Doença Atual"
-        observations: Cid10Input
+        observations: String
     }
 
     extend type Mutation {

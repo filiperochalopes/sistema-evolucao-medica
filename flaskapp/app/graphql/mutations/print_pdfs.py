@@ -87,7 +87,7 @@ def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict
             }
         }, history_of_present_illness=internment.hpi,
         initial_diagnosis_suspicion=f'{internment.cid10.code} - {internment.cid10.description}',
-        doctor_name=internment.professional.name, doctor_cns=internment.professional.cns, doctor_crm=internment.professional.professional_document_number, has_additional_health_insurance=extra.has_additional_health_insurance if hasattr(extra, 'has_additional_health_insurance') else None)
+        doctor_name=internment.professional.name, doctor_cns=internment.professional.cns, doctor_crm=internment.professional.professional_document_number, has_additional_health_insurance=extra.has_additional_health_insurance if 'has_additional_health_insurance' in extra else None)
 
 
 @mutation.field('printPdf_RelatorioAlta')
@@ -132,8 +132,8 @@ def print_pdf_relatorio_alta(_, info, internment_id: int, current_user: dict, ex
                 'uf': internment.patient.address.uf,
                 'city': internment.patient.address.city
             }
-        }, document_datetime=extra['datetime_stamp'] if hasattr(extra, 'datetime_stamp') else datetime.strftime(last_medical_evolution.created_at, '%Y-%m-%dT%H:%M:%S'), evolution=evolution, 
-        doctor_name=last_medical_evolution.professional.name, doctor_cns=last_medical_evolution.professional.cns, doctor_crm=last_medical_evolution.professional.professional_document_number, orientations=extra['orientations'] if hasattr(extra, 'orientations') else None)
+        }, document_datetime=extra['datetime_stamp'] if 'datetime_stamp' in extra else datetime.strftime(last_medical_evolution.created_at, '%Y-%m-%dT%H:%M:%S'), evolution=evolution, 
+        doctor_name=last_medical_evolution.professional.name, doctor_cns=last_medical_evolution.professional.cns, doctor_crm=last_medical_evolution.professional.professional_document_number, orientations=extra['orientations'] if 'orientations' in extra else None)
         
 @mutation.field('printPdf_FolhaPrescricao')
 @convert_kwargs_to_snake_case
@@ -285,8 +285,8 @@ def print_pdf_apac(_, info, internment_id: int, current_user: dict, extra: dict)
         }, main_procedure={
             'code': extra['procedure']['code'],
             'name': extra['procedure']['name'],
-            'quantity': extra['procedure']['quantity'] if (hasattr(extra, 'procedure') and hasattr(extra['procedure'], 'quantity')) else 1
-        }, secondaries_procedures=extra['secondary_procedures'] if hasattr(extra, 'secondary_procedures') else None, procedure_justification_main_cid_10=extra['diagnosis']['code'] if (hasattr(extra, 'diagnosis') and hasattr(extra['diagnosis'], 'code')) else internment.cid10.code, procedure_justification_description=extra['diagnosis']['description'] if (hasattr(extra, 'diagnosis') and hasattr(extra['diagnosis'], 'description')) else internment.cid10.description,  procedure_justification_sec_cid_10=extra['secondary_diagnosis']['code'] if (hasattr(extra, 'secondary_diagnosis') and hasattr(extra['secondary_diagnosis'], 'code')) else None, procedure_justification_observations=extra['observations'] if hasattr(extra, 'observatinos') else internment.hpi, procedure_justification_associated_cause_cid_10= extra['associated_cause']['code'] if (hasattr(extra, 'associated_cause') and hasattr(extra['associated_cause'], 'code')) else None, requesting_professional_name=current_user.name, requesting_professional_document={
+            'quantity': extra['procedure']['quantity'] if 'procedure' in extra and 'quantity' in extra['procedure'] else 1
+        }, secondaries_procedures=extra['secondary_procedures'] if 'secondary_procedures' in extra else None, procedure_justification_main_cid_10=extra['diagnosis']['code'] if 'diagnosis' in extra and 'code' in extra['diagnosis'] else internment.cid10.code, procedure_justification_description=extra['diagnosis']['description'] if 'diagnosis' in extra and 'description' in extra['diagnosis'] else internment.cid10.description,  procedure_justification_sec_cid_10=extra['secondary_diagnosis']['code'] if 'secondary_diagnosis' in extra and 'code' in extra['secondary_diagnosis'] else None, procedure_justification_observations=extra['observations'] if 'observations' in extra else internment.hpi, procedure_justification_associated_cause_cid_10= extra['associated_cause']['code'] if 'associated_cause' in extra and 'code' in extra['associated_cause'] else None, requesting_professional_name=current_user.name, requesting_professional_document={
             'cpf': current_user.cpf,
             'cns': current_user.cns
         })
