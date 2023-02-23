@@ -184,3 +184,14 @@ export const GENERATE_PDF_RELATORIO_ALTA = gql`
     }
   }
 `;
+
+export const GENERATE_PDF_AIH_SUS = gql`
+  mutation printPdf_AihSus(
+    $internmentId: Int!
+    $extra: PrintAihSusPdfExtraInput
+  ) {
+    printPdf_AihSus(internmentId: $internmentId, extra: $extra) {
+      base64Pdf
+    }
+  }
+`;
