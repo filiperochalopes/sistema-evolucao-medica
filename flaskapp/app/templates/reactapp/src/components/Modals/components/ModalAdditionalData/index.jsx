@@ -16,6 +16,7 @@ import {
   GENERATE_PDF_FICHA_INTERNAMENTO,
   GENERATE_PDF_FOLHA_EVOLUCAO,
   GENERATE_PDF_FOLHA_PRESCRICAO,
+  GENERATE_PDF_RELATORIO_ALTA,
 } from "graphql/mutations";
 import { useMutation } from "@apollo/client";
 import { cloneDeep } from "lodash";
@@ -68,14 +69,21 @@ const strategies = {
       </ButtonContainer>
     </>
   ),
-  DischargeForm: ({ formik }) => (
+  printPdf_RelatorioAlta: ({ formik }) => (
     <>
       <TextArea
         placeholder="orientações de alta"
-        name="dischargeGuidelines"
-        value={formik.values.dischargeGuidelines}
+        name="extra.orientations"
+        onChange={formik.handleChange}
+        value={formik.values.extra.orientations}
       />
-
+      <Input
+        type="datetime-local"
+        placeholder="Data Inicial"
+        onChange={formik.handleChange}
+        value={formik.values.extra.datetimeStamp}
+        name="extra.datetimeStamp"
+      />
       <ButtonContainer>
         <Button type="submit">Confirmar</Button>
       </ButtonContainer>
@@ -109,12 +117,11 @@ const initialValuesStrategies = {
   APAC: {
     examRequest: "",
   },
-  PrescriptionSheet: {
-    initialDate: "",
-    finalDate: "",
-  },
-  DischargeForm: {
-    dischargeGuidelines: "",
+  printPdf_RelatorioAlta: {
+    extra: {
+      orientations: "",
+      datetimeStamp: "",
+    },
   },
 };
 
@@ -142,6 +149,7 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
   const [getPDFFicha] = useMutation(GENERATE_PDF_FICHA_INTERNAMENTO);
   const [getPDFFolhaEvolucao] = useMutation(GENERATE_PDF_FOLHA_EVOLUCAO);
   const [getPDFFolhaPrescricao] = useMutation(GENERATE_PDF_FOLHA_PRESCRICAO);
+  const [getPDFRelatorioAlta] = useMutation(GENERATE_PDF_RELATORIO_ALTA);
 
   const Strategy = strategies[type];
   const navigate = useNavigate();
@@ -163,6 +171,10 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
       }
       if (type === "printPdf_FolhaPrescricao") {
         request = getPDFFolhaPrescricao;
+      }
+      if (type === "printPdf_RelatorioAlta") {
+        newValues.extra.datetimeStamp = `${newValues.extra.datetimeStamp}:00`;
+        request = getPDFRelatorioAlta;
       }
       if (!request) {
         return;

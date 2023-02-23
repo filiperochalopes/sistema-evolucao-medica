@@ -13,10 +13,7 @@ const Interval = ({ formik }) => {
     const finalDate = new Date();
     const finalDateFormat = `${finalDate.toISOString().split("T")[0]}T07:00`;
     const initalDateFormat = `${initialDate.toISOString().split("T")[0]}T07:00`;
-    console.log({
-      startDatetimeStamp: initalDateFormat,
-      endingDatetimeStamp: finalDateFormat,
-    });
+
     formik.setValues({
       extra: {
         interval: {

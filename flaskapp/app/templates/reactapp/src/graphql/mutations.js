@@ -173,3 +173,14 @@ export const GENERATE_PDF_FOLHA_PRESCRICAO = gql`
     }
   }
 `;
+
+export const GENERATE_PDF_RELATORIO_ALTA = gql`
+  mutation printPdf_RelatorioAlta(
+    $internmentId: Int!
+    $extra: PrintRelatorioAltaExtraInput
+  ) {
+    printPdf_RelatorioAlta(internmentId: $internmentId, extra: $extra) {
+      base64Pdf
+    }
+  }
+`;

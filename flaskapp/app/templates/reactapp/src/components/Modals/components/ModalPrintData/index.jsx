@@ -49,7 +49,7 @@ const ModalPrintData = ({ confirmButton, id }) => {
         customType="gray-300"
         type="button"
         onClick={() =>
-          addModal(additionalDataScreen({ type: "DischargeForm" }))
+          addModal(additionalDataScreen({ type: "printPdf_RelatorioAlta", id }))
         }
       >
         Ficha de Alta
