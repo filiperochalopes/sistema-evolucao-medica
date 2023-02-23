@@ -38,7 +38,9 @@ const ModalPrintData = ({ confirmButton, id }) => {
         customType="gray-300"
         type="button"
         onClick={() =>
-          addModal(additionalDataScreen({ type: "PrescriptionSheet" }))
+          addModal(
+            additionalDataScreen({ type: "printPdf_FolhaPrescricao", id })
+          )
         }
       >
         Folha Prescrição

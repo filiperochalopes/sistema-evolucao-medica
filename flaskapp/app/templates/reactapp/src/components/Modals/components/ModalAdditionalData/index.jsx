@@ -15,9 +15,11 @@ import { useNavigate } from "react-router-dom";
 import {
   GENERATE_PDF_FICHA_INTERNAMENTO,
   GENERATE_PDF_FOLHA_EVOLUCAO,
+  GENERATE_PDF_FOLHA_PRESCRICAO,
 } from "graphql/mutations";
 import { useMutation } from "@apollo/client";
-
+import { cloneDeep } from "lodash";
+import Interval from "./components/Interval";
 /* Strategy pattern */
 
 const strategies = {
@@ -57,52 +59,7 @@ const strategies = {
       </ButtonContainer>
     </>
   ),
-  printPdf_FolhaEvolucao: ({ formik }) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      const initialDate = new Date();
-      initialDate.setDate(initialDate.getDate() - 1);
-      initialDate.setHours(7);
-
-      const finalDate = new Date();
-      const finalDateFormat = `${finalDate.toISOString().split("T")[0]}T07:00`;
-      const initalDateFormat = `${
-        initialDate.toISOString().split("T")[0]
-      }T07:00`;
-      console.log({
-        startDatetimeStamp: initalDateFormat,
-        endingDatetimeStamp: finalDateFormat,
-      });
-      formik.setValues({
-        extra: {
-          interval: {
-            startDatetimeStamp: initalDateFormat,
-            endingDatetimeStamp: finalDateFormat,
-          },
-        },
-      });
-    }, []);
-
-    return (
-      <>
-        <Input
-          type="datetime-local"
-          value={formik.values.extra.interval.startDatetimeStamp}
-          onChange={formik.handleChange}
-          name="extra.interval.startDatetimeStamp"
-        />
-        <Input
-          type="datetime-local"
-          value={formik.values.extra.interval.endingDatetimeStamp}
-          onChange={formik.handleChange}
-          name="extra.interval.endingDatetimeStamp"
-        />
-        <ButtonContainer>
-          <Button type="submit">Confirmar</Button>
-        </ButtonContainer>
-      </>
-    );
-  },
+  printPdf_FolhaEvolucao: Interval,
   APAC: ({ formik }) => (
     <>
       <Select />
@@ -124,42 +81,7 @@ const strategies = {
       </ButtonContainer>
     </>
   ),
-  PrescriptionSheet: ({ formik }) => {
-    useEffect(() => {
-      const initialDate = new Date();
-      initialDate.setDate(initialDate.getDate() - 1);
-      initialDate.setHours(7);
-
-      const finalDate = new Date();
-      const finalDateFormat = `${finalDate.toISOString().split("T")[0]}T07:00`;
-      const initalDateFormat = `${
-        initialDate.toISOString().split("T")[0]
-      }T07:00`;
-      formik.setValues({
-        initialDate: initalDateFormat,
-        finalDate: finalDateFormat,
-      });
-    }, []);
-
-    return (
-      <>
-        <Input
-          type="datetime-local"
-          placeholder="Data Inicial"
-          onChange={(e) => console.log(e.target.value)}
-          value={formik.values.initialDate}
-        />
-        <Input
-          type="datetime-local"
-          placeholder="Data Final"
-          value={formik.values.finalDate}
-        />
-        <ButtonContainer>
-          <Button type="submit">Confirmar</Button>
-        </ButtonContainer>
-      </>
-    );
-  },
+  printPdf_FolhaPrescricao: Interval,
 };
 
 const initialValuesStrategies = {
@@ -169,6 +91,14 @@ const initialValuesStrategies = {
     },
   },
   printPdf_FolhaEvolucao: {
+    extra: {
+      interval: {
+        startDatetimeStamp: "",
+        endingDatetimeStamp: "",
+      },
+    },
+  },
+  printPdf_FolhaPrescricao: {
     extra: {
       interval: {
         startDatetimeStamp: "",
@@ -211,26 +141,28 @@ const b64toBlob = (b64Data, contentType = "", sliceSize = 512) => {
 const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
   const [getPDFFicha] = useMutation(GENERATE_PDF_FICHA_INTERNAMENTO);
   const [getPDFFolhaEvolucao] = useMutation(GENERATE_PDF_FOLHA_EVOLUCAO);
+  const [getPDFFolhaPrescricao] = useMutation(GENERATE_PDF_FOLHA_PRESCRICAO);
+
   const Strategy = strategies[type];
   const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: initialValuesStrategies[type],
     async onSubmit(values) {
-      const newValues = { ...values, extra: { ...values.extra } };
+      const newValues = cloneDeep(values);
       let request = undefined;
       if (type === "printPdf_FichaInternamento") {
         request = getPDFFicha;
       }
+      if (newValues.extra.interval) {
+        newValues.extra.interval.startDatetimeStamp = `${newValues.extra.interval.startDatetimeStamp}:00`;
+        newValues.extra.interval.endingDatetimeStamp = `${newValues.extra.interval.endingDatetimeStamp}:00`;
+      }
       if (type === "printPdf_FolhaEvolucao") {
-        console.log(newValues.extra.interval);
-        const initialDate =
-          newValues.extra.interval.startDatetimeStamp.split("T");
-        const finalDate =
-          newValues.extra.interval.endingDatetimeStamp.split("T");
-        newValues.extra.interval.startDatetimeStamp = `${initialDate[0]}T${initialDate[1]}:00`;
-        newValues.extra.interval.endingDatetimeStamp = `${finalDate[0]}T${finalDate[1]}:00`;
         request = getPDFFolhaEvolucao;
+      }
+      if (type === "printPdf_FolhaPrescricao") {
+        request = getPDFFolhaPrescricao;
       }
       if (!request) {
         return;

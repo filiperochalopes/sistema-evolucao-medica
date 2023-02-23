@@ -153,11 +153,22 @@ export const GENERATE_PDF_FICHA_INTERNAMENTO = gql`
 `;
 
 export const GENERATE_PDF_FOLHA_EVOLUCAO = gql`
-  mutation printPdf_FichaInternamento(
+  mutation printPdf_FolhaEvolucao(
     $internmentId: Int!
     $extra: PrintFolhaEvolucaoExtraInput
   ) {
     printPdf_FolhaEvolucao(internmentId: $internmentId, extra: $extra) {
+      base64Pdf
+    }
+  }
+`;
+
+export const GENERATE_PDF_FOLHA_PRESCRICAO = gql`
+  mutation printPdf_FolhaPrescricao(
+    $internmentId: Int!
+    $extra: PrintFolhaPrescricaoExtraInput
+  ) {
+    printPdf_FolhaPrescricao(internmentId: $internmentId, extra: $extra) {
       base64Pdf
     }
   }
