@@ -60,7 +60,15 @@ const ModalPrintData = ({ confirmButton, id }) => {
       >
         Ficha de Alta
       </Button>
-      <Button customType="gray-300" type="button">
+      <Button
+        customType="gray-300"
+        type="button"
+        onClick={() =>
+          addModal(
+            additionalDataScreen({ type: "printPdf_BalancoHidrico", id })
+          )
+        }
+      >
         Balanço hídrico
       </Button>
       <Button

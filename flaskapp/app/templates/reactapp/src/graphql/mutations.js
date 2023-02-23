@@ -195,3 +195,14 @@ export const GENERATE_PDF_AIH_SUS = gql`
     }
   }
 `;
+
+export const GENERATE_PDF_BALANCO_HIDRICO = gql`
+  mutation printPdf_BalancoHidrico(
+    $internmentId: Int!
+    $extra: PrintBalancoHidricoExtraInput
+  ) {
+    printPdf_BalancoHidrico(internmentId: $internmentId, extra: $extra) {
+      base64Pdf
+    }
+  }
+`;

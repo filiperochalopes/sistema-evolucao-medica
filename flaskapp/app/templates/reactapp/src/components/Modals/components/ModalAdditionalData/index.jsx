@@ -14,6 +14,7 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import {
   GENERATE_PDF_AIH_SUS,
+  GENERATE_PDF_BALANCO_HIDRICO,
   GENERATE_PDF_FICHA_INTERNAMENTO,
   GENERATE_PDF_FOLHA_EVOLUCAO,
   GENERATE_PDF_FOLHA_PRESCRICAO,
@@ -91,6 +92,7 @@ const strategies = {
       </ButtonContainer>
     </>
   ),
+  printPdf_BalancoHidrico: Interval,
   printPdf_FolhaPrescricao: Interval,
   printPdf_AihSus: ({ formik }) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -148,6 +150,14 @@ const initialValuesStrategies = {
       },
     },
   },
+  printPdf_BalancoHidrico: {
+    extra: {
+      interval: {
+        startDatetimeStamp: "",
+        endingDatetimeStamp: "",
+      },
+    },
+  },
   APAC: {
     examRequest: "",
   },
@@ -190,6 +200,7 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
   const [getPDFFolhaPrescricao] = useMutation(GENERATE_PDF_FOLHA_PRESCRICAO);
   const [getPDFRelatorioAlta] = useMutation(GENERATE_PDF_RELATORIO_ALTA);
   const [getPDFAihSus] = useMutation(GENERATE_PDF_AIH_SUS);
+  const [getPDFBalancoHidrico] = useMutation(GENERATE_PDF_BALANCO_HIDRICO);
 
   const Strategy = strategies[type];
   const navigate = useNavigate();
@@ -222,6 +233,9 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
           description: newValues.extra.secondaryDiagnosis.description,
         };
         request = getPDFAihSus;
+      }
+      if (type === "printPdf_BalancoHidrico") {
+        request = getPDFBalancoHidrico;
       }
       if (!request) {
         return;
