@@ -289,3 +289,13 @@ export const GET_ALL_CHART = gql`
     }
   }
 `;
+
+export const GET_HIGH_COMPLEXITY_PROCEDURES = gql`
+  query highComplexityProcedures {
+    highComplexityProcedures {
+      id
+      name
+      code
+    }
+  }
+`;

@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import Container, {
   ButtonContainer,
   CheckBoxContainer,
   CheckBoxsContainer,
+  ContainerProcessSecondaty,
 } from "./styles";
 import { createFilter, components } from "react-select";
 import Buffer from "buffer";
@@ -14,6 +16,7 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import {
   GENERATE_PDF_AIH_SUS,
+  GENERATE_PDF_APAC,
   GENERATE_PDF_BALANCO_HIDRICO,
   GENERATE_PDF_FICHA_INTERNAMENTO,
   GENERATE_PDF_FOLHA_EVOLUCAO,
@@ -23,7 +26,8 @@ import {
 import { useMutation, useQuery } from "@apollo/client";
 import { cloneDeep } from "lodash";
 import Interval from "./components/Interval";
-import { CID10 } from "graphql/queries";
+import { CID10, GET_HIGH_COMPLEXITY_PROCEDURES } from "graphql/queries";
+import { useState } from "react";
 /* Strategy pattern */
 
 const strategies = {
@@ -126,6 +130,235 @@ const strategies = {
       </>
     );
   },
+  printPdf_Apac: ({ formik }) => {
+    const [currentSecondaryProced, setCurrentSecondaryProcedure] =
+      useState(undefined);
+    const [currentQuantity, setCurrentQuantity] = useState(1);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { data: cid10Data } = useQuery(CID10);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { data: procedures } = useQuery(GET_HIGH_COMPLEXITY_PROCEDURES);
+
+    return (
+      <>
+        <Select
+          onChange={(e) => {
+            formik.setFieldValue("extra.procedure", {
+              ...e,
+              quantity: formik.values.extra.procedure?.quantity || 1,
+            });
+          }}
+          components={{
+            Option: ({ children, ...props }) => {
+              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+              const newProps = Object.assign(props, { innerProps: rest });
+              return (
+                <components.Option {...newProps}>{children}</components.Option>
+              );
+            },
+          }}
+          filterOption={createFilter({ ignoreAccents: false })}
+          getOptionLabel={(option) => option.name}
+          getOptionValue={(option) => option.code}
+          options={procedures?.highComplexityProcedures || []}
+          value={
+            formik.values.extra.procedure.name
+              ? formik.values.extra.procedure
+              : null
+          }
+          placeholder="Procedimento"
+        />
+        <Input
+          type="number"
+          placeholder="Quantidade"
+          onChange={formik.handleChange}
+          value={formik.values.extra.procedure.quantity}
+          name="extra.procedure.quantity"
+        />
+        <h2>Procedimentos Secundários</h2>
+        <ContainerProcessSecondaty>
+          {formik.values.extra.secondaryProcedures.map((procedure, index) => (
+            <div key={index}>
+              <Select
+                onChange={(e) => {
+                  formik.setFieldValue(`extra.secondaryProcedures[${index}]`, {
+                    name: e.name,
+                    code: e.code,
+                    quantity: procedure.quantity,
+                  });
+                }}
+                components={{
+                  Option: ({ children, ...props }) => {
+                    const { onMouseMove, onMouseOver, ...rest } =
+                      props.innerProps;
+                    const newProps = Object.assign(props, { innerProps: rest });
+                    return (
+                      <components.Option {...newProps}>
+                        {children}
+                      </components.Option>
+                    );
+                  },
+                }}
+                filterOption={createFilter({ ignoreAccents: false })}
+                getOptionLabel={(option) => option.name}
+                getOptionValue={(option) => option.code}
+                options={procedures?.highComplexityProcedures || []}
+                value={procedure}
+                placeholder="Procedimento Secundário"
+              />
+              <br />
+              <Input
+                type="number"
+                placeholder="Quantidade"
+                name={`extra.secondaryProcedures[${index}].quantity`}
+                onChange={formik.handleChange}
+                value={procedure.quantity}
+              />
+              <ButtonContainer>
+                <Button
+                  customType="red"
+                  type="button"
+                  onClick={() => {
+                    const filterProcedures =
+                      formik.values.extra.secondaryProcedures.filter(
+                        (procedure, indexPro) => indexPro !== index
+                      );
+                    formik.setFieldValue(
+                      "extra.secondaryProcedures",
+                      filterProcedures
+                    );
+                  }}
+                >
+                  Remover Procedimento
+                </Button>
+              </ButtonContainer>
+              <br />
+            </div>
+          ))}
+          <Select
+            onChange={(e) => {
+              setCurrentSecondaryProcedure({
+                name: e.name,
+                code: e.code,
+              });
+            }}
+            components={{
+              Option: ({ children, ...props }) => {
+                const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+                const newProps = Object.assign(props, { innerProps: rest });
+                return (
+                  <components.Option {...newProps}>
+                    {children}
+                  </components.Option>
+                );
+              },
+            }}
+            filterOption={createFilter({ ignoreAccents: false })}
+            getOptionLabel={(option) => option.name}
+            getOptionValue={(option) => option.code}
+            options={procedures?.highComplexityProcedures || []}
+            value={currentSecondaryProced}
+            placeholder="Procedimento Secundário"
+          />
+          <br />
+          <Input
+            type="number"
+            placeholder="Quantidade"
+            onChange={(e) => setCurrentQuantity(e.target.value)}
+            value={currentQuantity}
+          />
+          <ButtonContainer>
+            <Button
+              type="button"
+              onClick={() => {
+                formik.setFieldValue("extra.secondaryProcedures", [
+                  ...formik.values.extra.secondaryProcedures,
+                  {
+                    quantity: currentQuantity,
+                    name: currentSecondaryProced.name,
+                    code: currentSecondaryProced.code,
+                  },
+                ]);
+                setCurrentQuantity(1);
+                setCurrentSecondaryProcedure(undefined);
+              }}
+            >
+              Adicionar
+            </Button>
+          </ButtonContainer>
+        </ContainerProcessSecondaty>
+        <Select
+          onChange={(e) => {
+            formik.setFieldValue("extra.diagnosis", e);
+          }}
+          components={{
+            Option: ({ children, ...props }) => {
+              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+              const newProps = Object.assign(props, { innerProps: rest });
+              return (
+                <components.Option {...newProps}>{children}</components.Option>
+              );
+            },
+          }}
+          filterOption={createFilter({ ignoreAccents: false })}
+          getOptionLabel={(option) => option.description}
+          getOptionValue={(option) => option.code}
+          options={cid10Data?.cid10 || []}
+          value={formik.values.extra.diagnosis}
+          placeholder="Diagnóstico"
+        />
+        <Select
+          onChange={(e) => {
+            formik.setFieldValue("extra.secondaryDiagnosis", e);
+          }}
+          components={{
+            Option: ({ children, ...props }) => {
+              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+              const newProps = Object.assign(props, { innerProps: rest });
+              return (
+                <components.Option {...newProps}>{children}</components.Option>
+              );
+            },
+          }}
+          filterOption={createFilter({ ignoreAccents: false })}
+          getOptionLabel={(option) => option.description}
+          getOptionValue={(option) => option.code}
+          options={cid10Data?.cid10 || []}
+          value={formik.values.extra.secondaryDiagnosis}
+          placeholder="Diagnóstico secundário"
+        />
+        <Select
+          onChange={(e) => {
+            formik.setFieldValue("extra.ssociatedCause", e);
+          }}
+          components={{
+            Option: ({ children, ...props }) => {
+              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+              const newProps = Object.assign(props, { innerProps: rest });
+              return (
+                <components.Option {...newProps}>{children}</components.Option>
+              );
+            },
+          }}
+          filterOption={createFilter({ ignoreAccents: false })}
+          getOptionLabel={(option) => option.description}
+          getOptionValue={(option) => option.code}
+          options={cid10Data?.cid10 || []}
+          value={formik.values.extra.ssociatedCause}
+          placeholder="Causa Associada"
+        />
+        <TextArea
+          placeholder="Observações"
+          name="extra.observations"
+          onChange={formik.handleChange}
+          value={formik.values.extra.observations}
+        />
+        <ButtonContainer>
+          <Button type="submit">Confirmar</Button>
+        </ButtonContainer>
+      </>
+    );
+  },
 };
 
 const initialValuesStrategies = {
@@ -158,8 +391,17 @@ const initialValuesStrategies = {
       },
     },
   },
-  APAC: {
-    examRequest: "",
+  printPdf_Apac: {
+    extra: {
+      procedure: {
+        quantity: 1,
+      },
+      secondaryProcedures: [],
+      diagnosis: undefined,
+      secondaryDiagnosis: undefined,
+      ssociatedCause: undefined,
+      observations: undefined,
+    },
   },
   printPdf_RelatorioAlta: {
     extra: {
@@ -201,6 +443,7 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
   const [getPDFRelatorioAlta] = useMutation(GENERATE_PDF_RELATORIO_ALTA);
   const [getPDFAihSus] = useMutation(GENERATE_PDF_AIH_SUS);
   const [getPDFBalancoHidrico] = useMutation(GENERATE_PDF_BALANCO_HIDRICO);
+  const [getPDFApac] = useMutation(GENERATE_PDF_APAC);
 
   const Strategy = strategies[type];
   const navigate = useNavigate();
@@ -236,6 +479,26 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
       }
       if (type === "printPdf_BalancoHidrico") {
         request = getPDFBalancoHidrico;
+      }
+      if (type === "printPdf_Apac") {
+        newValues.extra.secondaryDiagnosis = {
+          code: newValues.extra.secondaryDiagnosis.code,
+          description: newValues.extra.secondaryDiagnosis.description,
+        };
+        newValues.extra.ssociatedCause = {
+          code: newValues.extra.ssociatedCause.code,
+          description: newValues.extra.ssociatedCause.description,
+        };
+        newValues.extra.diagnosis = {
+          code: newValues.extra.diagnosis.code,
+          description: newValues.extra.diagnosis.description,
+        };
+        newValues.extra.procedure = {
+          code: newValues.extra.procedure.code,
+          name: newValues.extra.procedure.name,
+          quantity: newValues.extra.procedure.quantity,
+        };
+        request = getPDFApac;
       }
       if (!request) {
         return;

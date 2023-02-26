@@ -206,3 +206,11 @@ export const GENERATE_PDF_BALANCO_HIDRICO = gql`
     }
   }
 `;
+
+export const GENERATE_PDF_APAC = gql`
+  mutation printPdf_Apac($internmentId: Int!, $extra: PrintApacExtraInput!) {
+    printPdf_Apac(internmentId: $internmentId, extra: $extra) {
+      base64Pdf
+    }
+  }
+`;

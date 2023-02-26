@@ -74,7 +74,9 @@ const ModalPrintData = ({ confirmButton, id }) => {
       <Button
         customType="gray-300"
         type="button"
-        onClick={() => addModal(additionalDataScreen({ type: "APAC" }))}
+        onClick={() =>
+          addModal(additionalDataScreen({ type: "printPdf_Apac", id }))
+        }
       >
         APAC
       </Button>

@@ -7,6 +7,7 @@ export default styled.form`
   row-gap: 0.5rem;
   margin-top: 1.5rem;
   width: 100%;
+  overflow: auto;
 `;
 
 export const ButtonContainer = styled.div`
@@ -24,4 +25,8 @@ export const CheckBoxsContainer = styled.div`
   display: flex;
   margin-top: 1rem;
   column-gap: 1rem;
+`;
+
+export const ContainerProcessSecondaty = styled.div`
+  padding-left: 16px;
 `;
