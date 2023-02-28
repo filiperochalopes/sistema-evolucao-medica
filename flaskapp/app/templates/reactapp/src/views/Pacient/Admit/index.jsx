@@ -139,6 +139,7 @@ const Admit = () => {
     }
     getCep();
   }, [formik.values.patient.address.zipCode]);
+  console.log(formik.errors);
 
   return (
     <Container>
@@ -170,6 +171,11 @@ const Admit = () => {
                 name="patient.name"
                 value={formik.values.patient.name}
                 placeholder="Nome Completo"
+                error={
+                  formik.errors.patient.name && formik.touched.patient.name
+                    ? formik.errors.patient.name
+                    : ""
+                }
               />
               <Input
                 onChange={formik.handleChange}
@@ -178,10 +184,17 @@ const Admit = () => {
                 value={formik.values.patient.birthdate}
                 placeholder="Data de Nascimento"
                 type="date"
+                error={
+                  formik.errors.patient.birthdate &&
+                  formik.touched.patient.birthdate
+                    ? formik.errors.patient.birthdate
+                    : ""
+                }
               />
               <Select
                 onChange={(e) => {
                   formik.setFieldValue("patient.sex", e);
+                  formik.setFieldTouched("patient.sex", true);
                 }}
                 value={formik.values.patient.sex}
                 placeholder="Sexo"
@@ -190,6 +203,11 @@ const Admit = () => {
                   { label: "Masculino", value: "male" },
                   { label: "Feminino", value: "fema" },
                 ]}
+                error={
+                  formik.errors.patient.sex && formik.touched.patient.sex
+                    ? formik.errors.patient.sex
+                    : ""
+                }
               />
             </div>
             <div className="row">
@@ -199,6 +217,12 @@ const Admit = () => {
                 name="patient.weightKg"
                 value={formik.values.patient.weightKg}
                 placeholder="Peso"
+                error={
+                  formik.errors.patient.weightKg &&
+                  formik.touched.patient.weightKg
+                    ? formik.errors.patient.weightKg
+                    : ""
+                }
               />
               <Input
                 onChange={formik.handleChange}
@@ -206,6 +230,12 @@ const Admit = () => {
                 name="patient.address.complement"
                 value={formik.values.patient.address.complement}
                 placeholder="Endereço"
+                error={
+                  formik.errors.patient.address.complement &&
+                  formik.touched.patient.address.complement
+                    ? formik.errors.patient.address.complement
+                    : ""
+                }
               />
 
               <Input
@@ -214,11 +244,18 @@ const Admit = () => {
                 name="patient.address.city"
                 value={formik.values.patient.address.city}
                 placeholder="Cidade"
+                error={
+                  formik.errors.patient.address.city &&
+                  formik.touched.patient.address.city
+                    ? formik.errors.patient.address.city
+                    : ""
+                }
               />
 
               <Select
                 onChange={(e) => {
                   formik.setFieldValue("patient.address.uf", e);
+                  formik.setFieldTouched("patient.address.uf", true);
                 }}
                 className="small"
                 getOptionLabel={(option) => option.name}
@@ -226,6 +263,12 @@ const Admit = () => {
                 value={formik.values.patient.address.uf}
                 placeholder="Estado"
                 options={statesData?.state || []}
+                error={
+                  formik.errors.patient.address.uf &&
+                  formik.touched.patient.address.uf
+                    ? formik.errors.patient.address.uf
+                    : ""
+                }
               />
               <Input
                 onChange={formik.handleChange}
@@ -233,6 +276,12 @@ const Admit = () => {
                 name="patient.address.zipCode"
                 value={formik.values.patient.address.zipCode}
                 placeholder="CEP"
+                error={
+                  formik.errors.patient.address.zipCode &&
+                  formik.touched.patient.address.zipCode
+                    ? formik.errors.patient.address.zipCode
+                    : ""
+                }
               />
             </div>
             <div className="row">
@@ -242,6 +291,12 @@ const Admit = () => {
                 value={formik.values.patient.address.neighborhood}
                 name="patient.address.neighborhood"
                 placeholder="Bairro"
+                error={
+                  formik.errors.patient.address.neighborhood &&
+                  formik.touched.patient.address.neighborhood
+                    ? formik.errors.patient.address.neighborhood
+                    : ""
+                }
               />
               <Input
                 onChange={formik.handleChange}
@@ -249,6 +304,12 @@ const Admit = () => {
                 value={formik.values.patient.address.street}
                 name="patient.address.street"
                 placeholder="Rua"
+                error={
+                  formik.errors.patient.address.street &&
+                  formik.touched.patient.address.street
+                    ? formik.errors.patient.address.street
+                    : ""
+                }
               />
               <Input
                 onChange={formik.handleChange}
@@ -256,6 +317,12 @@ const Admit = () => {
                 name="patient.address.number"
                 value={formik.values.patient.address.number}
                 placeholder="Nº"
+                error={
+                  formik.errors.patient.address.number &&
+                  formik.touched.patient.address.number
+                    ? formik.errors.patient.address.number
+                    : ""
+                }
               />
             </div>
             <div className="row">
@@ -265,6 +332,11 @@ const Admit = () => {
                 name="patient.cns"
                 value={formik.values.patient.cns}
                 placeholder="CNS"
+                error={
+                  formik.errors.patient.cns && formik.touched.patient.cns
+                    ? formik.errors.patient.cns
+                    : ""
+                }
               />
               <Input
                 onChange={(e) => {
@@ -276,6 +348,11 @@ const Admit = () => {
                 name="patient.cpf"
                 value={formik.values.patient.cpf}
                 placeholder="CPF"
+                error={
+                  formik.errors.patient.cpf && formik.touched.patient.cpf
+                    ? formik.errors.patient.cpf
+                    : ""
+                }
               />
               <Input
                 onChange={formik.handleChange}
@@ -283,11 +360,17 @@ const Admit = () => {
                 name="patient.rg"
                 value={formik.values.patient.rg}
                 placeholder="RG"
+                error={
+                  formik.errors.patient.rg && formik.touched.patient.rg
+                    ? formik.errors.patient.rg
+                    : ""
+                }
               />
             </div>
             <Select
               onChange={(e) => {
                 formik.setFieldValue("patient.allergies", e);
+                formik.setFieldTouched("patient.allergies", true);
               }}
               getOptionLabel={(option) => option.value}
               getOptionValue={(option) => option.id}
@@ -295,10 +378,17 @@ const Admit = () => {
               placeholder="ALERGIAS"
               options={allergiesData?.allergies || []}
               isMulti
+              error={
+                formik.errors.patient.allergies &&
+                formik.touched.patient.allergies
+                  ? formik.errors.patient.allergies
+                  : ""
+              }
             />
             <Select
               onChange={(e) => {
                 formik.setFieldValue("patient.comorbidities", e);
+                formik.setFieldTouched("patient.comorbidities", true);
               }}
               value={formik.values.patient.comorbidities}
               placeholder="COMORBIDADES"
@@ -306,6 +396,12 @@ const Admit = () => {
               getOptionValue={(option) => option.id}
               options={comorbiditiesData?.comorbidities || []}
               isMulti
+              error={
+                formik.errors.patient.comorbidities &&
+                formik.touched.patient.comorbidities
+                  ? formik.errors.patient.comorbidities
+                  : ""
+              }
             />
           </ContainerAddPacient>
         )}
@@ -316,16 +412,25 @@ const Admit = () => {
             name="hpi"
             value={formik.values.hpi}
             placeholder="HISTÓRIA CLÍNICA"
+            error={
+              formik.errors.hpi && formik.touched.hpi ? formik.errors.hpi : ""
+            }
           />
           <TextArea
             onChange={formik.handleChange}
             name="justification"
             value={formik.values.justification}
             placeholder="DADOS CLÍNICOS QUE DEMONSTRAM NECESSIDADE DE INTERNAMENTO"
+            error={
+              formik.errors.justification && formik.touched.justification
+                ? formik.errors.justification
+                : ""
+            }
           />
           <Select
             onChange={(e) => {
               formik.setFieldValue("cid10Code", e);
+              formik.setFieldTouched("cid10Code", true);
             }}
             components={{
               Option: ({ children, ...props }) => {
@@ -344,6 +449,11 @@ const Admit = () => {
             options={cid10Data?.cid10 || []}
             value={formik.values.cid10Code}
             placeholder="CID - SUSPEITA INICIAL"
+            error={
+              formik.errors.cid10Code && formik.touched.cid10Code
+                ? formik.errors.cid10Code
+                : ""
+            }
           />
         </div>
         <Button type="submit" className="button_admit">

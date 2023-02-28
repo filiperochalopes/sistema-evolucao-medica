@@ -3,6 +3,7 @@ import ReactSelect from "react-select";
 import Creatable from "react-select/creatable";
 import Container, { IconContainer } from "./styles";
 import { MdArrowDropDown } from "react-icons/md";
+import TextError from "components/TextError";
 
 const selectStyles = {
   container: (props) => ({
@@ -25,7 +26,13 @@ const selectStyles = {
   }),
 };
 
-const Select = ({ className, created = false, components = {}, ...rest }) => {
+const Select = ({
+  error,
+  className,
+  created = false,
+  components = {},
+  ...rest
+}) => {
   const SelectType = created ? Creatable : ReactSelect;
 
   return (
@@ -42,6 +49,7 @@ const Select = ({ className, created = false, components = {}, ...rest }) => {
         styles={selectStyles}
         {...rest}
       />
+      {error && <TextError>{error}</TextError>}
     </Container>
   );
 };
