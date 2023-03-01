@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 export default styled.input`
-  background: ${({ theme }) => theme.colors.gray};
-  width: 100%;
   height: 2.5rem;
   display: flex;
   align-items: center;
@@ -10,8 +8,14 @@ export default styled.input`
   border: none;
   outline: none;
   font-size: 1rem;
+  background: ${({ theme }) => theme.colors.gray};
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.black};
   }
+`;
+
+export const ContainerInput = styled.div`
+  flex: 1;
+  background: ${({ theme }) => theme.colors.gray};
 `;

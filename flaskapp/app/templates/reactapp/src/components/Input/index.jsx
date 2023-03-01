@@ -1,14 +1,14 @@
-import Container from "./styles";
+import Container, { ContainerInput } from "./styles";
 
 import React from "react";
 import TextError from "components/TextError";
 
 function Input({ error, ...props }) {
   return (
-    <div>
+    <ContainerInput>
       <Container {...props} />
       {error && <TextError>{error}</TextError>}
-    </div>
+    </ContainerInput>
   );
 }
 

@@ -172,8 +172,8 @@ const Admit = () => {
                 value={formik.values.patient.name}
                 placeholder="Nome Completo"
                 error={
-                  formik.errors.patient.name && formik.touched.patient.name
-                    ? formik.errors.patient.name
+                  formik.errors.patient?.name && formik.touched?.patient?.name
+                    ? formik.errors.patient?.name
                     : ""
                 }
               />
@@ -185,9 +185,9 @@ const Admit = () => {
                 placeholder="Data de Nascimento"
                 type="date"
                 error={
-                  formik.errors.patient.birthdate &&
-                  formik.touched.patient.birthdate
-                    ? formik.errors.patient.birthdate
+                  formik.errors.patient?.birthdate &&
+                  formik.touched?.patient?.birthdate
+                    ? formik.errors.patient?.birthdate
                     : ""
                 }
               />
@@ -204,8 +204,8 @@ const Admit = () => {
                   { label: "Feminino", value: "fema" },
                 ]}
                 error={
-                  formik.errors.patient.sex && formik.touched.patient.sex
-                    ? formik.errors.patient.sex
+                  formik.errors.patient?.sex && formik.touched?.patient?.sex
+                    ? formik.errors.patient?.sex
                     : ""
                 }
               />
@@ -218,9 +218,9 @@ const Admit = () => {
                 value={formik.values.patient.weightKg}
                 placeholder="Peso"
                 error={
-                  formik.errors.patient.weightKg &&
-                  formik.touched.patient.weightKg
-                    ? formik.errors.patient.weightKg
+                  formik.errors.patient?.weightKg &&
+                  formik.touched.patient?.weightKg
+                    ? formik.errors.patient?.weightKg
                     : ""
                 }
               />
@@ -231,9 +231,9 @@ const Admit = () => {
                 value={formik.values.patient.address.complement}
                 placeholder="Endereço"
                 error={
-                  formik.errors.patient.address.complement &&
-                  formik.touched.patient.address.complement
-                    ? formik.errors.patient.address.complement
+                  formik.errors.patient?.address?.complement &&
+                  formik.touched?.patient?.address?.complement
+                    ? formik.errors?.patient?.address?.complement
                     : ""
                 }
               />
@@ -245,9 +245,9 @@ const Admit = () => {
                 value={formik.values.patient.address.city}
                 placeholder="Cidade"
                 error={
-                  formik.errors.patient.address.city &&
-                  formik.touched.patient.address.city
-                    ? formik.errors.patient.address.city
+                  formik.errors?.patient?.address?.city &&
+                  formik.touched?.patient?.address?.city
+                    ? formik.errors?.patient?.address?.city
                     : ""
                 }
               />
@@ -260,13 +260,13 @@ const Admit = () => {
                 className="small"
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.uf}
-                value={formik.values.patient.address.uf}
+                value={formik.values?.patient?.address?.uf}
                 placeholder="Estado"
                 options={statesData?.state || []}
                 error={
-                  formik.errors.patient.address.uf &&
-                  formik.touched.patient.address.uf
-                    ? formik.errors.patient.address.uf
+                  formik.errors?.patient?.address?.uf &&
+                  formik.touched?.patient?.address?.uf
+                    ? formik.errors?.patient?.address?.uf
                     : ""
                 }
               />
@@ -274,12 +274,12 @@ const Admit = () => {
                 onChange={formik.handleChange}
                 className="small"
                 name="patient.address.zipCode"
-                value={formik.values.patient.address.zipCode}
+                value={formik.values?.patient?.address?.zipCode}
                 placeholder="CEP"
                 error={
-                  formik.errors.patient.address.zipCode &&
-                  formik.touched.patient.address.zipCode
-                    ? formik.errors.patient.address.zipCode
+                  formik.errors?.patient?.address?.zipCode &&
+                  formik.touched?.patient?.address?.zipCode
+                    ? formik.errors?.patient?.address?.zipCode
                     : ""
                 }
               />
@@ -292,9 +292,9 @@ const Admit = () => {
                 name="patient.address.neighborhood"
                 placeholder="Bairro"
                 error={
-                  formik.errors.patient.address.neighborhood &&
-                  formik.touched.patient.address.neighborhood
-                    ? formik.errors.patient.address.neighborhood
+                  formik.errors.patient?.address?.neighborhood &&
+                  formik.touched?.patient?.address?.neighborhood
+                    ? formik.errors?.patient?.address?.neighborhood
                     : ""
                 }
               />
@@ -305,9 +305,9 @@ const Admit = () => {
                 name="patient.address.street"
                 placeholder="Rua"
                 error={
-                  formik.errors.patient.address.street &&
-                  formik.touched.patient.address.street
-                    ? formik.errors.patient.address.street
+                  formik.errors?.patient?.address?.street &&
+                  formik.touched?.patient?.address?.street
+                    ? formik.errors?.patient?.address?.street
                     : ""
                 }
               />
@@ -318,9 +318,9 @@ const Admit = () => {
                 value={formik.values.patient.address.number}
                 placeholder="Nº"
                 error={
-                  formik.errors.patient.address.number &&
-                  formik.touched.patient.address.number
-                    ? formik.errors.patient.address.number
+                  formik.errors?.patient?.address?.number &&
+                  formik.touched?.patient?.address?.number
+                    ? formik.errors?.patient?.address?.number
                     : ""
                 }
               />
@@ -333,8 +333,8 @@ const Admit = () => {
                 value={formik.values.patient.cns}
                 placeholder="CNS"
                 error={
-                  formik.errors.patient.cns && formik.touched.patient.cns
-                    ? formik.errors.patient.cns
+                  formik.errors?.patient?.cns && formik?.touched?.patient?.cns
+                    ? formik.errors?.patient?.cns
                     : ""
                 }
               />
@@ -349,8 +349,8 @@ const Admit = () => {
                 value={formik.values.patient.cpf}
                 placeholder="CPF"
                 error={
-                  formik.errors.patient.cpf && formik.touched.patient.cpf
-                    ? formik.errors.patient.cpf
+                  formik.errors?.patient?.cpf && formik.touched?.patient?.cpf
+                    ? formik.errors?.patient?.cpf
                     : ""
                 }
               />
@@ -361,8 +361,8 @@ const Admit = () => {
                 value={formik.values.patient.rg}
                 placeholder="RG"
                 error={
-                  formik.errors.patient.rg && formik.touched.patient.rg
-                    ? formik.errors.patient.rg
+                  formik.errors?.patient?.rg && formik.touched?.patient?.rg
+                    ? formik.errors?.patient?.rg
                     : ""
                 }
               />
@@ -379,9 +379,9 @@ const Admit = () => {
               options={allergiesData?.allergies || []}
               isMulti
               error={
-                formik.errors.patient.allergies &&
-                formik.touched.patient.allergies
-                  ? formik.errors.patient.allergies
+                formik.errors?.patient?.allergies &&
+                formik.touched?.patient?.allergies
+                  ? formik.errors?.patient?.allergies
                   : ""
               }
             />
@@ -397,9 +397,9 @@ const Admit = () => {
               options={comorbiditiesData?.comorbidities || []}
               isMulti
               error={
-                formik.errors.patient.comorbidities &&
-                formik.touched.patient.comorbidities
-                  ? formik.errors.patient.comorbidities
+                formik.errors?.patient?.comorbidities &&
+                formik.touched?.patient?.comorbidities
+                  ? formik.errors?.patient?.comorbidities
                   : ""
               }
             />
@@ -413,7 +413,9 @@ const Admit = () => {
             value={formik.values.hpi}
             placeholder="HISTÓRIA CLÍNICA"
             error={
-              formik.errors.hpi && formik.touched.hpi ? formik.errors.hpi : ""
+              formik.errors?.hpi && formik.touched?.hpi
+                ? formik.errors?.hpi
+                : ""
             }
           />
           <TextArea

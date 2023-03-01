@@ -114,6 +114,12 @@ const VitalSign = () => {
               name="cardiacFrequency"
               value={formik.values.cardiacFrequency}
               onChange={formik.handleChange}
+              error={
+                formik.errors.cardiacFrequency &&
+                formik.touched.cardiacFrequency
+                  ? formik.errors.cardiacFrequency
+                  : ""
+              }
             />
             <p>BPM</p>
           </div>
@@ -128,6 +134,12 @@ const VitalSign = () => {
               name="respiratoryFrequency"
               value={formik.values.respiratoryFrequency}
               onChange={formik.handleChange}
+              error={
+                formik.errors.respiratoryFrequency &&
+                formik.touched.respiratoryFrequency
+                  ? formik.errors.respiratoryFrequency
+                  : ""
+              }
             />
             <p>IPM</p>
           </div>
@@ -141,6 +153,11 @@ const VitalSign = () => {
             name="pain"
             value={formik.values.pain}
             onChange={formik.handleChange}
+            error={
+              formik.errors.pain && formik.touched.pain
+                ? formik.errors.pain
+                : ""
+            }
           />
           <Input
             placeholder="LOCALIZAÇÃO DA DOR"
@@ -157,6 +174,12 @@ const VitalSign = () => {
             name="celciusAxillaryTemperature"
             value={formik.values.celciusAxillaryTemperature}
             onChange={formik.handleChange}
+            error={
+              formik.errors.celciusAxillaryTemperature &&
+              formik.touched.celciusAxillaryTemperature
+                ? formik.errors.celciusAxillaryTemperature
+                : ""
+            }
           />
         </Inputs>
       </div>
@@ -169,6 +192,12 @@ const VitalSign = () => {
               name="systolicBloodPressure"
               value={formik.values.systolicBloodPressure}
               onChange={formik.handleChange}
+              error={
+                formik.errors.systolicBloodPressure &&
+                formik.touched.systolicBloodPressure
+                  ? formik.errors.systolicBloodPressure
+                  : ""
+              }
             />
           </div>
           <div>
@@ -177,6 +206,12 @@ const VitalSign = () => {
               name="diastolicBloodPressure"
               value={formik.values.diastolicBloodPressure}
               onChange={formik.handleChange}
+              error={
+                formik.errors.diastolicBloodPressure &&
+                formik.touched.diastolicBloodPressure
+                  ? formik.errors.diastolicBloodPressure
+                  : ""
+              }
             />
           </div>
         </Inputs>
@@ -190,6 +225,11 @@ const VitalSign = () => {
               name="volumeMl"
               value={formik.values.volumeMl}
               onChange={formik.handleChange}
+              error={
+                formik.errors.volumeMl && formik.touched.volumeMl
+                  ? formik.errors.volumeMl
+                  : ""
+              }
             />
             <p>ML</p>
           </div>
@@ -198,6 +238,12 @@ const VitalSign = () => {
             onChange={formik.handleChange}
             name="descriptionVolumeMl"
             value={formik.values.descriptionVolumeMl}
+            error={
+              formik.errors.descriptionVolumeMl &&
+              formik.touched.descriptionVolumeMl
+                ? formik.errors.descriptionVolumeMl
+                : ""
+            }
           />
         </Inputs>
       </div>
@@ -209,6 +255,11 @@ const VitalSign = () => {
             name="glucose"
             value={formik.values.glucose}
             onChange={formik.handleChange}
+            error={
+              formik.errors.glucose && formik.touched.glucose
+                ? formik.errors.glucose
+                : ""
+            }
           />
         </Inputs>
       </div>
@@ -221,6 +272,11 @@ const VitalSign = () => {
             name="spO2"
             value={formik.values.spO2}
             onChange={formik.handleChange}
+            error={
+              formik.errors.spO2 && formik.touched.spO2
+                ? formik.errors.spO2
+                : ""
+            }
           />
         </Inputs>
       </div>
@@ -233,6 +289,12 @@ const VitalSign = () => {
             name="fetalCardiacFrequency"
             value={formik.values.fetalCardiacFrequency}
             onChange={formik.handleChange}
+            error={
+              formik.errors.fetalCardiacFrequency &&
+              formik.touched.fetalCardiacFrequency
+                ? formik.errors.fetalCardiacFrequency
+                : ""
+            }
           />
         </Inputs>
       </div>

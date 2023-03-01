@@ -126,6 +126,9 @@ const ModalUpdatePacientData = ({ id }) => {
           placeholder="Nome Completo"
           onChange={formik.handleChange}
           name="name"
+          error={
+            formik.errors.name && formik.touched.name ? formik.errors.name : ""
+          }
         />
         <Input
           className="small"
@@ -134,6 +137,11 @@ const ModalUpdatePacientData = ({ id }) => {
           type="date"
           value={formik.values.birthdate}
           name="birthdate"
+          error={
+            formik.errors.birthdate && formik.touched.birthdate
+              ? formik.errors.birthdate
+              : ""
+          }
         />
         <Select
           onChange={(e) => {
@@ -143,6 +151,9 @@ const ModalUpdatePacientData = ({ id }) => {
           placeholder="Sexo"
           className="small"
           options={GENERS}
+          error={
+            formik.errors.sex && formik.touched.sex ? formik.errors.sex : ""
+          }
         />
       </div>
       <div className="row">
@@ -151,12 +162,23 @@ const ModalUpdatePacientData = ({ id }) => {
           placeholder="Endereço"
           onChange={formik.handleChange}
           name="address.complement"
+          error={
+            formik.errors?.address?.complement &&
+            formik.touched?.address.complement
+              ? formik.errors?.address?.complement
+              : ""
+          }
         />
         <Input
           className="small"
           placeholder="Cidade"
           onChange={formik.handleChange}
           name="address.city"
+          error={
+            formik.errors?.address?.city && formik.touched?.address?.city
+              ? formik.errors?.address?.city
+              : ""
+          }
         />
 
         <Select
@@ -169,12 +191,22 @@ const ModalUpdatePacientData = ({ id }) => {
           value={formik.values.address.uf}
           placeholder="Estado"
           options={statesData?.state || []}
+          error={
+            formik.errors?.address?.uf && formik.touched?.address?.uf
+              ? formik.errors?.address?.uf
+              : ""
+          }
         />
         <Input
           className="small"
           placeholder="CEP"
           onChange={formik.handleChange}
           name="address.zipcode"
+          error={
+            formik.errors?.address?.zipcode && formik.touched?.address?.zipcode
+              ? formik.errors?.address?.zipcode
+              : ""
+          }
         />
       </div>
       <div className="row">
@@ -184,6 +216,12 @@ const ModalUpdatePacientData = ({ id }) => {
           name="weightKg"
           value={formik.values.weightKg}
           placeholder="Peso"
+          error={
+            formik.errors?.address?.weightKg &&
+            formik.touched?.address?.weightKg
+              ? formik.errors?.address?.weightKg
+              : ""
+          }
         />
 
         <Input
@@ -192,6 +230,7 @@ const ModalUpdatePacientData = ({ id }) => {
           name="rg"
           value={formik.values.rg}
           placeholder="RG"
+          error={formik.errors.rg && formik.touched.rg ? formik.errors.rg : ""}
         />
       </div>
       <div className="row">
@@ -201,12 +240,18 @@ const ModalUpdatePacientData = ({ id }) => {
           onChange={formik.handleChange}
           name="cns"
           value={formik.values.cns}
+          error={
+            formik.errors.cns && formik.touched.cns ? formik.errors.cns : ""
+          }
         />
         <Input
           className="normal"
           placeholder="CPF"
           onChange={formik.handleChange}
           name="cpf"
+          error={
+            formik.errors.cpf && formik.touched.cpf ? formik.errors.cpf : ""
+          }
         />
       </div>
       <Select
@@ -219,6 +264,11 @@ const ModalUpdatePacientData = ({ id }) => {
         placeholder="ALERGIAS"
         options={allergiesData?.allergies || []}
         isMulti
+        error={
+          formik.errors.allergies && formik.touched.allergies
+            ? formik.errors.allergies
+            : ""
+        }
       />
       <Select
         onChange={(e) => {
@@ -230,6 +280,11 @@ const ModalUpdatePacientData = ({ id }) => {
         getOptionValue={(option) => option.id}
         options={comorbiditiesData?.comorbidities || []}
         isMulti
+        error={
+          formik.errors.comorbidities && formik.touched.comorbidities
+            ? formik.errors.comorbidities
+            : ""
+        }
       />
       <Button type="submit">Atualizar Dados do Paciente</Button>
     </Container>
