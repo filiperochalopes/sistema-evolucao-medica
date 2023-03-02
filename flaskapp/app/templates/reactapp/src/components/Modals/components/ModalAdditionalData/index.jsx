@@ -28,6 +28,7 @@ import { cloneDeep } from "lodash";
 import Interval from "./components/Interval";
 import { CID10, GET_HIGH_COMPLEXITY_PROCEDURES } from "graphql/queries";
 import { useState } from "react";
+import { useSnackbar } from "notistack";
 /* Strategy pattern */
 
 const strategies = {
@@ -444,6 +445,7 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
   const [getPDFAihSus] = useMutation(GENERATE_PDF_AIH_SUS);
   const [getPDFBalancoHidrico] = useMutation(GENERATE_PDF_BALANCO_HIDRICO);
   const [getPDFApac] = useMutation(GENERATE_PDF_APAC);
+  const { enqueueSnackbar } = useSnackbar();
 
   const Strategy = strategies[type];
   const navigate = useNavigate();
@@ -451,70 +453,83 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
   const formik = useFormik({
     initialValues: initialValuesStrategies[type],
     async onSubmit(values) {
-      const newValues = cloneDeep(values);
-      let request = undefined;
-      if (type === "printPdf_FichaInternamento") {
-        request = getPDFFicha;
+      try {
+        const newValues = cloneDeep(values);
+        let request = undefined;
+        if (type === "printPdf_FichaInternamento") {
+          request = getPDFFicha;
+        }
+        if (newValues.extra.interval) {
+          newValues.extra.interval.startDatetimeStamp = `${newValues.extra.interval.startDatetimeStamp}:00`;
+          newValues.extra.interval.endingDatetimeStamp = `${newValues.extra.interval.endingDatetimeStamp}:00`;
+        }
+        if (type === "printPdf_FolhaEvolucao") {
+          request = getPDFFolhaEvolucao;
+        }
+        if (type === "printPdf_FolhaPrescricao") {
+          request = getPDFFolhaPrescricao;
+        }
+        if (type === "printPdf_RelatorioAlta") {
+          newValues.extra.datetimeStamp = `${newValues.extra.datetimeStamp}:00`;
+          request = getPDFRelatorioAlta;
+        }
+        if (type === "printPdf_AihSus") {
+          newValues.extra.secondaryDiagnosis = {
+            code: newValues.extra.secondaryDiagnosis.code,
+            description: newValues.extra.secondaryDiagnosis.description,
+          };
+          request = getPDFAihSus;
+        }
+        if (type === "printPdf_BalancoHidrico") {
+          request = getPDFBalancoHidrico;
+        }
+        if (type === "printPdf_Apac") {
+          newValues.extra.secondaryDiagnosis = {
+            code: newValues.extra.secondaryDiagnosis.code,
+            description: newValues.extra.secondaryDiagnosis.description,
+          };
+          newValues.extra.ssociatedCause = {
+            code: newValues.extra.ssociatedCause.code,
+            description: newValues.extra.ssociatedCause.description,
+          };
+          newValues.extra.diagnosis = {
+            code: newValues.extra.diagnosis.code,
+            description: newValues.extra.diagnosis.description,
+          };
+          newValues.extra.procedure = {
+            code: newValues.extra.procedure.code,
+            name: newValues.extra.procedure.name,
+            quantity: newValues.extra.procedure.quantity,
+          };
+          request = getPDFApac;
+        }
+        if (!request) {
+          return;
+        }
+        const response = await request({
+          variables: {
+            internmentId: Number(id),
+            extra: newValues.extra,
+          },
+        });
+        const link = document.createElement("a");
+        const file = b64toBlob(
+          response.data[type].base64Pdf,
+          "application/pdf"
+        );
+        const url = URL.createObjectURL(file);
+        link.href = url;
+        link.setAttribute("target", "_blank");
+        link.click();
+      } catch (e) {
+        if (e.graphQLErrors) {
+          e.graphQLErrors.forEach((err) => {
+            enqueueSnackbar(err.message, { variant: "error" });
+          });
+        } else {
+          enqueueSnackbar("Erro,tente novamente", { variant: "error" });
+        }
       }
-      if (newValues.extra.interval) {
-        newValues.extra.interval.startDatetimeStamp = `${newValues.extra.interval.startDatetimeStamp}:00`;
-        newValues.extra.interval.endingDatetimeStamp = `${newValues.extra.interval.endingDatetimeStamp}:00`;
-      }
-      if (type === "printPdf_FolhaEvolucao") {
-        request = getPDFFolhaEvolucao;
-      }
-      if (type === "printPdf_FolhaPrescricao") {
-        request = getPDFFolhaPrescricao;
-      }
-      if (type === "printPdf_RelatorioAlta") {
-        newValues.extra.datetimeStamp = `${newValues.extra.datetimeStamp}:00`;
-        request = getPDFRelatorioAlta;
-      }
-      if (type === "printPdf_AihSus") {
-        newValues.extra.secondaryDiagnosis = {
-          code: newValues.extra.secondaryDiagnosis.code,
-          description: newValues.extra.secondaryDiagnosis.description,
-        };
-        request = getPDFAihSus;
-      }
-      if (type === "printPdf_BalancoHidrico") {
-        request = getPDFBalancoHidrico;
-      }
-      if (type === "printPdf_Apac") {
-        newValues.extra.secondaryDiagnosis = {
-          code: newValues.extra.secondaryDiagnosis.code,
-          description: newValues.extra.secondaryDiagnosis.description,
-        };
-        newValues.extra.ssociatedCause = {
-          code: newValues.extra.ssociatedCause.code,
-          description: newValues.extra.ssociatedCause.description,
-        };
-        newValues.extra.diagnosis = {
-          code: newValues.extra.diagnosis.code,
-          description: newValues.extra.diagnosis.description,
-        };
-        newValues.extra.procedure = {
-          code: newValues.extra.procedure.code,
-          name: newValues.extra.procedure.name,
-          quantity: newValues.extra.procedure.quantity,
-        };
-        request = getPDFApac;
-      }
-      if (!request) {
-        return;
-      }
-      const response = await request({
-        variables: {
-          internmentId: Number(id),
-          extra: newValues.extra,
-        },
-      });
-      const link = document.createElement("a");
-      const file = b64toBlob(response.data[type].base64Pdf, "application/pdf");
-      const url = URL.createObjectURL(file);
-      link.href = url;
-      link.setAttribute("target", "_blank");
-      link.click();
     },
   });
   return (

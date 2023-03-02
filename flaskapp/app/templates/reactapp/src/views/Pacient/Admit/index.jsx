@@ -96,8 +96,14 @@ const Admit = () => {
         });
         enqueueSnackbar("Pendencia Cadastrada", { variant: "success" });
         navigate("/");
-      } catch {
-        enqueueSnackbar("Error: Tente novamente", { variant: "error" });
+      } catch (e) {
+        if (e.graphQLErrors) {
+          e.graphQLErrors.forEach((err) => {
+            enqueueSnackbar(err.message, { variant: "error" });
+          });
+        } else {
+          enqueueSnackbar("Erro,tente novamente", { variant: "error" });
+        }
       }
     },
     validationSchema: schema,

@@ -28,8 +28,12 @@ function Login() {
         const response = await signing({ variables: values });
         localStorage.setItem("token", response.data.signin.token);
         navigate("/pacientes");
-      } catch {
-        enqueueSnackbar("Erro, tente novamente", { variant: "error" });
+      } catch (e) {
+        if (e?.response?.errors) {
+          e?.response?.errors.forEach((erro) => {
+            enqueueSnackbar(erro.message, { variant: "error" });
+          });
+        }
       }
     },
   });
