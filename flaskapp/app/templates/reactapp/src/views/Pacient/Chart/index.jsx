@@ -12,9 +12,11 @@ import React from "react";
 import Strategies from "./Strategies";
 import updatePacientData from "helpers/updatePacientData";
 import { useModalContext } from "services/ModalContext";
+import { GENERATE_PDF_BALANCO_HIDRICO } from "graphql/mutations";
 
 const Chart = () => {
   const [getInternment, { data }] = useLazyQuery(GET_ALL_CHART);
+  const [printFluids] = useMutation(GENERATE_PDF_BALANCO_HIDRICO);
   const [newestChart, setNewestChart] = useState({
     prescriptions: [],
     sinals: {},
@@ -196,6 +198,7 @@ const Chart = () => {
       },
     });
   }, [params]);
+  console.log(newestChart.sinals);
 
   return (
     <Container>
@@ -210,7 +213,7 @@ const Chart = () => {
       </div>
       <h2>Admissão</h2>
       <p>{newestChart.textEvolution}</p>
-      <h2>Últimas 24h (17/07/2022 7h - 18/07/2022 7h)</h2>
+      <h2>Últimas Atualizações</h2>
       <p>{newestChart.textEvolution}</p>
       <h2 className="secondary">Prescrições</h2>
       <ol>
@@ -231,7 +234,38 @@ const Chart = () => {
           {(newestChart.sinals?.fluids || []).map(
             (fluid) => `${fluid.volumeMl}ml - ${fluid.descriptionVolumeMl}`
           )}
-          <button>
+          <button
+            type="button"
+            onClick={async () => {
+              const date = format(
+                new Date(newestChart.sinals.createdAt),
+                "yyyy/MM/dd",
+                {
+                  locale: ptBR,
+                }
+              );
+              const response = await printFluids({
+                variables: {
+                  internmentId: Number(params.id),
+                  extra: {
+                    interval: {
+                      startDatetimeStamp: `${date}:00:00`,
+                      endingDatetimeStamp: `${date}:23:59`,
+                    },
+                  },
+                },
+              });
+              const link = document.createElement("a");
+              const file = b64toBlob(
+                response.data.printPdf_BalancoHidrico.base64Pdf,
+                "application/pdf"
+              );
+              const url = URL.createObjectURL(file);
+              link.href = url;
+              link.setAttribute("target", "_blank");
+              link.click();
+            }}
+          >
             para ter uma visão geral do balanço hídrico acesse esse link
           </button>
         </li>
