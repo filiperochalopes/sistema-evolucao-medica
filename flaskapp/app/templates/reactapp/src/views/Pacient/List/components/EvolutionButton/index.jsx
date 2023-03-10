@@ -1,6 +1,7 @@
 import Button from "components/Button";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import CheckRole from "routes/CheckRole";
 import Container, { PopUp } from "./styles";
 
 const EvolutionButton = ({ id }) => {
@@ -17,7 +18,9 @@ const EvolutionButton = ({ id }) => {
       </Button>
       {showPopUp && (
         <PopUp>
-          <Link to={`/evoluir-paciente/${id}`}>Adicionar evolução</Link>
+          <CheckRole roles={["doc", "nur"]}>
+            <Link to={`/evoluir-paciente/${id}`}>Adicionar evolução</Link>
+          </CheckRole>
 
           <Link to={`/sinais-vitais/${id}`}>Atualizar sinais vitais</Link>
         </PopUp>

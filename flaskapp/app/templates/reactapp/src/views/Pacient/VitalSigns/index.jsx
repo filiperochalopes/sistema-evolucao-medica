@@ -3,13 +3,14 @@ import Container, { Inputs } from "./styles";
 import Button from "components/Button";
 import Input from "components/Input";
 import { useFormik } from "formik";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { CREATE_FLUID_BALANCE, CREATE_MEASURE } from "graphql/mutations";
 import { useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { GET_SINALS } from "graphql/queries";
 import { useEffect } from "react";
 import schema from "./schema";
+import CheckRole from "routes/CheckRole";
 
 const initialValues = {
   spO2: null,
@@ -92,6 +93,7 @@ const VitalSign = () => {
       object.descriptionVolumeMl = fluidBalance?.description?.value;
     }
     formik.setValues(object);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   useEffect(() => {
@@ -100,7 +102,7 @@ const VitalSign = () => {
         internment: params.id,
       },
     });
-  }, []);
+  }, [getSinals, params.id]);
 
   return (
     <Container onSubmit={formik.handleSubmit}>
@@ -216,37 +218,39 @@ const VitalSign = () => {
           </div>
         </Inputs>
       </div>
-      <div className="input">
-        <p>DADO DE BALANÇO HÍDRICO:</p>
-        <Inputs>
-          <div>
+      <CheckRole roles={["nur", "tec"]}>
+        <div className="input">
+          <p>DADO DE BALANÇO HÍDRICO:</p>
+          <Inputs>
+            <div>
+              <Input
+                className="small"
+                name="volumeMl"
+                value={formik.values.volumeMl}
+                onChange={formik.handleChange}
+                error={
+                  formik.errors.volumeMl && formik.touched.volumeMl
+                    ? formik.errors.volumeMl
+                    : ""
+                }
+              />
+              <p>ML</p>
+            </div>
             <Input
-              className="small"
-              name="volumeMl"
-              value={formik.values.volumeMl}
+              placeholder="DESCRIÇÃO"
               onChange={formik.handleChange}
+              name="descriptionVolumeMl"
+              value={formik.values.descriptionVolumeMl}
               error={
-                formik.errors.volumeMl && formik.touched.volumeMl
-                  ? formik.errors.volumeMl
+                formik.errors.descriptionVolumeMl &&
+                formik.touched.descriptionVolumeMl
+                  ? formik.errors.descriptionVolumeMl
                   : ""
               }
             />
-            <p>ML</p>
-          </div>
-          <Input
-            placeholder="DESCRIÇÃO"
-            onChange={formik.handleChange}
-            name="descriptionVolumeMl"
-            value={formik.values.descriptionVolumeMl}
-            error={
-              formik.errors.descriptionVolumeMl &&
-              formik.touched.descriptionVolumeMl
-                ? formik.errors.descriptionVolumeMl
-                : ""
-            }
-          />
-        </Inputs>
-      </div>
+          </Inputs>
+        </div>
+      </CheckRole>
       <div className="input">
         <p>GLICEMIA PERIFÉRICA:</p>
         <Inputs>

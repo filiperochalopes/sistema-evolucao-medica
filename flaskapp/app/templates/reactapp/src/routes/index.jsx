@@ -11,16 +11,20 @@ import Evolution from "views/Pacient/Evolution";
 import List from "views/Pacient/List";
 import VitalSign from "views/Pacient/VitalSigns";
 import PrivateRouter from "./PrivateRouter";
+import CheckRole from "./CheckRole";
+import ContextProvider from "services/Context";
 
 const routers = createBrowserRouter([
   {
     path: "/",
     element: (
-      <ModalContextProvider>
-        <PageTemplate>
-          <Outlet />
-        </PageTemplate>
-      </ModalContextProvider>
+      <ContextProvider>
+        <ModalContextProvider>
+          <PageTemplate>
+            <Outlet />
+          </PageTemplate>
+        </ModalContextProvider>
+      </ContextProvider>
     ),
     children: [
       {
@@ -39,7 +43,9 @@ const routers = createBrowserRouter([
         path: "/adimitir-paciente",
         element: (
           <PrivateRouter>
-            <Admit />
+            <CheckRole goBack roles={["doc"]}>
+              <Admit />
+            </CheckRole>
           </PrivateRouter>
         ),
       },
@@ -47,7 +53,9 @@ const routers = createBrowserRouter([
         path: "/evoluir-paciente/:id",
         element: (
           <PrivateRouter>
-            <Evolution />
+            <CheckRole goBack roles={["doc", "nur"]}>
+              <Evolution />
+            </CheckRole>
           </PrivateRouter>
         ),
       },

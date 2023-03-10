@@ -9,17 +9,20 @@ import { Link } from "react-router-dom";
 import { useModalContext } from "services/ModalContext";
 import EvolutionButton from "./components/EvolutionButton";
 import { useQuery } from "@apollo/client";
-import { INTERNMENTS, PATIENTS } from "graphql/queries";
+import { INTERNMENTS } from "graphql/queries";
 import { CONVERT_LABEL_SEX } from "constants/convertsexName";
+import CheckRole from "routes/CheckRole";
 const List = () => {
   const { data } = useQuery(INTERNMENTS);
   const { addModal } = useModalContext();
 
   return (
     <Container>
-      <Link to="/adimitir-paciente">
-        <Button className="add_new_pacient">+ Admitir paciente</Button>
-      </Link>
+      <CheckRole roles={["doc"]}>
+        <Link to="/adimitir-paciente">
+          <Button className="add_new_pacient">+ Admitir paciente</Button>
+        </Link>
+      </CheckRole>
 
       <div className="pacients-container">
         <h2>Pacientes Internados</h2>
@@ -45,15 +48,17 @@ const List = () => {
                       </Button>
                     </Link>
                     <EvolutionButton id={pacient.id} />
-                    <Button
-                      onClick={() => {
-                        addModal(printScreen(pacient.id));
-                      }}
-                      className="add_new_pacient"
-                      customType="gray"
-                    >
-                      Imprimir
-                    </Button>
+                    <CheckRole roles={["doc", "nur"]}>
+                      <Button
+                        onClick={() => {
+                          addModal(printScreen(pacient.id));
+                        }}
+                        className="add_new_pacient"
+                        customType="gray"
+                      >
+                        Imprimir
+                      </Button>
+                    </CheckRole>
                   </div>
                 </PacientContent>
               </Pacient>

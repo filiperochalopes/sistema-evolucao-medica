@@ -5,6 +5,7 @@ import Button from "components/Button";
 import { useModalContext } from "services/ModalContext";
 import React from "styled-components";
 import additionalDataScreen from "helpers/additionalDataScreen";
+import CheckRole from "routes/CheckRole";
 
 const ModalPrintData = ({ confirmButton, id }) => {
   const { addModal } = useModalContext();
@@ -40,26 +41,32 @@ const ModalPrintData = ({ confirmButton, id }) => {
       >
         Folha de Evolução
       </Button>
-      <Button
-        customType="gray-300"
-        type="button"
-        onClick={() =>
-          addModal(
-            additionalDataScreen({ type: "printPdf_FolhaPrescricao", id })
-          )
-        }
-      >
-        Folha Prescrição
-      </Button>
-      <Button
-        customType="gray-300"
-        type="button"
-        onClick={() =>
-          addModal(additionalDataScreen({ type: "printPdf_RelatorioAlta", id }))
-        }
-      >
-        Ficha de Alta
-      </Button>
+      <CheckRole roles={["doc"]}>
+        <Button
+          customType="gray-300"
+          type="button"
+          onClick={() =>
+            addModal(
+              additionalDataScreen({ type: "printPdf_FolhaPrescricao", id })
+            )
+          }
+        >
+          Folha Prescrição
+        </Button>
+      </CheckRole>
+      <CheckRole roles={["doc"]}>
+        <Button
+          customType="gray-300"
+          type="button"
+          onClick={() =>
+            addModal(
+              additionalDataScreen({ type: "printPdf_RelatorioAlta", id })
+            )
+          }
+        >
+          Ficha de Alta
+        </Button>
+      </CheckRole>
       <Button
         customType="gray-300"
         type="button"

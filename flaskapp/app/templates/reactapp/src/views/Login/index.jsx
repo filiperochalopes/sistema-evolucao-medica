@@ -11,11 +11,13 @@ import { useMutation } from "@apollo/client";
 import { SIGNING } from "graphql/mutations";
 import { useEffect } from "react";
 import { useSnackbar } from "notistack";
+import { useContextProvider } from "services/Context";
 
 function Login() {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [signing] = useMutation(SIGNING);
+  const { updateUser } = useContextProvider();
 
   const formik = useFormik({
     initialValues: {
@@ -27,6 +29,7 @@ function Login() {
       try {
         const response = await signing({ variables: values });
         localStorage.setItem("token", response.data.signin.token);
+        updateUser(response.data.signin.token);
         navigate("/pacientes");
       } catch (e) {
         if (e?.response?.errors) {

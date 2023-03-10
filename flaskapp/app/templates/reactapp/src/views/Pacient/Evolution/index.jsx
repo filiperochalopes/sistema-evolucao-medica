@@ -28,6 +28,7 @@ import { useEffect } from "react";
 import addMedicamentGroup from "helpers/addMedicamentGroup";
 import { format, parseISO } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
+import CheckRole from "routes/CheckRole";
 
 const Evolution = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -155,7 +156,7 @@ const Evolution = () => {
             data.internment.pendings[data.internment?.pendings?.length - 1]
               .createdAt
           ),
-          "'ÚLTIMA EVOLUÇÃO ATUALIZADA EM' dd/MM/yyyy HH:mm:ss",
+          "'ÚLTIMA PENDÊNCIA ATUALIZADA EM' dd/MM/yyyy HH:mm:ss",
           {
             locale: ptBR,
           }
@@ -247,14 +248,16 @@ const Evolution = () => {
       >
         <div className="header">
           <h2>Evoluir Paciente (João Miguel dos Santos Polenta, 83 anos)</h2>
-          <Button
-            type="button"
-            onClick={() => {
-              addModal(updatePacientData(params.id));
-            }}
-          >
-            Atualizar Dados do Paciente
-          </Button>
+          <CheckRole roles={["doc"]}>
+            <Button
+              type="button"
+              onClick={() => {
+                addModal(updatePacientData(params.id));
+              }}
+            >
+              Atualizar Dados do Paciente
+            </Button>
+          </CheckRole>
         </div>
         <TextArea
           placeholder="EVOLUÇÃO"
@@ -287,349 +290,360 @@ const Evolution = () => {
           />
           <p className="legend">{formikEvolution.values.dateFormat}</p>
         </div>
-
-        <Button className="evolution_button">Evoluir</Button>
+        <CheckRole roles={["doc", "nur"]}>
+          <Button className="evolution_button">Evoluir</Button>
+        </CheckRole>
       </form>
 
-      <div className="prescriptions_pacient">
-        <h2>Prescrição</h2>
-        <ol>
-          {formik.values.diet && (
-            <li>
-              <ListOption>
-                <ContainerListOption>
-                  <p>{formik.values.diet}</p>{" "}
-                  <div>
-                    <button
-                      onClick={() => {
-                        addModal(
-                          addPrescription({
-                            confirmButtonAction: (values) => {
-                              console.log(values);
-                              formik.setFieldValue(
-                                "diet",
-                                values.medicament.name
-                              );
-                            },
-                            notChangeType: true,
-                            currentMedicament: {
-                              type: {
-                                label: "Dieta",
-                                name: "diet",
-                              },
-                              medicament: {
-                                name: formik.values.diet,
-                                id: formik.values.diet,
-                              },
-                              drug: {
-                                useMode: "",
-                                routeAdministration: "",
-                                isAntibiotic: "oth",
-                                initialDate: "",
-                                finalDate: "",
-                              },
-                            },
-                          })
-                        );
-                      }}
-                      type="button"
-                    >
-                      <MdModeEdit size={18} color={theme.colors.blue} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        addModal(
-                          deletePrescription({
-                            confirmButtonAction: () =>
-                              formik.setFieldValue("diet", ""),
-                          })
-                        )
-                      }
-                    >
-                      <img src={trash} alt="remover" />
-                    </button>
-                  </div>
-                </ContainerListOption>
-              </ListOption>
-            </li>
-          )}
-          {formik.values.restingActivity && (
-            <li>
-              <ListOption>
-                <ContainerListOption>
-                  <p>{formik.values.restingActivity}</p>{" "}
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        addModal(
-                          addPrescription({
-                            notChangeType: true,
-                            drugs: formik.values.drugs,
-                            nursingActivities: formik.values.nursingActivities,
-                            confirmButtonAction: (values) => {
-                              console.log(values);
-                              formik.setFieldValue(
-                                "restingActivity",
-                                values.medicament.name
-                              );
-                            },
-                            currentMedicament: {
-                              type: {
-                                label: "Atividades de descanso",
-                                name: "restingActivity",
-                              },
-                              medicament: {
-                                name: formik.values.restingActivity,
-                                id: formik.values.restingActivity,
-                              },
-                              drug: {
-                                useMode: "",
-                                routeAdministration: "",
-                                isAntibiotic: "oth",
-                                initialDate: "",
-                                finalDate: "",
-                              },
-                              routeAdministration: undefined,
-                            },
-                          })
-                        );
-                      }}
-                    >
-                      <MdModeEdit size={18} color={theme.colors.blue} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        addModal(
-                          deletePrescription({
-                            confirmButtonAction: () =>
-                              formik.setFieldValue("restingActivity", ""),
-                          })
-                        )
-                      }
-                    >
-                      <img src={trash} alt="remover" />
-                    </button>
-                  </div>
-                </ContainerListOption>
-              </ListOption>
-            </li>
-          )}
-          {formik.values.nursingActivities.map((nursingActivity, index) => (
-            <li key={nursingActivity}>
-              <ListOption>
-                <ContainerListOption>
-                  <p>{nursingActivity}</p>
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        addModal(
-                          addPrescription({
-                            notChangeType: true,
-                            drugs: formik.values.drugs,
-
-                            nursingActivities: formik.values.nursingActivities,
-                            confirmButtonAction: (values) => {
-                              console.log(values);
-                              formik.setFieldValue(
-                                `nursingActivities[${index}]`,
-                                values.medicament.name
-                              );
-                            },
-                            currentMedicament: {
-                              type: {
-                                label: "Atividades de enfermagem",
-                                name: "nursingActivity",
-                              },
-                              medicament: {
-                                name: nursingActivity,
-                                id: nursingActivity,
-                              },
-                              drug: {
-                                useMode: "",
-                                routeAdministration: "",
-                                isAntibiotic: "oth",
-                                initialDate: "",
-                                finalDate: "",
-                              },
-                              routeAdministration: undefined,
-                            },
-                          })
-                        );
-                      }}
-                    >
-                      <MdModeEdit size={18} color={theme.colors.blue} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        addModal(
-                          deletePrescription({
-                            confirmButtonAction: () => {
-                              const filterNursingActivities =
-                                formik.values.nursingActivities.filter(
-                                  (value) => value === nursingActivity
+      <CheckRole roles={["doc"]}>
+        <div className="prescriptions_pacient">
+          <h2>Prescrição</h2>
+          <ol>
+            {formik.values.diet && (
+              <li>
+                <ListOption>
+                  <ContainerListOption>
+                    <p>{formik.values.diet}</p>{" "}
+                    <div>
+                      <button
+                        onClick={() => {
+                          addModal(
+                            addPrescription({
+                              confirmButtonAction: (values) => {
+                                console.log(values);
+                                formik.setFieldValue(
+                                  "diet",
+                                  values.medicament.name
                                 );
-                              formik.setFieldValue(
-                                "nursingActivities",
-                                filterNursingActivities
-                              );
-                            },
-                          })
-                        )
-                      }
-                    >
-                      <img src={trash} alt="remover" />
-                    </button>
-                  </div>
-                </ContainerListOption>
-              </ListOption>
-            </li>
-          ))}
-          {formik.values.drugs.map((drug, index) => (
-            <li key={drug.drugName}>
-              <ListOption>
-                <ContainerListOption>
-                  <p>{drug.drugName}</p>
-                  <div>
-                    <button
-                      onClick={() => {
-                        addModal(
-                          addPrescription({
-                            notChangeType: true,
-                            drugs: formik.values.drugs,
-                            nursingActivities: formik.values.nursingActivities,
-                            confirmButtonAction: (values) => {
-                              formik.setFieldValue(`drugs[${index}]`, {
-                                id: values.medicament.id,
-                                drugName: values.medicament.name,
-                                drugKind: values.drug.isAntibiotic,
-                                dosage: values.drug.useMode,
-                                route: values.drug.routeAdministration.value,
-                                initialDate: values.drug.initialDate
-                                  ? `${values.drug.initialDate}`
-                                  : undefined,
-                                endingDate: values.drug.finalDate
-                                  ? `${values.drug.finalDate}`
-                                  : undefined,
-                                block: values.block,
-                              });
-                            },
-                            currentMedicament: {
-                              block: drug.block,
-                              type: {
-                                label: "Medicação",
-                                name: "drug",
                               },
-                              medicament: { name: drug.drugName, id: drug.id },
-                              drug: {
-                                useMode: drug.dosage,
-                                routeAdministration: {
-                                  label: drug.route,
-                                  value: drug.route,
+                              notChangeType: true,
+                              currentMedicament: {
+                                type: {
+                                  label: "Dieta",
+                                  name: "diet",
                                 },
-                                isAntibiotic: drug.drugKind,
-                                initialDate: drug.initialDate,
-                                finalDate: drug.endingDate,
+                                medicament: {
+                                  name: formik.values.diet,
+                                  id: formik.values.diet,
+                                },
+                                drug: {
+                                  useMode: "",
+                                  routeAdministration: "",
+                                  isAntibiotic: "oth",
+                                  initialDate: "",
+                                  finalDate: "",
+                                },
                               },
-                            },
-                          })
-                        );
-                      }}
-                      type="button"
-                    >
-                      <MdModeEdit size={18} color={theme.colors.blue} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        addModal(
-                          deletePrescription({
-                            confirmButtonAction: () => {
-                              const filterDrugs = formik.values.drugs.filter(
-                                (value) => value.drugName !== drug.drugName
-                              );
-                              formik.setFieldValue("drugs", filterDrugs);
-                            },
-                          })
-                        )
-                      }
-                    >
-                      <img src={trash} alt="remover" />
-                    </button>
-                  </div>
-                </ContainerListOption>
-              </ListOption>
-            </li>
-          ))}
-        </ol>
-        <p className="legend">{formik.values.dateFormat}</p>
-        <div className="buttons">
+                            })
+                          );
+                        }}
+                        type="button"
+                      >
+                        <MdModeEdit size={18} color={theme.colors.blue} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          addModal(
+                            deletePrescription({
+                              confirmButtonAction: () =>
+                                formik.setFieldValue("diet", ""),
+                            })
+                          )
+                        }
+                      >
+                        <img src={trash} alt="remover" />
+                      </button>
+                    </div>
+                  </ContainerListOption>
+                </ListOption>
+              </li>
+            )}
+            {formik.values.restingActivity && (
+              <li>
+                <ListOption>
+                  <ContainerListOption>
+                    <p>{formik.values.restingActivity}</p>{" "}
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          addModal(
+                            addPrescription({
+                              notChangeType: true,
+                              drugs: formik.values.drugs,
+                              nursingActivities:
+                                formik.values.nursingActivities,
+                              confirmButtonAction: (values) => {
+                                console.log(values);
+                                formik.setFieldValue(
+                                  "restingActivity",
+                                  values.medicament.name
+                                );
+                              },
+                              currentMedicament: {
+                                type: {
+                                  label: "Atividades de descanso",
+                                  name: "restingActivity",
+                                },
+                                medicament: {
+                                  name: formik.values.restingActivity,
+                                  id: formik.values.restingActivity,
+                                },
+                                drug: {
+                                  useMode: "",
+                                  routeAdministration: "",
+                                  isAntibiotic: "oth",
+                                  initialDate: "",
+                                  finalDate: "",
+                                },
+                                routeAdministration: undefined,
+                              },
+                            })
+                          );
+                        }}
+                      >
+                        <MdModeEdit size={18} color={theme.colors.blue} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          addModal(
+                            deletePrescription({
+                              confirmButtonAction: () =>
+                                formik.setFieldValue("restingActivity", ""),
+                            })
+                          )
+                        }
+                      >
+                        <img src={trash} alt="remover" />
+                      </button>
+                    </div>
+                  </ContainerListOption>
+                </ListOption>
+              </li>
+            )}
+            {formik.values.nursingActivities.map((nursingActivity, index) => (
+              <li key={nursingActivity}>
+                <ListOption>
+                  <ContainerListOption>
+                    <p>{nursingActivity}</p>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          addModal(
+                            addPrescription({
+                              notChangeType: true,
+                              drugs: formik.values.drugs,
+
+                              nursingActivities:
+                                formik.values.nursingActivities,
+                              confirmButtonAction: (values) => {
+                                console.log(values);
+                                formik.setFieldValue(
+                                  `nursingActivities[${index}]`,
+                                  values.medicament.name
+                                );
+                              },
+                              currentMedicament: {
+                                type: {
+                                  label: "Atividades de enfermagem",
+                                  name: "nursingActivity",
+                                },
+                                medicament: {
+                                  name: nursingActivity,
+                                  id: nursingActivity,
+                                },
+                                drug: {
+                                  useMode: "",
+                                  routeAdministration: "",
+                                  isAntibiotic: "oth",
+                                  initialDate: "",
+                                  finalDate: "",
+                                },
+                                routeAdministration: undefined,
+                              },
+                            })
+                          );
+                        }}
+                      >
+                        <MdModeEdit size={18} color={theme.colors.blue} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          addModal(
+                            deletePrescription({
+                              confirmButtonAction: () => {
+                                const filterNursingActivities =
+                                  formik.values.nursingActivities.filter(
+                                    (value) => value === nursingActivity
+                                  );
+                                formik.setFieldValue(
+                                  "nursingActivities",
+                                  filterNursingActivities
+                                );
+                              },
+                            })
+                          )
+                        }
+                      >
+                        <img src={trash} alt="remover" />
+                      </button>
+                    </div>
+                  </ContainerListOption>
+                </ListOption>
+              </li>
+            ))}
+            {formik.values.drugs.map((drug, index) => (
+              <li key={drug.drugName}>
+                <ListOption>
+                  <ContainerListOption>
+                    <p>{drug.drugName}</p>
+                    <div>
+                      <button
+                        onClick={() => {
+                          addModal(
+                            addPrescription({
+                              notChangeType: true,
+                              drugs: formik.values.drugs,
+                              nursingActivities:
+                                formik.values.nursingActivities,
+                              confirmButtonAction: (values) => {
+                                formik.setFieldValue(`drugs[${index}]`, {
+                                  id: values.medicament.id,
+                                  drugName: values.medicament.name,
+                                  drugKind: values.drug.isAntibiotic,
+                                  dosage: values.drug.useMode,
+                                  route: values.drug.routeAdministration.value,
+                                  initialDate: values.drug.initialDate
+                                    ? `${values.drug.initialDate}`
+                                    : undefined,
+                                  endingDate: values.drug.finalDate
+                                    ? `${values.drug.finalDate}`
+                                    : undefined,
+                                  block: values.block,
+                                });
+                              },
+                              currentMedicament: {
+                                block: drug.block,
+                                type: {
+                                  label: "Medicação",
+                                  name: "drug",
+                                },
+                                medicament: {
+                                  name: drug.drugName,
+                                  id: drug.id,
+                                },
+                                drug: {
+                                  useMode: drug.dosage,
+                                  routeAdministration: {
+                                    label: drug.route,
+                                    value: drug.route,
+                                  },
+                                  isAntibiotic: drug.drugKind,
+                                  initialDate: drug.initialDate,
+                                  finalDate: drug.endingDate,
+                                },
+                              },
+                            })
+                          );
+                        }}
+                        type="button"
+                      >
+                        <MdModeEdit size={18} color={theme.colors.blue} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          addModal(
+                            deletePrescription({
+                              confirmButtonAction: () => {
+                                const filterDrugs = formik.values.drugs.filter(
+                                  (value) => value.drugName !== drug.drugName
+                                );
+                                formik.setFieldValue("drugs", filterDrugs);
+                              },
+                            })
+                          )
+                        }
+                      >
+                        <img src={trash} alt="remover" />
+                      </button>
+                    </div>
+                  </ContainerListOption>
+                </ListOption>
+              </li>
+            ))}
+          </ol>
+          <p className="legend">{formik.values.dateFormat}</p>
+          <div className="buttons">
+            <Button
+              className="button_add_prescription"
+              type="button"
+              onClick={() =>
+                addModal(
+                  addMedicamentGroup({
+                    currentMedicament: formik.values.drugs,
+                    confirmButtonAction: (values) => {
+                      formik.setFieldValue("drugs", [
+                        ...formik.values.drugs,
+                        ...values,
+                      ]);
+                    },
+                  })
+                )
+              }
+            >
+              Adicionar medicações sintomáticas
+            </Button>
+            <Button
+              className="button_normal"
+              type="button"
+              onClick={() =>
+                addModal(
+                  addPrescription({
+                    drugs: formik.values.drugs,
+                    nursingActivities: formik.values.nursingActivities,
+                    confirmButtonAction: (values) => {
+                      console.log(values);
+                      chainHandleSetDiet(values);
+                    },
+                  })
+                )
+              }
+            >
+              Adicionar nova linha
+            </Button>
+          </div>
           <Button
-            className="button_add_prescription"
             type="button"
-            onClick={() =>
-              addModal(
-                addMedicamentGroup({
-                  currentMedicament: formik.values.drugs,
-                  confirmButtonAction: (values) => {
-                    formik.setFieldValue("drugs", [
-                      ...formik.values.drugs,
-                      ...values,
-                    ]);
-                  },
-                })
-              )
-            }
+            onClick={() => formik.handleSubmit()}
+            className="button_normal button-update_prescription"
           >
-            Adicionar medicações sintomáticas
-          </Button>
-          <Button
-            className="button_normal"
-            type="button"
-            onClick={() =>
-              addModal(
-                addPrescription({
-                  drugs: formik.values.drugs,
-                  nursingActivities: formik.values.nursingActivities,
-                  confirmButtonAction: (values) => {
-                    console.log(values);
-                    chainHandleSetDiet(values);
-                  },
-                })
-              )
-            }
-          >
-            Adicionar nova linha
+            Atualizar prescrição
           </Button>
         </div>
-        <Button
-          type="button"
-          onClick={() => formik.handleSubmit()}
-          className="button_normal button-update_prescription"
+      </CheckRole>
+      <CheckRole roles={["doc"]}>
+        <form
+          onSubmit={formikPending.handleSubmit}
+          className="pendencies_pacient"
         >
-          Atualizar prescrição
-        </Button>
-      </div>
-      <form
-        onSubmit={formikPending.handleSubmit}
-        className="pendencies_pacient"
-      >
-        <h2>Pendências</h2>
-        <TextArea
-          name="text"
-          onChange={formikPending.handleChange}
-          value={formikPending.values.text}
-          placeholder="AQUI SEGUE UM TEXTO COM AS PENDÊNCIAS"
-        ></TextArea>
-        <p className="legend">{formikPending.values.dateFormat}</p>
-        <Button className="button_normal button-update_pendencies">
-          Atualizar Pendências
-        </Button>
-      </form>
+          <h2>Pendências</h2>
+          <TextArea
+            name="text"
+            onChange={formikPending.handleChange}
+            value={formikPending.values.text}
+            placeholder="AQUI SEGUE UM TEXTO COM AS PENDÊNCIAS"
+          ></TextArea>
+          <p className="legend">{formikPending.values.dateFormat}</p>
+          <Button className="button_normal button-update_pendencies">
+            Atualizar Pendências
+          </Button>
+        </form>
+      </CheckRole>
     </Container>
   );
 };

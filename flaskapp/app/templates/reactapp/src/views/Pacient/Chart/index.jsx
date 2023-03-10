@@ -13,6 +13,8 @@ import Strategies from "./Strategies";
 import updatePacientData from "helpers/updatePacientData";
 import { useModalContext } from "services/ModalContext";
 import { GENERATE_PDF_BALANCO_HIDRICO } from "graphql/mutations";
+import b64toBlob from "utils/b64toBlob";
+import CheckRole from "routes/CheckRole";
 
 const Chart = () => {
   const [getInternment, { data }] = useLazyQuery(GET_ALL_CHART);
@@ -204,12 +206,14 @@ const Chart = () => {
     <Container>
       <div className="header">
         <h2>Evoluir Paciente (João Miguel dos Santos Polenta, 83 anos)</h2>
-        <Button
-          type="button"
-          onClick={() => addModal(updatePacientData(params.id))}
-        >
-          Atualizar Dados do Paciente
-        </Button>
+        <CheckRole roles={["doc"]}>
+          <Button
+            type="button"
+            onClick={() => addModal(updatePacientData(params.id))}
+          >
+            Atualizar Dados do Paciente
+          </Button>
+        </CheckRole>
       </div>
       <h2>Admissão</h2>
       <p>{newestChart.textEvolution}</p>
