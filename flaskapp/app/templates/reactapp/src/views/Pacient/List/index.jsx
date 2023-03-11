@@ -65,7 +65,6 @@ const List = () => {
             ))}
         </div>
       </div>
-      <Button className="config">Configurações</Button>
     </Container>
   );
 };

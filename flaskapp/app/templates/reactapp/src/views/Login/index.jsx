@@ -62,6 +62,7 @@ function Login() {
       <Input
         placeholder="Senha"
         name="password"
+        type="password"
         value={formik.values.password}
         onChange={formik.handleChange}
       />
