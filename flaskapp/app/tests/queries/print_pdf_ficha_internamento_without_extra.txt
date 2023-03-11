@@ -1,0 +1,7 @@
+mutation{
+  printPdf_FichaInternamento(
+    internmentId:1
+  ){
+    base64Pdf
+  }
+}

@@ -1,0 +1,10 @@
+mutation{
+  signin(email:"contato@filipelopes.med.br", password:"passw@rd"){
+    user{
+      id
+      name
+      birthdate
+    }
+    token
+  }
+}

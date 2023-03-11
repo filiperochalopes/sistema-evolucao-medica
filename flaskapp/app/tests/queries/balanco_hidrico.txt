@@ -1,0 +1,120 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_BalancoHidrico(
+    patient: {
+      name: "Patient Test Name",
+      cns: "928976954930007",
+      motherName: "Patient Mother Name",
+      sex: "M",
+      phone: "10123456789",
+      weightKg: 123.00,
+    },
+    fluidBalance:[
+      {
+        createdAt: "2023-02-13T01:17:20.624559",
+        volumeMl: -600,
+        description: "diurese"
+      },
+      {
+        createdAt: "2023-02-12T01:17:20.624559",
+        volumeMl: 600,
+        description: "Antibiótico"
+      },
+      {
+        createdAt: "2023-02-09T01:17:20.624559",
+        volumeMl: -300,
+        description: "Dreno de Tórax"
+      },
+      {
+        createdAt: "2023-02-13T01:17:20.624559",
+        volumeMl: -600,
+        description: "diurese"
+      },
+      {
+        createdAt: "2023-02-08T01:17:20.624559",
+        volumeMl: 600,
+        description: "Antibiótico"
+      },
+      {
+        createdAt: "2023-02-08T02:17:20.624559",
+        volumeMl: -300,
+        description: "Dreno de Tórax"
+      },
+      {
+        createdAt: "2023-02-14T01:17:20.624559",
+        volumeMl: -600,
+        description: "diurese"
+      },
+      {
+        createdAt: "2023-02-08T01:17:20.624559",
+        volumeMl: 600,
+        description: "Antibiótico"
+      },
+      {
+        createdAt: "2023-02-08T02:17:20.624559",
+        volumeMl: -300,
+        description: "Dreno de Tórax"
+      },
+      {
+        createdAt: "2023-02-08T01:17:20.624559",
+        volumeMl: -600,
+        description: "diurese"
+      },
+      {
+        createdAt: "2023-06-09T01:17:20.624559",
+        volumeMl: 600,
+        description: "Antibiótico"
+      },
+      {
+        createdAt: "2023-04-09T01:17:20.624559",
+        volumeMl: -300,
+        description: "Dreno de Tórax"
+      },
+      {
+        createdAt: "2023-02-08T01:17:20.624559",
+        volumeMl: -600,
+        description: "diurese"
+      },
+      {
+        createdAt: "2023-06-09T01:17:20.624559",
+        volumeMl: 600,
+        description: "Antibiótico"
+      },
+      {
+        createdAt: "2023-04-09T01:17:20.624559",
+        volumeMl: -300,
+        description: "Dreno de Tórax"
+      },
+      {
+        createdAt: "2023-02-08T01:17:20.624559",
+        volumeMl: -600,
+        description: "diurese"
+      },
+      {
+        createdAt: "2023-06-09T01:17:20.624559",
+        volumeMl: 600,
+        description: "Antibiótico"
+      },
+      {
+        createdAt: "2023-04-09T01:17:20.624559",
+        volumeMl: -300,
+        description: "Dreno de Tórax"
+      },
+      {
+        createdAt: "2023-02-08T01:17:20.624559",
+        volumeMl: -600,
+        description: "diurese"
+      },
+      {
+        createdAt: "2023-06-09T01:17:20.624559",
+        volumeMl: 600,
+        description: "Antibiótico"
+      },
+      {
+        createdAt: "2023-04-09T01:17:20.624559",
+        volumeMl: -300,
+        description: "Dreno de Tórax"
+      },
+    ]
+	){base64Pdf}
+}

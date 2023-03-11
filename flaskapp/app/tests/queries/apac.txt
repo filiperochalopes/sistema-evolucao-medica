@@ -1,0 +1,75 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_Apac(
+		requestingEstablishment: {
+        name: "Establishmente Solict Name",
+        cnes: "1234567"
+      },
+    establishmentExec: {
+      name:"Establishment exec Name",
+      cnes: "1234567"
+    },
+    patient: {
+        name: "Patient Patient Name",
+        cns: "928976954930007",
+        birthdate: "2022-11-10",
+        sex: "M",
+        phone: "10123456789",
+        ethnicity: "Etnia",
+        motherName: "Patient Mother Name",
+        weightKg: 123.00,
+        address: {
+          street: "Patient Adress",
+          city: "Jau",
+          ibgeCityCode: "1234567",
+          uf: "SP",
+          zipCode: "12345678"
+        },
+    },
+		mainProcedure: {
+      name: "teste procedimento",
+      code: "hkmaug347s",
+      quantity: 1
+      },
+      secondariesProcedures:[
+      {
+      name: "teste procedimento",
+      code: "hkmaug347s",
+      quantity: 1
+      },
+      {
+      name: "segundo procedimento",
+      code: "hkmhsa3s23",
+      quantity: 4
+      }
+		],
+    contactsPhonenumbers: ["5425415864","3412344321"]
+		patientResponsibleName: "Patient Responsible Name",
+		patientColor: "BRANCA",
+		documentChartNumber: "12345",
+		procedureJustificationDescription: "Procedure Justification Description",
+		procedureJustificationMainCid10: "A123",
+		procedureJustificationSecCid10: "A31",
+		procedureJustificationAssociatedCauseCid10: "B435",
+		procedureJustificationObservations: "Procedure Justification Observations",
+		requestingProfessionalDocument: {
+		cns: "928976954930007",
+		cpf: null,
+		rg: null
+		},
+		requestingProfessionalName: "Professional Solicitator",
+		solicitationDate: "2022-11-10",
+		professionalAuthorizationName: "Professional authorization",
+		emissionOrgCode: "Cod121234",
+		authorizationProfessionalDocument: {
+		cns: "928976954930007",
+		cpf: null,
+		rg: null
+		},
+		authorizationDate: "2022-11-10",
+		signatureDate: "2022-11-10",
+		validityPeriodStart: "2022-11-10",
+		validityPeriodEnd: "2022-11-10"
+		)
+{base64Pdf}
+}

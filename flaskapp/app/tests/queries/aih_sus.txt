@@ -1,0 +1,69 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_AihSus(
+    requestingEstablishment: {
+      name: "Establishmente Solict Name",
+      cnes: "1234567"
+    },
+    establishmentExec: {
+      name:"Establishment exec Name",
+      cnes: "1234567"
+    }
+    patient: {
+      name: "Patient Name",
+      cns: "928976954930007",
+      birthdate: "2022-11-10",
+      sex: "M",
+      phone: "10123456789",
+      ethnicity: "Etnia",
+      weightKg: 123,
+      motherName: "Patient Mother Name",
+      address: {
+        street: "Patient Adress",
+        city: "Jau",
+        ibgeCityCode: "1234567",
+        uf: "SP",
+        zipCode: "12345678"
+      },
+    },
+    mainClinicalSignsSymptoms: "Patient main clinical signs sysmpthoms",
+    conditionsJustifyHospitalization: "Patient Conditions justify hiospitalizaiton",
+    initialDiagnosis: "initial Siagnostic",
+    principalCid10: "A12",
+    requestedProcedure: "Procedurew Solicited",
+    procedureCode: "1234567890",
+    clinic: "Clinic Name",
+    internationCarater: "TYriste",
+    requestingProfessionalDocument: {
+    cns: "928976954930007",
+    cpf: null,
+    rg: null
+    },
+    requestingProfessionalName: "Professional Solicitor Name",
+    requestDate: "2021-02-10",
+    professionalAuthorizationName: "Professional Authorizator Name",
+    emissionOrgCode: "12aass",
+    authorizationProfessionalDocument: {
+    cpf: "28445400070",
+    cns: null,
+    rg: null
+    }
+    authorizationDate: "2022-10-21",
+    hospitalizationAuthorizationNumber: "1212",
+    examResults: "Exam Results",
+    chartNumber: "124",
+    patientResponsibleName: "Responsible NAme",
+    contactsPhonenumbers: ["5425415864","3412344321"]
+    secondaryCid10: "S32",
+    cid10AssociatedCauses: "A213",
+    acidentType: "WORK",
+    insuranceCompanyCnpj: "37549670000171",
+    insuranceCompanyTicketNumber: "12354",
+    insuranceCompanySeries: "1233",
+    companyCnpj: "37549670000171",
+    companyCnae: 5310501,
+    companyCbor: 123456,
+    pensionStatus: "WORKER"
+  )
+{base64Pdf}
+}

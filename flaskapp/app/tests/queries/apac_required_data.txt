@@ -1,0 +1,22 @@
+mutation{
+    generatePdf_Apac(
+        requestingEstablishment: {
+            name: "Establishmente Solict Name",
+            cnes: "1234567"
+        },
+        patient: {
+            name: "Patient Patient Name",
+            cns: "928976954930007",
+            birthdate: "2022-11-10",
+          	motherName: "Patient Mother Name",
+            sex: "M",
+            weightKg: 123,
+            phone: "10123456789",
+            address: {
+                city: "Jau",
+                uf: "SP",
+            }
+        },
+        mainProcedure: {name: "teste procedimento",code: "hkmaug347s",quantity: 1}
+    ){base64Pdf}
+}

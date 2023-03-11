@@ -1,142 +1,125 @@
-from collections.abc import Mapping
-
+from gql import Client, gql
+from gql.transport.aiohttp import AIOHTTPTransport
+from datetime import datetime, timezone, timedelta
+from base64 import b64decode
+from app.env import DatabaseSettings
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+from app.models import BaseModel
+from app.env import GRAPHQL_MUTATION_QUERY_URL, QUERIES_DIRECTORY, TMP_FILES_FOLDER
 import pytest
-from graphql.validation.rules import ValidationRule
-
-from ariadne import (
-    MutationType,
-    QueryType,
-    SubscriptionType,
-    make_executable_schema,
-    upload_scalar,
-)
 
 
 @pytest.fixture
-def type_defs():
-    return """
-        scalar Upload
-        type Query {
-            hello(name: String): String
-            status: Boolean
-            testContext: String
-            testRoot: String
-            testError: Boolean
-        }
-        type Mutation {
-            upload(file: Upload!): String
-        }
-        type Subscription {
-            ping: String!
-            resolverError: Boolean
-            sourceError: Boolean
-            testContext: String
-            testRoot: String
-        }
-    """
-
-
-def resolve_hello(*_, name):
-    return "Hello, %s!" % name
-
-
-def resolve_status(*_):
-    return True
-
-
-def resolve_test_context(_, info):
-    return info.context.get("test")
-
-
-def resolve_test_root(root, *_):
-    return root.get("test")
-
-
-def resolve_error(*_):
-    raise Exception("Test exception")
+def client():
+    # Select your transport with ag graphql url endpoint
+    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+    # Create a GraphQL client using the defined transport
+    return Client(transport=transport, fetch_schema_from_transport=True)
 
 
 @pytest.fixture
-def resolvers():
-    query = QueryType()
-    query.set_field("hello", resolve_hello)
-    query.set_field("status", resolve_status)
-    query.set_field("testContext", resolve_test_context)
-    query.set_field("testRoot", resolve_test_root)
-    query.set_field("testError", resolve_error)
-    return query
+def auth_client(client):
+    '''Cria um cliente de requisições com usuário de teste padrão'''
+    signin_query = gql(get_query_from_txt('signin'))
+    result = client.execute(signin_query)
+    token = result['signin']['token']
+    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL, headers={'Authorization': f'Bearer {token}'})
+    # Create a GraphQL client using the defined transport
+    return Client(transport=transport, fetch_schema_from_transport=True)
 
-
-def resolve_upload(*_, file):
-    if file is not None:
-        return type(file).__name__
-    return None
-
-
-@pytest.fixture
-def mutations():
-    mutation = MutationType()
-    mutation.set_field("upload", resolve_upload)
-    return mutation
-
-
-async def ping_generator(*_):
-    yield {"ping": "pong"}
-
-
-async def error_generator(*_):
-    raise Exception("Test exception")
-    yield 1  # pylint: disable=unreachable
-
-
-async def test_context_generator(_, info):
-    yield {"testContext": info.context.get("test")}
-
-
-async def test_root_generator(root, *_):
-    yield {"testRoot": root.get("test")}
+def get_query_from_txt(filename: str):
+    '''Retorna o texto de uma querie armazenada em txt'''
+    with open(f'{QUERIES_DIRECTORY}/{filename}.txt', 'r') as file:
+        request = file.read()
+    return request
 
 
 @pytest.fixture
-def subscriptions():
-    subscription = SubscriptionType()
-    subscription.set_source("ping", ping_generator)
-    subscription.set_source("resolverError", ping_generator)
-    subscription.set_field("resolverError", resolve_error)
-    subscription.set_source("sourceError", error_generator)
-    subscription.set_source("testContext", test_context_generator)
-    subscription.set_source("testRoot", test_root_generator)
-    return subscription
+def fixture_get_query_from_txt(request):
+    get_query_from_txt(request.param)
 
 
 @pytest.fixture
-def schema(type_defs, resolvers, mutations, subscriptions):
-    return make_executable_schema(
-        type_defs, [resolvers, mutations, subscriptions, upload_scalar]
-    )
+def download_pdf(request):
+    '''
+    Converte string em base64 para um arquivo pdf temporário
+    lembrando sempre de excluir os dados mais antigos que um 
+    dia.
+
+    request.param deve ser uma tupla (label, base64string)
+    '''
+    created = False
+    try:
+        generated_pdf_b64 = b64decode(request.param[1], validate=True)
+
+        now = datetime.now()
+        f = open(
+            f"{TMP_FILES_FOLDER}/{request.param[0]}__{now.strftime('%Y_ %m_%d_%H_%M_%S')}.pdf", 'wb')
+        f.write(generated_pdf_b64)
+        f.close()
+        created = True
+    except:
+        created = False
+
+    return created
+
+
+@pytest.fixture(scope="session")
+def engine():
+    print(f"Conectando ao banco de dados {DatabaseSettings(env='production').URL}...")
+    return create_engine(DatabaseSettings(env='production').URL)
+
+
+@pytest.fixture(scope="session")
+def tables(engine):
+    print("Creating tables...")
+    BaseModel.metadata.create_all(engine)
+    yield
+    print("Droping tables...")
+    BaseModel.metadata.drop_all(engine)
 
 
 @pytest.fixture
-def validation_rule():
-    class NoopRule(ValidationRule):
-        pass
+def dbsession(engine, tables):
+    """Returns an sqlalchemy session, and after the test tears down everything properly."""
+    connection = engine.connect()
+    # begin the nested transaction
+    transaction = connection.begin()
+    # use the connection with the already started transaction
+    session = Session(bind=connection)
 
-    return NoopRule
+    yield session
+
+    session.close()
+    # roll back the broader transaction
+    transaction.rollback()
+    # put back the connection to the connection pool
+    connection.close()
 
 
 @pytest.fixture
-def fake_mapping():
-    class FakeMapping(Mapping):
-        def __init__(self, **kwargs):
-            self._dummy = {**kwargs}
+def lenght_test():
+    """generate a string with data with charactes to test lenght"""
+    lenght_test = ''
+    for x in range(0, 1100):
+        lenght_test += str(x)
+    return lenght_test
 
-        def __getitem__(self, key):
-            return self._dummy[key]
+@pytest.fixture
+def datetime_to_use():
+    """get current datetime to test"""
+    return datetime.now().isoformat()
 
-        def __iter__(self):
-            return iter(self._dummy)
+@pytest.fixture
+def datetime_with_timezone_to_use():
+    """get current datetime to test"""
+    tmz = timezone(offset=timedelta(hours=-3))
+    return datetime.now(tz=tmz).isoformat()
 
-        def __len__(self):
-            return len(self._dummy.keys())
-
-    return FakeMapping
+@pytest.fixture
+def client():
+    # Select your transport with ag graphql url endpoint
+    transport = AIOHTTPTransport(url=GRAPHQL_MUTATION_QUERY_URL)
+    # Create a GraphQL client using the defined transport
+    return Client(transport=transport, fetch_schema_from_transport=True)

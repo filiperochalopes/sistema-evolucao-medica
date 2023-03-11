@@ -1,13 +1,15 @@
 import sys
 from unicodedata import name
-from app.env import InstitutionData
+from app.env import InstitutionData, DatabaseSettings
 from .graphql import query, type_defs, mutation
+from .graphql.generate_pdf_schema import generate_pdf_type_defs
+from .graphql.print_pdf_schema import print_pdf_type_defs
 from flask import Flask, request, jsonify, send_from_directory
 from flask_migrate import Migrate
 from ariadne import graphql_sync, make_executable_schema
 from flask_scss import Scss
 from ariadne.constants import PLAYGROUND_HTML
-from app.models import DrugGroupPreset, db, Cid10, Config, Diet, Drug, DrugKindEnum, FluidBalanceDescription, NursingActivity, RestingActivity, State, Allergy, Comorbidity
+from app.models import DrugGroupPreset, db, Cid10, Config, Diet, Drug, DrugKindEnum, FluidBalanceDescription, NursingActivity, RestingActivity, State, Allergy, Comorbidity, HighComplexityProcedure
 from flask_cors import CORS
 from app.serializers import ma
 from flask import Blueprint, render_template
@@ -15,14 +17,14 @@ from flask import Blueprint, render_template
 import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///local.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = DatabaseSettings().URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config['AUTOCRUD_METADATA_ENABLED'] = True
 app.secret_key = os.getenv('SECRET_KEY')
 
 db.init_app(app)
 ma.init_app(app)
 CORS(app)
+
 
 migrate = Migrate(app, db)
 Scss(app, static_dir='app/static/css', asset_dir='app/assets/scss')
@@ -40,8 +42,7 @@ def send_report(path):
 def index(path):
     return render_template('reactapp/build/index.html')
 
-
-schema = make_executable_schema(type_defs, [query, mutation])
+schema = make_executable_schema([type_defs, generate_pdf_type_defs, print_pdf_type_defs], [query, mutation])
 
 
 @app.route("/api/v1/graphql", methods=["GET"])
@@ -95,6 +96,14 @@ def seed():
             state = State(ibge_code=int(row[0]), name=row[1], uf=row[2])
             db.session.add(state)
 
+    # cadastrando procedimentos de alta complexidade
+    with open(os.path.join(os.path.dirname(__file__), 'assets', 'HIGH-COMPLEXITY-PROCEDURES.csv'), 'r') as file:
+        csvreader = csv.reader(file, delimiter=',')
+        next(file)
+        for row in csvreader:
+            procedure = HighComplexityProcedure(name=row[0], code=row[1])
+            db.session.add(procedure)
+
     # Adicionando configurações das instituições
     configs = [
         Config(key='institution_name',
@@ -111,7 +120,7 @@ def seed():
         Drug(name='Diclofenaco 25mg/ml 3m', usual_dosage='75mg (1 ampola) no momento', usual_route='Intramuscular', kind=DrugKindEnum.oth),
         Drug(name='Dexametasona 4mg/2,5ml', usual_dosage='10mg (1 ampola) no momento', usual_route='Intramuscular', kind=DrugKindEnum.oth),
         Drug(name='Nebulização 1ml de adrenalina + 5ml de SF 0,9% + 10 gotas de Ipratrópio 0,25 mg/mL', usual_dosage='1g (1 ampola) no momento', usual_route='Inalatória por via nasal', comment='Zhang L, Sanguebsche LS. The safety of nebulization with 3 to 5 ML of adrenaline (1:1000) in children: An evidence based review. Jornal de Pediatria. 2005;81(3):193–7.  ', kind=DrugKindEnum.oth),
-        Drug(name='Ceftriaxona 1g', usual_dosage='1g 12/12h', usual_route='Endovenosa', comment='Dose pediátrica usual: (50mg/kg/dose) 12/12h', kind=DrugKindEnum.atb),
+        Drug(name='Ceftriaxona 1g', usual_dosage='1g 12/12h', usual_route='Endovenoso', comment='Dose pediátrica usual: (50mg/kg/dose) 12/12h', kind=DrugKindEnum.atb),
         Drug(name='Oxigênio', usual_dosage='Cateter nasal 3L/min se SpO2 < 92%', usual_route='Nasal', kind=DrugKindEnum.oth),
         Drug(name='Oxigênio', usual_dosage='Cateter nasal 3L/min', usual_route='Nasal', kind=DrugKindEnum.oth),
     ]

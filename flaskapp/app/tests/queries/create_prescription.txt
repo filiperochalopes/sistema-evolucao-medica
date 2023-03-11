@@ -1,0 +1,30 @@
+mutation{
+  createPrescription(
+    internmentId:1
+    drugs: [{
+      drugName: "Dipirona Flash"
+      drugKind: "oth"
+      dosage: "Dose vai aqui"
+      route: "Oral"
+    },{
+      drugName: "Antibiótico de Teste"
+      drugKind: "atb"
+      dosage: "Dose única"
+      route: "Intravenoso"
+      initialDate: "2022-12-01T11:30:00"
+      endingDate: "2022-12-08T11:30:00"
+    }]
+  ){
+    id
+    drugPrescriptions{
+      id
+      initialDate
+      endingDate
+      drug{
+        id
+        name
+        kind
+      }
+    }
+  }
+}

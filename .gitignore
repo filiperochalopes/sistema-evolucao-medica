@@ -1,4 +1,9 @@
 __pycache__
 .env
-*.db
 data
+.idea
+*.db
+flaskapp/app/tests/files/tmp/*.pdf
+data
+.DS_Store
+.pytest_cache
