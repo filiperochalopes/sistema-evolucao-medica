@@ -13,7 +13,6 @@ const Modal = ({
   customBackgroundHeader,
 }) => {
   const theme = useTheme();
-  console.log(confirmButton);
 
   return (
     <Container>

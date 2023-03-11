@@ -115,7 +115,6 @@ const Evolution = () => {
     if (!data) {
       return;
     }
-    console.log(data);
     if (data.internment?.prescriptions?.length > 0) {
       const prescription =
         data.internment?.prescriptions[
@@ -311,7 +310,6 @@ const Evolution = () => {
                           addModal(
                             addPrescription({
                               confirmButtonAction: (values) => {
-                                console.log(values);
                                 formik.setFieldValue(
                                   "diet",
                                   values.medicament.name
@@ -376,7 +374,6 @@ const Evolution = () => {
                               nursingActivities:
                                 formik.values.nursingActivities,
                               confirmButtonAction: (values) => {
-                                console.log(values);
                                 formik.setFieldValue(
                                   "restingActivity",
                                   values.medicament.name
@@ -441,7 +438,6 @@ const Evolution = () => {
                               nursingActivities:
                                 formik.values.nursingActivities,
                               confirmButtonAction: (values) => {
-                                console.log(values);
                                 formik.setFieldValue(
                                   `nursingActivities[${index}]`,
                                   values.medicament.name
@@ -608,7 +604,6 @@ const Evolution = () => {
                     drugs: formik.values.drugs,
                     nursingActivities: formik.values.nursingActivities,
                     confirmButtonAction: (values) => {
-                      console.log(values);
                       chainHandleSetDiet(values);
                     },
                   })

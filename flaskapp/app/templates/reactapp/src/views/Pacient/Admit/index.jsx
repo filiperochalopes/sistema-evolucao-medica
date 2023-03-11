@@ -139,13 +139,11 @@ const Admit = () => {
           },
         });
         // eslint-disable-next-line no-empty
-      } catch (e) {
-        console.log(e.message);
-      }
+      } catch (e) {}
     }
     getCep();
-  }, [formik.values.patient.address.zipCode]);
-  console.log(formik.errors);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values.patient.address.zipCode, statesData.state]);
 
   return (
     <Container>

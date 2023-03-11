@@ -13,7 +13,7 @@ import {
   DRUG_ROUTES,
   NURSING_ACTIVITIES,
 } from "graphql/queries";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "./styles";
 import { v4 as uuidv4 } from "uuid";
 import schema from "./schema";
@@ -151,7 +151,6 @@ const ModalAddPrescription = ({
     },
     validationSchema: schema,
   });
-  console.log(formik);
 
   useEffect(() => {
     if (!currentMedicament) {
@@ -159,6 +158,7 @@ const ModalAddPrescription = ({
     }
 
     formik.setValues(currentMedicament);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentMedicament]);
 
   useEffect(() => {
@@ -166,7 +166,6 @@ const ModalAddPrescription = ({
     if (!formik.values.type?.name) {
       return;
     }
-    console.log("formik.values.type?.namee", formik.values.type?.name);
 
     if (formik.values.type.name === "drug") {
       request = getDrugs;
@@ -183,7 +182,6 @@ const ModalAddPrescription = ({
     }
 
     request().then((response) => {
-      console.log("formik.values.type", response.data);
       let newMedicaments =
         response.data[medicamentsAdapter[formik.values.type.name]];
       if (formik.values.type.name === "nursingActivity") {
@@ -193,7 +191,6 @@ const ModalAddPrescription = ({
               (nursingActivitie) => nursingActivitie === medicament.name
             ) || medicament.name === currentMedicament?.medicament.name
         );
-        console.log("medicaments", newMedicaments);
       }
       setMedicaments(
         newMedicaments.map((medicament) => ({

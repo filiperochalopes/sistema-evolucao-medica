@@ -14,7 +14,6 @@ const ContextProvider = ({ children }) => {
       return;
     }
     const decode = jwt_decode(token);
-    console.log(decode);
     setUser({
       ...decode,
       token,

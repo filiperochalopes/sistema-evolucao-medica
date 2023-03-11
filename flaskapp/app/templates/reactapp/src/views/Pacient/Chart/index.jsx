@@ -114,13 +114,8 @@ const Chart = () => {
         data.internment.measures.length - 1,
         1
       )[0];
-      const fluidBalance = fluidBalances.splice(
-        data.internment.measures.length - 1,
-        1
-      )[0];
       let total = 0;
       const fluids = [];
-      console.log("measure", fluidBalances);
       const date = new Date();
       fluidBalances.forEach((fluidBalance) => {
         const response = intervalToDuration({
@@ -199,8 +194,7 @@ const Chart = () => {
         internment: params.id,
       },
     });
-  }, [params]);
-  console.log(newestChart.sinals);
+  }, [getInternment, params]);
 
   return (
     <Container>
