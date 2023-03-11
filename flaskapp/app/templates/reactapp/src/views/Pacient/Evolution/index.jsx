@@ -2,7 +2,6 @@ import Container, { ContainerListOption } from "./styles";
 import { createFilter, components } from "react-select";
 
 import Button from "components/Button";
-import Input from "components/Input";
 import ListOption from "components/ListOption";
 import TextArea from "components/TextArea";
 import Select from "components/Select";
@@ -47,7 +46,7 @@ const Evolution = () => {
         internment: Number(params.id),
       },
     });
-  }, [params.id]);
+  }, [getInternment, params.id]);
 
   const formik = useFormik({
     initialValues: {
@@ -116,6 +115,7 @@ const Evolution = () => {
     if (!data) {
       return;
     }
+    console.log(data);
     if (data.internment?.prescriptions?.length > 0) {
       const prescription =
         data.internment?.prescriptions[
@@ -177,7 +177,7 @@ const Evolution = () => {
           `'ÚLTIMA EVOLUÇÃO ATUALIZADA por ${
             data.internment.evolutions[data.internment?.evolutions?.length - 1]
               .professional.name
-          }' EM' dd/MM/yyyy HH:mm:ss`,
+          } EM' dd/MM/yyyy HH:mm:ss`,
           {
             locale: ptBR,
           }
@@ -211,7 +211,6 @@ const Evolution = () => {
   }
 
   function chainHandleSetNursingActivity(values) {
-    console.log(values);
     if (values.type.name === "nursingActivity") {
       formik.setFieldValue("nursingActivities", [
         ...formik.values.nursingActivities,
@@ -223,7 +222,6 @@ const Evolution = () => {
   }
 
   function chainHandleSetRestingActivity(values) {
-    console.log(values.type);
     if (values.type.name === "restingActivity") {
       formik.setFieldValue("restingActivity", values.medicament.name);
       return true;
@@ -247,7 +245,10 @@ const Evolution = () => {
         onSubmit={formikEvolution.handleSubmit}
       >
         <div className="header">
-          <h2>Evoluir Paciente (João Miguel dos Santos Polenta, 83 anos)</h2>
+          <h2>
+            Evoluir Paciente ({data?.internment?.patient?.name},{" "}
+            {data?.internment?.patient.age} anos)
+          </h2>
           <CheckRole roles={["doc"]}>
             <Button
               type="button"

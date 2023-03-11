@@ -141,6 +141,10 @@ export const GET_INTERNMENT = gql`
   query internment($internment: ID!) {
     internment(id: $internment) {
       justification
+      patient {
+        name
+        age
+      }
       cid10 {
         code
         description
