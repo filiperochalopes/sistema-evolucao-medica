@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import jwt_decode from "jwt-decode";
 import { useContextProvider } from "services/Context";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -22,7 +21,7 @@ const CheckRole = ({ children, roles, goBack }) => {
     if (goBack) {
       navigate(-1);
     }
-  }, [user]);
+  }, [goBack, navigate, roles, user]);
   if (permited === "waiting") {
     return <div />;
   }
