@@ -72,6 +72,7 @@ def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict
             'cpf': internment.patient.cpf,
             'cns': internment.patient.cns,
             'rg': internment.patient.rg,
+            'weight_kg': internment.patient.weight_kg,
             'nationality': 'brasileiro(a)',
             'ethnicity': None,
             'comorbidities': [c.value for c in internment.patient.comorbidities],
@@ -87,7 +88,7 @@ def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict
             }
         }, history_of_present_illness=internment.hpi,
         initial_diagnosis_suspicion=f'{internment.cid10.code} - {internment.cid10.description}',
-        doctor_name=internment.professional.name, doctor_cns=internment.professional.cns, doctor_crm=internment.professional.professional_document_number, has_additional_health_insurance=extra.has_additional_health_insurance if 'has_additional_health_insurance' in extra else None)
+        doctor_name=internment.professional.name, doctor_cns=internment.professional.cns, doctor_crm=internment.professional.professional_document_number, has_additional_health_insurance=extra['has_additional_health_insurance'] if 'has_additional_health_insurance' in extra else None)
 
 
 @mutation.field('printPdf_RelatorioAlta')
@@ -103,6 +104,7 @@ def print_pdf_relatorio_alta(_, info, internment_id: int, current_user: dict, ex
     history_of_present_illness = internment.hpi
     # Captura a última evolução médica para capturar quem fez a alta
     last_medical_evolution = db.session.query(Evolution).filter(Evolution.internment_id == internment.id).order_by(Evolution.created_at.desc()).first()
+
     evolution = f'''
     {history_of_present_illness}
 

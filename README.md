@@ -55,7 +55,7 @@ npm install --global yarn
 ### Realizando a build React
 
 ```sh
-cd flaskapp/app/templates/reactapp
+cd reactapp
 yarn
 yarn build
 ```

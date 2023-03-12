@@ -7,7 +7,7 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_API_URL,
+  uri: `${process.env.REACT_APP_API_URL}/graphql`,
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -33,4 +33,5 @@ const client = new ApolloClient({
   link: ApolloLink.from([logoutLink, authLink, httpLink]),
   cache: new InMemoryCache(),
 });
+
 export default client;

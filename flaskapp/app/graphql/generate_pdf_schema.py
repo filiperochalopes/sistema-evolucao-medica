@@ -33,7 +33,7 @@ generate_pdf_type_defs = gql(
         "Frequencia respiratoria em ipm"
         respiratoryFrequency: Int
         "Temperatura Axilar em graus Celsius"
-        celciusAxillaryTemperature: Int
+        celciusAxillaryTemperature: Float
         "Aferição de glicemia capilar, pode ser um número de 0 a 500, ou 'HI'"
         glucose: String
         "Frequencia cardiaca fetal"

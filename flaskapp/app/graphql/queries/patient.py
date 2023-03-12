@@ -20,6 +20,7 @@ def patient(*_, id:int=None, query_name_cns_cpf:str=None):
     return schema.dump(db.session.query(Patient).filter(Patient.name == query_name_cns_cpf).first())
 
 @query.field("patients")
+@convert_kwargs_to_snake_case
 def patients(*_, query_name_cns_cpf:str=None):
     schema = PatientSchema(many=True)
     if query_name_cns_cpf is not None:
