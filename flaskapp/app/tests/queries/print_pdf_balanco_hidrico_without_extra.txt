@@ -1,0 +1,5 @@
+mutation{
+  printPdf_BalancoHidrico(internmentId:1){
+    base64Pdf
+  }
+}

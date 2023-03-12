@@ -1,0 +1,30 @@
+mutation{
+    generatePdf_AihSus(
+        requestingEstablishment: {
+            name: "Establishment Solicit Name", 
+            cnes: "1234567"
+        },
+        patient: {
+            name: "Patient Name", 
+            cns: "928976954930007", 
+            birthdate: "2022-11-10", 
+            sex: "F", 
+            phone: "10123456789",
+            motherName: "Patient Mother Name", 
+            weightKg: 123, 
+            address: {
+                street: "Patient Adress street neighobourd", 
+                city: "Patient City", 
+                uf:"SP", 
+                zipCode: "12345678"
+            },
+        },
+        mainClinicalSignsSymptoms: "Patient main clinical signs sysmpthoms",
+        conditionsJustifyHospitalization: "'Patient Conditions justify hiospitalizaiton",
+        initialDiagnosis: "Patient Initial Diagnostic",
+        principalCid10: "A00",
+        requestingProfessionalDocument: {cns: "928976954930007", cpf: null, rg: null},
+        requestingProfessionalName: "Profissional Solicit Name",
+        requestDate: "2022-11-10",
+    ){base64Pdf}
+}

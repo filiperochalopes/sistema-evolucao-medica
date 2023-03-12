@@ -41,6 +41,6 @@ const ContextProvider = ({ children }) => {
   );
 };
 
-export const useContextProvider = () => useContext(Context);
-
+const useContextProvider = () => useContext(Context);
+export { useContextProvider };
 export default ContextProvider;

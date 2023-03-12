@@ -1,0 +1,25 @@
+mutation {
+  createMeasure(
+    internmentId:1
+    spO2: 98
+    pain: 0
+    systolicBloodPressure: 156
+    diastolicBloodPressure: 78
+    cardiacFrequency:78
+    respiratoryFrequency: 20
+    celciusAxillaryTemperature: 36.5
+    glucose: 356
+    fetalCardiacFrequency: 140
+  ){
+    id
+    spO2
+    pain
+    systolicBloodPressure
+    diastolicBloodPressure
+    cardiacFrequency
+    respiratoryFrequency
+    celciusAxillaryTemperature
+    glucose
+    fetalCardiacFrequency
+  }
+}

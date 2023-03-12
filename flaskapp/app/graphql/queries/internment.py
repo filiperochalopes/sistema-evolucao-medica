@@ -1,8 +1,7 @@
-from sys import intern
 import sys
 from app.graphql import query
-from app.models import Internment, db, Patient, Allergy, Comorbidity
-from app.serializers import InternmentSchema, PatientSchema
+from app.models import Internment, db, Patient
+from app.serializers import InternmentSchema
 
 @query.field("internment")
 def internment(*_, id:int):

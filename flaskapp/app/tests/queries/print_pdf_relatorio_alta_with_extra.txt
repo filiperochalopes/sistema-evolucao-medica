@@ -1,0 +1,11 @@
+mutation{
+  printPdf_RelatorioAlta(
+    internmentId: 1
+    extra: {
+      orientations: "Nam iaculis molestie justo vel finibus. Sed varius diam tempor sagittis blandit. Nullam ornare, nisi id elementum aliquam, mi justo ultricies eros, eu ullamcorper leo neque quis orci. Suspendisse tempor sem diam, nec accumsan nunc facilisis eu. Proin nulla eros, posuere quis purus eget, fringilla cursus metus. Donec consectetur suscipit semper. Etiam tristique sagittis auctor. Nam at massa viverra, laoreet justo sit amet, molestie libero."
+      datetimeStamp: "2023-10-10T17:55:00"
+    }
+  ){
+    base64Pdf
+  }
+}

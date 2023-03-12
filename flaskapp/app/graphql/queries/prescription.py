@@ -6,7 +6,7 @@ from app.serializers import DrugGroupPresetSchema, DrugSchema
 
 @query.field("prescription")
 @convert_kwargs_to_snake_case
-def prescription(*_, patient_id:int=None, initial_datetime:str=datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%d 7:00:00'), ending_datetime:str=datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')):
+def prescription(*_, patient_id:int=None, initial_datetime:str=datetime.strftime(datetime.now() - timedelta(1), '%Y-%m-%dT7:00:00'), ending_datetime:str=datetime.strftime(datetime.now(), '%Y-%m-%dT%H:%M:%S')):
     '''Função que retorna as prescrições de determinado paciente'''
     return []
 
