@@ -183,6 +183,7 @@ const Evolution = () => {
         ),
       });
     }
+    // eslint-disable-next-line
   }, [data]);
 
   function chainHandleSetDrugs(values) {
