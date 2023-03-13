@@ -42,7 +42,7 @@ const strategies = {
           <input
             id="checkbox_true"
             type="checkbox"
-            value={formik.values.extra.hasAdditionalHealthInsurance}
+            checked={formik.values.extra.hasAdditionalHealthInsurance}
             onChange={() =>
               formik.setFieldValue("extra", {
                 hasAdditionalHealthInsurance: true,
@@ -55,7 +55,7 @@ const strategies = {
           <input
             id="checkbox_false"
             type="checkbox"
-            value={!formik.values.extra.hasAdditionalHealthInsurance}
+            checked={!formik.values.extra.hasAdditionalHealthInsurance}
             onChange={() =>
               formik.setFieldValue("extra", {
                 hasAdditionalHealthInsurance: false,
@@ -366,7 +366,7 @@ const strategies = {
 const initialValuesStrategies = {
   printPdf_FichaInternamento: {
     extra: {
-      hasAdditionalHealthInsurance: true,
+      hasAdditionalHealthInsurance: false,
     },
   },
   printPdf_FolhaEvolucao: {
