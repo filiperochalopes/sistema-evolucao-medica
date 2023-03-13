@@ -50,9 +50,9 @@ const Admit = () => {
         weightKg: "",
         address: {
           zipCode: "",
-          street: "dd",
+          street: "",
           complement: "",
-          number: "32",
+          number: "",
           city: "",
           uf: null,
           neighborhood: "",
