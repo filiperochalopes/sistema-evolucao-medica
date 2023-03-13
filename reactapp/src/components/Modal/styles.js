@@ -40,10 +40,6 @@ export const ContainerContentModal = styled.div`
   background: #fff;
   flex-direction: column;
   border-radius: 5px;
-
-  main {
-    overflow: auto;
-  }
 `;
 
 export const Header = styled.div`

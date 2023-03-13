@@ -6,7 +6,6 @@ import Container, {
   ContainerProcessSecondaty,
 } from "./styles";
 import { createFilter, components } from "react-select";
-import Buffer from "buffer";
 import React from "styled-components";
 import TextArea from "components/TextArea";
 import Button from "components/Button";
