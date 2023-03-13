@@ -32,8 +32,8 @@ function Login() {
         updateUser(response.data.signin.token);
         navigate("/pacientes");
       } catch (e) {
-        if (e?.response?.errors) {
-          e?.response?.errors.forEach((erro) => {
+        if (e?.graphQLErrors) {
+          e?.graphQLErrors.forEach((erro) => {
             enqueueSnackbar(erro.message, { variant: "error" });
           });
         }
