@@ -113,7 +113,7 @@ export const CREATE_MEASURE = gql`
     $diastolicBloodPressure: Int
     $cardiacFrequency: Int
     $respiratoryFrequency: Int
-    $celciusAxillaryTemperature: Int
+    $celciusAxillaryTemperature: Float
     $glucose: Int
     $fetalCardiacFrequency: Int
   ) {
