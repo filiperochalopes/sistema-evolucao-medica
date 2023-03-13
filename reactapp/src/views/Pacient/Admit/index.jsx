@@ -143,7 +143,7 @@ const Admit = () => {
     }
     getCep();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formik.values.patient.address.zipCode, statesData.state]);
+  }, [formik.values.patient.address.zipCode, statesData]);
 
   return (
     <Container>
