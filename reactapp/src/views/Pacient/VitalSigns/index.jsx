@@ -40,7 +40,7 @@ const VitalSign = () => {
         const variables = {
           internmentId: Number(params.id),
           spO2: values.spO2 > 0 ? Number(values.spO2) : null,
-          pain: Number(values.pain),
+          pain: Number(values.pain) ? Number(values.pain) : null,
           systolicBloodPressure: Number(values.systolicBloodPressure),
           diastolicBloodPressure: Number(values.diastolicBloodPressure),
           cardiacFrequency: Number(values.cardiacFrequency),
