@@ -58,13 +58,28 @@ const Evolution = () => {
     onSubmit: async (values) => {
       try {
         const newValues = { ...values };
-        newValues.drugs = newValues.drugs.map(({ id, block, ...rest }) => rest);
+        newValues.drugs = newValues.drugs.map(({ id, block, ...rest }) => {
+          if (rest.drugKind !== "oth") {
+            return {
+              ...rest,
+              endingDate: `${rest.endingDate}:00`,
+              initialDate: `${rest.initialDate}:00`,
+            };
+          }
+          return rest;
+        });
         await createPrescription({
           variables: { ...newValues, internmentId: Number(params.id) },
         });
         enqueueSnackbar("Prescrição Cadastrada", { variant: "success" });
-      } catch {
-        enqueueSnackbar("Error: Tente novamente", { variant: "error" });
+      } catch (e) {
+        if (e.graphQLErrors) {
+          e.graphQLErrors.forEach((err) => {
+            enqueueSnackbar(err.message, { variant: "error" });
+          });
+        } else {
+          enqueueSnackbar("Erro,tente novamente", { variant: "error" });
+        }
       }
     },
     validationSchema: schema,
