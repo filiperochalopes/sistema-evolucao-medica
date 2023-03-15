@@ -22,6 +22,7 @@ import schema from "./schema";
 import maskCpf from "utils/maskCpf";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import useHandleErrors from "hooks/useHandleErrors";
 
 const SEX_OPTIONS = [
   { label: "Masculino", value: "male" },
@@ -37,6 +38,7 @@ const Admit = () => {
   const [getPatient] = useLazyQuery(GET_PATIENT);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const { handleErrors } = useHandleErrors();
   const formik = useFormik({
     initialValues: {
       addPacient: false,
@@ -102,13 +104,7 @@ const Admit = () => {
         enqueueSnackbar("Pendencia Cadastrada", { variant: "success" });
         navigate("/");
       } catch (e) {
-        if (e.graphQLErrors) {
-          e.graphQLErrors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: "error" });
-          });
-        } else {
-          enqueueSnackbar("Erro,tente novamente", { variant: "error" });
-        }
+        handleErrors(e);
       }
     },
     validationSchema: schema,

@@ -10,14 +10,14 @@ import loginSchema from "schemas/loginSchema";
 import { useMutation } from "@apollo/client";
 import { SIGNING } from "graphql/mutations";
 import { useEffect } from "react";
-import { useSnackbar } from "notistack";
 import { useContextProvider } from "services/Context";
+import useHandleErrors from "hooks/useHandleErrors";
 
 function Login() {
-  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [signing] = useMutation(SIGNING);
   const { updateUser } = useContextProvider();
+  const { handleErrors } = useHandleErrors();
 
   const formik = useFormik({
     initialValues: {
@@ -32,11 +32,7 @@ function Login() {
         updateUser(response.data.signin.token);
         navigate("/pacientes");
       } catch (e) {
-        if (e?.graphQLErrors) {
-          e?.graphQLErrors.forEach((erro) => {
-            enqueueSnackbar(erro.message, { variant: "error" });
-          });
-        }
+        handleErrors(e);
       }
     },
   });
