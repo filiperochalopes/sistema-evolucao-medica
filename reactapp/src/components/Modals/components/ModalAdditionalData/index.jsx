@@ -428,7 +428,6 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const Strategy = strategies[type];
-  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: initialValuesStrategies[type],
@@ -440,8 +439,12 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
           request = getPDFFicha;
         }
         if (newValues.extra.interval) {
-          newValues.extra.interval.startDatetimeStamp = `${newValues.extra.interval.startDatetimeStamp}:00`;
-          newValues.extra.interval.endingDatetimeStamp = `${newValues.extra.interval.endingDatetimeStamp}:00`;
+          if (newValues.extra.interval.startDatetimeStamp) {
+            newValues.extra.interval.startDatetimeStamp = `${newValues.extra.interval.startDatetimeStamp}:00`;
+          }
+          if (newValues.extra.interval.endingDatetimeStamp) {
+            newValues.extra.interval.endingDatetimeStamp = `${newValues.extra.interval.endingDatetimeStamp}:00`;
+          }
         }
         if (type === "printPdf_FolhaEvolucao") {
           request = getPDFFolhaEvolucao;
@@ -450,7 +453,9 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
           request = getPDFFolhaPrescricao;
         }
         if (type === "printPdf_RelatorioAlta") {
-          newValues.extra.datetimeStamp = `${newValues.extra.datetimeStamp}:00`;
+          if (newValues.extra.datetimeStamp) {
+            newValues.extra.datetimeStamp = `${newValues.extra.datetimeStamp}:00`;
+          }
           request = getPDFRelatorioAlta;
         }
         if (type === "printPdf_AihSus") {
