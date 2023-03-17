@@ -7,7 +7,15 @@ export default styled.form`
   row-gap: 0.5rem;
   margin-top: 1.5rem;
   width: 100%;
-  overflow: auto;
+
+  .select_container {
+    position: absolute;
+    width: auto;
+    width: calc(100% - 4rem);
+  }
+  .select_container_back {
+    opacity: 0;
+  }
 `;
 
 export const ButtonContainer = styled.div`
