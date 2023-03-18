@@ -28,6 +28,7 @@ import addMedicamentGroup from "helpers/addMedicamentGroup";
 import { format, parseISO } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 import CheckRole from "routes/CheckRole";
+import useHandleErrors from "hooks/useHandleErrors";
 
 const Evolution = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -39,6 +40,7 @@ const Evolution = () => {
   const [getInternment, { data }] = useLazyQuery(GET_INTERNMENT);
   const params = useParams();
   const theme = useTheme();
+  const { handleErrors } = useHandleErrors();
 
   useEffect(() => {
     getInternment({
@@ -73,13 +75,7 @@ const Evolution = () => {
         });
         enqueueSnackbar("Prescrição Cadastrada", { variant: "success" });
       } catch (e) {
-        if (e.graphQLErrors) {
-          e.graphQLErrors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: "error" });
-          });
-        } else {
-          enqueueSnackbar("Erro,tente novamente", { variant: "error" });
-        }
+        handleErrors(e);
       }
     },
     validationSchema: schema,
@@ -120,8 +116,8 @@ const Evolution = () => {
           },
         });
         enqueueSnackbar("Pendencia Cadastrada", { variant: "success" });
-      } catch {
-        enqueueSnackbar("Error: Tente novamente", { variant: "error" });
+      } catch (e) {
+        handleErrors(e);
       }
     },
   });
