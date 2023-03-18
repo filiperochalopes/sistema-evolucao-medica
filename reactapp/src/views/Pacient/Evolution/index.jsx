@@ -62,8 +62,8 @@ const Evolution = () => {
           if (rest.drugKind !== "oth") {
             return {
               ...rest,
-              endingDate: `${rest.endingDate}:00`,
-              initialDate: `${rest.initialDate}:00`,
+              endingDate: `${rest.endingDate}`,
+              initialDate: `${rest.initialDate}`,
             };
           }
           return rest;
@@ -213,10 +213,10 @@ const Evolution = () => {
           dosage: values.drug.useMode,
           route: values.drug.routeAdministration.value,
           initialDate: values.drug.initialDate
-            ? `${values.drug.initialDate}`
+            ? `${values.drug.initialDate}:00`
             : undefined,
           endingDate: values.drug.finalDate
-            ? `${values.drug.finalDate}`
+            ? `${values.drug.finalDate}:00`
             : undefined,
         },
       ]);
