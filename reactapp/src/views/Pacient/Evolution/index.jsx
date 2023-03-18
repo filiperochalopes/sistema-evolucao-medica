@@ -60,16 +60,18 @@ const Evolution = () => {
     onSubmit: async (values) => {
       try {
         const newValues = { ...values };
-        newValues.drugs = newValues.drugs.map(({ id, block, ...rest }) => {
-          if (rest.drugKind !== "oth") {
-            return {
-              ...rest,
-              endingDate: `${rest.endingDate}`,
-              initialDate: `${rest.initialDate}`,
-            };
+        newValues.drugs = newValues.drugs.map(
+          ({ id, block, initialDateFormat, endingDateFormat, ...rest }) => {
+            if (rest.drugKind !== "oth") {
+              return {
+                ...rest,
+                endingDate: `${rest.endingDate}`,
+                initialDate: `${rest.initialDate}`,
+              };
+            }
+            return rest;
           }
-          return rest;
-        });
+        );
         await createPrescription({
           variables: { ...newValues, internmentId: Number(params.id) },
         });
@@ -142,6 +144,12 @@ const Evolution = () => {
           initialDate: drug.initialDate ? `${drug.initialDate}` : undefined,
           endingDate: drug.initialDate ? `${drug.endingDate}` : undefined,
           block: true,
+          initialDateFormat: drug.initialDate
+            ? format(parseISO(`${drug.initialDate}`), "dd/MM/yyyy HH:mm:ss")
+            : undefined,
+          endingDateFormat: drug.endingDate
+            ? format(parseISO(`${drug.endingDate}`), "dd/MM/yyyy HH:mm:ss")
+            : undefined,
         })),
         nursingActivities: prescription.nursingActivities.map(
           (nursingActivity) => nursingActivity.name
@@ -208,6 +216,18 @@ const Evolution = () => {
           drugKind: values.drug.isAntibiotic,
           dosage: values.drug.useMode,
           route: values.drug.routeAdministration.value,
+          initialDateFormat: values.drug.initialDate
+            ? format(
+                parseISO(`${values.drug.initialDate}:00`),
+                "dd/MM/yyyy HH:mm:ss"
+              )
+            : undefined,
+          endingDateFormat: values.drug.finalDate
+            ? format(
+                parseISO(`${values.drug.finalDate}:00`),
+                "dd/MM/yyyy HH:mm:ss"
+              )
+            : undefined,
           initialDate: values.drug.initialDate
             ? `${values.drug.initialDate}:00`
             : undefined,
@@ -509,7 +529,15 @@ const Evolution = () => {
               <li key={drug.drugName}>
                 <ListOption>
                   <ContainerListOption>
-                    <p>{drug.drugName}</p>
+                    <p>
+                      {drug.drugName} - {drug.route} - {drug?.drugKind}
+                      {drug?.initialDateFormat
+                        ? ` - ${drug?.initialDateFormat}`
+                        : ""}
+                      {drug?.endingDateFormat
+                        ? ` - ${drug?.endingDateFormat}`
+                        : ""}
+                    </p>
                     <div>
                       <button
                         onClick={() => {
