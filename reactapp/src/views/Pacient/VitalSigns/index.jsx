@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import schema from "./schema";
 import CheckRole from "routes/CheckRole";
+import useHandleErrors from "hooks/useHandleErrors";
 
 const initialValues = {
   spO2: null,
@@ -28,6 +29,7 @@ const VitalSign = () => {
   const [createMeasure] = useMutation(CREATE_MEASURE);
   const [createFluidBalance] = useMutation(CREATE_FLUID_BALANCE);
   const { enqueueSnackbar } = useSnackbar();
+  const { handleErrors } = useHandleErrors();
   const params = useParams();
   const formik = useFormik({
     initialValues,
@@ -57,8 +59,8 @@ const VitalSign = () => {
           },
         });
         enqueueSnackbar("Prescrição Cadastrada", { variant: "success" });
-      } catch {
-        enqueueSnackbar("Error: Tente novamente", { variant: "error" });
+      } catch (e) {
+        handleErrors(e);
       }
     },
   });

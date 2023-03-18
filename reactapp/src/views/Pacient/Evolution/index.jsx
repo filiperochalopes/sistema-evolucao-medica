@@ -97,8 +97,8 @@ const Evolution = () => {
         });
 
         enqueueSnackbar("Evolução Cadastrada", { variant: "success" });
-      } catch {
-        enqueueSnackbar("Error: Tente novamente", { variant: "error" });
+      } catch (e) {
+        handleErrors(e);
       }
     },
   });
