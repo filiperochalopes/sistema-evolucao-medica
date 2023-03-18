@@ -28,6 +28,7 @@ import addMedicamentGroup from "helpers/addMedicamentGroup";
 import { format, parseISO } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 import CheckRole from "routes/CheckRole";
+import useHandleErrors from "hooks/useHandleErrors";
 
 const Evolution = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -39,6 +40,7 @@ const Evolution = () => {
   const [getInternment, { data }] = useLazyQuery(GET_INTERNMENT);
   const params = useParams();
   const theme = useTheme();
+  const { handleErrors } = useHandleErrors();
 
   useEffect(() => {
     getInternment({
@@ -58,13 +60,22 @@ const Evolution = () => {
     onSubmit: async (values) => {
       try {
         const newValues = { ...values };
-        newValues.drugs = newValues.drugs.map(({ id, block, ...rest }) => rest);
+        newValues.drugs = newValues.drugs.map(({ id, block, ...rest }) => {
+          if (rest.drugKind !== "oth") {
+            return {
+              ...rest,
+              endingDate: `${rest.endingDate}`,
+              initialDate: `${rest.initialDate}`,
+            };
+          }
+          return rest;
+        });
         await createPrescription({
           variables: { ...newValues, internmentId: Number(params.id) },
         });
         enqueueSnackbar("Prescrição Cadastrada", { variant: "success" });
-      } catch {
-        enqueueSnackbar("Error: Tente novamente", { variant: "error" });
+      } catch (e) {
+        handleErrors(e);
       }
     },
     validationSchema: schema,
@@ -86,8 +97,8 @@ const Evolution = () => {
         });
 
         enqueueSnackbar("Evolução Cadastrada", { variant: "success" });
-      } catch {
-        enqueueSnackbar("Error: Tente novamente", { variant: "error" });
+      } catch (e) {
+        handleErrors(e);
       }
     },
   });
@@ -105,8 +116,8 @@ const Evolution = () => {
           },
         });
         enqueueSnackbar("Pendencia Cadastrada", { variant: "success" });
-      } catch {
-        enqueueSnackbar("Error: Tente novamente", { variant: "error" });
+      } catch (e) {
+        handleErrors(e);
       }
     },
   });
@@ -198,10 +209,10 @@ const Evolution = () => {
           dosage: values.drug.useMode,
           route: values.drug.routeAdministration.value,
           initialDate: values.drug.initialDate
-            ? `${values.drug.initialDate}`
+            ? `${values.drug.initialDate}:00`
             : undefined,
           endingDate: values.drug.finalDate
-            ? `${values.drug.finalDate}`
+            ? `${values.drug.finalDate}:00`
             : undefined,
         },
       ]);

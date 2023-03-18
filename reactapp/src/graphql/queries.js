@@ -105,8 +105,8 @@ export const STATES = gql`
 `;
 
 export const GET_PATIENT = gql`
-  query patient($id: ID, $queryNameCnsCpf: String) {
-    patient(id: $id, queryNameCnsCpf: $queryNameCnsCpf) {
+  query patients($queryNameCnsCpf: String) {
+    patients(queryNameCnsCpf: $queryNameCnsCpf) {
       id
       name
       birthdate

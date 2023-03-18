@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useContextProvider } from "services/Context";
 
 function PageTemplate({ children, headerComponent }) {
-  const { logout } = useContextProvider();
+  const { logout, user } = useContextProvider();
   return (
     <Container>
       <Header defaultHeight={!headerComponent}>
@@ -15,13 +15,17 @@ function PageTemplate({ children, headerComponent }) {
           headerComponent
         ) : (
           <>
-            <button onClick={() => logout()}>
-              <BiLogOut color="#fff" size={32} />
-            </button>
-            <Link to="/">
-              <img src={logo} alt="logo" />
-            </Link>
-            <span />
+            {user && (
+              <>
+                <button onClick={() => logout()}>
+                  <BiLogOut color="#fff" size={32} />
+                </button>
+                <Link to="/">
+                  <img src={logo} alt="logo" />
+                </Link>
+                <span />
+              </>
+            )}
           </>
         )}
       </Header>

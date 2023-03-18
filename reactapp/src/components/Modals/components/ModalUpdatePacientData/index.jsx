@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import getCepApiAdapter from "services/getCepApiAdapter";
 import Select from "components/Select";
 import { UPDATE_PATIENT } from "graphql/mutations";
+import { useSnackbar } from "notistack";
 
 const GENERS = [
   { label: "Masculino", value: "male" },
@@ -22,6 +23,7 @@ const ModalUpdatePacientData = ({ id }) => {
   const [getPatientData, { data }] = useLazyQuery(GET_PATIENT);
   const [updatePatient] = useMutation(UPDATE_PATIENT);
   const { data: statesData } = useQuery(STATES);
+  const { enqueueSnackbar } = useSnackbar();
 
   const formik = useFormik({
     initialValues: {
@@ -43,25 +45,33 @@ const ModalUpdatePacientData = ({ id }) => {
         uf: "",
       },
     },
-    onSubmit: (values) => {
-      updatePatient({
-        variables: {
-          id: id,
-          patient: {
-            ...values,
-            sex: values.sex.value,
-            comorbidities: values.comorbidities.map(
-              (commorbiditie) => commorbiditie.id
-            ),
-            allergies: values.allergies.map((allergie) => allergie.id),
-            weightKg: parseFloat(values.weightKg),
-            address: {
-              ...values.address,
-              uf: values.address.uf.uf,
+    onSubmit: async (values) => {
+      try {
+        await updatePatient({
+          variables: {
+            id: id,
+            patient: {
+              ...values,
+              sex: values.sex.value,
+              comorbidities: values.comorbidities.map(
+                (commorbiditie) => commorbiditie.id
+              ),
+              allergies: values.allergies.map((allergie) => allergie.id),
+              weightKg: parseFloat(values.weightKg),
+              address: {
+                ...values.address,
+                uf: values.address.uf.uf,
+              },
             },
           },
-        },
-      });
+        });
+      } catch (e) {
+        if (e?.graphQLErrors) {
+          e?.graphQLErrors.forEach((erro) => {
+            enqueueSnackbar(erro.message, { variant: "error" });
+          });
+        }
+      }
     },
   });
   useEffect(() => {
@@ -73,19 +83,20 @@ const ModalUpdatePacientData = ({ id }) => {
   }, [id, getPatientData]);
 
   useEffect(() => {
-    if (!data) {
+    if (!data || !statesData) {
       return;
     }
+    const findUf = statesData.state.find((state) => data.patient.address.uf);
 
     formik.setValues({
       allergies: data.patient.allergies,
       address: {
-        zipcode: "",
-        street: "dd",
-        complement: "",
-        number: "32",
-        city: "",
-        uf: "",
+        zipcode: data.patient.address.zipCode,
+        street: data.patient.address.street,
+        complement: data.patient.address.complement,
+        number: data.patient.address.number,
+        city: data.patient.address.city,
+        uf: findUf,
       },
       birthdate: data.patient.birthdate,
       cns: data.patient.cns,
@@ -96,7 +107,7 @@ const ModalUpdatePacientData = ({ id }) => {
       sex: GENERS.find((gener) => gener.value === data.patient.sex),
       weightKg: data.patient.weightKg,
     });
-  }, [data]);
+  }, [data, statesData]);
 
   useEffect(() => {
     async function getCep() {
@@ -126,6 +137,7 @@ const ModalUpdatePacientData = ({ id }) => {
           placeholder="Nome Completo"
           onChange={formik.handleChange}
           name="name"
+          value={formik.values.name}
           error={
             formik.errors.name && formik.touched.name ? formik.errors.name : ""
           }
@@ -162,6 +174,7 @@ const ModalUpdatePacientData = ({ id }) => {
           placeholder="Endereço"
           onChange={formik.handleChange}
           name="address.complement"
+          value={formik.values.address.complement}
           error={
             formik.errors?.address?.complement &&
             formik.touched?.address.complement
@@ -173,6 +186,7 @@ const ModalUpdatePacientData = ({ id }) => {
           className="small"
           placeholder="Cidade"
           onChange={formik.handleChange}
+          value={formik.values.address.city}
           name="address.city"
           error={
             formik.errors?.address?.city && formik.touched?.address?.city
@@ -202,6 +216,7 @@ const ModalUpdatePacientData = ({ id }) => {
           placeholder="CEP"
           onChange={formik.handleChange}
           name="address.zipcode"
+          value={formik.values.address.zipcode}
           error={
             formik.errors?.address?.zipcode && formik.touched?.address?.zipcode
               ? formik.errors?.address?.zipcode
@@ -248,6 +263,7 @@ const ModalUpdatePacientData = ({ id }) => {
           className="normal"
           placeholder="CPF"
           onChange={formik.handleChange}
+          value={formik.values.cpf}
           name="cpf"
           error={
             formik.errors.cpf && formik.touched.cpf ? formik.errors.cpf : ""

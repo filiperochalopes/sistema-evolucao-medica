@@ -22,6 +22,12 @@ import schema from "./schema";
 import maskCpf from "utils/maskCpf";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import useHandleErrors from "hooks/useHandleErrors";
+
+const SEX_OPTIONS = [
+  { label: "Masculino", value: "male" },
+  { label: "Feminino", value: "fema" },
+];
 
 const Admit = () => {
   const [createInternment] = useMutation(CREATE_INTERNMENT);
@@ -32,6 +38,7 @@ const Admit = () => {
   const [getPatient] = useLazyQuery(GET_PATIENT);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const { handleErrors } = useHandleErrors();
   const formik = useFormik({
     initialValues: {
       addPacient: false,
@@ -50,9 +57,9 @@ const Admit = () => {
         weightKg: "",
         address: {
           zipCode: "",
-          street: "dd",
+          street: "",
           complement: "",
-          number: "32",
+          number: "",
           city: "",
           uf: null,
           neighborhood: "",
@@ -97,13 +104,7 @@ const Admit = () => {
         enqueueSnackbar("Pendencia Cadastrada", { variant: "success" });
         navigate("/");
       } catch (e) {
-        if (e.graphQLErrors) {
-          e.graphQLErrors.forEach((err) => {
-            enqueueSnackbar(err.message, { variant: "error" });
-          });
-        } else {
-          enqueueSnackbar("Erro,tente novamente", { variant: "error" });
-        }
+        handleErrors(e);
       }
     },
     validationSchema: schema,
@@ -112,14 +113,49 @@ const Admit = () => {
     initialValues: {
       patientName: "",
     },
-    onSubmit(values) {
-      getPatient({
-        variables: {
-          queryNameCnsCpf: values.patientName,
-        },
-      });
+    async onSubmit(values) {
+      try {
+        const response = await getPatient({
+          variables: {
+            queryNameCnsCpf: values.patientName,
+          },
+        });
+        console.log(response?.data?.patients[0]?.address.complement);
+        const findSex = SEX_OPTIONS.find(
+          (sex) => response.data?.patients[0]?.sex === sex.value
+        );
+        const findUf = statesData.state.find(
+          (state) => state.uf === response.data?.patients[0]?.address.uf
+        );
+        formik.setValues({
+          ...formik.values,
+          patient: {
+            name: response?.data?.patients[0]?.name,
+            sex: findSex,
+            birthdate: "",
+            cpf: response?.data?.patients[0]?.cpf,
+            cns: response?.data?.patients[0]?.cns,
+            rg: response?.data?.patients[0]?.rg,
+            comorbidities: response?.data?.patients[0]?.comorbidities,
+            allergies: response?.data?.patients[0]?.allergies,
+            weightKg: response?.data?.patients[0]?.weightKg,
+            address: {
+              zipCode: response?.data?.patients[0]?.address.zipCode,
+              street: response?.data?.patients[0]?.address.street,
+              complement: response?.data?.patients[0]?.address.complement,
+              number: response?.data?.patients[0]?.address.number,
+              city: response?.data?.patients[0]?.address.city,
+              uf: findUf,
+              neighborhood: response?.data?.patients[0]?.address.neighborhood,
+            },
+          },
+        });
+      } catch {
+        console.log("error");
+      }
     },
   });
+  console.log(formik.values);
 
   useEffect(() => {
     async function getCep() {
@@ -135,7 +171,10 @@ const Admit = () => {
           patient: {
             ...formik.values.patient,
             cpf: formik.values.patient.cpf.replace(/\D/gi, ""),
-            address: { ...response.data, uf: findUf },
+            address: Object.assign(formik.values.patient.address, {
+              ...response.data,
+              uf: findUf,
+            }),
           },
         });
         // eslint-disable-next-line no-empty
@@ -143,7 +182,7 @@ const Admit = () => {
     }
     getCep();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formik.values.patient.address.zipCode, statesData.state]);
+  }, [formik.values.patient.address.zipCode, statesData]);
 
   return (
     <Container>
@@ -203,10 +242,7 @@ const Admit = () => {
                 value={formik.values.patient.sex}
                 placeholder="Sexo"
                 className="small"
-                options={[
-                  { label: "Masculino", value: "male" },
-                  { label: "Feminino", value: "fema" },
-                ]}
+                options={SEX_OPTIONS}
                 error={
                   formik.errors.patient?.sex && formik.touched?.patient?.sex
                     ? formik.errors.patient?.sex

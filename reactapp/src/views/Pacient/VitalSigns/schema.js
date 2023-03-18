@@ -2,8 +2,8 @@ import { ERROR_LABEL } from "constants/errorText";
 import * as Yup from "yup";
 
 export default Yup.object().shape({
-  spO2: Yup.number().moreThan(0).required(ERROR_LABEL),
-  pain: Yup.number().moreThan(0).required(ERROR_LABEL),
+  spO2: Yup.number().required(ERROR_LABEL),
+  pain: Yup.number(),
   systolicBloodPressure: Yup.number().required(ERROR_LABEL),
   diastolicBloodPressure: Yup.number().required(ERROR_LABEL),
   cardiacFrequency: Yup.number().required(ERROR_LABEL),
