@@ -33,14 +33,15 @@ const ModalUpdatePacientData = ({ id }) => {
       cpf: "",
       cns: "",
       rg: "",
+      motherName: "",
       comorbidities: [],
       allergies: [],
       weightKg: "",
       address: {
-        zipcode: "",
-        street: "dd",
+        zipCode: "",
+        street: "",
         complement: "",
-        number: "32",
+        number: "",
         city: "",
         uf: "",
       },
@@ -86,26 +87,28 @@ const ModalUpdatePacientData = ({ id }) => {
     if (!data || !statesData) {
       return;
     }
-    const findUf = statesData.state.find((state) => data.patient.address.uf);
+    const findUf = statesData.state.find(
+      (state) => state.value === data.patients[0].address.uf
+    );
 
     formik.setValues({
-      allergies: data.patient.allergies,
+      allergies: data.patients[0].allergies,
       address: {
-        zipcode: data.patient.address.zipCode,
-        street: data.patient.address.street,
-        complement: data.patient.address.complement,
-        number: data.patient.address.number,
-        city: data.patient.address.city,
+        zipcode: data.patients[0].address.zipCode,
+        street: data.patients[0].address.street,
+        complement: data.patients[0].address.complement,
+        number: data.patients[0].address.number,
+        city: data.patients[0].address.city,
         uf: findUf,
       },
-      birthdate: data.patient.birthdate,
-      cns: data.patient.cns,
-      comorbidities: data.patient.comorbidities,
-      cpf: data.patient.cpf,
-      name: data.patient.name,
-      rg: data.patient.rg,
-      sex: GENERS.find((gener) => gener.value === data.patient.sex),
-      weightKg: data.patient.weightKg,
+      birthdate: data.patients[0].birthdate,
+      cns: data.patients[0].cns,
+      comorbidities: data.patients[0].comorbidities,
+      cpf: data.patients[0].cpf,
+      name: data.patients[0].name,
+      rg: data.patients[0].rg,
+      sex: GENERS.find((gener) => gener.value === data.patients[0].sex),
+      weightKg: data.patients[0].weightKg,
     });
   }, [data, statesData]);
 
@@ -128,6 +131,7 @@ const ModalUpdatePacientData = ({ id }) => {
     }
     getCep();
   }, [formik.values.address.zipcode]);
+  console.log("formik.values", formik.values);
 
   return (
     <Container onSubmit={formik.handleSubmit}>
@@ -155,6 +159,7 @@ const ModalUpdatePacientData = ({ id }) => {
               : ""
           }
         />
+
         <Select
           onChange={(e) => {
             formik.setFieldValue("sex", e);
@@ -165,6 +170,20 @@ const ModalUpdatePacientData = ({ id }) => {
           options={GENERS}
           error={
             formik.errors.sex && formik.touched.sex ? formik.errors.sex : ""
+          }
+        />
+      </div>
+      <div className="row">
+        <Input
+          className="small"
+          placeholder="Nome da Mãe"
+          onChange={formik.handleChange}
+          value={formik.values.motherName}
+          name="motherName"
+          error={
+            formik.errors.motherName && formik.touched.motherName
+              ? formik.errors.motherName
+              : ""
           }
         />
       </div>
@@ -216,10 +235,10 @@ const ModalUpdatePacientData = ({ id }) => {
           placeholder="CEP"
           onChange={formik.handleChange}
           name="address.zipcode"
-          value={formik.values.address.zipcode}
+          value={formik.values.address.zipCode}
           error={
-            formik.errors?.address?.zipcode && formik.touched?.address?.zipcode
-              ? formik.errors?.address?.zipcode
+            formik.errors?.address?.zipCode && formik.touched?.address?.zipCode
+              ? formik.errors?.address?.zipCode
               : ""
           }
         />

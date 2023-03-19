@@ -1,18 +1,25 @@
 import Container, { ContainerInput, Label } from "./styles";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import TextError from "components/TextError";
 
 function Input({ error, disabled, placeholder, value, ...props }) {
   const [select, setSelect] = useState(false);
+  const ref = useRef(null);
+  console.log(ref.current?.clientWidth);
   return (
     <ContainerInput disabled={disabled}>
       {placeholder && (
-        <Label disabled={disabled} select={select || value}>
+        <Label
+          width={ref?.current?.clientWidth}
+          disabled={disabled}
+          select={select || value}
+        >
           {placeholder}
         </Label>
       )}
       <Container
+        ref={ref}
         disabled={disabled}
         value={value}
         {...props}

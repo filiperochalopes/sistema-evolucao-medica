@@ -25,7 +25,6 @@ export const ContainerInput = styled.div`
 `;
 
 export const Label = styled.label`
-  width: calc(100% - 8px);
   background: ${({ theme }) => theme.colors.gray};
   color: ${({ theme }) => theme.colors.black};
   position: absolute;
@@ -35,6 +34,7 @@ export const Label = styled.label`
   left: 8px;
   pointer-events: none;
   user-select: none;
+  width: ${({ width }) => `calc(${width}px - 8px)`};
   ${({ select }) =>
     select &&
     css`
