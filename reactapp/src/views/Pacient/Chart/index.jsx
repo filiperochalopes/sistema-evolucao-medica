@@ -124,41 +124,66 @@ const Chart = () => {
     if (data.internment.measures.length > 0) {
       const measures = [...data.internment.measures];
       const fluidBalances = [...data.internment.fluidBalance];
-      const measure = measures.splice(
-        data.internment.measures.length - 1,
-        1
-      )[0];
+      const object = {
+        cardiacFrequency: "",
+        cardiacFrequencyCreatedAt: "",
+        fetalCardiacFrequency: "",
+        fetalCardiacFrequencyCreatedAt: "",
+        celciusAxillaryTemperature: "",
+        celciusAxillaryTemperatureCreatedAt: "",
+        createdAt: "",
+        diastolicBloodPressure: "",
+        diastolicBloodPressureCreatedAt: "",
+        glucose: "",
+        glucoseCreatedAt: "",
+        pain: "",
+        painCreatedAt: "",
+        respiratoryFrequency: "",
+        respiratoryFrequencyCreatedAt: "",
+        spO2: "",
+        spO2CreatedAt: "",
+        systolicBloodPressure: "",
+        systolicBloodPressureCreatedAt: "",
+        fluids: [],
+        totalFluids: "",
+      };
+      console.log(measures[0]);
+      // eslint-disable-next-line for-direction
+      for (let i = measures.length - 1; i > 0; i--) {
+        console.log("Oi");
+        const objectKeys = Object.keys(measures[i]);
+        objectKeys.forEach((key) => {
+          if (!object[key] && measures[i][key]) {
+            object[key] = measures[i][key];
+            object[`${key}CreatedAt`] = format(
+              parseISO(measures[i].createdAt),
+              "dd/MM/yyyy HH:mm:ss",
+              {
+                locale: ptBR,
+              }
+            );
+          }
+        });
+      }
+
       let total = 0;
       const fluids = [];
       const date = new Date();
-      fluidBalances.forEach((fluidBalance) => {
-        const response = intervalToDuration({
-          start: parseISO(measure.createdAt),
-          end: date,
-        });
-        if (response.days <= 1) {
-          total += fluidBalance.volumeMl;
-          fluids.push({
-            volumeMl: fluidBalance.volumeMl,
-            descriptionVolumeMl: fluidBalance.description.value,
-          });
-        }
-      });
+      // fluidBalances.forEach((fluidBalance) => {
+      //   const response = intervalToDuration({
+      //     start: parseISO(measure.createdAt),
+      //     end: date,
+      //   });
+      //   if (response.days <= 1) {
+      //     total += fluidBalance.volumeMl;
+      //     fluids.push({
+      //       volumeMl: fluidBalance.volumeMl,
+      //       descriptionVolumeMl: fluidBalance.description.value,
+      //     });
+      //   }
+      // });
 
-      array.sinals = {
-        cardiacFrequency: measure.cardiacFrequency,
-        fetalCardiacFrequency: measure.fetalCardiacFrequency,
-        celciusAxillaryTemperature: measure.celciusAxillaryTemperature,
-        createdAt: measure.createdAt,
-        diastolicBloodPressure: measure.diastolicBloodPressure,
-        glucose: measure.glucose,
-        pain: measure.pain,
-        respiratoryFrequency: measure.respiratoryFrequency,
-        spO2: measure.spO2,
-        systolicBloodPressure: measure.systolicBloodPressure,
-        fluids: fluids,
-        totalFluids: total,
-      };
+      array.sinals = object;
       const measuresWithDateFormat = templateFormatedData(
         measures,
         (measure, index) => {
@@ -239,11 +264,26 @@ const Chart = () => {
       </ol>
       <h2 className="secondary">Sinais Vitais</h2>
       <ul>
-        <li>FC {newestChart.sinals?.cardiacFrequency}bpm </li>
-        <li>FCF {newestChart.sinals?.fetalCardiacFrequency}bpm </li>
-        <li>HGT {newestChart.sinals?.glucose} mg/ml</li>
-        <li>FR {newestChart.sinals?.respiratoryFrequency} </li>
-        <li>TEMP AXILAR {newestChart.sinals?.celciusAxillaryTemperature} </li>
+        <li>
+          FC {newestChart.sinals?.cardiacFrequency}bpm{" "}
+          {newestChart.sinals?.cardiacFrequencyCreatedAt}
+        </li>
+        <li>
+          FCF {newestChart.sinals?.fetalCardiacFrequency}bpm{" "}
+          {newestChart.sinals?.fetalCardiacFrequencyCreatedAt}{" "}
+        </li>
+        <li>
+          HGT {newestChart.sinals?.glucose} mg/ml{" "}
+          {newestChart.sinals?.glucoseCreatedAt}
+        </li>
+        <li>
+          FR {newestChart.sinals?.respiratoryFrequency}{" "}
+          {newestChart.sinals?.respiratoryFrequencyCreatedAt}
+        </li>
+        <li>
+          TEMP AXILAR {newestChart.sinals?.celciusAxillaryTemperature}{" "}
+          {newestChart.sinals?.celciusAxillaryTemperatureCreatedAt}
+        </li>
         <li>
           BALANÇO HÍDRICO{" "}
           <strong>TOTAL {newestChart.sinals?.totalFluids}</strong> |
