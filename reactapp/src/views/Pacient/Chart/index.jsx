@@ -3,7 +3,7 @@ import Container from "./styles";
 import Button from "components/Button";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { GET_ALL_CHART } from "graphql/queries";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { format, intervalToDuration, parseISO } from "date-fns";
@@ -50,9 +50,23 @@ const Chart = () => {
       });
     });
     prescription.drugPrescriptions.forEach((drug) => {
+      let initialDate = "";
+      let finalDate = "";
+      if (drug.initialDate) {
+        initialDate = format(
+          parseISO(drug.initialDate),
+          "dd/MM/yyyy HH:mm:ss",
+          {
+            locale: ptBR,
+          }
+        );
+        finalDate = format(parseISO(drug.endingDate), "dd/MM/yyyy HH:mm:ss", {
+          locale: ptBR,
+        });
+      }
       array.push({
         id: drug.drug.name,
-        value: `${drug.drug.name} ${drug.route}`,
+        value: `${drug.drug.name} ${drug.route} ${drug.dosage} ${drug.drug.name} ${initialDate} ${finalDate}`,
       });
     });
 
@@ -199,7 +213,11 @@ const Chart = () => {
   return (
     <Container>
       <div className="header">
-        <h2>Evoluir Paciente (João Miguel dos Santos Polenta, 83 anos)</h2>
+        <h2>
+          <Link to={`/evoluir-paciente/${params.id}`}>Evoluir Paciente</Link> (
+          {data?.internment?.patient?.name},{data?.internment?.patient?.age}{" "}
+          anos)
+        </h2>
         <CheckRole roles={["doc"]}>
           <Button
             type="button"
