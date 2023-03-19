@@ -532,20 +532,24 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
           request = getPDFRelatorioAlta;
         }
         if (type === "printPdf_AihSus") {
-          newValues.extra.secondaryDiagnosis = {
-            code: newValues.extra.secondaryDiagnosis.code,
-            description: newValues.extra.secondaryDiagnosis.description,
-          };
+          if (newValues.extra.secondaryDiagnosis?.code) {
+            newValues.extra.secondaryDiagnosis = {
+              code: newValues.extra.secondaryDiagnosis.code,
+              description: newValues.extra.secondaryDiagnosis.description,
+            };
+          }
           request = getPDFAihSus;
         }
         if (type === "printPdf_BalancoHidrico") {
           request = getPDFBalancoHidrico;
         }
         if (type === "printPdf_Apac") {
-          newValues.extra.secondaryDiagnosis = {
-            code: newValues.extra.secondaryDiagnosis.code,
-            description: newValues.extra.secondaryDiagnosis.description,
-          };
+          if (newValues.extra.secondaryDiagnosis?.code) {
+            newValues.extra.secondaryDiagnosis = {
+              code: newValues.extra.secondaryDiagnosis.code,
+              description: newValues.extra.secondaryDiagnosis.description,
+            };
+          }
           newValues.extra.ssociatedCause = {
             code: newValues.extra.ssociatedCause.code,
             description: newValues.extra.ssociatedCause.description,

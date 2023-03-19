@@ -15,6 +15,8 @@ export default styled.form`
   }
   .select_container_back {
     opacity: 0;
+    user-select: none;
+    pointer-events: none;
   }
 `;
 
