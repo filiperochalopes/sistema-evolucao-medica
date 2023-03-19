@@ -11,6 +11,7 @@ export default styled.textarea`
   outline: none;
   font-size: 1rem;
   resize: none;
+  padding-top: 1rem;
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.black};

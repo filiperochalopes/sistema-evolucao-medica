@@ -268,6 +268,7 @@ const Evolution = () => {
     }
     return chainHandleSetRestingActivity(values);
   }
+  console.log(formik.values);
 
   return (
     <Container>
@@ -529,15 +530,19 @@ const Evolution = () => {
               <li key={drug.drugName}>
                 <ListOption>
                   <ContainerListOption>
-                    <p>
-                      {drug.drugName} - {drug.route} - {drug?.drugKind}
-                      {drug?.initialDateFormat
-                        ? ` - ${drug?.initialDateFormat}`
-                        : ""}
-                      {drug?.endingDateFormat
-                        ? ` - ${drug?.endingDateFormat}`
-                        : ""}
-                    </p>
+                    <div className="column">
+                      <p>
+                        {drug.drugName} - {drug.route} - {drug.dosage}
+                      </p>
+                      <p>
+                        {drug?.initialDateFormat
+                          ? `Data Inicial ${drug?.initialDateFormat}`
+                          : ""}
+                        {drug?.endingDateFormat
+                          ? `   Data Final ${drug?.endingDateFormat}`
+                          : ""}
+                      </p>
+                    </div>
                     <div>
                       <button
                         onClick={() => {
