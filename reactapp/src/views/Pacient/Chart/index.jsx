@@ -9,7 +9,7 @@ import { useState } from "react";
 import { format, intervalToDuration, parseISO } from "date-fns";
 import ptBR from "date-fns/esm/locale/pt-BR";
 import React from "react";
-import Strategies from "./Strategies";
+import Strategies, { PendingStrategy } from "./Strategies";
 import updatePacientData from "helpers/updatePacientData";
 import { useModalContext } from "services/ModalContext";
 import { GENERATE_PDF_BALANCO_HIDRICO } from "graphql/mutations";
@@ -22,7 +22,8 @@ const Chart = () => {
   const [newestChart, setNewestChart] = useState({
     prescriptions: [],
     sinals: {},
-    textEvolution: "",
+    textEvolution: [],
+    pending: {},
   });
   const [oldCharts, setOldCharts] = useState([]);
   const params = useParams();
@@ -99,7 +100,8 @@ const Chart = () => {
     const array = {
       prescriptions: [],
       sinals: {},
-      textEvolution: "",
+      textEvolution: [],
+      pending: {},
     };
     let oldChards = [];
 
@@ -199,20 +201,35 @@ const Chart = () => {
       oldChards = [...oldChards, ...measuresWithDateFormat];
     }
     if (data.internment.evolutions.length > 0) {
-      const evolutions = [...data.internment.evolutions];
-      const evolution = evolutions.splice(
-        data.internment.evolutions.length - 1,
-        1
-      )[0];
-      array.textEvolution = evolution.text;
+      const evolutionsText = [];
+      const othersEvolutions = [];
+      const date = new Date();
+      for (let i = data.internment.evolutions.length - 1; i >= 0; i--) {
+        const evolution = data.internment.evolutions[i];
+        const response = intervalToDuration({
+          start: parseISO(evolution.createdAt),
+          end: date,
+        });
+        if (response.days <= 2) {
+          evolutionsText.push(evolution);
+        } else {
+          othersEvolutions.push(evolution);
+        }
+      }
+      const evolutions = [...othersEvolutions];
+      array.textEvolution = evolutionsText;
       const evolutionsWithDateFormat = templateFormatedData(evolutions);
       oldChards = [...oldChards, ...evolutionsWithDateFormat];
     }
 
     if (data.internment.pendings.length > 0) {
-      const pendingsWithDateFormat = templateFormatedData(
-        data.internment.pendings
-      );
+      const pendings = [...data.internment.pendings];
+      const pending = pendings.splice(
+        data.internment.pendings.length - 1,
+        1
+      )[0];
+      array.pending = templateFormatedData([pending])[0];
+      const pendingsWithDateFormat = templateFormatedData(pendings);
       oldChards = [...oldChards, ...pendingsWithDateFormat];
     }
 
@@ -235,7 +252,7 @@ const Chart = () => {
       },
     });
   }, [getInternment, params]);
-
+  console.log(newestChart);
   return (
     <Container>
       <div className="header">
@@ -254,9 +271,11 @@ const Chart = () => {
         </CheckRole>
       </div>
       <h2>Admissão</h2>
-      <p>{newestChart.textEvolution}</p>
+      <p>{data?.internment?.hpi}</p>
       <h2>Últimas Atualizações</h2>
-      <p>{newestChart.textEvolution}</p>
+      {newestChart.textEvolution.map((evolution) => (
+        <p>{evolution?.text}</p>
+      ))}
       <h2 className="secondary">Prescrições</h2>
       <ol>
         {newestChart.prescriptions.map((prescription) => (
@@ -327,6 +346,10 @@ const Chart = () => {
           </button>
         </li>
       </ul>
+      <PendingStrategy
+        dateFormated={newestChart.pending?.dateFormated}
+        text={newestChart.pending?.text}
+      />
       <h2>Demais Evoluções</h2>
       {oldCharts.map((oldChart) => (
         <div>

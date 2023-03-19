@@ -238,6 +238,7 @@ export const GET_ALL_CHART = gql`
         age
         name
       }
+      hpi
       evolutions {
         text
         professional {
