@@ -3,13 +3,13 @@ import Container from "./styles";
 import Button from "components/Button";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { GET_ALL_CHART } from "graphql/queries";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { format, intervalToDuration, parseISO } from "date-fns";
 import ptBR from "date-fns/esm/locale/pt-BR";
 import React from "react";
-import Strategies from "./Strategies";
+import Strategies, { PendingStrategy } from "./Strategies";
 import updatePacientData from "helpers/updatePacientData";
 import { useModalContext } from "services/ModalContext";
 import { GENERATE_PDF_BALANCO_HIDRICO } from "graphql/mutations";
@@ -22,7 +22,8 @@ const Chart = () => {
   const [newestChart, setNewestChart] = useState({
     prescriptions: [],
     sinals: {},
-    textEvolution: "",
+    textEvolution: [],
+    pending: {},
   });
   const [oldCharts, setOldCharts] = useState([]);
   const params = useParams();
@@ -50,9 +51,23 @@ const Chart = () => {
       });
     });
     prescription.drugPrescriptions.forEach((drug) => {
+      let initialDate = "";
+      let finalDate = "";
+      if (drug.initialDate) {
+        initialDate = format(
+          parseISO(drug.initialDate),
+          "dd/MM/yyyy HH:mm:ss",
+          {
+            locale: ptBR,
+          }
+        );
+        finalDate = format(parseISO(drug.endingDate), "dd/MM/yyyy HH:mm:ss", {
+          locale: ptBR,
+        });
+      }
       array.push({
         id: drug.drug.name,
-        value: `${drug.drug.name} ${drug.route}`,
+        value: `${drug.drug.name} ${drug.route} ${drug.dosage} ${drug.drug.name} ${initialDate} ${finalDate}`,
       });
     });
 
@@ -85,7 +100,8 @@ const Chart = () => {
     const array = {
       prescriptions: [],
       sinals: {},
-      textEvolution: "",
+      textEvolution: [],
+      pending: {},
     };
     let oldChards = [];
 
@@ -110,16 +126,54 @@ const Chart = () => {
     if (data.internment.measures.length > 0) {
       const measures = [...data.internment.measures];
       const fluidBalances = [...data.internment.fluidBalance];
-      const measure = measures.splice(
-        data.internment.measures.length - 1,
-        1
-      )[0];
+      const object = {
+        cardiacFrequency: "",
+        cardiacFrequencyCreatedAt: "",
+        fetalCardiacFrequency: "",
+        fetalCardiacFrequencyCreatedAt: "",
+        celciusAxillaryTemperature: "",
+        celciusAxillaryTemperatureCreatedAt: "",
+        createdAt: "",
+        diastolicBloodPressure: "",
+        diastolicBloodPressureCreatedAt: "",
+        glucose: "",
+        glucoseCreatedAt: "",
+        pain: "",
+        painCreatedAt: "",
+        respiratoryFrequency: "",
+        respiratoryFrequencyCreatedAt: "",
+        spO2: "",
+        spO2CreatedAt: "",
+        systolicBloodPressure: "",
+        systolicBloodPressureCreatedAt: "",
+        fluids: [],
+        totalFluids: "",
+      };
+      console.log(measures[0]);
+      // eslint-disable-next-line for-direction
+      for (let i = measures.length - 1; i > 0; i--) {
+        console.log("Oi");
+        const objectKeys = Object.keys(measures[i]);
+        objectKeys.forEach((key) => {
+          if (!object[key] && measures[i][key]) {
+            object[key] = measures[i][key];
+            object[`${key}CreatedAt`] = format(
+              parseISO(measures[i].createdAt),
+              "dd/MM/yyyy HH:mm:ss",
+              {
+                locale: ptBR,
+              }
+            );
+          }
+        });
+      }
+
       let total = 0;
       const fluids = [];
       const date = new Date();
       fluidBalances.forEach((fluidBalance) => {
         const response = intervalToDuration({
-          start: parseISO(measure.createdAt),
+          start: parseISO(object.createdAt),
           end: date,
         });
         if (response.days <= 1) {
@@ -130,21 +184,9 @@ const Chart = () => {
           });
         }
       });
-
-      array.sinals = {
-        cardiacFrequency: measure.cardiacFrequency,
-        fetalCardiacFrequency: measure.fetalCardiacFrequency,
-        celciusAxillaryTemperature: measure.celciusAxillaryTemperature,
-        createdAt: measure.createdAt,
-        diastolicBloodPressure: measure.diastolicBloodPressure,
-        glucose: measure.glucose,
-        pain: measure.pain,
-        respiratoryFrequency: measure.respiratoryFrequency,
-        spO2: measure.spO2,
-        systolicBloodPressure: measure.systolicBloodPressure,
-        fluids: fluids,
-        totalFluids: total,
-      };
+      object.fluids = fluids;
+      object.totalFluids = total;
+      array.sinals = object;
       const measuresWithDateFormat = templateFormatedData(
         measures,
         (measure, index) => {
@@ -159,20 +201,35 @@ const Chart = () => {
       oldChards = [...oldChards, ...measuresWithDateFormat];
     }
     if (data.internment.evolutions.length > 0) {
-      const evolutions = [...data.internment.evolutions];
-      const evolution = evolutions.splice(
-        data.internment.evolutions.length - 1,
-        1
-      )[0];
-      array.textEvolution = evolution.text;
+      const evolutionsText = [];
+      const othersEvolutions = [];
+      const date = new Date();
+      for (let i = data.internment.evolutions.length - 1; i >= 0; i--) {
+        const evolution = data.internment.evolutions[i];
+        const response = intervalToDuration({
+          start: parseISO(evolution.createdAt),
+          end: date,
+        });
+        if (response.days <= 2) {
+          evolutionsText.push(evolution);
+        } else {
+          othersEvolutions.push(evolution);
+        }
+      }
+      const evolutions = [...othersEvolutions];
+      array.textEvolution = evolutionsText;
       const evolutionsWithDateFormat = templateFormatedData(evolutions);
       oldChards = [...oldChards, ...evolutionsWithDateFormat];
     }
 
     if (data.internment.pendings.length > 0) {
-      const pendingsWithDateFormat = templateFormatedData(
-        data.internment.pendings
-      );
+      const pendings = [...data.internment.pendings];
+      const pending = pendings.splice(
+        data.internment.pendings.length - 1,
+        1
+      )[0];
+      array.pending = templateFormatedData([pending])[0];
+      const pendingsWithDateFormat = templateFormatedData(pendings);
       oldChards = [...oldChards, ...pendingsWithDateFormat];
     }
 
@@ -195,11 +252,15 @@ const Chart = () => {
       },
     });
   }, [getInternment, params]);
-
+  console.log(newestChart);
   return (
     <Container>
       <div className="header">
-        <h2>Evoluir Paciente (João Miguel dos Santos Polenta, 83 anos)</h2>
+        <h2>
+          <Link to={`/evoluir-paciente/${params.id}`}>Evoluir Paciente</Link> (
+          {data?.internment?.patient?.name},{data?.internment?.patient?.age}{" "}
+          anos)
+        </h2>
         <CheckRole roles={["doc"]}>
           <Button
             type="button"
@@ -210,9 +271,11 @@ const Chart = () => {
         </CheckRole>
       </div>
       <h2>Admissão</h2>
-      <p>{newestChart.textEvolution}</p>
+      <p>{data?.internment?.hpi}</p>
       <h2>Últimas Atualizações</h2>
-      <p>{newestChart.textEvolution}</p>
+      {newestChart.textEvolution.map((evolution) => (
+        <p>{evolution?.text}</p>
+      ))}
       <h2 className="secondary">Prescrições</h2>
       <ol>
         {newestChart.prescriptions.map((prescription) => (
@@ -221,11 +284,26 @@ const Chart = () => {
       </ol>
       <h2 className="secondary">Sinais Vitais</h2>
       <ul>
-        <li>FC {newestChart.sinals?.cardiacFrequency}bpm </li>
-        <li>FCF {newestChart.sinals?.fetalCardiacFrequency}bpm </li>
-        <li>HGT {newestChart.sinals?.glucose} mg/ml</li>
-        <li>FR {newestChart.sinals?.respiratoryFrequency} </li>
-        <li>TEMP AXILAR {newestChart.sinals?.celciusAxillaryTemperature} </li>
+        <li>
+          FC {newestChart.sinals?.cardiacFrequency}bpm{" "}
+          {newestChart.sinals?.cardiacFrequencyCreatedAt}
+        </li>
+        <li>
+          FCF {newestChart.sinals?.fetalCardiacFrequency}bpm{" "}
+          {newestChart.sinals?.fetalCardiacFrequencyCreatedAt}{" "}
+        </li>
+        <li>
+          HGT {newestChart.sinals?.glucose} mg/ml{" "}
+          {newestChart.sinals?.glucoseCreatedAt}
+        </li>
+        <li>
+          FR {newestChart.sinals?.respiratoryFrequency}{" "}
+          {newestChart.sinals?.respiratoryFrequencyCreatedAt}
+        </li>
+        <li>
+          TEMP AXILAR {newestChart.sinals?.celciusAxillaryTemperature}{" "}
+          {newestChart.sinals?.celciusAxillaryTemperatureCreatedAt}
+        </li>
         <li>
           BALANÇO HÍDRICO{" "}
           <strong>TOTAL {newestChart.sinals?.totalFluids}</strong> |
@@ -268,6 +346,10 @@ const Chart = () => {
           </button>
         </li>
       </ul>
+      <PendingStrategy
+        dateFormated={newestChart.pending?.dateFormated}
+        text={newestChart.pending?.text}
+      />
       <h2>Demais Evoluções</h2>
       {oldCharts.map((oldChart) => (
         <div>

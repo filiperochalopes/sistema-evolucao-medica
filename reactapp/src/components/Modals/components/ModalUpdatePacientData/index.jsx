@@ -10,11 +10,21 @@ import { useEffect } from "react";
 import getCepApiAdapter from "services/getCepApiAdapter";
 import Select from "components/Select";
 import { UPDATE_PATIENT } from "graphql/mutations";
-import { useSnackbar } from "notistack";
+import useHandleErrors from "hooks/useHandleErrors";
+import maskPhone from "utils/maskPhone";
+import maskCpf from "utils/maskCpf";
 
+import { useSnackbar } from "notistack";
 const GENERS = [
   { label: "Masculino", value: "male" },
   { label: "Feminino", value: "fema" },
+];
+
+const ETHNICITYS = [
+  { label: "Negra", value: "negra" },
+  { label: "Parda", value: "parda" },
+  { label: "Amarela", value: "amarela" },
+  { label: "Branca", value: "branca" },
 ];
 
 const ModalUpdatePacientData = ({ id }) => {
@@ -23,8 +33,8 @@ const ModalUpdatePacientData = ({ id }) => {
   const [getPatientData, { data }] = useLazyQuery(GET_PATIENT);
   const [updatePatient] = useMutation(UPDATE_PATIENT);
   const { data: statesData } = useQuery(STATES);
+  const { handleErrors } = useHandleErrors();
   const { enqueueSnackbar } = useSnackbar();
-
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -33,17 +43,21 @@ const ModalUpdatePacientData = ({ id }) => {
       cpf: "",
       cns: "",
       rg: "",
+      motherName: "",
+      phone: "",
       comorbidities: [],
       allergies: [],
       weightKg: "",
       address: {
-        zipcode: "",
-        street: "dd",
+        zipCode: "",
+        street: "",
         complement: "",
-        number: "32",
+        number: "",
         city: "",
         uf: "",
       },
+      ethnicity: "",
+      nationality: "",
     },
     onSubmit: async (values) => {
       try {
@@ -62,15 +76,15 @@ const ModalUpdatePacientData = ({ id }) => {
                 ...values.address,
                 uf: values.address.uf.uf,
               },
+              cpf: values.cpf.replace(/\D/g, ""),
+              ethnicity: values.ethnicity?.value,
+              phone: values.phone.replace(/\D/g, ""),
             },
           },
         });
+        enqueueSnackbar("Paciente Atualizado", { variant: "success" });
       } catch (e) {
-        if (e?.graphQLErrors) {
-          e?.graphQLErrors.forEach((erro) => {
-            enqueueSnackbar(erro.message, { variant: "error" });
-          });
-        }
+        handleErrors(e);
       }
     },
   });
@@ -86,26 +100,34 @@ const ModalUpdatePacientData = ({ id }) => {
     if (!data || !statesData) {
       return;
     }
-    const findUf = statesData.state.find((state) => data.patient.address.uf);
+    const findUf = statesData.state.find(
+      (state) => state.value === data.patients[0].address.uf
+    );
+    const findEthnicity = ETHNICITYS.find(
+      (ethnicity) => ethnicity.value === data?.patients[0].ethnicity
+    );
 
     formik.setValues({
-      allergies: data.patient.allergies,
+      allergies: data.patients[0].allergies,
       address: {
-        zipcode: data.patient.address.zipCode,
-        street: data.patient.address.street,
-        complement: data.patient.address.complement,
-        number: data.patient.address.number,
-        city: data.patient.address.city,
+        zipcode: data.patients[0].address.zipCode,
+        street: data.patients[0].address.street,
+        complement: data.patients[0].address.complement,
+        number: data.patients[0].address.number,
+        city: data.patients[0].address.city,
         uf: findUf,
       },
-      birthdate: data.patient.birthdate,
-      cns: data.patient.cns,
-      comorbidities: data.patient.comorbidities,
-      cpf: data.patient.cpf,
-      name: data.patient.name,
-      rg: data.patient.rg,
-      sex: GENERS.find((gener) => gener.value === data.patient.sex),
-      weightKg: data.patient.weightKg,
+      birthdate: data.patients[0].birthdate,
+      cns: data.patients[0].cns,
+      comorbidities: data.patients[0].comorbidities,
+      cpf: maskCpf(data.patients[0].cpf),
+      name: data.patients[0].name,
+      motherName: data.patients[0].motherName,
+      rg: data.patients[0].rg,
+      phone: maskPhone(data.patients[0].phone),
+      sex: GENERS.find((gener) => gener.value === data.patients[0].sex),
+      weightKg: data.patients[0].weightKg,
+      ethnicity: findEthnicity,
     });
   }, [data, statesData]);
 
@@ -128,6 +150,7 @@ const ModalUpdatePacientData = ({ id }) => {
     }
     getCep();
   }, [formik.values.address.zipcode]);
+  console.log("formik.values", formik.values);
 
   return (
     <Container onSubmit={formik.handleSubmit}>
@@ -155,6 +178,7 @@ const ModalUpdatePacientData = ({ id }) => {
               : ""
           }
         />
+
         <Select
           onChange={(e) => {
             formik.setFieldValue("sex", e);
@@ -165,6 +189,35 @@ const ModalUpdatePacientData = ({ id }) => {
           options={GENERS}
           error={
             formik.errors.sex && formik.touched.sex ? formik.errors.sex : ""
+          }
+        />
+      </div>
+      <div className="row">
+        <Input
+          className="small"
+          placeholder="Nome da Mãe"
+          onChange={formik.handleChange}
+          value={formik.values.motherName}
+          name="motherName"
+          error={
+            formik.errors.motherName && formik.touched.motherName
+              ? formik.errors.motherName
+              : ""
+          }
+        />
+        <Input
+          className="small"
+          placeholder="Telefone"
+          onChange={(e) => {
+            const phone = maskPhone(e.target.value);
+            formik.setFieldValue("phone", phone);
+          }}
+          value={formik.values.phone}
+          name="phone"
+          error={
+            formik.errors.phone && formik.touched.phone
+              ? formik.errors.phone
+              : ""
           }
         />
       </div>
@@ -216,13 +269,41 @@ const ModalUpdatePacientData = ({ id }) => {
           placeholder="CEP"
           onChange={formik.handleChange}
           name="address.zipcode"
-          value={formik.values.address.zipcode}
+          value={formik.values.address.zipCode}
           error={
-            formik.errors?.address?.zipcode && formik.touched?.address?.zipcode
-              ? formik.errors?.address?.zipcode
+            formik.errors?.address?.zipCode && formik.touched?.address?.zipCode
+              ? formik.errors?.address?.zipCode
               : ""
           }
         />
+      </div>
+      <div className="row">
+        <Input
+          onChange={formik.handleChange}
+          name="nationality"
+          value={formik.values.nationality}
+          placeholder="Nacionalidade"
+          error={
+            formik.errors?.nationality && formik.touched?.nationality
+              ? formik.errors?.nationality
+              : ""
+          }
+        />
+        <div className="small">
+          <Select
+            onChange={(e) => {
+              formik.setFieldValue("ethnicity", e);
+            }}
+            value={formik.values.ethnicity}
+            placeholder="Etnia"
+            options={ETHNICITYS}
+            error={
+              formik.errors.ethnicity && formik.touched.ethnicity
+                ? formik.errors.ethnicity
+                : ""
+            }
+          />
+        </div>
       </div>
       <div className="row">
         <Input
@@ -232,9 +313,8 @@ const ModalUpdatePacientData = ({ id }) => {
           value={formik.values.weightKg}
           placeholder="Peso"
           error={
-            formik.errors?.address?.weightKg &&
-            formik.touched?.address?.weightKg
-              ? formik.errors?.address?.weightKg
+            formik.errors?.weightKg && formik.touched?.weightKg
+              ? formik.errors?.weightKg
               : ""
           }
         />
@@ -262,7 +342,9 @@ const ModalUpdatePacientData = ({ id }) => {
         <Input
           className="normal"
           placeholder="CPF"
-          onChange={formik.handleChange}
+          onChange={(e) => {
+            formik.setFieldValue("cpf", maskCpf(e.target.value));
+          }}
           value={formik.values.cpf}
           name="cpf"
           error={

@@ -10,7 +10,7 @@ import { SnackbarProvider } from "notistack";
 
 function App() {
   return (
-    <SnackbarProvider maxSnack={3}>
+    <SnackbarProvider autoHideDuration={3000} maxSnack={3}>
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
           <GlobalStyles />

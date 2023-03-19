@@ -12,7 +12,6 @@ import Button from "components/Button";
 import Select from "components/Select";
 import Input from "components/Input";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
 import {
   GENERATE_PDF_AIH_SUS,
   GENERATE_PDF_APAC,
@@ -27,7 +26,6 @@ import { cloneDeep } from "lodash";
 import Interval from "./components/Interval";
 import { CID10, GET_HIGH_COMPLEXITY_PROCEDURES } from "graphql/queries";
 import { useState } from "react";
-import { useSnackbar } from "notistack";
 import b64toBlob from "utils/b64toBlob";
 import useHandleErrors from "hooks/useHandleErrors";
 /* Strategy pattern */
@@ -133,7 +131,7 @@ const strategies = {
             getOptionValue={(option) => option.code}
             options={cid10Data?.cid10 || []}
             value={formik.values.extra.secondaryDiagnosis}
-            placeholder="CID - SUSPEITA INICIAL teste"
+            placeholder="CID - SUSPEITA SECUNDÁRIA"
           />
         </div>
         <div className="select_container_back">
@@ -532,20 +530,24 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
           request = getPDFRelatorioAlta;
         }
         if (type === "printPdf_AihSus") {
-          newValues.extra.secondaryDiagnosis = {
-            code: newValues.extra.secondaryDiagnosis.code,
-            description: newValues.extra.secondaryDiagnosis.description,
-          };
+          if (newValues.extra.secondaryDiagnosis?.code) {
+            newValues.extra.secondaryDiagnosis = {
+              code: newValues.extra.secondaryDiagnosis.code,
+              description: newValues.extra.secondaryDiagnosis.description,
+            };
+          }
           request = getPDFAihSus;
         }
         if (type === "printPdf_BalancoHidrico") {
           request = getPDFBalancoHidrico;
         }
         if (type === "printPdf_Apac") {
-          newValues.extra.secondaryDiagnosis = {
-            code: newValues.extra.secondaryDiagnosis.code,
-            description: newValues.extra.secondaryDiagnosis.description,
-          };
+          if (newValues.extra.secondaryDiagnosis?.code) {
+            newValues.extra.secondaryDiagnosis = {
+              code: newValues.extra.secondaryDiagnosis.code,
+              description: newValues.extra.secondaryDiagnosis.description,
+            };
+          }
           newValues.extra.ssociatedCause = {
             code: newValues.extra.ssociatedCause.code,
             description: newValues.extra.ssociatedCause.description,

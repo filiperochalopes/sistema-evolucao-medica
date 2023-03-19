@@ -114,6 +114,7 @@ export const GET_PATIENT = gql`
       age
       cns
       rg
+      phone
       cpf
       weightKg
       comorbidities {
@@ -234,6 +235,11 @@ export const DRUG_PRESETS = gql`
 export const GET_ALL_CHART = gql`
   query internment($internment: ID!) {
     internment(id: $internment) {
+      patient {
+        age
+        name
+      }
+      hpi
       evolutions {
         text
         professional {

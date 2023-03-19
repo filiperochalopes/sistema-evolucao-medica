@@ -129,6 +129,11 @@ export const ContainerListOption = styled.div`
   justify-content: space-between;
   display: flex;
 
+  .column {
+    flex-direction: column;
+    row-gap: 0.5rem;
+  }
+
   button {
     background: none;
     border: none;

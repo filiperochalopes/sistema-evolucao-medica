@@ -8,6 +8,13 @@ export default styled.div`
     font-size: 1.5rem;
     font-weight: 400;
     margin-bottom: 1.5rem;
+    a {
+      color: #000;
+
+      :hover {
+        text-decoration: underline;
+      }
+    }
 
     &.secondary {
       color: ${({ theme }) => theme.colors.gray400};

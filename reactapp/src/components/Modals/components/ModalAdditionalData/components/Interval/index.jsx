@@ -6,22 +6,48 @@ const { ButtonContainer } = require("../../styles");
 
 const Interval = ({ formik }) => {
   useEffect(() => {
-    const initialDate = new Date();
-    initialDate.setDate(initialDate.getDate() - 1);
-    initialDate.setHours(7);
+    const currentDate = new Date();
 
-    const finalDate = new Date();
-    const finalDateFormat = `${finalDate.toISOString().split("T")[0]}T07:00`;
-    const initalDateFormat = `${initialDate.toISOString().split("T")[0]}T07:00`;
+    if (currentDate.getHours() > 7 && currentDate.getHours() < 24) {
+      const initialDate = new Date();
+      const finalDate = new Date();
+      finalDate.setDate(initialDate.getDate() + 1);
 
-    formik.setValues({
-      extra: {
-        interval: {
-          startDatetimeStamp: initalDateFormat,
-          endingDatetimeStamp: finalDateFormat,
+      initialDate.setHours(7);
+      finalDate.setHours(7);
+      const finalDateFormat = `${finalDate.toISOString().split("T")[0]}T07:00`;
+      const initalDateFormat = `${
+        initialDate.toISOString().split("T")[0]
+      }T07:00`;
+      formik.setValues({
+        extra: {
+          interval: {
+            startDatetimeStamp: initalDateFormat,
+            endingDatetimeStamp: finalDateFormat,
+          },
         },
-      },
-    });
+      });
+    } else {
+      const initialDate = new Date();
+      const finalDate = new Date();
+
+      initialDate.setDate(initialDate.getDate() - 1);
+
+      initialDate.setHours(7);
+      finalDate.setHours(7);
+      const finalDateFormat = `${finalDate.toISOString().split("T")[0]}T07:00`;
+      const initalDateFormat = `${
+        initialDate.toISOString().split("T")[0]
+      }T07:00`;
+      formik.setValues({
+        extra: {
+          interval: {
+            startDatetimeStamp: initalDateFormat,
+            endingDatetimeStamp: finalDateFormat,
+          },
+        },
+      });
+    }
   }, []);
 
   return (

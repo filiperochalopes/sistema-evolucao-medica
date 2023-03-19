@@ -1,4 +1,4 @@
-const PendingStrategy = (value) => (
+export const PendingStrategy = (value) => (
   <>
     <h2 className="secondary">Pendências {value.dateFormated}</h2>
     <p>{value.text}</p>
