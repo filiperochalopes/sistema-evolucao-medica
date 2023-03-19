@@ -94,12 +94,13 @@ def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict
 @mutation.field('printPdf_RelatorioAlta')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_relatorio_alta(_, info, internment_id: int, current_user: dict, extra: dict = None):
+def print_pdf_relatorio_alta(_, info, internment_id: int, current_user: dict, extra: dict = {}):
     internment = db.session.query(Internment).get(internment_id)
 
     # TODO Gerar resumo da história por meio de NLP https://spacedata.com.br/resumo-de-texto-em-python/
 
     evolution = ''
+    
     # Captura a história de admissão
     history_of_present_illness = internment.hpi
     # Captura a última evolução médica para capturar quem fez a alta
@@ -134,8 +135,8 @@ def print_pdf_relatorio_alta(_, info, internment_id: int, current_user: dict, ex
                 'uf': internment.patient.address.uf,
                 'city': internment.patient.address.city
             }
-        }, document_datetime=extra['datetime_stamp'] if 'datetime_stamp' in extra else datetime.strftime(last_medical_evolution.created_at, '%Y-%m-%dT%H:%M:%S'), evolution=evolution, 
-        doctor_name=last_medical_evolution.professional.name, doctor_cns=last_medical_evolution.professional.cns, doctor_crm=last_medical_evolution.professional.professional_document_number, orientations=extra['orientations'] if 'orientations' in extra else None)
+        }, document_datetime=extra['datetime_stamp'] if ('datetime_stamp' in extra and extra['datetime_stamp'] is not None) else datetime.strftime(last_medical_evolution.created_at, '%Y-%m-%dT%H:%M:%S'), evolution=evolution, 
+        doctor_name=last_medical_evolution.professional.name, doctor_cns=last_medical_evolution.professional.cns, doctor_crm=last_medical_evolution.professional.professional_document_number, orientations=extra['orientations'] if ('orientations' in extra and extra['orientations'] is not None) else None)
         
 @mutation.field('printPdf_FolhaPrescricao')
 @convert_kwargs_to_snake_case
