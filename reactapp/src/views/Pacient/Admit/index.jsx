@@ -31,8 +31,12 @@ const SEX_OPTIONS = [
 
 const Admit = () => {
   const [createInternment] = useMutation(CREATE_INTERNMENT);
-  const { data: allergiesData } = useQuery(ALLERGIES);
-  const { data: comorbiditiesData } = useQuery(COMORBIDITIES);
+  const { data: allergiesData } = useQuery(ALLERGIES, {
+    fetchPolicy: "no-cache",
+  });
+  const { data: comorbiditiesData } = useQuery(COMORBIDITIES, {
+    fetchPolicy: "no-cache",
+  });
   const { data: statesData } = useQuery(STATES);
   const { data: cid10Data } = useQuery(CID10);
   const [getPatient] = useLazyQuery(GET_PATIENT);

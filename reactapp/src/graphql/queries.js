@@ -117,6 +117,7 @@ export const GET_PATIENT = gql`
       phone
       cpf
       weightKg
+      motherName
       comorbidities {
         id
         value

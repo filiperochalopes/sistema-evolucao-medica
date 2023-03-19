@@ -13,6 +13,17 @@ export default styled.form`
     margin-top: 0.5rem;
   }
 
+  .select_container {
+    position: absolute;
+    width: auto;
+    width: calc(100% - 4rem);
+  }
+  .select_container_back {
+    opacity: 0;
+    user-select: none;
+    pointer-events: none;
+  }
+
   .row {
     display: flex;
     flex-wrap: wrap;

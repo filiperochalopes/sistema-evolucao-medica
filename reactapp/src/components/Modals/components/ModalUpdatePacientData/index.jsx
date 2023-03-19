@@ -20,16 +20,13 @@ const GENERS = [
   { label: "Feminino", value: "fema" },
 ];
 
-const ETHNICITYS = [
-  { label: "Negra", value: "negra" },
-  { label: "Parda", value: "parda" },
-  { label: "Amarela", value: "amarela" },
-  { label: "Branca", value: "branca" },
-];
-
 const ModalUpdatePacientData = ({ id }) => {
-  const { data: allergiesData } = useQuery(ALLERGIES);
-  const { data: comorbiditiesData } = useQuery(COMORBIDITIES);
+  const { data: allergiesData } = useQuery(ALLERGIES, {
+    fetchPolicy: "no-cache",
+  });
+  const { data: comorbiditiesData } = useQuery(COMORBIDITIES, {
+    fetchPolicy: "no-cache",
+  });
   const [getPatientData, { data }] = useLazyQuery(GET_PATIENT);
   const [updatePatient] = useMutation(UPDATE_PATIENT);
   const { data: statesData } = useQuery(STATES);
@@ -103,10 +100,6 @@ const ModalUpdatePacientData = ({ id }) => {
     const findUf = statesData.state.find(
       (state) => state.value === data.patients[0].address.uf
     );
-    const findEthnicity = ETHNICITYS.find(
-      (ethnicity) => ethnicity.value === data?.patients[0].ethnicity
-    );
-
     formik.setValues({
       allergies: data.patients[0].allergies,
       address: {
@@ -127,7 +120,6 @@ const ModalUpdatePacientData = ({ id }) => {
       phone: maskPhone(data.patients[0].phone),
       sex: GENERS.find((gener) => gener.value === data.patients[0].sex),
       weightKg: data.patients[0].weightKg,
-      ethnicity: findEthnicity,
     });
   }, [data, statesData]);
 
@@ -150,10 +142,41 @@ const ModalUpdatePacientData = ({ id }) => {
     }
     getCep();
   }, [formik.values.address.zipcode]);
-  console.log("formik.values", formik.values);
 
   return (
     <Container onSubmit={formik.handleSubmit}>
+      <Select
+        onChange={(e) => {
+          formik.setFieldValue("allergies", e);
+        }}
+        getOptionLabel={(option) => option.value}
+        getOptionValue={(option) => option.id}
+        value={formik.values.allergies}
+        placeholder="ALERGIAS"
+        options={allergiesData?.allergies || []}
+        isMulti
+        error={
+          formik.errors.allergies && formik.touched.allergies
+            ? formik.errors.allergies
+            : ""
+        }
+      />
+      <Select
+        onChange={(e) => {
+          formik.setFieldValue("comorbidities", e);
+        }}
+        value={formik.values.comorbidities}
+        placeholder="COMORBIDADES"
+        getOptionLabel={(option) => option.value}
+        getOptionValue={(option) => option.id}
+        options={comorbiditiesData?.comorbidities || []}
+        isMulti
+        error={
+          formik.errors.comorbidities && formik.touched.comorbidities
+            ? formik.errors.comorbidities
+            : ""
+        }
+      />
       <div className="row">
         <Input
           className="larger"
@@ -280,34 +303,6 @@ const ModalUpdatePacientData = ({ id }) => {
       <div className="row">
         <Input
           onChange={formik.handleChange}
-          name="nationality"
-          value={formik.values.nationality}
-          placeholder="Nacionalidade"
-          error={
-            formik.errors?.nationality && formik.touched?.nationality
-              ? formik.errors?.nationality
-              : ""
-          }
-        />
-        <div className="small">
-          <Select
-            onChange={(e) => {
-              formik.setFieldValue("ethnicity", e);
-            }}
-            value={formik.values.ethnicity}
-            placeholder="Etnia"
-            options={ETHNICITYS}
-            error={
-              formik.errors.ethnicity && formik.touched.ethnicity
-                ? formik.errors.ethnicity
-                : ""
-            }
-          />
-        </div>
-      </div>
-      <div className="row">
-        <Input
-          onChange={formik.handleChange}
           className="small"
           name="weightKg"
           value={formik.values.weightKg}
@@ -352,38 +347,7 @@ const ModalUpdatePacientData = ({ id }) => {
           }
         />
       </div>
-      <Select
-        onChange={(e) => {
-          formik.setFieldValue("allergies", e);
-        }}
-        getOptionLabel={(option) => option.value}
-        getOptionValue={(option) => option.id}
-        value={formik.values.allergies}
-        placeholder="ALERGIAS"
-        options={allergiesData?.allergies || []}
-        isMulti
-        error={
-          formik.errors.allergies && formik.touched.allergies
-            ? formik.errors.allergies
-            : ""
-        }
-      />
-      <Select
-        onChange={(e) => {
-          formik.setFieldValue("comorbidities", e);
-        }}
-        value={formik.values.comorbidities}
-        placeholder="COMORBIDADES"
-        getOptionLabel={(option) => option.value}
-        getOptionValue={(option) => option.id}
-        options={comorbiditiesData?.comorbidities || []}
-        isMulti
-        error={
-          formik.errors.comorbidities && formik.touched.comorbidities
-            ? formik.errors.comorbidities
-            : ""
-        }
-      />
+
       <Button type="submit">Atualizar Dados do Paciente</Button>
     </Container>
   );
