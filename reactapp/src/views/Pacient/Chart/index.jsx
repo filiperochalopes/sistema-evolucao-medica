@@ -169,20 +169,21 @@ const Chart = () => {
       let total = 0;
       const fluids = [];
       const date = new Date();
-      // fluidBalances.forEach((fluidBalance) => {
-      //   const response = intervalToDuration({
-      //     start: parseISO(measure.createdAt),
-      //     end: date,
-      //   });
-      //   if (response.days <= 1) {
-      //     total += fluidBalance.volumeMl;
-      //     fluids.push({
-      //       volumeMl: fluidBalance.volumeMl,
-      //       descriptionVolumeMl: fluidBalance.description.value,
-      //     });
-      //   }
-      // });
-
+      fluidBalances.forEach((fluidBalance) => {
+        const response = intervalToDuration({
+          start: parseISO(object.createdAt),
+          end: date,
+        });
+        if (response.days <= 1) {
+          total += fluidBalance.volumeMl;
+          fluids.push({
+            volumeMl: fluidBalance.volumeMl,
+            descriptionVolumeMl: fluidBalance.description.value,
+          });
+        }
+      });
+      object.fluids = fluids;
+      object.totalFluids = total;
       array.sinals = object;
       const measuresWithDateFormat = templateFormatedData(
         measures,
