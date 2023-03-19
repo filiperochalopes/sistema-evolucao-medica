@@ -133,7 +133,7 @@ const strategies = {
             getOptionValue={(option) => option.code}
             options={cid10Data?.cid10 || []}
             value={formik.values.extra.secondaryDiagnosis}
-            placeholder="CID - SUSPEITA INICIAL teste"
+            placeholder="CID - SUSPEITA SECUNDÁRIA"
           />
         </div>
         <div className="select_container_back">

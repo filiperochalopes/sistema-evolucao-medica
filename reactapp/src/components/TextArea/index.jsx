@@ -1,14 +1,26 @@
-import Container from "./styles";
+import Container, { ContainerTextArea, Label } from "./styles";
 
-import React from "react";
+import React, { useState } from "react";
 import TextError from "components/TextError";
 
-function TextArea({ error, ...props }) {
+function TextArea({ error, placeholder, disabled, value, ...props }) {
+  const [select, setSelect] = useState(false);
   return (
-    <div>
-      <Container {...props} />
+    <ContainerTextArea>
+      {placeholder && (
+        <Label disabled={disabled} select={select || value}>
+          {placeholder}
+        </Label>
+      )}
+      <Container
+        disabled={disabled}
+        {...props}
+        value={value}
+        onFocus={() => setSelect(true)}
+        onBlur={() => setSelect(false)}
+      />
       {error && <TextError>{error}</TextError>}
-    </div>
+    </ContainerTextArea>
   );
 }
 

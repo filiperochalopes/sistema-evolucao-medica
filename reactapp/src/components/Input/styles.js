@@ -21,4 +21,29 @@ export default styled.input`
 
 export const ContainerInput = styled.div`
   flex: 1;
+  position: relative;
+`;
+
+export const Label = styled.label`
+  width: calc(100% - 8px);
+  background: ${({ theme }) => theme.colors.gray};
+  color: ${({ theme }) => theme.colors.black};
+  position: absolute;
+  transition: top 0.2s linear, left 0.2s linear, font-size 0.2s linear;
+  font-size: 1rem;
+  top: 10px;
+  left: 8px;
+  pointer-events: none;
+  user-select: none;
+  ${({ select }) =>
+    select &&
+    css`
+      top: 4px;
+      font-size: 0.5rem;
+    `}
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      background: #ececec;
+    `}
 `;
