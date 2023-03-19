@@ -12,7 +12,6 @@ import Button from "components/Button";
 import Select from "components/Select";
 import Input from "components/Input";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
 import {
   GENERATE_PDF_AIH_SUS,
   GENERATE_PDF_APAC,
@@ -27,7 +26,6 @@ import { cloneDeep } from "lodash";
 import Interval from "./components/Interval";
 import { CID10, GET_HIGH_COMPLEXITY_PROCEDURES } from "graphql/queries";
 import { useState } from "react";
-import { useSnackbar } from "notistack";
 import b64toBlob from "utils/b64toBlob";
 import useHandleErrors from "hooks/useHandleErrors";
 /* Strategy pattern */

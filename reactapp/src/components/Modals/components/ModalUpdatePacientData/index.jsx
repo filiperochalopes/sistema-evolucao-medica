@@ -10,11 +10,21 @@ import { useEffect } from "react";
 import getCepApiAdapter from "services/getCepApiAdapter";
 import Select from "components/Select";
 import { UPDATE_PATIENT } from "graphql/mutations";
-import { useSnackbar } from "notistack";
+import useHandleErrors from "hooks/useHandleErrors";
+import maskPhone from "utils/maskPhone";
+import maskCpf from "utils/maskCpf";
 
+import { useSnackbar } from "notistack";
 const GENERS = [
   { label: "Masculino", value: "male" },
   { label: "Feminino", value: "fema" },
+];
+
+const ETHNICITYS = [
+  { label: "Negra", value: "negra" },
+  { label: "Parda", value: "parda" },
+  { label: "Amarela", value: "amarela" },
+  { label: "Branca", value: "branca" },
 ];
 
 const ModalUpdatePacientData = ({ id }) => {
@@ -23,8 +33,8 @@ const ModalUpdatePacientData = ({ id }) => {
   const [getPatientData, { data }] = useLazyQuery(GET_PATIENT);
   const [updatePatient] = useMutation(UPDATE_PATIENT);
   const { data: statesData } = useQuery(STATES);
+  const { handleErrors } = useHandleErrors();
   const { enqueueSnackbar } = useSnackbar();
-
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -34,6 +44,7 @@ const ModalUpdatePacientData = ({ id }) => {
       cns: "",
       rg: "",
       motherName: "",
+      phone: "",
       comorbidities: [],
       allergies: [],
       weightKg: "",
@@ -45,6 +56,8 @@ const ModalUpdatePacientData = ({ id }) => {
         city: "",
         uf: "",
       },
+      ethnicity: "",
+      nationality: "",
     },
     onSubmit: async (values) => {
       try {
@@ -63,15 +76,15 @@ const ModalUpdatePacientData = ({ id }) => {
                 ...values.address,
                 uf: values.address.uf.uf,
               },
+              cpf: values.cpf.replace(/\D/g, ""),
+              ethnicity: values.ethnicity?.value,
+              phone: values.phone.replace(/\D/g, ""),
             },
           },
         });
+        enqueueSnackbar("Paciente Atualizado", { variant: "success" });
       } catch (e) {
-        if (e?.graphQLErrors) {
-          e?.graphQLErrors.forEach((erro) => {
-            enqueueSnackbar(erro.message, { variant: "error" });
-          });
-        }
+        handleErrors(e);
       }
     },
   });
@@ -90,6 +103,9 @@ const ModalUpdatePacientData = ({ id }) => {
     const findUf = statesData.state.find(
       (state) => state.value === data.patients[0].address.uf
     );
+    const findEthnicity = ETHNICITYS.find(
+      (ethnicity) => ethnicity.value === data?.patients[0].ethnicity
+    );
 
     formik.setValues({
       allergies: data.patients[0].allergies,
@@ -104,11 +120,14 @@ const ModalUpdatePacientData = ({ id }) => {
       birthdate: data.patients[0].birthdate,
       cns: data.patients[0].cns,
       comorbidities: data.patients[0].comorbidities,
-      cpf: data.patients[0].cpf,
+      cpf: maskCpf(data.patients[0].cpf),
       name: data.patients[0].name,
+      motherName: data.patients[0].motherName,
       rg: data.patients[0].rg,
+      phone: maskPhone(data.patients[0].phone),
       sex: GENERS.find((gener) => gener.value === data.patients[0].sex),
       weightKg: data.patients[0].weightKg,
+      ethnicity: findEthnicity,
     });
   }, [data, statesData]);
 
@@ -186,6 +205,21 @@ const ModalUpdatePacientData = ({ id }) => {
               : ""
           }
         />
+        <Input
+          className="small"
+          placeholder="Telefone"
+          onChange={(e) => {
+            const phone = maskPhone(e.target.value);
+            formik.setFieldValue("phone", phone);
+          }}
+          value={formik.values.phone}
+          name="phone"
+          error={
+            formik.errors.phone && formik.touched.phone
+              ? formik.errors.phone
+              : ""
+          }
+        />
       </div>
       <div className="row">
         <Input
@@ -246,14 +280,41 @@ const ModalUpdatePacientData = ({ id }) => {
       <div className="row">
         <Input
           onChange={formik.handleChange}
+          name="nationality"
+          value={formik.values.nationality}
+          placeholder="Nacionalidade"
+          error={
+            formik.errors?.nationality && formik.touched?.nationality
+              ? formik.errors?.nationality
+              : ""
+          }
+        />
+        <div className="small">
+          <Select
+            onChange={(e) => {
+              formik.setFieldValue("ethnicity", e);
+            }}
+            value={formik.values.ethnicity}
+            placeholder="Etnia"
+            options={ETHNICITYS}
+            error={
+              formik.errors.ethnicity && formik.touched.ethnicity
+                ? formik.errors.ethnicity
+                : ""
+            }
+          />
+        </div>
+      </div>
+      <div className="row">
+        <Input
+          onChange={formik.handleChange}
           className="small"
           name="weightKg"
           value={formik.values.weightKg}
           placeholder="Peso"
           error={
-            formik.errors?.address?.weightKg &&
-            formik.touched?.address?.weightKg
-              ? formik.errors?.address?.weightKg
+            formik.errors?.weightKg && formik.touched?.weightKg
+              ? formik.errors?.weightKg
               : ""
           }
         />
@@ -281,7 +342,9 @@ const ModalUpdatePacientData = ({ id }) => {
         <Input
           className="normal"
           placeholder="CPF"
-          onChange={formik.handleChange}
+          onChange={(e) => {
+            formik.setFieldValue("cpf", maskCpf(e.target.value));
+          }}
           value={formik.values.cpf}
           name="cpf"
           error={

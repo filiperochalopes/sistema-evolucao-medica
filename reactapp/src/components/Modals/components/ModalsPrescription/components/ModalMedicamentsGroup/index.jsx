@@ -8,7 +8,6 @@ import Container, { GroupMedicament } from "./styles";
 const ModalMedicamentGroup = ({ confirmButton, currentMedicament }) => {
   const { data } = useQuery(DRUG_PRESETS);
   const [presets, setPresets] = useState();
-  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     if (!data) {

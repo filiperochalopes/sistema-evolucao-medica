@@ -114,6 +114,7 @@ export const GET_PATIENT = gql`
       age
       cns
       rg
+      phone
       cpf
       weightKg
       comorbidities {
