@@ -68,5 +68,4 @@ const ContainerInputs = styled.div`
 
 export const ContainerAddPacient = styled(ContainerInputs)`
   margin-top: 1.5rem;
-  background-color: ${({ theme }) => theme.colors.grayLight};
 `;

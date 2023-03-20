@@ -15,6 +15,7 @@ import {
   COMORBIDITIES,
   GET_PATIENTS,
   STATES,
+  GET_PATIENT,
 } from "graphql/queries";
 import { useEffect } from "react";
 import getCepApiAdapter from "services/getCepApiAdapter";
@@ -39,7 +40,8 @@ const Admit = () => {
   });
   const { data: statesData } = useQuery(STATES);
   const { data: cid10Data } = useQuery(CID10);
-  const [getPatient] = useLazyQuery(GET_PATIENTS);
+  const [getPatients] = useLazyQuery(GET_PATIENTS);
+  const [getPatient, { data }] = useLazyQuery(GET_PATIENT);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { handleErrors } = useHandleErrors();
@@ -125,41 +127,48 @@ const Admit = () => {
           },
         });
         console.log(response?.data?.patients[0]?.address.complement);
-        const findSex = SEX_OPTIONS.find(
-          (sex) => response.data?.patients[0]?.sex === sex.value
-        );
-        const findUf = statesData.state.find(
-          (state) => state.uf === response.data?.patients[0]?.address.uf
-        );
-        formik.setValues({
-          ...formik.values,
-          patient: {
-            name: response?.data?.patients[0]?.name,
-            sex: findSex,
-            birthdate: "",
-            cpf: response?.data?.patients[0]?.cpf,
-            cns: response?.data?.patients[0]?.cns,
-            rg: response?.data?.patients[0]?.rg,
-            comorbidities: response?.data?.patients[0]?.comorbidities,
-            allergies: response?.data?.patients[0]?.allergies,
-            weightKg: response?.data?.patients[0]?.weightKg,
-            address: {
-              zipCode: response?.data?.patients[0]?.address.zipCode,
-              street: response?.data?.patients[0]?.address.street,
-              complement: response?.data?.patients[0]?.address.complement,
-              number: response?.data?.patients[0]?.address.number,
-              city: response?.data?.patients[0]?.address.city,
-              uf: findUf,
-              neighborhood: response?.data?.patients[0]?.address.neighborhood,
-            },
-          },
-        });
       } catch {
         console.log("error");
       }
     },
   });
   console.log(formik.values);
+
+  useEffect(() => {
+    if (data && statesData?.state) {
+      console.log("data", data);
+      const findSex = SEX_OPTIONS.find(
+        (sex) => data?.patient?.sex === sex.value
+      );
+      const findUf = statesData.state.find(
+        (state) => state.uf === data?.patient?.address.uf
+      );
+      formik.setValues({
+        ...formik.values,
+        addPacient: true,
+        patient: {
+          name: data?.patient?.name,
+          sex: findSex,
+          birthdate: "",
+          cpf: data?.patient?.cpf,
+          cns: data?.patient?.cns,
+          rg: data?.patient?.rg,
+          comorbidities: data?.patient?.comorbidities,
+          allergies: data?.patient?.allergies,
+          weightKg: data?.patient?.weightKg,
+          address: {
+            zipCode: data?.patient?.address.zipCode,
+            street: data?.patient?.address.street,
+            complement: data?.patient?.address.complement,
+            number: data?.patient?.address.number,
+            city: data?.patient?.address.city,
+            uf: findUf,
+            neighborhood: data?.patient?.address.neighborhood,
+          },
+        },
+      });
+    }
+  }, [data, statesData]);
 
   useEffect(() => {
     async function getCep() {
@@ -188,14 +197,35 @@ const Admit = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values.patient.address.zipCode, statesData]);
 
+  const promiseOptions = async (inputValue) => {
+    const patients = await getPatients({
+      variables: {
+        queryNameCnsCpf: inputValue,
+      },
+    });
+    return patients.data?.patients.map((patient) => ({
+      label: patient.name,
+      id: patient.id,
+    }));
+  };
+
   return (
     <Container>
       <h2>Admitir Paciente</h2>
       <ContainerSearchInput onSubmit={formikGetPatient.handleSubmit}>
-        <Input
+        <Select
+          loadOptions={promiseOptions}
           value={formikGetPatient.values.patientName}
           name="patientName"
-          onChange={formikGetPatient.handleChange}
+          async
+          onChange={(e) => {
+            console.log("e", e);
+            getPatient({
+              variables: {
+                id: e.id,
+              },
+            });
+          }}
         />
         <Button customType="gray">Pesquisar</Button>
       </ContainerSearchInput>

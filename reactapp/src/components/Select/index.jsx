@@ -4,7 +4,7 @@ import Creatable from "react-select/creatable";
 import Container, { IconContainer } from "./styles";
 import { MdArrowDropDown } from "react-icons/md";
 import TextError from "components/TextError";
-
+import AsyncSelect from "react-select/async";
 const selectStyles = {
   container: (props) => ({
     ...props,
@@ -31,9 +31,11 @@ const Select = ({
   className,
   created = false,
   components = {},
+  async = false,
   ...rest
 }) => {
-  const SelectType = created ? Creatable : ReactSelect;
+  const SelectType =
+    created && !async ? Creatable : async ? AsyncSelect : ReactSelect;
 
   return (
     <Container className={className}>
