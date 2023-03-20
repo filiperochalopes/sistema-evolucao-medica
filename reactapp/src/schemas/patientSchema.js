@@ -7,7 +7,7 @@ export default Yup.object().shape({
   birthdate: Yup.string().required(ERROR_LABEL),
   cpf: Yup.string().required(ERROR_LABEL),
   cns: Yup.string().required(ERROR_LABEL),
-  rg: Yup.string().required("RG é Obrigatório"),
+  rg: Yup.string().required(ERROR_LABEL),
   comorbidities: Yup.array().of(Yup.mixed()),
   allergies: Yup.array().of(Yup.mixed()),
   weightKg: Yup.string().required(ERROR_LABEL),
@@ -20,4 +20,5 @@ export default Yup.object().shape({
     uf: Yup.mixed().required(ERROR_LABEL),
     neighborhood: Yup.string().required(ERROR_LABEL),
   }),
+  motherName: Yup.string().required(ERROR_LABEL),
 });

@@ -24,6 +24,7 @@ import maskCpf from "utils/maskCpf";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import useHandleErrors from "hooks/useHandleErrors";
+import maskPhone from "utils/maskPhone";
 
 const SEX_OPTIONS = [
   { label: "Masculino", value: "male" },
@@ -61,6 +62,7 @@ const Admit = () => {
         comorbidities: [],
         allergies: [],
         weightKg: "",
+        motherName: "",
         address: {
           zipCode: "",
           street: "",
@@ -82,6 +84,8 @@ const Admit = () => {
         ),
         allergies: values.patient.allergies.map((allergie) => allergie.id),
         weightKg: parseFloat(values.patient.weightKg),
+        phone: values.patient.phone.replace(/\D/g, ""),
+        cpf: values.patient.cpf.replace(/\D/g, ""),
         address: {
           ...values.patient.address,
           uf: values.patient.address.uf.uf,
@@ -150,12 +154,14 @@ const Admit = () => {
           name: data?.patient?.name,
           sex: findSex,
           birthdate: "",
-          cpf: data?.patient?.cpf,
+          cpf: maskCpf(data?.patient?.cpf),
           cns: data?.patient?.cns,
           rg: data?.patient?.rg,
+          motherName: data?.patient?.motherName,
           comorbidities: data?.patient?.comorbidities,
           allergies: data?.patient?.allergies,
           weightKg: data?.patient?.weightKg,
+          phone: maskPhone(data?.patient?.phone),
           address: {
             zipCode: data?.patient?.address.zipCode,
             street: data?.patient?.address.street,
@@ -183,7 +189,7 @@ const Admit = () => {
           ...formik.values,
           patient: {
             ...formik.values.patient,
-            cpf: formik.values.patient.cpf.replace(/\D/gi, ""),
+            cpf: maskCpf(formik.values.patient.cpf),
             address: Object.assign(formik.values.patient.address, {
               ...response.data,
               uf: findUf,
@@ -265,6 +271,36 @@ const Admit = () => {
                   formik.errors.patient?.birthdate &&
                   formik.touched?.patient?.birthdate
                     ? formik.errors.patient?.birthdate
+                    : ""
+                }
+              />
+              <Input
+                onChange={formik.handleChange}
+                className="small"
+                name="patient.motherName"
+                value={formik.values.patient.motherName}
+                placeholder="Nome da Mãe"
+                error={
+                  formik.errors.patient?.motherName &&
+                  formik.touched?.patient?.motherName
+                    ? formik.errors.patient?.motherName
+                    : ""
+                }
+              />
+              <Input
+                onChange={(e) => {
+                  formik.setFieldValue(
+                    "patient.phone",
+                    maskPhone(e.target.value)
+                  );
+                }}
+                className="small"
+                name="patient.phone"
+                value={formik.values.patient.phone}
+                placeholder="Telefone"
+                error={
+                  formik.errors.patient?.phone && formik.touched?.patient?.phone
+                    ? formik.errors.patient?.phone
                     : ""
                 }
               />
