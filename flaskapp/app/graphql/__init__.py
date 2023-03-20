@@ -416,6 +416,7 @@ type_defs = gql(
         weightKg: Float
         comorbidities: [ValueObject]
         allergies: [ValueObject]
+        motherName: String
         address: Address
     }
 
