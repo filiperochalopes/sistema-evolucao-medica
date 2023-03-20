@@ -104,9 +104,44 @@ export const STATES = gql`
   }
 `;
 
-export const GET_PATIENT = gql`
+export const GET_PATIENTS = gql`
   query patients($queryNameCnsCpf: String) {
     patients(queryNameCnsCpf: $queryNameCnsCpf) {
+      id
+      name
+      birthdate
+      sex
+      age
+      cns
+      rg
+      phone
+      cpf
+      weightKg
+      motherName
+      comorbidities {
+        id
+        value
+      }
+      allergies {
+        id
+        value
+      }
+      address {
+        zipCode
+        street
+        number
+        neighborhood
+        complement
+        city
+        uf
+      }
+    }
+  }
+`;
+
+export const GET_PATIENT = gql`
+  query patient($id: ID) {
+    patient(id: $id) {
       id
       name
       birthdate

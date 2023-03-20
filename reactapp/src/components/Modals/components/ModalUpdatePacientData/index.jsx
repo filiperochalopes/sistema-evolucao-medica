@@ -98,28 +98,28 @@ const ModalUpdatePacientData = ({ id }) => {
       return;
     }
     const findUf = statesData.state.find(
-      (state) => state.value === data.patients[0].address.uf
+      (state) => state.value === data.patient.address.uf
     );
     formik.setValues({
-      allergies: data.patients[0].allergies,
+      allergies: data.patient.allergies,
       address: {
-        zipcode: data.patients[0].address.zipCode,
-        street: data.patients[0].address.street,
-        complement: data.patients[0].address.complement,
-        number: data.patients[0].address.number,
-        city: data.patients[0].address.city,
+        zipcode: data.patient.address.zipCode,
+        street: data.patient.address.street,
+        complement: data.patient.address.complement,
+        number: data.patient.address.number,
+        city: data.patient.address.city,
         uf: findUf,
       },
-      birthdate: data.patients[0].birthdate,
-      cns: data.patients[0].cns,
-      comorbidities: data.patients[0].comorbidities,
-      cpf: maskCpf(data.patients[0].cpf),
-      name: data.patients[0].name,
-      motherName: data.patients[0].motherName,
-      rg: data.patients[0].rg,
-      phone: maskPhone(data.patients[0].phone),
-      sex: GENERS.find((gener) => gener.value === data.patients[0].sex),
-      weightKg: data.patients[0].weightKg,
+      birthdate: data.patient.birthdate,
+      cns: data.patient.cns,
+      comorbidities: data.patient.comorbidities,
+      cpf: maskCpf(data.patient.cpf),
+      name: data.patient.name,
+      motherName: data.patient.motherName,
+      rg: data.patient.rg,
+      phone: maskPhone(data.patient.phone),
+      sex: GENERS.find((gener) => gener.value === data.patient.sex),
+      weightKg: data.patient.weightKg,
     });
   }, [data, statesData]);
 

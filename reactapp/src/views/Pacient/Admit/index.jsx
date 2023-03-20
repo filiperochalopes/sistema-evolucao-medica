@@ -13,7 +13,7 @@ import {
   ALLERGIES,
   CID10,
   COMORBIDITIES,
-  GET_PATIENT,
+  GET_PATIENTS,
   STATES,
 } from "graphql/queries";
 import { useEffect } from "react";
@@ -39,7 +39,7 @@ const Admit = () => {
   });
   const { data: statesData } = useQuery(STATES);
   const { data: cid10Data } = useQuery(CID10);
-  const [getPatient] = useLazyQuery(GET_PATIENT);
+  const [getPatient] = useLazyQuery(GET_PATIENTS);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { handleErrors } = useHandleErrors();
