@@ -172,11 +172,19 @@ const Chart = () => {
       const fluids = [];
       const date = new Date();
       fluidBalances.forEach((fluidBalance) => {
-        const response = intervalToDuration({
-          start: parseISO(object.createdAt),
-          end: date,
-        });
-        if (response.days <= 1) {
+        if (object?.createdAt) {
+          const response = intervalToDuration({
+            start: parseISO(object.createdAt),
+            end: date,
+          });
+          if (response.days <= 1) {
+            total += fluidBalance.volumeMl;
+            fluids.push({
+              volumeMl: fluidBalance.volumeMl,
+              descriptionVolumeMl: fluidBalance.description.value,
+            });
+          }
+        } else {
           total += fluidBalance.volumeMl;
           fluids.push({
             volumeMl: fluidBalance.volumeMl,
