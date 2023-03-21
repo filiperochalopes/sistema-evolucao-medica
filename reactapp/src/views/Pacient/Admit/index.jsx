@@ -125,22 +125,19 @@ const Admit = () => {
     },
     async onSubmit(values) {
       try {
-        const response = await getPatient({
+        await getPatient({
           variables: {
             queryNameCnsCpf: values.patientName,
           },
         });
-        console.log(response?.data?.patients[0]?.address.complement);
       } catch {
         console.log("error");
       }
     },
   });
-  console.log(formik.values);
 
   useEffect(() => {
     if (data && statesData?.state) {
-      console.log("data", data);
       const findSex = SEX_OPTIONS.find(
         (sex) => data?.patient?.sex === sex.value
       );
@@ -153,7 +150,7 @@ const Admit = () => {
         patient: {
           name: data?.patient?.name,
           sex: findSex,
-          birthdate: "",
+          birthdate: data?.patient?.birthdate,
           cpf: maskCpf(data?.patient?.cpf),
           cns: data?.patient?.cns,
           rg: data?.patient?.rg,
