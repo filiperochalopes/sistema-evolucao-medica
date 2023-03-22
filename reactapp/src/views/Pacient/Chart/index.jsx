@@ -266,8 +266,7 @@ const Chart = () => {
       <div className="header">
         <h2>
           <Link to={`/evoluir-paciente/${params.id}`}>Evoluir Paciente</Link> (
-          {data?.internment?.patient?.name},{data?.internment?.patient?.age}{" "}
-          anos)
+          {data?.internment?.patient?.name},{data?.internment?.patient?.age})
         </h2>
         <CheckRole roles={["doc"]}>
           <Button

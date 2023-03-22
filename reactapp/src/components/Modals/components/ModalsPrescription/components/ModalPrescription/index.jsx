@@ -38,6 +38,7 @@ const prescriptionTypesStrategies = {
         setDataDrugsRoutesInObject(transformDrugsRoutesInObject);
       }
     }, [drugRoutesData]);
+    console.log(formik);
     return (
       <>
         <Input
@@ -45,14 +46,25 @@ const prescriptionTypesStrategies = {
           name="drug.useMode"
           onChange={formik.handleChange}
           placeholder="Modo de uso"
+          error={
+            formik.errors.drug?.useMode && formik.touched?.drug?.useMode
+              ? formik.errors.drug?.useMode
+              : ""
+          }
         />
         <Select
           options={dataDrugsRoutesInObject}
           className="medium_size"
-          value={formik.values.drug.routeAdministration}
+          value={formik.values.drug?.routeAdministration}
           placeholder="Via de Administração"
           isDisabled={formik.values.block}
           onChange={(e) => formik.setFieldValue("drug.routeAdministration", e)}
+          error={
+            formik.errors?.drug?.routeAdministration &&
+            formik.touched?.drug?.routeAdministration
+              ? formik.errors?.drug?.routeAdministration
+              : ""
+          }
         />
         <div className="container_checkbox">
           <CheckBox
@@ -77,6 +89,12 @@ const prescriptionTypesStrategies = {
               type="datetime-local"
               className="medium_size"
               placeholder="Data de início"
+              error={
+                formik.errors.drug.initialDate &&
+                formik.touched?.drug.initialDate
+                  ? formik.errors.drug.initialDate
+                  : ""
+              }
             />
             <Input
               value={formik.values.drug.finalDate}
@@ -85,6 +103,11 @@ const prescriptionTypesStrategies = {
               type="datetime-local"
               className="medium_size"
               placeholder="Data de fim"
+              error={
+                formik.errors.drug.finalDate && formik.touched?.drug.finalDate
+                  ? formik.errors.drug.finalDate
+                  : ""
+              }
             />
           </div>
         )}

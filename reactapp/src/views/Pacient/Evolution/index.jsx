@@ -268,7 +268,6 @@ const Evolution = () => {
     }
     return chainHandleSetRestingActivity(values);
   }
-  console.log(formik.values);
 
   return (
     <Container>
@@ -279,7 +278,7 @@ const Evolution = () => {
         <div className="header">
           <h2>
             Evoluir Paciente ({data?.internment?.patient?.name},{" "}
-            {data?.internment?.patient.age} anos)
+            {data?.internment?.patient.age})
           </h2>
           <CheckRole roles={["doc"]}>
             <Button
