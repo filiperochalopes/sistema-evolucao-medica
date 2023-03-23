@@ -84,13 +84,23 @@ const Admit = () => {
         ),
         allergies: values.patient.allergies.map((allergie) => allergie.id),
         weightKg: parseFloat(values.patient.weightKg),
-        phone: values.patient.phone.replace(/\D/g, ""),
-        cpf: values.patient.cpf.replace(/\D/g, ""),
-        address: {
-          ...values.patient.address,
-          uf: values.patient.address.uf.uf,
-        },
+        phone: values.patient.phone?.replace(/\D/g, ""),
+        cpf: values.patient.cpf?.replace(/\D/g, ""),
       };
+
+      for (const chave in patient) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (patient.hasOwnProperty(chave) && patient[chave] === "") {
+          delete patient[chave];
+        }
+      }
+
+      if (values.patient.address) {
+        patient.address = {
+          ...values.patient.address,
+          uf: values.patient.address?.uf?.uf || "",
+        };
+      }
       const dateBirthDay = new Date(patient.birthdate);
       const birthday = `${dateBirthDay.getFullYear()}-${
         dateBirthDay.getMonth() + 1
@@ -114,11 +124,13 @@ const Admit = () => {
         enqueueSnackbar("Pendencia Cadastrada", { variant: "success" });
         navigate("/");
       } catch (e) {
+        console.log(e);
         handleErrors(e);
       }
     },
     validationSchema: schema,
   });
+  console.log(formik);
   const formikGetPatient = useFormik({
     initialValues: {
       patientName: "",
@@ -177,7 +189,7 @@ const Admit = () => {
     async function getCep() {
       try {
         const response = await getCepApiAdapter(
-          formik.values.patient.address.zipCode
+          formik.values.patient?.address?.zipCode
         );
         const findUf = statesData.state.find(
           (state) => state.uf === response.data.uf
@@ -187,7 +199,7 @@ const Admit = () => {
           patient: {
             ...formik.values.patient,
             cpf: maskCpf(formik.values.patient.cpf),
-            address: Object.assign(formik.values.patient.address, {
+            address: Object.assign(formik.values.patient?.address || {}, {
               ...response.data,
               uf: findUf,
             }),
@@ -198,7 +210,7 @@ const Admit = () => {
     }
     getCep();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formik.values.patient.address.zipCode, statesData]);
+  }, [formik.values.patient.address, statesData]);
 
   const promiseOptions = async (inputValue) => {
     const patients = await getPatients({
@@ -230,7 +242,6 @@ const Admit = () => {
             });
           }}
         />
-        <Button customType="gray">Pesquisar</Button>
       </ContainerSearchInput>
       <Button
         className="add_pacient"
@@ -304,7 +315,6 @@ const Admit = () => {
               <Select
                 onChange={(e) => {
                   formik.setFieldValue("patient.sex", e);
-                  formik.setFieldTouched("patient.sex", true);
                 }}
                 value={formik.values.patient.sex}
                 placeholder="Sexo"
@@ -335,8 +345,8 @@ const Admit = () => {
                 onChange={formik.handleChange}
                 className="small"
                 name="patient.address.complement"
-                value={formik.values.patient.address.complement}
-                placeholder="Endereço"
+                value={formik.values.patient?.address?.complement}
+                placeholder="Complemento"
                 error={
                   formik.errors.patient?.address?.complement &&
                   formik.touched?.patient?.address?.complement
@@ -349,7 +359,7 @@ const Admit = () => {
                 onChange={formik.handleChange}
                 className="small"
                 name="patient.address.city"
-                value={formik.values.patient.address.city}
+                value={formik.values.patient?.address?.city}
                 placeholder="Cidade"
                 error={
                   formik.errors?.patient?.address?.city &&
@@ -395,7 +405,7 @@ const Admit = () => {
               <Input
                 onChange={formik.handleChange}
                 className="small"
-                value={formik.values.patient.address.neighborhood}
+                value={formik.values.patient?.address?.neighborhood}
                 name="patient.address.neighborhood"
                 placeholder="Bairro"
                 error={
@@ -408,7 +418,7 @@ const Admit = () => {
               <Input
                 onChange={formik.handleChange}
                 className="small"
-                value={formik.values.patient.address.street}
+                value={formik.values.patient?.address?.street}
                 name="patient.address.street"
                 placeholder="Rua"
                 error={
@@ -422,7 +432,7 @@ const Admit = () => {
                 onChange={formik.handleChange}
                 className="small"
                 name="patient.address.number"
-                value={formik.values.patient.address.number}
+                value={formik.values.patient?.address?.number}
                 placeholder="Nº"
                 error={
                   formik.errors?.patient?.address?.number &&
