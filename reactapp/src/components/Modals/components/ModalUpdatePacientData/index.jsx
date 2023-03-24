@@ -6,7 +6,7 @@ import React from "styled-components";
 import { useFormik } from "formik";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { ALLERGIES, COMORBIDITIES, GET_PATIENT, STATES } from "graphql/queries";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import getCepApiAdapter from "services/getCepApiAdapter";
 import Select from "components/Select";
 import { UPDATE_PATIENT } from "graphql/mutations";
@@ -32,6 +32,8 @@ const ModalUpdatePacientData = ({ id }) => {
   const { data: statesData } = useQuery(STATES);
   const { handleErrors } = useHandleErrors();
   const { enqueueSnackbar } = useSnackbar();
+  const [comorbidities, setComorbidities] = useState([]);
+  const [allergies, setAllergies] = useState([]);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -65,9 +67,9 @@ const ModalUpdatePacientData = ({ id }) => {
               ...values,
               sex: values.sex.value,
               comorbidities: values.comorbidities.map(
-                (commorbiditie) => commorbiditie.id
+                (commorbiditie) => commorbiditie.value
               ),
-              allergies: values.allergies.map((allergie) => allergie.id),
+              allergies: values.allergies.map((allergie) => allergie.value),
               weightKg: parseFloat(values.weightKg),
               address: {
                 ...values.address,
@@ -92,6 +94,30 @@ const ModalUpdatePacientData = ({ id }) => {
       },
     });
   }, [id, getPatientData]);
+
+  useEffect(() => {
+    if (!comorbiditiesData) {
+      return;
+    }
+    const newComorbidities = comorbiditiesData.comorbidities.map(
+      (comorbiditie) => ({
+        label: comorbiditie.value,
+        value: comorbiditie.value,
+      })
+    );
+    setComorbidities(newComorbidities);
+  }, [comorbiditiesData]);
+
+  useEffect(() => {
+    if (!allergiesData) {
+      return;
+    }
+    const newAllergies = allergiesData.allergies.map((allergie) => ({
+      label: allergie.value,
+      value: allergie.value,
+    }));
+    setAllergies(newAllergies);
+  }, [allergiesData]);
 
   useEffect(() => {
     if (!data || !statesData) {
@@ -149,12 +175,11 @@ const ModalUpdatePacientData = ({ id }) => {
         onChange={(e) => {
           formik.setFieldValue("allergies", e);
         }}
-        getOptionLabel={(option) => option.value}
-        getOptionValue={(option) => option.id}
         value={formik.values.allergies}
         placeholder="ALERGIAS"
-        options={allergiesData?.allergies || []}
+        options={allergies}
         isMulti
+        created
         error={
           formik.errors.allergies && formik.touched.allergies
             ? formik.errors.allergies
@@ -165,11 +190,10 @@ const ModalUpdatePacientData = ({ id }) => {
         onChange={(e) => {
           formik.setFieldValue("comorbidities", e);
         }}
+        created
         value={formik.values.comorbidities}
         placeholder="COMORBIDADES"
-        getOptionLabel={(option) => option.value}
-        getOptionValue={(option) => option.id}
-        options={comorbiditiesData?.comorbidities || []}
+        options={comorbidities}
         isMulti
         error={
           formik.errors.comorbidities && formik.touched.comorbidities

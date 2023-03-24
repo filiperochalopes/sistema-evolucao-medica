@@ -4,7 +4,7 @@ import { createFilter, components } from "react-select";
 import Button from "components/Button";
 import Input from "components/Input";
 import TextArea from "components/TextArea";
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import { CREATE_INTERNMENT } from "graphql/mutations";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
@@ -45,6 +45,8 @@ const Admit = () => {
   const [getPatient, { data }] = useLazyQuery(GET_PATIENT);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [comorbidities, setComorbidities] = useState([]);
+  const [allergies, setAllergies] = useState([]);
   const { handleErrors } = useHandleErrors();
   const formik = useFormik({
     initialValues: {
@@ -80,9 +82,9 @@ const Admit = () => {
         ...values.patient,
         sex: values.patient.sex.value,
         comorbidities: values.patient.comorbidities.map(
-          (commorbiditie) => commorbiditie.id
+          (commorbiditie) => commorbiditie.value
         ),
-        allergies: values.patient.allergies.map((allergie) => allergie.id),
+        allergies: values.patient.allergies.map((allergie) => allergie.value),
         weightKg: parseFloat(values.patient.weightKg),
         phone: values.patient.phone?.replace(/\D/g, ""),
         cpf: values.patient.cpf?.replace(/\D/g, ""),
@@ -130,7 +132,31 @@ const Admit = () => {
     },
     validationSchema: schema,
   });
-  console.log(formik);
+
+  useEffect(() => {
+    if (!comorbiditiesData) {
+      return;
+    }
+    const newComorbidities = comorbiditiesData.comorbidities.map(
+      (comorbiditie) => ({
+        label: comorbiditie.value,
+        value: comorbiditie.value,
+      })
+    );
+    setComorbidities(newComorbidities);
+  }, [comorbiditiesData]);
+
+  useEffect(() => {
+    if (!allergiesData) {
+      return;
+    }
+    const newAllergies = allergiesData.allergies.map((allergie) => ({
+      label: allergie.value,
+      value: allergie.value,
+    }));
+    setAllergies(newAllergies);
+  }, [allergiesData]);
+
   const formikGetPatient = useFormik({
     initialValues: {
       patientName: "",
@@ -487,14 +513,12 @@ const Admit = () => {
             <Select
               onChange={(e) => {
                 formik.setFieldValue("patient.allergies", e);
-                formik.setFieldTouched("patient.allergies", true);
               }}
-              getOptionLabel={(option) => option.value}
-              getOptionValue={(option) => option.id}
               value={formik.values.patient.allergies}
               placeholder="ALERGIAS"
-              options={allergiesData?.allergies || []}
+              options={allergies}
               isMulti
+              created
               error={
                 formik.errors?.patient?.allergies &&
                 formik.touched?.patient?.allergies
@@ -503,15 +527,13 @@ const Admit = () => {
               }
             />
             <Select
+              created
               onChange={(e) => {
                 formik.setFieldValue("patient.comorbidities", e);
-                formik.setFieldTouched("patient.comorbidities", true);
               }}
               value={formik.values.patient.comorbidities}
               placeholder="COMORBIDADES"
-              getOptionLabel={(option) => option.value}
-              getOptionValue={(option) => option.id}
-              options={comorbiditiesData?.comorbidities || []}
+              options={comorbidities}
               isMulti
               error={
                 formik.errors?.patient?.comorbidities &&
@@ -549,7 +571,6 @@ const Admit = () => {
           <Select
             onChange={(e) => {
               formik.setFieldValue("cid10Code", e);
-              formik.setFieldTouched("cid10Code", true);
             }}
             components={{
               Option: ({ children, ...props }) => {
