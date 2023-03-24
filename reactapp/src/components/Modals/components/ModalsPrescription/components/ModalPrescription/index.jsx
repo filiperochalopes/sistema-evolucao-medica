@@ -38,7 +38,7 @@ const prescriptionTypesStrategies = {
         setDataDrugsRoutesInObject(transformDrugsRoutesInObject);
       }
     }, [drugRoutesData]);
-    console.log(formik);
+
     return (
       <>
         <Input
@@ -57,7 +57,6 @@ const prescriptionTypesStrategies = {
           className="medium_size"
           value={formik.values.drug?.routeAdministration}
           placeholder="Via de Administração"
-          isDisabled={formik.values.block}
           onChange={(e) => formik.setFieldValue("drug.routeAdministration", e)}
           error={
             formik.errors?.drug?.routeAdministration &&
