@@ -9,14 +9,18 @@ const MeasureStrategy = (value) => (
   <>
     <h2 className="secondary">Sinais Vitais {value.dateFormated}</h2>
     <ul>
-      <li>FC {value.cardiacFrequency}bpm </li>
-      <li>FCF {value.fetalCardiacFrequency}bpm</li>
-      <li>HGT 110 </li>
-      <li>FR {value.respiratoryFrequency} </li>
-      <li>TEMP AXILAR {value.celciusAxillaryTemperature}</li>
-      <li>
+      {value.cardiacFrequency && <li>FC {value.cardiacFrequency}bpm </li>}
+      {value.fetalCardiacFrequency && (
+        <li>FCF {value.fetalCardiacFrequency}bpm</li>
+      )}
+      {value.glucose && <li>HGT {value.glucose} </li>}
+      {value.respiratoryFrequency && <li>FR {value.respiratoryFrequency} </li>}
+      {value.celciusAxillaryTemperature && (
+        <li>TEMP AXILAR {value.celciusAxillaryTemperature}</li>
+      )}
+      {/* <li>
         BALANÇO HÍDRICO <strong>TOTAL -500</strong> 110 - COPO COM ÁGUA
-      </li>
+      </li> */}
     </ul>
   </>
 );

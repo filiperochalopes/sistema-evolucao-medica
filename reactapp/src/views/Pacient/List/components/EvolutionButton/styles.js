@@ -12,7 +12,7 @@ export const PopUp = styled.div`
   position: absolute;
   left: 0;
   font-size: 0.75rem;
-
+  z-index: 2;
   a {
     cursor: pointer;
     display: block;

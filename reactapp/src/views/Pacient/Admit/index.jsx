@@ -4,7 +4,7 @@ import { createFilter, components } from "react-select";
 import Button from "components/Button";
 import Input from "components/Input";
 import TextArea from "components/TextArea";
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import { CREATE_INTERNMENT } from "graphql/mutations";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
@@ -45,6 +45,8 @@ const Admit = () => {
   const [getPatient, { data }] = useLazyQuery(GET_PATIENT);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [comorbidities, setComorbidities] = useState([]);
+  const [allergies, setAllergies] = useState([]);
   const { handleErrors } = useHandleErrors();
   const formik = useFormik({
     initialValues: {
@@ -80,17 +82,27 @@ const Admit = () => {
         ...values.patient,
         sex: values.patient.sex.value,
         comorbidities: values.patient.comorbidities.map(
-          (commorbiditie) => commorbiditie.id
+          (commorbiditie) => commorbiditie.value
         ),
-        allergies: values.patient.allergies.map((allergie) => allergie.id),
+        allergies: values.patient.allergies.map((allergie) => allergie.value),
         weightKg: parseFloat(values.patient.weightKg),
-        phone: values.patient.phone.replace(/\D/g, ""),
-        cpf: values.patient.cpf.replace(/\D/g, ""),
-        address: {
-          ...values.patient.address,
-          uf: values.patient.address.uf.uf,
-        },
+        phone: values.patient.phone?.replace(/\D/g, ""),
+        cpf: values.patient.cpf?.replace(/\D/g, ""),
       };
+
+      for (const chave in patient) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (patient.hasOwnProperty(chave) && patient[chave] === "") {
+          delete patient[chave];
+        }
+      }
+
+      if (values.patient.address) {
+        patient.address = {
+          ...values.patient.address,
+          uf: values.patient.address?.uf?.uf || "",
+        };
+      }
       const dateBirthDay = new Date(patient.birthdate);
       const birthday = `${dateBirthDay.getFullYear()}-${
         dateBirthDay.getMonth() + 1
@@ -114,33 +126,56 @@ const Admit = () => {
         enqueueSnackbar("Pendencia Cadastrada", { variant: "success" });
         navigate("/");
       } catch (e) {
+        console.log(e);
         handleErrors(e);
       }
     },
     validationSchema: schema,
   });
+
+  useEffect(() => {
+    if (!comorbiditiesData) {
+      return;
+    }
+    const newComorbidities = comorbiditiesData.comorbidities.map(
+      (comorbiditie) => ({
+        label: comorbiditie.value,
+        value: comorbiditie.value,
+      })
+    );
+    setComorbidities(newComorbidities);
+  }, [comorbiditiesData]);
+
+  useEffect(() => {
+    if (!allergiesData) {
+      return;
+    }
+    const newAllergies = allergiesData.allergies.map((allergie) => ({
+      label: allergie.value,
+      value: allergie.value,
+    }));
+    setAllergies(newAllergies);
+  }, [allergiesData]);
+
   const formikGetPatient = useFormik({
     initialValues: {
       patientName: "",
     },
     async onSubmit(values) {
       try {
-        const response = await getPatient({
+        await getPatient({
           variables: {
             queryNameCnsCpf: values.patientName,
           },
         });
-        console.log(response?.data?.patients[0]?.address.complement);
       } catch {
         console.log("error");
       }
     },
   });
-  console.log(formik.values);
 
   useEffect(() => {
     if (data && statesData?.state) {
-      console.log("data", data);
       const findSex = SEX_OPTIONS.find(
         (sex) => data?.patient?.sex === sex.value
       );
@@ -153,7 +188,7 @@ const Admit = () => {
         patient: {
           name: data?.patient?.name,
           sex: findSex,
-          birthdate: "",
+          birthdate: data?.patient?.birthdate,
           cpf: maskCpf(data?.patient?.cpf),
           cns: data?.patient?.cns,
           rg: data?.patient?.rg,
@@ -180,7 +215,7 @@ const Admit = () => {
     async function getCep() {
       try {
         const response = await getCepApiAdapter(
-          formik.values.patient.address.zipCode
+          formik.values.patient?.address?.zipCode
         );
         const findUf = statesData.state.find(
           (state) => state.uf === response.data.uf
@@ -190,7 +225,7 @@ const Admit = () => {
           patient: {
             ...formik.values.patient,
             cpf: maskCpf(formik.values.patient.cpf),
-            address: Object.assign(formik.values.patient.address, {
+            address: Object.assign(formik.values.patient?.address || {}, {
               ...response.data,
               uf: findUf,
             }),
@@ -201,7 +236,7 @@ const Admit = () => {
     }
     getCep();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formik.values.patient.address.zipCode, statesData]);
+  }, [formik.values.patient.address, statesData]);
 
   const promiseOptions = async (inputValue) => {
     const patients = await getPatients({
@@ -233,7 +268,6 @@ const Admit = () => {
             });
           }}
         />
-        <Button customType="gray">Pesquisar</Button>
       </ContainerSearchInput>
       <Button
         className="add_pacient"
@@ -307,7 +341,6 @@ const Admit = () => {
               <Select
                 onChange={(e) => {
                   formik.setFieldValue("patient.sex", e);
-                  formik.setFieldTouched("patient.sex", true);
                 }}
                 value={formik.values.patient.sex}
                 placeholder="Sexo"
@@ -338,8 +371,8 @@ const Admit = () => {
                 onChange={formik.handleChange}
                 className="small"
                 name="patient.address.complement"
-                value={formik.values.patient.address.complement}
-                placeholder="Endereço"
+                value={formik.values.patient?.address?.complement}
+                placeholder="Complemento"
                 error={
                   formik.errors.patient?.address?.complement &&
                   formik.touched?.patient?.address?.complement
@@ -352,7 +385,7 @@ const Admit = () => {
                 onChange={formik.handleChange}
                 className="small"
                 name="patient.address.city"
-                value={formik.values.patient.address.city}
+                value={formik.values.patient?.address?.city}
                 placeholder="Cidade"
                 error={
                   formik.errors?.patient?.address?.city &&
@@ -398,7 +431,7 @@ const Admit = () => {
               <Input
                 onChange={formik.handleChange}
                 className="small"
-                value={formik.values.patient.address.neighborhood}
+                value={formik.values.patient?.address?.neighborhood}
                 name="patient.address.neighborhood"
                 placeholder="Bairro"
                 error={
@@ -411,7 +444,7 @@ const Admit = () => {
               <Input
                 onChange={formik.handleChange}
                 className="small"
-                value={formik.values.patient.address.street}
+                value={formik.values.patient?.address?.street}
                 name="patient.address.street"
                 placeholder="Rua"
                 error={
@@ -425,7 +458,7 @@ const Admit = () => {
                 onChange={formik.handleChange}
                 className="small"
                 name="patient.address.number"
-                value={formik.values.patient.address.number}
+                value={formik.values.patient?.address?.number}
                 placeholder="Nº"
                 error={
                   formik.errors?.patient?.address?.number &&
@@ -480,14 +513,12 @@ const Admit = () => {
             <Select
               onChange={(e) => {
                 formik.setFieldValue("patient.allergies", e);
-                formik.setFieldTouched("patient.allergies", true);
               }}
-              getOptionLabel={(option) => option.value}
-              getOptionValue={(option) => option.id}
               value={formik.values.patient.allergies}
               placeholder="ALERGIAS"
-              options={allergiesData?.allergies || []}
+              options={allergies}
               isMulti
+              created
               error={
                 formik.errors?.patient?.allergies &&
                 formik.touched?.patient?.allergies
@@ -496,15 +527,13 @@ const Admit = () => {
               }
             />
             <Select
+              created
               onChange={(e) => {
                 formik.setFieldValue("patient.comorbidities", e);
-                formik.setFieldTouched("patient.comorbidities", true);
               }}
               value={formik.values.patient.comorbidities}
               placeholder="COMORBIDADES"
-              getOptionLabel={(option) => option.value}
-              getOptionValue={(option) => option.id}
-              options={comorbiditiesData?.comorbidities || []}
+              options={comorbidities}
               isMulti
               error={
                 formik.errors?.patient?.comorbidities &&
@@ -542,7 +571,6 @@ const Admit = () => {
           <Select
             onChange={(e) => {
               formik.setFieldValue("cid10Code", e);
-              formik.setFieldTouched("cid10Code", true);
             }}
             components={{
               Option: ({ children, ...props }) => {

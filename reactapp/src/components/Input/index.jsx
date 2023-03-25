@@ -6,7 +6,6 @@ import TextError from "components/TextError";
 function Input({ error, disabled, placeholder, value, ...props }) {
   const [select, setSelect] = useState(false);
   const ref = useRef(null);
-  console.log(ref.current?.clientWidth);
   return (
     <ContainerInput disabled={disabled}>
       {placeholder && (

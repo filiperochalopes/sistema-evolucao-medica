@@ -92,7 +92,7 @@ const strategies = {
       />
       <Input
         type="datetime-local"
-        placeholder="Data Inicial"
+        placeholder="Data e Hora da Alta"
         onChange={formik.handleChange}
         value={formik.values.extra.datetimeStamp}
         name="extra.datetimeStamp"

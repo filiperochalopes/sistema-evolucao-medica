@@ -12,16 +12,16 @@ import CheckRole from "routes/CheckRole";
 import useHandleErrors from "hooks/useHandleErrors";
 
 const initialValues = {
-  spO2: null,
-  pain: null,
-  systolicBloodPressure: null,
-  diastolicBloodPressure: null,
-  cardiacFrequency: null,
-  respiratoryFrequency: null,
-  celciusAxillaryTemperature: null,
-  glucose: null,
-  fetalCardiacFrequency: null,
-  volumeMl: null,
+  spO2: "",
+  pain: "",
+  systolicBloodPressure: "",
+  diastolicBloodPressure: "",
+  cardiacFrequency: "",
+  respiratoryFrequency: "",
+  celciusAxillaryTemperature: "",
+  glucose: "",
+  fetalCardiacFrequency: "",
+  volumeMl: "",
   descriptionVolumeMl: "",
 };
 
@@ -34,7 +34,7 @@ const VitalSign = () => {
   const formik = useFormik({
     initialValues,
     validationSchema: schema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       try {
         const variables = {
           internmentId: Number(params.id),
@@ -59,6 +59,7 @@ const VitalSign = () => {
           },
         });
         enqueueSnackbar("Prescrição Cadastrada", { variant: "success" });
+        resetForm(initialValues);
       } catch (e) {
         handleErrors(e);
       }
@@ -76,6 +77,7 @@ const VitalSign = () => {
               <Input
                 className="small"
                 name="cardiacFrequency"
+                type="text"
                 value={formik.values.cardiacFrequency}
                 onChange={formik.handleChange}
                 error={
@@ -96,6 +98,7 @@ const VitalSign = () => {
           <div>
             <div className="small">
               <Input
+                type="text"
                 className="small"
                 name="respiratoryFrequency"
                 value={formik.values.respiratoryFrequency}
@@ -117,6 +120,7 @@ const VitalSign = () => {
         <Inputs>
           <div className="small">
             <Input
+              type="text"
               name="pain"
               value={formik.values.pain}
               onChange={formik.handleChange}
@@ -131,6 +135,7 @@ const VitalSign = () => {
             placeholder="LOCALIZAÇÃO DA DOR"
             onChange={formik.handleChange}
             disabled
+            type="text"
           />
         </Inputs>
       </div>
@@ -139,6 +144,7 @@ const VitalSign = () => {
         <Inputs>
           <div className="small">
             <Input
+              type="text"
               className="small"
               name="celciusAxillaryTemperature"
               value={formik.values.celciusAxillaryTemperature}
@@ -158,6 +164,7 @@ const VitalSign = () => {
         <Inputs>
           <div className="small">
             <Input
+              type="text"
               name="systolicBloodPressure"
               value={formik.values.systolicBloodPressure}
               onChange={formik.handleChange}

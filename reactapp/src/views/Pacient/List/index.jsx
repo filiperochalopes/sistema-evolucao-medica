@@ -13,7 +13,9 @@ import { INTERNMENTS } from "graphql/queries";
 import { CONVERT_LABEL_SEX } from "constants/convertsexName";
 import CheckRole from "routes/CheckRole";
 const List = () => {
-  const { data } = useQuery(INTERNMENTS);
+  const { data } = useQuery(INTERNMENTS, {
+    fetchPolicy: "no-cache",
+  });
   const { addModal } = useModalContext();
 
   return (

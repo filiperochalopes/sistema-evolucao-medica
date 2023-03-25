@@ -266,8 +266,7 @@ const Chart = () => {
       <div className="header">
         <h2>
           <Link to={`/evoluir-paciente/${params.id}`}>Evoluir Paciente</Link> (
-          {data?.internment?.patient?.name},{data?.internment?.patient?.age}{" "}
-          anos)
+          {data?.internment?.patient?.name},{data?.internment?.patient?.age})
         </h2>
         <CheckRole roles={["doc"]}>
           <Button
@@ -292,26 +291,36 @@ const Chart = () => {
       </ol>
       <h2 className="secondary">Sinais Vitais</h2>
       <ul>
-        <li>
-          FC {newestChart.sinals?.cardiacFrequency}bpm{" "}
-          {newestChart.sinals?.cardiacFrequencyCreatedAt}
-        </li>
-        <li>
-          FCF {newestChart.sinals?.fetalCardiacFrequency}bpm{" "}
-          {newestChart.sinals?.fetalCardiacFrequencyCreatedAt}{" "}
-        </li>
-        <li>
-          HGT {newestChart.sinals?.glucose} mg/ml{" "}
-          {newestChart.sinals?.glucoseCreatedAt}
-        </li>
-        <li>
-          FR {newestChart.sinals?.respiratoryFrequency}{" "}
-          {newestChart.sinals?.respiratoryFrequencyCreatedAt}
-        </li>
-        <li>
-          TEMP AXILAR {newestChart.sinals?.celciusAxillaryTemperature}{" "}
-          {newestChart.sinals?.celciusAxillaryTemperatureCreatedAt}
-        </li>
+        {newestChart.sinals?.cardiacFrequency && (
+          <li>
+            FC {newestChart.sinals?.cardiacFrequency}bpm{" "}
+            {newestChart.sinals?.cardiacFrequencyCreatedAt}
+          </li>
+        )}
+        {newestChart.sinals?.fetalCardiacFrequency && (
+          <li>
+            FCF {newestChart.sinals?.fetalCardiacFrequency}bpm{" "}
+            {newestChart.sinals?.fetalCardiacFrequencyCreatedAt}{" "}
+          </li>
+        )}
+        {newestChart.sinals?.glucose && (
+          <li>
+            HGT {newestChart.sinals?.glucose} mg/ml{" "}
+            {newestChart.sinals?.glucoseCreatedAt}
+          </li>
+        )}
+        {newestChart.sinals?.respiratoryFrequency && (
+          <li>
+            FR {newestChart.sinals?.respiratoryFrequency}{" "}
+            {newestChart.sinals?.respiratoryFrequencyCreatedAt}
+          </li>
+        )}
+        {newestChart.sinals?.celciusAxillaryTemperature && (
+          <li>
+            TEMP AXILAR {newestChart.sinals?.celciusAxillaryTemperature}{" "}
+            {newestChart.sinals?.celciusAxillaryTemperatureCreatedAt}
+          </li>
+        )}
         <li>
           BALANÇO HÍDRICO{" "}
           <strong>TOTAL {newestChart.sinals?.totalFluids}</strong> |
