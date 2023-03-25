@@ -40,6 +40,7 @@ const Select = ({
   return (
     <Container className={className}>
       <SelectType
+        menuPosition="fixed"
         components={{
           DropdownIndicator: () => (
             <IconContainer>

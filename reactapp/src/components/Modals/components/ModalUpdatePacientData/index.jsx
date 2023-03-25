@@ -171,36 +171,6 @@ const ModalUpdatePacientData = ({ id }) => {
 
   return (
     <Container onSubmit={formik.handleSubmit}>
-      <Select
-        onChange={(e) => {
-          formik.setFieldValue("allergies", e);
-        }}
-        value={formik.values.allergies}
-        placeholder="ALERGIAS"
-        options={allergies}
-        isMulti
-        created
-        error={
-          formik.errors.allergies && formik.touched.allergies
-            ? formik.errors.allergies
-            : ""
-        }
-      />
-      <Select
-        onChange={(e) => {
-          formik.setFieldValue("comorbidities", e);
-        }}
-        created
-        value={formik.values.comorbidities}
-        placeholder="COMORBIDADES"
-        options={comorbidities}
-        isMulti
-        error={
-          formik.errors.comorbidities && formik.touched.comorbidities
-            ? formik.errors.comorbidities
-            : ""
-        }
-      />
       <div className="row">
         <Input
           className="larger"
@@ -347,6 +317,36 @@ const ModalUpdatePacientData = ({ id }) => {
           error={formik.errors.rg && formik.touched.rg ? formik.errors.rg : ""}
         />
       </div>
+      <Select
+        onChange={(e) => {
+          formik.setFieldValue("allergies", e);
+        }}
+        value={formik.values.allergies}
+        placeholder="ALERGIAS"
+        options={allergies}
+        isMulti
+        created
+        error={
+          formik.errors.allergies && formik.touched.allergies
+            ? formik.errors.allergies
+            : ""
+        }
+      />
+      <Select
+        onChange={(e) => {
+          formik.setFieldValue("comorbidities", e);
+        }}
+        created
+        value={formik.values.comorbidities}
+        placeholder="COMORBIDADES"
+        options={comorbidities}
+        isMulti
+        error={
+          formik.errors.comorbidities && formik.touched.comorbidities
+            ? formik.errors.comorbidities
+            : ""
+        }
+      />
       <div className="row">
         <Input
           className="normal"

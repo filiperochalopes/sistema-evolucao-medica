@@ -2,7 +2,7 @@ import { ERROR_LABEL } from "constants/errorText";
 import * as Yup from "yup";
 
 export default Yup.object().shape({
-  name: Yup.string(),
+  name: Yup.string().required(ERROR_LABEL),
   sex: Yup.mixed().required(ERROR_LABEL),
   birthdate: Yup.string().required(ERROR_LABEL),
   cpf: Yup.string(),

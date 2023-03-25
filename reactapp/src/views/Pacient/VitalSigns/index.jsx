@@ -38,8 +38,8 @@ const VitalSign = () => {
       try {
         const variables = {
           internmentId: Number(params.id),
-          spO2: values.spO2 > 0 ? Number(values.spO2) : null,
-          pain: Number(values.pain) ? Number(values.pain) : null,
+          spO2: Number(values.spO2) > 0 ? Number(values.spO2) : "",
+          pain: Number(values.pain) > 0 ? Number(values.pain) : "",
           systolicBloodPressure: Number(values.systolicBloodPressure),
           diastolicBloodPressure: Number(values.diastolicBloodPressure),
           cardiacFrequency: Number(values.cardiacFrequency),
@@ -48,6 +48,15 @@ const VitalSign = () => {
           glucose: Number(values.glucose),
           fetalCardiacFrequency: Number(values.fetalCardiacFrequency),
         };
+        for (const chave in variables) {
+          if (
+            // eslint-disable-next-line no-prototype-builtins
+            variables.hasOwnProperty(chave) &&
+            variables[chave] === ""
+          ) {
+            delete variables[chave];
+          }
+        }
         await createMeasure({
           variables,
         });
