@@ -338,20 +338,6 @@ const Admit = () => {
                     : ""
                 }
               />
-              <Select
-                onChange={(e) => {
-                  formik.setFieldValue("patient.sex", e);
-                }}
-                value={formik.values.patient.sex}
-                placeholder="Sexo"
-                className="small"
-                options={SEX_OPTIONS}
-                error={
-                  formik.errors.patient?.sex && formik.touched?.patient?.sex
-                    ? formik.errors.patient?.sex
-                    : ""
-                }
-              />
             </div>
             <div className="row">
               <Input
@@ -367,6 +353,34 @@ const Admit = () => {
                     : ""
                 }
               />
+              <Select
+                onChange={(e) => {
+                  formik.setFieldValue("patient.sex", e);
+                }}
+                value={formik.values.patient.sex}
+                placeholder="Sexo"
+                className="small"
+                options={SEX_OPTIONS}
+                error={
+                  formik.errors.patient?.sex && formik.touched?.patient?.sex
+                    ? formik.errors.patient?.sex
+                    : ""
+                }
+              />
+              <Input
+                onChange={formik.handleChange}
+                className="small"
+                value={formik.values.patient?.address?.street}
+                name="patient.address.street"
+                placeholder="Rua"
+                error={
+                  formik.errors?.patient?.address?.street &&
+                  formik.touched?.patient?.address?.street
+                    ? formik.errors?.patient?.address?.street
+                    : ""
+                }
+              />
+
               <Input
                 onChange={formik.handleChange}
                 className="small"
@@ -377,6 +391,34 @@ const Admit = () => {
                   formik.errors.patient?.address?.complement &&
                   formik.touched?.patient?.address?.complement
                     ? formik.errors?.patient?.address?.complement
+                    : ""
+                }
+              />
+            </div>
+            <div className="row">
+              <Input
+                onChange={formik.handleChange}
+                className="small"
+                name="patient.address.number"
+                value={formik.values.patient?.address?.number}
+                placeholder="Nº"
+                error={
+                  formik.errors?.patient?.address?.number &&
+                  formik.touched?.patient?.address?.number
+                    ? formik.errors?.patient?.address?.number
+                    : ""
+                }
+              />
+              <Input
+                onChange={formik.handleChange}
+                className="small"
+                value={formik.values.patient?.address?.neighborhood}
+                name="patient.address.neighborhood"
+                placeholder="Bairro"
+                error={
+                  formik.errors.patient?.address?.neighborhood &&
+                  formik.touched?.patient?.address?.neighborhood
+                    ? formik.errors?.patient?.address?.neighborhood
                     : ""
                 }
               />
@@ -413,6 +455,8 @@ const Admit = () => {
                     : ""
                 }
               />
+            </div>
+            <div className="row">
               <Input
                 onChange={formik.handleChange}
                 className="small"
@@ -426,49 +470,6 @@ const Admit = () => {
                     : ""
                 }
               />
-            </div>
-            <div className="row">
-              <Input
-                onChange={formik.handleChange}
-                className="small"
-                value={formik.values.patient?.address?.neighborhood}
-                name="patient.address.neighborhood"
-                placeholder="Bairro"
-                error={
-                  formik.errors.patient?.address?.neighborhood &&
-                  formik.touched?.patient?.address?.neighborhood
-                    ? formik.errors?.patient?.address?.neighborhood
-                    : ""
-                }
-              />
-              <Input
-                onChange={formik.handleChange}
-                className="small"
-                value={formik.values.patient?.address?.street}
-                name="patient.address.street"
-                placeholder="Rua"
-                error={
-                  formik.errors?.patient?.address?.street &&
-                  formik.touched?.patient?.address?.street
-                    ? formik.errors?.patient?.address?.street
-                    : ""
-                }
-              />
-              <Input
-                onChange={formik.handleChange}
-                className="small"
-                name="patient.address.number"
-                value={formik.values.patient?.address?.number}
-                placeholder="Nº"
-                error={
-                  formik.errors?.patient?.address?.number &&
-                  formik.touched?.patient?.address?.number
-                    ? formik.errors?.patient?.address?.number
-                    : ""
-                }
-              />
-            </div>
-            <div className="row">
               <Input
                 onChange={formik.handleChange}
                 className="normal"
