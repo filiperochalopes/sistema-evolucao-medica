@@ -41,6 +41,7 @@ def create_internment(_, info, hpi: str, justification: str, patient: dict, cid_
         del patient['address']
         stored_patient.allergies.clear()
         stored_patient.comorbidities.clear()
+        print(patient, file=sys.stderr)
         comorbidities, allergies = create_comorbidities_and_allergies(input_patient=patient).values()
         stored_patient.comorbidities.extend(comorbidities)
         stored_patient.allergies.extend(allergies)

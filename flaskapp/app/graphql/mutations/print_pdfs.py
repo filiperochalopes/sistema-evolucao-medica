@@ -48,7 +48,7 @@ def print_pdf_aih_sus(_, info, internment_id: int, current_user: dict, extra: di
                 'uf': internment.patient.address.uf,
                 'city': internment.patient.address.city
             }
-        }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=internment.cid10.code, requesting_professional_name=internment.professional.name, requesting_professional_document={
+        }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=internment.cid10.code, secondary_cid_10=extra['secondary_diagnosis']['code'] if ('secondary_diagnosis' in extra and 'code' in extra['secondary_diagnosis']) else None, requesting_professional_name=internment.professional.name, requesting_professional_document={
             'cns': internment.professional.cns,
             'cpf': internment.professional.cpf
         }

@@ -346,10 +346,11 @@ class Measure(BaseModel):
 
     @validates('spO2')
     def validate_spO2(self, _, value):
-        if value <= 0:
-            raise ValueError("SpO2 deve ser maior que 0")
-        if value >= 100:
-            raise ValueError("Valor não natural de SpO2, deve ser menor que 100")
+        if value is not None:
+            if value <= 0:
+                raise ValueError("SpO2 deve ser maior que 0")
+            if value >= 100:
+                raise ValueError("Valor não natural de SpO2, deve ser menor que 100")
         return value
 
     @validates('systolic_bp')
