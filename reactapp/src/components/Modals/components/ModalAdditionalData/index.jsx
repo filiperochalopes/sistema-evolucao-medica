@@ -70,13 +70,8 @@ const strategies = {
   printPdf_FolhaEvolucao: Interval,
   APAC: ({ formik }) => (
     <>
-      <div className="select_container">
-        <Select />
-      </div>
+      <Select />
 
-      <div className="select_container_back">
-        <Select />
-      </div>
       <ButtonContainer>
         <Button type="submit">Confirmar</Button>
       </ButtonContainer>
@@ -110,33 +105,26 @@ const strategies = {
 
     return (
       <>
-        <div className="select_container">
-          <Select
-            onChange={(e) => {
-              formik.setFieldValue("extra.secondaryDiagnosis", e);
-            }}
-            components={{
-              Option: ({ children, ...props }) => {
-                const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
-                const newProps = Object.assign(props, { innerProps: rest });
-                return (
-                  <components.Option {...newProps}>
-                    {children}
-                  </components.Option>
-                );
-              },
-            }}
-            filterOption={createFilter({ ignoreAccents: false })}
-            getOptionLabel={(option) => option.description}
-            getOptionValue={(option) => option.code}
-            options={cid10Data?.cid10 || []}
-            value={formik.values.extra.secondaryDiagnosis}
-            placeholder="CID - SUSPEITA SECUNDÁRIA"
-          />
-        </div>
-        <div className="select_container_back">
-          <Select />
-        </div>
+        <Select
+          onChange={(e) => {
+            formik.setFieldValue("extra.secondaryDiagnosis", e);
+          }}
+          components={{
+            Option: ({ children, ...props }) => {
+              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+              const newProps = Object.assign(props, { innerProps: rest });
+              return (
+                <components.Option {...newProps}>{children}</components.Option>
+              );
+            },
+          }}
+          filterOption={createFilter({ ignoreAccents: false })}
+          getOptionLabel={(option) => option.description}
+          getOptionValue={(option) => option.code}
+          options={cid10Data?.cid10 || []}
+          value={formik.values.extra.secondaryDiagnosis}
+          placeholder="CID - SUSPEITA SECUNDÁRIA"
+        />
         <ButtonContainer>
           <Button type="submit">Confirmar</Button>
         </ButtonContainer>
@@ -154,41 +142,33 @@ const strategies = {
 
     return (
       <>
-        <div className="select_container">
-          <Select
-            onChange={(e) => {
-              formik.setFieldValue("extra.procedure", {
-                ...e,
-                quantity: formik.values.extra.procedure?.quantity || 1,
-              });
-            }}
-            components={{
-              Option: ({ children, ...props }) => {
-                const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
-                const newProps = Object.assign(props, { innerProps: rest });
-                return (
-                  <components.Option {...newProps}>
-                    {children}
-                  </components.Option>
-                );
-              },
-            }}
-            filterOption={createFilter({ ignoreAccents: false })}
-            getOptionLabel={(option) => option.name}
-            getOptionValue={(option) => option.code}
-            options={procedures?.highComplexityProcedures || []}
-            value={
-              formik.values.extra.procedure.name
-                ? formik.values.extra.procedure
-                : null
-            }
-            placeholder="Procedimento"
-          />
-        </div>
-
-        <div className="select_container_back">
-          <Select />
-        </div>
+        <Select
+          onChange={(e) => {
+            formik.setFieldValue("extra.procedure", {
+              ...e,
+              quantity: formik.values.extra.procedure?.quantity || 1,
+            });
+          }}
+          components={{
+            Option: ({ children, ...props }) => {
+              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+              const newProps = Object.assign(props, { innerProps: rest });
+              return (
+                <components.Option {...newProps}>{children}</components.Option>
+              );
+            },
+          }}
+          filterOption={createFilter({ ignoreAccents: false })}
+          getOptionLabel={(option) => option.name}
+          getOptionValue={(option) => option.code}
+          options={procedures?.highComplexityProcedures || []}
+          value={
+            formik.values.extra.procedure.name
+              ? formik.values.extra.procedure
+              : null
+          }
+          placeholder="Procedimento"
+        />
         <Input
           type="number"
           placeholder="Quantidade"
@@ -200,44 +180,35 @@ const strategies = {
         <ContainerProcessSecondaty>
           {formik.values.extra.secondaryProcedures.map((procedure, index) => (
             <div key={index}>
-              <div className="select_container">
-                <Select
-                  onChange={(e) => {
-                    formik.setFieldValue(
-                      `extra.secondaryProcedures[${index}]`,
-                      {
-                        name: e.name,
-                        code: e.code,
-                        quantity: procedure.quantity,
-                      }
+              <Select
+                onChange={(e) => {
+                  formik.setFieldValue(`extra.secondaryProcedures[${index}]`, {
+                    name: e.name,
+                    code: e.code,
+                    quantity: procedure.quantity,
+                  });
+                }}
+                components={{
+                  Option: ({ children, ...props }) => {
+                    const { onMouseMove, onMouseOver, ...rest } =
+                      props.innerProps;
+                    const newProps = Object.assign(props, {
+                      innerProps: rest,
+                    });
+                    return (
+                      <components.Option {...newProps}>
+                        {children}
+                      </components.Option>
                     );
-                  }}
-                  components={{
-                    Option: ({ children, ...props }) => {
-                      const { onMouseMove, onMouseOver, ...rest } =
-                        props.innerProps;
-                      const newProps = Object.assign(props, {
-                        innerProps: rest,
-                      });
-                      return (
-                        <components.Option {...newProps}>
-                          {children}
-                        </components.Option>
-                      );
-                    },
-                  }}
-                  filterOption={createFilter({ ignoreAccents: false })}
-                  getOptionLabel={(option) => option.name}
-                  getOptionValue={(option) => option.code}
-                  options={procedures?.highComplexityProcedures || []}
-                  value={procedure}
-                  placeholder="Procedimento Secundário"
-                />
-              </div>
-
-              <div className="select_container_back">
-                <Select />
-              </div>
+                  },
+                }}
+                filterOption={createFilter({ ignoreAccents: false })}
+                getOptionLabel={(option) => option.name}
+                getOptionValue={(option) => option.code}
+                options={procedures?.highComplexityProcedures || []}
+                value={procedure}
+                placeholder="Procedimento Secundário"
+              />
               <br />
               <Input
                 type="number"
@@ -267,38 +238,31 @@ const strategies = {
               <br />
             </div>
           ))}
-          <div className="select_container">
-            <Select
-              onChange={(e) => {
-                setCurrentSecondaryProcedure({
-                  name: e.name,
-                  code: e.code,
-                });
-              }}
-              components={{
-                Option: ({ children, ...props }) => {
-                  const { onMouseMove, onMouseOver, ...rest } =
-                    props.innerProps;
-                  const newProps = Object.assign(props, { innerProps: rest });
-                  return (
-                    <components.Option {...newProps}>
-                      {children}
-                    </components.Option>
-                  );
-                },
-              }}
-              filterOption={createFilter({ ignoreAccents: false })}
-              getOptionLabel={(option) => option.name}
-              getOptionValue={(option) => option.code}
-              options={procedures?.highComplexityProcedures || []}
-              value={currentSecondaryProced}
-              placeholder="Procedimento Secundário"
-            />
-          </div>
-
-          <div className="select_container_back">
-            <Select />
-          </div>
+          <Select
+            onChange={(e) => {
+              setCurrentSecondaryProcedure({
+                name: e.name,
+                code: e.code,
+              });
+            }}
+            components={{
+              Option: ({ children, ...props }) => {
+                const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+                const newProps = Object.assign(props, { innerProps: rest });
+                return (
+                  <components.Option {...newProps}>
+                    {children}
+                  </components.Option>
+                );
+              },
+            }}
+            filterOption={createFilter({ ignoreAccents: false })}
+            getOptionLabel={(option) => option.name}
+            getOptionValue={(option) => option.code}
+            options={procedures?.highComplexityProcedures || []}
+            value={currentSecondaryProced}
+            placeholder="Procedimento Secundário"
+          />
           <br />
           <Input
             type="number"
@@ -326,90 +290,66 @@ const strategies = {
             </Button>
           </ButtonContainer>
         </ContainerProcessSecondaty>
-        <div className="select_container">
-          <Select
-            onChange={(e) => {
-              formik.setFieldValue("extra.diagnosis", e);
-            }}
-            components={{
-              Option: ({ children, ...props }) => {
-                const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
-                const newProps = Object.assign(props, { innerProps: rest });
-                return (
-                  <components.Option {...newProps}>
-                    {children}
-                  </components.Option>
-                );
-              },
-            }}
-            filterOption={createFilter({ ignoreAccents: false })}
-            getOptionLabel={(option) => option.description}
-            getOptionValue={(option) => option.code}
-            options={cid10Data?.cid10 || []}
-            value={formik.values.extra.diagnosis}
-            placeholder="Diagnóstico"
-          />
-        </div>
-
-        <div className="select_container_back">
-          <Select />
-        </div>
-        <div className="select_container">
-          <Select
-            onChange={(e) => {
-              formik.setFieldValue("extra.secondaryDiagnosis", e);
-            }}
-            components={{
-              Option: ({ children, ...props }) => {
-                const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
-                const newProps = Object.assign(props, { innerProps: rest });
-                return (
-                  <components.Option {...newProps}>
-                    {children}
-                  </components.Option>
-                );
-              },
-            }}
-            filterOption={createFilter({ ignoreAccents: false })}
-            getOptionLabel={(option) => option.description}
-            getOptionValue={(option) => option.code}
-            options={cid10Data?.cid10 || []}
-            value={formik.values.extra.secondaryDiagnosis}
-            placeholder="Diagnóstico secundário"
-          />
-        </div>
-
-        <div className="select_container_back">
-          <Select />
-        </div>
-        <div className="select_container">
-          <Select
-            onChange={(e) => {
-              formik.setFieldValue("extra.ssociatedCause", e);
-            }}
-            components={{
-              Option: ({ children, ...props }) => {
-                const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
-                const newProps = Object.assign(props, { innerProps: rest });
-                return (
-                  <components.Option {...newProps}>
-                    {children}
-                  </components.Option>
-                );
-              },
-            }}
-            filterOption={createFilter({ ignoreAccents: false })}
-            getOptionLabel={(option) => option.description}
-            getOptionValue={(option) => option.code}
-            options={cid10Data?.cid10 || []}
-            value={formik.values.extra.ssociatedCause}
-            placeholder="Causa Associada"
-          />
-        </div>
-
-        <div className="select_container_back">
-          <Select />
-        </div>
+        <Select
+          onChange={(e) => {
+            formik.setFieldValue("extra.diagnosis", e);
+          }}
+          components={{
+            Option: ({ children, ...props }) => {
+              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+              const newProps = Object.assign(props, { innerProps: rest });
+              return (
+                <components.Option {...newProps}>{children}</components.Option>
+              );
+            },
+          }}
+          filterOption={createFilter({ ignoreAccents: false })}
+          getOptionLabel={(option) => option.description}
+          getOptionValue={(option) => option.code}
+          options={cid10Data?.cid10 || []}
+          value={formik.values.extra.diagnosis}
+          placeholder="Diagnóstico"
+        />
+        <Select
+          onChange={(e) => {
+            formik.setFieldValue("extra.secondaryDiagnosis", e);
+          }}
+          components={{
+            Option: ({ children, ...props }) => {
+              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+              const newProps = Object.assign(props, { innerProps: rest });
+              return (
+                <components.Option {...newProps}>{children}</components.Option>
+              );
+            },
+          }}
+          filterOption={createFilter({ ignoreAccents: false })}
+          getOptionLabel={(option) => option.description}
+          getOptionValue={(option) => option.code}
+          options={cid10Data?.cid10 || []}
+          value={formik.values.extra.secondaryDiagnosis}
+          placeholder="Diagnóstico secundário"
+        />
+        <Select
+          onChange={(e) => {
+            formik.setFieldValue("extra.ssociatedCause", e);
+          }}
+          components={{
+            Option: ({ children, ...props }) => {
+              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+              const newProps = Object.assign(props, { innerProps: rest });
+              return (
+                <components.Option {...newProps}>{children}</components.Option>
+              );
+            },
+          }}
+          filterOption={createFilter({ ignoreAccents: false })}
+          getOptionLabel={(option) => option.description}
+          getOptionValue={(option) => option.code}
+          options={cid10Data?.cid10 || []}
+          value={formik.values.extra.ssociatedCause}
+          placeholder="Causa Associada"
+        />
         <TextArea
           placeholder="Observações"
           name="extra.observations"

@@ -42,10 +42,7 @@ export const ContainerContentModal = styled.div`
   border-radius: 5px;
 
   main {
-    position: relative;
-    > div {
-      overflow: auto;
-    }
+    overflow: auto;
   }
 `;
 
