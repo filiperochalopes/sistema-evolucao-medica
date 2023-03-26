@@ -12,11 +12,16 @@ import { useQuery } from "@apollo/client";
 import { INTERNMENTS } from "graphql/queries";
 import { CONVERT_LABEL_SEX } from "constants/convertsexName";
 import CheckRole from "routes/CheckRole";
+import { useEffect } from "react";
 const List = () => {
-  const { data } = useQuery(INTERNMENTS, {
+  const { data, refetch } = useQuery(INTERNMENTS, {
     fetchPolicy: "no-cache",
   });
   const { addModal } = useModalContext();
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <Container>
