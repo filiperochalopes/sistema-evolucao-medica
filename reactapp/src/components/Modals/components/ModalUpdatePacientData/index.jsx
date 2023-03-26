@@ -15,6 +15,7 @@ import maskPhone from "utils/maskPhone";
 import maskCpf from "utils/maskCpf";
 
 import { useSnackbar } from "notistack";
+import patientSchema from "schemas/patientSchema";
 const GENERS = [
   { label: "Masculino", value: "male" },
   { label: "Feminino", value: "fema" },
@@ -65,7 +66,7 @@ const ModalUpdatePacientData = ({ id }) => {
             id: id,
             patient: {
               ...values,
-              sex: values.sex.value,
+              sex: values.sex?.value,
               comorbidities: values.comorbidities.map(
                 (commorbiditie) => commorbiditie.value
               ),
@@ -73,10 +74,9 @@ const ModalUpdatePacientData = ({ id }) => {
               weightKg: parseFloat(values.weightKg),
               address: {
                 ...values.address,
-                uf: values.address.uf.uf,
+                uf: values.address?.uf?.uf,
               },
               cpf: values.cpf.replace(/\D/g, ""),
-              ethnicity: values.ethnicity?.value,
               phone: values.phone.replace(/\D/g, ""),
             },
           },
@@ -87,6 +87,7 @@ const ModalUpdatePacientData = ({ id }) => {
         handleErrors(e);
       }
     },
+    validationSchema: patientSchema,
   });
   useEffect(() => {
     getPatientData({

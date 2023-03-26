@@ -488,19 +488,26 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
               description: newValues.extra.secondaryDiagnosis.description,
             };
           }
-          newValues.extra.ssociatedCause = {
-            code: newValues.extra.ssociatedCause.code,
-            description: newValues.extra.ssociatedCause.description,
-          };
-          newValues.extra.diagnosis = {
-            code: newValues.extra.diagnosis.code,
-            description: newValues.extra.diagnosis.description,
-          };
-          newValues.extra.procedure = {
-            code: newValues.extra.procedure.code,
-            name: newValues.extra.procedure.name,
-            quantity: newValues.extra.procedure.quantity,
-          };
+          console.log(newValues);
+          if (newValues.extra.ssociatedCause) {
+            newValues.extra.ssociatedCause = {
+              code: newValues.extra.ssociatedCause.code,
+              description: newValues.extra.ssociatedCause.description,
+            };
+          }
+          if (newValues.extra.diagnosis) {
+            newValues.extra.diagnosis = {
+              code: newValues.extra.diagnosis.code,
+              description: newValues.extra.diagnosis.description,
+            };
+          }
+          if (newValues.extra.procedure) {
+            newValues.extra.procedure = {
+              code: newValues.extra.procedure.code,
+              name: newValues.extra.procedure.name,
+              quantity: newValues.extra.procedure.quantity,
+            };
+          }
           request = getPDFApac;
         }
         if (!request) {
@@ -522,6 +529,7 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
         link.setAttribute("target", "_blank");
         link.click();
       } catch (e) {
+        console.log(e);
         handleErrors(e);
       }
     },
