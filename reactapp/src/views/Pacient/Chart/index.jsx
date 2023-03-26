@@ -148,6 +148,7 @@ const Chart = () => {
         systolicBloodPressureCreatedAt: "",
         fluids: [],
         totalFluids: "",
+        existSinals: measures.length > 0,
       };
       console.log(measures[0]);
       // eslint-disable-next-line for-direction
@@ -260,7 +261,7 @@ const Chart = () => {
       },
     });
   }, [getInternment, params]);
-
+  console.log("newestChart.textEvolution", newestChart.textEvolution.length);
   return (
     <Container>
       <div className="header">
@@ -277,102 +278,122 @@ const Chart = () => {
           </Button>
         </CheckRole>
       </div>
-      <h2>Admissão</h2>
-      <p>{data?.internment?.hpi}</p>
-      <h2>Últimas Atualizações</h2>
-      {newestChart.textEvolution.map((evolution) => (
-        <p>{evolution?.text}</p>
-      ))}
-      <h2 className="secondary">Prescrições</h2>
+      {data?.internment?.hpi && (
+        <>
+          <h2>Admissão</h2>
+          <p>{data?.internment?.hpi}</p>
+        </>
+      )}
+      {newestChart.textEvolution.length > 0 && (
+        <>
+          <h2>Últimas Atualizações</h2>
+          {newestChart.textEvolution.map((evolution) => (
+            <p>{evolution?.text}</p>
+          ))}
+        </>
+      )}
+      {newestChart.prescriptions.length > 0 && (
+        <h2 className="secondary">Prescrições</h2>
+      )}
       <ol>
         {newestChart.prescriptions.map((prescription) => (
           <li key={prescription.id}>{prescription.value}</li>
         ))}
       </ol>
-      <h2 className="secondary">Sinais Vitais</h2>
-      <ul>
-        {newestChart.sinals?.cardiacFrequency && (
-          <li>
-            FC {newestChart.sinals?.cardiacFrequency}bpm{" "}
-            {newestChart.sinals?.cardiacFrequencyCreatedAt}
-          </li>
-        )}
-        {newestChart.sinals?.fetalCardiacFrequency && (
-          <li>
-            FCF {newestChart.sinals?.fetalCardiacFrequency}bpm{" "}
-            {newestChart.sinals?.fetalCardiacFrequencyCreatedAt}{" "}
-          </li>
-        )}
-        {newestChart.sinals?.glucose && (
-          <li>
-            HGT {newestChart.sinals?.glucose} mg/ml{" "}
-            {newestChart.sinals?.glucoseCreatedAt}
-          </li>
-        )}
-        {newestChart.sinals?.respiratoryFrequency && (
-          <li>
-            FR {newestChart.sinals?.respiratoryFrequency}{" "}
-            {newestChart.sinals?.respiratoryFrequencyCreatedAt}
-          </li>
-        )}
-        {newestChart.sinals?.celciusAxillaryTemperature && (
-          <li>
-            TEMP AXILAR {newestChart.sinals?.celciusAxillaryTemperature}{" "}
-            {newestChart.sinals?.celciusAxillaryTemperatureCreatedAt}
-          </li>
-        )}
-        <li>
-          BALANÇO HÍDRICO{" "}
-          <strong>TOTAL {newestChart.sinals?.totalFluids}</strong> |
-          {(newestChart.sinals?.fluids || []).map(
-            (fluid) => `${fluid.volumeMl}ml - ${fluid.descriptionVolumeMl}`
-          )}
-          <button
-            type="button"
-            onClick={async () => {
-              const date = format(
-                new Date(newestChart.sinals.createdAt),
-                "yyyy/MM/dd",
-                {
-                  locale: ptBR,
-                }
-              );
-              const response = await printFluids({
-                variables: {
-                  internmentId: Number(params.id),
-                  extra: {
-                    interval: {
-                      startDatetimeStamp: `${date}:00:00`,
-                      endingDatetimeStamp: `${date}:23:59`,
+      {newestChart.sinals?.existSinals && (
+        <>
+          <h2 className="secondary">Sinais Vitais</h2>
+          <ul>
+            {newestChart.sinals?.cardiacFrequency && (
+              <li>
+                FC {newestChart.sinals?.cardiacFrequency}bpm{" "}
+                {newestChart.sinals?.cardiacFrequencyCreatedAt}
+              </li>
+            )}
+            {newestChart.sinals?.fetalCardiacFrequency && (
+              <li>
+                FCF {newestChart.sinals?.fetalCardiacFrequency}bpm{" "}
+                {newestChart.sinals?.fetalCardiacFrequencyCreatedAt}{" "}
+              </li>
+            )}
+            {newestChart.sinals?.glucose && (
+              <li>
+                HGT {newestChart.sinals?.glucose} mg/ml{" "}
+                {newestChart.sinals?.glucoseCreatedAt}
+              </li>
+            )}
+            {newestChart.sinals?.respiratoryFrequency && (
+              <li>
+                FR {newestChart.sinals?.respiratoryFrequency}{" "}
+                {newestChart.sinals?.respiratoryFrequencyCreatedAt}
+              </li>
+            )}
+            {newestChart.sinals?.celciusAxillaryTemperature && (
+              <li>
+                TEMP AXILAR {newestChart.sinals?.celciusAxillaryTemperature}{" "}
+                {newestChart.sinals?.celciusAxillaryTemperatureCreatedAt}
+              </li>
+            )}
+            <li>
+              BALANÇO HÍDRICO{" "}
+              <strong>TOTAL {newestChart.sinals?.totalFluids}</strong> |
+              {(newestChart.sinals?.fluids || []).map(
+                (fluid) => `${fluid.volumeMl}ml - ${fluid.descriptionVolumeMl}`
+              )}
+              <button
+                type="button"
+                onClick={async () => {
+                  const date = format(
+                    new Date(newestChart.sinals.createdAt),
+                    "yyyy/MM/dd",
+                    {
+                      locale: ptBR,
+                    }
+                  );
+                  const response = await printFluids({
+                    variables: {
+                      internmentId: Number(params.id),
+                      extra: {
+                        interval: {
+                          startDatetimeStamp: `${date}:00:00`,
+                          endingDatetimeStamp: `${date}:23:59`,
+                        },
+                      },
                     },
-                  },
-                },
-              });
-              const link = document.createElement("a");
-              const file = b64toBlob(
-                response.data.printPdf_BalancoHidrico.base64Pdf,
-                "application/pdf"
-              );
-              const url = URL.createObjectURL(file);
-              link.href = url;
-              link.setAttribute("target", "_blank");
-              link.click();
-            }}
-          >
-            para ter uma visão geral do balanço hídrico acesse esse link
-          </button>
-        </li>
-      </ul>
-      <PendingStrategy
-        dateFormated={newestChart.pending?.dateFormated}
-        text={newestChart.pending?.text}
-      />
-      <h2>Demais Evoluções</h2>
-      {oldCharts.map((oldChart) => (
-        <div>
-          <Strategies oldChart={oldChart} />
-        </div>
-      ))}
+                  });
+                  const link = document.createElement("a");
+                  const file = b64toBlob(
+                    response.data.printPdf_BalancoHidrico.base64Pdf,
+                    "application/pdf"
+                  );
+                  const url = URL.createObjectURL(file);
+                  link.href = url;
+                  link.setAttribute("target", "_blank");
+                  link.click();
+                }}
+              >
+                para ter uma visão geral do balanço hídrico acesse esse link
+              </button>
+            </li>
+          </ul>
+        </>
+      )}
+      {newestChart.pending?.text && (
+        <PendingStrategy
+          dateFormated={newestChart.pending?.dateFormated}
+          text={newestChart.pending?.text}
+        />
+      )}
+      {oldCharts.length > 0 && (
+        <>
+          <h2>Demais Evoluções</h2>
+          {oldCharts.map((oldChart) => (
+            <div>
+              <Strategies oldChart={oldChart} />
+            </div>
+          ))}
+        </>
+      )}
     </Container>
   );
 };
