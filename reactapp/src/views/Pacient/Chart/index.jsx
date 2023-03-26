@@ -67,7 +67,7 @@ const Chart = () => {
       }
       array.push({
         id: drug.drug.name,
-        value: `${drug.drug.name} ${drug.route} ${drug.dosage} ${drug.drug.name} ${initialDate} ${finalDate}`,
+        value: `${drug.drug.name} ${drug.route} ${drug.dosage} ${initialDate} ${finalDate}`,
       });
     });
 
@@ -260,7 +260,7 @@ const Chart = () => {
       },
     });
   }, [getInternment, params]);
-  console.log(newestChart);
+
   return (
     <Container>
       <div className="header">
