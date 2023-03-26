@@ -23,7 +23,7 @@ const authLink = setContext((_, { headers }) => {
 
 const logoutLink = onError(({ response }) => {
   if (
-    response.errors.find((error) => error.message === "Signature has expired")
+    response?.errors?.find((error) => error.message === "Signature has expired")
   ) {
     localStorage.removeItem("token");
     window.location.href = "/";

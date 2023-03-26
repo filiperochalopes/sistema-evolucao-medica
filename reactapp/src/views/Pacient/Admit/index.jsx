@@ -346,6 +346,7 @@ const Admit = () => {
                 name="patient.weightKg"
                 value={formik.values.patient.weightKg}
                 placeholder="Peso"
+                type="number"
                 error={
                   formik.errors.patient?.weightKg &&
                   formik.touched.patient?.weightKg

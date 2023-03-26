@@ -83,6 +83,7 @@ const ModalUpdatePacientData = ({ id }) => {
         });
         enqueueSnackbar("Paciente Atualizado", { variant: "success" });
       } catch (e) {
+        console.log(e);
         handleErrors(e);
       }
     },
@@ -285,7 +286,7 @@ const ModalUpdatePacientData = ({ id }) => {
           className="small"
           placeholder="CEP"
           onChange={formik.handleChange}
-          name="address.zipcode"
+          name="address.zipCode"
           value={formik.values.address.zipCode}
           error={
             formik.errors?.address?.zipCode && formik.touched?.address?.zipCode
@@ -301,6 +302,7 @@ const ModalUpdatePacientData = ({ id }) => {
           name="weightKg"
           value={formik.values.weightKg}
           placeholder="Peso"
+          type="number"
           error={
             formik.errors?.weightKg && formik.touched?.weightKg
               ? formik.errors?.weightKg

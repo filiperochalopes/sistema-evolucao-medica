@@ -17,6 +17,17 @@ export default styled.input`
   :disabled {
     background: #ececec;
   }
+
+  ::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  [type="number"] {
+    -moz-appearance: textfield;
+  }
 `;
 
 export const ContainerInput = styled.div`
