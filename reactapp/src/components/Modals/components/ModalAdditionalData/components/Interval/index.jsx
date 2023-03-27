@@ -54,14 +54,14 @@ const Interval = ({ formik }) => {
     <>
       <Input
         type="datetime-local"
-        placeholder="Data Inicial"
+        placeholder="Data e Hora inicial"
         onChange={formik.handleChange}
         value={formik.values.extra.interval.startDatetimeStamp}
         name="extra.interval.startDatetimeStamp"
       />
       <Input
         type="datetime-local"
-        placeholder="Data Final"
+        placeholder="Data e Hora Final"
         onChange={formik.handleChange}
         value={formik.values.extra.interval.endingDatetimeStamp}
         name="extra.interval.endingDatetimeStamp"
