@@ -17,7 +17,9 @@ import b64toBlob from "utils/b64toBlob";
 import CheckRole from "routes/CheckRole";
 
 const Chart = () => {
-  const [getInternment, { data }] = useLazyQuery(GET_ALL_CHART);
+  const [getInternment, { data }] = useLazyQuery(GET_ALL_CHART, {
+    fetchPolicy: "no-cache",
+  });
   const [printFluids] = useMutation(GENERATE_PDF_BALANCO_HIDRICO);
   const [newestChart, setNewestChart] = useState({
     prescriptions: [],
