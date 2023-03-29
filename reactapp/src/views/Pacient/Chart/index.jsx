@@ -15,11 +15,13 @@ import { useModalContext } from "services/ModalContext";
 import { GENERATE_PDF_BALANCO_HIDRICO } from "graphql/mutations";
 import b64toBlob from "utils/b64toBlob";
 import CheckRole from "routes/CheckRole";
+import useHandleErrors from "hooks/useHandleErrors";
 
 const Chart = () => {
   const [getInternment, { data }] = useLazyQuery(GET_ALL_CHART, {
     fetchPolicy: "no-cache",
   });
+  const { handleErrors } = useHandleErrors();
   const [printFluids] = useMutation(GENERATE_PDF_BALANCO_HIDRICO);
   const [newestChart, setNewestChart] = useState({
     prescriptions: [],
@@ -173,21 +175,24 @@ const Chart = () => {
 
       let total = 0;
       const fluids = [];
-      const date = new Date();
+      let initialDate = new Date();
+      let endDate = new Date();
+
+      if (initialDate.getHours() > 7) {
+        endDate.setDate(initialDate.getDate() + 1);
+        console.log(endDate);
+      } else {
+        initialDate.setDate(initialDate.getDate() - 1);
+      }
+      endDate.setHours(7, 0, 0);
+      initialDate.setHours(7, 0, 0);
+
+      endDate = endDate.getTime();
+      initialDate = initialDate.getTime();
       fluidBalances.forEach((fluidBalance) => {
-        if (object?.createdAt) {
-          const response = intervalToDuration({
-            start: parseISO(object.createdAt),
-            end: date,
-          });
-          if (response.days <= 1) {
-            total += fluidBalance.volumeMl;
-            fluids.push({
-              volumeMl: fluidBalance.volumeMl,
-              descriptionVolumeMl: fluidBalance.description.value,
-            });
-          }
-        } else {
+        const fluidBalaneDate = new Date(fluidBalance.createdAt);
+        const fluidBalanceTime = fluidBalaneDate.getTime();
+        if (initialDate <= fluidBalanceTime && endDate >= fluidBalanceTime) {
           total += fluidBalance.volumeMl;
           fluids.push({
             volumeMl: fluidBalance.volumeMl,
@@ -345,33 +350,45 @@ const Chart = () => {
               <button
                 type="button"
                 onClick={async () => {
-                  const date = format(
-                    new Date(newestChart.sinals.createdAt),
-                    "yyyy/MM/dd",
-                    {
-                      locale: ptBR,
+                  try {
+                    let initialDate = new Date();
+                    let endDate = new Date();
+
+                    if (initialDate.getHours() > 7) {
+                      endDate.setDate(initialDate.getDate() + 1);
+                    } else {
+                      initialDate.setDate(initialDate.getDate() - 1);
                     }
-                  );
-                  const response = await printFluids({
-                    variables: {
-                      internmentId: Number(params.id),
-                      extra: {
-                        interval: {
-                          startDatetimeStamp: `${date}:00:00`,
-                          endingDatetimeStamp: `${date}:23:59`,
+                    initialDate = format(initialDate, "yyyy/MM/dd", {
+                      locale: ptBR,
+                    });
+                    endDate = format(endDate, "yyyy/MM/dd", {
+                      locale: ptBR,
+                    });
+
+                    const response = await printFluids({
+                      variables: {
+                        internmentId: Number(params.id),
+                        extra: {
+                          interval: {
+                            startDatetimeStamp: `${initialDate}:07:00`,
+                            endingDatetimeStamp: `${endDate}:07:00`,
+                          },
                         },
                       },
-                    },
-                  });
-                  const link = document.createElement("a");
-                  const file = b64toBlob(
-                    response.data.printPdf_BalancoHidrico.base64Pdf,
-                    "application/pdf"
-                  );
-                  const url = URL.createObjectURL(file);
-                  link.href = url;
-                  link.setAttribute("target", "_blank");
-                  link.click();
+                    });
+                    const link = document.createElement("a");
+                    const file = b64toBlob(
+                      response.data.printPdf_BalancoHidrico.base64Pdf,
+                      "application/pdf"
+                    );
+                    const url = URL.createObjectURL(file);
+                    link.href = url;
+                    link.setAttribute("target", "_blank");
+                    link.click();
+                  } catch (e) {
+                    handleErrors(e);
+                  }
                 }}
               >
                 para ter uma visão geral do balanço hídrico acesse esse link
