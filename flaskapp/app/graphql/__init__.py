@@ -267,7 +267,7 @@ type_defs = gql(
 
     input PatientInput{
         "Nome completo do paciente"
-        name:String,
+        name:String!,
         "Nome completo da mãe do paciente"
         motherName: String!
         "Sexo biológico binário `male` ou `female`"
