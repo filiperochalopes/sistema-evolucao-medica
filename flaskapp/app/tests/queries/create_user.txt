@@ -1,16 +1,16 @@
 mutation{
-  createUser(masterKey:"passw@rd", user:{
-    email: "contato@filipelopes.med.br"
-    name: "Luke Skywalker"
-    phone: "71992540736"
-    password: "passw@rd"
-    cpf: "67705766434"
-    weightKg: 69.5
-    cns: "843199791240004"
-    birthdate: "1995-12-01"
-    professionalCategory: "doc"
-    professionalDocumentUf: "BA"
-    professionalDocumentNumber: "37825"
+  createUser(masterKey:"passw@rd", 
+    user:{
+      email: "contato@filipelopes.med.br"
+      name: "Luke Skywalker"
+      phone: "71992540736"
+      password: "passw@rd"
+      cpf: "67705766434"
+      cns: "843199791240004"
+      birthdate: "1995-12-01"
+      professionalCategory: "doc"
+      professionalDocumentUf: "BA"
+      professionalDocumentNumber: "37825"
   }){
     id
   }

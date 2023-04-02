@@ -1,6 +1,4 @@
-import datetime
-from datetime import date
-import sys
+from datetime import date, datetime, timedelta
 
 def calculate_age(birthdate:date):
     '''Captura a idade completa, dada uma data de nascimento'''
@@ -27,15 +25,15 @@ def calculate_age(birthdate:date):
 
 def get_default_timestamp_interval():
     # Avalia o horário atual, se estiver à frente de 7h da manhã captura o dia de hoje e amanhã, se estiver atrás de 7h da manhã captura o dia de ontem e hoje.
-    now = datetime.datetime.now()
-    tomorrow = now + datetime.timedelta(days=1)
-    yesterday = now + datetime.timedelta(days=-1)
+    now = datetime.now()
+    tomorrow = now + timedelta(days=1)
+    yesterday = now + timedelta(days=-1)
 
     tomorrow = tomorrow.replace(hour=7, minute=0, second=0)
     now = now.replace(hour=7, minute=0, second=0)
     yesterday = yesterday.replace(hour=7, minute=0, second=0)
 
-    if datetime.datetime.now().hour > 7:
+    if datetime.now().hour > 7:
         _start_datetime_ISO_string = now.strftime('%Y-%m-%dT%H:%M:%S')
         _ending_datetime_ISO_string = tomorrow.strftime('%Y-%m-%dT%H:%M:%S')
     else:
