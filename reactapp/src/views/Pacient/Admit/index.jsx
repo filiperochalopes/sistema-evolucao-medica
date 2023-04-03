@@ -16,6 +16,7 @@ import {
   GET_PATIENTS,
   STATES,
   GET_PATIENT,
+  GET_INITIAL_PATIENTS,
 } from "graphql/queries";
 import { useEffect } from "react";
 import getCepApiAdapter from "services/getCepApiAdapter";
@@ -42,6 +43,7 @@ const Admit = () => {
   const { data: statesData } = useQuery(STATES);
   const { data: cid10Data } = useQuery(CID10);
   const [getPatients] = useLazyQuery(GET_PATIENTS);
+  const { data: InitialPatients } = useQuery(GET_INITIAL_PATIENTS);
   const [getPatient, { data }] = useLazyQuery(GET_PATIENT);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -255,6 +257,10 @@ const Admit = () => {
       <h2>Admitir Paciente</h2>
       <ContainerSearchInput onSubmit={formikGetPatient.handleSubmit}>
         <Select
+          defaultOptions={InitialPatients?.patients?.map((patient) => ({
+            label: patient.name,
+            id: patient.id,
+          }))}
           loadOptions={promiseOptions}
           value={formikGetPatient.values.patientName}
           name="patientName"

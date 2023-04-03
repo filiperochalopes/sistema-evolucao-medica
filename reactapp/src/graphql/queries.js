@@ -139,6 +139,41 @@ export const GET_PATIENTS = gql`
   }
 `;
 
+export const GET_INITIAL_PATIENTS = gql`
+  query patients {
+    patients {
+      id
+      name
+      birthdate
+      sex
+      age
+      cns
+      rg
+      phone
+      cpf
+      weightKg
+      motherName
+      comorbidities {
+        id
+        value
+      }
+      allergies {
+        id
+        value
+      }
+      address {
+        zipCode
+        street
+        number
+        neighborhood
+        complement
+        city
+        uf
+      }
+    }
+  }
+`;
+
 export const GET_PATIENT = gql`
   query patient($id: ID) {
     patient(id: $id) {
