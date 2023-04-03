@@ -19,7 +19,7 @@ from app.services.functions.pdfs.func_generate_pdf_balanco_hidrico import func_g
 @mutation.field('printPdf_AihSus')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_aih_sus(_, info, internment_id: int, current_user: dict, extra: dict = None):
+def print_pdf_aih_sus(_, info, internment_id: int, current_user: dict, extra: dict = {}):
     internment = db.session.query(Internment).get(internment_id)
 
     return func_generate_pdf_aih_sus(
@@ -58,7 +58,7 @@ def print_pdf_aih_sus(_, info, internment_id: int, current_user: dict, extra: di
 @mutation.field('printPdf_FichaInternamento')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict, extra: dict = None):
+def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict, extra: dict = {}):
     internment = db.session.query(Internment).get(internment_id)
 
     return func_generate_pdf_ficha_internamento(
@@ -196,7 +196,7 @@ def print_pdf_folha_prescricao(_, info, internment_id: int, current_user: dict, 
 @mutation.field('printPdf_FolhaEvolucao')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_folha_evolucao(_, info, internment_id: int, current_user: dict, extra: dict = None):
+def print_pdf_folha_evolucao(_, info, internment_id: int, current_user: dict, extra: dict = {}):
     internment = db.session.query(Internment).get(internment_id)
 
     start_datetime_stamp, ending_datetime_stamp = get_default_timestamp_interval_with_extra_interval_options(extra)
@@ -237,7 +237,7 @@ def print_pdf_folha_evolucao(_, info, internment_id: int, current_user: dict, ex
 @mutation.field('printPdf_BalancoHidrico')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_balanco_hidrico(_, info, internment_id: int, current_user: dict, extra: dict = None):
+def print_pdf_balanco_hidrico(_, info, internment_id: int, current_user: dict, extra: dict = {}):
     internment = db.session.query(Internment).get(internment_id)
     start_datetime_stamp, ending_datetime_stamp = get_default_timestamp_interval_with_extra_interval_options(extra)
 
