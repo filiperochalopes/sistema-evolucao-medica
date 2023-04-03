@@ -181,27 +181,32 @@ const Evolution = () => {
         ),
       });
     }
-    if (data.internment?.evolutions?.length > 0) {
-      formikEvolution.setValues({
-        cid10Code: data.internment.cid10,
-        text: data.internment.evolutions[
-          data.internment?.evolutions?.length - 1
-        ].text,
-        dateFormat: format(
-          parseISO(
-            data.internment.evolutions[data.internment?.evolutions?.length - 1]
-              .createdAt
-          ),
-          `'ÚLTIMA EVOLUÇÃO ATUALIZADA por ${
-            data.internment.evolutions[data.internment?.evolutions?.length - 1]
-              .professional.name
-          } EM' dd/MM/yyyy HH:mm:ss`,
-          {
-            locale: ptBR,
-          }
-        ),
-      });
-    }
+    formikEvolution.setValues({
+      cid10Code: data.internment.cid10,
+      text:
+        data.internment.evolutions?.length > 0
+          ? data.internment.evolutions[data.internment?.evolutions?.length - 1]
+              .text
+          : "",
+      dateFormat:
+        data.internment.evolutions?.length > 0
+          ? format(
+              parseISO(
+                data.internment.evolutions[
+                  data.internment?.evolutions?.length - 1
+                ].createdAt
+              ),
+              `'ÚLTIMA EVOLUÇÃO ATUALIZADA por ${
+                data.internment.evolutions[
+                  data.internment?.evolutions?.length - 1
+                ].professional.name
+              } EM' dd/MM/yyyy HH:mm:ss`,
+              {
+                locale: ptBR,
+              }
+            )
+          : "",
+    });
     // eslint-disable-next-line
   }, [data]);
 
@@ -318,7 +323,7 @@ const Evolution = () => {
             getOptionValue={(option) => option.code}
             options={cid10Data?.cid10 || []}
             value={formikEvolution.values.cid10Code}
-            placeholder="CID - SUSPEITA INICIAL"
+            placeholder="CID - ATUALIZAÇÃO DE DIAGNÓSTICO PRINCIPAL"
           />
           <p className="legend">{formikEvolution.values.dateFormat}</p>
         </div>
