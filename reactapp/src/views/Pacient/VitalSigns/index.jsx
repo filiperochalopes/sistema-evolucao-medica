@@ -86,7 +86,7 @@ const VitalSign = () => {
               <Input
                 className="small"
                 name="cardiacFrequency"
-                type="text"
+                type="number"
                 value={formik.values.cardiacFrequency}
                 onChange={formik.handleChange}
                 error={
@@ -107,7 +107,7 @@ const VitalSign = () => {
           <div>
             <div className="small">
               <Input
-                type="text"
+                type="number"
                 className="small"
                 name="respiratoryFrequency"
                 value={formik.values.respiratoryFrequency}
@@ -129,8 +129,8 @@ const VitalSign = () => {
         <Inputs>
           <div className="small">
             <Input
-              type="text"
               name="pain"
+              type="number"
               value={formik.values.pain}
               onChange={formik.handleChange}
               error={
@@ -153,7 +153,7 @@ const VitalSign = () => {
         <Inputs>
           <div className="small">
             <Input
-              type="text"
+              type="number"
               className="small"
               name="celciusAxillaryTemperature"
               value={formik.values.celciusAxillaryTemperature}
@@ -173,7 +173,7 @@ const VitalSign = () => {
         <Inputs>
           <div className="small">
             <Input
-              type="text"
+              type="number"
               name="systolicBloodPressure"
               value={formik.values.systolicBloodPressure}
               onChange={formik.handleChange}
@@ -187,6 +187,7 @@ const VitalSign = () => {
           </div>
           <div className="small">
             <Input
+              type="number"
               name="diastolicBloodPressure"
               value={formik.values.diastolicBloodPressure}
               onChange={formik.handleChange}
@@ -207,6 +208,7 @@ const VitalSign = () => {
             <div>
               <div className="small">
                 <Input
+                  type="number"
                   name="volumeMl"
                   value={formik.values.volumeMl}
                   onChange={formik.handleChange}
@@ -240,6 +242,7 @@ const VitalSign = () => {
           <Input
             className="small"
             name="glucose"
+            type="number"
             value={formik.values.glucose}
             onChange={formik.handleChange}
             error={
@@ -258,6 +261,7 @@ const VitalSign = () => {
             <Input
               className="small"
               name="spO2"
+              type="number"
               value={formik.values.spO2}
               onChange={formik.handleChange}
               error={
@@ -276,6 +280,7 @@ const VitalSign = () => {
           <div className="small">
             <Input
               className="small"
+              type="number"
               name="fetalCardiacFrequency"
               value={formik.values.fetalCardiacFrequency}
               onChange={formik.handleChange}
