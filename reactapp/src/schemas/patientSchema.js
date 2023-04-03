@@ -8,7 +8,7 @@ export default Yup.object().shape({
   cpf: Yup.string(),
   cns: Yup.string().required(ERROR_LABEL),
   rg: Yup.string(),
-  phone: Yup.string(),
+  phone: Yup.string().required(ERROR_LABEL),
   comorbidities: Yup.array().of(Yup.mixed()),
   allergies: Yup.array().of(Yup.mixed()),
   weightKg: Yup.string().required(ERROR_LABEL),
