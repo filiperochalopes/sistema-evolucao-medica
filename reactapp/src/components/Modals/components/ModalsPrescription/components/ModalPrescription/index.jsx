@@ -89,8 +89,8 @@ const prescriptionTypesStrategies = {
               className="medium_size"
               placeholder="Data de início"
               error={
-                formik.errors.drug.initialDate &&
-                formik.touched?.drug.initialDate
+                formik.errors?.drug?.initialDate &&
+                formik.touched?.drug?.initialDate
                   ? formik.errors.drug.initialDate
                   : ""
               }
@@ -103,7 +103,8 @@ const prescriptionTypesStrategies = {
               className="medium_size"
               placeholder="Data de fim"
               error={
-                formik.errors.drug.finalDate && formik.touched?.drug.finalDate
+                formik.errors?.drug?.finalDate &&
+                formik.touched?.drug?.finalDate
                   ? formik.errors.drug.finalDate
                   : ""
               }
