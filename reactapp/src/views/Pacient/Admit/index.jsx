@@ -196,7 +196,7 @@ const Admit = () => {
           birthdate: data?.patient?.birthdate,
           cpf: maskCpf(data?.patient?.cpf),
           cns: data?.patient?.cns,
-          rg: data?.patient?.rg,
+          rg: data?.patient?.rg || "",
           motherName: data?.patient?.motherName,
           comorbidities: data?.patient?.comorbidities.map((comorbiditie) => ({
             label: comorbiditie.value,
