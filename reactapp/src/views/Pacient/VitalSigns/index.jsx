@@ -36,27 +36,22 @@ const VitalSign = () => {
     validationSchema: schema,
     onSubmit: async (values, { resetForm }) => {
       try {
+        const newValues = { ...values };
         const variables = {
           internmentId: Number(params.id),
-          spO2: Number(values.spO2) > 0 ? Number(values.spO2) : "",
-          pain: Number(values.pain) > 0 ? Number(values.pain) : "",
-          systolicBloodPressure: Number(values.systolicBloodPressure),
-          diastolicBloodPressure: Number(values.diastolicBloodPressure),
-          cardiacFrequency: Number(values.cardiacFrequency),
-          respiratoryFrequency: Number(values.respiratoryFrequency),
-          celciusAxillaryTemperature: Number(values.celciusAxillaryTemperature),
-          glucose: Number(values.glucose),
-          fetalCardiacFrequency: Number(values.fetalCardiacFrequency),
         };
-        for (const chave in variables) {
+        for (const chave in newValues) {
           if (
             // eslint-disable-next-line no-prototype-builtins
-            variables.hasOwnProperty(chave) &&
-            variables[chave] === ""
+            newValues.hasOwnProperty(chave) &&
+            newValues[chave] === ""
           ) {
-            delete variables[chave];
+            delete newValues[chave];
+          } else {
+            variables[chave] = Number(newValues[chave]);
           }
         }
+
         await createMeasure({
           variables,
         });

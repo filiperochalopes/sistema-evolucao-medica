@@ -16,6 +16,30 @@ import { GENERATE_PDF_BALANCO_HIDRICO } from "graphql/mutations";
 import b64toBlob from "utils/b64toBlob";
 import CheckRole from "routes/CheckRole";
 import useHandleErrors from "hooks/useHandleErrors";
+import verifyIfDateIsRangeCurrentDate from "utils/verifyIfDateIsRangeCurrentDate";
+
+const MEASURES_TITLES = {
+  cardiacFrequency: {
+    title: "FC",
+    legend: "bpm",
+  },
+  fetalCardiacFrequency: {
+    title: "FCF",
+    legend: "bpm",
+  },
+  glucose: {
+    title: "HGT",
+    legend: "mg/ml",
+  },
+  respiratoryFrequency: {
+    title: "FR",
+    legend: "",
+  },
+  celciusAxillaryTemperature: {
+    title: "TEMP AXILAR",
+    legend: "",
+  },
+};
 
 const Chart = () => {
   const [getInternment, { data }] = useLazyQuery(GET_ALL_CHART, {
@@ -98,6 +122,7 @@ const Chart = () => {
   }
 
   useEffect(() => {
+    const verifyDate = verifyIfDateIsRangeCurrentDate();
     if (!data) {
       return;
     }
@@ -127,95 +152,132 @@ const Chart = () => {
 
       oldChards = [...oldChards, ...prescriptionsFormated];
     }
-    if (data.internment.measures.length > 0) {
-      const measures = [...data.internment.measures];
-      const fluidBalances = [...data.internment.fluidBalance];
-      const object = {
-        cardiacFrequency: "",
-        cardiacFrequencyCreatedAt: "",
-        fetalCardiacFrequency: "",
-        fetalCardiacFrequencyCreatedAt: "",
-        celciusAxillaryTemperature: "",
-        celciusAxillaryTemperatureCreatedAt: "",
-        createdAt: "",
-        diastolicBloodPressure: "",
-        diastolicBloodPressureCreatedAt: "",
-        glucose: "",
-        glucoseCreatedAt: "",
-        pain: "",
-        painCreatedAt: "",
-        respiratoryFrequency: "",
-        respiratoryFrequencyCreatedAt: "",
-        spO2: "",
-        spO2CreatedAt: "",
-        systolicBloodPressure: "",
-        systolicBloodPressureCreatedAt: "",
-        fluids: [],
-        totalFluids: "",
-        existSinals: measures.length > 0,
-      };
-      console.log(measures[0]);
-      // eslint-disable-next-line for-direction
-      for (let i = measures.length - 1; i > 0; i--) {
-        console.log("Oi");
-        const objectKeys = Object.keys(measures[i]);
-        objectKeys.forEach((key) => {
-          if (!object[key] && measures[i][key]) {
-            object[key] = measures[i][key];
-            object[`${key}CreatedAt`] = format(
-              parseISO(measures[i].createdAt),
-              "dd/MM/yyyy HH:mm:ss",
-              {
-                locale: ptBR,
-              }
-            );
+    const oldMeasures = [];
+    data.internment.measures.forEach((measure) => {
+      try {
+        verifyDate.verifyDate(new Date(measure.createdAt));
+        const keysMeasure = Object.keys(measure);
+        keysMeasure.forEach((key) => {
+          if (typeof measure[key] !== "number") {
+            return;
           }
-        });
-      }
-
-      let total = 0;
-      const fluids = [];
-      let initialDate = new Date();
-      let endDate = new Date();
-
-      if (initialDate.getHours() > 7) {
-        endDate.setDate(initialDate.getDate() + 1);
-        console.log(endDate);
-      } else {
-        initialDate.setDate(initialDate.getDate() - 1);
-      }
-      endDate.setHours(7, 0, 0);
-      initialDate.setHours(7, 0, 0);
-
-      endDate = endDate.getTime();
-      initialDate = initialDate.getTime();
-      fluidBalances.forEach((fluidBalance) => {
-        const fluidBalaneDate = new Date(fluidBalance.createdAt);
-        const fluidBalanceTime = fluidBalaneDate.getTime();
-        if (initialDate <= fluidBalanceTime && endDate >= fluidBalanceTime) {
-          total += fluidBalance.volumeMl;
-          fluids.push({
-            volumeMl: fluidBalance.volumeMl,
-            descriptionVolumeMl: fluidBalance.description.value,
+          if (!array.sinals[key]) {
+            array.sinals[key] = {
+              title: MEASURES_TITLES[key].title,
+              array: [],
+            };
+          }
+          array.sinals[key].array.push({
+            text: `${measure[key]}` + MEASURES_TITLES[key].legend,
+            date: format(parseISO(measure.createdAt), "HH:mm:ss", {
+              locale: ptBR,
+            }),
+            id: array.sinals[key].array.length,
           });
-        }
-      });
-      object.fluids = fluids;
-      object.totalFluids = total;
-      array.sinals = object;
-      const measuresWithDateFormat = templateFormatedData(
-        measures,
-        (measure, index) => {
-          const fluidBalance = fluidBalances[index];
-          return {
-            ...measure,
-            volumeMl: fluidBalance.volumeMl,
-            descriptionVolumeMl: fluidBalance.description.value,
-          };
-        }
+        });
+      } catch {
+        oldMeasures.push(measure);
+      }
+    });
+
+    let total = 0;
+    const fluids = [];
+    data.internment.fluidBalance.forEach((fluidBalance) => {
+      try {
+        verifyDate.verifyDate(new Date(fluidBalance.createdAt));
+        total += fluidBalance.volumeMl;
+        fluids.push({
+          volumeMl: fluidBalance.volumeMl,
+          descriptionVolumeMl: fluidBalance.description.value,
+        });
+      } catch (e) {
+        console.log("error fluid");
+      }
+    });
+    if (fluids.length > 0) {
+      const text = fluids.reduce(
+        (oldText, fluid) =>
+          oldText + ` ${fluid.volumeMl}ml - ${fluid.descriptionVolumeMl}`,
+        ""
       );
-      oldChards = [...oldChards, ...measuresWithDateFormat];
+      array.sinals.fluids = {
+        title: (
+          <>
+            Balanço Hídrico <strong>Total {total}</strong>
+          </>
+        ),
+        array: [
+          {
+            text: (
+              <>
+                {text}{" "}
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      let initialDate = new Date();
+                      let endDate = new Date();
+
+                      if (initialDate.getHours() > 7) {
+                        endDate.setDate(initialDate.getDate() + 1);
+                      } else {
+                        initialDate.setDate(initialDate.getDate() - 1);
+                      }
+                      initialDate = format(initialDate, "yyyy/MM/dd", {
+                        locale: ptBR,
+                      });
+                      endDate = format(endDate, "yyyy/MM/dd", {
+                        locale: ptBR,
+                      });
+
+                      const response = await printFluids({
+                        variables: {
+                          internmentId: Number(params.id),
+                          extra: {
+                            interval: {
+                              startDatetimeStamp: `${initialDate}:07:00`,
+                              endingDatetimeStamp: `${endDate}:07:00`,
+                            },
+                          },
+                        },
+                      });
+                      const link = document.createElement("a");
+                      const file = b64toBlob(
+                        response.data.printPdf_BalancoHidrico.base64Pdf,
+                        "application/pdf"
+                      );
+                      const url = URL.createObjectURL(file);
+                      link.href = url;
+                      link.setAttribute("target", "_blank");
+                      link.click();
+                    } catch (e) {
+                      handleErrors(e);
+                    }
+                  }}
+                >
+                  para ter uma visão geral do balanço hídrico acesse esse link
+                </button>
+              </>
+            ),
+            date: "",
+            id: 1,
+          },
+        ],
+      };
     }
+    const measuresWithDateFormat = templateFormatedData(
+      oldMeasures,
+      (measure, index) => {
+        const fluidBalance = data.internment.fluidBalance[index];
+        return {
+          ...measure,
+          volumeMl: fluidBalance.volumeMl,
+          descriptionVolumeMl: fluidBalance.description.value,
+        };
+      }
+    );
+
+    oldChards = [...oldChards, ...measuresWithDateFormat];
     if (data.internment.evolutions.length > 0) {
       const evolutionsText = [];
       const othersEvolutions = [];
@@ -268,7 +330,7 @@ const Chart = () => {
       },
     });
   }, [getInternment, params]);
-  console.log("newestChart.textEvolution", newestChart.textEvolution.length);
+
   return (
     <Container>
       <div className="header">
@@ -307,96 +369,19 @@ const Chart = () => {
           <li key={prescription.id}>{prescription.value}</li>
         ))}
       </ol>
-      {newestChart.sinals?.existSinals && (
-        <>
-          <h2 className="secondary">Sinais Vitais</h2>
-          <ul>
-            {newestChart.sinals?.cardiacFrequency && (
-              <li>
-                FC {newestChart.sinals?.cardiacFrequency}bpm{" "}
-                {newestChart.sinals?.cardiacFrequencyCreatedAt}
-              </li>
+      <h2>Sinais Vitais</h2>
+      <ul>
+        {Object.keys(newestChart.sinals).map((key) => (
+          <li>
+            {newestChart.sinals[key].title}
+            {newestChart.sinals[key].array.map((text) =>
+              typeof text.text === "string"
+                ? text.text + " " + text.date + " "
+                : text.text
             )}
-            {newestChart.sinals?.fetalCardiacFrequency && (
-              <li>
-                FCF {newestChart.sinals?.fetalCardiacFrequency}bpm{" "}
-                {newestChart.sinals?.fetalCardiacFrequencyCreatedAt}{" "}
-              </li>
-            )}
-            {newestChart.sinals?.glucose && (
-              <li>
-                HGT {newestChart.sinals?.glucose} mg/ml{" "}
-                {newestChart.sinals?.glucoseCreatedAt}
-              </li>
-            )}
-            {newestChart.sinals?.respiratoryFrequency && (
-              <li>
-                FR {newestChart.sinals?.respiratoryFrequency}{" "}
-                {newestChart.sinals?.respiratoryFrequencyCreatedAt}
-              </li>
-            )}
-            {newestChart.sinals?.celciusAxillaryTemperature && (
-              <li>
-                TEMP AXILAR {newestChart.sinals?.celciusAxillaryTemperature}{" "}
-                {newestChart.sinals?.celciusAxillaryTemperatureCreatedAt}
-              </li>
-            )}
-            <li>
-              BALANÇO HÍDRICO{" "}
-              <strong>TOTAL {newestChart.sinals?.totalFluids}</strong> |
-              {(newestChart.sinals?.fluids || []).map(
-                (fluid) => `${fluid.volumeMl}ml - ${fluid.descriptionVolumeMl}`
-              )}
-              <button
-                type="button"
-                onClick={async () => {
-                  try {
-                    let initialDate = new Date();
-                    let endDate = new Date();
-
-                    if (initialDate.getHours() > 7) {
-                      endDate.setDate(initialDate.getDate() + 1);
-                    } else {
-                      initialDate.setDate(initialDate.getDate() - 1);
-                    }
-                    initialDate = format(initialDate, "yyyy/MM/dd", {
-                      locale: ptBR,
-                    });
-                    endDate = format(endDate, "yyyy/MM/dd", {
-                      locale: ptBR,
-                    });
-
-                    const response = await printFluids({
-                      variables: {
-                        internmentId: Number(params.id),
-                        extra: {
-                          interval: {
-                            startDatetimeStamp: `${initialDate}:07:00`,
-                            endingDatetimeStamp: `${endDate}:07:00`,
-                          },
-                        },
-                      },
-                    });
-                    const link = document.createElement("a");
-                    const file = b64toBlob(
-                      response.data.printPdf_BalancoHidrico.base64Pdf,
-                      "application/pdf"
-                    );
-                    const url = URL.createObjectURL(file);
-                    link.href = url;
-                    link.setAttribute("target", "_blank");
-                    link.click();
-                  } catch (e) {
-                    handleErrors(e);
-                  }
-                }}
-              >
-                para ter uma visão geral do balanço hídrico acesse esse link
-              </button>
-            </li>
-          </ul>
-        </>
-      )}
+          </li>
+        ))}
+      </ul>
       {newestChart.pending?.text && (
         <PendingStrategy
           dateFormated={newestChart.pending?.dateFormated}
