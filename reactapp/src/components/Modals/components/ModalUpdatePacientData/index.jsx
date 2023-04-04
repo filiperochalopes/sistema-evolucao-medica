@@ -28,7 +28,9 @@ const ModalUpdatePacientData = ({ id }) => {
   const { data: comorbiditiesData } = useQuery(COMORBIDITIES, {
     fetchPolicy: "no-cache",
   });
-  const [getPatientData, { data }] = useLazyQuery(GET_PATIENT);
+  const [getPatientData, { data }] = useLazyQuery(GET_PATIENT, {
+    fetchPolicy: "no-cache",
+  });
   const [updatePatient] = useMutation(UPDATE_PATIENT);
   const { data: statesData } = useQuery(STATES);
   const { handleErrors } = useHandleErrors();
@@ -129,7 +131,10 @@ const ModalUpdatePacientData = ({ id }) => {
       (state) => state.value === data.patient.address.uf
     );
     formik.setValues({
-      allergies: data.patient.allergies,
+      allergies: data.patient?.allergies.map((allergie) => ({
+        label: allergie.value,
+        value: allergie.value,
+      })),
       address: {
         zipcode: data.patient.address.zipCode,
         street: data.patient.address.street,
@@ -140,7 +145,10 @@ const ModalUpdatePacientData = ({ id }) => {
       },
       birthdate: data.patient.birthdate,
       cns: data.patient.cns,
-      comorbidities: data.patient.comorbidities,
+      comorbidities: data.patient?.comorbidities.map((comorbiditie) => ({
+        label: comorbiditie.value,
+        value: comorbiditie.value,
+      })),
       cpf: maskCpf(data.patient.cpf),
       name: data.patient.name,
       motherName: data.patient.motherName,

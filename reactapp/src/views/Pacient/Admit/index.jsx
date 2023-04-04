@@ -44,7 +44,9 @@ const Admit = () => {
   const { data: cid10Data } = useQuery(CID10);
   const [getPatients] = useLazyQuery(GET_PATIENTS);
   const { data: InitialPatients } = useQuery(GET_INITIAL_PATIENTS);
-  const [getPatient, { data }] = useLazyQuery(GET_PATIENT);
+  const [getPatient, { data }] = useLazyQuery(GET_PATIENT, {
+    fetchPolicy: "no-cache",
+  });
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [comorbidities, setComorbidities] = useState([]);
@@ -196,8 +198,14 @@ const Admit = () => {
           cns: data?.patient?.cns,
           rg: data?.patient?.rg,
           motherName: data?.patient?.motherName,
-          comorbidities: data?.patient?.comorbidities,
-          allergies: data?.patient?.allergies,
+          comorbidities: data?.patient?.comorbidities.map((comorbiditie) => ({
+            label: comorbiditie.value,
+            value: comorbiditie.value,
+          })),
+          allergies: data?.patient?.allergies.map((allergie) => ({
+            label: allergie.value,
+            value: allergie.value,
+          })),
           weightKg: data?.patient?.weightKg,
           phone: maskPhone(data?.patient?.phone),
           address: {
@@ -350,6 +358,7 @@ const Admit = () => {
                 onChange={formik.handleChange}
                 className="small"
                 name="patient.weightKg"
+                lang="en-US"
                 value={formik.values.patient.weightKg}
                 placeholder="Peso"
                 type="number"
@@ -527,6 +536,8 @@ const Admit = () => {
               options={allergies}
               isMulti
               created
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.value}
               error={
                 formik.errors?.patient?.allergies &&
                 formik.touched?.patient?.allergies
@@ -541,6 +552,8 @@ const Admit = () => {
               }}
               value={formik.values.patient.comorbidities}
               placeholder="COMORBIDADES"
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.value}
               options={comorbidities}
               isMulti
               error={
