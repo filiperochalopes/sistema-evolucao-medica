@@ -289,7 +289,7 @@ const Evolution = () => {
             <Button
               type="button"
               onClick={() => {
-                addModal(updatePacientData(params.id));
+                addModal(updatePacientData(data?.internment?.patient.id));
               }}
             >
               Atualizar Dados do Paciente

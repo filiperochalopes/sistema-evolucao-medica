@@ -3,13 +3,17 @@ import Container, { Inputs } from "./styles";
 import Button from "components/Button";
 import Input from "components/Input";
 import { useFormik } from "formik";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_FLUID_BALANCE, CREATE_MEASURE } from "graphql/mutations";
 import { useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import schema from "./schema";
 import CheckRole from "routes/CheckRole";
 import useHandleErrors from "hooks/useHandleErrors";
+import { FLUID_BALANCE_DESCRIPTIONS } from "graphql/queries";
+import Select from "components/Select";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const initialValues = {
   spO2: "",
@@ -28,9 +32,11 @@ const initialValues = {
 const VitalSign = () => {
   const [createMeasure] = useMutation(CREATE_MEASURE);
   const [createFluidBalance] = useMutation(CREATE_FLUID_BALANCE);
+  const { data } = useQuery(FLUID_BALANCE_DESCRIPTIONS);
   const { enqueueSnackbar } = useSnackbar();
   const { handleErrors } = useHandleErrors();
   const params = useParams();
+  const [fluidBalanceDescripton, setFluidBalanceDescripton] = useState([]);
   const formik = useFormik({
     initialValues,
     validationSchema: schema,
@@ -55,13 +61,17 @@ const VitalSign = () => {
         await createMeasure({
           variables,
         });
-        await createFluidBalance({
-          variables: {
-            internmentId: Number(params.id),
-            volumeMl: Number(values.volumeMl),
-            description: values.descriptionVolumeMl,
-          },
-        });
+        if (values.descriptionVolumeMl) {
+          await createFluidBalance({
+            variables: {
+              internmentId: Number(params.id),
+              volumeMl: Number(values.volumeMl),
+              description: values.descriptionVolumeMl.map(
+                (description) => description.value
+              ),
+            },
+          });
+        }
         enqueueSnackbar("Prescrição Cadastrada", { variant: "success" });
         resetForm(initialValues);
       } catch (e) {
@@ -69,6 +79,19 @@ const VitalSign = () => {
       }
     },
   });
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    const newFluidBalanceDescripton = data.fluidBalanceDescriptions.map(
+      (allergie) => ({
+        label: allergie.value,
+        value: allergie.value,
+      })
+    );
+    setFluidBalanceDescripton(newFluidBalanceDescripton);
+  }, [data]);
 
   return (
     <Container onSubmit={formik.handleSubmit}>
@@ -216,15 +239,21 @@ const VitalSign = () => {
               </div>
               <p>ML</p>
             </div>
-            <Input
-              placeholder="DESCRIÇÃO"
-              onChange={formik.handleChange}
-              name="descriptionVolumeMl"
+            <Select
+              onChange={(e) => {
+                formik.setFieldValue("descriptionVolumeMl", e);
+              }}
               value={formik.values.descriptionVolumeMl}
+              placeholder="ALERGIAS"
+              options={fluidBalanceDescripton}
+              isMulti
+              created
+              getOptionLabel={(option) => option.value}
+              getOptionValue={(option) => option.value}
               error={
-                formik.errors.descriptionVolumeMl &&
-                formik.touched.descriptionVolumeMl
-                  ? formik.errors.descriptionVolumeMl
+                formik.errors?.descriptionVolumeMl &&
+                formik.touched?.descriptionVolumeMl
+                  ? formik.errors?.descriptionVolumeMl
                   : ""
               }
             />

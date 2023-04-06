@@ -16,6 +16,7 @@ import maskCpf from "utils/maskCpf";
 
 import { useSnackbar } from "notistack";
 import patientSchema from "schemas/patientSchema";
+import maskCep from "utils/maskCep";
 const GENERS = [
   { label: "Masculino", value: "male" },
   { label: "Feminino", value: "fema" },
@@ -136,7 +137,7 @@ const ModalUpdatePacientData = ({ id }) => {
         value: allergie.value,
       })),
       address: {
-        zipcode: data.patient.address.zipCode,
+        zipCode: maskCep(data.patient.address.zipCode),
         street: data.patient.address.street,
         complement: data.patient.address.complement,
         number: data.patient.address.number,
@@ -162,7 +163,9 @@ const ModalUpdatePacientData = ({ id }) => {
   useEffect(() => {
     async function getCep() {
       try {
-        const response = await getCepApiAdapter(formik.values.address.zipcode);
+        const response = await getCepApiAdapter(
+          formik.values.address.zipcode.replace(/\D/g, "")
+        );
         const findUf = statesData.state.find(
           (state) => state.uf === response.data.uf
         );
@@ -294,7 +297,9 @@ const ModalUpdatePacientData = ({ id }) => {
         <Input
           className="small"
           placeholder="CEP"
-          onChange={formik.handleChange}
+          onChange={(e) => {
+            formik.setFieldValue("address.zipCode", maskCep(e.target.value));
+          }}
           name="address.zipCode"
           value={formik.values.address.zipCode}
           error={

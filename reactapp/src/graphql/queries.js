@@ -32,6 +32,15 @@ export const ALLERGIES = gql`
   }
 `;
 
+export const FLUID_BALANCE_DESCRIPTIONS = gql`
+  query getfluidBalanceDescriptions {
+    fluidBalanceDescriptions {
+      id
+      value
+    }
+  }
+`;
+
 export const COMORBIDITIES = gql`
   query getComorbidities {
     comorbidities {
@@ -216,6 +225,7 @@ export const GET_INTERNMENT = gql`
       patient {
         name
         age
+        id
       }
       cid10 {
         code
@@ -309,6 +319,7 @@ export const GET_ALL_CHART = gql`
       patient {
         age
         name
+        id
       }
       hpi
       evolutions {
