@@ -36,7 +36,6 @@ const VitalSign = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { handleErrors } = useHandleErrors();
   const params = useParams();
-  const [fluidBalanceDescripton, setFluidBalanceDescripton] = useState([]);
   const formik = useFormik({
     initialValues,
     validationSchema: schema,
@@ -57,18 +56,18 @@ const VitalSign = () => {
             variables[chave] = Number(newValues[chave]);
           }
         }
+        if (Object.keys(variables).length > 1) {
+          await createMeasure({
+            variables,
+          });
+        }
 
-        await createMeasure({
-          variables,
-        });
         if (values.descriptionVolumeMl) {
           await createFluidBalance({
             variables: {
               internmentId: Number(params.id),
               volumeMl: Number(values.volumeMl),
-              description: values.descriptionVolumeMl.map(
-                (description) => description.value
-              ),
+              description: values.descriptionVolumeMl.value,
             },
           });
         }
@@ -79,19 +78,6 @@ const VitalSign = () => {
       }
     },
   });
-
-  useEffect(() => {
-    if (!data) {
-      return;
-    }
-    const newFluidBalanceDescripton = data.fluidBalanceDescriptions.map(
-      (allergie) => ({
-        label: allergie.value,
-        value: allergie.value,
-      })
-    );
-    setFluidBalanceDescripton(newFluidBalanceDescripton);
-  }, [data]);
 
   return (
     <Container onSubmit={formik.handleSubmit}>
@@ -245,11 +231,9 @@ const VitalSign = () => {
               }}
               value={formik.values.descriptionVolumeMl}
               placeholder="ALERGIAS"
-              options={fluidBalanceDescripton}
-              isMulti
-              created
+              options={data?.fluidBalanceDescriptions || []}
               getOptionLabel={(option) => option.value}
-              getOptionValue={(option) => option.value}
+              getOptionValue={(option) => option.id}
               error={
                 formik.errors?.descriptionVolumeMl &&
                 formik.touched?.descriptionVolumeMl
