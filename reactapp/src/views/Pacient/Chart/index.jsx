@@ -17,6 +17,7 @@ import b64toBlob from "utils/b64toBlob";
 import CheckRole from "routes/CheckRole";
 import useHandleErrors from "hooks/useHandleErrors";
 import verifyIfDateIsRangeCurrentDate from "utils/verifyIfDateIsRangeCurrentDate";
+import { useCallback } from "react";
 
 const MEASURES_TITLES = {
   cardiacFrequency: {
@@ -51,7 +52,7 @@ const Chart = () => {
     prescriptions: [],
     sinals: {},
     textEvolution: [],
-    pending: {},
+    pending: [],
   });
   const [oldCharts, setOldCharts] = useState([]);
   const params = useParams();
@@ -121,8 +122,232 @@ const Chart = () => {
     });
   }
 
-  useEffect(() => {
+  const handlePrescriptions = useCallback((currentPrescriptions) => {
+    const prescriptions = [];
+    const oldPrescriptions = [];
+
     const verifyDate = verifyIfDateIsRangeCurrentDate();
+    if (currentPrescriptions.length > 0) {
+      currentPrescriptions.forEach((currentPrescription) => {
+        const prescription = formatPrescription(currentPrescription);
+        try {
+          verifyDate.verifyDate(currentPrescription.createdAt);
+          prescriptions.push(prescription);
+        } catch {
+          const dateFormated = format(
+            parseISO(currentPrescription.createdAt),
+            "dd/MM/yyyy HH:mm:ss",
+            {
+              locale: ptBR,
+            }
+          );
+          oldPrescriptions.push({
+            items: prescription,
+            dateFormated,
+            __typename: currentPrescription.__typename,
+          });
+        }
+      });
+    }
+
+    return { prescriptions, oldPrescriptions };
+  }, []);
+
+  const handleMeasures = useCallback((currentMeasures) => {
+    const sinals = {};
+    const oldMeasures = [];
+
+    const verifyDate = verifyIfDateIsRangeCurrentDate();
+    currentMeasures.forEach((measure) => {
+      try {
+        verifyDate.verifyDate(new Date(measure.createdAt));
+        const keysMeasure = Object.keys(measure);
+        keysMeasure.forEach((key) => {
+          if (typeof measure[key] !== "number") {
+            return;
+          }
+          if (!sinals[key]) {
+            sinals[key] = {
+              title: MEASURES_TITLES[key].title,
+              array: [],
+            };
+          }
+          sinals[key].array.push({
+            text: `${measure[key]}` + MEASURES_TITLES[key].legend,
+            date: format(parseISO(measure.createdAt), "HH:mm:ss", {
+              locale: ptBR,
+            }),
+            id: sinals[key].array.length,
+          });
+        });
+      } catch {
+        oldMeasures.push(measure);
+      }
+    });
+
+    return { sinals, oldMeasures };
+  }, []);
+
+  const handleFluids = useCallback(
+    (currentFluids) => {
+      const verifyDate = verifyIfDateIsRangeCurrentDate();
+      let total = 0;
+      const fluids = [];
+      let newFluids = {};
+      currentFluids.forEach((fluidBalance) => {
+        try {
+          verifyDate.verifyDate(new Date(fluidBalance.createdAt));
+          total += fluidBalance?.volumeMl || 0;
+          fluids.push({
+            volumeMl: fluidBalance?.volumeMl || 0,
+            descriptionVolumeMl: fluidBalance.description.value,
+          });
+        } catch (e) {
+          console.log("error fluid");
+        }
+      });
+      if (fluids.length > 0) {
+        const text = fluids.reduce(
+          (oldText, fluid) =>
+            oldText + ` ${fluid.volumeMl}ml - ${fluid.descriptionVolumeMl}`,
+          ""
+        );
+        newFluids = {
+          title: (
+            <>
+              Balanço Hídrico <strong>Total {total}</strong>
+            </>
+          ),
+          array: [
+            {
+              text: (
+                <>
+                  {text}{" "}
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      try {
+                        let initialDate = new Date();
+                        let endDate = new Date();
+
+                        if (initialDate.getHours() > 7) {
+                          endDate.setDate(initialDate.getDate() + 1);
+                        } else {
+                          initialDate.setDate(initialDate.getDate() - 1);
+                        }
+                        initialDate = format(initialDate, "yyyy/MM/dd", {
+                          locale: ptBR,
+                        });
+                        endDate = format(endDate, "yyyy/MM/dd", {
+                          locale: ptBR,
+                        });
+
+                        const response = await printFluids({
+                          variables: {
+                            internmentId: Number(params.id),
+                            extra: {
+                              interval: {
+                                startDatetimeStamp: `${initialDate}:07:00`,
+                                endingDatetimeStamp: `${endDate}:07:00`,
+                              },
+                            },
+                          },
+                        });
+                        const link = document.createElement("a");
+                        const file = b64toBlob(
+                          response.data.printPdf_BalancoHidrico.base64Pdf,
+                          "application/pdf"
+                        );
+                        const url = URL.createObjectURL(file);
+                        link.href = url;
+                        link.setAttribute("target", "_blank");
+                        link.click();
+                      } catch (e) {
+                        handleErrors(e);
+                      }
+                    }}
+                  >
+                    para ter uma visão geral do balanço hídrico acesse esse link
+                  </button>
+                </>
+              ),
+              date: "",
+              id: 1,
+            },
+          ],
+        };
+      }
+      return { fluids: newFluids };
+    },
+    [params.id, printFluids]
+  );
+
+  const handleEvolutions = useCallback((currentEvolutions) => {
+    const verifyDate = verifyIfDateIsRangeCurrentDate();
+    const evolutionsText = [];
+    const othersEvolutions = [];
+    if (currentEvolutions.length > 0) {
+      const date = new Date();
+      currentEvolutions.forEach((currentEvolution) => {
+        try {
+          verifyDate.verifyDate(new Date(currentEvolution.createdAt));
+          const response = intervalToDuration({
+            start: parseISO(currentEvolution.createdAt),
+            end: date,
+          });
+          if (response.days <= 2) {
+            evolutionsText.push(currentEvolution);
+          } else {
+            othersEvolutions.push(currentEvolution);
+          }
+        } catch {
+          console.log("error");
+          const dateFormated = format(
+            parseISO(currentEvolution.createdAt),
+            "dd/MM/yyyy HH:mm:ss",
+            {
+              locale: ptBR,
+            }
+          );
+          othersEvolutions.push({
+            ...currentEvolution,
+            dateFormated,
+          });
+        }
+      });
+      return { evolutionsText, othersEvolutions };
+    }
+  }, []);
+
+  const handlePendents = useCallback((currentPendents) => {
+    const verifyDate = verifyIfDateIsRangeCurrentDate();
+    const pendents = [];
+    const oldPendents = [];
+    if (currentPendents.length > 0) {
+      currentPendents.forEach((currentPendent) => {
+        try {
+          verifyDate.verifyDate(new Date(currentPendent.createdAt));
+
+          pendents.push(currentPendent);
+        } catch {
+          const dateFormated = format(
+            parseISO(currentPendent.createdAt),
+            "dd/MM/yyyy HH:mm:ss",
+            {
+              locale: ptBR,
+            }
+          );
+          oldPendents.push({
+            ...currentPendent,
+            dateFormated,
+          });
+        }
+      });
+      return { oldPendents, pendents };
+    }
+  }, []);
+
+  useEffect(() => {
     if (!data) {
       return;
     }
@@ -133,183 +358,41 @@ const Chart = () => {
       pending: {},
     };
     let oldChards = [];
+    const prescriptions = handlePrescriptions(data.internment.prescriptions);
 
-    if (data.internment.prescriptions.length > 0) {
-      const prescriptions = [...data.internment.prescriptions];
-      const prescription = prescriptions.splice(
-        data.internment.prescriptions.length - 1,
-        1
-      )[0];
-      const prescriptionFormated = formatPrescription(prescription);
-      array.prescriptions.push(...prescriptionFormated);
-      const prescriptionsFormated = templateFormatedData(
-        prescriptions,
-        (prescription) => ({
-          items: formatPrescription(prescription),
-          __typename: prescription.__typename,
-        })
-      );
+    oldChards = [...oldChards, ...prescriptions.oldPrescriptions];
+    array.prescriptions.push(...prescriptions.prescriptions);
 
-      oldChards = [...oldChards, ...prescriptionsFormated];
-    }
     const oldMeasures = [];
-    data.internment.measures.forEach((measure) => {
-      try {
-        verifyDate.verifyDate(new Date(measure.createdAt));
-        const keysMeasure = Object.keys(measure);
-        keysMeasure.forEach((key) => {
-          if (typeof measure[key] !== "number") {
-            return;
-          }
-          if (!array.sinals[key]) {
-            array.sinals[key] = {
-              title: MEASURES_TITLES[key].title,
-              array: [],
-            };
-          }
-          array.sinals[key].array.push({
-            text: `${measure[key]}` + MEASURES_TITLES[key].legend,
-            date: format(parseISO(measure.createdAt), "HH:mm:ss", {
-              locale: ptBR,
-            }),
-            id: array.sinals[key].array.length,
-          });
-        });
-      } catch {
-        oldMeasures.push(measure);
-      }
-    });
+    const measures = handleMeasures(data.internment.measures);
+    array.sinals = measures.sinals;
+    oldMeasures.push(...measures.oldMeasures);
+    oldChards = [...oldChards, ...measures.oldMeasures];
 
-    let total = 0;
-    const fluids = [];
-    data.internment.fluidBalance.forEach((fluidBalance) => {
-      try {
-        verifyDate.verifyDate(new Date(fluidBalance.createdAt));
-        total += fluidBalance.volumeMl;
-        fluids.push({
-          volumeMl: fluidBalance.volumeMl,
-          descriptionVolumeMl: fluidBalance.description.value,
-        });
-      } catch (e) {
-        console.log("error fluid");
-      }
-    });
-    if (fluids.length > 0) {
-      const text = fluids.reduce(
-        (oldText, fluid) =>
-          oldText + ` ${fluid.volumeMl}ml - ${fluid.descriptionVolumeMl}`,
-        ""
-      );
-      array.sinals.fluids = {
-        title: (
-          <>
-            Balanço Hídrico <strong>Total {total}</strong>
-          </>
-        ),
-        array: [
-          {
-            text: (
-              <>
-                {text}{" "}
-                <button
-                  type="button"
-                  onClick={async () => {
-                    try {
-                      let initialDate = new Date();
-                      let endDate = new Date();
+    const fluids = handleFluids(data.internment.fluidBalance);
 
-                      if (initialDate.getHours() > 7) {
-                        endDate.setDate(initialDate.getDate() + 1);
-                      } else {
-                        initialDate.setDate(initialDate.getDate() - 1);
-                      }
-                      initialDate = format(initialDate, "yyyy/MM/dd", {
-                        locale: ptBR,
-                      });
-                      endDate = format(endDate, "yyyy/MM/dd", {
-                        locale: ptBR,
-                      });
-
-                      const response = await printFluids({
-                        variables: {
-                          internmentId: Number(params.id),
-                          extra: {
-                            interval: {
-                              startDatetimeStamp: `${initialDate}:07:00`,
-                              endingDatetimeStamp: `${endDate}:07:00`,
-                            },
-                          },
-                        },
-                      });
-                      const link = document.createElement("a");
-                      const file = b64toBlob(
-                        response.data.printPdf_BalancoHidrico.base64Pdf,
-                        "application/pdf"
-                      );
-                      const url = URL.createObjectURL(file);
-                      link.href = url;
-                      link.setAttribute("target", "_blank");
-                      link.click();
-                    } catch (e) {
-                      handleErrors(e);
-                    }
-                  }}
-                >
-                  para ter uma visão geral do balanço hídrico acesse esse link
-                </button>
-              </>
-            ),
-            date: "",
-            id: 1,
-          },
-        ],
-      };
-    }
+    array.sinals.fluids = fluids.fluids;
     const measuresWithDateFormat = templateFormatedData(
       oldMeasures,
       (measure, index) => {
         const fluidBalance = data.internment.fluidBalance[index];
         return {
           ...measure,
-          volumeMl: fluidBalance.volumeMl,
-          descriptionVolumeMl: fluidBalance.description.value,
+          volumeMl: fluidBalance?.volumeMl,
+          descriptionVolumeMl: fluidBalance?.description?.value,
         };
       }
     );
 
     oldChards = [...oldChards, ...measuresWithDateFormat];
-    if (data.internment.evolutions.length > 0) {
-      const evolutionsText = [];
-      const othersEvolutions = [];
-      const date = new Date();
-      for (let i = data.internment.evolutions.length - 1; i >= 0; i--) {
-        const evolution = data.internment.evolutions[i];
-        const response = intervalToDuration({
-          start: parseISO(evolution.createdAt),
-          end: date,
-        });
-        if (response.days <= 2) {
-          evolutionsText.push(evolution);
-        } else {
-          othersEvolutions.push(evolution);
-        }
-      }
-      const evolutions = [...othersEvolutions];
-      array.textEvolution = evolutionsText;
-      const evolutionsWithDateFormat = templateFormatedData(evolutions);
-      oldChards = [...oldChards, ...evolutionsWithDateFormat];
-    }
+    const evolutions = handleEvolutions(data.internment.evolutions);
+    array.textEvolution = evolutions.evolutionsText;
+    oldChards = [...oldChards, ...evolutions.othersEvolutions];
+    const pendents = handlePendents(data.internment.pendings);
 
-    if (data.internment.pendings.length > 0) {
-      const pendings = [...data.internment.pendings];
-      const pending = pendings.splice(
-        data.internment.pendings.length - 1,
-        1
-      )[0];
-      array.pending = templateFormatedData([pending])[0];
-      const pendingsWithDateFormat = templateFormatedData(pendings);
-      oldChards = [...oldChards, ...pendingsWithDateFormat];
-    }
+    console.log("pendents", pendents);
+    array.pending = pendents.pendents;
+    oldChards = [...oldChards, ...pendents.oldPendents];
 
     oldChards.sort((chartA, chartB) => {
       const dataChartA = new Date(chartA.createdAt);
@@ -321,7 +404,14 @@ const Chart = () => {
     });
     setOldCharts(oldChards);
     setNewestChart(array);
-  }, [data]);
+  }, [
+    data,
+    handleEvolutions,
+    handleFluids,
+    handleMeasures,
+    handlePendents,
+    handlePrescriptions,
+  ]);
 
   useEffect(() => {
     getInternment({
@@ -384,12 +474,14 @@ const Chart = () => {
           </li>
         ))}
       </ul>
-      {newestChart.pending?.text && (
-        <PendingStrategy
-          dateFormated={newestChart.pending?.dateFormated}
-          text={newestChart.pending?.text}
-        />
-      )}
+      {newestChart.pending.length > 0 &&
+        newestChart.pending.map((pending) => (
+          <PendingStrategy
+            dateFormated={pending?.dateFormated}
+            text={pending?.text}
+          />
+        ))}
+
       {oldCharts.length > 0 && (
         <>
           <h2>Demais Evoluções</h2>
