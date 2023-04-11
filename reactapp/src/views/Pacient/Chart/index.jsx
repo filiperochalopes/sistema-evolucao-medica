@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { format, intervalToDuration, parseISO } from "date-fns";
-import ptBR from "date-fns/esm/locale/pt-BR";
+import ptBR from "date-fns/locale/pt-BR";
 import React from "react";
 import Strategies, { PendingStrategy } from "./Strategies";
 import updatePacientData from "helpers/updatePacientData";

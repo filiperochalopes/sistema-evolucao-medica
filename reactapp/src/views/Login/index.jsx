@@ -27,11 +27,15 @@ function Login() {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       try {
+        console.log("lucasd");
         const response = await signing({ variables: values });
+        console.log(response.data);
         localStorage.setItem("token", response.data.signin.token);
         updateUser(response.data.signin.token);
         navigate("/pacientes");
       } catch (e) {
+        console.log("error");
+        console.log("error", e);
         handleErrors(e);
       }
     },
@@ -54,15 +58,17 @@ function Login() {
         name="email"
         value={formik.values.email}
         onChange={formik.handleChange}
+        data-testid="email"
       />
       <Input
         placeholder="Senha"
         name="password"
+        data-testid="password"
         type="password"
         value={formik.values.password}
         onChange={formik.handleChange}
       />
-      <Button>Entrar</Button>
+      <Button data-testid="button">Entrar</Button>
     </Container>
   );
 }

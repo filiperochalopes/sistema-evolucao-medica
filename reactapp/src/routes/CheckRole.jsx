@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useContextProvider } from "services/Context";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
 // const { Navigate, useLocation, useNavigate } = require("react-router-dom");
 
 const CheckRole = ({ children, roles, goBack }) => {

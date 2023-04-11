@@ -132,7 +132,7 @@ module.exports = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  // setupFiles: [],
+  setupFiles: ["./src/setupTests.js"],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
@@ -162,10 +162,11 @@ module.exports = {
   // testPathIgnorePatterns: [
   //   "/node_modules/"
   // ],
-  // transformIgnorePatterns: [
-  //   // Change MODULE_NAME_HERE to your module that isn't being compiled
-  //   "/node_modules/(?!MODULE_NAME_HERE).+\\.js$"
-  // ],
+  transformIgnorePatterns: [
+    // Change MODULE_NAME_HERE to your module that isn't being compiled
+    // "/node_modules/(?!MODULE_NAME_HERE).+\\.js$"
+    // "/node_modules/(?!@remix-run/web-fetch).+\\.js$",
+  ],
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
 
@@ -177,6 +178,7 @@ module.exports = {
   moduleNameMapper: {
     "\\.(css)$": "identity-obj-proxy",
     "\\.(jpg|jpeg|png)$": "identity-obj-proxy",
+    "^.+\\.svg$": "jest-svg-transformer",
   },
   // This option allows use of a custom test runner
   // testRunner: "jest-circus/runner",

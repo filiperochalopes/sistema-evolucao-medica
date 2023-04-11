@@ -14,7 +14,7 @@ import PrivateRouter from "./PrivateRouter";
 import CheckRole from "./CheckRole";
 import ContextProvider from "services/Context";
 
-const routers = createBrowserRouter([
+export const routes = [
   {
     path: "/",
     element: (
@@ -77,7 +77,9 @@ const routers = createBrowserRouter([
       },
     ],
   },
-]);
+];
+
+const routers = createBrowserRouter(routes);
 
 function Router() {
   return <RouterProvider router={routers} />;
