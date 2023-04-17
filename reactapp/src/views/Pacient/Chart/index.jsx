@@ -355,7 +355,7 @@ const Chart = () => {
       prescriptions: [],
       sinals: {},
       textEvolution: [],
-      pending: {},
+      pending: [],
     };
     let oldChards = [];
     const prescriptions = handlePrescriptions(data.internment.prescriptions);
@@ -390,8 +390,7 @@ const Chart = () => {
     oldChards = [...oldChards, ...evolutions.othersEvolutions];
     const pendents = handlePendents(data.internment.pendings);
 
-    console.log("pendents", pendents);
-    array.pending = pendents.pendents;
+    array.pending = pendents?.pendents || [];
     oldChards = [...oldChards, ...pendents.oldPendents];
 
     oldChards.sort((chartA, chartB) => {
@@ -402,6 +401,7 @@ const Chart = () => {
       }
       return 1;
     });
+    console.log("array", array);
     setOldCharts(oldChards);
     setNewestChart(array);
   }, [
@@ -420,6 +420,7 @@ const Chart = () => {
       },
     });
   }, [getInternment, params]);
+  console.log("newestChart", newestChart);
 
   return (
     <Container>
@@ -465,8 +466,8 @@ const Chart = () => {
       <ul>
         {Object.keys(newestChart.sinals).map((key) => (
           <li>
-            {newestChart.sinals[key].title}
-            {newestChart.sinals[key].array.map((text) =>
+            {newestChart?.sinals[key].title}
+            {newestChart?.sinals[key]?.array?.map((text) =>
               typeof text.text === "string"
                 ? text.text + " " + text.date + " "
                 : text.text
