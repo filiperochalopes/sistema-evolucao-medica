@@ -8,6 +8,10 @@ const useHandleErrors = () => {
       enqueueSnackbar("Erro de Conexão, tente novamente", { variant: "error" });
       return;
     }
+    if (error?.message === "Network request failed") {
+      enqueueSnackbar("Erro de Conexão, tente novamente", { variant: "error" });
+      return;
+    }
     if (error.graphQLErrors) {
       error.graphQLErrors.forEach((err) => {
         enqueueSnackbar(err.message, { variant: "error" });

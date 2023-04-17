@@ -27,15 +27,12 @@ function Login() {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       try {
-        console.log("lucasd");
         const response = await signing({ variables: values });
         console.log(response.data);
         localStorage.setItem("token", response.data.signin.token);
         updateUser(response.data.signin.token);
         navigate("/pacientes");
       } catch (e) {
-        console.log("error");
-        console.log("error", e);
         handleErrors(e);
       }
     },
