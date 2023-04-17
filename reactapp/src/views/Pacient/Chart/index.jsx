@@ -315,8 +315,8 @@ const Chart = () => {
           });
         }
       });
-      return { evolutionsText, othersEvolutions };
     }
+    return { evolutionsText, othersEvolutions };
   }, []);
 
   const handlePendents = useCallback((currentPendents) => {
@@ -343,8 +343,8 @@ const Chart = () => {
           });
         }
       });
-      return { oldPendents, pendents };
     }
+    return { oldPendents, pendents };
   }, []);
 
   useEffect(() => {
