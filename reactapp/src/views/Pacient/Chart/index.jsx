@@ -9,7 +9,10 @@ import { useState } from "react";
 import { format, intervalToDuration, parseISO } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 import React from "react";
-import Strategies, { PendingStrategy } from "./Strategies";
+import Strategies, {
+  PendingStrategy,
+  PrescriptionStrategy,
+} from "./Strategies";
 import updatePacientData from "helpers/updatePacientData";
 import { useModalContext } from "services/ModalContext";
 import { GENERATE_PDF_BALANCO_HIDRICO } from "graphql/mutations";
@@ -130,17 +133,21 @@ const Chart = () => {
     if (currentPrescriptions.length > 0) {
       currentPrescriptions.forEach((currentPrescription) => {
         const prescription = formatPrescription(currentPrescription);
+        const dateFormated = format(
+          parseISO(currentPrescription.createdAt),
+          "dd/MM/yyyy HH:mm:ss",
+          {
+            locale: ptBR,
+          }
+        );
         try {
-          verifyDate.verifyDate(currentPrescription.createdAt);
-          prescriptions.push(prescription);
-        } catch {
-          const dateFormated = format(
-            parseISO(currentPrescription.createdAt),
-            "dd/MM/yyyy HH:mm:ss",
-            {
-              locale: ptBR,
-            }
-          );
+          verifyDate.verifyDate(new Date(currentPrescription.createdAt));
+          prescriptions.push({
+            items: prescription,
+            dateFormated,
+          });
+          console.log(prescriptions);
+        } catch (e) {
           oldPrescriptions.push({
             items: prescription,
             dateFormated,
@@ -454,14 +461,9 @@ const Chart = () => {
           ))}
         </>
       )}
-      {newestChart.prescriptions.length > 0 && (
-        <h2 className="secondary">Prescrições</h2>
-      )}
-      <ol>
-        {newestChart.prescriptions.map((prescription) => (
-          <li key={prescription.id}>{prescription.value}</li>
-        ))}
-      </ol>
+      {newestChart.prescriptions.map((prescription) => (
+        <PrescriptionStrategy {...prescription} />
+      ))}
       <h2>Sinais Vitais</h2>
       <ul>
         {Object.keys(newestChart.sinals).map((key) => (
