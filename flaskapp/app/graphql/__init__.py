@@ -5,7 +5,7 @@ type_defs = gql(
     '''
     type Query {
        users: [User]
-       cid10: [Cid10!]
+       cid10(query:String, perPage:Int, page:Int): [Cid10!]
        state: [State!]
        restingActivities: [NamedObject!]
        diets: [NamedObject!]

@@ -5,8 +5,6 @@ WORKDIR /home/node/app
 
 COPY . .
 
-ENV CHOKIDAR_USEPOLLING=true
-
 EXPOSE 3000
 
 ENTRYPOINT ["yarn", "start"]
