@@ -36,7 +36,7 @@ const EvolutionStrategy = (value) => (
   </>
 );
 
-const PrescriptionStrategy = (value) => (
+export const PrescriptionStrategy = (value) => (
   <>
     <h2 className="secondary">Prescrições {value.dateFormated}</h2>
     <ol>
