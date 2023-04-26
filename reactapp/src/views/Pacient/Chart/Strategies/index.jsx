@@ -22,6 +22,14 @@ const MeasureStrategy = (value) => (
       {value.celciusAxillaryTemperature !== null && (
         <li>TEMP AXILAR {value.celciusAxillaryTemperature}</li>
       )}
+      {value.spO2 !== null && <li>Pressão Arterial {value.spO2}</li>}
+      {value.pain !== null && <li>DOR {value.pain}</li>}
+      {value.systolicBloodPressure !== null && (
+        <li>PAS {value.systolicBloodPressure}</li>
+      )}
+      {value.diastolicBloodPressure !== null && (
+        <li>PAD {value.diastolicBloodPressure}</li>
+      )}
       {/* <li>
         BALANÇO HÍDRICO <strong>TOTAL -500</strong> 110 - COPO COM ÁGUA
       </li> */}

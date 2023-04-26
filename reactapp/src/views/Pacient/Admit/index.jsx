@@ -41,7 +41,7 @@ const Admit = () => {
     fetchPolicy: "no-cache",
   });
   const { data: statesData } = useQuery(STATES);
-  const { data: cid10Data } = useQuery(CID10);
+  const [getCid10, { data: cid10Data }] = useLazyQuery(CID10);
   const [getPatients] = useLazyQuery(GET_PATIENTS);
   const { data: InitialPatients } = useQuery(GET_INITIAL_PATIENTS);
   const [getPatient, { data }] = useLazyQuery(GET_PATIENT, {
@@ -274,7 +274,6 @@ const Admit = () => {
           name="patientName"
           async
           onChange={(e) => {
-            console.log("e", e);
             getPatient({
               variables: {
                 id: e.id,
@@ -593,23 +592,32 @@ const Admit = () => {
             onChange={(e) => {
               formik.setFieldValue("cid10Code", e);
             }}
-            components={{
-              Option: ({ children, ...props }) => {
-                const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
-                const newProps = Object.assign(props, { innerProps: rest });
-                return (
-                  <components.Option {...newProps}>
-                    {children}
-                  </components.Option>
-                );
-              },
+            // components={{
+            //   Option: ({ children, ...props }) => {
+            //     const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
+            //     const newProps = Object.assign(props, { innerProps: rest });
+            //     return (
+            //       <components.Option {...newProps}>
+            //         {children}
+            //       </components.Option>
+            //     );
+            //   },
+            // }}
+            loadOptions={async (inputValue) => {
+              const response = await getCid10({
+                variables: {
+                  query: inputValue,
+                },
+              });
+              return response?.data.cid10;
             }}
+            async
             filterOption={createFilter({ ignoreAccents: false })}
             getOptionLabel={(option) =>
               `${option.code} - ${option.description}`
             }
             getOptionValue={(option) => option.code}
-            options={cid10Data?.cid10 || []}
+            // options={cid10Data?.cid10 || []}
             value={formik.values.cid10Code}
             placeholder="CID - SUSPEITA INICIAL"
             error={

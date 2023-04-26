@@ -43,6 +43,22 @@ const MEASURES_TITLES = {
     title: "TEMP AXILAR",
     legend: "",
   },
+  spO2: {
+    title: "Pressão Arterial",
+    legend: "",
+  },
+  pain: {
+    title: "DOR",
+    legend: "",
+  },
+  systolicBloodPressure: {
+    title: "PAS",
+    legend: "",
+  },
+  diastolicBloodPressure: {
+    title: "PAD",
+    legend: "",
+  },
 };
 
 const Chart = () => {
@@ -175,19 +191,19 @@ const Chart = () => {
           }
           if (!sinals[key]) {
             sinals[key] = {
-              title: MEASURES_TITLES[key].title,
+              title: MEASURES_TITLES[key]?.title || "",
               array: [],
             };
           }
           sinals[key].array.push({
-            text: `${measure[key]}` + MEASURES_TITLES[key].legend,
+            text: `${measure[key]}` + (MEASURES_TITLES[key]?.legend || ""),
             date: format(parseISO(measure.createdAt), "HH:mm:ss", {
               locale: ptBR,
             }),
             id: sinals[key].array.length,
           });
         });
-      } catch {
+      } catch (e) {
         oldMeasures.push(measure);
       }
     });

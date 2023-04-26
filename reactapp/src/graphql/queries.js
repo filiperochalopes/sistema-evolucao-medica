@@ -15,8 +15,8 @@ export const INTERNMENTS = gql`
 `;
 
 export const CID10 = gql`
-  query getCid10 {
-    cid10 {
+  query getCid10($query: String) {
+    cid10(query: $query) {
       code
       description
     }

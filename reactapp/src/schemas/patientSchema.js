@@ -15,10 +15,10 @@ export default Yup.object().shape({
     zipCode: Yup.string(),
     street: Yup.string(),
     complement: Yup.string(),
-    number: Yup.string(),
+    number: Yup.string().nullable(),
     city: Yup.string(),
     uf: Yup.mixed(),
-    neighborhood: Yup.string(),
+    neighborhood: Yup.string().nullable(),
   }),
   motherName: Yup.string().required(ERROR_LABEL),
 });

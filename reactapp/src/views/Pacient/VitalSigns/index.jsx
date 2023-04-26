@@ -230,7 +230,7 @@ const VitalSign = () => {
                 formik.setFieldValue("descriptionVolumeMl", e);
               }}
               value={formik.values.descriptionVolumeMl}
-              placeholder="ALERGIAS"
+              placeholder="Descrição"
               options={data?.fluidBalanceDescriptions || []}
               getOptionLabel={(option) => option.value}
               getOptionValue={(option) => option.id}
