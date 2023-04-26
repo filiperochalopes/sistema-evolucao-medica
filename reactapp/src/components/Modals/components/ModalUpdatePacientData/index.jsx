@@ -57,6 +57,7 @@ const ModalUpdatePacientData = ({ id }) => {
         complement: "",
         number: "",
         city: "",
+        neighborhood: "",
         uf: "",
       },
       ethnicity: "",
@@ -86,7 +87,6 @@ const ModalUpdatePacientData = ({ id }) => {
         });
         enqueueSnackbar("Paciente Atualizado", { variant: "success" });
       } catch (e) {
-        console.log(e);
         handleErrors(e);
       }
     },
@@ -141,6 +141,7 @@ const ModalUpdatePacientData = ({ id }) => {
         street: data.patient.address.street,
         complement: data.patient.address.complement,
         number: data.patient.address.number,
+        neighborhood: data.patient.address.neighborhood,
         city: data.patient.address.city,
         uf: findUf,
       },
@@ -164,14 +165,22 @@ const ModalUpdatePacientData = ({ id }) => {
     async function getCep() {
       try {
         const response = await getCepApiAdapter(
-          formik.values.address.zipcode.replace(/\D/g, "")
+          formik.values.address.zipCode.replace(/\D/g, "")
         );
         const findUf = statesData.state.find(
           (state) => state.uf === response.data.uf
         );
+        const address = { ...formik.values.address };
+        const newAddress = { ...response.data, uf: findUf };
+        Object.keys(newAddress).forEach((key) => {
+          // eslint-disable-next-line no-prototype-builtins
+          if (address.hasOwnProperty(key) && newAddress[key]) {
+            address[key] = newAddress[key];
+          }
+        });
         formik.setValues({
           ...formik.values,
-          address: { ...response.data, uf: findUf },
+          address: address,
         });
 
         // eslint-disable-next-line no-empty
@@ -180,7 +189,7 @@ const ModalUpdatePacientData = ({ id }) => {
       }
     }
     getCep();
-  }, [formik.values.address.zipcode]);
+  }, [formik.values.address.zipCode]);
 
   return (
     <Container onSubmit={formik.handleSubmit}>
@@ -305,6 +314,33 @@ const ModalUpdatePacientData = ({ id }) => {
           error={
             formik.errors?.address?.zipCode && formik.touched?.address?.zipCode
               ? formik.errors?.address?.zipCode
+              : ""
+          }
+        />
+      </div>
+      <div className="row">
+        <Input
+          onChange={formik.handleChange}
+          className="small"
+          name="address.number"
+          value={formik.values?.address?.number}
+          placeholder="Nº"
+          error={
+            formik.errors?.address?.number && formik.touched?.address?.number
+              ? formik.errors?.address?.number
+              : ""
+          }
+        />
+        <Input
+          onChange={formik.handleChange}
+          className="small"
+          value={formik.values?.address?.neighborhood}
+          name="address.neighborhood"
+          placeholder="Bairro"
+          error={
+            formik.errors?.address?.neighborhood &&
+            formik.touched?.address?.neighborhood
+              ? formik.errors?.address?.neighborhood
               : ""
           }
         />
