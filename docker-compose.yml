@@ -37,10 +37,11 @@ services:
       context: reactapp
       dockerfile: Dockerfile.dev
     volumes:
-      - ./reactapp:/home/node/app
+      - ./reactapp:/home/node/app:delegated
       - ./reactapp/node_modules:/home/node/app/node_modules
     environment:
       - REACT_APP_API_URL=/api/v1
+      - CHOKIDAR_USEPOLLING=true
     ports:
       - "${FRONTEND_PORT}:3000"
     stdin_open: true

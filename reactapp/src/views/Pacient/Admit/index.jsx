@@ -605,7 +605,9 @@ const Admit = () => {
               },
             }}
             filterOption={createFilter({ ignoreAccents: false })}
-            getOptionLabel={(option) => option.description}
+            getOptionLabel={(option) =>
+              `${option.code} - ${option.description}`
+            }
             getOptionValue={(option) => option.code}
             options={cid10Data?.cid10 || []}
             value={formik.values.cid10Code}

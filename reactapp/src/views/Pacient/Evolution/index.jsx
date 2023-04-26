@@ -282,7 +282,7 @@ const Evolution = () => {
       >
         <div className="header">
           <h2>
-            Evoluir Paciente ({data?.internment?.patient?.name},{" "}
+            Evoluir Paciente ({data?.internment?.patient?.name},&nbsp;--
             {data?.internment?.patient.age})
           </h2>
           <CheckRole roles={["doc"]}>
