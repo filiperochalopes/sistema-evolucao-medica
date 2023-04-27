@@ -162,7 +162,6 @@ const Chart = () => {
             items: prescription,
             dateFormated,
           });
-          console.log(prescriptions);
         } catch (e) {
           oldPrescriptions.push({
             items: prescription,
@@ -191,12 +190,12 @@ const Chart = () => {
           }
           if (!sinals[key]) {
             sinals[key] = {
-              title: MEASURES_TITLES[key]?.title || "",
+              title: `${MEASURES_TITLES[key]?.title} ` || " ",
               array: [],
             };
           }
           sinals[key].array.push({
-            text: `${measure[key]}` + (MEASURES_TITLES[key]?.legend || ""),
+            text: `${measure[key]}  ` + (MEASURES_TITLES[key]?.legend || ""),
             date: format(parseISO(measure.createdAt), "HH:mm:ss", {
               locale: ptBR,
             }),

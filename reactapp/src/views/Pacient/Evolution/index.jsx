@@ -36,7 +36,7 @@ const Evolution = () => {
   const [createPrescription] = useMutation(CREATE_PRESCRIPTION);
   const [createEvolution] = useMutation(CREATE_EVOLUTION);
   const [createPeding] = useMutation(CREATE_PENDING);
-  const { data: cid10Data } = useQuery(CID10);
+  const [getCid10] = useLazyQuery(CID10);
   const [getInternment, { data }] = useLazyQuery(GET_INTERNMENT);
   const params = useParams();
   const theme = useTheme();
@@ -318,10 +318,18 @@ const Evolution = () => {
                 );
               },
             }}
+            async
             filterOption={createFilter({ ignoreAccents: false })}
             getOptionLabel={(option) => option.description}
             getOptionValue={(option) => option.code}
-            options={cid10Data?.cid10 || []}
+            loadOptions={async (inputValue) => {
+              const response = await getCid10({
+                variables: {
+                  query: inputValue,
+                },
+              });
+              return response?.data.cid10;
+            }}
             value={formikEvolution.values.cid10Code}
             placeholder="CID - ATUALIZAÇÃO DE DIAGNÓSTICO PRINCIPAL"
           />
