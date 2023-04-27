@@ -12,8 +12,6 @@ import CheckRole from "routes/CheckRole";
 import useHandleErrors from "hooks/useHandleErrors";
 import { FLUID_BALANCE_DESCRIPTIONS } from "graphql/queries";
 import Select from "components/Select";
-import { useState } from "react";
-import { useEffect } from "react";
 
 const initialValues = {
   spO2: "",
@@ -26,7 +24,7 @@ const initialValues = {
   glucose: "",
   fetalCardiacFrequency: "",
   volumeMl: "",
-  descriptionVolumeMl: "",
+  descriptionVolumeMl: null,
 };
 
 const VitalSign = () => {
@@ -40,6 +38,17 @@ const VitalSign = () => {
     initialValues,
     validationSchema: schema,
     onSubmit: async (values, { resetForm }) => {
+      console.log("values", values);
+      if (
+        (values.volumeMl && !values.descriptionVolumeMl?.value) ||
+        (!values.volumeMl && values.descriptionVolumeMl?.value)
+      ) {
+        enqueueSnackbar(
+          "Para adicionar um balanço hidrico,tando o volume quanto a descrição devem ser preenchidas",
+          { variant: "error" }
+        );
+        return;
+      }
       try {
         const newValues = { ...values };
         const variables = {
@@ -227,6 +236,7 @@ const VitalSign = () => {
             </div>
             <Select
               onChange={(e) => {
+                console.log(e);
                 formik.setFieldValue("descriptionVolumeMl", e);
               }}
               value={formik.values.descriptionVolumeMl}
