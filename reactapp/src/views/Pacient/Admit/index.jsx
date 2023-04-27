@@ -44,6 +44,7 @@ const Admit = () => {
   const [getCid10] = useLazyQuery(CID10);
   const [getPatients] = useLazyQuery(GET_PATIENTS);
   const { data: InitialPatients } = useQuery(GET_INITIAL_PATIENTS);
+  const { data: dataCid10 } = useQuery(CID10);
   const [getPatient, { data }] = useLazyQuery(GET_PATIENT, {
     fetchPolicy: "no-cache",
   });
@@ -589,6 +590,7 @@ const Admit = () => {
             }
           />
           <Select
+            defaultOptions={dataCid10?.cid10}
             onChange={(e) => {
               formik.setFieldValue("cid10Code", e);
             }}

@@ -37,6 +37,7 @@ const Evolution = () => {
   const [createEvolution] = useMutation(CREATE_EVOLUTION);
   const [createPeding] = useMutation(CREATE_PENDING);
   const [getCid10] = useLazyQuery(CID10);
+  const { data: dataCid10 } = useQuery(CID10);
   const [getInternment, { data }] = useLazyQuery(GET_INTERNMENT);
   const params = useParams();
   const theme = useTheme();
@@ -307,17 +308,7 @@ const Evolution = () => {
             onChange={(e) => {
               formikEvolution.setFieldValue("cid10Code", e);
             }}
-            components={{
-              Option: ({ children, ...props }) => {
-                const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
-                const newProps = Object.assign(props, { innerProps: rest });
-                return (
-                  <components.Option {...newProps}>
-                    {children}
-                  </components.Option>
-                );
-              },
-            }}
+            defaultOptions={dataCid10?.cid10}
             async
             filterOption={createFilter({ ignoreAccents: false })}
             getOptionLabel={(option) => option.description}
