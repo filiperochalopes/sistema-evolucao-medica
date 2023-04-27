@@ -1,11 +1,12 @@
 import { ERROR_LABEL } from "constants/errorText";
+import cpfSchema from "utils/cpfSchema";
 import * as Yup from "yup";
 
 export default Yup.object().shape({
   name: Yup.string().required(ERROR_LABEL),
   sex: Yup.mixed().required(ERROR_LABEL),
   birthdate: Yup.string().required(ERROR_LABEL),
-  cpf: Yup.string(),
+  cpf: cpfSchema,
   cns: Yup.string().required(ERROR_LABEL),
   phone: Yup.string().required(ERROR_LABEL),
   comorbidities: Yup.array().of(Yup.mixed()),
