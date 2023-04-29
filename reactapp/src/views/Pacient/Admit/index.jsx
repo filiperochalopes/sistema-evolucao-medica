@@ -72,11 +72,11 @@ const Admit = () => {
         weightKg: "",
         motherName: "",
         address: {
-          zipCode: "",
+          zipCode: "48170000",
           street: "",
           complement: "",
           number: "",
-          city: "",
+          city: "Água Fria",
           uf: null,
           neighborhood: "",
         },

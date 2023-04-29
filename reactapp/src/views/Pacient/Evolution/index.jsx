@@ -311,7 +311,9 @@ const Evolution = () => {
             defaultOptions={dataCid10?.cid10}
             async
             filterOption={createFilter({ ignoreAccents: false })}
-            getOptionLabel={(option) => option.description}
+            getOptionLabel={(option) =>
+              `${option.code} - ${option.description}`
+            }
             getOptionValue={(option) => option.code}
             loadOptions={async (inputValue) => {
               const response = await getCid10({

@@ -1,7 +1,4 @@
 from datetime import datetime
-from pprint import pprint
-import bcrypt
-import sys
 
 from ariadne import convert_kwargs_to_snake_case
 from app.models import db
