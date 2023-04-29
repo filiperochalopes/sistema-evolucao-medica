@@ -129,7 +129,7 @@ const ModalUpdatePacientData = ({ id }) => {
       return;
     }
     const findUf = statesData.state.find(
-      (state) => state.value === data.patient.address.uf
+      (state) => state.uf === data.patient.address.uf
     );
     formik.setValues({
       allergies: data.patient?.allergies.map((allergie) => ({
@@ -171,7 +171,11 @@ const ModalUpdatePacientData = ({ id }) => {
           (state) => state.uf === response.data.uf
         );
         const address = { ...formik.values.address };
-        const newAddress = { ...response.data, uf: findUf };
+        const newAddress = {
+          ...response.data,
+          zipCode: formik.values.address.zipCode,
+          uf: findUf,
+        };
         Object.keys(newAddress).forEach((key) => {
           // eslint-disable-next-line no-prototype-builtins
           if (address.hasOwnProperty(key) && newAddress[key]) {
