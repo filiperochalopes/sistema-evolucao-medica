@@ -12,10 +12,11 @@ import { SIGNING } from "graphql/mutations";
 import { useEffect } from "react";
 import { useContextProvider } from "services/Context";
 import useHandleErrors from "hooks/useHandleErrors";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 function Login() {
   const navigate = useNavigate();
-  const [signing] = useMutation(SIGNING);
+  const [signing, { loading }] = useMutation(SIGNING);
   const { updateUser } = useContextProvider();
   const { handleErrors } = useHandleErrors();
 
@@ -26,6 +27,9 @@ function Login() {
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
+      if (loading) {
+        return;
+      }
       try {
         const response = await signing({ variables: values });
         console.log(response.data);
@@ -70,7 +74,9 @@ function Login() {
         value={formik.values.password}
         onChange={formik.handleChange}
       />
-      <Button data-testid="button">Entrar</Button>
+      <Button loading={loading} data-testid="button">
+        Entrar
+      </Button>
     </Container>
   );
 }

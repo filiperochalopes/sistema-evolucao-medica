@@ -1,4 +1,23 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
+
+const spin = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+export const ContainerLoading = styled.div`
+  ${({ loading }) =>
+    loading &&
+    css`
+      svg {
+        animation: ${spin} 0.8s infinite linear;
+      }
+    `}
+`;
 
 export default styled.button`
   height: 2.5rem;
