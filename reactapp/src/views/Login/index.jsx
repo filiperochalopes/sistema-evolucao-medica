@@ -56,6 +56,11 @@ function Login() {
         value={formik.values.email}
         onChange={formik.handleChange}
         data-testid="email"
+        error={
+          formik.errors.email && formik.touched?.email
+            ? formik.errors.email
+            : ""
+        }
       />
       <Input
         placeholder="Senha"
