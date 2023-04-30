@@ -21,7 +21,7 @@ import {
   GENERATE_PDF_FOLHA_PRESCRICAO,
   GENERATE_PDF_RELATORIO_ALTA,
 } from "graphql/mutations";
-import { useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { cloneDeep } from "lodash";
 import Interval from "./components/Interval";
 import { CID10, GET_HIGH_COMPLEXITY_PROCEDURES } from "graphql/queries";
@@ -102,6 +102,7 @@ const strategies = {
   printPdf_AihSus: ({ formik }) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { data: cid10Data } = useQuery(CID10);
+    const [getCid10] = useLazyQuery(CID10);
 
     return (
       <>
@@ -109,19 +110,19 @@ const strategies = {
           onChange={(e) => {
             formik.setFieldValue("extra.secondaryDiagnosis", e);
           }}
-          components={{
-            Option: ({ children, ...props }) => {
-              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
-              const newProps = Object.assign(props, { innerProps: rest });
-              return (
-                <components.Option {...newProps}>{children}</components.Option>
-              );
-            },
+          loadOptions={async (inputValue) => {
+            const response = await getCid10({
+              variables: {
+                query: inputValue,
+              },
+            });
+            return response?.data.cid10;
           }}
+          async
           filterOption={createFilter({ ignoreAccents: false })}
           getOptionLabel={(option) => option.description}
           getOptionValue={(option) => option.code}
-          options={cid10Data?.cid10 || []}
+          defaultOptions={cid10Data?.cid10}
           value={formik.values.extra.secondaryDiagnosis}
           placeholder="CID - SUSPEITA SECUNDÁRIA"
         />
@@ -137,6 +138,7 @@ const strategies = {
     const [currentQuantity, setCurrentQuantity] = useState(1);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { data: cid10Data } = useQuery(CID10);
+    const [getCid10] = useLazyQuery(CID10);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { data: procedures } = useQuery(GET_HIGH_COMPLEXITY_PROCEDURES);
 
@@ -294,19 +296,19 @@ const strategies = {
           onChange={(e) => {
             formik.setFieldValue("extra.diagnosis", e);
           }}
-          components={{
-            Option: ({ children, ...props }) => {
-              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
-              const newProps = Object.assign(props, { innerProps: rest });
-              return (
-                <components.Option {...newProps}>{children}</components.Option>
-              );
-            },
+          loadOptions={async (inputValue) => {
+            const response = await getCid10({
+              variables: {
+                query: inputValue,
+              },
+            });
+            return response?.data.cid10;
           }}
+          async
           filterOption={createFilter({ ignoreAccents: false })}
-          getOptionLabel={(option) => option.description}
+          getOptionLabel={(option) => `${option.code} - ${option.description}`}
           getOptionValue={(option) => option.code}
-          options={cid10Data?.cid10 || []}
+          defaultOptions={cid10Data?.cid10}
           value={formik.values.extra.diagnosis}
           placeholder="Diagnóstico"
         />
@@ -314,19 +316,19 @@ const strategies = {
           onChange={(e) => {
             formik.setFieldValue("extra.secondaryDiagnosis", e);
           }}
-          components={{
-            Option: ({ children, ...props }) => {
-              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
-              const newProps = Object.assign(props, { innerProps: rest });
-              return (
-                <components.Option {...newProps}>{children}</components.Option>
-              );
-            },
+          loadOptions={async (inputValue) => {
+            const response = await getCid10({
+              variables: {
+                query: inputValue,
+              },
+            });
+            return response?.data.cid10;
           }}
+          async
           filterOption={createFilter({ ignoreAccents: false })}
-          getOptionLabel={(option) => option.description}
+          getOptionLabel={(option) => `${option.code} - ${option.description}`}
           getOptionValue={(option) => option.code}
-          options={cid10Data?.cid10 || []}
+          defaultOptions={cid10Data?.cid10}
           value={formik.values.extra.secondaryDiagnosis}
           placeholder="Diagnóstico secundário"
         />
