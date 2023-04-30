@@ -45,7 +45,7 @@ const Admit = () => {
   const [getPatients] = useLazyQuery(GET_PATIENTS);
   const { data: InitialPatients } = useQuery(GET_INITIAL_PATIENTS);
   const { data: dataCid10 } = useQuery(CID10);
-  const [getPatient, { data }] = useLazyQuery(GET_PATIENT, {
+  const [getPatient, { data: patientData }] = useLazyQuery(GET_PATIENT, {
     fetchPolicy: "no-cache",
   });
   const navigate = useNavigate();
@@ -77,7 +77,7 @@ const Admit = () => {
           complement: "",
           number: "",
           city: "Água Fria",
-          uf: null,
+          uf: { value: "BA", label: "Bahia" },
           neighborhood: "",
         },
       },
@@ -181,47 +181,52 @@ const Admit = () => {
   });
 
   useEffect(() => {
-    if (data && statesData?.state) {
+    if (patientData && statesData?.state) {
       const findSex = SEX_OPTIONS.find(
-        (sex) => data?.patient?.sex === sex.value
+        (sex) => patientData?.patient?.sex === sex.value
       );
-      const findUf = statesData.state.find(
-        (state) => state.uf === data?.patient?.address.uf
+      const selectedUF = statesData.state.find(
+        (state) => state.uf === patientData?.patient?.address.uf
       );
+      console.log(selectedUF);
       formik.setValues({
         ...formik.values,
         addPacient: true,
         patient: {
-          name: data?.patient?.name,
+          name: patientData?.patient?.name,
           sex: findSex,
-          birthdate: data?.patient?.birthdate,
-          cpf: maskCpf(data?.patient?.cpf),
-          cns: data?.patient?.cns,
-          rg: data?.patient?.rg || "",
-          motherName: data?.patient?.motherName,
-          comorbidities: data?.patient?.comorbidities.map((comorbiditie) => ({
-            label: comorbiditie.value,
-            value: comorbiditie.value,
+          birthdate: patientData?.patient?.birthdate,
+          cpf: maskCpf(patientData?.patient?.cpf),
+          cns: patientData?.patient?.cns,
+          rg: patientData?.patient?.rg || "",
+          motherName: patientData?.patient?.motherName,
+          comorbidities: patientData?.patient?.comorbidities.map(
+            (comorbidity) => ({
+              label: comorbidity.value,
+              value: comorbidity.value,
+            })
+          ),
+          allergies: patientData?.patient?.allergies.map((allergy) => ({
+            label: allergy.value,
+            value: allergy.value,
           })),
-          allergies: data?.patient?.allergies.map((allergie) => ({
-            label: allergie.value,
-            value: allergie.value,
-          })),
-          weightKg: data?.patient?.weightKg,
-          phone: maskPhone(data?.patient?.phone),
+          weightKg: patientData?.patient?.weightKg,
+          phone: maskPhone(patientData?.patient?.phone),
           address: {
-            zipCode: data?.patient?.address.zipCode,
-            street: data?.patient?.address.street,
-            complement: data?.patient?.address.complement,
-            number: data?.patient?.address.number,
-            city: data?.patient?.address.city,
-            uf: findUf,
-            neighborhood: data?.patient?.address.neighborhood,
+            zipCode: patientData?.patient?.address.zipCode,
+            street: patientData?.patient?.address.street,
+            complement: patientData?.patient?.address.complement,
+            number: patientData?.patient?.address.number,
+            city: patientData?.patient?.address.city,
+            uf: selectedUF
+              ? { label: selectedUF?.name, value: selectedUF?.uf }
+              : null,
+            neighborhood: patientData?.patient?.address.neighborhood,
           },
         },
       });
     }
-  }, [data, statesData]);
+  }, [patientData, statesData]);
 
   useEffect(() => {
     async function getCep() {
@@ -273,6 +278,7 @@ const Admit = () => {
           loadOptions={promiseOptions}
           value={formikGetPatient.values.patientName}
           name="patientName"
+          placeholder="Selecione um paciente já cadastrado"
           async
           onChange={(e) => {
             getPatient({
@@ -459,11 +465,13 @@ const Admit = () => {
                   formik.setFieldTouched("patient.address.uf", true);
                 }}
                 className="small"
-                getOptionLabel={(option) => option.name}
-                getOptionValue={(option) => option.uf}
                 value={formik.values?.patient?.address?.uf}
                 placeholder="Estado"
-                options={statesData?.state || []}
+                options={
+                  statesData?.state?.reduce((acc, cur) => {
+                    return [{ label: cur.name, value: cur.uf }, ...acc];
+                  }, []) || []
+                }
                 error={
                   formik.errors?.patient?.address?.uf &&
                   formik.touched?.patient?.address?.uf

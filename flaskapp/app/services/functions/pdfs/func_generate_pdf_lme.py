@@ -65,7 +65,7 @@ def func_generate_pdf_lme(requesting_establishment:dict, patient:dict, patient_h
         except:
             return Exception('Erro desconhecido ocorreu enquanto adicionava dados obrigadorios')
 
-        #Adding data that can be null
+        # Adding data that can be null
         try:
             pdf.set_font('Roboto-Mono', 9)
             pdf.add_document_cns_cpf_rg(document={'cpf': patient.get('cpf'), 'cns': patient.get('cns')}, pos_square_cpf=(40, 66), pos_square_cns=(84,66), pos_cns=(129, 66), pos_cpf=(129, 66),field_name='Patient Document', interval='  ', nullable=True, square_size=(5, 8))

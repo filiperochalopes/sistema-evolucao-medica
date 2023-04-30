@@ -21,7 +21,7 @@ const ModalPrintData = ({ confirmButton, id }) => {
         customType="gray-300"
         type="button"
       >
-        Ficha de Internamento Hospitalar
+        Ficha de Internamento Hospitalar (AIH)
       </Button>
       <Button
         customType="gray-300"
@@ -30,7 +30,7 @@ const ModalPrintData = ({ confirmButton, id }) => {
           addModal(additionalDataScreen({ type: "printPdf_AihSus", id }))
         }
       >
-        Folha de Admissão do Hospital
+        Folha de Admissão do Hospital (Folha de Rosto)
       </Button>
       <Button
         customType="gray-300"
