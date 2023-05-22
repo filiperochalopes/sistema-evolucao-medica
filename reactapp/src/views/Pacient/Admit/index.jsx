@@ -110,7 +110,7 @@ const Admit = () => {
       if (values.patient.address) {
         patient.address = {
           ...values.patient.address,
-          zipcode: values.patient.address.zipCode?.replace(/\D/g, ""),
+          zipCode: values.patient.address.zipCode?.replace(/\D/g, ""),
           uf: values.patient.address?.uf?.value || "",
         };
       }
