@@ -78,7 +78,8 @@ const ModalUpdatePacientData = ({ id }) => {
               weightKg: parseFloat(values.weightKg),
               address: {
                 ...values.address,
-                uf: values.address?.uf?.uf,
+                zipCode: values.address.zipCode?.replace(/\D/g, ""),
+                uf: values.address.uf.uf,
               },
               cpf: values.cpf.replace(/\D/g, ""),
               phone: values.phone.replace(/\D/g, ""),
@@ -92,6 +93,7 @@ const ModalUpdatePacientData = ({ id }) => {
     },
     validationSchema: patientSchema,
   });
+
   useEffect(() => {
     getPatientData({
       variables: {
@@ -269,12 +271,11 @@ const ModalUpdatePacientData = ({ id }) => {
           className="small"
           placeholder="Endereço"
           onChange={formik.handleChange}
-          name="address.complement"
-          value={formik.values.address.complement}
+          name="address.street"
+          value={formik.values.address.street}
           error={
-            formik.errors?.address?.complement &&
-            formik.touched?.address.complement
-              ? formik.errors?.address?.complement
+            formik.errors?.address?.street && formik.touched?.address.street
+              ? formik.errors?.address?.street
               : ""
           }
         />

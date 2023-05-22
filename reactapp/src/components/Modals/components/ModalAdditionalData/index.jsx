@@ -336,19 +336,19 @@ const strategies = {
           onChange={(e) => {
             formik.setFieldValue("extra.ssociatedCause", e);
           }}
-          components={{
-            Option: ({ children, ...props }) => {
-              const { onMouseMove, onMouseOver, ...rest } = props.innerProps;
-              const newProps = Object.assign(props, { innerProps: rest });
-              return (
-                <components.Option {...newProps}>{children}</components.Option>
-              );
-            },
+          loadOptions={async (inputValue) => {
+            const response = await getCid10({
+              variables: {
+                query: inputValue,
+              },
+            });
+            return response?.data.cid10;
           }}
+          async
           filterOption={createFilter({ ignoreAccents: false })}
-          getOptionLabel={(option) => option.description}
+          getOptionLabel={(option) => `${option.code} - ${option.description}`}
           getOptionValue={(option) => option.code}
-          options={cid10Data?.cid10 || []}
+          defaultOptions={cid10Data?.cid10}
           value={formik.values.extra.ssociatedCause}
           placeholder="Causa Associada"
         />

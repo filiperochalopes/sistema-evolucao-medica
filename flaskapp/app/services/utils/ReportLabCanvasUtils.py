@@ -461,7 +461,7 @@ class ReportLabCanvasUtils():
             self.validate_func_args(function_to_verify=self.add_CEP, variables_to_verify={'cep':cep, 'pos':pos, 'field_name':field_name, 'nullable':nullable, 'interval':interval, 'formated':formated})
 
             cep = str(cep).strip()
-            if len(cep) == 8:
+            if len(cep) >= 8:
                 if formated:
                     cep = cep[:5] + '-' + cep[5:]
 
@@ -469,7 +469,7 @@ class ReportLabCanvasUtils():
                 self.add_data(data=cep, pos=pos)
                 return None
             else:
-                raise Exception(f"Nao foi possivel adicionar {field_name} porque o cpf nao possui 8 digitos")
+                raise Exception(f"Nao foi possivel adicionar {field_name} porque o CEP nao possui 8 digitos")
 
         except Exception as error:
             raise error

@@ -13,9 +13,9 @@ from app.serializers import ma
 
 import os
 
+
 template_dir = os.path.join(os.path.abspath(
     os.path.dirname(__file__)), 'templates')
-react_folder = os.path.join(template_dir, 'reactapp')
 app = Flask(__name__, static_folder='reactapp/build')
 app.config['SQLALCHEMY_DATABASE_URI'] = DatabaseSettings().URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -61,13 +61,47 @@ def graphql_server():
 Comandos flask cli
 '''
 
+from app.models import User
+from app.services.utils.auth import cpf_validator, cns_validator
+from app.models import User, ProfessionalCategoryEnum
+from datetime import datetime
+import sys
+import json
+
+@app.cli.command("create_users")
+def create_users():
+    encrypted_password = User.generate_password('passw@rd')
+    json_file = open(os.path.join(os.path.abspath(
+    os.path.dirname(__file__)), 'users.json'))
+    users = json.load(json_file)
+    user_dict = {}
+    for user in users:
+        user_dict = {**user}
+        print(f"Cadastrando usuário {user['name']}...", file=sys.stderr)
+        # Verifica o preenchimento de cpf ou cns, um dos dois devem estar preenchidos
+        if 'cpf' in user and not user['cpf'] and 'cns' in user and not user['cns']:
+            raise Exception(
+                'CPF ou CNS devem estar preenchidos, os dois campos não podem ficar em branco')
+        if 'cns' in user and user['cns'] is not None:
+            if cns_validator.validate(user['cns']) is False:
+                raise Exception(f'Número de CNS {user["cns"]} inválido')
+        if 'cpf' in user and user['cpf'] is not None:
+            if cpf_validator.validate(user['cpf']) is False:
+                raise Exception('Número de CPF inválido')
+        
+        user_dict['professional_category'] = ProfessionalCategoryEnum[user['professional_category']]
+        user_dict['birthdate'] = datetime.strptime(user['birthdate'], '%Y-%m-%d')
+        user_dict['password_hash'] = encrypted_password
+        new_user = User(**user_dict)
+        db.session.add(new_user)
+        db.session.commit()
 
 @app.cli.command("seed")
 def seed():
     """Seed the database."""
     import csv
 
-    # cadastrando lista de Cid10
+    # Cadastrando lista de Cid10
     with open(os.path.join(os.path.dirname(__file__), 'assets', 'CID-10-DATASUS.csv'), 'r', encoding='ISO-8859-1') as file:
         csvreader = csv.reader(file, dialect='excel', delimiter=';')
         next(file)
@@ -75,7 +109,7 @@ def seed():
             cid10 = Cid10(code=row[0], description=row[4])
             db.session.add(cid10)
 
-    # cadastrando lista de Estados
+    # Cadastrando lista de Estados
     with open(os.path.join(os.path.dirname(__file__), 'assets', 'ESTADOS-UF.csv'), 'r') as file:
         csvreader = csv.reader(file, delimiter=',')
         next(file)

@@ -96,6 +96,10 @@ const Admit = () => {
         cpf: values.patient.cpf?.replace(/\D/g, ""),
       };
 
+      console.log(patient);
+      console.log(values);
+
+      // Excluindo chaves não utilizadas
       for (const chave in patient) {
         // eslint-disable-next-line no-prototype-builtins
         if (patient.hasOwnProperty(chave) && patient[chave] === "") {
@@ -106,7 +110,8 @@ const Admit = () => {
       if (values.patient.address) {
         patient.address = {
           ...values.patient.address,
-          uf: values.patient.address?.uf?.uf || "",
+          zipcode: values.patient.address.zipCode?.replace(/\D/g, ""),
+          uf: values.patient.address?.uf?.value || "",
         };
       }
       const dateBirthDay = new Date(patient.birthdate);
@@ -254,6 +259,7 @@ const Admit = () => {
     getCep();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values.patient.address?.zipCode, statesData]);
+
   const promiseOptions = async (inputValue) => {
     const patients = await getPatients({
       variables: {
@@ -461,6 +467,7 @@ const Admit = () => {
 
               <Select
                 onChange={(e) => {
+                  console.log(e);
                   formik.setFieldValue("patient.address.uf", e);
                   formik.setFieldTouched("patient.address.uf", true);
                 }}

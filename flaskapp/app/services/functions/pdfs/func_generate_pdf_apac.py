@@ -69,7 +69,8 @@ def func_generate_pdf_apac(requesting_establishment:dict, patient:dict, main_pro
             pdf.set_font('Roboto-Mono', 9)
             pdf.add_oneline_text(text=patient.get('mother_name'), pos=(36, 654), field_name='Patient Mother Name', len_max=67, len_min=7, nullable=True)
             pdf.add_oneline_text(text=patient['address'].get('street'), pos=(36, 608), field_name='Patient Adress', len_max=97, len_min=7, nullable=True)
-            pdf.add_oneline_text(text=patient['address'].get('zip_code'), pos=(476, 582), field_name='Patient Adress CEP', len_max=8, len_min=8, nullable=True, interval=' ')
+            # ! Fix len_max deve ser 8
+            pdf.add_oneline_text(text=patient['address'].get('zip_code'), pos=(476, 582), field_name='Patient Adress CEP', len_max=10, len_min=8, nullable=True, interval=' ')
             pdf.add_oneline_text(text=patient['address'].get('ibge_city_code'), pos=(370, 582), field_name='Patient Adress City IBGE code', len_max=7, len_min=7, nullable=True)
             pdf.add_oneline_text(text=establishment_exec.get('name'), pos=(36, 30), field_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
             pdf.add_UF(uf=patient['address']['uf'], pos=(443, 582), field_name='Patient Adress UF', nullable=True, interval='  ')

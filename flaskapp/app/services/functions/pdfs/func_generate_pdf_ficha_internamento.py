@@ -40,8 +40,9 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
             pdf.add_document_cns_cpf_rg(document={'cpf': patient['cpf'], 'rg': patient['rg']}, pos_square_cpf=(24, 608), pos_square_rg=(58,608), pos_rg=(92, 610), pos_cpf=(92, 610),field_name='Pacient Document', formated=True)
             pdf.add_oneline_text(text=patient['address']['street'], pos=(230, 610), field_name='Patient Adress', len_max=63, len_min=7)
             pdf.add_phonenumber(number=patient['phone'], pos=(173, 547), field_name='Patient phone number', formated=True)
-            pdf.add_oneline_text(text=str(patient['allergies']).replace('[', '').replace(']', ''), pos=(26, 481), field_name='Patient Drugs Allergies', len_max=100, len_min=5)
-            pdf.add_oneline_text(text=str(patient['comorbidities']).replace('[', '').replace(']', ''), pos=(26, 449), field_name='Patient Commorbidites', len_max=100, len_min=5)
+            # ! Fix Adicionar opção de Nega alergias, que deve ser obrigatório ter pelo menos um item no campo
+            pdf.add_oneline_text(text=str(patient['allergies']).replace('[', '').replace(']', ''), pos=(26, 481), field_name='Patient Drugs Allergies', len_max=100, len_min=5, nullable=True)
+            pdf.add_oneline_text(text=str(patient['comorbidities']).replace('[', '').replace(']', ''), pos=(26, 449), field_name='Patient Commorbidites', len_max=100, len_min=5, nullable=True)
             pdf.add_morelines_text(text=history_of_present_illness, initial_pos=(26, 418), decrease_ypos= 10, field_name='Current Illness History', len_max=1600, char_per_lines=100, len_min=10)
             pdf.add_oneline_text(text=initial_diagnosis_suspicion, pos=(26, 244), field_name='Initial Diagnostic Suspicion', len_max=100, len_min=5)
             pdf.add_oneline_text(text=doctor_name, pos=(304, 195), field_name='Doctor Name', len_max=49, len_min=7)
@@ -54,7 +55,6 @@ def func_generate_pdf_ficha_internamento(document_datetime:datetime.datetime, pa
 
         #Adding data that can be null
         try:
-            
             pdf.add_oneline_text(text=patient['address'].get('number'), pos=(24, 580), field_name='Patient Adress Number', len_max=6, len_min=1,nullable=True)
             pdf.add_oneline_text(text=patient['address'].get('neighborhood'), pos=(66, 580), field_name='Patient Adress Neighborhood', len_max=31, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient['address'].get('city'), pos=(243, 580), field_name='Patient Adress City', len_max=34, len_min=3, nullable=True)

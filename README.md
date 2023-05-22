@@ -2,6 +2,20 @@
 
 Inicialmente criado com a ideia de ser um registro para acompanhamento de pacientes por médicos de um pronto atendimento, o conceito foi migrado ao notar a debilidade de um Hospital de Pequeno Porte em registrar as condutas de seus pacientes. Esse novo escopo visa ser responsável pela melhoria da comunicação e atenção da equipe.
 
+## Deploy em ambiente de homologação/produção
+
+1. (Opcional) Crie dentro da pasta app uma lista de usuários para cadastro/seed inicial
+2. Execute:
+
+```sh
+docker-compose down --volumes --remove-orphans
+rm -rf data
+docker-compose up -d
+make migrate
+make seed
+make users
+```
+
 ## Ambiente de desenvolvimento
 
 Para desenvolvimento foi criado um ambiente docker que supre as necessidades da construção, entretando para produção será instalado em um computador Windows de baixo custo da unidade que funcionará como servidor.
