@@ -11,18 +11,36 @@ export default styled.div`
 export const Header = styled.header`
   background-color: ${({ theme }) => theme.colors.green};
   width: 100%;
-  display: flex;
-  align-items: center;
   justify-content: center;
+
+  ul {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    list-style: none;
+
+    ul {
+      position: absolute;
+      top: 1em;
+      width: 150px;
+
+      li {
+        width: 100%;
+        padding: 1rem;
+        background-color: ${({ theme }) => theme.colors.gray};
+      }
+    }
+  }
 
   ${({ defaultHeight }) =>
     defaultHeight &&
     css`
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       padding: 0 2rem;
       min-height: 5rem;
+
       button {
         background: none;
         border: none;

@@ -50,6 +50,16 @@ export const routes = [
         ),
       },
       {
+        path: "/editar-usuario",
+        element: (
+          <PrivateRouter>
+            <CheckRole goBack roles={["doc"]}>
+              <Admit />
+            </CheckRole>
+          </PrivateRouter>
+        ),
+      },
+      {
         path: "/evoluir-paciente/:id",
         element: (
           <PrivateRouter>

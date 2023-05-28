@@ -382,6 +382,9 @@ type_defs = gql(
         id: ID!
         email: String
         name: String
+        cns: String
+        cpf: String
+        rg: String
         birthdate: String
         professionalCategory: String
         professionalDocumentUf: String

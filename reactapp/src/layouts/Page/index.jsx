@@ -1,17 +1,16 @@
 import Container, { Header, Main } from "./styles";
-import { BiLogOut } from "react-icons/bi";
-import logo from "../../assets/logo.png";
+import logo from "assets/logo.png";
+import { AiFillCaretDown } from "react-icons/ai";
 
-import React, { useEffect } from "react";
+import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useContextProvider } from "services/Context";
 
+// todo esse headerComponent existe para ser usado também em Modal, o que não faz sentido, pois não é uma página de template, então deve ser removido daqui, assim também defaultHeight
 function PageTemplate({ children, headerComponent }) {
   const { logout, decodedJWT, user } = useContextProvider();
-
-  useEffect(() => {
-    console.log(decodedJWT);
-  }, [decodedJWT]);
+  const [showMenu, setShowMenu] = useState(false);
 
   return (
     <Container>
@@ -22,13 +21,29 @@ function PageTemplate({ children, headerComponent }) {
           <>
             {decodedJWT && (
               <>
-                <button onClick={() => logout()}>
-                  <BiLogOut color="#fff" size={32} />
-                </button>
-                <Link to="/">
+                <Link to="/" title="Voltar para lista de internamentos">
                   <img src={logo} alt="logo" />
                 </Link>
-                <div>{user?.name}</div>
+                <ul>
+                  <li
+                    onMouseOver={() => setShowMenu(true)}
+                    onFocus={() => setShowMenu(true)}
+                    onMouseOut={() => setShowMenu(false)}
+                    onBlur={() => setShowMenu(false)}
+                  >
+                    Olá {user?.name} <AiFillCaretDown />
+                    {showMenu && (
+                      <ul>
+                        <li>
+                          <Link to="/editar-usuario">Editar dados</Link>
+                        </li>
+                        <li>
+                          <button onClick={() => logout()}>Sair</button>
+                        </li>
+                      </ul>
+                    )}
+                  </li>
+                </ul>
                 <span />
               </>
             )}

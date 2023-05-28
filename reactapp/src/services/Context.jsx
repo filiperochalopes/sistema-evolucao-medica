@@ -10,7 +10,10 @@ const ContextProvider = ({ children }) => {
   const [decodedJWT, setDecodedJWT] = useState();
   const [user, setUser] = useState();
   const navigate = useNavigate();
-  const [getMyUser, { myUserData }] = useLazyQuery(MY_USER);
+  const [getMyUser] = useLazyQuery(MY_USER, {
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "network-only",
+  });
 
   useEffect(() => {
     // Captura o token da local storage
@@ -28,14 +31,13 @@ const ContextProvider = ({ children }) => {
 
   useEffect(() => {
     // Em caso de alterações do token é preciso rever o usuário
-    getMyUser();
+    if (decodedJWT?.sub) {
+      getMyUser().then(({ data: { myUser } }) => {
+        // Setando dados de usuário em contexto
+        setUser(myUser);
+      });
+    }
   }, [decodedJWT, getMyUser]);
-
-  useEffect(() => {
-    // Setando dados de usuário em contexto
-    console.log(myUserData);
-    setUser(myUserData);
-  }, [myUserData]);
 
   function updateDecodedJWT(token) {
     const _decodedJWT = jwt_decode(token);
