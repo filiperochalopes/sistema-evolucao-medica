@@ -1,0 +1,248 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_FolhaEvolucao(
+    patient: {
+      name: "Patient Test Name",
+      cns: "928976954930007",
+      weightKg: 123.00,
+      sex: "F", 
+      phone: "10123456789",
+      motherName: "Patient Mother Name", 
+    },
+    evolutions:[
+      {
+        createdAt: "2023-02-12T23:59:24",
+        description: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id. Nulla pretium, massa nec aliquet mattis, erat felis egestas massa, eu lacinia ipsum ligula eu sapien. Maecenas posuere, felis sit amet viverra fini",
+        professional:
+        {
+          name: "Professional Name",
+          category: "m",
+          document: "12345/BA"
+        }
+      },
+      {
+        createdAt: "2023-02-12T23:59:24",
+        description: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id. Nulla pretium, massa nec aliquet mattis, erat felis egestas massa, eu lacinia ipsum ligula eu sapien. Mae",
+        professional:
+        {
+          name: "Another Professional Name",
+          category: "e",
+          document: "1234534"
+        }
+      },
+      {
+        createdAt: "2023-02-12T23:59:24",
+        description: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id.quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id.quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.",
+        professional:{
+          name: "Professional aaaa Name",
+          category: "m",
+          document: "54321/BA"
+        }
+      },
+      {
+        createdAt: "2023-02-12T23:59:24",
+        description: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, ",
+    	  professional:
+        {
+          name: "Last Professional Name",
+          category: "e",
+         document: "987654"
+        }
+      },
+    ]
+    measures: [
+      {
+        createdAt: "2023-02-12T23:59:24",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
+        glucose: "152",
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        professional:{
+          name: "Professional aaaa Name",
+          category: "m",
+          document: "54321/BA"
+        }
+      },
+      {
+        createdAt: "2023-02-12T22:59:24",
+        cardiacFrequency: 32,
+        respiratoryFrequency: 10,
+        sistolicBloodPressure: 124,
+        diastolicBloodPressure: 81,
+        glucose: "400",
+        spO2: 92,
+        celciusAxillaryTemperature: 38,
+        pain: 5,
+        professional:{
+          name: "Another Professional name",
+          category: "e",
+          document: "4512788"
+        }
+      },
+      {
+        createdAt: "2023-02-12T23:59:24",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
+        glucose: "152",
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        professional:{
+          name: "Professional aaaa Name",
+          category: "m",
+          document: "54321/BA"
+        }
+      },
+      {
+        createdAt: "2023-02-12T22:59:24",
+        cardiacFrequency: 32,
+        respiratoryFrequency: 10,
+        sistolicBloodPressure: 124,
+        diastolicBloodPressure: 81,
+        glucose: "400",
+        spO2: 92,
+        celciusAxillaryTemperature: 38,
+        pain: 5,
+        professional:{
+          name: "Another Professional name",
+          category: "e",
+          document: "4512788"
+        }
+      },
+      {
+        createdAt: "2023-02-12T23:59:24",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
+        glucose: "152",
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        professional:{
+          name: "Professional aaaa Name",
+          category: "m",
+          document: "54321/BA"
+        }
+      },
+      {
+        createdAt: "2023-02-12T22:59:24",
+        cardiacFrequency: 32,
+        respiratoryFrequency: 10,
+        sistolicBloodPressure: 124,
+        diastolicBloodPressure: 81,
+        glucose: "400",
+        spO2: 92,
+        celciusAxillaryTemperature: 38,
+        pain: 5,
+        professional:{
+          name: "Another Professional name",
+          category: "e",
+          document: "4512788"
+        }
+      },
+      {
+        createdAt: "2023-02-12T23:59:24",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
+        glucose: "152",
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        professional:{
+          name: "Professional aaaa Name",
+          category: "m",
+          document: "54321/BA"
+        }
+      },
+      {
+        createdAt: "2023-02-12T22:59:24",
+        cardiacFrequency: 32,
+        respiratoryFrequency: 10,
+        sistolicBloodPressure: 124,
+        diastolicBloodPressure: 81,
+        glucose: "400",
+        spO2: 92,
+        celciusAxillaryTemperature: 38,
+        pain: 5,
+        professional:{
+          name: "Another Professional name",
+          category: "e",
+          document: "4512788"
+        }
+      },
+      {
+        createdAt: "2023-02-12T23:59:24",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
+        glucose: "152",
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        professional:{
+          name: "Professional aaaa Name",
+          category: "m",
+          document: "54321/BA"
+        }
+      },
+      {
+        createdAt: "2023-02-12T22:59:24",
+        cardiacFrequency: 32,
+        respiratoryFrequency: 10,
+        sistolicBloodPressure: 124,
+        diastolicBloodPressure: 81,
+        glucose: "400",
+        spO2: 92,
+        celciusAxillaryTemperature: 38,
+        pain: 5,
+        professional:{
+          name: "Another Professional name",
+          category: "e",
+          document: "4512788"
+        }
+      },
+      {
+        createdAt: "2023-02-12T23:59:24",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
+        glucose: "152",
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        professional:{
+          name: "Professional aaaa Name",
+          category: "m",
+          document: "54321/BA"
+        }
+      },
+      {
+        createdAt: "2023-02-12T22:59:24",
+        cardiacFrequency: 32,
+        respiratoryFrequency: 10,
+        sistolicBloodPressure: 124,
+        diastolicBloodPressure: 81,
+        glucose: "400",
+        spO2: 92,
+        celciusAxillaryTemperature: 38,
+        pain: 5,
+        professional:{
+          name: "Another Professional name",
+          category: "e",
+          document: "4512788"
+        }
+      }
+    ])
+{base64Pdf}
+}

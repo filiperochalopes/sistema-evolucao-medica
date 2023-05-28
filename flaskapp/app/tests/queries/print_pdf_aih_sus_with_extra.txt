@@ -1,0 +1,13 @@
+mutation{
+  printPdf_AihSus(
+    internmentId:1
+    extra: {
+      secondaryDiagnosis:{
+        code: "I200"
+        description: "Angina Instável"        
+      }
+    }
+  ){
+    base64Pdf
+  }
+}

@@ -2,6 +2,20 @@
 
 Inicialmente criado com a ideia de ser um registro para acompanhamento de pacientes por médicos de um pronto atendimento, o conceito foi migrado ao notar a debilidade de um Hospital de Pequeno Porte em registrar as condutas de seus pacientes. Esse novo escopo visa ser responsável pela melhoria da comunicação e atenção da equipe.
 
+## Deploy em ambiente de homologação/produção
+
+1. (Opcional) Crie dentro da pasta app uma lista de usuários para cadastro/seed inicial
+2. Execute:
+
+```sh
+docker-compose down --volumes --remove-orphans
+rm -rf data
+docker-compose up -d
+make migrate
+make seed
+make users
+```
+
 ## Ambiente de desenvolvimento
 
 Para desenvolvimento foi criado um ambiente docker que supre as necessidades da construção, entretando para produção será instalado em um computador Windows de baixo custo da unidade que funcionará como servidor.
@@ -55,7 +69,7 @@ npm install --global yarn
 ### Realizando a build React
 
 ```sh
-cd flaskapp/app/templates/reactapp
+cd reactapp
 yarn
 yarn build
 ```
@@ -87,17 +101,6 @@ FLASK_DEBUG=false
 gunicorn --bind 0.0.0.0:5000 wsgi:app --daemon
 ```
 
-# Como rodar os testes
-### Entre no diretorio /app/app
-```cd /app/app```
-### Agora rode os teste utilizando esse comando
-```pytest /app/app/graphql/mutations/pdfs/tests/```
+### Testes
 
-### O resultado é pra ser parecido isso:
-```
-root@d956c3253006:/app/app# pytest /app/app/graphql/mutations/pdfs/tests/
-========================================================================================== test session starts ==========================================================================================platform linux -- Python 3.8.15, pytest-7.1.3, pluggy-1.0.0
-rootdir: /app/app
-plugins: anyio-3.6.1
-collected 819 items
-```
+Para facilitar o teste estou mantendo no README algumas requisições para preencher o banco de dados com informações iniciais e úteis para o teste estão disponíveis na lista de comando do `Makefile`

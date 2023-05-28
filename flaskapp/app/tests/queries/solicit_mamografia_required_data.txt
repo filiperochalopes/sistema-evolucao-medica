@@ -1,0 +1,23 @@
+mutation{
+    generatePdf_SolicitMamografia(
+        patient: {
+            name: "Pacient Name",
+            cns: "928976954930007",
+            birthdate: "2022-11-10",
+            motherName: "Paciente Mother Name",
+            weightKg: 123,
+            sex: "F", 
+            phone: "10123456789",
+            address:{
+                uf: "SP",
+                city: "Jau"
+            }
+        },
+        mammogramBefore: ["NAO", "2020"],
+        noduleLump: "NAO",
+        highRisk: "NAOSABE",
+        examinatedBefore: "NUNCA",
+        requestingProfessionalName: "Professional Soliciame",
+        solicitationDate: "2022-11-10"
+){base64Pdf}
+    }

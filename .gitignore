@@ -1,6 +1,10 @@
 __pycache__
 .env
+data
 .idea
-flaskapp/app/graphql/mutations/pdfs/tests/pdfs_created_files_test/*
-instance/
 *.db
+flaskapp/app/tests/files/tmp/*.pdf
+data
+.DS_Store
+.pytest_cache
+users.json

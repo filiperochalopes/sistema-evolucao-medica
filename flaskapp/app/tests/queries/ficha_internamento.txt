@@ -1,0 +1,35 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_FichaInternamento(
+    documentDatetime: "2023-02-13T01:17:20.624559",
+    patient: {
+      name: "Patient Name",
+      cns: "928976954930007",
+      cpf: "14383811744",
+      rg: null,
+      birthdate: "2022-11-10",
+      nationality: "Brasileira",
+      sex: "M",
+      weightKg: 123.00,
+      phone: "10123456789",
+      motherName: "Patient Mother Name",
+      address: {
+        street: "Patient Adress",
+        number: "124",
+        neighborhood: "Patient Neighbourhood",
+        city: "Patient City",
+        uf: "SP",
+        zipCode: "12345678",
+      },
+      comorbidities: ["Patient", "Commorbidites"],
+      allergies: ["Patient", "Drug", "Allergies"],
+    }
+    historyOfPresentIllness: "Current Illness History",
+    hasAdditionalHealthInsurance: "SIM",
+    initialDiagnosisSuspicion: "Initial Suspiction",
+    doctorName: "Doctor Name",
+    doctorCns: "928976954930007",
+    doctorCrm: "CRM/UF 123456",
+  )
+{base64Pdf}
+}

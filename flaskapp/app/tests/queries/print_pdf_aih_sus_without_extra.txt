@@ -1,0 +1,7 @@
+mutation{
+  printPdf_AihSus(
+    internmentId:1
+  ){
+    base64Pdf
+  }
+}

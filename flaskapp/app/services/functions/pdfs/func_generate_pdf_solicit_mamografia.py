@@ -1,0 +1,186 @@
+import datetime
+from app.services.utils.PdfSolicitMamografia import PdfSolicitMamografia
+
+
+def func_generate_pdf_solicit_mamografia(patient:dict, nodule_lump:str, high_risk:str, examinated_before:str, mammogram_before:list, solicitation_date:datetime.datetime, requesting_professional_name:str, health_unit_adress_uf:str=None, health_unit_cnes:int=None, health_unit_name:str=None, health_unit_adress_city:str=None, health_unit_city_ibge_code:str=None, document_chart_number:str=None, protocol_number:str=None, patient_surname:str=None,  patient_ethnicity:list=None, patient_schooling:str=None, patient_phonenumber:str=None, radiotherapy_before:list=None, breast_surgery_before:dict=None, exam_number:str=None, tracking_mammogram:str=None, diagnostic_mammogram:dict=None) -> str:
+    """Fill solicitacion mamografia (Solicitacao de Mamografia) 
+    Args:
+        patient (dict): Patient info
+        nodule_lump (str): nodule_lump
+        high_risk (str): high_risk
+        examinated_before (str): examinated_before
+        mammogram_before (list): list with option and year, ['SIM', '2020']
+        solicitation_date (datetime.datetime): solicitation_date
+        requesting_professional_name (str): requesting_professional_name
+        health_unit_adress_uf (str, optional): health_unit_adress_uf. Defaults to None.
+        health_unit_cnes (int, optional): health_unit_cnes. Defaults to None.
+        health_unit_name (str, optional): health_unit_name. Defaults to None.
+        health_unit_adress_city (str, optional): health_unit_adress_city. Defaults to None.
+        health_unit_city_ibge_code (str, optional): health_unit_city_ibge_code. Defaults to None.
+        document_chart_number (str, optional): document_chart_number. Defaults to None.
+        protocol_number (str, optional): protocol_number. Defaults to None.
+        patient_surname (str, optional): patient_surname. Defaults to None.
+        patient_ethnicity (list, optional): patient_ethnicity. Defaults to None.
+        patient_schooling (str, optional): patient_schooling. Defaults to None.
+        patient_phonenumber (int, optional): patient_phonenumber. Defaults to None.
+        radiotherapy_before (list, optional): Option and year, eg ['SIMESQ', '2020']. Defaults to None.
+        breast_surgery_before (dict, optional): dict with opions and years, eg:
+        {
+    'didNot':False,
+    'biopsiaInsinonal':(2021, 2020),
+    'biopsiaExcisional':(2021, 2020),
+    'centraledomia':(2021, 2020),
+    'segmentectomia':None,
+    'dutectomia':(2021, 2020),
+    'mastectomia':(2021, 2020),
+    'mastectomiaPoupadoraPele':(2021, 2020),
+    'mastectomiaPoupadoraPeleComplexoAreolo':(2021, 2020),
+    'linfadenectomiaAxilar':(2021, 2020),
+    'biopsiaLinfonodo':(2021, 2020),
+    'reconstrucaoMamaria':(2021, 2020),
+    'mastoplastiaRedutora':(2021, 2020),
+    'indusaoImplantes':(2021, 2020)
+    }. Defaults to None.
+        exam_number (int, optional): exam_number. Defaults to None.
+        tracking_mammogram (str, optional): tracking_mammogram. Defaults to None.
+        diagnostic_mammogram (dict, optional): diagnostic mammogram option. eg:
+        'exame_clinico':
+        {'direita':[
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
+            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ],
+        'esquerda':[
+            'PAPILAR', 
+            {'descarga_papilar': ['CRISTALINA', 'HEMORRAGICA'],
+            'nodulo': ['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'espessamento':['QSL', 'QIL', 'QSM', 'QIM', 'UQLAT', 'UQSUP', 'UQMED', 'UQINF', 'RRA', 'PA'],
+            'linfonodo_palpavel':['AXILAR', 'SUPRACLAVICULAR']}
+            ]
+        },
+    'controle_radiologico':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        },
+    'lesao_diagnostico':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        },
+    'avaliacao_resposta':
+        ['direita', 'esquerda'],
+    'revisao_mamografia_lesao':
+        {'direita': ['0', '3', '4', '5'],
+        'esquerda': ['0', '3', '4', '5']
+        },
+    'controle_lesao':
+        {'direita': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo'],
+        'esquerda': ['nodulo', 'microca', 'assimetria_focal', 'assimetria_difusa', 'area_densa', 'distorcao', 'linfonodo']
+        }. Defaults to None.
+
+    Returns:
+        str: Request with pdf in base64
+    """    
+    try:
+        pdf = PdfSolicitMamografia()
+
+        # Writing all data in respective fields
+        # not null data
+
+        try:
+            pdf.add_cns(cns=patient['cns'], pos=(46, 676), field_name='Patient CNS', interval=' ')
+            pdf.add_datetime(date=patient['birthdate'], pos=(48, 563), field_name='Patient Birthday', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
+            
+            pdf.add_markable_square_and_onelinetext(option=mammogram_before[0], valid_options=['SIM', 'NAO', 'NAOSABE'], text_options=['SIM'], options_positions=((51,64), (51,52), (51, 40)), field_name='Has made mamogram before', square_size=(15,9), len_max=4, len_min=4, text=mammogram_before[1], text_pos=(200, 68), interval=' ')
+            patient_age = pdf.get_patient_age(birthdate=patient['birthdate'])
+            pdf.add_oneline_intnumber(number=patient_age, pos=(217, 563), field_name='Patient Age', len_max=2, len_min=1,value_min=0, value_max=130, interval=' ')
+            pdf.set_font('Roboto-Mono', 13)
+            pdf.add_morelines_text(text=patient['name'], initial_pos=(47, 653), decrease_ypos=18, field_name='Patient Name', len_max=42, len_min=7, interval=' ', char_per_lines=87)
+            pdf.add_oneline_text(text=patient['mother_name'], pos=(47, 612), field_name='Patient Mother Name', len_max=42, len_min=7, interval=' ')
+            
+            pdf.set_font('Roboto-Mono', 9)
+            pdf.add_markable_square(option=nodule_lump, valid_options=['SIMDIR', 'SIMESQ', 'NAO'], options_positions=((50,332), (50,320), (50, 310)), field_name='Has nodule lump', square_size=(15,9))
+            pdf.add_markable_square(option=high_risk, valid_options=['SIM', 'NAO', 'NAOSABE'], options_positions=((51,278), (51,266), (51, 255)), field_name='Has high risk', square_size=(15,9))
+            pdf.add_markable_square(option=examinated_before, valid_options=['SIM', 'NUNCA', 'NAOSABE'], options_positions=((51,120), (51,107), (51, 94)), field_name='Has been examinated before', square_size=(15,9))
+        
+        except Exception as error:
+            raise error
+        except:
+            raise Exception('Algum erro nao diagnoticado ocorreu enquanto adicionava dados obrigatorios na pagina 1')
+
+        #Adding data that can be null
+        try:
+            pdf.set_font('Roboto-Mono', 13)
+            pdf.add_UF(uf=health_unit_adress_uf, pos=(47, 762), field_name='Health Unit Adress UF', nullable=True, interval=' ')
+            pdf.add_oneline_text(text=health_unit_name, pos=(47, 741), field_name='Health Unit Name', len_max=42, len_min=7, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=health_unit_adress_city, pos=(168, 720), field_name='Health Unit Adress City', len_max=14, len_min=3, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=patient_surname, pos=(288, 635), field_name='Patient Surname', len_max=18, len_min=4, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('street'), pos=(47, 529), field_name='Patient Adress', len_max=42, len_min=7, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('complement'), pos=(168, 507), field_name='Patient Adress Adjunct', len_max=25, len_min=7, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('neighborhood'), pos=(292, 484), field_name='Patient Adress Neighborhood', len_max=14, len_min=7, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('reference'), pos=(47, 413), field_name='Patient Adress Reference', len_max=33, len_min=4, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('city'), pos=(167, 461), field_name='Patient Adress City', len_max=15, len_min=3, interval=' ', nullable=True)
+            pdf.add_patient_adress_cep(number=patient['address'].get('zip_code'))
+            pdf.add_patient_phonenumber(number=patient_phonenumber)            
+            pdf.add_radiotherapy_before(radiotherapy_before=radiotherapy_before)
+            pdf.add_breast_surgery_before(breast_surgery_before=breast_surgery_before)
+
+            pdf.set_font('Roboto-Mono', 12)
+            pdf.add_oneline_intnumber(number=health_unit_cnes, pos=(178, 761), field_name='Health Unit CNES', len_max=7, len_min=7,value_min=0, value_max=99999999, interval=' ', nullable=True)
+            pdf.add_oneline_text(text=protocol_number, pos=(406, 768), field_name='Protocol Number', len_max=23, len_min=1, nullable=True)
+            if patient.get('cpf') != None:
+                pdf.add_document_cns_cpf_rg(document={'cpf':patient.get('cpf')}, pos_cpf=(52, 589),field_name='Patient Document CPF', interval=' ', nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('number'), pos=(52, 506), field_name='Patient Adress Number', len_max=6, len_min=1, interval=' ', nullable=True)
+            pdf.add_UF(uf=patient['address'].get('uf'), pos=(535, 484), field_name='Patient Adress UF', nullable=True, interval=' ')
+
+
+            pdf.set_font('Roboto-Mono', 9)
+            pdf.add_oneline_text(text=health_unit_city_ibge_code, pos=(47, 720), field_name='Health Unit City IBGE code', len_max=7, len_min=7, nullable=True, interval='  ')
+            pdf.add_oneline_text(text=document_chart_number, pos=(410, 720), field_name='Document Chart Number', len_max=10, len_min=1, nullable=True, interval='  ')
+            pdf.add_sex_square(sex=patient.get('sex'), pos_male=(291, 672), pos_fem=(338, 672), field_name='Patient Sex', square_size=(11,9), nullable=True)
+            pdf.add_oneline_text(text=patient.get('nationality'), pos=(278, 587), field_name='Patient Nationality', len_max=32, len_min=3, nullable=True)
+            pdf.add_oneline_text(text=patient['address'].get('ibge_city_code'), pos=(47, 461), field_name='Patient City IBGE code', len_max=7, len_min=7, nullable=True, interval='  ')
+            if patient_ethnicity == None:
+                patient_ethnicity = [None, None]
+            if type(patient_ethnicity) != type(list()):
+                raise Exception('Etnia do paciente (Patient ethnicity) deve ser uma lista')
+            pdf.add_markable_square_and_onelinetext(option=patient_ethnicity[0], valid_options=['BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'], text_options=['INDIGENA'], text_pos=(516, 563), options_positions=((278, 560), (323, 560),(363, 560),(401, 560), (450, 560)), field_name='Patient Ethinicity', len_max=10, text=patient_ethnicity[1], len_min=4, square_size=(11, 9), nullable=True)
+            pdf.add_markable_square(option=patient_schooling, valid_options=['ANALFABETO', 'FUNDINCOM', 'FUNDCOMPL', 'MEDIOCOMPL', 'SUPCOMPL'], options_positions=((55, 380), (115, 381), (223, 381), (325, 381), (408, 381)), field_name='Patient Schooling', square_size=(10,9), nullable=True)
+            
+        except Exception as error:
+            return error
+        except:
+            return Exception('Erro critico ocorreu enquanto adicionava dados opcionais na pagina 1')
+
+
+### Add Page 2
+        pdf.change_canvas()
+
+        try:
+            pdf.add_oneline_text(text=requesting_professional_name, pos=(206, 346), field_name='Professional Solicitor Name', len_max=23, len_min=7, interval=' ')
+
+            pdf.set_font('Roboto-Mono', 12)
+            pdf.add_datetime(date=solicitation_date, pos=(48, 346), field_name='Solicitation Datetime', hours=False, interval=' ', formated=False, interval_between_numbers=' ')
+            pdf.add_oneline_text(text=exam_number, pos=(114, 324), field_name='Exam number', len_max=16, len_min=1, nullable=True, interval=' ')
+            pdf.set_font('Roboto-Mono', 9)
+            pdf.add_markable_square(option=tracking_mammogram, valid_options=['POPALVO', 'RISCOELEVADO', 'JATRATADO'], options_positions=((56, 374), (152, 374), (328, 374)), field_name='Tracking Mammogram', square_size=(11,10), nullable=True)
+            pdf.add_diagnostic_mammogram(diagnostic_mammogram=diagnostic_mammogram)
+
+        except Exception as error:
+            return error
+        except:
+            return Exception('Algum erro nao diagnoticado ocorreu enquanto adicionava dados obrigatorios na pagina 2')
+
+
+        #Get pdf base64
+        pdf_base64_enconded = pdf.get_base64()
+
+        return {
+            "base64Pdf": str(pdf_base64_enconded)[2:-1]
+        }
+    except Exception as error:
+        return error
+    except:
+        return Exception("Erro critico enquanto preenchia o documento de Solicitacao de Mamografia")
+

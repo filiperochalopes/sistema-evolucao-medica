@@ -1,0 +1,13 @@
+mutation{
+  printPdf_Apac(
+    internmentId:1
+    extra: {
+      procedure: {
+        code: "1234567890"
+        name: "NOME DO PROCEdimento"
+      }
+    }
+  ){
+    base64Pdf
+  }
+}

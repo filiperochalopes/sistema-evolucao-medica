@@ -5,11 +5,33 @@ type_defs = gql(
     '''
     type Query {
        users: [User]
-       cid10: [Cid10!]
-       patients(queryNameCnsCpf:String): [Patient]
-       internments(active:Boolean): [Internment]
-       evolutions(patientId:ID!): Evolution
-    }  
+       cid10(query:String, perPage:Int, page:Int): [Cid10!]
+       state: [State!]
+       restingActivities: [NamedObject!]
+       diets: [NamedObject!]
+       drugs: [Drug!]
+       drugPresets: [DrugPreset!]
+       nursingActivities: [NamedObject!]
+       drugRoutes: [String]
+       prescriptionTypes: [Option]
+       prescription: [Prescription!]
+       patient(id:ID, queryNameCnsCpf:String): Patient
+       patients(queryNameCnsCpf:String, perPage:Int, page:Int): [Patient]
+       internment(id:ID!): Internment
+       alembicVersion: AlembicVersion
+       internments(active:Boolean, cns:String): [Internment]
+       myUser: User
+       "ValueObject Descrição de registro de Balanço Hídrico"
+       fluidBalanceDescriptions: [ValueObject]
+       "ValueObject Alergia"
+       allergies: [ValueObject]
+       "ValueObject Comorbidade"
+       comorbidities: [ValueObject]
+       "ValueObject Procedimentos de Alta Complexidade"
+       highComplexityProcedures: [Procedure]
+       "Query para fins de teste"
+       hello: String
+    }
 
     type Mutation {
         """
@@ -33,13 +55,26 @@ type_defs = gql(
             masterKey:String!, 
             user: UserInput): User
         """
+        Atualização de senha por parte do próprio usuário
+        """
+        updatePassword(password: String!): User
+        """
+        Reset de senha direto na requisição para em caso de esquecimento ou perda de senha, a senha será resetada para "senha@123"
+        """
+        resetPassword(
+            masterKey:String!,
+            cns: String!): User
+        """
         Criar paciente para cadastro do 
         """
         createPatient(patient: PatientInput): Patient
         """
         Atualizar paciente
         """
-        updatePatient(is: ID!, patient:PatientInput): Patient
+        updatePatient(id: ID!, patient:PatientInput): Patient
+        """
+        Cria internamento básico
+        """
         createInternment(
             "No formato yyyy-mm-dd HH:MM"
             admissionDatetime:String,
@@ -52,541 +87,119 @@ type_defs = gql(
             "Diagnóstico inicial de internamento"
             cid10Code: String
         ): Internment
+        """
+        Atualiza internamento: Serve para poder encerrar um internamento. Ele registra a data de encerramento da internação.
+        """
+        updateInternment(
+            id: ID!
+            "Data de alta/encerramento do internamento yyyy-mm-dd HH:MM"
+            finishedAt: String
+            "Para reabrir um internamento para algum tipo de acréscrimo, evolução em fase de teste passe o parâmetro como true"
+            reOpen: Boolean
+        ): Internment
+        """
+        Cria uma evolução textual de enfermagem ou médica
+        """    
+        createEvolution(
+            "Id do internamento do paciente para o qual a evolução está sendo inserida"
+            internmentId: Int!, 
+            "Texto da evolução médica ou de enfermagem"
+            text:String,
+            "Diagnóstico caso tenha alterado durante o internamento"
+            cid10Code: String
+            ): Evolution
+        """
+        Cria um registro de prescrição que pode ser atualizado no mesmo dia.
+        """    
+        createPrescription(
+            "Id do internamento do paciente para o qual a evolução está sendo inserida"
+            internmentId: Int!, 
+            restingActivity: String
+            diet: String
+            drugs: [DrugPrescriptionInput]
+            nursingActivities: [String]
+            ): Prescription
+        """
+        Cria um registro de pendências, útil para passagem de plantão, quando o colega necessita saber 
+        """    
+        createPending(
+            "Id do internamento do paciente para o qual a evolução está sendo inserida"
+            internmentId: Int!, 
+            "Texto com relatório sucinto de pendências para o paciente"
+            text: String
+            ): Pending
+        """
+        É responsável por salvar os sinais vitais de um paciente, relacionado a um internamento
+        """
+        createMeasure(
+            "Id do internamento do paciente para o qual a evolução está sendo inserida"
+            internmentId: Int!, 
+            "Saturação de Oxigênio, deve ser maior que 0 e menor que 100"
+            spO2: Int
+            "Escala de dor de 0 a 10"
+            pain: Int
+            "Pressão arterial sistólica, número de 1 a 3 dígitos"
+            systolicBloodPressure: Int
+            "Pressão arterial diastólica, número de 1 a 3 dígitos"
+            diastolicBloodPressure: Int
+            "Frequencia cardíaca, de dois a 3 dígitos"
+            cardiacFrequency: Int
+            "Frequencia respiratória, dois dígitos"
+            respiratoryFrequency: Int
+            "Temperatura axilar em graus celcius, dois dígitos"
+            celciusAxillaryTemperature: Float
+            "Medida de glicemia no padrão mg/dL, chamada também de HGT ou glicemia periférica"
+            glucose: Int
+            "Batimentos cardíacos fetais, para uso em gestantes. De dois a três dígitos"
+            fetalCardiacFrequency: Int
+            ): Measure
+        """
+        É responsável por salvar um registro único de balanço hídrico, relacionado a um internamento
+        """
+        createFluidBalance(
+            "Id do internamento do paciente para o qual a evolução está sendo inserida"
+            internmentId: Int!, 
+            "Volume que foi recebido ou desprezado no momento"
+            volumeMl: Int
+            "Essa string deve ser, de preferência, uma das disponibilizadas para FluidBalanceDescription"
+            description: String
+        ): FluidBalance
+    }
 
-        "Criação de documento de AIH"
-        generatePdf_AihSus(
-            "Nome do Estabelecimento Solicitante, max:82 min:7 caracteres"
-            establishmentSolitcName: String!,
-            "CNES do Estabelecimento Solicitante"
-            establishmentSolitcCnes: Int!, 
-            "Nome do Estabelecimento Executante, max:82 min:8 caracteres"
-            establishmentExecName: String!, 
-            "CNES do Estabelecimento Executante"
-            establishmentExecCnes: Int!, 
-            "Nome do paciente, max:79 min:7 caracteres"
-            patientName: String!, 
-            "Número do Cartão do SUS do paciente"
-            patientCns: String!,
-            "Data de nascimento do paciente, no formato DD/MM/YYYY"
-            patientBirthday: String!,
-            "Sexo do Paciente, opcao M ou F."
-            patientSex: String!,
-            "Nome da Mae do paciente, max:70 min:7 caracteres"
-            patientMotherName: String!, 
-            "Endereco do paciente, somente 'rua, numero, bairro', max: 101 min:7 caracteres"
-            patientAdress: String!, 
-            "Cidade do paciente, max:58 min:3 caracteres"
-            patientAdressCity: String!, 
-            "Codigo IBGE do municipio do paciente"
-            patientAdressCityIbgeCode: String!,
-            "Sigla do estado, UF, da cidade do paciente, somente a sigla"
-            patientAdressUF: String!,
-            "CEP do endereço do paciente"
-            patientAdressCEP: String!,
-            "Principais sintomas e sintomas clinicos, max:1009 min:5 caracteres"
-            mainClinicalSignsSymptoms: String!,
-            "Condicoes que justificam a internacao, max:403 min:5 caracteres"
-            conditionsJustifyHospitalization: String!,
-            "Diagnostico inicial, max:44 min:5 caracteres"
-            initialDiagnostic: String!,
-            "Cid 10 princical, usando o formato padrao de CID, max:4 min:3 caracteres"
-            principalCid10: String!, 
-            "Procedimento solicitado, max:65 min:6 caracteres"
-            procedureSolicited: String!,
-            "Codigo do procedimento solicitado, deve ter exatamente 10 caracteres"
-            procedureCode: String!,
-            "Nome da clinica, max:18 min:6 caracteres"
-            clinic: String!, 
-            "Carater da internacao, max:19 min:6 caracteres"
-            internationCarater: String!, 
-            "Documento do profissional solicitante, cns ou cpf, utilize o input DocumentInput"
-            profSolicitorDocument: DocumentInput!, 
-            "Nome do profissional solicitante, max:48 min:8 caracteres"
-            profSolicitorName: String!,
-            "Data e hora da solicitacao, somente dia/mes/ano"
-            solicitationDatetime: String!,
-            "Nome do profissional autorizador, max:48 min:8 caracteres" 
-            profAutorizationName: String!,
-            "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:17 min:2 caracteres"
-            emissionOrgCode: String!, 
-            "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
-            autorizatonProfDocument: DocumentInput!,
-            "Data e hora da autorizacao, somente dia/mes/ano"
-            autorizatonDatetime: String!,
-            "Numero da autorizacao de internacao hospitalar, no maximo 18 digitos"
-            hospitalizationAutorizationNumber: String!,
-            "Resultados de exames, max: 403 min:5 caracteres"
-            examResults: String,
-            "Numero do Prontuario, max:20 min:1 caracteres"
-            chartNumber: String, 
-            "Etinia do Paciente, max:11 min:4 caracteres"
-            patientEthnicity: String, 
-            "Nome do responsavel do paciente, max:70 min:7 caracteres"
-            patientResponsibleName: String, 
-            "Numero de telefone da mae do paciente, envie somente numeros, 10 ou 11 digitos"
-            patientMotherPhonenumber: String, 
-            "Numero de telefone do Responsavel do paciente, envie somente numeros, 10 ou 11 digitos"
-            patientResponsiblePhonenumber: String,
-            "CID10 secundario"
-            secondaryCid10: String,
-            "CID10 causas associadas"
-            cid10AssociatedCauses: String,
-            """
-            Tipo do acidente, opcoes:
-                'TRAFFIC'   -> Acidente de Transito
-                'WORK'      -> Acidente de Trabalho tipico
-                'WORK_PATH' -> Acidente de Trabalho trajeto
-            """
-            acidentType: String,
-            "CNPJ da Seguradora, envie somente numeros"
-            insuranceCompanyCnpj: String,
-            "Codigo do bilhete da seguradora, somente numero max 16 digitos"
-            insuranceCompanyTicketNumber: String, 
-            "Serie da seguradora, max:10 min:1 caracteres"
-            insuranceCompanySeries: String,
-            "CNPJ da Empresa, somente numeros"
-            companyCnpj: String,
-            "CNAE da empresa, somente numeros"
-            companyCnae: Int,
-            "CBOR da empresa, somente numeros"
-            companyCbor: Int,
-            """
-            Vinculo com a previdencia, Opcoes:
-                'WORKER'      -> Empregado
-                'EMPLOYER'    -> Empregador
-                'AUTONOMOUS'  -> Autonomo
-                'UNEMPLOYED'  -> Desempregado
-                'RETIRED'     -> Aposentado
-                'NOT_INSURED' -> Nao Segurado
-            """
-            pensionStatus: String
-        ): GeneratedPdf
-
-        "Criação de documento de APAC"
-        generatePdf_Apac(
-            "Nome do Estabelecimento Solicitante, max:77 min:7 caracteres"
-            establishmentSolitcName: String!,
-            "CNES do Estabelecimento Solicitante"
-            establishmentSolitcCnes: Int!,
-            "Nome do paciente, max:67 min:7 caracteres"
-            patientName: String!, 
-            "Número do Cartão do SUS do paciente"
-            patientCns: String!,
-            "Sexo do Paciente, opcao M ou F."
-            patientSex: String!,
-            "Data de nascimento do paciente, no formato DD/MM/YYYY"
-            patientBirthday: String!,
-            "Cidade do paciente, max:58 min:3 caracteres"
-            patientAdressCity: String!,
-            "Procedimento Solicitado, utilize o input ProcedimentoInput"
-            mainProcedure: ProcedimentoInput!,
-            "Procedimentos Secundarios, no maximo 5, envie uma lista de ProcedimentoInput"
-            secondariesProcedures: [ProcedimentoInput],
-            "Nome da Mae do paciente, max:65 min:7 caracteres"
-            patientMotherName: String,
-            "Numero de telefone da mae do paciente, envie somente numeros, 10 ou 11 digitos"
-            patientMotherPhonenumber: String, 
-            "Nome do responsavel do paciente, max:67 min:7 caracteres"
-            patientResponsibleName: String, 
-            "Numero de telefone do Responsavel do paciente, envie somente numeros, 10 ou 11 digitos"
-            patientResponsiblePhonenumber: String,
-            "Endereco do paciente, somente 'rua, numero, bairro', max: 97 min:7 caracteres"
-            patientAdress: String,
-            "Etinia do Paciente, max:17 min:4 caracteres"
-            patientEthnicity: String, 
-            "Cor do Paciente, max:10 min:4 caracteres"
-            patientColor: String, 
-            "Sigla do estado, UF, da cidade do paciente, somente a sigla"
-            patientAdressUF: String,
-            "CEP do endereço do paciente"
-            patientAdressCEP: String,
-            "Numero do Prontuario, max:14 min:1 caracteres"
-            documentChartNumber: String,
-            "Codigo IBGE do municipio do paciente"
-            patientAdressCityIbgeCode: String,
-            "Descricao do diagnostico do procedimento solicitado. max: 55 min: 4 caracteres"
-            procedureJustificationDescription: String,
-            "Cid 10 principal do diagnostico"
-            procedureJustificationMainCid10: String,
-            "Cid 10 secundario do diagnostico"
-            procedureJustificationSecCid10: String,
-            "Cid 10 de causas associadas do diagnostico"
-            procedureJustificationAssociatedCauseCid10: String,
-            "Observacoes do diagnostico, max: 776 min: 5 caracteres"  
-            procedureJustificationComments: String,
-            "Nome do Estabelecimento Executante, max:71 min:8 caracteres"
-            establishmentExecName: String,
-            "CNES do Estabelecimento Executante"
-            establishmentExecCnes: Int,
-            "Documento do profissional solicitante, cns ou cpf, utilize o input DocumentInput"
-            profSolicitorDocument: DocumentInput, 
-            "Nome do profissional solicitante, max:48 min:5 caracteres"
-            profSolicitorName: String,
-            "Data da solicitacao, somente dia/mes/ano"
-            solicitationDatetime: String,
-            "Nome do profissional autorizador, max:46 min:5 caracteres" 
-            profAutorizationName:String,
-            "Codigo da organizacao emissora, esse dado fica no campo de autorizacao, max:16 min:2 caracteres"
-            emissionOrgCode: String, 
-            "Documento do profissional autorizador, cns ou cpf, utilize o input DocumentInput"
-            autorizatonProfDocument: DocumentInput,
-            "Data da autorizacao, somente dia/mes/ano"
-            autorizatonDatetime: String,
-            "Data da Assinatura, somente DD/MM/YYYY"
-            signatureDatetime: String,
-            "Data do inicio do periodo de Validade da APAC, utilize a data no formato DD/MM/YYYY"
-            validityPeriodStart: String,
-            "Data do fim do periodo de Validade da APAC, utilize a data no formato DD/MM/YYYY"
-            validityPeriodEnd: String
-        ): GeneratedPdf
-
-        "Criação de documento de Precricao medica"
-        generatePdf_PrescricaoMedica(
-            "Data do documento no formato DD/MM/YYYY"
-            documentDatetime: String!,
-            "Nome do paciente, max:34 min:7 caracteres"
-            patientName: String!,
-            "Nome do Medico, max:34 min:7 caracteres"
-            doctorName: String!,
-            "CRM do medico, max:13 min:11"
-            doctorCrm: String!,
-            """
-            List de precicoes enviadas pelo medico, voce pode adicionar mais de uma utilizando uma lista de PrescriptionInput, veja as docs do input PrescriptionInput para mais informações"
-            """
-            prescription: [PrescriptionInput]!
-        ): GeneratedPdf
-    
-        "Criação de documento de Relatorio de Alta"
-        generatePdf_RelatorioAlta(
-            "Data do documento no formato DD/MM/YYYY HH:mm"
-            documentDatetime: String!,
-            "Nome do paciente, max:64 min:7 caracteres"
-            patientName: String!,
-            "CNS do paciente, envie sem formatacao, apenas numeros. Exemplo XXXXXXXXXXXXXXX"
-            patientCns: String!,
-            "Data de Nascimento do paciente no formato DD/MM/YYYY"
-            patientBirthday: String!,
-            "Sexo do Paciente, opcao M ou F."
-            patientSex: String!,
-            "Nome da Mae do paciente, max:69 min 7 caracteres"
-            patientMotherName: String!,
-            "Documento do paciente, CPF ou RG, utilize o input DocumentInput"
-            patientDocument: DocumentInput!,
-            "Endereco do paciente, max:63 min:7 caracteres"
-            patientAdress: String!,
-            "Nome do Medico, max:49 min:7 caracteres"
-            doctorName: String!,
-            "CNS do medico, envie sem formatacao, apenas numeros. Exemplo XXXXXXXXXXXXXXX"
-            doctorCns: String!,
-            "CRM do medico, max:13 min:11"
-            doctorCrm: String!,
-            "Evolucao do paciente, max: 2100 min:10 caracteres"
-            evolution: String!,
-            "Orientacoes para o paciente, max:800 min:10 caracteres"
-            orientations: String
-        ): GeneratedPdf
-
-        "Criação de documento de LME"
-        generatePdf_Lme(
-            "Nome do estabelecimento Solicitante, max:65 min:8 caracteres"
-            establishmentSolitcName: String!,
-            "CNES do estabelecimento Solicitante"
-            establishmentSolitcCnes: Int!
-            "Nome do paciente, max:79 min:7 caracteres"
-            patientName: String!,
-            "Nome da Mae do paciente, max:79 min:7 caracteres"
-            patientMotherName: String!,
-            """
-            Peso do paciente, numero inteiro no maximo 3 digitos, sera entendido como um valor total.
-            Exemplo:
-                patientWeight: 54  // sera entedido como 54kg
-            """
-            patientWeight: Int!,
-            """
-            Altura do paciente, numero inteiro no maximo 3 digitos (e inteiro pois sera formatado com espacos e virgula depois no pdf)
-            Exemplo: 
-                patientHeight: 180 // sera entendido como 1.80 metros
-            """
-            patientHeight: Int!,
-            "Cid 10 do diagnostico"
-            cid10: String!,
-            "Anamnese, max:485 min: 5 caracteres"
-            anamnese: String!,
-            "Nome do profissional solicitante, max:45 min:8 caracteres"
-            profSolicitorName: String!,
-            "Data da solicitacao no formato DD/MM/YYYY"
-            solicitationDatetime: String!,
-            "Documento do profissional solicitante, CNS ou CPF, utilize o DocumentInput"
-            profSolicitorDocument: DocumentInput!,
-            """
-            Atestado de capacidade, envie como uma list com 2 opcoes. ['Sim'/'Nao', 'Nome do responsavel]. 
-            Nome do responsavel deve ter no max:46 min:5(caso a opcao seja Sim) caracteres
-            """
-            capacityAttest: [String]!,
-            """
-            Informacoes de quem preencheu, envie um lista com as seguintes opcoes:
-            [ 
-                'PACIENTE'/'MAE'/'RESPONSAVEL'/'MEDICO'/'OUTRO',
-                'Nome do outro', somente se for selecionado max: 42 min:5 caracteres
-                '{'cpf':'12345678900'}, documento do outro, envie nesse formato o cpf'
-            ]
-            Exemplos:
-                filledBy: ['PACIENTE', null, null]
-                filledBy: ['OUTRO', 'Nome do Outro', "{'cpf':'12345678900'}"]
-            """
-            filledBy: [String]!,
-            """
-            Etinia do paciente, envie alguma dessas opcoes: 'BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA', 'SEMINFO', 'INFORMAR'.
-            Caso a opcaos escolhida for INFORMAR deve ser passar o texto, com no max: 31 e min: 4 caracteres.
-            Exemplo:
-                patientEthnicity: ['Parda', null]
-                patientEthnicity: ['Informar', 'Etinia']
-
-            """
-            patientEthnicity: [String]!,
-            """
-            Informacoes do tramento anterior ou do tratamento atual, envie uma list com as opcoes ['SIM'/'NAO', 'Tratamento anterior'], Envie um texto com o tratamento anterior ou  caso a opcao SIM for escolhida, max: 170 min:4 caracteres. 
-            Exemplo:
-                previousTreatment: ['Nao', null]
-                previousTreatment: ['Sim', 'tratamento anterior']
-            """
-            previousTreatment: [String]!,
-            "Diagnostico, max: 84 min:4 caracteres"
-            diagnostic: String,
-            "Documento do Paciente, CPF, envie um DocumentInput"
-            patientDocument: DocumentInput,
-            "Email do paciente, max:62 min: 8 caracteres"
-            patientEmail: String,
-            """
-            Numero de telegone para contato, envie no maximo 2 numeros, envie 10 digitos (contanto com o DDD)
-            Exemplo: ["1034567654", "111234567890"]
-            """
-            contactsPhonenumbers: [String],
-            """
-            Lista com os medicamentos Solicitados, envie uma lista com no maximo 5 MedicineInput. 
-            """  
-            medicines: [MedicineInput]
-        ): GeneratedPdf
-
-        "Criação de documento de Solicitacao de Exames"
-        generatePdf_SolicitExames(
-            "Nome do paciente, max:70 min:7 caracteres"
-            patientName: String!,
-            "CNS do paciente"
-            patientCns: String!,
-            "Data de nascimento do paciente no formato DD/MM/YYYY"
-            patientBirthday: String!,
-            "Endereco do paciente, max: 216 min:7 caracteres"
-            patientAdress: String!,
-            "Motivo da Solicitacao, max: 216 min:7 caracteres"
-            solicitationReason: String!,
-            "Nome do profissional Solicitante, max:29 min:7 caracteres"
-            profSolicitorName: String!,
-            "Data da Solicitacao no formato DD/MM/YYYY"
-            solicitationDatetime: String!,
-            "Exames solicitados"
-            exams: String!,
-            "Nome do profissional autorizador, max:29 min:7 caracteres"
-            profAuthorizedName: String,
-            "Nome do paciente no final do documento, esse campo fica no fim do documento e tem um tamanho maximo diferente. max:46 min:7 caracteres"
-            documentPacientName: String,
-            "Data da Autorizacao no formato DD/MM/YYYY"
-            autorizationDatetime: String,
-            "Data do paciente, tambem no campo inferior no formato DD/MM/YYYY"
-            documentPacientDate: String,
-        ): GeneratedPdf
-
-        "Criação de documento de Solicitacao de Mamografia"
-        generatePdf_SolicitMamografia(
-            "CNS do paciente"
-            patientCns: String!,
-            "Data de nascimento do paciente no formato DD/MM/YYYY"
-            patientBirthday: String!,
-            """
-            Fez mamograma antes, envie uma lista com o primeiro valor ['SIM'/'NAO', 'Ano do mamograga']
-            Exemplo: 
-                ['SIM', '2020']
-                ['NAO', null]
-            """
-            mammogramBefore: [String]!,
-            "Idade do paciente"
-            patientAge: Int!,
-            "Nome do Paciente, max:42 min:7 caracteres"
-            patientName: String!,
-            "Nome da mae do paciente, max:42 min:7 car"
-            patientMotherName: String!,
-            """
-            Possui nodulo. Opcoes:
-                - "SIMDIR" -> Sim direita
-                - "SIMESQ" -> Sim esquerda
-                - "NAO"    -> Nao possui
-            """
-            noduleLump: String!,
-            """
-            Tem risco elevado. Opcoes:
-                - "SIM"
-                - "NAO"
-                - "NAOSABE"
-            """
-            highRisk: String!,
-            """
-            Ja foi examinada antes. Opcoes:
-                - "SIM"
-                - "NUNCA"
-                - "NAOSABE"
-            """
-            examinatedBefore: String!,
-            "Nome da Unidade de Saudes, max: 42 min:7"
-            healthUnitName: String,
-            "UF em que a Unidade de Saude esta, somente a sigla 2 caracteres"
-            healthUnitAdressUf: String,
-            "Nome da cidade aonde esta a unidade de saude, max:14 min:3"
-            healthUnitAdressCity: String,
-            "Apelido do paciente, max:18 min:4 caracteres" 
-            patientSurname: String,
-            "Endereco do Paciente, max:42 min:7 caracteres"
-            patientAdress: String,
-            "Complemento do endereco do paciente, max:25 min:7 caracteres"
-            patientAdressAdjunct: String,
-            "Bairro do endereco do paciente, max:14 min:7 caracteres"
-            patientAdressNeighborhood: String,
-            "Referencia do endereco do paciente, max:33 min:4 caracteres"
-            patientAdressReference: String,
-            "Cidade do endereco do paciente, max:15 min:3 caracteres"
-            patientAdressCity: String,
-            "CEP do endereco do paciente, envie somente numeros sem formatacao, Exemplo: XXXXXXXX"
-            patientAdressCep: String,
-            """
-            Escolaridade do paciente, opcoes:
-            "ANALFABETO"  -> Analfabeto
-            "FUNDINCOM"   -> Ensino Fundamental Incompleto
-            "FUNDCOMPL"   -> Ensino Fundamental Completo
-            "MEDIOCOMPL"  -> Ensino Medio Completo
-            "SUPCOMPL"    -> Ensino Superior Completo
-            """
-            patientSchooling: String,
-            "Numero de telefone do paciente, envie somente textos sem formatacao. Deve ter 10 digitos somente."
-            patientPhonenumber: String,
-            """
-            Ja fez radioterapia antes, lista com opcoes e ano caso seja sim.
-            Opcoes:
-                -'SIMDIR' -> Sim mama direita, deve inserir o ano, ex: ["SIMDIR", "2019"] 
-                -'SIMESQ' -> Sim mama esquerda, deve inserir o ano, ex: ["SIMESQ", "2019"] 
-                -'NAO' -> Nao, nao precisa enviar o ano, ex: ["NAO", null]
-                -'NAOSABE' -> Nao sabe, nao precisa enviar o ano, ex: ["NAO", null]
-            """
-            radiotherapyBefore: [String],
-            "Ja fez cirurgia nas mamas antes, utilize o SurgeryBeforeInput"
-            breastSurgeryBefore: SurgeryBeforeInput,
-            "CNES da unidade de saude"
-            healthUnitCnes: Int,
-            "Numero do protocolo, max:23 min:1 caracteres"        
-            protocolNumber: String,
-            "CPF do paciente, envie com o input DocumentInput"
-            patientDocumentCpf: DocumentInput,
-            "Numero do endereco do paciente, max: 6 digitos"
-            patientAdressNumber: Int,
-            "UF do endereco do paciente, envie somente a sigla"
-            patientAdressUf: String,
-            "Codigo do IBGE do Município da Unidade de Saude"
-            healthUnitCityIbgeCode: String,
-            "Numero do protocolo, max: 10 caracteres"
-            documentChartNumber: String,
-            "Sexo do paciente, envie M ou F"
-            patientSex: String,
-            "Nacionalidade do paciente"
-            patientNationality: String,
-            "Codigo do IBGE do Município do paciente"
-            patientCityIbgeCode: String,
-            """
-            Etinia do paciente, envie uma lista com algumas das opcoes, e caso seja indigena especificar o nome com no max: 10 caracteres. Opcoes:
-            'BRANCA','PRETA', 'PARDA', 'AMARELA', 'INDIGENA'.
-            Exemplos:
-                ["BRANCA", null]
-                ["INDIGENA", "Guarani"]
-            """
-            patientEthnicity: [String],
-            "Nome do Profissional Solicitante, max: 23 min:7 caracteres"
-            profSolicitorName: String!,
-            "Data da Solicitacao no formato DD/MM/YYYY"
-            solicitationDatetime: String!,
-            "Numero do exame, max: 16 caracteres"
-            examNumber: String,
-            """
-            Mamografia de rasteramento. Opcoes:
-                "POPALVO"       -> Populacao alvo
-                "RISCOELEVADO"  -> Populacao de risco elevado
-                "JATRATADO"     -> Paciente ja tratado de cancer de mama
-            """
-            trackingMammogram: String,
-            "Adiconar Mamografia Diagnostica, utilize o input DiagnosticMamogramInput"
-            diagnosticMammogram: DiagnosticMamogramInput
-        ): GeneratedPdf
-
-        "Criação de documento de Solicitacao de Mamografia"
-        generatePdf_FichaInternamento(
-            "Data Hora do documento no formato DD/MM/YYYY HH:mm"
-            documentDatetime: String!,
-            "Nome do paciente, max: 64 min:7 caracteres"
-            patientName: String!,
-            "CNS do paciente"
-            patientCns: String!,
-            "Data de nascimento do paciente no formato DD/MM/YYYY"
-            patientBirthday: String!,
-            "Sexo do paciente, Escolha a opcao M ou F"
-            patientSex: String!,
-            "Nome da Mae do paciente, max: 69 min:7 caracteres"
-            patientMotherName: String!,
-            "Documento do paciente, CPF ou RG, utilize o DocumentInput"
-            patientDocument: DocumentInput!,
-            "Endereco do paciente, max: 63 min:7 caracteres"
-            patientAdress: String!,
-            "Numero de telefone do paciente, envie somente os numeros sem formatacao, ex: XXXXXXXXXX, 10 ou 11 caracteres"
-            patientPhonenumber: String!,
-            "Alergias Medicamentosas, max:100 min:5 caracteres"
-            patientDrugAllergies: String!,
-            "Comorbidades/doencas previas do paciente, max:100 min:5 caracteres"
-            patientComorbidities: String!,
-            "Historia da doenca atual/Exame fisico, max: 1600 min:10 caracteres"
-            currentIllnessHistory: String!,
-            "Supeita diagnostica Inicial (CID), max:100 min:5 caracteres"
-            initialDiagnosticSuspicion: String!,
-            "Nome do Medico, max: 49 min:7 caracteres"
-            doctorName: String!,
-            "CNS do Medico, envie somente numeros"
-            doctorCns: String!,
-            "CRM do medico, max:13 min:11"
-            doctorCrm: String!,
-            "Numero do endereco do paciente, max:6 digitos"
-            patientAdressNumber: Int,
-            "Bairro do endereco do paciente, max: 31 min: 4 caracters"
-            patientAdressNeigh: String,
-            "Cidade do endereco do paciente, max:34 min:3 caracteres"
-            patientAdressCity: String,
-            "UF do endereco do paciente, envie somente a sigla"
-            patientAdressUf: String,
-            "CEP do endereco do paciente, envie somente numeros"
-            patientAdressCep: String,
-            "Nacionalidade do paciente, max:25 min:3 caracteres"
-            patientNationality: String,
-            "Possui convenio suplementar, opcoes: 'SIM','NAO'"
-            hasAdditionalHealthInsurance: String,
-            """
-            Peso estimado do paciente, numero inteiro no maximo 3 digitos, sera entendido como um valor total.
-            Exemplo:
-                patientEstimateWeight: 54  // sera entedido como 54kg
-            """
-            patientEstimateWeight: Int
-        ): GeneratedPdf
+    input DrugPrescriptionInput{
+        "Nome da medicação"
+        drugName: String!
+        "No momento só existem 2 tipos: `atb`  para antibióticos, pois com esse o campo de data inicial de uso dedve ser obrigatória e `oth` para outros"
+        drugKind: String!
+        "Modo de uso"
+        dosage: String!
+        "Via de administração"
+        route: String!
+        "No formato ISO %Y-%m-%dT%H:%M:%S"
+        initialDate: String
+        "No formato ISO %Y-%m-%dT%H:%M:%S"
+        endingDate: String
     }
 
     input AddressInput{
-        zipCode: String
-        street:String
-        complement:String
-        number:String
-        city: String!
-        uf: String!
+            "CEP do endereco"
+            zipCode: String
+            "Nome da Rua"
+            street:String
+            "Complemento"
+            complement:String
+            "Bairro do endereco"
+            neighborhood:String
+            "Numero do endereco"
+            number:String
+            "Nome da Cidade"
+            city: String!
+            "Codigo IGBE do municipio"
+            ibgeCityCode: String
+            "Sigla do estado"
+            uf: String!
+            "Pontos de Referencia"
+            reference: String
     }
 
     input ProcedimentoInput{
@@ -643,7 +256,7 @@ type_defs = gql(
         "Apenas dígitos, para fins de testes, pode gerar [nesse link](https://geradornv.com.br/gerador-cns/)"
         cns:String, 
         "Data de aniversário no formato `yyyy-mm-dd`"
-        birthday: String, 
+        birthdate: String, 
         "Categoria de profissional, um dedstes: `doc` para médicos, `nur` para enfermeira e `tec` para técnico de enfermagem"
         professionalCategory:String, 
         "UF do documento de conselho profissional"
@@ -653,20 +266,33 @@ type_defs = gql(
     }
 
     input PatientInput{
-        name:String,
+        "Nome completo do paciente"
+        name:String!,
+        "Nome completo da mãe do paciente"
+        motherName: String!
         "Sexo biológico binário `male` ou `female`"
-        sex:String,
-        "Data de aniversário no formato `yyyy-mm-dd`"
-        birthday: String
+        sex:String!,
+        "Dado muito relevante para cáculos, peso em quilos"
+        weightKg: Float!
+        "Data de nascimento no formato `yyyy-mm-dd`"
+        birthdate: String!
         "Apenas dígitos, para fins de testes pode gerar [nesse link](https://geradornv.com.br/gerador-cpf/)"
         cpf:String, 
         "Apenas dígitos, para fins de testes, pode gerar [nesse link](https://geradornv.com.br/gerador-cns/)"
         cns:String!, 
+        "Apenas dígito do Documento de Registro Geral"
         rg: String
+        "Telefone de contato do paciente, de preferência WhatsApp"
+        phone: String!
+        "Nacionalidade do Paciente"
+        nationality: String
+        "Etnia do Paciente"
+        ethnicity: String
         "Lista de doenças do paciente"
         comorbidities: [String]
         "Alergias"
         allergies: [String]
+        "Dados de endereço"
         address: AddressInput
     }
 
@@ -748,11 +374,15 @@ type_defs = gql(
         cns: String
     }
 
+    type AlembicVersion{
+        version: String
+    }
+
     type User {
         id: ID!
         email: String
         name: String
-        birthday: String
+        birthdate: String
         professionalCategory: String
         professionalDocumentUf: String
         professionalDocumentNumber: String
@@ -763,27 +393,61 @@ type_defs = gql(
         token: String
     }
 
-    type GeneratedPdf {
-        base64Pdf: String
+    type Address{
+        zipCode: String
+        street:String
+        number:String
+        neighborhood:String
+        complement:String
+        city: String
+        uf: String
     }
 
     type Patient {
         id: ID!
         name: String
+        birthdate: String
+        sex: String
+        age: String
         cns: String
+        rg: String
+        cpf: String
+        phone: String
+        weightKg: Float
+        comorbidities: [ValueObject]
+        allergies: [ValueObject]
+        motherName: String
+        address: Address
+    }
+
+    type FluidBalance{
+        id: ID!
+        volumeMl: Int
+        description: ValueObject    
+        createdAt: String
+        professional: User
+    }
+
+    type State {
+        ibge_code: ID!
+        name: String
+        uf: String!
     }
 
     type Internment{
-        id: ID!
+        id: ID
         admissionDatetime: String
         patient: Patient
         hpi: String
         justification: String
-        cid10Code: String
+        cid10: Cid10
         createdAt: String
+        finishedAt: String
         evolutions: [Evolution]
         measures: [Measure]
-        prescription: [Prescription]
+        prescriptions: [Prescription]
+        pendings: [Pending]
+        fluidBalance: [FluidBalance]
     }
 
 
@@ -794,62 +458,95 @@ type_defs = gql(
         createdAt: String
     }
 
+    type Pending{
+        id: ID!
+        text: String
+        createdAt: String
+    }
+
     type Measure{
         id: ID!
         spO2: Int
         pain: Int
-        sistolicBloodPressure: Int
+        systolicBloodPressure: Int
         diastolicBloodPressure: Int
         cardiacFrequency: Int
         respiratoryFrequency: Int
-        celciusAxillaryTemperature: Int
+        celciusAxillaryTemperature: Float
         glucose: Int
         fetalCardiacFrequency: Int
         professional: User
         createdAt: String
     }
 
-    type RestingActivity{
+    type NamedObject{
         id: ID!
         name: String
     }
 
-    type NursingActivity{
+    type ValueObject{
         id: ID!
-        name: String
+        value: String
     }
 
-    type Diet{
+    type Procedure{
         id: ID!
         name: String
+        code: String
     }
 
     type Drug{
         id: ID!
         name: String
         usualDosage: String
+        usualRoute: String
         comment: String
         kind: String
+    }
+
+    type DrugPreset{
+        name: String
+        label: String
+        drugs: [Drug]
+        createdAt: String
+    }
+
+    type Option{
+        "Identificador único da option"
+        name: String,
+        "Identificador Human readable"
+        label: String
+        "Seed que preenche o campo de options"
+        querySeed: String
     }
 
     type DrugPrescription{
         id: ID!
         drug: Drug
         dosage: String
+        route: String
         initialDate: String
         endingDate: String
     }
 
     type Prescription{
-        resting: RestingActivity
-        diet: Diet
-        drugs: [DrugPrescription]
-        nursing: [NursingActivity]
+        id: ID!
+        "Note que a atividade de repouso é única"
+        restingActivity: NamedObject
+        "Note que a dieta é única"
+        diet: NamedObject
+        "Prescrições de medicamentos"
+        drugPrescriptions: [DrugPrescription]
+        "Atividades de enfermagem"
+        nursingActivities: [NamedObject]
+        "Timestamp ISO de criação da prescrição"
         createdAt: String
     }
 
     type Cid10 {
+        "Cid 10, usando o formato padrao de CID, max:4 min:3 caracteres"
         code: String!
+        "Descrição da doença, max:44 min:5 caracteres"
         description: String!
     }
 ''')

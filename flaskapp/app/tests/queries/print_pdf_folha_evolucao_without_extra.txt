@@ -1,0 +1,7 @@
+mutation {
+  printPdf_FolhaEvolucao(
+    internmentId: 1
+  ) {
+    base64Pdf
+  }
+}

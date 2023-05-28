@@ -1,0 +1,10 @@
+mutation {
+  createPending(
+    internmentId: 1
+    text: "Pendencias de exemplo. Sed porta ornare neque vitae interdum. Cras viverra purus quis purus ultricies interdum. Fusce venenatis bibendum leo. Vestibulum lobortis eleifend facilisis. Duis congue neque eget tempus hendrerit. Phasellus hendrerit purus neque, ut viverra lorem venenatis eget. Donec a elit a sapien tempor scelerisque id ut leo. Etiam ut neque sit amet turpis tempus sollicitudin id et enim."
+  ){
+    id
+    text
+    createdAt
+  }
+}
