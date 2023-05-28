@@ -11,9 +11,10 @@ from app.services.utils.create_comorbities_and_allergies import create_comorbidi
 @token_authorization
 def update_patient(_, info, id:int, patient:dict, current_user:dict):
     stored_patient = db.session.query(Patient).get(id)
-    updated_address = Address(**patient['address'])
-    db.session.add(updated_address)
-    stored_patient.address = updated_address
+    # Atualizando endereço sem criar uma nova linha
+    patient_address = db.session.query(Address).get(stored_patient.address_id)
+    for key, value in patient['address'].items():
+        setattr(patient_address, key, value)
     del patient['address']
     stored_patient.allergies.clear()
     stored_patient.comorbidities.clear()
@@ -24,9 +25,7 @@ def update_patient(_, info, id:int, patient:dict, current_user:dict):
     del patient['allergies']
     for key, value in patient.items():
         setattr(stored_patient, key, value)
-    patient_model = stored_patient
-    db.session.add(patient_model)
     db.session.commit()
 
     schema = PatientSchema()
-    return schema.dump(patient_model)
+    return schema.dump(stored_patient)

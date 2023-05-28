@@ -5,6 +5,7 @@ import printScreen from "helpers/printScreen";
 import Button from "components/Button";
 import Pacient from "components/ListOption";
 import React from "react";
+import { SlOptionsVertical } from "react-icons/sl";
 import { Link } from "react-router-dom";
 import { useModalContext } from "services/ModalContext";
 import EvolutionButton from "./components/EvolutionButton";
@@ -67,6 +68,9 @@ const List = () => {
                         Imprimir
                       </Button>
                     </CheckRole>
+                    <button>
+                      <SlOptionsVertical />
+                    </button>
                   </div>
                 </PacientContent>
               </Pacient>

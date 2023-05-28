@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import { useLazyQuery } from "@apollo/client";
 import { MY_USER } from "graphql/queries";
 import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 
 const Context = createContext(null);
 
@@ -29,16 +30,6 @@ const ContextProvider = ({ children }) => {
     });
   }, []);
 
-  useEffect(() => {
-    // Em caso de alterações do token é preciso rever o usuário
-    if (decodedJWT?.sub) {
-      getMyUser().then(({ data: { myUser } }) => {
-        // Setando dados de usuário em contexto
-        setUser(myUser);
-      });
-    }
-  }, [decodedJWT, getMyUser]);
-
   function updateDecodedJWT(token) {
     const _decodedJWT = jwt_decode(token);
     setDecodedJWT({
@@ -47,6 +38,20 @@ const ContextProvider = ({ children }) => {
     });
   }
 
+  const updateUser = useCallback(() => {
+    if (decodedJWT?.sub) {
+      getMyUser().then(({ data: { myUser } }) => {
+        // Setando dados de usuário em contexto
+        setUser(myUser);
+      });
+    }
+  }, [decodedJWT, getMyUser]);
+
+  useEffect(() => {
+    // Em caso de alterações do token é preciso rever o usuário
+    updateUser();
+  }, [updateUser]);
+
   function logout() {
     localStorage.removeItem("token");
     setDecodedJWT(undefined);
@@ -54,7 +59,9 @@ const ContextProvider = ({ children }) => {
   }
 
   return (
-    <Context.Provider value={{ decodedJWT, updateDecodedJWT, user, logout }}>
+    <Context.Provider
+      value={{ decodedJWT, updateDecodedJWT, user, updateUser, logout }}
+    >
       {children}
     </Context.Provider>
   );

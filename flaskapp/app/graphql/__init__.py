@@ -55,6 +55,11 @@ type_defs = gql(
             masterKey:String!, 
             user: UserInput): User
         """
+        Atualiza o usuário logado
+        """
+        updateMyUser(
+            user: UserInput): User
+        """
         Atualização de senha por parte do próprio usuário
         """
         updatePassword(password: String!): User

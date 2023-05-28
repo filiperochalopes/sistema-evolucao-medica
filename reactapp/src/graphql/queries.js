@@ -8,7 +8,10 @@ export const MY_USER = gql`
       email
       cns
       cpf
-      rg
+      birthdate
+      professionalCategory
+      professionalDocumentUf
+      professionalDocumentNumber
     }
   }
 `;
