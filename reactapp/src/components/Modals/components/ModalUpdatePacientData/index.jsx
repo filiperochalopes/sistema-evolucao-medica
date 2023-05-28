@@ -161,6 +161,8 @@ const ModalUpdatePacientData = ({ id }) => {
       sex: GENERS.find((gener) => gener.value === data.patient.sex),
       weightKg: data.patient.weightKg,
     });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, statesData]);
 
   useEffect(() => {
@@ -195,6 +197,8 @@ const ModalUpdatePacientData = ({ id }) => {
       }
     }
     getCep();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values.address.zipCode]);
 
   return (

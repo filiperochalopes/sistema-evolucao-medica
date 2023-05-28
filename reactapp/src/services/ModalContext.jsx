@@ -13,13 +13,15 @@ const ModalContextProvider = ({ children }) => {
   const navigate = useLocation();
 
   useEffect(() => {
+    const elementRef = rootElemRef.current;
     if (modalRoot) {
-      modalRoot.appendChild(rootElemRef.current);
+      modalRoot.appendChild(elementRef);
     }
     return function removeElement() {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      rootElemRef.current.remove();
+      elementRef.remove();
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

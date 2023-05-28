@@ -13,6 +13,7 @@ import { INTERNMENTS } from "graphql/queries";
 import { CONVERT_LABEL_SEX } from "constants/convertsexName";
 import CheckRole from "routes/CheckRole";
 import { useEffect } from "react";
+
 const List = () => {
   const { data, refetch } = useQuery(INTERNMENTS, {
     fetchPolicy: "no-cache",
@@ -21,7 +22,7 @@ const List = () => {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   return (
     <Container>

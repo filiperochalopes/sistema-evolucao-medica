@@ -12,12 +12,11 @@ import { SIGNING } from "graphql/mutations";
 import { useEffect } from "react";
 import { useContextProvider } from "services/Context";
 import useHandleErrors from "hooks/useHandleErrors";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 function Login() {
   const navigate = useNavigate();
   const [signing, { loading }] = useMutation(SIGNING);
-  const { updateUser } = useContextProvider();
+  const { updateDecodedJWT } = useContextProvider();
   const { handleErrors } = useHandleErrors();
 
   const formik = useFormik({
@@ -34,7 +33,7 @@ function Login() {
         const response = await signing({ variables: values });
         console.log(response.data);
         localStorage.setItem("token", response.data.signin.token);
-        updateUser(response.data.signin.token);
+        updateDecodedJWT(response.data.signin.token);
         navigate("/pacientes");
       } catch (e) {
         handleErrors(e);

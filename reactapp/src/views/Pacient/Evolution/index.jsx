@@ -1,5 +1,5 @@
 import Container, { ContainerListOption } from "./styles";
-import { createFilter, components } from "react-select";
+import { createFilter } from "react-select";
 
 import Button from "components/Button";
 import ListOption from "components/ListOption";

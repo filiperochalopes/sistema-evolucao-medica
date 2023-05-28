@@ -2,12 +2,17 @@ import Container, { Header, Main } from "./styles";
 import { BiLogOut } from "react-icons/bi";
 import logo from "../../assets/logo.png";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useContextProvider } from "services/Context";
 
 function PageTemplate({ children, headerComponent }) {
-  const { logout, user } = useContextProvider();
+  const { logout, decodedJWT, user } = useContextProvider();
+
+  useEffect(() => {
+    console.log(decodedJWT);
+  }, [decodedJWT]);
+
   return (
     <Container>
       <Header defaultHeight={!headerComponent}>
@@ -15,7 +20,7 @@ function PageTemplate({ children, headerComponent }) {
           headerComponent
         ) : (
           <>
-            {user && (
+            {decodedJWT && (
               <>
                 <button onClick={() => logout()}>
                   <BiLogOut color="#fff" size={32} />
@@ -23,6 +28,7 @@ function PageTemplate({ children, headerComponent }) {
                 <Link to="/">
                   <img src={logo} alt="logo" />
                 </Link>
+                <div>{user?.name}</div>
                 <span />
               </>
             )}

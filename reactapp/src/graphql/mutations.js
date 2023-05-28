@@ -1,5 +1,13 @@
 import { gql } from "@apollo/client";
 
+export const UPDATE_MY_USER = gql`
+  mutation updateMyUser($masterKey: String!, $user: UserInput) {
+    patients(masterKey: $masterKey, user: $use) {
+      id
+    }
+  }
+`;
+
 export const CREATE_USER = gql`
   mutation createUser($masterKey: String!, $user: UserInput) {
     patients(masterKey: $masterKey, user: $use) {

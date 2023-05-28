@@ -76,6 +76,10 @@ export const Header = styled.div`
         return css`
           background-color: ${theme.colors.red700};
         `;
+      default:
+        return css`
+          background-color: ${theme.colors.green};
+        `;
     }
   }}
 `;

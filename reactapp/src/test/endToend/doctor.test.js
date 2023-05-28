@@ -3,11 +3,10 @@ import "@testing-library/jest-dom";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { SIGNING } from "../../graphql/mutations";
 import React from "react";
-import App from "App";
 import { SnackbarProvider } from "notistack";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyles } from "theme/styles.App";
-import Router, { routes } from "routes";
+import { routes } from "routes";
 import theme from "theme/theme";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 const mocks = [
