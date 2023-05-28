@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+cd ./reactapp 
+npx prettier --write src/**/*.{js,jsx} && npx eslint src/**/*.{js,jsx} --fix

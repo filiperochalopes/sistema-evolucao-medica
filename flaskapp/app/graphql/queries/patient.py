@@ -20,10 +20,15 @@ def patient(*_, id:int=None, query_name_cns_cpf:str=None):
     return schema.dump(db.session.query(Patient).filter(Patient.name == query_name_cns_cpf).first())
 
 @query.field("patients")
-def patients(*_, query_name_cns_cpf:str=None):
+@convert_kwargs_to_snake_case
+def patients(*_, query_name_cns_cpf:str=None, per_page:int=None, page:int=1):
     schema = PatientSchema(many=True)
     if query_name_cns_cpf is not None:
-        schema.dump(db.session.query(Patient).filter(or_(Patient.name.ilike(f'%{query_name_cns_cpf}%'), Patient.cns.ilike(f'%{query_name_cns_cpf}%'), Patient.cpf.ilike(f'%{query_name_cns_cpf}%'))))
+        if per_page is not None:
+            return schema.dump(db.session.query(Patient).filter(or_(Patient.name.ilike(f'%{query_name_cns_cpf}%'), Patient.cns.ilike(f'%{query_name_cns_cpf}%'), Patient.cpf.ilike(f'%{query_name_cns_cpf}%'))))
+        else:
+            return schema.dump(db.session.query(Patient).filter(or_(Patient.name.ilike(f'%{query_name_cns_cpf}%'), Patient.cns.ilike(f'%{query_name_cns_cpf}%'), Patient.cpf.ilike(f'%{query_name_cns_cpf}%'))).paginate(page=page, per_page=per_page))
+        
     return schema.dump(db.session.query(Patient).all())
 
 @query.field("allergies")

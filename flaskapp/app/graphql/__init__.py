@@ -5,7 +5,7 @@ type_defs = gql(
     '''
     type Query {
        users: [User]
-       cid10: [Cid10!]
+       cid10(query:String, perPage:Int, page:Int): [Cid10!]
        state: [State!]
        restingActivities: [NamedObject!]
        diets: [NamedObject!]
@@ -16,7 +16,7 @@ type_defs = gql(
        prescriptionTypes: [Option]
        prescription: [Prescription!]
        patient(id:ID, queryNameCnsCpf:String): Patient
-       patients(queryNameCnsCpf:String): [Patient]
+       patients(queryNameCnsCpf:String, perPage:Int, page:Int): [Patient]
        internment(id:ID!): Internment
        alembicVersion: AlembicVersion
        internments(active:Boolean, cns:String): [Internment]
@@ -168,13 +168,13 @@ type_defs = gql(
 
     input DrugPrescriptionInput{
         "Nome da medicação"
-        drugName: String
+        drugName: String!
         "No momento só existem 2 tipos: `atb`  para antibióticos, pois com esse o campo de data inicial de uso dedve ser obrigatória e `oth` para outros"
-        drugKind: String
+        drugKind: String!
         "Modo de uso"
-        dosage: String
+        dosage: String!
         "Via de administração"
-        route: String
+        route: String!
         "No formato ISO %Y-%m-%dT%H:%M:%S"
         initialDate: String
         "No formato ISO %Y-%m-%dT%H:%M:%S"
@@ -267,7 +267,7 @@ type_defs = gql(
 
     input PatientInput{
         "Nome completo do paciente"
-        name:String,
+        name:String!,
         "Nome completo da mãe do paciente"
         motherName: String!
         "Sexo biológico binário `male` ou `female`"
@@ -275,7 +275,7 @@ type_defs = gql(
         "Dado muito relevante para cáculos, peso em quilos"
         weightKg: Float!
         "Data de nascimento no formato `yyyy-mm-dd`"
-        birthdate: String
+        birthdate: String!
         "Apenas dígitos, para fins de testes pode gerar [nesse link](https://geradornv.com.br/gerador-cpf/)"
         cpf:String, 
         "Apenas dígitos, para fins de testes, pode gerar [nesse link](https://geradornv.com.br/gerador-cns/)"
@@ -416,6 +416,7 @@ type_defs = gql(
         weightKg: Float
         comorbidities: [ValueObject]
         allergies: [ValueObject]
+        motherName: String
         address: Address
     }
 

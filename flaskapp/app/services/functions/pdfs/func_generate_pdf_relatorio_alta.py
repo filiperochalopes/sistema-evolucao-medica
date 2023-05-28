@@ -21,7 +21,7 @@ def func_generate_pdf_relatorio_alta(document_datetime:str, patient:dict, evolut
         # Writing all data in respective fields
         # not null data
         try:
-            
+            pdf.add_datetime(date=document_datetime, pos=(490, 740), field_name='Document Datetime', hours=True, formated=True,centralized=True)
             # change font size to normal            
             pdf.set_font('Roboto-Mono', 9)            
             pdf.add_oneline_text(text=patient['name'], pos=(27, 674), field_name='Patient Name', len_max=64, len_min=7)

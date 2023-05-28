@@ -7,3 +7,4 @@ flaskapp/app/tests/files/tmp/*.pdf
 data
 .DS_Store
 .pytest_cache
+users.json

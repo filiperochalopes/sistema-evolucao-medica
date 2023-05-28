@@ -19,7 +19,7 @@ from app.services.functions.pdfs.func_generate_pdf_balanco_hidrico import func_g
 @mutation.field('printPdf_AihSus')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_aih_sus(_, info, internment_id: int, current_user: dict, extra: dict = None):
+def print_pdf_aih_sus(_, info, internment_id: int, current_user: dict, extra: dict = {}):
     internment = db.session.query(Internment).get(internment_id)
 
     return func_generate_pdf_aih_sus(
@@ -48,7 +48,7 @@ def print_pdf_aih_sus(_, info, internment_id: int, current_user: dict, extra: di
                 'uf': internment.patient.address.uf,
                 'city': internment.patient.address.city
             }
-        }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=internment.cid10.code, requesting_professional_name=internment.professional.name, requesting_professional_document={
+        }, main_clinical_signs_symptoms=internment.hpi, conditions_justify_hospitalization=internment.justification, initial_diagnosis=internment.cid10.description, principal_cid_10=internment.cid10.code, secondary_cid_10=extra['secondary_diagnosis']['code'] if ('secondary_diagnosis' in extra and 'code' in extra['secondary_diagnosis']) else None, requesting_professional_name=internment.professional.name, requesting_professional_document={
             'cns': internment.professional.cns,
             'cpf': internment.professional.cpf
         }
@@ -58,7 +58,7 @@ def print_pdf_aih_sus(_, info, internment_id: int, current_user: dict, extra: di
 @mutation.field('printPdf_FichaInternamento')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict, extra: dict = None):
+def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict, extra: dict = {}):
     internment = db.session.query(Internment).get(internment_id)
 
     return func_generate_pdf_ficha_internamento(
@@ -72,6 +72,7 @@ def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict
             'cpf': internment.patient.cpf,
             'cns': internment.patient.cns,
             'rg': internment.patient.rg,
+            'weight_kg': internment.patient.weight_kg,
             'nationality': 'brasileiro(a)',
             'ethnicity': None,
             'comorbidities': [c.value for c in internment.patient.comorbidities],
@@ -87,22 +88,24 @@ def print_pdf_ficha_internamento(_, info, internment_id: int, current_user: dict
             }
         }, history_of_present_illness=internment.hpi,
         initial_diagnosis_suspicion=f'{internment.cid10.code} - {internment.cid10.description}',
-        doctor_name=internment.professional.name, doctor_cns=internment.professional.cns, doctor_crm=internment.professional.professional_document_number, has_additional_health_insurance=extra.has_additional_health_insurance if 'has_additional_health_insurance' in extra else None)
+        doctor_name=internment.professional.name, doctor_cns=internment.professional.cns, doctor_crm=internment.professional.professional_document_number, has_additional_health_insurance=extra['has_additional_health_insurance'] if 'has_additional_health_insurance' in extra else None)
 
 
 @mutation.field('printPdf_RelatorioAlta')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_relatorio_alta(_, info, internment_id: int, current_user: dict, extra: dict = None):
+def print_pdf_relatorio_alta(_, info, internment_id: int, current_user: dict, extra: dict = {}):
     internment = db.session.query(Internment).get(internment_id)
 
     # TODO Gerar resumo da história por meio de NLP https://spacedata.com.br/resumo-de-texto-em-python/
 
     evolution = ''
+    
     # Captura a história de admissão
     history_of_present_illness = internment.hpi
     # Captura a última evolução médica para capturar quem fez a alta
     last_medical_evolution = db.session.query(Evolution).filter(Evolution.internment_id == internment.id).order_by(Evolution.created_at.desc()).first()
+
     evolution = f'''
     {history_of_present_illness}
 
@@ -132,8 +135,8 @@ def print_pdf_relatorio_alta(_, info, internment_id: int, current_user: dict, ex
                 'uf': internment.patient.address.uf,
                 'city': internment.patient.address.city
             }
-        }, document_datetime=extra['datetime_stamp'] if 'datetime_stamp' in extra else datetime.strftime(last_medical_evolution.created_at, '%Y-%m-%dT%H:%M:%S'), evolution=evolution, 
-        doctor_name=last_medical_evolution.professional.name, doctor_cns=last_medical_evolution.professional.cns, doctor_crm=last_medical_evolution.professional.professional_document_number, orientations=extra['orientations'] if 'orientations' in extra else None)
+        }, document_datetime=extra['datetime_stamp'] if ('datetime_stamp' in extra and extra['datetime_stamp'] is not None) else datetime.strftime(last_medical_evolution.created_at, '%Y-%m-%dT%H:%M:%S'), evolution=evolution, 
+        doctor_name=last_medical_evolution.professional.name, doctor_cns=last_medical_evolution.professional.cns, doctor_crm=last_medical_evolution.professional.professional_document_number, orientations=extra['orientations'] if ('orientations' in extra and extra['orientations'] is not None) else None)
         
 @mutation.field('printPdf_FolhaPrescricao')
 @convert_kwargs_to_snake_case
@@ -193,7 +196,7 @@ def print_pdf_folha_prescricao(_, info, internment_id: int, current_user: dict, 
 @mutation.field('printPdf_FolhaEvolucao')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_folha_evolucao(_, info, internment_id: int, current_user: dict, extra: dict = None):
+def print_pdf_folha_evolucao(_, info, internment_id: int, current_user: dict, extra: dict = {}):
     internment = db.session.query(Internment).get(internment_id)
 
     start_datetime_stamp, ending_datetime_stamp = get_default_timestamp_interval_with_extra_interval_options(extra)
@@ -234,7 +237,7 @@ def print_pdf_folha_evolucao(_, info, internment_id: int, current_user: dict, ex
 @mutation.field('printPdf_BalancoHidrico')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_balanco_hidrico(_, info, internment_id: int, current_user: dict, extra: dict = None):
+def print_pdf_balanco_hidrico(_, info, internment_id: int, current_user: dict, extra: dict = {}):
     internment = db.session.query(Internment).get(internment_id)
     start_datetime_stamp, ending_datetime_stamp = get_default_timestamp_interval_with_extra_interval_options(extra)
 

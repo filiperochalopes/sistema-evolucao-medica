@@ -1,0 +1,57 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:jsx-a11y/recommended",
+    "react-app",
+    "prettier"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    },
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "plugins": ["react-hooks", "react", "prettier", "jsx-a11y"],
+  "rules": {
+    "semi": "off",
+    "no-console": ["error", { "allow": ["log", "warn", "error"] }],
+    "arrow-parens": ["error", "always"],
+    "no-underscore-dangle": "off",
+    "quotes": ["error", "double", { "avoidEscape": true }],
+    "prettier/prettier": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-filename-extension": [
+      "error",
+      { "extensions": [".js", ".jsx"] }
+    ],
+    "react/forbid-prop-types": [0, { "forbid": ["any"] }],
+    "react/prop-types": 0,
+    "react/jsx-uses-react": "error",
+    "react/display-name": 0,
+    "import/prefer-default-export": "off",
+
+    "no-unused-expressions": ["error", { "allowTaggedTemplates": true }]
+  },
+  "settings": {
+    "react": {
+      "pragma": "React"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  }
+}

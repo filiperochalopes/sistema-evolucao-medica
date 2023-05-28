@@ -7,6 +7,9 @@ logs:
 seed:
 	docker exec -it evolucao_hospitalar_app bash -c "FLASK_APP=app/__init__.py && \
 	flask seed"
+users:
+	docker exec -it evolucao_hospitalar_app bash -c "FLASK_APP=app/__init__.py && \
+	flask create_users"
 terminal:
 	docker exec -it evolucao_hospitalar_app bash
 shell:

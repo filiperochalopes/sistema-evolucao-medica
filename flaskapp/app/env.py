@@ -75,9 +75,6 @@ class DatabaseSettings:
         if env == 'production':
             self.HOST = 'db'
             self.PORT = 5432
-        elif env == 'testing':
-            self.HOST = 'db_test'
-            self.PORT = 5433
         
         self.NAME = os.getenv('POSTGRES_NAME', 'hmlem')
         self.USER = os.getenv('POSTGRES_USER', 'postgres')

@@ -22,6 +22,8 @@ def internments(*_, active=True, cns=None):
     if cns is not None:
         # Caso tenha cns, filtra pelos internamentos que pertencem apenas ao paciente em questão
         query = query.filter(Internment.patient.has(Patient.cns == cns))
+    
+    query = query.order_by(Internment.created_at.desc())
 
     schema = InternmentSchema(many=True)
     return schema.dump(query.all())
