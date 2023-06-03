@@ -31,7 +31,7 @@ def func_generate_pdf_evol_compact(patient: dict, evolution: dict,document_creat
             pdf.add_oneline_text(text=str(patient['comorbidities']).replace("'", "").replace('[', '').replace(']', ''), pos=(90, 472), field_name='Patient Commorbidites', len_max=38, len_min=5)
             pdf.add_morelines_text(text=str(patient['allergies']).replace("'", "").replace('[', '').replace(']', ''), initial_pos=(61, 461), field_name='Patient Drugs Allergies', len_max=150, len_min=5, char_per_lines=44, decrease_ypos=10, max_lines_amount=4)
 
-            pdf.set_font('Roboto-Mono', 10)
+            pdf.set_font('Roboto-Condensed-Bold', 10)
             pdf.can.setFillColorRGB(255, 255, 255, 1)
             # Patient Data with White text
             pdf.add_abbreviated_name(name=patient['name'], pos=(19, 515), field_name="Patient Name", len_max=31, len_min=5, uppered=True)
@@ -40,6 +40,7 @@ def func_generate_pdf_evol_compact(patient: dict, evolution: dict,document_creat
             pdf.add_datetime(date=admission_history['admission_date'], pos=(408, 515), field_name="Data da Admissao", hours=False, formated=True)
             pdf.add_oneline_text(text=f"{admission_history['internment_day']} DE INTERNAMENTO", pos=(540, 515), field_name="Dia da internacao", len_max=40, len_min=5)
             pdf.can.setFillColorRGB(0, 0, 0, 1)
+            pdf.set_font('Roboto-Mono', 10)
             
             pdf.add_morelines_text(text=admission_history['admission_text'], initial_pos=(286, 498), field_name="Texto do Historico de Admissao", len_max=630, len_min=3, char_per_lines=89, decrease_ypos=10, max_lines_amount=7)
             professional_info = pdf.create_professional_info_text(professional=admission_history['professional'], date=admission_history['professional_created_date'],nullable=False) 
