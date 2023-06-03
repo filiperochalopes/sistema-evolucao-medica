@@ -123,6 +123,14 @@ print_pdf_type_defs = gql(
         ): GeneratedPdf
 
         """
+        Gera PDF para impressão, documento de Evolucao Compacta
+        """
+        printPdf_EvolCompact(
+            "Id do internamento do referência"
+            internmentId: Int!
+        ): GeneratedPdf
+
+        """
         Gera PDF para impressão, documento de Prescrição Médica
         """
         printPdf_BalancoHidrico(

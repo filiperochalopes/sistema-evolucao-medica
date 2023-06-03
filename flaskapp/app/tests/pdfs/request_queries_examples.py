@@ -38,3 +38,5 @@ folha_prescricao_request_string = get_request_from_txt('folha_prescricao.txt')
 folha_evolucao_request_string = get_request_from_txt('folha_evolucao.txt')
 
 balanco_hidrico_request_string = get_request_from_txt('balanco_hidrico.txt')
+
+evol_compact_request_string = get_request_from_txt('evol_compact.txt')

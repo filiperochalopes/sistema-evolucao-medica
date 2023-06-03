@@ -344,7 +344,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {field_name}')
 
 
-    def add_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, field_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='') -> None:
+    def add_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, field_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='', return_ypos:bool=True) -> None:
         """Add text that is fill in one line
 
         Args:
@@ -365,7 +365,7 @@ class ReportLabCanvasUtils():
             if nullable:
                 if text == None or len(str(text).strip()) == 0:
                     return None
-            self.validate_func_args(function_to_verify=self.add_morelines_text, variables_to_verify={'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'field_name':field_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval}, nullable_variables=['max_lines_amount'])
+            self.validate_func_args(function_to_verify=self.add_morelines_text, variables_to_verify={'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'field_name':field_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'return_ypos':return_ypos}, nullable_variables=['max_lines_amount', 'return_ypos'])
 
 
             if not nullable:
@@ -395,6 +395,8 @@ class ReportLabCanvasUtils():
                     broke_lines_times -= 1
                     ypos -= decrease_ypos
 
+                if return_ypos:
+                    return ypos
                 return None
             else:
                 raise Exception(f"Nao foi possivel adicionar {field_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
@@ -615,7 +617,19 @@ class ReportLabCanvasUtils():
         except:
             raise Exception(f'Erro desconhecido enquando adicionava {field_name}')
 
+    def get_patient_age(self, birthdate):
+        try:
+            # brazillian timezone UTC-3
+            timezone = datetime.timezone(offset=datetime.timedelta(hours=-3))
+            today = datetime.datetime.now(tz=timezone)
+            age = isoparse(birthdate)
 
+            patient_age = today.year - age.year - ((today.month, today.day) < (age.month, age.day))
+            if patient_age < 0:
+                raise Exception(f'O calculo de idade do paciente retornou um numero negativo -> {patient_age}, lembre-se de utilizar o fuso-horario do brasil GMT-3')
+            return patient_age
+        except Exception as error:
+            raise Exception(f'A data de nascimento do paciente nao corresponde ao formato iso yyyy-mm-dd')
 
     def add_interval_to_data(self, data:str, interval:str) -> str:
         """add interval to data

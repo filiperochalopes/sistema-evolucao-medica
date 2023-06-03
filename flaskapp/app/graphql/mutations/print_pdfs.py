@@ -14,6 +14,7 @@ from app.services.functions.pdfs.func_generate_pdf_relatorio_alta import func_ge
 from app.services.functions.pdfs.func_generate_pdf_folha_prescricao import func_generate_pdf_folha_prescricao
 from app.services.functions.pdfs.func_generate_pdf_folha_evolucao import func_generate_pdf_folha_evolucao
 from app.services.functions.pdfs.func_generate_pdf_balanco_hidrico import func_generate_pdf_balanco_hidrico
+from app.services.functions.pdfs.func_generate_pdf_evol_compact import func_generate_pdf_evol_compact
 
 
 @mutation.field('printPdf_AihSus')
@@ -293,4 +294,10 @@ def print_pdf_apac(_, info, internment_id: int, current_user: dict, extra: dict)
             'cpf': current_user.cpf,
             'cns': current_user.cns
         })
-        
+
+
+@mutation.field('printPdf_EvolCompact')
+@convert_kwargs_to_snake_case
+@token_authorization
+def print_pdf_evol_compact(_, info, internment_id: int, current_user: dict, extra: dict = {}):
+    pass

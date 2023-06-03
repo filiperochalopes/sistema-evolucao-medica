@@ -10,6 +10,19 @@ generate_pdf_type_defs = gql(
         document: String!
     }
 
+    input AdmissionHistoryInput{
+        "Profissional Responsavel"
+        professional: ProfessionalInput!,
+        "Data da criação pelo profissional, String no formato ISO %Y-%m-%dT%H:%M:%S"
+        professionalCreatedDate: String!,
+        "Data do historico da Admissao"
+        admissionDate: String!,
+        "Contagem de dia de internamento"
+        internmentDay: Int!,
+        "Texto da admissão"
+        admissionText: String!,
+    }
+
     input EvolutionInput{
         "Data da criacao. String no formato ISO %Y-%m-%dT%H:%M:%S"
         createdAt: String!
@@ -78,6 +91,24 @@ generate_pdf_type_defs = gql(
     }
 
     extend type Mutation {
+        "Gerando página de evolução compact"
+        generatePdf_EvolCompact(
+            "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
+            patient: PatientInput!,
+            "Descricao da evolucao"
+            evolution: EvolutionInput!,
+            "Data de criacao"
+            documentCreatedAt: String!,
+            "Historia da Admissao"
+            admissionHistory: AdmissionHistoryInput!,
+            "Prescricoes"
+            prescription: [PrescriptionInput]!,
+            "Cuidados de Enfermagem"
+            prescriptionCares: String!
+            "Medicoes a partir de 5 horas"
+            measures: [MeasureInput]
+        ): GeneratedPdf
+
         "Gerando página de evolução, sendo que na primeira página sempre mostra a tabela de evolução"
         generatePdf_FolhaEvolucao(
             "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
