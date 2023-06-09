@@ -22,14 +22,22 @@ def func_generate_pdf_evol_compact(patient: dict, evolution: dict,document_creat
                 else:
                     raise Exception('Sexo do paciente deve ser M ou F')
 
-            pdf.add_oneline_text(text=patient_sex, pos=(47, 497), field_name="Patient Sex", len_max=11, len_min=5)
             patient_weight = int(patient['weight_kg'])
-            pdf.add_oneline_text(text=f"{patient_weight}kg", pos=(47, 485), field_name="Patient Weight", len_max=11, len_min=1)
-            pdf.add_datetime(date=patient['birthdate'], pos=(196, 497), field_name="Patient Birthday", hours=False, formated=True)
-            pdf.add_cns(cns=patient['cns'], pos=(115, 485), field_name='Patient CNS', formated=False)
-            pdf.set_font('Roboto-Mono', 8)
-            pdf.add_oneline_text(text=str(patient['comorbidities']).replace("'", "").replace('[', '').replace(']', ''), pos=(90, 472), field_name='Patient Commorbidites', len_max=38, len_min=5)
-            pdf.add_morelines_text(text=str(patient['allergies']).replace("'", "").replace('[', '').replace(']', ''), initial_pos=(61, 461), field_name='Patient Drugs Allergies', len_max=150, len_min=5, char_per_lines=44, decrease_ypos=10, max_lines_amount=4)
+            # pdf.add_oneline_text(text=patient_sex, pos=(47, 497), field_name="Patient Sex", len_max=11, len_min=5)
+            # patient_weight = int(patient['weight_kg'])
+            # pdf.add_oneline_text(text=f"{patient_weight}kg", pos=(47, 485), field_name="Patient Weight", len_max=11, len_min=1)
+            # pdf.add_datetime(date=patient['birthdate'], pos=(196, 497), field_name="Patient Birthday", hours=False, formated=True)
+            # pdf.add_cns(cns=patient['cns'], pos=(115, 485), field_name='Patient CNS', formated=False)
+            # pdf.set_font('Roboto-Mono', 8)
+            # pdf.add_oneline_text(text=str(patient['comorbidities']).replace("'", "").replace('[', '').replace(']', ''), pos=(90, 472), field_name='Patient Commorbidites', len_max=38, len_min=5)
+            # pdf.add_morelines_text(text=str(patient['allergies']).replace("'", "").replace('[', '').replace(']', ''), initial_pos=(61, 461), field_name='Patient Drugs Allergies', len_max=150, len_min=5, char_per_lines=44, decrease_ypos=10, max_lines_amount=4)
+
+            print(patient_data)
+
+            patient_allergies = str(patient['allergies']).replace("'", "").replace('[', '').replace(']', '')
+            patient_commorbidities = str(patient['comorbidities']).replace("'", "").replace('[', '').replace(']', '')
+
+            pdf.add_morelines_text(text=f'Sexo: {patient_sex}  Peso: {patient_weight}kg  CNS: {patient["cns"]}  Comorbidades: {patient_commorbidities}  Alergias: {patient_allergies}', initial_pos=(20, 497), field_name='Patient Info', len_max=403, len_min=5, char_per_lines=42, decrease_ypos=11, max_lines_amount=8)
 
             pdf.set_font('Roboto-Condensed-Bold', 10)
             pdf.can.setFillColorRGB(255, 255, 255, 1)
