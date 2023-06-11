@@ -1,6 +1,6 @@
 mutation {
   printPdf_FolhaPrescricao(
-    internmentId: 1
+    prescriptionId: 1
   ) {
     base64Pdf
   }

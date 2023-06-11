@@ -549,6 +549,8 @@ type_defs = gql(
         nursingActivities: [NamedObject]
         "Timestamp ISO de criação da prescrição"
         createdAt: String
+        "Profissional que criou a prescrição"
+        professional: User
     }
 
     type Cid10 {

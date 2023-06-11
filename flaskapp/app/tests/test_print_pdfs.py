@@ -41,14 +41,7 @@ class TestPrintPdfs:
         assert isinstance(result['printPdf_RelatorioAlta']['base64Pdf'], str)
 
     def test_print_pdf_folha_prescricao_with_extra(self, auth_client):
-        timestamp_interval = get_default_timestamp_interval()
-
-        params = {
-            'startDatetimeISOString': timestamp_interval.start_datetime_ISO_string, 
-            'endingDatetimeISOString': timestamp_interval.ending_datetime_ISO_string
-        }
-
-        result = auth_client.execute(self.print_pdf_folha_prescricao_with_extra_query, variable_values=params)
+        result = auth_client.execute(self.print_pdf_folha_prescricao_with_extra_query, variable_values={'prescriptionId': 1})
         assert isinstance(result['printPdf_FolhaPrescricao']['base64Pdf'], str)
 
     def test_print_pdf_folha_evolucao_without_extra(self, auth_client):

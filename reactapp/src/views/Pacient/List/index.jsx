@@ -42,8 +42,8 @@ const List = () => {
               <Pacient key={pacient.id}>
                 <PacientContent>
                   <p>
-                    {pacient.patient.name},{" "}
-                    {CONVERT_LABEL_SEX[pacient.patient.sex]},
+                    {pacient.patient.name} (
+                    {CONVERT_LABEL_SEX[pacient.patient.sex]}){" "}
                     {pacient.patient.age}
                   </p>
                   <div className="container_buttons">

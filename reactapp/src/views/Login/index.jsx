@@ -16,7 +16,7 @@ import useHandleErrors from "hooks/useHandleErrors";
 function Login() {
   const navigate = useNavigate();
   const [signing, { loading }] = useMutation(SIGNING);
-  const { updateDecodedJWT } = useContextProvider();
+  const { updateDecodedJWT, decodedJWT } = useContextProvider();
   const { handleErrors } = useHandleErrors();
 
   const formik = useFormik({
@@ -43,12 +43,13 @@ function Login() {
 
   useEffect(() => {
     const getToken = localStorage.getItem("token");
-    if (getToken) {
+    // Verifica se tem o token validando o login e se
+    if (getToken && new Date() <= new Date(decodedJWT?.exp * 1000)) {
       navigate("/pacientes", {
         replace: true,
       });
     }
-  }, [navigate]);
+  }, [decodedJWT]);
 
   return (
     <Container onSubmit={formik.handleSubmit}>

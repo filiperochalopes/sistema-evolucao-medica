@@ -166,11 +166,8 @@ export const GENERATE_PDF_FOLHA_EVOLUCAO = gql`
 `;
 
 export const GENERATE_PDF_FOLHA_PRESCRICAO = gql`
-  mutation printPdf_FolhaPrescricao(
-    $internmentId: Int!
-    $extra: PrintFolhaPrescricaoExtraInput
-  ) {
-    printPdf_FolhaPrescricao(internmentId: $internmentId, extra: $extra) {
+  mutation printPdf_FolhaPrescricao($prescriptionId: ID!) {
+    printPdf_FolhaPrescricao(prescriptionId: $prescriptionId) {
       base64Pdf
     }
   }

@@ -31,6 +31,37 @@ export const INTERNMENTS = gql`
   }
 `;
 
+export const INTERNMENT_PRESCRIPTIONS = gql`
+  query getInternmentPrescriptions($internmentId: ID!) {
+    internment(id: $internmentId) {
+      prescriptions {
+        id
+        createdAt
+        professional {
+          id
+          name
+        }
+        restingActivity {
+          name
+        }
+        diet {
+          name
+        }
+        drugPrescriptions {
+          drug {
+            name
+          }
+          dosage
+          route
+        }
+        nursingActivities {
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const CID10 = gql`
   query getCid10($query: String) {
     cid10(query: $query) {

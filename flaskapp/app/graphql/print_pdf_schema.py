@@ -108,9 +108,8 @@ print_pdf_type_defs = gql(
         Gera PDF para impressão, documento de Prescrição Médica
         """
         printPdf_FolhaPrescricao(
-            "Id do internamento do referência"
-            internmentId: Int!
-            extra: PrintFolhaPrescricaoExtraInput
+            "Id da prescrição a ser impressa"
+            prescriptionId: ID!
         ): GeneratedPdf
 
         """
