@@ -298,8 +298,8 @@ class PdfEvolCompact(ReportLabCanvasUtils):
         ]:
             if item[1] != None:
                 data = str(item[1]).replace("'", "").replace("[", "").replace("]", "")
-                optional_data += f"{item[0]}: {data}"
+                optional_data += f"  {item[0]}: {data}"
         if regulation_code != None:
-            optional_data += f"Codigo de Regulação: {regulation_code}"
+            optional_data += f"  Codigo de Regulação: {regulation_code}"
 
         return optional_data

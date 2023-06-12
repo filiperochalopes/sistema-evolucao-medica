@@ -46,13 +46,13 @@ def func_generate_pdf_evol_compact(
                     raise Exception("Sexo do paciente deve ser M ou F")
 
             patient_weight = int(patient["weight_kg"])
-            
+
             optional_data = pdf.get_optional_data(
                 patient=patient, regulation_code=regulation_code
             )
 
             pdf.add_morelines_text(
-                text=f'Sexo: {patient_sex}  Peso: {patient_weight}kg  CNS: {patient["cns"]}  '
+                text=f'Sexo: {patient_sex}  Peso: {patient_weight}kg  CNS: {patient["cns"]}'
                 + optional_data,
                 initial_pos=(20, 497),
                 field_name="Patient Info",
