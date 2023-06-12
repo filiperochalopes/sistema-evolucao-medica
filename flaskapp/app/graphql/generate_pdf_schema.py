@@ -95,6 +95,8 @@ generate_pdf_type_defs = gql(
         generatePdf_EvolCompact(
             "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
             patient: PatientInput!,
+            "Codigo de Regulacao"
+            regulationCode: String,
             "Descricao da evolucao"
             evolution: EvolutionInput!,
             "Data de criacao"
