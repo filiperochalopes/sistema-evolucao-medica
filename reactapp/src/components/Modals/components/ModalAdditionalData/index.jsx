@@ -35,6 +35,7 @@ import useHandleErrors from "hooks/useHandleErrors";
 import { useEffect } from "react";
 import PrescriptionGroupInput from "../PrescriptionGroupInput";
 import { get24ShiftDatetimeInterval } from "./components/Interval";
+import { useContextProvider } from "services/Context";
 
 const strategies = {
   printPdf_FichaInternamento: ({ formik }) => (
@@ -114,24 +115,27 @@ const strategies = {
     const [inTimePrescriptions, setInTimePrescriptions] = useState([]);
     // Prescrições antigas, porém
     const [previousPrescriptions, setPreviousPrescriptions] = useState([]);
+    const { user } = useContextProvider();
 
     useEffect(() => {
       if (prescriptionsData)
         setPrescriptions(
-          prescriptionsData?.internment.prescriptions.reduce(
-            (acc, cur) => [
-              {
-                ...cur,
-                description: `${cur.restingActivity.name} - ${
-                  cur.diet.name
-                } - ${cur.drugPrescriptions.map(
-                  (dp) => `${dp.drug.name} - ${dp.drug.dosage} ·`
-                )}`,
-              },
-              ...acc,
-            ],
-            []
-          )
+          prescriptionsData?.internment.prescriptions
+            .filter((p) => p.professional.id === user.id)
+            .reduce(
+              (acc, cur) => [
+                {
+                  ...cur,
+                  description: `${cur.restingActivity.name} - ${
+                    cur.diet.name
+                  } - ${cur.drugPrescriptions.map(
+                    (dp) => `${dp.drug.name} - ${dp.drug.dosage} ·`
+                  )}`,
+                },
+                ...acc,
+              ],
+              []
+            )
         );
     }, [prescriptionsData]);
 
