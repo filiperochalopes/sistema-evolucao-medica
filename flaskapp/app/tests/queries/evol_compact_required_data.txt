@@ -1,4 +1,3 @@
-# Write your query or mutation here
 mutation{
 	generatePdf_EvolCompact(
     patient: {

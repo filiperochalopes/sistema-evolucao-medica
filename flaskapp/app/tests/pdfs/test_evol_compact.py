@@ -139,12 +139,12 @@ def data_to_use(
         pain: 5,
         fetalCardiacFrequency: 52,
         professional:{
-          name: "Another Professional name",
-          category: "e",
-          document: "4512788"
+        name: "Another Professional name",
+        category: "e",
+        document: "4512788"
         }
-      },
-      {
+    },
+    {
         createdAt: "2023-02-12T23:59:24",
         cardiacFrequency: 54,
         respiratoryFrequency: 15,
@@ -156,12 +156,12 @@ def data_to_use(
         pain: 2,
         fetalCardiacFrequency: 52,
         professional:{
-          name: "Professional aaaa Name",
-          category: "m",
-          document: "54321/BA"
+        name: "Professional aaaa Name",
+        category: "m",
+        document: "54321/BA"
         }
-      },
-      {
+    },
+    {
         createdAt: "2023-02-12T22:59:24",
         cardiacFrequency: 32,
         respiratoryFrequency: 10,
@@ -172,12 +172,12 @@ def data_to_use(
         celciusAxillaryTemperature: 38,
         pain: 5,
         professional:{
-          name: "Another Professional name",
-          category: "e",
-          document: "4512788"
+        name: "Another Professional name",
+        category: "e",
+        document: "4512788"
         }
-      },
-      {
+    },
+    {
         createdAt: "2023-02-12T23:59:24",
         cardiacFrequency: 54,
         respiratoryFrequency: 15,
@@ -189,11 +189,11 @@ def data_to_use(
         pain: 2,
         fetalCardiacFrequency: 52,
         professional:{
-          name: "Professional aaaa Name",
-          category: "m",
-          document: "54321/BA"
+        name: "Professional aaaa Name",
+        category: "m",
+        document: "54321/BA"
         }
-      }""",
+    }""",
 ):
     if patient_birthday == None:
         patient_birthday = datetime_to_use
@@ -286,7 +286,8 @@ def test_awnser_with_only_required_data(client):
 
     assert result == True
 
-
+# ? Esses testes foram feitos?
+# TODO Remover esses comentários que são mais lembretes e não explicativos quando concluir
 #################################################################
 # TEST DATETIMES VARIABLES
 # patient_birthday
@@ -298,5 +299,6 @@ def test_awnser_with_only_required_data(client):
 
 def test_valid_patient_birthday(client, datetime_to_use):
     assert (
-        data_to_use(client, datetime_to_use, patient_birthday=datetime_to_use) == True
+        data_to_use(client, datetime_to_use,
+                    patient_birthday=datetime_to_use) == True
     )
