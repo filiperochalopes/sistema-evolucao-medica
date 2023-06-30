@@ -883,7 +883,7 @@ class ReportLabCanvasUtils():
             try:
                 #Create a datetimeobject just to makesure the date is valid
                 date_object = isoparse(date)
-            except:
+            except ValueError:
                 raise Exception(f'{field_name}- A data nao corresponde ao formato ISO %Y-%m-%dT%H:%M:%S')
             str_date = str('%02d/%02d/%d %02d:%02d') % (date_object.day, date_object.month, date_object.year, date_object.hour, date_object.minute)
             if hours:  

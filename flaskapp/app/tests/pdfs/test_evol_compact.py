@@ -9,7 +9,7 @@ from app.tests.pdfs.request_queries_examples import (
 
 def data_to_use(
     client,
-    datetime_to_use,
+    datetime_with_timezone_to_use,
     patient_name="Patient Name",
     patient_cns="928976954930007",
     patient_birthday=None,
@@ -196,46 +196,14 @@ def data_to_use(
     }""",
 ):
     if patient_birthday == None:
-        patient_birthday = datetime_to_use
+        patient_birthday = datetime_with_timezone_to_use
 
-    patient_address = (
-        "{"
-        + "street: "
-        + f'"{patient_address}"'
-        + ", city: "
-        + f'"{patient_address_city}"'
-        + ", ibgeCityCode: "
-        + f'"{patient_address_city_ibge_code}"'
-        + ", uf:"
-        + f'"{patient_address_uf}"'
-        + ", zipCode: "
-        + f'"{patient_address_cep}"'
-        + "},"
-    )
 
-    patient = (
-        "{name: "
-        + f'"{patient_name}"'
-        + ", cns: "
-        + f'"{patient_cns}"'
-        + ", birthdate: "
-        + f'"{patient_birthday}"'
-        + "phone: "
-        + f'"10123456789"'
-        + ", sex: "
-        + f'"{patient_sex}"'
-        + ",weightKg:"
-        + "123"
-        + ", motherName: "
-        + f'"{patient_mother_name}"'
-        + ", comorbidities: "
-        + f"{comorbidities}"
-        + ", allergies: "
-        + f"{allergies}"
-        + ", address: "
-        + f"{patient_address}"
-        + "}"
-    )
+    # patient_birthday = patient_birthday.isoformat()
+
+    patient_address = "{"+ "street: "+ f'"{patient_address}"'+ ", city: "+ f'"{patient_address_city}"'+ ", ibgeCityCode: "+ f'"{patient_address_city_ibge_code}"'+ ", uf:"+ f'"{patient_address_uf}"'+ ", zipCode: "+ f'"{patient_address_cep}"'+ "},"
+
+    patient = "{name: " + f'"{patient_name}"'+ ", cns: "+ f'"{patient_cns}"'+ ", birthdate: "+ f'"{patient_birthday}"'+ ", phone: "+ f'"10123456789"'+ ", sex: "+ f'"{patient_sex}"'+ ",weightKg:"+ "123"+ ", motherName: "+ f'"{patient_mother_name}"'+ ", comorbidities: "+ f"{comorbidities}"+ ", allergies: "+ f"{allergies}"+ ", address: "+ f"{patient_address}"+ "}"
 
     request_string = """
         mutation{
@@ -244,7 +212,7 @@ def data_to_use(
     campos_string = f"""
     patient: {patient},
     regulationCode: "{regulation_code}",
-    documentCreatedAt: "{datetime_to_use}",
+    documentCreatedAt: "{datetime_with_timezone_to_use}",
     admissionHistory: {admission_history},
     evolution:{evolution},
     prescription: [{prescription}],
@@ -258,20 +226,21 @@ def data_to_use(
     """
     all_string = request_string + campos_string + final_string
     query = gql(all_string)
-    try:
+    #try:
         # When some exception is created in grphql he return a error
-        client.execute(query)
-        return True
-    except:
-        return False
+    print(all_string)
+    client.execute(query)
+    return True
+    # except:
+    #     return False
 
 
-def test_with_data_in_function(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use) == True
+def test_with_data_in_function(client, datetime_with_timezone_to_use):
+    assert data_to_use(client, datetime_with_timezone_to_use) == True
 
 
-def test_answer_with_all_fields(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use) == True
+def test_answer_with_all_fields(client, datetime_with_timezone_to_use):
+    assert data_to_use(client, datetime_with_timezone_to_use) == True
 
 
 def test_awnser_with_only_required_data(client):
@@ -297,8 +266,8 @@ def test_awnser_with_only_required_data(client):
 # test valid datetime
 
 
-def test_valid_patient_birthday(client, datetime_to_use):
+def test_valid_patient_birthday(client, datetime_with_timezone_to_use):
     assert (
-        data_to_use(client, datetime_to_use,
-                    patient_birthday=datetime_to_use) == True
+        data_to_use(client, datetime_with_timezone_to_use,
+                    patient_birthday=datetime_with_timezone_to_use) == True
     )
