@@ -4,11 +4,9 @@ from base64 import b64decode
 import pytest
 
 from app.env import TMP_FILES_FOLDER
-
 from app.tests.pdfs.request_queries_examples import (
     evol_compact_request_strings
 )
-
 
 
 def make_request(client, request_string):
