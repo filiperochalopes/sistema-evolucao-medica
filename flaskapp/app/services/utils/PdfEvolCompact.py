@@ -222,6 +222,8 @@ class PdfEvolCompact(ReportLabCanvasUtils):
             None
         """
         try:
+            if measures is None:
+                return None
             self.validate_func_args(
                 function_to_verify=self.add_measures,
                 variables_to_verify={"measures": measures},
@@ -303,3 +305,46 @@ class PdfEvolCompact(ReportLabCanvasUtils):
             optional_data += f"  Codigo de Regulação: {regulation_code}"
 
         return optional_data
+    
+    def add_nursing_prescriptions(self, nursing_prescriptions):
+        resting = nursing_prescriptions.get("resting")
+        diet = nursing_prescriptions.get("diet")
+        activities = nursing_prescriptions.get("activities")
+
+        total_string = ""
+        if resting != None:
+            total_string += str(resting)
+        
+        if diet != None:
+            total_string += f' DIETA: {str(diet)}'
+
+        if activities != None:
+            total_string += f' ATIVIDADES:'
+            for activity in activities:
+                total_string += f' {activity["description"]} |'
+
+        return self.add_morelines_text(
+                text=total_string,
+                initial_pos=(18, 124),
+                field_name="Cuidados de Enfermagem, Dieta e Atividades",
+                len_max=403,
+                len_min=5,
+                char_per_lines=67,
+                decrease_ypos=10,
+                max_lines_amount=6,
+        )
+    
+
+    def get_pendings_text(self, pendings):
+        date_object = isoparse(pendings["created_at"])
+        str_date = str("%02d/%02d/%d %02d:%02d") % (
+            date_object.day,
+            date_object.month,
+            date_object.year,
+            date_object.hour,
+            date_object.minute,
+        )
+
+        text = f' PENDÊNCIAS: {pendings["description"]} ({str_date})'
+
+        return text

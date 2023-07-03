@@ -100,7 +100,15 @@ mutation{
         useMode:"1 comprimido, via oral, de 6/6h por 3 dias"
       },
     ],
-    prescriptionCares: "Cuidados de Enfermagem",
+    nursingPrescriptions: {
+      resting: "Repouso relativo no leito, manter cabeceira elevada de 45° e perna direita elevada.",
+      diet: "Dieta pastosa, via oral, para diabético e hipertenso",
+      activities: [
+        {description: "Alteração de decúbito de 2/2h, atenção para úlceras por pressão" },
+        {description: "Aferição de sinais vitais de 6/6h" },
+        {description: "Realizar sondagem vesical e quantificação de balanço hídrico" },
+      ]
+    },
     measures: [
       {
         createdAt: "2023-02-12T23:59:24",

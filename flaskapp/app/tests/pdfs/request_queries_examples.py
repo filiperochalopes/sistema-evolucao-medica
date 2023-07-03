@@ -1,4 +1,5 @@
 from app.env import QUERIES_DIRECTORY
+import os
 
 def get_request_from_txt(filename:str):
     """Return as string with a request"""
@@ -6,6 +7,14 @@ def get_request_from_txt(filename:str):
         request = file.read()
     return request
 
+
+def get_all_tests_requests(filename_start:str):
+    all_queries = []
+    for file in os.listdir(QUERIES_DIRECTORY):
+        if file.startswith(filename_start):
+            all_queries.append(get_request_from_txt(file))
+
+    return all_queries
 
 ## Requests strings
 apac_request_string = get_request_from_txt('apac.txt') 
@@ -39,5 +48,7 @@ folha_evolucao_request_string = get_request_from_txt('folha_evolucao.txt')
 
 balanco_hidrico_request_string = get_request_from_txt('balanco_hidrico.txt')
 
-evol_compact_request_string = get_request_from_txt('evol_compact.txt')
-evol_compact_required_data_request_string = get_request_from_txt('evol_compact_required_data.txt')
+# evol_compact_request_string = get_request_from_txt('evol_compact.txt')
+# evol_compact_required_data_request_string = get_request_from_txt('evol_compact_required_data.txt')
+
+evol_compact_request_strings = get_all_tests_requests('evol_compact')

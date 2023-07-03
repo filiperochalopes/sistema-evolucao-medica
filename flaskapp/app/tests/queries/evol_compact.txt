@@ -17,6 +17,7 @@ mutation{
     regulationCode: "3381668",
     documentCreatedAt: "2023-07-03",
     admissionHistory: {
+      internmentDay: 3,
       professional:{
           name: "Filipe Costa Martins",
           category: "med",
@@ -28,7 +29,7 @@ mutation{
     },
     evolution:{
         createdAt: "2023-06-29T07:35:24",
-        text: "Evolução do dia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras facilisis augue et ex ullamcorper egestas volutpat nec velit. Nunc eget metus lectus. Proin porta maximus varius. Suspendisse eget posuere purus. Aliquam ultrices auctor ante quis volutpat. Fusce felis nisl, semper ut mi ac, volutpat luctus nisi. Curabitur sodales feugiat turpis, at cursus lectus eleifend sed. Nam at erat iaculis, venenatis purus ut, gravida felis. Phasellus eu neque malesuada urna mollis malesuada. Aenean cursus risus nec eros laoreet consectetur. Donec pharetra felis vel magna imperdiet, sed ultricies dolor aliquam. Nulla fringilla, enim quis semper condimentum, magna ante iaculis risus, vel condimentum felis felis sed leo. Mauris viverra id lorem non egestas. Duis vitae ante tortor. Duis pharetra dictum sem, sed vehicula mi. Mauris congue rhoncus libero sed luctus.",
+        text: "Evolução do dia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras facilisis augue et ex ullamcorper egestas volutpat nec velit. Nunc eget metus lectus. Proin porta maximus varius. Suspendisse eget posuere purus. Aliquam ultrices auctor ante quis volutpat.",
         professional:
         {
           name: "Filipe da Cunha Alcântara",
@@ -41,19 +42,26 @@ mutation{
       description: "Pendências para o paciente. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras facilisis augue et ex ullamcorper egestas volutpat nec velit. Nunc eget metus lectus. Proin porta maximus varius. Suspendisse eget posuere purus."
     },
     prescription: [
-      { description:"Hidratação basal - 500ml de SF 12/12h (Endovenoso)" },
-      { description:"Ceftriaxona 1g - 1 ampola 12/12h - D0 28/06/2023 DF 05/06/2023 (Endovenoso)" },
-      { description:"Furosemida 10mg/ml 2ml pela manhã (Endovenoso)" },
-      { description:"Salbutamol 100mcg/jato 10 jatos 20/20min com espaçador por 3 ciclos, se falta de ar, repetir sempre que necessário (Nasal)" },
-      { description:"Metoclopramida 5mg/ml 10mg se náusea ou vômitos. Ou ainda se for necessário aplicar Morfina (Endovenosa)" },
-      { description:"Dipirona 500mg/ml 1 ampola se febre, temperatura axilar maior do que 37,8°C, ou dor 6/6h (Endovenoso)" },
-      { description:"Morfina 10mg/ml Diluir 1ml em 9ml de soro fisiológico 0,9% e administrar 2ml de 4/4h se dor muito intensa (Endovenoso)" },
-      { description:"Insulina Regular conforme protocolo da unidade se HGT > 200mg/dl (Subcutânea)" },
-      { description:"Glicose 50% 2 ampolas se HGT < 70 em bólus lento sem diluição (Endovenosa)" },
-      { description:"Heparina 5.000 UI 12/12h (Subcutânea)" },
-      { description:"Insulina NPH 10UI pela manhã e 10UI à noite (Subcutânea)" },
-      { description:"Ciprofloxacino 400mg/200ml - 200ml 12/12h (Endovenosa) - D0 12/05/2022 DF 17/05/2022" },
-      { description:"Clonazepam 2,5mg/ml - 10 gotas à noite S/N (Oral)" },
+     {
+        medicineName:"Dipirona 500mg", 
+        amount:"4 comprimidos", 
+        useMode:"1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        medicineName:"Dipirona 500mg", 
+        amount:"4 comprimidos", 
+        useMode:"1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        medicineName:"Dipirona 500mg", 
+        amount:"4 comprimidos", 
+        useMode:"1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        medicineName:"Dipirona 500mg", 
+        amount:"4 comprimidos", 
+        useMode:"1 comprimido, via oral, de 6/6h por 3 dias"
+      },
     ],
     nursingPrescriptions: {
       resting: "Repouso relativo no leito, manter cabeceira elevada de 45° e perna direita elevada.",

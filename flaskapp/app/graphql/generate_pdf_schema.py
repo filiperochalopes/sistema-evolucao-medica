@@ -32,6 +32,27 @@ generate_pdf_type_defs = gql(
         professional: ProfessionalInput!
     }
 
+    input PendingInput{
+        "Data da criacao. String no formato ISO %Y-%m-%dT%H:%M:%S"
+        createdAt: String!,
+        "Descricao da evolucao"
+        description: String!
+    }
+
+    input NursingPrescriptionsInput{
+        "Prescricao de Repouso para o Paciente"
+        resting: String!,
+        "Dieta do Paciente"
+        diet: String,
+        "Atividades"
+        activities: [ActivitiesInput],
+    }
+
+    input ActivitiesInput{
+        "Descricao da atividade"
+        description: String!,
+    }
+
     input MeasureInput{
         "Valores de saturação periférica de oxigênio de 20 a 99"
         spO2: Int
@@ -99,14 +120,16 @@ generate_pdf_type_defs = gql(
             regulationCode: String,
             "Descricao da evolucao"
             evolution: EvolutionInput!,
+            "Descricao das pendencias"
+            pendings: PendingInput,
             "Data de criacao"
             documentCreatedAt: String!,
             "Historia da Admissao"
             admissionHistory: AdmissionHistoryInput!,
             "Prescricoes"
             prescription: [PrescriptionInput]!,
-            "Cuidados de Enfermagem"
-            prescriptionCares: String!
+            "Cuidados de Enfermagem, Dieta e Atividades"
+            nursingPrescriptions: NursingPrescriptionsInput!,
             "Medicoes a partir de 5 horas"
             measures: [MeasureInput]
         ): GeneratedPdf

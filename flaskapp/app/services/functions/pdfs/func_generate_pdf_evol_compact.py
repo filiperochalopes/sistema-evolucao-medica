@@ -8,9 +8,10 @@ def func_generate_pdf_evol_compact(
     document_created_at: str,
     admission_history: dict,
     prescription: list,
-    prescription_cares: str,
-    measures: list,
+    nursing_prescriptions: dict,
+    measures: list = None,
     regulation_code: str = None,
+    pendings: list = None,
 ) -> str:
     try:
         pdf = PdfEvolCompact()
@@ -122,8 +123,12 @@ def func_generate_pdf_evol_compact(
                 len_min=5,
             )
 
+            evolution_text = evolution["text"]
+            if pendings is not None:
+                evolution_text += pdf.get_pendings_text(pendings=pendings)
+
             pdf.add_morelines_text(
-                text=evolution["text"],
+                text=evolution_text,
                 initial_pos=(357, 114),
                 field_name="Texto da Evolucao",
                 len_max=800,
@@ -148,18 +153,7 @@ def func_generate_pdf_evol_compact(
             )
 
             pdf.add_prescription(prescription=prescription)
-            pdf.add_morelines_text(
-                text=prescription_cares,
-                initial_pos=(18, 124),
-                field_name="Cuidados de Enfermagem",
-                len_max=403,
-                len_min=5,
-                char_per_lines=67,
-                decrease_ypos=10,
-                max_lines_amount=6,
-            )
-
-            pdf.add_measures(measures=measures)
+            pdf.add_nursing_prescriptions(nursing_prescriptions=nursing_prescriptions)
 
         except Exception as error:
             return error
@@ -167,6 +161,17 @@ def func_generate_pdf_evol_compact(
         except:
             return Exception(
                 "Erro desconhecido correu enquanto adicionava dados obrigatorios"
+            )
+        
+        try:
+            pdf.add_measures(measures=measures)
+
+        except Exception as error:
+            return error
+        
+        except:
+            return Exception(
+                "Erro desconhecido correu enquanto adicionava dados opcionais"
             )
 
         # Get pdf base64
