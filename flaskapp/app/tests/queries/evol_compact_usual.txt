@@ -17,7 +17,6 @@ mutation{
     regulationCode: "3381668",
     documentCreatedAt: "2023-07-03",
     admissionHistory: {
-      internmentDay: 3,
       professional:{
           name: "Filipe Costa Martins",
           category: "med",

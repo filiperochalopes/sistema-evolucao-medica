@@ -11,13 +11,12 @@ mutation{
       phone: "75992540735",
       motherName: "Joana Maria Cerqueira", 
       birthdate: "1985-11-10",
-      comorbidities: ["Diabetes Mellitus Tipo II", "Hipertensão Arterial Sistêmica", "Tabagismo", "Etilismo"],
+      comorbidities: ["Diabetes Mellitus Tipo II", "Hipertensão Arterial Sistêmica", "Tabagismo", "Etilismo", "Muitas comorbidades", "outra comorbidade", "Diabetes Mellitus Tipo II", "Hipertensão Arterial Sistêmica", "Tabagismo", "Etilismo", "Hipertensao"],
       allergies: ["Dipirona", "AINES", "Amoxicilina"],
     },
     regulationCode: "3381668",
     documentCreatedAt: "2023-07-03",
     admissionHistory: {
-      internmentDay: 3,
       professional:{
           name: "Filipe Costa Martins",
           category: "med",
@@ -25,11 +24,11 @@ mutation{
       },
       professionalCreatedDate: "2023-02-13T01:17:20",
       admissionDate: "2023-06-28",
-      admissionText: "História da Admissão do paciente. Donec sollicitudin laoreet lacus, vitae blandit diam elementum eget. Phasellus vestibulum orci in purus pretium aliquet. Donec vitae libero a magna dignissim vehicula vitae at urna. Fusce porttitor eros et ornare egestas. Suspendisse condimentum odio quam, quis mattis est commodo vel. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent ultrices sodales mauris, rhoncus hendrerit mauris placerat eget."
+      admissionText: "História da Admissão do paciente. Donec sollicitudin laoreet lacus, vitae blandit diam elementum eget. Phasellus vestibulum orci in purus pretium aliquet. Donec vitae libero a magna dignissim vehicula vitae at urna. Fusce porttitor eros et ornare egestas. Suspendisse condimentum odio quam, quis mattis est commodo vel. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent ultrices sodales mauris, rhoncus hendrerit mauris placerat eget. Donec a sapien eu nisi mattis lobortis quis in sem. Nam pulvinar nisi nec arcu suscipit, a semper magna pellentesque. Etiam ac est pharetra, laoreet metus sit amet, placerat urna. Donec pretium vel leo eget dictum. Pellentesque feugiat nec lorem congue auctor. Sed placerat neque ac dolor placerat vulputate. Pellentesque sollicitudin ipsum bibendum, gravida turpis scelerisque, consequat nunc. Proin purus purus, efficitur id vestibulum quis, vestibulum sit amet leo."
     },
     evolution:{
         createdAt: "2023-06-29T07:35:24",
-        text: "Evolução do dia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras facilisis augue et ex ullamcorper egestas volutpat nec velit. Nunc eget metus lectus. Proin porta maximus varius. Suspendisse eget posuere purus. Aliquam ultrices auctor ante quis volutpat.",
+        text: "Evolução do dia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras facilisis augue et ex ullamcorper egestas volutpat nec velit. Nunc eget metus lectus. Proin porta maximus varius. Suspendisse eget posuere purus. Aliquam ultrices auctor ante quis volutpat. Fusce felis nisl, semper ut mi ac, volutpat luctus nisi. Curabitur sodales feugiat turpis, at cursus lectus eleifend sed. Nam at erat iaculis, venenatis purus ut, gravida felis. Phasellus eu neque malesuada urna mollis malesuada. Aenean cursus risus nec eros laoreet consectetur. Donec pharetra felis vel magna imperdiet, sed ultricies dolor aliquam. Nulla fringilla, enim quis semper condimentum, magna ante iaculis risus, vel condimentum felis felis sed leo. Mauris viverra id lorem non egestas. Duis vitae ante tortor. Duis pharetra dictum sem, sed vehicula mi. Mauris congue rhoncus libero sed luctus. Donec pretium vel leo eget dictum. Pellentesque feugiat nec lorem congue auctor. Sed placerat neque ac dolor placerat vulputate. Pellentesque sollicitudin ipsum bibendum, gravida turpis scelerisque, consequat nunc. Proin purus purus, efficitur id vestibulum quis, vestibulum sit amet leo.",
         professional:
         {
           name: "Filipe da Cunha Alcântara",
@@ -65,12 +64,14 @@ mutation{
     ],
     nursingPrescriptions: {
       resting: "Repouso relativo no leito, manter cabeceira elevada de 45° e perna direita elevada.",
-      diet: "Dieta pastosa, via oral, para diabético e hipertenso",
+      diet: "Dieta pastosa, via oral, para diabético e hipertenso. Dieta pastosa, via oral, para diabético e hipertenso",
       activities: [
         {description: "Alteração de decúbito de 2/2h, atenção para úlceras por pressão" },
         {description: "Aferição de sinais vitais de 6/6h" },
         {description: "Realizar sondagem vesical e quantificação de balanço hídrico" },
         {description: "Monitoramento multiparamétrico" },
+        {description: "Mais uma atividade para adicionar" },
+        {description: "Atividade limite de texto para testar as retirencias e alteração de fonte" },
       ]
     },
     measures: [
@@ -147,7 +148,7 @@ mutation{
         respiratoryFrequency: 15,
         sistolicBloodPressure: 152,
         diastolicBloodPressure: 84,
-        glucose: "152",
+        glucose: "152", 
         spO2: 96,
         celciusAxillaryTemperature: 37,
         pain: 2,

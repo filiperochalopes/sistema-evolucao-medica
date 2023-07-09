@@ -332,6 +332,7 @@ class PdfEvolCompact(ReportLabCanvasUtils):
                 char_per_lines=67,
                 decrease_ypos=10,
                 max_lines_amount=6,
+                auto_adjust=True
         )
     
 

@@ -1,5 +1,6 @@
 import datetime
 from app.services.utils.PdfEvolCompact import PdfEvolCompact
+from dateutil.parser import isoparse
 
 
 def func_generate_pdf_evol_compact(
@@ -55,13 +56,14 @@ def func_generate_pdf_evol_compact(
             pdf.add_morelines_text(
                 text=f'Sexo: {patient_sex}  Peso: {patient_weight}kg  CNS: {patient["cns"]}'
                 + optional_data,
-                initial_pos=(20, 497),
+                initial_pos=(20, 498),
                 field_name="Patient Info",
-                len_max=403,
+                len_max=336,
                 len_min=5,
                 char_per_lines=42,
                 decrease_ypos=11,
                 max_lines_amount=8,
+                auto_adjust=True
             )
 
             pdf.set_font("Roboto-Condensed-Bold", 10)
@@ -90,8 +92,11 @@ def func_generate_pdf_evol_compact(
                 hours=False,
                 formated=True,
             )
+
+            today = datetime.datetime.now().date()
+            internment_day = abs((isoparse(admission_history["admission_date"]).date() - today).days)
             pdf.add_oneline_text(
-                text=f"{admission_history['internment_day']} DE INTERNAMENTO",
+                text=f"{internment_day} DE INTERNAMENTO",
                 pos=(540, 515),
                 field_name="Dia da internacao",
                 len_max=40,
@@ -109,6 +114,7 @@ def func_generate_pdf_evol_compact(
                 char_per_lines=89,
                 decrease_ypos=10,
                 max_lines_amount=7,
+                auto_adjust=True
             )
             professional_info = pdf.create_professional_info_text(
                 professional=admission_history["professional"],
@@ -136,6 +142,7 @@ def func_generate_pdf_evol_compact(
                 max_lines_amount=10,
                 char_per_lines=77,
                 decrease_ypos=10,
+                auto_adjust=True
             )
             professional_info = pdf.create_professional_info_text(
                 professional=evolution["professional"],

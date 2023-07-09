@@ -17,8 +17,6 @@ generate_pdf_type_defs = gql(
         professionalCreatedDate: String!,
         "Data do historico da Admissao"
         admissionDate: String!,
-        "Contagem de dia de internamento"
-        internmentDay: Int!,
         "Texto da admissão"
         admissionText: String!,
     }
@@ -45,10 +43,10 @@ generate_pdf_type_defs = gql(
         "Dieta do Paciente"
         diet: String,
         "Atividades"
-        activities: [ActivitiesInput],
+        activities: [DescriptionInput],
     }
 
-    input ActivitiesInput{
+    input DescriptionInput{
         "Descricao da atividade"
         description: String!,
     }

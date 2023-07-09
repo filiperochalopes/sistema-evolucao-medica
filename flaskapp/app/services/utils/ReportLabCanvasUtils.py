@@ -344,7 +344,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {field_name}')
 
 
-    def add_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, field_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='', return_ypos:bool=True) -> None:
+    def add_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, field_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='', return_ypos:bool=True, auto_adjust:bool=False, auto_adjust_min_fontsize:int=7) -> None:
         """Add text that is fill in one line
 
         Args:
@@ -365,8 +365,7 @@ class ReportLabCanvasUtils():
             if nullable:
                 if text == None or len(str(text).strip()) == 0:
                     return None
-            self.validate_func_args(function_to_verify=self.add_morelines_text, variables_to_verify={'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'field_name':field_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'return_ypos':return_ypos}, nullable_variables=['max_lines_amount', 'return_ypos'])
-
+            self.validate_func_args(function_to_verify=self.add_morelines_text, variables_to_verify={'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'field_name':field_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'return_ypos':return_ypos, 'auto_adjust':auto_adjust, "auto_adjust_min_fontsize":auto_adjust_min_fontsize}, nullable_variables=['max_lines_amount', 'return_ypos'])
 
             if not nullable:
                 text = text.strip()
@@ -379,6 +378,8 @@ class ReportLabCanvasUtils():
                 str_to_line = ''
                 broke_lines_times = int(len(text)/char_per_lines)
                 if max_lines_amount != None and broke_lines_times + 1 > max_lines_amount:
+                    if auto_adjust:
+                        return self._add_morelines_texts_with_auto_adjust(text, len_min, len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize)
                     raise Exception(f'Nao foi possivel adicionar {field_name} pois a quantidade de linhas necessrias e maior que {max_lines_amount}')
                 current_line = char_per_lines
                 last_line = 0
@@ -398,6 +399,8 @@ class ReportLabCanvasUtils():
                 if return_ypos:
                     return ypos
                 return None
+            elif auto_adjust:
+                return self._add_morelines_texts_with_auto_adjust(text, len_min, len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize)
             else:
                 raise Exception(f"Nao foi possivel adicionar {field_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
 
@@ -405,6 +408,68 @@ class ReportLabCanvasUtils():
             raise error
         except:
             raise Exception(f'Erro desconhecido enquando adicionava {field_name}')
+
+
+    def _add_morelines_texts_with_auto_adjust(self, text, len_min, len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize):
+        # This is the percentage data the program will use to increase or decreave values when needed
+        # example: to font 9 to 8, the char_per_lines will increave 13.13% -> * 1.1313
+        AUTO_ADJUST_FONTSIZE_DATA = {
+            9: {
+                'char_per_lines': 1.1123
+                },
+            8: {
+                'char_per_lines': 1.1313, 
+                },
+            7: {
+                'char_per_lines': 1.1428, 
+                },
+        }
+
+        current_size = self.can._fontsize
+        start_size = current_size
+        status = ''
+        while len(text) > len_max:
+            current_size -= 1   
+            if current_size < auto_adjust_min_fontsize:
+                text = text[:len_max-4] + '...'
+                status += f'{self.can._fontsize}_{start_size} - {char_per_lines} - {len(text)}_{len_max}\n'           
+                break
+            # Update values
+            status += f'{self.can._fontsize}_{start_size} - {char_per_lines} - {len(text)}_{len_max}\n'           
+
+            new_char_per_lines = AUTO_ADJUST_FONTSIZE_DATA.get(current_size)['char_per_lines'] * char_per_lines
+
+            char_per_lines = round(new_char_per_lines)
+            len_max = char_per_lines * max_lines_amount
+            # remove max_lines_limitation
+            self.can._fontsize = current_size
+
+        #raise Exception(status)
+        self.can.setFont(self.can._fontname, self.can._fontsize)
+        text = self.add_interval_to_data(data=text, interval=interval)
+        str_to_line = ''
+        broke_lines_times = int(len(text)/char_per_lines)
+        if max_lines_amount != None and broke_lines_times + 1 > max_lines_amount:
+            raise Exception(f'Nao foi possivel adicionar {field_name} pois a quantidade de linhas necessrias e maior que {max_lines_amount}')
+        current_line = char_per_lines
+        last_line = 0
+        xpos = initial_pos[0]
+        ypos = initial_pos[1]
+        # Making the line break whem has max charater limiti reached in a line
+        total_lines = broke_lines_times + 1
+
+        while broke_lines_times >= 0:
+            str_to_line = text[last_line:current_line]
+            self.add_data(data=str_to_line, pos=(xpos, ypos))
+            last_line = current_line
+            current_line += char_per_lines
+            broke_lines_times -= 1
+            ypos -= decrease_ypos
+
+        self.set_font(self.can._fontname, start_size)
+        if return_ypos:
+            return ypos
+        return None
 
 
     def add_phonenumber(self, number:str, pos:tuple, field_name:str, nullable:bool=False, interval:str='', formated:bool=False) -> None:
