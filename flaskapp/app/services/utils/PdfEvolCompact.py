@@ -327,7 +327,7 @@ class PdfEvolCompact(ReportLabCanvasUtils):
 
         return self.add_morelines_text(
                 text=total_string,
-                initial_pos=(18, 124),
+                initial_pos=(18, 125),
                 field_name="Cuidados de Enfermagem, Dieta e Atividades",
                 len_max=403,
                 len_min=5,
