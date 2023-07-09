@@ -162,6 +162,8 @@ class PdfEvolCompact(ReportLabCanvasUtils):
                 len_max=4032,
                 char_per_lines=CHAR_PER_LINES,
                 return_ypos=True,
+                max_lines_amount=2,
+                auto_adjust=True
             )
             if yposition <= 110:
                 raise Exception(
