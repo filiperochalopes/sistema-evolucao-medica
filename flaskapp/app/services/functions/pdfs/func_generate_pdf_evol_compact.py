@@ -61,7 +61,7 @@ def func_generate_pdf_evol_compact(
                 len_max=336,
                 len_min=5,
                 char_per_lines=42,
-                decrease_ypos=11,
+                decrease_ypos=10,
                 max_lines_amount=8,
                 auto_adjust=True
             )
