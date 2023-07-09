@@ -18,7 +18,7 @@ mutation{
     documentCreatedAt: "2023-07-03",
     admissionHistory: {
       professional:{
-          name: "Filipe Costa Martins",
+          name: "Filipe Costa Martins Nome Completo Muito Longo Reticencias",
           category: "med",
           document: "54321/BA"
       },

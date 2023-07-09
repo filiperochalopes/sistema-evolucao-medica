@@ -127,6 +127,7 @@ def func_generate_pdf_evol_compact(
                 field_name="Admission Professional Info",
                 len_max=80,
                 len_min=5,
+                auto_adjust=True
             )
 
             evolution_text = evolution["text"]
@@ -157,6 +158,7 @@ def func_generate_pdf_evol_compact(
                 field_name="Evolution Professional Info",
                 len_max=84,
                 len_min=5,
+                auto_adjust=True
             )
 
             pdf.add_prescription(prescription=prescription)

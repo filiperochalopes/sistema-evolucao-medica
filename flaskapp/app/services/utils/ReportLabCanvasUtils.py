@@ -259,7 +259,7 @@ class ReportLabCanvasUtils():
             raise Exception("Erro desconhecido enquanto criava um novo arquivo pdf")
 
 
-    def add_oneline_text(self, text:str, pos:tuple, field_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, right_align:bool=False) -> None:
+    def add_oneline_text(self, text:str, pos:tuple, field_name:str, len_max:int, nullable:bool=False, len_min:int=0, interval:str='', centralized:bool=False, right_align:bool=False, auto_adjust:bool=False, auto_adjust_min_fontsize:int=7) -> None:
         """Add text that is fill in one line
 
         Args:
@@ -280,7 +280,7 @@ class ReportLabCanvasUtils():
                 if text == None or len(str(text).strip()) == 0:
                     return None
 
-            self.validate_func_args(function_to_verify=self.add_oneline_text, variables_to_verify={'text':text, 'pos':pos, 'field_name':field_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized, 'right_align':right_align})
+            self.validate_func_args(function_to_verify=self.add_oneline_text, variables_to_verify={'text':text, 'pos':pos, 'field_name':field_name, 'len_max':len_max, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'centralized':centralized, 'right_align':right_align, 'auto_adjust':auto_adjust, "auto_adjust_min_fontsize":auto_adjust_min_fontsize})
 
             if not nullable:
                 text = text.strip()
@@ -297,6 +297,8 @@ class ReportLabCanvasUtils():
                 else:
                     self.add_data(data=text, pos=pos)
                 return None
+            elif auto_adjust:
+                return self._add_oneline_text_with_auto_adjust(text, pos, len_max, interval, centralized, right_align, auto_adjust_min_fontsize)
             else:
                 raise Exception(f"Nao foi possivel adicionar {field_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
         
@@ -304,6 +306,44 @@ class ReportLabCanvasUtils():
             raise error
         except:
             raise Exception(f'Erro desconhecido enquando adicionava {field_name}')
+
+
+    def _add_oneline_text_with_auto_adjust(self, text, pos, len_max, interval, centralized, right_align, auto_adjust_min_fontsize):
+        AUTO_ADJUST_FONTSIZE_DATA = {
+            9: {
+                'char_per_lines': 1.1123
+                },
+            8: {
+                'char_per_lines': 1.1313, 
+                },
+            7: {
+                'char_per_lines': 1.1428, 
+                },
+        }
+
+        current_size = self.can._fontsize
+        start_size = current_size
+        while len(text) > len_max:
+            current_size -= 1   
+            if current_size < auto_adjust_min_fontsize:
+                text = text[:len_max-4] + '...'        
+                break
+            # Update values
+            new_len_max = AUTO_ADJUST_FONTSIZE_DATA.get(current_size)['char_per_lines'] * len_max
+
+            len_max = round(new_len_max)
+            # remove max_lines_limitation
+            self.can._fontsize = current_size
+        self.set_font(self.can._fontname, self.can._fontsize)
+        text = self.add_interval_to_data(data=text, interval=interval)
+        if centralized:
+            self.add_centralized_data(data=text, pos=pos)
+        elif right_align: 
+            self.add_right_data(data=text, pos=pos)
+        else:
+            self.add_data(data=text, pos=pos)
+        self.set_font(self.can._fontname, start_size)
+        return None
 
 
     def add_abbreviated_name(self, name:str, pos:tuple, field_name:str, len_max:int, len_min:int=0, centralized:bool=False, nullable:bool=False, uppered:bool=False):
@@ -379,7 +419,7 @@ class ReportLabCanvasUtils():
                 broke_lines_times = int(len(text)/char_per_lines)
                 if max_lines_amount != None and broke_lines_times + 1 > max_lines_amount:
                     if auto_adjust:
-                        return self._add_morelines_texts_with_auto_adjust(text, len_min, len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize)
+                        return self._add_morelines_texts_with_auto_adjust(text, len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize)
                     raise Exception(f'Nao foi possivel adicionar {field_name} pois a quantidade de linhas necessrias e maior que {max_lines_amount}')
                 current_line = char_per_lines
                 last_line = 0
@@ -400,7 +440,7 @@ class ReportLabCanvasUtils():
                     return ypos
                 return None
             elif auto_adjust:
-                return self._add_morelines_texts_with_auto_adjust(text, len_min, len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize)
+                return self._add_morelines_texts_with_auto_adjust(text, len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize)
             else:
                 raise Exception(f"Nao foi possivel adicionar {field_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
 
@@ -410,7 +450,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {field_name}')
 
 
-    def _add_morelines_texts_with_auto_adjust(self, text, len_min, len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize):
+    def _add_morelines_texts_with_auto_adjust(self, text,  len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize):
         # This is the percentage data the program will use to increase or decreave values when needed
         # example: to font 9 to 8, the char_per_lines will increave 13.13% -> * 1.1313
         AUTO_ADJUST_FONTSIZE_DATA = {
@@ -427,16 +467,12 @@ class ReportLabCanvasUtils():
 
         current_size = self.can._fontsize
         start_size = current_size
-        status = ''
         while len(text) > len_max:
             current_size -= 1   
             if current_size < auto_adjust_min_fontsize:
-                text = text[:len_max-4] + '...'
-                status += f'{self.can._fontsize}_{start_size} - {char_per_lines} - {len(text)}_{len_max}\n'           
+                text = text[:len_max-4] + '...'       
                 break
             # Update values
-            status += f'{self.can._fontsize}_{start_size} - {char_per_lines} - {len(text)}_{len_max}\n'           
-
             new_char_per_lines = AUTO_ADJUST_FONTSIZE_DATA.get(current_size)['char_per_lines'] * char_per_lines
 
             char_per_lines = round(new_char_per_lines)
@@ -444,8 +480,7 @@ class ReportLabCanvasUtils():
             # remove max_lines_limitation
             self.can._fontsize = current_size
 
-        #raise Exception(status)
-        self.can.setFont(self.can._fontname, self.can._fontsize)
+        self.set_font(self.can._fontname, self.can._fontsize)
         text = self.add_interval_to_data(data=text, interval=interval)
         str_to_line = ''
         broke_lines_times = int(len(text)/char_per_lines)
