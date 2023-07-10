@@ -479,6 +479,7 @@ class ReportLabCanvasUtils():
             len_max = char_per_lines * max_lines_amount
             # remove max_lines_limitation
             self.can._fontsize = current_size
+            
 
         self.set_font(self.can._fontname, self.can._fontsize)
         text = self.add_interval_to_data(data=text, interval=interval)

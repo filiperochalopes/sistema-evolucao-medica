@@ -125,7 +125,7 @@ generate_pdf_type_defs = gql(
             "Historia da Admissao"
             admissionHistory: AdmissionHistoryInput!,
             "Prescricoes"
-            prescription: [PrescriptionInput]!,
+            prescription: [DescriptionInput]!,
             "Cuidados de Enfermagem, Dieta e Atividades"
             nursingPrescriptions: NursingPrescriptionsInput!,
             "Medicoes a partir de 5 horas"

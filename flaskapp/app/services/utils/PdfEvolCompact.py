@@ -81,56 +81,9 @@ class PdfEvolCompact(ReportLabCanvasUtils):
         # verify if the type is list
         if type(prescription) != type(list()):
             raise Exception(
-                'prescription deve ser uma lista de dicionarios, exemplo: [{"medicine_name":"Dipirona 500mg", "amount":"4 comprimidos", "use_mode":"1 comprimido, via oral, de 6/6h por 3 dias"}, {"medicine_name":"Metocoplamina 10mg", "amount":"6 comprimidos", "use_mode":"1 comprimido, via oral, de 8/8h por 2 dias"}]'
+                'prescription deve ser uma lista'
             )
-        NECESSARY_KEYS = ["medicine_name", "amount", "use_mode"]
-        totalChar = 0
-        # Add , in the end to evade errors
-        for presc in prescription:
-            # verify if the item in list is a dict
-            if type(presc) != type(dict()):
-                raise Exception(
-                    "Todos os itens na lista de prescricao devem ser dicionarios"
-                )
-            # Verify if the necessary keys are in the dict
-            if (
-                "medicine_name" not in presc.keys()
-                or "amount" not in presc.keys()
-                or "use_mode" not in presc.keys()
-            ):
-                raise Exception(
-                    'Algumas chaves do dicionário estao faltando, o dicionario deve ter as chaves "medicine_name", "amount", "use_mode"'
-                )
-            # Verify if the value in the dics is str
-            elif (
-                type(presc["medicine_name"]) != type(str())
-                or type(presc["amount"]) != type(str())
-                or type(presc["use_mode"]) != type(str())
-            ):
-                raise Exception(
-                    'Os valores nas chaves "medicine_name", "amount", "use_mode" devem ser strings'
-                )
-            # verify if medicine_name and amount together isnt bigger than 1 line (61 characters)
-            elif len(presc["medicine_name"].strip() + presc["amount"].strip()) > 61:
-                raise Exception(
-                    '"medicine_name" e "amount" juntas nao podem ultrapassar 61 caracteres'
-                )
-            # Verify id use_mode isnt bigger than 3 lines (244 characters)
-            elif len(presc["use_mode"].strip()) > 244:
-                raise Exception('"use_mode" nao pode ultrapassar 244 caracteres')
-            # Verify if the dict has more keys than the needed
-            for key in presc.keys():
-                if key not in NECESSARY_KEYS:
-                    raise Exception(
-                        'O dicionario pode ter somente 3 chaves, sendo elas: "medicine_name", "amount", "use_mode"'
-                    )
-            # calculate the total lenght of use_mode
-            totalChar += len(presc["use_mode"].strip())
-        # Verify if user_mode total lenght and the 2 line that every medicine and amount need isnt bigger than the total of de document
-        if totalChar + (61 * len(prescription)) == 2501:
-            raise Exception(
-                "O total do docmuento nao pode ultrapassar 2501 caracteres. Lembre-se que 1 linha inteira (61 caracteres) sao destinadas ao nome do medicamento e a quantidade"
-            )
+        
 
         CHAR_PER_LINES = 82
         DEFAULT_RECT_HEIGHT = 1
@@ -140,10 +93,7 @@ class PdfEvolCompact(ReportLabCanvasUtils):
         yposition = 387
 
         for presc in prescription:
-            medicine_name = presc["medicine_name"].strip()
-            use_mode = presc["use_mode"].strip()
-            # Discover how many . dots hhas to be between medicinename and amount
-            current_text = medicine_name + " " + use_mode
+            current_text = presc['description'].strip()
 
             if count != 1:
                 rect_y_pos = int(yposition + 11)
