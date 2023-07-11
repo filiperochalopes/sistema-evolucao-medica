@@ -53,7 +53,6 @@ mutation{
       { description:"Heparina 5.000 UI 12/12h (Subcutânea)" },
       { description:"Insulina NPH 10UI pela manhã e 10UI à noite (Subcutânea)" },
       { description:"Ciprofloxacino 400mg/200ml - 200ml 12/12h (Endovenosa) - D0 12/05/2022 DF 17/05/2022" },
-      { description:"Clonazepam 2,5mg/ml - 10 gotas à noite S/N (Oral)" },
     ],
     nursingPrescriptions: {
       resting: "Repouso relativo no leito, manter cabeceira elevada de 45° e perna direita elevada.",
