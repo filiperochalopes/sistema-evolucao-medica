@@ -252,9 +252,9 @@ class PdfEvolCompact(ReportLabCanvasUtils):
         ]:
             if item[1] != None:
                 data = str(item[1]).replace("'", "").replace("[", "").replace("]", "")
-                optional_data += f"  {item[0]}: {data}"
+                optional_data += f" {item[0]}: {data}"
         if regulation_code != None:
-            optional_data += f"  Codigo de Regulação: {regulation_code}"
+            optional_data += f" Codigo_de_Regulação: {regulation_code}"
 
         return optional_data
     
@@ -284,7 +284,8 @@ class PdfEvolCompact(ReportLabCanvasUtils):
                 char_per_lines=67,
                 decrease_ypos=10,
                 max_lines_amount=6,
-                auto_adjust=True
+                auto_adjust=True,
+                bold_words=['DIETA:', 'ATIVIDADES:'],
         )
     
 

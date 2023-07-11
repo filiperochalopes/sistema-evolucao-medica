@@ -1,7 +1,9 @@
 import sys
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
+from reportlab.platypus import Paragraph
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from PyPDF2 import PdfWriter, PdfReader
 import io
 import re
@@ -23,6 +25,17 @@ class ReportLabCanvasUtils():
         # this is also changed in the document to some especific fields
         pdfmetrics.registerFont(TTFont('Roboto-Mono', FONT_DIRECTORY))
         pdfmetrics.registerFont(TTFont('Roboto-Condensed-Bold', BOLD_FONT_DIRECTORY))
+        # pdfmetrics.registerFontFamily('Roboto-Mono', normal='Roboto-Mono', bold='Roboto-Condensed-Bold', italic='OpenSansL')
+        # style = getSampleStyleSheet()
+        # self.paragraph_style = ParagraphStyle('normal',
+        # fontName="Roboto-Mono",
+        # fontSize=10,
+        # parent=style['BodyText'],
+        # alignment=0,
+        # leading=0,
+        # textColor='black',
+        # strikeWidth=100,
+        # )
     
     
     def get_output(self) -> PdfWriter:
@@ -384,7 +397,7 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {field_name}')
 
 
-    def add_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, field_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='', return_ypos:bool=True, auto_adjust:bool=False, auto_adjust_min_fontsize:int=7) -> None:
+    def add_morelines_text(self, text:str, initial_pos:tuple, decrease_ypos:int, field_name:str, len_max:int, char_per_lines:int, max_lines_amount:int=None, nullable:bool=False, len_min:int=0, interval:str='', return_ypos:bool=True, auto_adjust:bool=False, auto_adjust_min_fontsize:int=7, bold_words:list=None, remove_underline:bool=False) -> None:
         """Add text that is fill in one line
 
         Args:
@@ -405,7 +418,7 @@ class ReportLabCanvasUtils():
             if nullable:
                 if text == None or len(str(text).strip()) == 0:
                     return None
-            self.validate_func_args(function_to_verify=self.add_morelines_text, variables_to_verify={'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'field_name':field_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'return_ypos':return_ypos, 'auto_adjust':auto_adjust, "auto_adjust_min_fontsize":auto_adjust_min_fontsize}, nullable_variables=['max_lines_amount', 'return_ypos'])
+            self.validate_func_args(function_to_verify=self.add_morelines_text, variables_to_verify={'text':text, 'initial_pos':initial_pos, 'decrease_ypos':decrease_ypos, 'field_name':field_name, 'len_max':len_max, 'char_per_lines':char_per_lines, 'max_lines_amount':max_lines_amount, 'nullable':nullable, 'len_min':len_min, 'interval':interval, 'return_ypos':return_ypos, 'auto_adjust':auto_adjust, "auto_adjust_min_fontsize":auto_adjust_min_fontsize, "bold_words":bold_words, "remove_underline":remove_underline}, nullable_variables=['max_lines_amount', 'return_ypos', 'bold_words'])
 
             if not nullable:
                 text = text.strip()
@@ -428,19 +441,25 @@ class ReportLabCanvasUtils():
                 # Making the line break whem has max charater limiti reached in a line
                 total_lines = broke_lines_times + 1
 
+                canvas_text = text
+                if remove_underline:
+                    canvas_text = canvas_text.replace('_', ' ')
                 while broke_lines_times >= 0:
-                    str_to_line = text[last_line:current_line]
+                    str_to_line = canvas_text[last_line:current_line]
                     self.add_data(data=str_to_line, pos=(xpos, ypos))
                     last_line = current_line
                     current_line += char_per_lines
                     broke_lines_times -= 1
                     ypos -= decrease_ypos
 
+                if bold_words != None:
+                    self._add_bold_words(text=text, initial_pos=initial_pos, char_per_lines=char_per_lines, decrease_ypos=decrease_ypos, bold_words=bold_words, remove_underline=remove_underline)
+
                 if return_ypos:
                     return ypos
                 return None
             elif auto_adjust:
-                return self._add_morelines_texts_with_auto_adjust(text, len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize)
+                return self._add_morelines_texts_with_auto_adjust(text, len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize, bold_words, remove_underline)
             else:
                 raise Exception(f"Nao foi possivel adicionar {field_name} porque e maior que {len_max} characteres ou menor que {len_min} caracteres")
 
@@ -450,7 +469,35 @@ class ReportLabCanvasUtils():
             raise Exception(f'Erro desconhecido enquando adicionava {field_name}')
 
 
-    def _add_morelines_texts_with_auto_adjust(self, text,  len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize):
+    def _add_bold_words(self, text, initial_pos, char_per_lines, decrease_ypos, bold_words, remove_underline=False):
+        filtered_text = ""
+        word_list = text.split()
+        for word in word_list:
+            if word in bold_words:
+                filtered_text += word + " "
+            else:
+                filtered_text += " " * len(word) + " "
+
+        if remove_underline:
+            filtered_text = filtered_text.replace('_', ' ')
+        
+        for x in range(2):
+            xpos = initial_pos[0]
+            ypos = initial_pos[1]
+            current_line = char_per_lines
+            last_line = 0
+            broke_lines_times = int(len(text)/char_per_lines)
+            
+            while broke_lines_times >= 0:
+                str_to_line = filtered_text[last_line:current_line]
+                self.add_data(data=str_to_line, pos=(xpos, ypos))
+                last_line = current_line
+                current_line += char_per_lines
+                broke_lines_times -= 1
+                ypos -= decrease_ypos 
+
+
+    def _add_morelines_texts_with_auto_adjust(self, text,  len_max, interval, char_per_lines, max_lines_amount, field_name, initial_pos, decrease_ypos, return_ypos, auto_adjust_min_fontsize, bold_words, remove_underline):
         # This is the percentage data the program will use to increase or decreave values when needed
         # example: to font 9 to 8, the char_per_lines will increave 13.13% -> * 1.1313
         AUTO_ADJUST_FONTSIZE_DATA = {
@@ -493,14 +540,20 @@ class ReportLabCanvasUtils():
         ypos = initial_pos[1]
         # Making the line break whem has max charater limiti reached in a line
         total_lines = broke_lines_times + 1
+        canvas_text = text
+        if remove_underline:
+            canvas_text = canvas_text.replace('_', ' ')
 
         while broke_lines_times >= 0:
-            str_to_line = text[last_line:current_line]
+            str_to_line = canvas_text[last_line:current_line]
             self.add_data(data=str_to_line, pos=(xpos, ypos))
             last_line = current_line
             current_line += char_per_lines
             broke_lines_times -= 1
             ypos -= decrease_ypos
+
+        if bold_words != None:
+            self._add_bold_words(text=text, initial_pos=initial_pos, char_per_lines=char_per_lines, decrease_ypos=decrease_ypos, bold_words=bold_words, remove_underline=remove_underline)
 
         self.set_font(self.can._fontname, start_size)
         if return_ypos:

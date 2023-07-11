@@ -54,7 +54,7 @@ def func_generate_pdf_evol_compact(
             )
 
             pdf.add_morelines_text(
-                text=f'Sexo: {patient_sex}  Peso: {patient_weight}kg  CNS: {patient["cns"]}'
+                text=f'Sexo: {patient_sex} Peso: {patient_weight}kg CNS: {patient["cns"]}'
                 + optional_data,
                 initial_pos=(20, 498),
                 field_name="Patient Info",
@@ -63,7 +63,9 @@ def func_generate_pdf_evol_compact(
                 char_per_lines=42,
                 decrease_ypos=10,
                 max_lines_amount=8,
-                auto_adjust=True
+                auto_adjust=True,
+                bold_words=["Sexo:", "Peso:", "CNS:", "Comobidades:", "Codigo_de_Regulação:", "Alergias:"],
+                remove_underline=True
             )
 
             pdf.set_font("Roboto-Condensed-Bold", 10)
