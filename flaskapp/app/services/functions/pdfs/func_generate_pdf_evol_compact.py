@@ -29,12 +29,13 @@ def func_generate_pdf_evol_compact(
                 uppered=True,
                 centralized=True,
             )
-            pdf.add_datetime(
+            today = pdf.add_datetime(
                 date=document_created_at,
                 pos=(716, 553),
                 field_name="Document Date",
                 hours=False,
                 formated=True,
+                return_dateobject=True,
             )
 
             pdf.set_font("Roboto-Mono", 10)
@@ -95,8 +96,8 @@ def func_generate_pdf_evol_compact(
                 formated=True,
             )
 
-            today = datetime.datetime.now().date()
-            internment_day = abs((isoparse(admission_history["admission_date"]).date() - today).days)
+            internment_day = (today.date() - isoparse(admission_history["admission_date"]).date()).days
+            
             pdf.add_oneline_text(
                 text=f"{internment_day} DE INTERNAMENTO",
                 pos=(540, 515),
