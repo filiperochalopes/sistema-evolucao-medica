@@ -17,8 +17,7 @@ def get_all_tests_requests(filename_start:str):
     return all_queries
 
 ## Requests strings
-apac_request_string = get_request_from_txt('apac.txt') 
-apac_required_data_request_string = get_request_from_txt('apac_required_data.txt') 
+apac_request_strings = get_all_tests_requests('apac')
 
 exam_request_request_string = get_request_from_txt('exam_request.txt')
 exam_request_required_data_request_string = get_request_from_txt('exam_request_required_data.txt')
