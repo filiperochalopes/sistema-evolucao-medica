@@ -296,8 +296,8 @@ def print_pdf_apac(_, info, internment_id: int, current_user: dict, extra: dict)
         })
 
 
-@mutation.field('printPdf_EvolCompact')
+@mutation.field('printPdf_EvolucaoCompacta')
 @convert_kwargs_to_snake_case
 @token_authorization
-def print_pdf_evol_compact(_, info, internment_id: int, current_user: dict, extra: dict = {}):
+def print_pdf_evolucao_compacta(_, info, internment_id: int, prescription_id: int, evolution_id: int, pendings_id: int, current_user: dict, extra: dict = {}):
     pass

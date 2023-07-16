@@ -17,9 +17,8 @@ import {
   GENERATE_PDF_APAC,
   GENERATE_PDF_BALANCO_HIDRICO,
   GENERATE_PDF_FICHA_INTERNAMENTO,
-  GENERATE_PDF_FOLHA_EVOLUCAO,
-  GENERATE_PDF_FOLHA_PRESCRICAO,
   GENERATE_PDF_RELATORIO_ALTA,
+  GENERATE_PDF_EVOLUCAO_COMPACTA,
 } from "graphql/mutations";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { cloneDeep } from "lodash";
@@ -71,7 +70,6 @@ const strategies = {
   APAC: ({ formik }) => (
     <>
       <Select />
-
       <ButtonContainer>
         <Button type="submit">Confirmar</Button>
       </ButtonContainer>
@@ -424,8 +422,7 @@ const initialValuesStrategies = {
 const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
   const { handleErrors } = useHandleErrors();
   const [getPDFFicha] = useMutation(GENERATE_PDF_FICHA_INTERNAMENTO);
-  const [getPDFFolhaEvolucao] = useMutation(GENERATE_PDF_FOLHA_EVOLUCAO);
-  const [getPDFFolhaPrescricao] = useMutation(GENERATE_PDF_FOLHA_PRESCRICAO);
+  const [getPDFEvolucaoCompacta] = useMutation(GENERATE_PDF_EVOLUCAO_COMPACTA);
   const [getPDFRelatorioAlta] = useMutation(GENERATE_PDF_RELATORIO_ALTA);
   const [getPDFAihSus] = useMutation(GENERATE_PDF_AIH_SUS);
   const [getPDFBalancoHidrico] = useMutation(GENERATE_PDF_BALANCO_HIDRICO);
@@ -454,11 +451,8 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
             newValues.extra.interval.endingDatetimeStamp = null;
           }
         }
-        if (type === "printPdf_FolhaEvolucao") {
-          request = getPDFFolhaEvolucao;
-        }
-        if (type === "printPdf_FolhaPrescricao") {
-          request = getPDFFolhaPrescricao;
+        if (type === "printPdf_EvolucaoCompacta") {
+          request = getPDFEvolucaoCompacta;
         }
         if (type === "printPdf_RelatorioAlta") {
           if (newValues.extra.datetimeStamp) {
@@ -490,7 +484,6 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
               description: newValues.extra.secondaryDiagnosis.description,
             };
           }
-          console.log(newValues);
           if (newValues.extra.ssociatedCause) {
             newValues.extra.ssociatedCause = {
               code: newValues.extra.ssociatedCause.code,

@@ -32,26 +32,17 @@ const ModalPrintData = ({ confirmButton, id }) => {
       >
         Folha de Admissão do Hospital (AIH)
       </Button>
-      <Button
-        customType="gray-300"
-        type="button"
-        onClick={() =>
-          addModal(additionalDataScreen({ type: "printPdf_FolhaEvolucao", id }))
-        }
-      >
-        Folha de Evolução
-      </Button>
       <CheckRole roles={["doc"]}>
         <Button
           customType="gray-300"
           type="button"
           onClick={() =>
             addModal(
-              additionalDataScreen({ type: "printPdf_FolhaPrescricao", id })
+              additionalDataScreen({ type: "printPdf_EvolucaoCompacta", id })
             )
           }
         >
-          Folha Prescrição
+          Folha de Evolução Compacta
         </Button>
       </CheckRole>
       <CheckRole roles={["doc"]}>
