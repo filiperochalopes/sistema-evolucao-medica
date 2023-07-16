@@ -19,7 +19,7 @@ mutation{
     admissionHistory: {
       professional:{
           name: "Filipe Costa Martins",
-          category: "med",
+          category: "enf",
           document: "54321/BA"
       },
       professionalCreatedDate: "2023-02-13T01:17:20",
