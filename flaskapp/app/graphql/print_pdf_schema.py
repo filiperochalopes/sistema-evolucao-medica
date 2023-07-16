@@ -125,9 +125,11 @@ print_pdf_type_defs = gql(
         """
         Gera PDF para impressão, documento de Evolucao Compacta
         """
-        printPdf_EvolCompact(
-            "Id do internamento do referência"
+        printPdf_EvolucaoCompacta(
             internmentId: Int!
+            prescriptionId: Int!
+            evolutionId: Int!
+            pendingsId: Int!
         ): GeneratedPdf
 
         """
