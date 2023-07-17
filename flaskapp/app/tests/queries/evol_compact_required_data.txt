@@ -15,7 +15,7 @@ mutation{
     admissionHistory: {
       professional:{
           name: "Professional aaaa Name",
-          category: "m",
+          category: "nur",
           document: "54321/BA"
       },
       professionalCreatedDate: "2023-02-13T01:17:20.624559",
@@ -28,7 +28,7 @@ mutation{
         professional:
         {
           name: "Another Professional Name",
-          category: "e",
+          category: "nur",
           document: "1234534"
         }
     },
@@ -96,7 +96,7 @@ mutation{
         fetalCardiacFrequency: 52,
         professional:{
           name: "Professional aaaa Name",
-          category: "m",
+          category: "nur",
           document: "54321/BA"
         }
       },
@@ -113,7 +113,7 @@ mutation{
         fetalCardiacFrequency: 52,
         professional:{
           name: "Another Professional name",
-          category: "e",
+          category: "nur",
           document: "4512788"
         }
       },
@@ -130,7 +130,7 @@ mutation{
         fetalCardiacFrequency: 52,
         professional:{
           name: "Professional aaaa Name",
-          category: "m",
+          category: "nur",
           document: "54321/BA"
         }
       },
@@ -146,7 +146,7 @@ mutation{
         pain: 5,
         professional:{
           name: "Another Professional name",
-          category: "e",
+          category: "nur",
           document: "4512788"
         }
       },
@@ -163,7 +163,7 @@ mutation{
         fetalCardiacFrequency: 52,
         professional:{
           name: "Professional aaaa Name",
-          category: "m",
+          category: "nur",
           document: "54321/BA"
         }
       },
