@@ -361,6 +361,42 @@ def print_pdf_evolucao_compacta(_, info, internment_id: int, current_user: dict,
             'description': f'{dp.drug.name} | {dp.dosage} {treatment_duration} ({dp.route})'
         })
 
+    print({
+        'patient': {
+            'name': internment.patient.name,
+            'sex': internment.patient.sex.name,
+            'cns': internment.patient.cns,
+            'weight_kg': internment.patient.weight_kg,
+            'birthdate': datetime.strftime(internment.patient.birthdate, '%Y-%m-%d'),
+        },
+        'evolution': {
+            'text': evolution.text,
+            'created_at': evolution.created_at.isoformat(),
+            'professional': {
+                'id': internment.professional.id,
+                'name': internment.professional.name,
+                'document': f'{internment.professional.professional_document_number}/{internment.professional.professional_document_uf}',
+                'category': internment.professional.professional_category.name
+            }
+        },
+        'document_created_at':datetime.now().isoformat(),
+        'admission_history':{
+            'created_at': internment.created_at.isoformat(),
+            'text': internment.hpi,
+            'professional': {
+                'id': internment.professional.id,
+                'name': internment.professional.name,
+                'document': f'{internment.professional.professional_document_number}/{internment.professional.professional_document_uf}',
+                'category': internment.professional.professional_category.name
+            }
+        },
+        'nursing_prescriptions': nursing_prescriptions,
+        'prescription': prescriptions,
+        'pendings': {
+            'description': pendings.text,
+            'created_at': pendings.created_at.isoformat()
+        }
+    })
     return func_generate_pdf_evol_compact(
         patient={
             'name': internment.patient.name,

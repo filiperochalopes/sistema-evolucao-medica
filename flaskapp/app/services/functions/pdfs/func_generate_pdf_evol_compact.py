@@ -138,13 +138,15 @@ def func_generate_pdf_evol_compact(
             if pendings is not None:
                 evolution_text += pdf.get_pendings_text(pendings=pendings)
 
+            # ! not working with max_lines_amount less than 10
+            # TODO Need to be check
             pdf.add_morelines_text(
                 text=evolution_text,
                 initial_pos=(357, 114),
                 field_name="Texto da Evolucao",
                 len_max=800,
                 len_min=5,
-                max_lines_amount=10,
+                max_lines_amount=20,
                 char_per_lines=77,
                 decrease_ypos=10,
                 auto_adjust=True
