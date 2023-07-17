@@ -19,7 +19,7 @@ mutation{
     admissionHistory: {
       professional:{
           name: "Filipe Costa Martins",
-          category: "enf",
+          category: "nur",
           document: "54321/BA"
       },
       professionalCreatedDate: "2023-02-13T01:17:20",
@@ -112,7 +112,7 @@ mutation{
         fetalCardiacFrequency: 52,
         professional:{
           name: "Professional aaaa Name",
-          category: "m",
+          category: "med",
           document: "54321/BA"
         }
       },
@@ -128,7 +128,7 @@ mutation{
         pain: 5,
         professional:{
           name: "Another Professional name",
-          category: "e",
+          category: "tec",
           document: "4512788"
         }
       },
@@ -145,7 +145,7 @@ mutation{
         fetalCardiacFrequency: 52,
         professional:{
           name: "Professional aaaa Name",
-          category: "m",
+          category: "med",
           document: "54321/BA"
         }
       },
