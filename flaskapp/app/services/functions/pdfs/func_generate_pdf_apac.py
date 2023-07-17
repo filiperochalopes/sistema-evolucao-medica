@@ -74,7 +74,8 @@ def func_generate_pdf_apac(requesting_establishment:dict, patient:dict, main_pro
             pdf.add_oneline_text(text=patient['address'].get('ibge_city_code'), pos=(370, 582), field_name='Patient Adress City IBGE code', len_max=7, len_min=7, nullable=True)
             pdf.add_oneline_text(text=establishment_exec.get('name'), pos=(36, 30), field_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
             pdf.add_UF(uf=patient['address']['uf'], pos=(443, 582), field_name='Patient Adress UF', nullable=True, interval='  ')
-            pdf.add_oneline_text(text=str(procedure_justification_description[0:55]).upper(), pos=(36, 344), field_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
+            if procedure_justification_description is not None:
+                pdf.add_oneline_text(text=str(procedure_justification_description[0:55]).upper(), pos=(36, 344), field_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient_responsible_name, pos=(36, 630), field_name='Patient Responsible Name', len_max=67, len_min=7, nullable=True)
 
             pdf.add_contact_phonenumbers(phone_numbers=contacts_phonenumbers, pos=(409, 650), interval='  ', y_decrease=24, nullable=True)

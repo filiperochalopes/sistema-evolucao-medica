@@ -1,0 +1,173 @@
+mutation{
+	generatePdf_EvolCompact(
+    patient: {
+      name: "Patient Test Name",
+      cpf: "1452847546",
+      rg: "651425",
+      cns: "928976954930007",
+      weightKg: 123.00,
+      sex: "F", 
+      phone: "10123456789",
+      motherName: "Patient Mother Name", 
+      birthdate: "2020-11-10",
+    },
+    documentCreatedAt: "2020-11-10",
+    admissionHistory: {
+      professional:{
+          name: "Professional aaaa Name",
+          category: "m",
+          document: "54321/BA"
+      },
+      professionalCreatedDate: "2023-02-13T01:17:20.624559",
+      admissionDate: "2021-10-23",
+      admissionText: "Admission text"
+    },
+    evolution:{
+        createdAt: "2023-02-12T23:59:24",
+        text: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id. Nulla pretium, massa nec aliquet mattis, erat felis egestas massa, eu lacinia ipsum ligula eu sapien. Mae",
+        professional:
+        {
+          name: "Another Professional Name",
+          category: "e",
+          document: "1234534"
+        }
+    },
+    prescription: [
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+    ],
+    nursingPrescriptions: {
+      resting: "Repouso relativo no leito, manter cabeceira elevada de 45° e perna direita elevada.",
+      diet: "Dieta pastosa, via oral, para diabético e hipertenso",
+      activities: [
+        {description: "Alteração de decúbito de 2/2h, atenção para úlceras por pressão" },
+        {description: "Aferição de sinais vitais de 6/6h" },
+        {description: "Realizar sondagem vesical e quantificação de balanço hídrico" },
+      ]
+    },
+    measures: [
+      {
+        createdAt: "2023-02-12T23:59:24",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
+        glucose: "152",
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        fetalCardiacFrequency: 52,
+        professional:{
+          name: "Professional aaaa Name",
+          category: "m",
+          document: "54321/BA"
+        }
+      },
+      {
+        createdAt: "2023-02-12T22:59:24",
+        cardiacFrequency: 32,
+        respiratoryFrequency: 10,
+        sistolicBloodPressure: 124,
+        diastolicBloodPressure: 81,
+        glucose: "400",
+        spO2: 92,
+        celciusAxillaryTemperature: 38,
+        pain: 5,
+        fetalCardiacFrequency: 52,
+        professional:{
+          name: "Another Professional name",
+          category: "e",
+          document: "4512788"
+        }
+      },
+      {
+        createdAt: "2023-02-12T23:59:24",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
+        glucose: "152",
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        fetalCardiacFrequency: 52,
+        professional:{
+          name: "Professional aaaa Name",
+          category: "m",
+          document: "54321/BA"
+        }
+      },
+      {
+        createdAt: "2023-02-12T22:59:24",
+        cardiacFrequency: 32,
+        respiratoryFrequency: 10,
+        sistolicBloodPressure: 124,
+        diastolicBloodPressure: 81,
+        glucose: "400",
+        spO2: 92,
+        celciusAxillaryTemperature: 38,
+        pain: 5,
+        professional:{
+          name: "Another Professional name",
+          category: "e",
+          document: "4512788"
+        }
+      },
+      {
+        createdAt: "2023-02-12T23:59:24",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
+        glucose: "152",
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        fetalCardiacFrequency: 52,
+        professional:{
+          name: "Professional aaaa Name",
+          category: "m",
+          document: "54321/BA"
+        }
+      },
+    ],
+  )
+{base64Pdf}
+}

@@ -335,7 +335,7 @@ const Evolution = () => {
 
       <CheckRole roles={["doc"]}>
         <div className="prescriptions_pacient">
-          <h2>Prescrição</h2>
+          <h2 id="prescricao">Prescrição</h2>
           <ol>
             {formik.values.diet && (
               <li>
@@ -677,7 +677,7 @@ const Evolution = () => {
           onSubmit={formikPending.handleSubmit}
           className="pendencies_pacient"
         >
-          <h2>Pendências</h2>
+          <h2 id="pendencias">Pendências</h2>
           <TextArea
             name="text"
             onChange={formikPending.handleChange}

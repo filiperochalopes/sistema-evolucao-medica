@@ -1,9 +1,9 @@
 import React from "react";
-import PrescriptionGroupInput from "./styles";
+import GroupInput from "./styles";
 
 export default ({ optionId, name, id, description, onChange }) => {
   return (
-    <PrescriptionGroupInput>
+    <GroupInput>
       <input
         type="radio"
         name={name}
@@ -12,6 +12,6 @@ export default ({ optionId, name, id, description, onChange }) => {
         onChange={onChange}
       />
       <label htmlFor={id}>{description}</label>
-    </PrescriptionGroupInput>
+    </GroupInput>
   );
 };

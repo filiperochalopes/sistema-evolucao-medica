@@ -469,6 +469,7 @@ type_defs = gql(
     type Pending{
         id: ID!
         text: String
+        professional: User
         createdAt: String
     }
 

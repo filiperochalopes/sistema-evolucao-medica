@@ -117,20 +117,6 @@ class PdfSolicitMamografia(ReportLabCanvasUtils):
         except:
             raise Exception(f'Erro desconhecido ocorreu enquanto adicionava o numero de telefone do paciente')
 
-    def get_patient_age(self, birthdate):
-        try:
-            # brazillian timezone UTC-3
-            timezone = datetime.timezone(offset=datetime.timedelta(hours=-3))
-            today = datetime.datetime.now(tz=timezone)
-            age = isoparse(birthdate)
-
-            patient_age = today.year - age.year - ((today.month, today.day) < (age.month, age.day))
-            if patient_age < 0:
-                raise Exception(f'O calculo de idade do paciente retornou um numero negativo -> {patient_age}, lembre-se de utilizar o fuso-horario do brasil GMT-3')
-            return patient_age
-        except Exception as error:
-            raise Exception(f'A data de nascimento do paciente nao corresponde ao formato iso yyyy-mm-dd')
-
     def add_radiotherapy_before(self, radiotherapy_before:list):
         """add radiotherapy option to document
 

@@ -10,6 +10,17 @@ generate_pdf_type_defs = gql(
         document: String!
     }
 
+    input AdmissionHistoryInput{
+        "Profissional Responsavel"
+        professional: ProfessionalInput!,
+        "Data da criação pelo profissional, String no formato ISO %Y-%m-%dT%H:%M:%S"
+        professionalCreatedDate: String!,
+        "Data do historico da Admissao"
+        admissionDate: String!,
+        "Texto da admissão"
+        admissionText: String!,
+    }
+
     input EvolutionInput{
         "Data da criacao. String no formato ISO %Y-%m-%dT%H:%M:%S"
         createdAt: String!
@@ -17,6 +28,27 @@ generate_pdf_type_defs = gql(
         text: String!
         "Profissional responsavel"
         professional: ProfessionalInput!
+    }
+
+    input PendingInput{
+        "Data da criacao. String no formato ISO %Y-%m-%dT%H:%M:%S"
+        createdAt: String!,
+        "Descricao da evolucao"
+        description: String!
+    }
+
+    input NursingPrescriptionsInput{
+        "Prescricao de Repouso para o Paciente"
+        resting: String!,
+        "Dieta do Paciente"
+        diet: String,
+        "Atividades"
+        activities: [DescriptionInput],
+    }
+
+    input DescriptionInput{
+        "Descricao da atividade"
+        description: String!,
     }
 
     input MeasureInput{
@@ -78,6 +110,28 @@ generate_pdf_type_defs = gql(
     }
 
     extend type Mutation {
+        "Gerando página de evolução compact"
+        generatePdf_EvolCompact(
+            "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
+            patient: PatientInput!,
+            "Codigo de Regulacao"
+            regulationCode: String,
+            "Descricao da evolucao"
+            evolution: EvolutionInput!,
+            "Descricao das pendencias"
+            pendings: PendingInput,
+            "Data de criacao"
+            documentCreatedAt: String!,
+            "Historia da Admissao"
+            admissionHistory: AdmissionHistoryInput!,
+            "Prescricoes"
+            prescription: [DescriptionInput]!,
+            "Cuidados de Enfermagem, Dieta e Atividades"
+            nursingPrescriptions: NursingPrescriptionsInput!,
+            "Medicoes a partir de 5 horas"
+            measures: [MeasureInput]
+        ): GeneratedPdf
+
         "Gerando página de evolução, sendo que na primeira página sempre mostra a tabela de evolução"
         generatePdf_FolhaEvolucao(
             "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"

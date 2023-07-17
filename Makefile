@@ -37,6 +37,8 @@ test_flow:
 	docker exec -it evolucao_hospitalar_app bash -c 'flask db upgrade && flask seed'
 	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k TestInternmentFlow'
 	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k TestPrintPdfs'
+test_pdfs:
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_evol_compact'
 fix-folder-permission:
 	docker exec -it evolucao_hospitalar_app bash -c ' \
 		chmod -R 777 /app/migrations'

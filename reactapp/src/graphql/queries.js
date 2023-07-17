@@ -62,6 +62,38 @@ export const INTERNMENT_PRESCRIPTIONS = gql`
   }
 `;
 
+export const INTERNMENT_PENDINGS = gql`
+  query getInternmentPendings($internmentId: ID!) {
+    internment(id: $internmentId) {
+      pendings {
+        id
+        createdAt
+        text
+        professional {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const INTERNMENT_EVOLUTIONS = gql`
+  query getInternmentEvolutions($internmentId: ID!) {
+    internment(id: $internmentId) {
+      evolutions {
+        id
+        createdAt
+        text
+        professional {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const CID10 = gql`
   query getCid10($query: String) {
     cid10(query: $query) {

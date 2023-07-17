@@ -4,7 +4,7 @@ import Button from "components/Button";
 import { DRUG_PRESETS } from "graphql/queries";
 import { useEffect, useState } from "react";
 import Container from "./styles";
-import PrescriptionGroupInput from "components/Modals/components/PrescriptionGroupInput";
+import PrescriptionGroupInput from "components/Modals/components/GroupInput";
 
 const ModalMedicamentGroup = ({ confirmButton, currentMedicament }) => {
   const { data: drugPresetsData } = useQuery(DRUG_PRESETS);

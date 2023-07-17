@@ -181,6 +181,8 @@ class MeasureSchema(CamelCaseSchema):
 class PendingSchema(CamelCaseSchema):
     class Meta:
         model = Pending
+    
+    professional = sqa_fields.Nested(UserSchema)
 
 
 class InternmentSchema(CamelCaseSchema):

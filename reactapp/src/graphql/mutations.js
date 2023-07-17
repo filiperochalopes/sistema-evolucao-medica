@@ -154,20 +154,12 @@ export const GENERATE_PDF_FICHA_INTERNAMENTO = gql`
   }
 `;
 
-export const GENERATE_PDF_FOLHA_EVOLUCAO = gql`
-  mutation printPdf_FolhaEvolucao(
+export const GENERATE_PDF_EVOLUCAO_COMPACTA = gql`
+  mutation printPdf_EvolucaoCompacta(
     $internmentId: Int!
-    $extra: PrintFolhaEvolucaoExtraInput
+    $extra: PrintEvolucaoCompactaInput!
   ) {
-    printPdf_FolhaEvolucao(internmentId: $internmentId, extra: $extra) {
-      base64Pdf
-    }
-  }
-`;
-
-export const GENERATE_PDF_FOLHA_PRESCRICAO = gql`
-  mutation printPdf_FolhaPrescricao($prescriptionId: ID!) {
-    printPdf_FolhaPrescricao(prescriptionId: $prescriptionId) {
+    printPdf_EvolucaoCompacta(internmentId: $internmentId, extra: $extra) {
       base64Pdf
     }
   }
