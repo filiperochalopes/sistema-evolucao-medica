@@ -22,9 +22,8 @@ mutation{
           category: "nur",
           document: "54321/BA"
       },
-      professionalCreatedDate: "2023-02-13T01:17:20",
-      admissionDate: "2023-06-28",
-      admissionText: "História da Admissão do paciente. Donec sollicitudin laoreet lacus, vitae blandit diam elementum eget. Phasellus vestibulum orci in purus pretium aliquet. Donec vitae libero a magna dignissim vehicula vitae at urna. Fusce porttitor eros et ornare egestas. Suspendisse condimentum odio quam, quis mattis est commodo vel. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent ultrices sodales mauris, rhoncus hendrerit mauris placerat eget."
+      createdAt: "2023-02-13T01:17:20",
+      text: "História da Admissão do paciente. Donec sollicitudin laoreet lacus, vitae blandit diam elementum eget. Phasellus vestibulum orci in purus pretium aliquet. Donec vitae libero a magna dignissim vehicula vitae at urna. Fusce porttitor eros et ornare egestas. Suspendisse condimentum odio quam, quis mattis est commodo vel. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent ultrices sodales mauris, rhoncus hendrerit mauris placerat eget."
     },
     evolution:{
         createdAt: "2023-06-29T07:35:24",

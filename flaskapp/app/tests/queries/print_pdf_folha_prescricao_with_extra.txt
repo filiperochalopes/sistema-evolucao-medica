@@ -1,6 +1,6 @@
-mutation printPdf_FolhaPrescricao (prescriptionId:$prescriptionId) {
+mutation {
   printPdf_FolhaPrescricao(
-    prescriptionId: $prescriptionId
+    prescriptionId: 1
   ) {
     base64Pdf
   }

@@ -13,12 +13,10 @@ generate_pdf_type_defs = gql(
     input AdmissionHistoryInput{
         "Profissional Responsavel"
         professional: ProfessionalInput!,
-        "Data da criação pelo profissional, String no formato ISO %Y-%m-%dT%H:%M:%S"
-        professionalCreatedDate: String!,
-        "Data do historico da Admissao"
-        admissionDate: String!,
+        "Data do historico da Admissao, String no formato ISO %Y-%m-%dT%H:%M:%"
+        createdAt: String!,
         "Texto da admissão"
-        admissionText: String!,
+        text: String!,
     }
 
     input EvolutionInput{

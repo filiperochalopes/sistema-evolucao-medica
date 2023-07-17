@@ -18,9 +18,8 @@ mutation{
           category: "nur",
           document: "54321/BA"
       },
-      professionalCreatedDate: "2023-02-13T01:17:20.624559",
-      admissionDate: "2021-10-23",
-      admissionText: "Admission text"
+      createdAt: "2023-02-13T01:17:20.624559",
+      text: "Admission text"
     },
     evolution:{
         createdAt: "2023-02-12T23:59:24",
