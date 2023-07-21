@@ -146,7 +146,7 @@ def func_generate_pdf_evol_compact(
                 field_name="Texto da Evolucao",
                 len_max=800,
                 len_min=5,
-                max_lines_amount=20,
+                max_lines_amount=10,
                 char_per_lines=77,
                 decrease_ypos=10,
                 auto_adjust=True
