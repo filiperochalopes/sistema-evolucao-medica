@@ -3,7 +3,7 @@ import * as Yup from "yup";
 
 export default Yup.object().shape({
   type: Yup.mixed().required(),
-  medicament: Yup.mixed().required(),
+  prescription: Yup.mixed().required(),
   drug: Yup.object()
     .when("type", (type, schema) =>
       type?.name === "drug"

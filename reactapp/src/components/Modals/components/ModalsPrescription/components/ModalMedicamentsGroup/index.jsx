@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Container from "./styles";
 import PrescriptionGroupInput from "components/Modals/components/GroupInput";
 
-const ModalMedicamentGroup = ({ confirmButton, currentMedicament }) => {
+const ModalMedicamentGroup = ({ confirmCallback }) => {
   const { data: drugPresetsData } = useQuery(DRUG_PRESETS);
   const [presets, setPresets] = useState([]);
   const [selectedPreset, setSelectedPreset] = useState(null);
@@ -55,7 +55,6 @@ const ModalMedicamentGroup = ({ confirmButton, currentMedicament }) => {
           const drugPrescriptions = [];
           selectedPreset.drugs.forEach((drug) => {
             drugPrescriptions.push({
-              block: true,
               id: drug.id,
               drugName: drug.name,
               drugKind: drug.kind,
@@ -64,9 +63,8 @@ const ModalMedicamentGroup = ({ confirmButton, currentMedicament }) => {
               initialDate: undefined,
               endingDate: undefined,
             });
-            console.log(drugPrescriptions);
           });
-          confirmButton(drugPrescriptions);
+          confirmCallback(drugPrescriptions);
         }}
       >
         Adicionar Linha

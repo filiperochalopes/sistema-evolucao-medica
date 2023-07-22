@@ -1,7 +1,7 @@
 import datetime
 from app.services.utils.PdfEvolCompact import PdfEvolCompact
 from dateutil.parser import isoparse
-
+import sys
 
 def func_generate_pdf_evol_compact(
     patient: dict,
@@ -14,6 +14,9 @@ def func_generate_pdf_evol_compact(
     regulation_code: str = None,
     pendings: dict = None,
 ) -> str:
+    print("***echo***", file=sys.stderr)
+    print(patient, file=sys.stderr)
+    print(evolution, file=sys.stderr)
     try:
         pdf = PdfEvolCompact()
         lenght_test = ""
@@ -41,10 +44,10 @@ def func_generate_pdf_evol_compact(
 
             pdf.set_font("Roboto-Mono", 10)
             patient_sex = patient["sex"]
-            if len(patient_sex) == 1:
-                if patient_sex == "M":
+            if len(patient_sex) >= 1:
+                if patient_sex == "male":
                     patient_sex = "Masculino"
-                elif patient_sex == "F":
+                elif patient_sex == "fema":
                     patient_sex = "Feminino"
                 else:
                     raise Exception("Sexo do paciente deve ser M ou F")

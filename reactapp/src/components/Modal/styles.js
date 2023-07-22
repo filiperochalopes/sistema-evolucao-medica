@@ -52,6 +52,7 @@ export const Header = styled.div`
   justify-content: space-between;
   line-height: 2.5rem;
   display: flex;
+  color: #fff;
 
   p {
     font-weight: 700;
@@ -75,7 +76,6 @@ export const Header = styled.div`
       case "red":
         return css`
           background-color: ${theme.colors.red700};
-          color: #fff;
         `;
       default:
         return css`
@@ -91,6 +91,8 @@ export const Main = styled.main`
   flex: 1;
   justify-content: center;
   padding: 0 2rem;
+  max-height: 500px;
+  overflow-y: auto;
 
   > div {
     width: 100%;

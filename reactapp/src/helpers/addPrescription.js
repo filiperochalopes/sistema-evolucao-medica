@@ -4,21 +4,20 @@ const addPrescription = ({
   confirmButtonAction,
   drugs,
   nursingActivities,
-  currentMedicament,
-
-  notChangeType = false,
+  currentPrescription,
+  update = false,
 }) => ({
-  confirmButtonAction: confirmButtonAction,
+  confirmButtonAction,
   content: (
     <ModalAddPrescription
       drugs={drugs}
       nursingActivities={nursingActivities}
-      currentMedicament={currentMedicament}
-      notChangeType={notChangeType}
+      currentPrescription={currentPrescription}
+      update={update}
     />
   ),
   returnButtonAction: () => {},
-  title: notChangeType ? "Atualizar Linha" : "Adicionar Nova Linha",
+  title: update ? "Atualizar Linha" : "Adicionar Nova Linha",
 });
 
 export default addPrescription;

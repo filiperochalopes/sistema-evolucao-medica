@@ -403,6 +403,7 @@ def print_pdf_evolucao_compacta(_, info, internment_id: int, current_user: dict,
             'sex': internment.patient.sex.name,
             'cns': internment.patient.cns,
             'weight_kg': internment.patient.weight_kg,
+            'mother_name': internment.patient.mother_name,
             'birthdate': datetime.strftime(internment.patient.birthdate, '%Y-%m-%d'),
         },
         evolution={
