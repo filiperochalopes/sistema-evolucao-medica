@@ -6,12 +6,15 @@ import { useTheme } from "styled-components";
 
 const Modal = ({
   children,
-  confirmButton,
+  confirmCallback,
   goBack,
   headerTitle,
   headerStyle,
+  ...rest
 }) => {
   const theme = useTheme();
+
+  console.log(rest);
 
   return (
     <Container>
@@ -40,7 +43,9 @@ const Modal = ({
             </button>
           </Header>
           <Main>
-            <div>{cloneElement(children, { confirmButton, goBack })}</div>
+            <div>
+              {cloneElement(children, { confirmCallback, goBack, ...rest })}
+            </div>
           </Main>
         </ContainerContentModal>
       </div>

@@ -75,6 +75,7 @@ export const Header = styled.div`
       case "red":
         return css`
           background-color: ${theme.colors.red700};
+          color: #fff;
         `;
       default:
         return css`

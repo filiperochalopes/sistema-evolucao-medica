@@ -71,10 +71,8 @@ const ModalUpdatePacientData = ({ id }) => {
             patient: {
               ...values,
               sex: values.sex?.value,
-              comorbidities: values.comorbidities.map(
-                (commorbiditie) => commorbiditie.value
-              ),
-              allergies: values.allergies.map((allergie) => allergie.value),
+              comorbidities: values.comorbidities.map((c) => c.value),
+              allergies: values.allergies.map((a) => a.value),
               weightKg: parseFloat(values.weightKg),
               address: {
                 ...values.address,

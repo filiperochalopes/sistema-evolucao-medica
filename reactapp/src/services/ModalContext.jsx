@@ -7,8 +7,9 @@ import { v4 as uuidv4 } from "uuid";
 const Context = createContext(null);
 const modalRoot = document.getElementById("modals");
 
+// Gerencia todos os modais gerados
 const ModalContextProvider = ({ children }) => {
-  const [modais, setModais] = useState([]);
+  const [modals, setModals] = useState([]);
   const rootElemRef = React.useRef(document.createElement("div"));
   const navigate = useLocation();
 
@@ -25,25 +26,26 @@ const ModalContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    setModais([]);
+    setModals([]);
   }, [navigate]);
 
   function templateRemoveModal({ hook, id, params = {} }) {
-    const newModais = modais.filter((modal) => modal.id !== id);
-    setModais(newModais);
+    const _modals = modals.filter((modal) => modal.id !== id);
+    setModals(_modals);
     hook(params);
   }
 
   function addModal({
-    confirmButtonAction = () => {},
-    content,
-    returnButtonAction = () => {},
     title,
+    content,
     headerStyle,
+    confirmButtonAction = () => {},
+    returnButtonAction = () => {},
+    ...rest
   }) {
     const id = uuidv4();
-    setModais([
-      ...modais,
+    setModals([
+      ...modals,
       {
         id,
         tag: (
@@ -51,7 +53,7 @@ const ModalContextProvider = ({ children }) => {
             key={id}
             headerTitle={title}
             headerStyle={headerStyle}
-            confirmButton={(params) =>
+            confirmCallback={(params) =>
               templateRemoveModal({
                 hook: confirmButtonAction,
                 id,
@@ -64,6 +66,7 @@ const ModalContextProvider = ({ children }) => {
                 id,
               })
             }
+            {...rest}
           >
             {content}
           </Modal>
@@ -75,7 +78,7 @@ const ModalContextProvider = ({ children }) => {
   return (
     <Context.Provider value={{ addModal }}>
       {ReactDOM.createPortal(
-        <>{modais.map((modal) => modal.tag)}</>,
+        <>{modals.map((modal) => modal.tag)}</>,
         rootElemRef.current
       )}
       {children}

@@ -10,7 +10,7 @@ import updatePacientData from "helpers/updatePacientData";
 import addPrescription from "helpers/addPrescription";
 import { MdModeEdit } from "react-icons/md";
 import trash from "assets/trash.svg";
-import deletePrescription from "helpers/deletePrescription";
+import alertConfirmation from "helpers/alertConfirmation";
 import { useTheme } from "styled-components";
 import { useFormik } from "formik";
 import schema from "./schema";
@@ -382,8 +382,10 @@ const Evolution = () => {
                         type="button"
                         onClick={() =>
                           addModal(
-                            deletePrescription({
-                              confirmButtonAction: () =>
+                            alertConfirmation({
+                              question:
+                                "Tem certeza que deseja excluir o item?",
+                              confirmCallback: () =>
                                 formik.setFieldValue("diet", ""),
                             })
                           )
@@ -445,8 +447,10 @@ const Evolution = () => {
                         type="button"
                         onClick={() =>
                           addModal(
-                            deletePrescription({
-                              confirmButtonAction: () =>
+                            alertConfirmation({
+                              question:
+                                "Tem certeza que deseja excluir o item?",
+                              confirmCallback: () =>
                                 formik.setFieldValue("restingActivity", ""),
                             })
                           )
@@ -509,7 +513,9 @@ const Evolution = () => {
                         type="button"
                         onClick={() =>
                           addModal(
-                            deletePrescription({
+                            alertConfirmation({
+                              question:
+                                "Tem certeza que deseja excluir o item?",
                               confirmButtonAction: () => {
                                 const filterNursingActivities =
                                   formik.values.nursingActivities.filter(
@@ -605,8 +611,10 @@ const Evolution = () => {
                         type="button"
                         onClick={() =>
                           addModal(
-                            deletePrescription({
-                              confirmButtonAction: () => {
+                            alertConfirmation({
+                              question:
+                                "Tem certeza que deseja excluir o item?",
+                              confirmCallback: () => {
                                 const filterDrugs = formik.values.drugs.filter(
                                   (value) => value.drugName !== drug.drugName
                                 );
