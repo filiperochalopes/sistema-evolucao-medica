@@ -1,0 +1,155 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_EvolCompact(
+    patient: {
+      name: "Antônio José da Silva Cerqueira Suzarth",
+      cpf: "46402434728",
+      rg: "448342194",
+      cns: "217734315270009",
+      weightKg: 86.603,
+      sex: "M", 
+      phone: "75992540735",
+      motherName: "Joana Maria Cerqueira", 
+      birthdate: "1985-11-10",
+      comorbidities: ["Diabetes Mellitus Tipo II", "Hipertensão Arterial Sistêmica", "Tabagismo", "Etilismo", "Muitas comorbidades", "outra comorbidade", "Diabetes Mellitus Tipo II", "Hipertensão Arterial Sistêmica", "Tabagismo", "Etilismo", "Hipertensao"],
+      allergies: ["Dipirona", "AINES", "Amoxicilina"],
+    },
+    regulationCode: "3381668",
+    documentCreatedAt: "2023-07-03",
+    admissionHistory: {
+      professional:{
+          name: "Filipe Costa Martins Nome Completo Muito Longo Reticencias",
+          category: "med",
+          document: "54321/BA"
+      },
+      createdAt: "2023-02-13T01:17:20",
+      text: "História da Admissão do paciente. Donec sollicitudin laoreet lacus, vitae blandit diam elementum eget. Phasellus vestibulum orci in purus pretium aliquet. Donec vitae libero a magna dignissim vehicula vitae at urna. Fusce porttitor eros et ornare egestas. Suspendisse condimentum odio quam, quis mattis est commodo vel. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent ultrices sodales mauris, rhoncus hendrerit mauris placerat eget. Donec a sapien eu nisi mattis lobortis quis in sem. Nam pulvinar nisi nec arcu suscipit, a semper magna pellentesque. Etiam ac est pharetra, laoreet metus sit amet, placerat urna. Donec pretium vel leo eget dictum. Pellentesque feugiat nec lorem congue auctor. Sed placerat neque ac dolor placerat vulputate. Pellentesque sollicitudin ipsum bibendum, gravida turpis scelerisque, consequat nunc. Proin purus purus, efficitur id vestibulum quis, vestibulum sit amet leo."
+    },
+    evolution:{
+        createdAt: "2023-06-29T07:35:24",
+        text: "Evolução do dia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras facilisis augue et ex ullamcorper egestas volutpat nec velit. Nunc eget metus lectus. Proin porta maximus varius. Suspendisse eget posuere purus. Aliquam ultrices auctor ante quis volutpat. Fusce felis nisl, semper ut mi ac, volutpat luctus nisi. Curabitur sodales feugiat turpis, at cursus lectus eleifend sed. Nam at erat iaculis, venenatis purus ut, gravida felis. Phasellus eu neque malesuada urna mollis malesuada. Aenean cursus risus nec eros laoreet consectetur. Donec pharetra felis vel magna imperdiet, sed ultricies dolor aliquam. Nulla fringilla, enim quis semper condimentum, magna ante iaculis risus, vel condimentum felis felis sed leo. Mauris viverra id lorem non egestas. Duis vitae ante tortor. Duis pharetra dictum sem, sed vehicula mi. Mauris congue rhoncus libero sed luctus. Donec pretium vel leo eget dictum. Pellentesque feugiat nec lorem congue auctor. Sed placerat neque ac dolor placerat vulputate. Pellentesque sollicitudin ipsum bibendum, gravida turpis scelerisque, consequat nunc. Proin purus purus, efficitur id vestibulum quis, vestibulum sit amet leo.",
+        professional:
+        {
+          name: "Filipe da Cunha Alcântara",
+          category: "med",
+          document: "37865/BA"
+        }
+    },
+    pendings: {
+      createdAt: "2023-06-29T07:50:24",
+      description: "Pendências para o paciente. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras facilisis augue et ex ullamcorper egestas volutpat nec velit. Nunc eget metus lectus. Proin porta maximus varius. Suspendisse eget posuere purus."
+    },
+    prescription: [
+     {
+        description:"Dipirona 500mg - 4 comprimidos - 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias, lorem impsum jajasj asuqwuubw iuabubuidqwiuai qiubadibuadsbi"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias, lorem impsum jajasj"
+      },
+    ],
+    nursingPrescriptions: {
+      resting: "",
+      diet: "",
+      activities: []
+    },
+    measures: [
+      {
+        createdAt: "2023-02-12T23:59:24",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
+        glucose: "152",
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        fetalCardiacFrequency: 52,
+        professional:{
+          name: "Taynara Martins Ferreira",
+          category: "nur",
+          document: "333652/COREN BA ENFERMAGEM"
+        }
+      },
+      {
+        createdAt: "2023-02-12T22:59:24",
+        cardiacFrequency: 32,
+        respiratoryFrequency: 10,
+        sistolicBloodPressure: 124,
+        diastolicBloodPressure: 81,
+        glucose: "400",
+        spO2: 92,
+        celciusAxillaryTemperature: 38,
+        pain: 5,
+        fetalCardiacFrequency: 52,
+        professional:{
+          name: "Another Professional name",
+          category: "tec",
+          document: "3338052/COREN BA TECNICA"
+        }
+      },
+      {
+        createdAt: "2023-02-12T23:59:24",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
+        glucose: "152",
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        fetalCardiacFrequency: 52,
+        professional:{
+          name: "Professional aaaa Name",
+          category: "med",
+          document: "54321/BA"
+        }
+      },
+      {
+        createdAt: "2023-02-12T22:59:24",
+        cardiacFrequency: 32,
+        respiratoryFrequency: 10,
+        sistolicBloodPressure: 124,
+        diastolicBloodPressure: 81,
+        glucose: "400",
+        spO2: 92,
+        celciusAxillaryTemperature: 38,
+        pain: 5,
+        professional:{
+          name: "Another Professional name",
+          category: "med",
+          document: "4512788"
+        }
+      },
+      {
+        createdAt: "2023-02-12T23:59:24",
+        cardiacFrequency: 54,
+        respiratoryFrequency: 15,
+        sistolicBloodPressure: 152,
+        diastolicBloodPressure: 84,
+        glucose: "152", 
+        spO2: 96,
+        celciusAxillaryTemperature: 37,
+        pain: 2,
+        fetalCardiacFrequency: 52,
+        professional:{
+          name: "Professional aaaa Name",
+          category: "med",
+          document: "54321/BA"
+        }
+      },
+    ],
+  )
+{base64Pdf}
+}

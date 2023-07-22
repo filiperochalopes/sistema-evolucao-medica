@@ -264,13 +264,13 @@ class PdfEvolCompact(ReportLabCanvasUtils):
         activities = nursing_prescriptions.get("activities")
 
         total_string = ""
-        if resting != None:
-            total_string += str(resting)
+        if resting != None and resting != "":
+            total_string += f' REPOUSO: {str(resting)}'
         
-        if diet != None:
+        if diet != None and diet != "":
             total_string += f' DIETA: {str(diet)}'
 
-        if activities != None:
+        if activities != None and len(activities) > 0:
             total_string += f' ATIVIDADES:'
             for activity in activities:
                 total_string += f' {activity["description"]} |'
@@ -285,7 +285,8 @@ class PdfEvolCompact(ReportLabCanvasUtils):
                 decrease_ypos=10,
                 max_lines_amount=6,
                 auto_adjust=True,
-                bold_words=['DIETA:', 'ATIVIDADES:'],
+                bold_words=['REPOUSO:', 'DIETA:', 'ATIVIDADES:'],
+                nullable=True
         )
     
 
