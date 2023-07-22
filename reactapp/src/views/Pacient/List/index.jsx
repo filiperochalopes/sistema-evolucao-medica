@@ -5,7 +5,7 @@ import printScreen from "helpers/printScreen";
 import Button from "components/Button";
 import Pacient from "components/ListOption";
 import React from "react";
-import { SlOptionsVertical } from "react-icons/sl";
+import { BiArchiveIn } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { useModalContext } from "services/ModalContext";
 import EvolutionButton from "./components/EvolutionButton";
@@ -68,9 +68,11 @@ const List = () => {
                         Imprimir
                       </Button>
                     </CheckRole>
-                    <button>
-                      <SlOptionsVertical />
-                    </button>
+                    <CheckRole roles={["nur"]}>
+                      <Button customType="gray" alt="Arquivar" title="Arquivar">
+                        <BiArchiveIn />
+                      </Button>
+                    </CheckRole>
                   </div>
                 </PacientContent>
               </Pacient>

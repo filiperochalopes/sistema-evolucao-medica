@@ -115,7 +115,7 @@ def upgrade():
     sa.Column('cpf', sa.String(), nullable=True),
     sa.Column('cns', sa.String(), nullable=True),
     sa.Column('birthdate', sa.Date(), nullable=False),
-    sa.Column('professional_category', sa.Enum('doc', 'nur', 'tec', name='professionalcategoryenum'), nullable=False),
+    sa.Column('professional_category', sa.Enum('doc', 'nur', 'tec', 'adm', name='professionalcategoryenum'), nullable=False),
     sa.Column('phone', sa.String(), nullable=True),
     sa.Column('professional_document_uf', sa.String(), nullable=True),
     sa.Column('professional_document_number', sa.String(), nullable=True),

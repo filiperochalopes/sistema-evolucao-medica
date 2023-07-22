@@ -1,0 +1,15 @@
+mutation{
+  createUser(masterKey:"passw@rd", 
+    user:{
+      email: "admin@filipelopes.med.br"
+      name: "Carol Adm"
+      phone: "75986523225"
+      password: "passw@rd"
+      cpf: "53466105617"
+      cns: "932449522140009"
+      birthdate: "1985-08-20"
+      professionalCategory: "adm"
+  }){
+    id
+  }
+}
