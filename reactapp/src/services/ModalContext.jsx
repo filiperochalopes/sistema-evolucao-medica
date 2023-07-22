@@ -39,7 +39,7 @@ const ModalContextProvider = ({ children }) => {
     content,
     returnButtonAction = () => {},
     title,
-    customBackgroundHeader,
+    headerStyle,
   }) {
     const id = uuidv4();
     setModais([
@@ -50,7 +50,7 @@ const ModalContextProvider = ({ children }) => {
           <Modal
             key={id}
             headerTitle={title}
-            customBackgroundHeader={customBackgroundHeader}
+            headerStyle={headerStyle}
             confirmButton={(params) =>
               templateRemoveModal({
                 hook: confirmButtonAction,

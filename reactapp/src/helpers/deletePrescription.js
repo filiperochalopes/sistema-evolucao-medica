@@ -5,7 +5,7 @@ const deletePrescription = ({ confirmButtonAction }) => ({
   content: <ModalDeletePrescription />,
   returnButtonAction: () => {},
   title: "Atenção",
-  customBackgroundHeader: "red",
+  headerStyle: "red",
 });
 
 export default deletePrescription;

@@ -47,17 +47,17 @@ export const ContainerContentModal = styled.div`
 `;
 
 export const Header = styled.div`
+  background-color: ${({ theme }) => theme.colors.green};
   width: 100%;
-  height: 100%;
-  display: flex;
-  color: ${({ theme }) => theme.colors.white};
-  align-items: center;
-  padding-left: 2rem;
   justify-content: space-between;
+  line-height: 2.5rem;
+  display: flex;
 
   p {
     font-weight: 700;
     font-size: 1.25rem;
+    width: 100%;
+    padding-left: 2rem;
   }
 
   button {
@@ -70,8 +70,8 @@ export const Header = styled.div`
     justify-content: center;
   }
 
-  ${({ customBackgroundHeader, theme }) => {
-    switch (customBackgroundHeader) {
+  ${({ headerStyle, theme }) => {
+    switch (headerStyle) {
       case "red":
         return css`
           background-color: ${theme.colors.red700};
@@ -82,4 +82,20 @@ export const Header = styled.div`
         `;
     }
   }}
+`;
+
+export const Main = styled.main`
+  width: 100%;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  padding: 0 2rem;
+
+  > div {
+    width: 100%;
+    max-width: 56.25rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+  }
 `;
