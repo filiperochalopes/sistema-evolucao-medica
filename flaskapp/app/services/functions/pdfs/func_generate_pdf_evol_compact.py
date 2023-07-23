@@ -147,6 +147,7 @@ def func_generate_pdf_evol_compact(
                 max_lines_amount=10,
                 char_per_lines=77,
                 decrease_ypos=10,
+                bold_words=['PENDÊNCIAS:'],
                 auto_adjust=True
             )
             professional_info = pdf.create_professional_info_text(
