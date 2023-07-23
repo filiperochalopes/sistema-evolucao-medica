@@ -36,8 +36,8 @@ lme_request_strings = get_all_tests_requests('lme')
 
 prescricao_medica_request_strings = get_all_tests_requests('prescricao_medica')
 
-relatorio_alta_request_string = get_request_from_txt('relatorio_alta.txt')
-relatorio_alta_required_data_request_string = get_request_from_txt('relatorio_alta_required_data.txt')
+relatorio_alta_request_strings = get_all_tests_requests('relatorio_alta')
+
 
 solicit_mamografia_request_string = get_request_from_txt('solicit_mamografia.txt')
 solicit_mamografia_required_data_request_string = get_request_from_txt('solicit_mamografia_required_data.txt')
