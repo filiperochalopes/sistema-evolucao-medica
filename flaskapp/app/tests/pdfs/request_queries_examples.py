@@ -34,7 +34,7 @@ folha_prescricao_request_strings = get_all_tests_requests('folha_prescricao')
 
 lme_request_strings = get_all_tests_requests('lme')
 
-prescricao_medica_request_string = get_request_from_txt('prescricao_medica.txt')
+prescricao_medica_request_strings = get_all_tests_requests('prescricao_medica')
 
 relatorio_alta_request_string = get_request_from_txt('relatorio_alta.txt')
 relatorio_alta_required_data_request_string = get_request_from_txt('relatorio_alta_required_data.txt')
