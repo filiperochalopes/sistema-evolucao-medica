@@ -265,15 +265,15 @@ class PdfEvolCompact(ReportLabCanvasUtils):
 
         total_string = ""
         if resting != None and resting != "":
-            total_string += f' REPOUSO: {str(resting)}'
+            total_string += f' REPOUSO: {str(resting).strip()}'
         
         if diet != None and diet != "":
-            total_string += f' DIETA: {str(diet)}'
+            total_string += f' DIETA: {str(diet).strip()}'
 
         if activities != None and len(activities) > 0:
             total_string += f' ATIVIDADES:'
             for activity in activities:
-                total_string += f' {activity["description"]} |'
+                total_string += f' {activity["description"].strip()} |'
 
         return self.add_morelines_text(
                 text=total_string,
