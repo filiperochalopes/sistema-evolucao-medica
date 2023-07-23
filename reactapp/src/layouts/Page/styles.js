@@ -12,6 +12,11 @@ export const Header = styled.header`
   background-color: ${({ theme }) => theme.colors.green};
   width: 100%;
   justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+  min-height: 5rem;
 
   ul {
     position: absolute;
@@ -31,26 +36,6 @@ export const Header = styled.header`
       }
     }
   }
-
-  ${({ defaultHeight }) =>
-    defaultHeight &&
-    css`
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 2rem;
-      min-height: 5rem;
-
-      button {
-        background: none;
-        border: none;
-        cursor: pointer;
-      }
-
-      img {
-        height: 2.75rem;
-      }
-    `}
 `;
 
 export const Main = styled.main`

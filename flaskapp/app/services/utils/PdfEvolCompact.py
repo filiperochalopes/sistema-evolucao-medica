@@ -60,7 +60,7 @@ class PdfEvolCompact(ReportLabCanvasUtils):
             date_object.minute,
         )
 
-        document_category = "CRM" if category.lower()[0] == "med" else "COREN"
+        document_category = "CRM" if category.lower() == "doc" else "COREN"
 
         prof_info = (
             f"{str(name).strip()} {document_category} {str(document)}"

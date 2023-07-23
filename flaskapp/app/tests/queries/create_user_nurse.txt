@@ -1,0 +1,17 @@
+mutation{ 
+  createUser(masterKey:"passw@rd", 
+    user:{
+      email: "enfermeira@filipelopes.med.br"
+      name: "Enfermeira Simone"
+      phone: "71992540735"
+      password: "passw@rd"
+      cpf: "11876350903"
+      cns: "124991149410006"
+      birthdate: "1985-11-05"
+      professionalCategory: "nur"
+      professionalDocumentUf: "BA"
+      professionalDocumentNumber: "123456"
+  }){
+    id
+  }
+}

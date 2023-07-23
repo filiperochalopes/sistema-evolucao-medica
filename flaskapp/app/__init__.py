@@ -57,7 +57,6 @@ def graphql_playground():
 @app.route("/api/v1/graphql", methods=["POST"])
 def graphql_server():
     data = request.get_json()
-    print(data, file=sys.stderr)
     success, result = graphql_sync(
         schema, data, context_value={"request": request})
     status_code = 200 if success else 400

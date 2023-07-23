@@ -19,6 +19,12 @@ def create_prescription(_, info, current_user: dict, internment_id:int, resting_
     # Determinando profissional que está registrando
     professional = current_user
 
+    # Verifica se existe alguma prescrição, não aceitar em branco
+    if not diet:
+        raise Exception("É necessário que a prescrição tenha Dieta do paciente.")
+    if not resting_activity:
+        raise Exception("É necessário que a prescrição tenha forma de Repouso do paciente.")
+
     # Cria a prescrição
     prescription_model = Prescription(created_at=datetime.now())
     db.session.add(prescription_model)

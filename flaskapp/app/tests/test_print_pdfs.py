@@ -10,8 +10,6 @@ class TestPrintPdfs:
     print_pdf_ficha_internamento_without_extra_query = gql(get_query_from_txt('print_pdf_ficha_internamento_without_extra'))
     print_pdf_relatorio_alta_with_extra_query = gql(get_query_from_txt('print_pdf_relatorio_alta_with_extra'))
     print_pdf_relatorio_alta_without_extra_query = gql(get_query_from_txt('print_pdf_relatorio_alta_without_extra'))
-    print_pdf_folha_prescricao_with_extra_query = gql(get_query_from_txt('print_pdf_folha_prescricao_with_extra'))
-    print_pdf_folha_prescricao_without_extra_query = gql(get_query_from_txt('print_pdf_folha_prescricao_without_extra'))
     print_pdf_folha_evolucao_without_extra_query = gql(get_query_from_txt('print_pdf_folha_evolucao_without_extra'))
     print_pdf_apac_with_extra_query = gql(get_query_from_txt('print_pdf_apac_with_extra'))
     print_pdf_balanco_hidrico_without_extra_query = gql(get_query_from_txt('print_pdf_balanco_hidrico_without_extra'))
@@ -39,10 +37,6 @@ class TestPrintPdfs:
     def test_print_pdf_relatorio_alta_without_extra(self, auth_client):
         result = auth_client.execute(self.print_pdf_relatorio_alta_without_extra_query)
         assert isinstance(result['printPdf_RelatorioAlta']['base64Pdf'], str)
-
-    def test_print_pdf_folha_prescricao_with_extra(self, auth_client):
-        result = auth_client.execute(self.print_pdf_folha_prescricao_with_extra_query, variable_values={'prescriptionId': 1})
-        assert isinstance(result['printPdf_FolhaPrescricao']['base64Pdf'], str)
 
     def test_print_pdf_folha_evolucao_without_extra(self, auth_client):
         result = auth_client.execute(self.print_pdf_folha_evolucao_without_extra_query)

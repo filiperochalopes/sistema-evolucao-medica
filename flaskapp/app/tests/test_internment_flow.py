@@ -5,7 +5,9 @@ from app.tests.conftest import get_query_from_txt
 
 
 class TestInternmentFlow:
-    create_user_query = gql(get_query_from_txt('create_user'))
+    create_user_doctor_query = gql(get_query_from_txt('create_user_doctor'))
+    create_user_nurse_query = gql(get_query_from_txt('create_user_nurse'))
+    create_user_admin_query = gql(get_query_from_txt('create_user_admin'))
     hello_query = gql(get_query_from_txt('hello'))
     signin_query = gql(get_query_from_txt('signin'))
     alembic_version_query = gql(get_query_from_txt('alembic_version'))
@@ -27,13 +29,25 @@ class TestInternmentFlow:
         result = client.execute(self.alembic_version_query)
         assert isinstance(result['alembicVersion']['version'], str)
 
-    def test_create_user(self, client):
+    def test_create_doctor(self, client):
         try:
             # Reconectando banco de dados, após exclusão manual que geralmente é feita antes de rodar o script de teste. A primeira execução não funciona, queixa de um erro de desligamento do banco de dados pelo administrador
-            result = client.execute(self.create_user_query)
+            result = client.execute(self.create_user_doctor_query)
         except Exception as e:
-            result = client.execute(self.create_user_query)
+            result = client.execute(self.create_user_doctor_query)
+        
         assert int(result['createUser']['id']) > 0
+
+    def test_create_nurse(self, client):
+        result = client.execute(self.create_user_nurse_query)
+        
+        assert int(result['createUser']['id']) > 0
+    
+    def test_create_admin(self, client):
+        result = client.execute(self.create_user_admin_query)
+        
+        assert int(result['createUser']['id']) > 0
+        
 
     def test_signin(self, client):
         result = client.execute(self.signin_query)

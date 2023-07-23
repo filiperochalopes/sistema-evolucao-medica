@@ -7,48 +7,40 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useContextProvider } from "services/Context";
 
-// todo esse headerComponent existe para ser usado também em Modal, o que não faz sentido, pois não é uma página de template, então deve ser removido daqui, assim também defaultHeight
-function PageTemplate({ children, headerComponent }) {
+function PageTemplate({ children }) {
   const { logout, decodedJWT, user } = useContextProvider();
   const [showMenu, setShowMenu] = useState(false);
 
   return (
     <Container>
-      <Header defaultHeight={!headerComponent}>
-        {headerComponent ? (
-          headerComponent
-        ) : (
-          <>
-            {decodedJWT && (
-              <>
-                <Link to="/" title="Voltar para lista de internamentos">
-                  <img src={logo} alt="logo" />
-                </Link>
-                <ul>
-                  <li
-                    onMouseOver={() => setShowMenu(true)}
-                    onFocus={() => setShowMenu(true)}
-                    onMouseOut={() => setShowMenu(false)}
-                    onBlur={() => setShowMenu(false)}
-                  >
-                    Olá {user?.name} <AiFillCaretDown />
-                    {showMenu && (
-                      <ul>
-                        <li>
-                          <Link to="/editar-usuario">Editar dados</Link>
-                        </li>
-                        <li>
-                          <button onClick={() => logout()}>Sair</button>
-                        </li>
-                      </ul>
-                    )}
-                  </li>
-                </ul>
-                <span />
-              </>
-            )}
-          </>
-        )}
+      <Header>
+        <>
+          <Link to="/" title="Voltar para lista de internamentos">
+            <img src={logo} alt="logo" />
+          </Link>
+          {decodedJWT && (
+            <ul>
+              <li
+                onMouseOver={() => setShowMenu(true)}
+                onFocus={() => setShowMenu(true)}
+                onMouseOut={() => setShowMenu(false)}
+                onBlur={() => setShowMenu(false)}
+              >
+                Olá {user?.name} <AiFillCaretDown />
+                {showMenu && (
+                  <ul>
+                    <li>
+                      <Link to="/editar-usuario">Editar dados</Link>
+                    </li>
+                    <li>
+                      <button onClick={() => logout()}>Sair</button>
+                    </li>
+                  </ul>
+                )}
+              </li>
+            </ul>
+          )}
+        </>
       </Header>
       <Main>
         <div>{children}</div>

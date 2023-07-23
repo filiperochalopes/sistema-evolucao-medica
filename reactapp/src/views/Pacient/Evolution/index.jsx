@@ -10,7 +10,7 @@ import updatePacientData from "helpers/updatePacientData";
 import addPrescription from "helpers/addPrescription";
 import { MdModeEdit } from "react-icons/md";
 import trash from "assets/trash.svg";
-import deletePrescription from "helpers/deletePrescription";
+import alertConfirmation from "helpers/alertConfirmation";
 import { useTheme } from "styled-components";
 import { useFormik } from "formik";
 import schema from "./schema";
@@ -217,8 +217,8 @@ const Evolution = () => {
         ...formik.values.drugs,
         {
           block: values.block,
-          id: values.medicament.id,
-          drugName: values.medicament.name,
+          id: values.prescription.id,
+          drugName: values.prescription.name,
           drugKind: values.drug.isAntibiotic,
           dosage: values.drug.useMode,
           route: values.drug.routeAdministration.value,
@@ -244,14 +244,14 @@ const Evolution = () => {
       ]);
       return true;
     }
-    throw new Error("tratamento não existe");
+    throw new Error("Tratamento não existe");
   }
 
   function chainHandleSetNursingActivity(values) {
     if (values.type.name === "nursingActivity") {
       formik.setFieldValue("nursingActivities", [
         ...formik.values.nursingActivities,
-        values.medicament.name,
+        values.prescription.name,
       ]);
       return true;
     }
@@ -260,7 +260,7 @@ const Evolution = () => {
 
   function chainHandleSetRestingActivity(values) {
     if (values.type.name === "restingActivity") {
-      formik.setFieldValue("restingActivity", values.medicament.name);
+      formik.setFieldValue("restingActivity", values.prescription.name);
       return true;
     }
 
@@ -269,7 +269,7 @@ const Evolution = () => {
 
   function chainHandleSetDiet(values) {
     if (values.type.name === "diet") {
-      formik.setFieldValue("diet", values.medicament.name);
+      formik.setFieldValue("diet", values.prescription.name);
       return true;
     }
     return chainHandleSetRestingActivity(values);
@@ -350,16 +350,16 @@ const Evolution = () => {
                               confirmButtonAction: (values) => {
                                 formik.setFieldValue(
                                   "diet",
-                                  values.medicament.name
+                                  values.prescription.name
                                 );
                               },
-                              notChangeType: true,
-                              currentMedicament: {
+                              update: true,
+                              currentPrescription: {
                                 type: {
                                   label: "Dieta",
                                   name: "diet",
                                 },
-                                medicament: {
+                                prescription: {
                                   name: formik.values.diet,
                                   id: formik.values.diet,
                                 },
@@ -382,8 +382,10 @@ const Evolution = () => {
                         type="button"
                         onClick={() =>
                           addModal(
-                            deletePrescription({
-                              confirmButtonAction: () =>
+                            alertConfirmation({
+                              question:
+                                "Tem certeza que deseja excluir o item?",
+                              confirmCallback: () =>
                                 formik.setFieldValue("diet", ""),
                             })
                           )
@@ -407,22 +409,22 @@ const Evolution = () => {
                         onClick={() => {
                           addModal(
                             addPrescription({
-                              notChangeType: true,
+                              update: true,
                               drugs: formik.values.drugs,
                               nursingActivities:
                                 formik.values.nursingActivities,
                               confirmButtonAction: (values) => {
                                 formik.setFieldValue(
                                   "restingActivity",
-                                  values.medicament.name
+                                  values.prescription.name
                                 );
                               },
-                              currentMedicament: {
+                              currentPrescription: {
                                 type: {
                                   label: "Atividades de descanso",
                                   name: "restingActivity",
                                 },
-                                medicament: {
+                                prescription: {
                                   name: formik.values.restingActivity,
                                   id: formik.values.restingActivity,
                                 },
@@ -445,8 +447,10 @@ const Evolution = () => {
                         type="button"
                         onClick={() =>
                           addModal(
-                            deletePrescription({
-                              confirmButtonAction: () =>
+                            alertConfirmation({
+                              question:
+                                "Tem certeza que deseja excluir o item?",
+                              confirmCallback: () =>
                                 formik.setFieldValue("restingActivity", ""),
                             })
                           )
@@ -470,23 +474,22 @@ const Evolution = () => {
                         onClick={() => {
                           addModal(
                             addPrescription({
-                              notChangeType: true,
+                              update: true,
                               drugs: formik.values.drugs,
-
                               nursingActivities:
                                 formik.values.nursingActivities,
                               confirmButtonAction: (values) => {
                                 formik.setFieldValue(
                                   `nursingActivities[${index}]`,
-                                  values.medicament.name
+                                  values.prescription.name
                                 );
                               },
-                              currentMedicament: {
+                              currentPrescription: {
                                 type: {
                                   label: "Atividades de enfermagem",
                                   name: "nursingActivity",
                                 },
-                                medicament: {
+                                prescription: {
                                   name: nursingActivity,
                                   id: nursingActivity,
                                 },
@@ -509,7 +512,9 @@ const Evolution = () => {
                         type="button"
                         onClick={() =>
                           addModal(
-                            deletePrescription({
+                            alertConfirmation({
+                              question:
+                                "Tem certeza que deseja excluir o item?",
                               confirmButtonAction: () => {
                                 const filterNursingActivities =
                                   formik.values.nursingActivities.filter(
@@ -553,14 +558,14 @@ const Evolution = () => {
                         onClick={() => {
                           addModal(
                             addPrescription({
-                              notChangeType: true,
+                              update: true,
                               drugs: formik.values.drugs,
                               nursingActivities:
                                 formik.values.nursingActivities,
                               confirmButtonAction: (values) => {
                                 formik.setFieldValue(`drugs[${index}]`, {
-                                  id: values.medicament.id,
-                                  drugName: values.medicament.name,
+                                  id: values.prescription.id,
+                                  drugName: values.prescription.name,
                                   drugKind: values.drug.isAntibiotic,
                                   dosage: values.drug.useMode,
                                   route: values.drug.routeAdministration.value,
@@ -573,13 +578,13 @@ const Evolution = () => {
                                   block: values.block,
                                 });
                               },
-                              currentMedicament: {
+                              currentPrescription: {
                                 block: drug.block,
                                 type: {
                                   label: "Medicação",
                                   name: "drug",
                                 },
-                                medicament: {
+                                prescription: {
                                   name: drug.drugName,
                                   id: drug.id,
                                 },
@@ -605,8 +610,10 @@ const Evolution = () => {
                         type="button"
                         onClick={() =>
                           addModal(
-                            deletePrescription({
-                              confirmButtonAction: () => {
+                            alertConfirmation({
+                              question:
+                                "Tem certeza que deseja excluir o item?",
+                              confirmCallback: () => {
                                 const filterDrugs = formik.values.drugs.filter(
                                   (value) => value.drugName !== drug.drugName
                                 );
@@ -654,6 +661,7 @@ const Evolution = () => {
                     drugs: formik.values.drugs,
                     nursingActivities: formik.values.nursingActivities,
                     confirmButtonAction: (values) => {
+                      console.log(values);
                       chainHandleSetDiet(values);
                     },
                   })

@@ -26,6 +26,14 @@ export const UPDATE_PATIENT = gql`
   }
 `;
 
+export const UPDATE_INTERNMENT = gql`
+  mutation updatePatient($id: ID!, $finishedAt: String) {
+    updateInternment(id: $id, finishedAt: $finishedAt) {
+      id
+    }
+  }
+`;
+
 export const CREATE_INTERNMENT = gql`
   mutation createInternment(
     $admissionDatetime: String

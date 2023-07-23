@@ -30,8 +30,6 @@ def update_my_user(_, info, user: dict, current_user:dict):
     user_model = db.session.query(User).get(current_user.id)
     for key, value in user.items():     
         setattr(user_model, key, value)
-    print(user_model, file=sys.stderr)
-    print(user, file=sys.stderr)
     db.session.commit()
 
     schema =  UserSchema()
