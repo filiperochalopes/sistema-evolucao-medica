@@ -21,7 +21,7 @@ apac_request_strings = get_all_tests_requests('apac')
 
 aih_sus_request_strings = get_all_tests_requests('aih_sus')
 
-balanco_hidrico_request_string = get_request_from_txt('balanco_hidrico.txt')
+balanco_hidrico_request_strings = get_all_tests_requests('balanco_hidrico.txt')
 
 exam_request_request_string = get_request_from_txt('exam_request.txt')
 exam_request_required_data_request_string = get_request_from_txt('exam_request_required_data.txt')

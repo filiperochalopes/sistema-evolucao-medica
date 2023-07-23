@@ -4,6 +4,7 @@ mutation{
     patient: {
       name: "Patient Test Name",
       cns: "928976954930007",
+      birthdate: "2010-01-10",
       motherName: "Patient Mother Name",
       sex: "M",
       phone: "10123456789",
