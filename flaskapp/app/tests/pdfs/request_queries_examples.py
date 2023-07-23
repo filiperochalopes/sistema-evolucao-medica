@@ -26,8 +26,7 @@ balanco_hidrico_request_strings = get_all_tests_requests('balanco_hidrico')
 exam_request_request_strings = get_all_tests_requests('exam_request')
 
 
-ficha_internamento_request_string = get_request_from_txt('ficha_internamento.txt')
-ficha_internamento_required_data_request_string = get_request_from_txt('ficha_internamento_required_data.txt')
+ficha_internamento_request_strings = get_all_tests_requests('ficha_internamento')
 
 
 lme_request_string = get_request_from_txt('lme.txt')
