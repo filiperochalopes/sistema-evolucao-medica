@@ -137,7 +137,7 @@ def func_generate_pdf_evol_compact(
                 auto_adjust=True
             )
 
-            evolution_text = evolution["text"]
+            evolution_text = evolution["text"].strip()
             if pendings is not None:
                 evolution_text += pdf.get_pendings_text(pendings=pendings)
 
