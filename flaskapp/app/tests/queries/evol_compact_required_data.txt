@@ -6,7 +6,7 @@ mutation{
       rg: "651425",
       cns: "928976954930007",
       weightKg: 123.00,
-      sex: "F", 
+      sex: "fema", 
       phone: "10123456789",
       motherName: "Patient Mother Name", 
       birthdate: "2020-11-10",

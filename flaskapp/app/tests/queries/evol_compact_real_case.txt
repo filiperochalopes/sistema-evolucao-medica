@@ -7,7 +7,7 @@ mutation{
       rg: "448342194",
       cns: "217734315270009",
       weightKg: 86.603,
-      sex: "M", 
+      sex: "male", 
       phone: "75992540735",
       motherName: "Joana Maria Cerqueira", 
       birthdate: "1985-11-10",
@@ -31,7 +31,7 @@ mutation{
         professional:
         {
           name: "Filipe da Cunha Alcântara",
-          category: "med",
+          category: "doc",
           document: "37865/BA"
         }
     },
@@ -111,7 +111,7 @@ mutation{
         fetalCardiacFrequency: 52,
         professional:{
           name: "Professional aaaa Name",
-          category: "med",
+          category: "doc",
           document: "54321/BA"
         }
       },
@@ -144,7 +144,7 @@ mutation{
         fetalCardiacFrequency: 52,
         professional:{
           name: "Professional aaaa Name",
-          category: "med",
+          category: "doc",
           document: "54321/BA"
         }
       },

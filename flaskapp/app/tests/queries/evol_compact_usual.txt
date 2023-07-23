@@ -7,7 +7,7 @@ mutation{
       rg: "448342194",
       cns: "217734315270009",
       weightKg: 86.603,
-      sex: "M", 
+      sex: "male", 
       phone: "75992540735",
       motherName: "Joana Maria Cerqueira", 
       birthdate: "1985-11-10",

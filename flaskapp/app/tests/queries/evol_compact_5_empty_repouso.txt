@@ -7,7 +7,7 @@ mutation{
       rg: "448342194",
       cns: "217734315270009",
       weightKg: 86.603,
-      sex: "M", 
+      sex: "male", 
       phone: "75992540735",
       motherName: "Joana Maria Cerqueira", 
       birthdate: "1985-11-10",
@@ -19,7 +19,7 @@ mutation{
     admissionHistory: {
       professional:{
           name: "Filipe Costa Martins Nome Completo Muito Longo Reticencias",
-          category: "med",
+          category: "doc",
           document: "54321/BA"
       },
       createdAt: "2023-02-13T01:17:20",
@@ -31,7 +31,7 @@ mutation{
         professional:
         {
           name: "Filipe da Cunha Alcântara",
-          category: "med",
+          category: "doc",
           document: "37865/BA"
         }
     },
@@ -112,7 +112,7 @@ mutation{
         fetalCardiacFrequency: 52,
         professional:{
           name: "Professional aaaa Name",
-          category: "med",
+          category: "doc",
           document: "54321/BA"
         }
       },
@@ -128,7 +128,7 @@ mutation{
         pain: 5,
         professional:{
           name: "Another Professional name",
-          category: "med",
+          category: "doc",
           document: "4512788"
         }
       },
@@ -145,7 +145,7 @@ mutation{
         fetalCardiacFrequency: 52,
         professional:{
           name: "Professional aaaa Name",
-          category: "med",
+          category: "doc",
           document: "54321/BA"
         }
       },
