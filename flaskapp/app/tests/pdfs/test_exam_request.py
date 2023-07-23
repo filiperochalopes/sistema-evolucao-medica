@@ -1,142 +1,33 @@
 from gql import gql
-import pytest
-from app.tests.pdfs.request_queries_examples import exam_request_required_data_request_string
+from base64 import b64decode
 
-def data_to_use(client, datetime_to_use, patient_name='Patient Name',patient_cns='928976954930007', patient_birthday=None,patient_address="Patient Adress",exams="Exames tests with a text",solicitation_reason="Solicitation Reason",requesting_professional_name="Professional Solicitor",professional_authorized_name="Professional Authorized",solicitation_date=None,authorization_date=None, document_pacient_date=None,document_pacient_name='Document pacient name'):
+from app.env import TMP_FILES_FOLDER
+from app.tests.pdfs.request_queries_examples import exam_request_request_strings
 
-    if patient_birthday == None:
-        patient_birthday = datetime_to_use
-    if solicitation_date == None:
-        solicitation_date = datetime_to_use
-    if document_pacient_date == None:
-        document_pacient_date = datetime_to_use
-    if authorization_date == None:
-        authorization_date = datetime_to_use
-
-    patient_address = '{' + 'street: ' + f'"{patient_address}"' + ', uf:' + '"SP"' + ', city: ' + '"City"' + '},'
-
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + f'"{patient_cns}"' + ', birthdate: ' + f'"{patient_birthday}"' + 'sex: "M",motherName: "Patient Mother Name",' + 'phone: ' + f'"10123456789"' + ',weightKg:' + '123' + ', address: ' + f'{patient_address}' + '}'
-
-    request_string = """
-        mutation{
-            generatePdf_SolicitExames("""
-
-    campos_string = f"""
-    patient: {patient},
-    solicitationReason: "{solicitation_reason}",
-    requestingProfessionalName: "{requesting_professional_name}",
-    solicitationDate: "{solicitation_date}",
-    exams: "{exams}",
-    professionalAuthorizedName: "{professional_authorized_name}", 
-    documentPacientName: "{document_pacient_name}",
-    authorizationDate: "{authorization_date}",
-    documentPacientDate: "{document_pacient_date}"
-    """
-
-    final_string = """
-    ){base64Pdf}
-    }
-    """
-    all_string = request_string + campos_string + final_string
-    query = gql(all_string)
-    try:
-        #When some exception is created in grphql he return a error
-        client.execute(query)
-        return True
-    except:
-        return False 
-
-#Testing Ficha Internamento
-def test_with_data_in_function(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use) == True
-
-def test_answer_with_all_fields(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use) == True
-
-def test_awnser_with_only_required_data(client, datetime_to_use):
-    
-    query = gql(exam_request_required_data_request_string)
-    result = False
-    try:
-        #When some exception is created in grphql he return a error
-        client.execute(query)
-        result = True
-    except:
-        result = False 
-    
-    assert result == True
+def make_request(client, request_string):
+    query = gql(request_string)
+    # When some exception is created in grphql he return a error
+    client.execute(query)
+    return True
 
 
-##############################################################
-# ERRORS IN NAMES CAMPS
-# patientName
-# professional_authorized_name
-# requesting_professional_name
-# document_pacient_name
-# Name empty
-# Name with space
-# long name
-# short name
-# wrong name type
+def test_all_test_queries(client):
+    for request_string in exam_request_request_strings:
+        assert make_request(client, request_string) == True
 
 
-@pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_professional_authorized_name(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, professional_authorized_name=test_input) == True
+def test_create_pdf_file_from_queries(client):
+    PDF_START_STRING = 'exam_request'
 
-@pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_document_pacient_name(test_input, client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, document_pacient_name=test_input) == True
+    DIRECTORY_START = f"{TMP_FILES_FOLDER}/{PDF_START_STRING}_"
+    count = 1
+    for request_string in exam_request_request_strings:
+        query = gql(request_string)
+        result = client.execute(query)
+        generated_pdf_b64 = b64decode(result["generatePdf_SolicitExames"]["base64Pdf"], validate=True)
 
-
-#################################################################
-# TEST DATETIMES VARIABLES
-# patient_birthday
-# solicitation_date
-# authorization_date
-# document_pacient_date
-# test wrong type
-# test valid datetime
-
-def test_valid_patient_birthday(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use,patient_birthday=datetime_to_use) == True
-
-def test_valid_solicitation_date(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use,solicitation_date=datetime_to_use) == True
-
-def test_valid_authorization_date(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use,authorization_date=datetime_to_use) == True
-
-def test_valid_document_pacient_date(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use,document_pacient_date=datetime_to_use) == True
-
-
-#############################################################################
-# TEST TEXT VARIABLES THAT CHANGE NUMBER OF PAGS
-# exams
-# test wrong type
-# test empty value
-# test empty spaces 
-# test short text
-# test more than limit
-# test 1 page long 
-# test 2 pages long
-# test 3 pages long
-
-def test_1_pages_long_exams(client, datetime_to_use, lenght_test):
-    text = lenght_test[:200]
-    assert data_to_use(client, datetime_to_use,exams=text) == True
-
-def test_2_pages_long_exams(client, datetime_to_use, lenght_test):
-    text = lenght_test[:400]
-    assert data_to_use(client, datetime_to_use,exams=text) == True
-
-def test_3_pages_long_exams(client, datetime_to_use, lenght_test):
-    text = lenght_test[:750]
-    assert data_to_use(client, datetime_to_use,exams=text) == True
-
-
-
-
-
-
+        f = open(f"{DIRECTORY_START}{count}.pdf", 'wb')
+        f.write(generated_pdf_b64)
+        f.close()
+        count += 1
+        assert True

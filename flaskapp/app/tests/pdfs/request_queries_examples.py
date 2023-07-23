@@ -21,12 +21,10 @@ apac_request_strings = get_all_tests_requests('apac')
 
 aih_sus_request_strings = get_all_tests_requests('aih_sus')
 
-balanco_hidrico_request_strings = get_all_tests_requests('balanco_hidrico.txt')
+balanco_hidrico_request_strings = get_all_tests_requests('balanco_hidrico')
 
-exam_request_request_string = get_request_from_txt('exam_request.txt')
-exam_request_required_data_request_string = get_request_from_txt('exam_request_required_data.txt')
-exam_request_2_pages_request_string = get_request_from_txt('exam_request_2_pages.txt')
-exam_request_3_pages_request_string = get_request_from_txt('exam_request_3_pages.txt')
+exam_request_request_strings = get_all_tests_requests('exam_request')
+
 
 ficha_internamento_request_string = get_request_from_txt('ficha_internamento.txt')
 ficha_internamento_required_data_request_string = get_request_from_txt('ficha_internamento_required_data.txt')
