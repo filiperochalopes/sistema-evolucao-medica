@@ -30,6 +30,7 @@ ficha_internamento_request_strings = get_all_tests_requests('ficha_internamento'
 
 folha_evolucao_request_strings = get_all_tests_requests('folha_evolucao')
 
+folha_prescricao_request_strings = get_all_tests_requests('folha_prescricao')
 
 lme_request_string = get_request_from_txt('lme.txt')
 lme_required_data_request_string = get_request_from_txt('lme_required_data.txt')
@@ -42,7 +43,6 @@ relatorio_alta_required_data_request_string = get_request_from_txt('relatorio_al
 solicit_mamografia_request_string = get_request_from_txt('solicit_mamografia.txt')
 solicit_mamografia_required_data_request_string = get_request_from_txt('solicit_mamografia_required_data.txt')
 
-folha_prescricao_request_string = get_request_from_txt('folha_prescricao.txt')
 
 
 

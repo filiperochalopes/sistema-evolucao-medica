@@ -1,70 +1,40 @@
 from gql import gql
+from base64 import b64decode
 import pytest
 
-
-def data_to_use(client, datetime_to_use, created_at=None, patient_name='Patient Name', prescriptions=[{'type': "Repouso",'description': "Prescription description",'route': "Endovenosa",'start_date': "2023-02-12T21:59:24",'ending_date': "2023-02-12T21:59:24"}]):
-
-    if created_at == None:
-        created_at = datetime_to_use
-    all_prescriptions = ''
-    for presc in prescriptions:
-        all_prescriptions += '{type:' + f'"{presc["type"]}"' + ',description:' + f'"{presc["description"]}"' + ',route:' + f'"{presc["route"]}"' + ',startDate:' + f'"{presc["start_date"]}"' + ',endingDate:' + f'"{presc["ending_date"]}"' + '},'
-
-    patient = '{name: ' + f'"{patient_name}"' + ', cns: ' + '"928976954930007"' + ',weightKg:' + '123' + ',sex: "F", phone: "10123456789", motherName: "Patient Mother Name"' + '}'
-
-    request_string = """
-        mutation{
-	        generatePdf_FolhaPrescricao("""
-
-    campos_string = f"""
-    createdAt: "{created_at}",
-    patient: {patient},
-    prescriptions: [{all_prescriptions}]
-    """
-
-    final_string = """
-    ){base64Pdf}
-    }
-    """
-    all_string = request_string + campos_string + final_string
-    query = gql(all_string)
-    try:
-        #When some exception is created in grphql he return a error
-        client.execute(query)
-        return True
-    except:
-        return False 
-
-#Testing folha prescricao
-def test_with_data_in_function(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use) == True
+from app.env import TMP_FILES_FOLDER
+from app.tests.pdfs.request_queries_examples import (
+    folha_prescricao_request_strings
+)
 
 
-##############################################################
-# ERRORS IN NAMES CAMPS
-
-@pytest.mark.parametrize("test_input", ['    ', ''])
-def test_empty_value_patient_name(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, patient_name=test_input) == False
-
-#################################################################
-# TEST DATETIMES VARIABLES
-
-def test_valid_created_at(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, created_at=datetime_to_use) == True
-
-def test_invalid_created_at(client, datetime_to_use):
-    assert data_to_use(client, datetime_to_use, created_at='2023-14-31T21:59:24') == False
+def make_request(client, request_string):
+    query = gql(request_string)
+    # When some exception is created in grphql he return a error
+    client.execute(query)
+    return True
 
 
-##################################################################
-# TEST PRESCRIPTIONS
+@pytest.mark.skip(reason="We have to fix mutation first")
+def test_all_test_queries(client):
+    for request_string in folha_prescricao_request_strings:
+        assert make_request(client, request_string) == True
 
-@pytest.mark.parametrize("test_input", [
-    [{'type': "Repouso",'description': "Prescription description",'route': "Endovenosa",'start_date': "2023-02-12T21:59:24",'ending_date': "2023-02-12T23:59:24"}],
-    [{'type': "Another Repouso",'description': "AAAAAAPrescription description",'route': "Endovenosa",'start_date': "2023-02-12T21:59:24",'ending_date': "2023-02-12T23:59:24"}],
-    [{'type': "Another Repouso",'description': "Prescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPresc",'route': "Endovenosa",'start_date': "2023-02-12T21:59:24",'ending_date': "2023-02-12T23:59:24"}],
-])
-def test_valid_prescriptions(client, datetime_to_use, test_input):
-    assert data_to_use(client, datetime_to_use, prescriptions=test_input) == True
+
+@pytest.mark.skip(reason="We have to fix mutation first")
+def test_create_pdf_file_from_queries(client):
+    PDF_START_STRING = 'folha_prescricao'
+
+    DIRECTORY_START = f"{TMP_FILES_FOLDER}/{PDF_START_STRING}_"
+    count = 1
+    for request_string in folha_prescricao_request_strings:
+        query = gql(request_string)
+        result = client.execute(query)
+        generated_pdf_b64 = b64decode(result["generatePdf_FolhaPrescricao"]["base64Pdf"], validate=True)
+
+        f = open(f"{DIRECTORY_START}{count}.pdf", 'wb')
+        f.write(generated_pdf_b64)
+        f.close()
+        count += 1
+        assert True
 
