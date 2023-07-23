@@ -1,7 +1,7 @@
 mutation{
 	generatePdf_EvolCompact(
     patient: {
-      name: "Patient Test Name",
+      name: "Patient",
       cpf: "1452847546",
       rg: "651425",
       cns: "928976954930007",
