@@ -19,6 +19,10 @@ def get_all_tests_requests(filename_start:str):
 ## Requests strings
 apac_request_strings = get_all_tests_requests('apac')
 
+aih_sus_request_strings = get_all_tests_requests('aih_sus')
+
+balanco_hidrico_request_string = get_request_from_txt('balanco_hidrico.txt')
+
 exam_request_request_string = get_request_from_txt('exam_request.txt')
 exam_request_required_data_request_string = get_request_from_txt('exam_request_required_data.txt')
 exam_request_2_pages_request_string = get_request_from_txt('exam_request_2_pages.txt')
@@ -27,8 +31,6 @@ exam_request_3_pages_request_string = get_request_from_txt('exam_request_3_pages
 ficha_internamento_request_string = get_request_from_txt('ficha_internamento.txt')
 ficha_internamento_required_data_request_string = get_request_from_txt('ficha_internamento_required_data.txt')
 
-aih_sus_request_string = get_request_from_txt('aih_sus.txt')
-aih_sus_required_data_request_string = get_request_from_txt('aih_sus_required_data.txt')
 
 lme_request_string = get_request_from_txt('lme.txt')
 lme_required_data_request_string = get_request_from_txt('lme_required_data.txt')
@@ -45,6 +47,5 @@ folha_prescricao_request_string = get_request_from_txt('folha_prescricao.txt')
 
 folha_evolucao_request_string = get_request_from_txt('folha_evolucao.txt')
 
-balanco_hidrico_request_string = get_request_from_txt('balanco_hidrico.txt')
 
 evol_compact_request_strings = get_all_tests_requests('evol_compact')
