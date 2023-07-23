@@ -25,7 +25,6 @@ balanco_hidrico_request_strings = get_all_tests_requests('balanco_hidrico')
 
 exam_request_request_strings = get_all_tests_requests('exam_request')
 
-
 ficha_internamento_request_strings = get_all_tests_requests('ficha_internamento')
 
 folha_evolucao_request_strings = get_all_tests_requests('folha_evolucao')
@@ -38,11 +37,6 @@ prescricao_medica_request_strings = get_all_tests_requests('prescricao_medica')
 
 relatorio_alta_request_strings = get_all_tests_requests('relatorio_alta')
 
-
-solicit_mamografia_request_string = get_request_from_txt('solicit_mamografia.txt')
-solicit_mamografia_required_data_request_string = get_request_from_txt('solicit_mamografia_required_data.txt')
-
-
-
+solicit_mamografia_request_strings = get_all_tests_requests('solicit_mamografia')
 
 evol_compact_request_strings = get_all_tests_requests('evol_compact')
