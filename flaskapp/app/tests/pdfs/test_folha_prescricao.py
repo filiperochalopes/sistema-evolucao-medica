@@ -15,13 +15,11 @@ def make_request(client, request_string):
     return True
 
 
-@pytest.mark.skip(reason="We have to fix mutation first")
 def test_all_test_queries(client):
     for request_string in folha_prescricao_request_strings:
         assert make_request(client, request_string) == True
 
 
-@pytest.mark.skip(reason="We have to fix mutation first")
 def test_create_pdf_file_from_queries(client):
     PDF_START_STRING = 'folha_prescricao'
 

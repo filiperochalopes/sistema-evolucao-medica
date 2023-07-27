@@ -72,17 +72,21 @@ class PdfFolhaPrescricao(ReportLabCanvasUtils):
         self.validate_func_args(function_to_verify=self.create_professional_info_text, variables_to_verify={'professional':professional, 'nullable':nullable})
 
         # getting data
-        name = professional.get('name')
-        crm = professional.get('professional_document_number')
-        crm_uf = professional.get('professional_document_uf')
+        name = professional.get("name")
+        document = professional.get("document")
+        category = professional.get("category")
 
         if not nullable:
             # if any camp can be null, the function will check all variables and return a Exception if is missing
-            for camp in [name, crm, crm_uf]:
+            for camp in [name, document]:
                 if camp == None:
-                    raise Exception('Algum campo do profissional está faltando, o documento precisa do nome, crm e sigla uf do estado do crm')
+                    raise Exception(
+                        'Algum campo do profissional está faltando, o profissional precisa do nome, e documento no formato "54321/BA"'
+                    )
 
-        prof_info = f"Responsável Médico {str(name).strip()} CRM {str(crm).strip()}/{str(crm_uf).strip()}"
+        document_category = "CRM" if category.lower() == "doc" else "COREN"
+
+        prof_info = f"Responsável Médico: {str(name).strip()} {document_category} {str(document)}"
 
         return prof_info
 

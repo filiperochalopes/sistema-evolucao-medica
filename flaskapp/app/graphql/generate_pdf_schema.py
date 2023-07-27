@@ -146,7 +146,9 @@ generate_pdf_type_defs = gql(
             createdAt: String!
             "Nome do paciente, o sistema ira abreviar os nomes do meio, exemplo: Joao da Silva -> JOAO D. SILVA"
             patient: PatientInput!
-            prescriptions: [PrescriptionItemInput]
+            prescriptions: [PrescriptionItemInput],
+            "Profissional Responsavel"
+            professional: ProfessionalInput
         ): GeneratedPdf
 
         "Gerando página de evolução, sendo que na primeira página sempre mostra a tabela de evolução"
