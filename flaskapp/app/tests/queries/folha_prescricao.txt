@@ -83,6 +83,6 @@ mutation{
         endingDate: "2023-02-12T23:59:24"      
       }
     ],
-    professioanl: null
+    professional: null
 ){base64Pdf}
 }
