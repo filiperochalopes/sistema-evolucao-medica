@@ -95,7 +95,7 @@ def func_generate_pdf_apac(requesting_establishment:dict, patient:dict, main_pro
             pdf.add_datetime(date=validity_period_start, pos=(402, 66), field_name='Validity Period Start', hours=False, interval='  ', formated=False, nullable=True)
             pdf.add_datetime(date=validity_period_end, pos=(492, 66), field_name='Validity Period End', hours=False, interval='  ', formated=False, nullable=True)
             pdf.add_secondary_procedures(procedures=secondaries_procedures)
-            pdf.add_morelines_text(text=procedure_justification_observations, initial_pos=(36, 318), decrease_ypos= 10, field_name='Procedure justification Observations', len_max=776, char_per_lines=97, len_min=5, nullable=True)
+            pdf.add_morelines_text(text=procedure_justification_observations, initial_pos=(36, 318), decrease_ypos= 10, field_name='Procedure justification Observations', len_max=776, char_per_lines=97, len_min=0, nullable=True)
             pdf.add_document_cns_cpf_rg(document=requesting_professional_document, pos_square_cpf=(103, 180), pos_square_cns=(51,180), pos_cns=(151, 181), pos_cpf=(151, 181),field_name='Professional Solicitor Document', interval='  ',nullable=True)
             pdf.add_document_cns_cpf_rg(document=authorization_professional_document, pos_square_cpf=(103, 104), pos_square_cns=(51,104), pos_cns=(149, 105), pos_cpf=(151, 105),field_name='Professional Authorizator Document', interval='  ',nullable=True)
         except Exception as error:
