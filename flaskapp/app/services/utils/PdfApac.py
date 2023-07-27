@@ -98,6 +98,7 @@ class PdfApac(ReportLabCanvasUtils):
                 self.add_procedure(procedure=proc, code_pos=(CODE_X_POS, ypos), name_pos=(NAME_X_POS, ypos), quant_pos=(QUANT_X_POS, ypos), field_name=f'({cont}) second procedures')
                 ypos -= REDUCE_Y
 
+            self.set_font('Roboto-Mono', 9)
             return None
 
         except Exception as error:
