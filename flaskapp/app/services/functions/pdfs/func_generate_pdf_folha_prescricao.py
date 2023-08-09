@@ -32,16 +32,23 @@ professional:dict=None
 
             tmz = timezone(offset=timedelta(hours=-3))
             printed_at = datetime.now(tz=tmz).isoformat()
-            pdf.add_datetime(date=printed_at, pos=(673, 34), field_name="Document printed date (Bottom position)", nullable=True)
-            pdf.add_datetime(date=created_at, pos=(692, 20), field_name="Document created date (Bottom position)")
+            pdf.add_datetime(date=printed_at, pos=(692, 20), field_name="Document printed date (Bottom position)", nullable=True)
+            pdf.add_datetime(date=created_at, pos=(673, 34), field_name="Document created date (Bottom position)")
 
             pdf.set_font('Roboto-Mono', 11)
-            current_user_info = pdf.create_professional_info_text(professional=professional, nullable=False)
-            pdf.add_oneline_text(text=current_user_info, pos=(812, 50), field_name='Professional Info', len_max=67, right_align=True)
         except Exception as error:
             return error
         except:
             return Exception('Erro desconhecido enquanto adicionava dados obrigatorios')
+    
+        try:
+            if professional != None:
+                current_user_info = pdf.create_professional_info_text(professional=professional, nullable=False)
+                pdf.add_oneline_text(text=current_user_info, pos=(812, 50), field_name='Professional Info', len_max=67, right_align=True)
+        except Exception as error:
+            return error
+        except:
+            return Exception('Erro desconhecido enquanto adicionava dados opcionais')
 
 
         #Get pdf base64

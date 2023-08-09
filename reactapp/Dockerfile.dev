@@ -5,6 +5,8 @@ WORKDIR /home/node/app
 
 COPY . .
 
+RUN npm install 
+
 EXPOSE 3000
 
-ENTRYPOINT ["yarn", "start"]
+ENTRYPOINT ["npm", "run" ,"start"]

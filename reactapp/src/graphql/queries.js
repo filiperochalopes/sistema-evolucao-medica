@@ -1,5 +1,21 @@
 import { gql } from "@apollo/client";
 
+export const MY_USER = gql`
+  query getMyUser {
+    myUser {
+      id
+      name
+      email
+      cns
+      cpf
+      birthdate
+      professionalCategory
+      professionalDocumentUf
+      professionalDocumentNumber
+    }
+  }
+`;
+
 export const INTERNMENTS = gql`
   query getIntenments {
     internments {
@@ -9,6 +25,70 @@ export const INTERNMENTS = gql`
         name
         cns
         age
+        sex
+      }
+    }
+  }
+`;
+
+export const INTERNMENT_PRESCRIPTIONS = gql`
+  query getInternmentPrescriptions($internmentId: ID!) {
+    internment(id: $internmentId) {
+      prescriptions {
+        id
+        createdAt
+        professional {
+          id
+          name
+        }
+        restingActivity {
+          name
+        }
+        diet {
+          name
+        }
+        drugPrescriptions {
+          drug {
+            name
+          }
+          dosage
+          route
+        }
+        nursingActivities {
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const INTERNMENT_PENDINGS = gql`
+  query getInternmentPendings($internmentId: ID!) {
+    internment(id: $internmentId) {
+      pendings {
+        id
+        createdAt
+        text
+        professional {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const INTERNMENT_EVOLUTIONS = gql`
+  query getInternmentEvolutions($internmentId: ID!) {
+    internment(id: $internmentId) {
+      evolutions {
+        id
+        createdAt
+        text
+        professional {
+          id
+          name
+        }
       }
     }
   }

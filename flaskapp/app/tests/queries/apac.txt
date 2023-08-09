@@ -54,11 +54,10 @@ mutation{
 		procedureJustificationObservations: "Procedure Justification Observations",
 		requestingProfessionalDocument: {
 		cns: "928976954930007",
-		cpf: null,
+		cpf: "28445400070",
 		rg: null
 		},
 		requestingProfessionalName: "Professional Solicitator",
-		solicitationDate: "2022-11-10",
 		professionalAuthorizationName: "Professional authorization",
 		emissionOrgCode: "Cod121234",
 		authorizationProfessionalDocument: {

@@ -17,18 +17,26 @@ import {
   GENERATE_PDF_APAC,
   GENERATE_PDF_BALANCO_HIDRICO,
   GENERATE_PDF_FICHA_INTERNAMENTO,
-  GENERATE_PDF_FOLHA_EVOLUCAO,
-  GENERATE_PDF_FOLHA_PRESCRICAO,
   GENERATE_PDF_RELATORIO_ALTA,
+  GENERATE_PDF_EVOLUCAO_COMPACTA,
 } from "graphql/mutations";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { cloneDeep } from "lodash";
 import Interval from "./components/Interval";
-import { CID10, GET_HIGH_COMPLEXITY_PROCEDURES } from "graphql/queries";
+import {
+  CID10,
+  GET_HIGH_COMPLEXITY_PROCEDURES,
+  INTERNMENT_PRESCRIPTIONS,
+  INTERNMENT_EVOLUTIONS,
+  INTERNMENT_PENDINGS,
+} from "graphql/queries";
 import { useState } from "react";
 import b64toBlob from "utils/b64toBlob";
 import useHandleErrors from "hooks/useHandleErrors";
-/* Strategy pattern */
+import { useEffect } from "react";
+import GroupInput from "../GroupInput";
+import { get24ShiftDatetimeInterval } from "./components/Interval";
+import { useContextProvider } from "services/Context";
 
 const strategies = {
   printPdf_FichaInternamento: ({ formik }) => (
@@ -67,11 +75,9 @@ const strategies = {
       </ButtonContainer>
     </>
   ),
-  printPdf_FolhaEvolucao: Interval,
-  APAC: ({ formik }) => (
+  APAC: () => (
     <>
       <Select />
-
       <ButtonContainer>
         <Button type="submit">Confirmar</Button>
       </ButtonContainer>
@@ -98,7 +104,206 @@ const strategies = {
     </>
   ),
   printPdf_BalancoHidrico: Interval,
-  printPdf_FolhaPrescricao: Interval,
+  printPdf_EvolucaoCompacta: ({ formik, extra: { internmentId } }) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+
+    /**
+     * Capturando as prescrições do internamento em questão
+     */
+    const { data: prescriptionsData } = useQuery(INTERNMENT_PRESCRIPTIONS, {
+      variables: { internmentId },
+    });
+    // Todas as prescrições carregadas
+    const [prescriptions, setPrescriptions] = useState([]);
+    // Prescrições realizadas pelo usuário dentro do intervalo do turno/plantão
+    const [inTimePrescriptions, setInTimePrescriptions] = useState([]);
+    /**
+     * Capturando as evoluções do internamento em questão
+     */
+    const { data: evolutionsData } = useQuery(INTERNMENT_EVOLUTIONS, {
+      variables: { internmentId },
+    });
+    // Todas as evoluções carregadas
+    const [evolutions, setEvolutions] = useState([]);
+    // Evoluções realizadas pelo usuário dentro do intervalo do turno/plantão
+    const [inTimeEvolutions, setInTimeEvolutions] = useState([]);
+    /**
+     * Capturando as pendências do internamento em questão
+     */
+    const { data: pendingsData } = useQuery(INTERNMENT_PENDINGS, {
+      variables: { internmentId },
+    });
+    // Todas as pendências carregadas
+    const [pendings, setPendings] = useState([]);
+    // Prescrições realizadas dentro do intervalo do turno/plantão
+    const [inTimePendings, setInTimePendings] = useState([]);
+    // Usuárion logado
+    const { user } = useContextProvider();
+
+    useEffect(() => {
+      // Realizando refatoração dos dados recebidos de prescrição, capturando e organizando apenas os dados do usuário logado no período do plantão
+      if (prescriptionsData)
+        setPrescriptions(
+          prescriptionsData?.internment.prescriptions
+            .filter((p) => p.professional.id === user.id)
+            .reduce(
+              (acc, cur) => [
+                {
+                  ...cur,
+                  description: `${cur.restingActivity.name} - ${
+                    cur.diet.name
+                  } - ${cur.drugPrescriptions.map(
+                    (dp) => `${dp.drug.name} - ${dp.drug.dosage} ·`
+                  )}`,
+                },
+                ...acc,
+              ],
+              []
+            )
+        );
+    }, [prescriptionsData]);
+
+    useEffect(() => {
+      // Realizando refatoração dos dados recebidos de evoluções, capturando e organizando apenas os dados do usuário logado no período do plantão
+      if (evolutionsData)
+        setEvolutions(
+          evolutionsData?.internment.evolutions.filter(
+            (p) => p.professional.id === user.id
+          )
+        );
+    }, [evolutionsData]);
+
+    useEffect(() => {
+      // Realizando refatoração dos dados recebidos de pendências, capturando e organizando apenas os dados do usuário logado no período do plantão
+      if (pendingsData)
+        setPendings(
+          pendingsData?.internment.pendings
+            .filter((p) => p.professional.id === user.id)
+            .reduce(
+              (acc, cur) => [
+                {
+                  ...cur,
+                  description: `${cur.text} - ${cur.createdAt}`,
+                },
+                ...acc,
+              ],
+              []
+            )
+        );
+    }, [pendingsData]);
+
+    useEffect(() => {
+      if (prescriptions?.length) {
+        // Filtrando por último período
+        const fullShiftDatetimeInterval = get24ShiftDatetimeInterval();
+        const getInTimeItems = (items) =>
+          items.filter(
+            (i) =>
+              new Date(i.createdAt) >=
+              new Date(fullShiftDatetimeInterval.startDatetimeStamp)
+          );
+        if (!inTimePrescriptions.length) {
+          setInTimePrescriptions(getInTimeItems(prescriptions));
+        }
+        if (!inTimeEvolutions.length) {
+          setInTimeEvolutions(getInTimeItems(evolutions));
+        }
+        if (!inTimePendings.length) {
+          setInTimePendings(getInTimeItems(pendings));
+        }
+      }
+    }, [prescriptions, evolutions, pendings]);
+
+    // Retorna as prescrições realizadas
+    return (
+      <>
+        <section>
+          <h3>Prescrições</h3>
+          {inTimePrescriptions.length ? (
+            inTimePrescriptions?.map((p) => (
+              <GroupInput
+                optionId={p.id}
+                name="extra.prescriptionId"
+                id={`prescription-${p.id}`}
+                onChange={formik.handleChange}
+                description={
+                  <div>
+                    <h4>{p.createdAt}</h4>
+                    <p>{p.description}</p>
+                  </div>
+                }
+              />
+            ))
+          ) : (
+            <p>
+              Não existem prescrições realizadas nesse plantão por esse usuário,{" "}
+              <a href={`/evoluir-paciente/${internmentId}`}>
+                atualize a prescrição
+              </a>{" "}
+              para poder realizar a impressão.
+            </p>
+          )}
+        </section>
+        <section>
+          <h3>Evoluções</h3>
+          {inTimeEvolutions.length ? (
+            inTimeEvolutions?.map((p) => (
+              <GroupInput
+                optionId={p.id}
+                name="extra.evolutionId"
+                id={`evolution-${p.id}`}
+                onChange={formik.handleChange}
+                description={
+                  <div>
+                    <h4>{p.createdAt}</h4>
+                    <p>{p.text}</p>
+                  </div>
+                }
+              />
+            ))
+          ) : (
+            <p>
+              Não existem evoluções realizadas nesse plantão por esse usuário,{" "}
+              <a href={`/evoluir-paciente/${internmentId}`}>
+                atualize a evolução
+              </a>{" "}
+              para poder realizar a impressão.
+            </p>
+          )}
+        </section>
+        <section>
+          <h3>Pendências</h3>
+          {inTimePendings.length ? (
+            inTimePendings?.map((p) => (
+              <GroupInput
+                optionId={p.id}
+                name="extra.pendingsId"
+                id={`pendings-${p.id}`}
+                onChange={formik.handleChange}
+                description={
+                  <div>
+                    <h4>{p.createdAt}</h4>
+                    <p>{p.text}</p>
+                  </div>
+                }
+              />
+            ))
+          ) : (
+            <p>
+              Não existem pendências realizadas nesse plantão por esse usuário,{" "}
+              <a href={`/evoluir-paciente/${internmentId}`}>
+                atualize as pendências
+              </a>{" "}
+              para poder realizar a impressão.
+            </p>
+          )}
+        </section>
+        <ButtonContainer>
+          <Button type="submit">Confirmar</Button>
+        </ButtonContainer>
+      </>
+    );
+  },
   printPdf_AihSus: ({ formik }) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { data: cid10Data } = useQuery(CID10);
@@ -366,26 +571,11 @@ const strategies = {
   },
 };
 
+// Valores iniciais dos formulários e envios formik de cada formulário
 const initialValuesStrategies = {
   printPdf_FichaInternamento: {
     extra: {
       hasAdditionalHealthInsurance: false,
-    },
-  },
-  printPdf_FolhaEvolucao: {
-    extra: {
-      interval: {
-        startDatetimeStamp: "",
-        endingDatetimeStamp: "",
-      },
-    },
-  },
-  printPdf_FolhaPrescricao: {
-    extra: {
-      interval: {
-        startDatetimeStamp: "",
-        endingDatetimeStamp: "",
-      },
     },
   },
   printPdf_BalancoHidrico: {
@@ -394,6 +584,13 @@ const initialValuesStrategies = {
         startDatetimeStamp: "",
         endingDatetimeStamp: "",
       },
+    },
+  },
+  printPdf_EvolucaoCompacta: {
+    extra: {
+      prescriptionId: null,
+      evolutionId: null,
+      pendingsId: null,
     },
   },
   printPdf_Apac: {
@@ -421,61 +618,78 @@ const initialValuesStrategies = {
   },
 };
 
-const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
+/**
+ * Modal de dados adicionais, reúne o grupo de modais disponíveis para impressão de arquivos que necessitam de dados adicionais para processamento.
+ *
+ * @param {*} props type = Tipo do Modal
+ * @returns Modal com formulário útil
+ */
+const ModalAdditionalData = ({ type, id: internmentId, ...rest }) => {
   const { handleErrors } = useHandleErrors();
   const [getPDFFicha] = useMutation(GENERATE_PDF_FICHA_INTERNAMENTO);
-  const [getPDFFolhaEvolucao] = useMutation(GENERATE_PDF_FOLHA_EVOLUCAO);
-  const [getPDFFolhaPrescricao] = useMutation(GENERATE_PDF_FOLHA_PRESCRICAO);
+  const [getPDFEvolucaoCompacta] = useMutation(GENERATE_PDF_EVOLUCAO_COMPACTA);
   const [getPDFRelatorioAlta] = useMutation(GENERATE_PDF_RELATORIO_ALTA);
   const [getPDFAihSus] = useMutation(GENERATE_PDF_AIH_SUS);
   const [getPDFBalancoHidrico] = useMutation(GENERATE_PDF_BALANCO_HIDRICO);
   const [getPDFApac] = useMutation(GENERATE_PDF_APAC);
 
+  // TODO Otimizar nomes como strategy e organização de informações, para editar um modal está sendo necessário realizar muitos arrodeios, talvez um conteiner Wrap seja mais interessantes do que todo esse arrodeio de hooks
+  // Configura estratégia usada na renderização que está mais para definição do conteúdo por mio da string
   const Strategy = strategies[type];
 
+  // TODO FormikModalWrap?
+  // Formik utilizado em todos os formulários.
   const formik = useFormik({
     initialValues: initialValuesStrategies[type],
     async onSubmit(values) {
       try {
-        const newValues = cloneDeep(values);
+        // ! Pq esse deep clone?
+        const valuesDeepClone = cloneDeep(values);
+        console.log(values, valuesDeepClone);
         let request = undefined;
         if (type === "printPdf_FichaInternamento") {
           request = getPDFFicha;
         }
-        if (newValues.extra.interval) {
-          if (newValues.extra.interval.startDatetimeStamp) {
-            newValues.extra.interval.startDatetimeStamp = `${newValues.extra.interval.startDatetimeStamp}:00`;
+        if (valuesDeepClone.extra && valuesDeepClone.extra.interval) {
+          if (valuesDeepClone.extra.interval.startDatetimeStamp) {
+            valuesDeepClone.extra.interval.startDatetimeStamp = `${valuesDeepClone.extra.interval.startDatetimeStamp}:00`;
           } else {
-            newValues.extra.interval.startDatetimeStamp = null;
+            valuesDeepClone.extra.interval.startDatetimeStamp = null;
           }
-          if (newValues.extra.interval.endingDatetimeStamp) {
-            newValues.extra.interval.endingDatetimeStamp = `${newValues.extra.interval.endingDatetimeStamp}:00`;
+          if (valuesDeepClone.extra.interval.endingDatetimeStamp) {
+            valuesDeepClone.extra.interval.endingDatetimeStamp = `${valuesDeepClone.extra.interval.endingDatetimeStamp}:00`;
           } else {
-            newValues.extra.interval.endingDatetimeStamp = null;
+            valuesDeepClone.extra.interval.endingDatetimeStamp = null;
           }
         }
-        if (type === "printPdf_FolhaEvolucao") {
-          request = getPDFFolhaEvolucao;
-        }
-        if (type === "printPdf_FolhaPrescricao") {
-          request = getPDFFolhaPrescricao;
+        if (type === "printPdf_EvolucaoCompacta") {
+          valuesDeepClone.extra.pendingsId = parseInt(
+            valuesDeepClone.extra.pendingsId
+          );
+          valuesDeepClone.extra.evolutionId = parseInt(
+            valuesDeepClone.extra.evolutionId
+          );
+          valuesDeepClone.extra.prescriptionId = parseInt(
+            valuesDeepClone.extra.prescriptionId
+          );
+          request = getPDFEvolucaoCompacta;
         }
         if (type === "printPdf_RelatorioAlta") {
-          if (newValues.extra.datetimeStamp) {
-            newValues.extra.datetimeStamp = `${newValues.extra.datetimeStamp}:00`;
+          if (valuesDeepClone.extra.datetimeStamp) {
+            valuesDeepClone.extra.datetimeStamp = `${valuesDeepClone.extra.datetimeStamp}:00`;
           } else {
-            newValues.extra.datetimeStamp = null;
+            valuesDeepClone.extra.datetimeStamp = null;
           }
-          if (!newValues.extra.orientations) {
-            newValues.extra.orientations = null;
+          if (!valuesDeepClone.extra.orientations) {
+            valuesDeepClone.extra.orientations = null;
           }
           request = getPDFRelatorioAlta;
         }
         if (type === "printPdf_AihSus") {
-          if (newValues.extra.secondaryDiagnosis?.code) {
-            newValues.extra.secondaryDiagnosis = {
-              code: newValues.extra.secondaryDiagnosis.code,
-              description: newValues.extra.secondaryDiagnosis.description,
+          if (valuesDeepClone.extra.secondaryDiagnosis?.code) {
+            valuesDeepClone.extra.secondaryDiagnosis = {
+              code: valuesDeepClone.extra.secondaryDiagnosis.code,
+              description: valuesDeepClone.extra.secondaryDiagnosis.description,
             };
           }
           request = getPDFAihSus;
@@ -484,30 +698,29 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
           request = getPDFBalancoHidrico;
         }
         if (type === "printPdf_Apac") {
-          if (newValues.extra.secondaryDiagnosis?.code) {
-            newValues.extra.secondaryDiagnosis = {
-              code: newValues.extra.secondaryDiagnosis.code,
-              description: newValues.extra.secondaryDiagnosis.description,
+          if (valuesDeepClone.extra.secondaryDiagnosis?.code) {
+            valuesDeepClone.extra.secondaryDiagnosis = {
+              code: valuesDeepClone.extra.secondaryDiagnosis.code,
+              description: valuesDeepClone.extra.secondaryDiagnosis.description,
             };
           }
-          console.log(newValues);
-          if (newValues.extra.ssociatedCause) {
-            newValues.extra.ssociatedCause = {
-              code: newValues.extra.ssociatedCause.code,
-              description: newValues.extra.ssociatedCause.description,
+          if (valuesDeepClone.extra.ssociatedCause) {
+            valuesDeepClone.extra.ssociatedCause = {
+              code: valuesDeepClone.extra.ssociatedCause.code,
+              description: valuesDeepClone.extra.ssociatedCause.description,
             };
           }
-          if (newValues.extra.diagnosis) {
-            newValues.extra.diagnosis = {
-              code: newValues.extra.diagnosis.code,
-              description: newValues.extra.diagnosis.description,
+          if (valuesDeepClone.extra.diagnosis) {
+            valuesDeepClone.extra.diagnosis = {
+              code: valuesDeepClone.extra.diagnosis.code,
+              description: valuesDeepClone.extra.diagnosis.description,
             };
           }
-          if (newValues.extra.procedure) {
-            newValues.extra.procedure = {
-              code: newValues.extra.procedure.code,
-              name: newValues.extra.procedure.name,
-              quantity: newValues.extra.procedure.quantity,
+          if (valuesDeepClone.extra.procedure) {
+            valuesDeepClone.extra.procedure = {
+              code: valuesDeepClone.extra.procedure.code,
+              name: valuesDeepClone.extra.procedure.name,
+              quantity: valuesDeepClone.extra.procedure.quantity,
             };
           }
           request = getPDFApac;
@@ -517,8 +730,9 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
         }
         const response = await request({
           variables: {
-            internmentId: Number(id),
-            extra: newValues.extra,
+            // id do internamento sempre é passado para todas as mutations
+            internmentId: Number(internmentId),
+            extra: { ...valuesDeepClone.extra },
           },
         });
         const link = document.createElement("a");
@@ -538,7 +752,7 @@ const ModalAdditionalData = ({ type, confirmButton, id, ...rest }) => {
   });
   return (
     <Container onSubmit={formik.handleSubmit}>
-      <Strategy confirmButton={confirmButton} formik={formik} />
+      <Strategy formik={formik} extra={{ ...rest, internmentId }} />
     </Container>
   );
 };

@@ -54,7 +54,7 @@ class PdfApac(ReportLabCanvasUtils):
             self.add_oneline_text(text=str(procedure['code']).upper(), pos=code_pos, field_name=f'{field_name} Procedure Code', len_max=10, len_min=10, interval='  ')
             #Change size to add Code and Name
             self.set_font('Roboto-Mono', 9)
-            self.add_oneline_text(text=str(procedure['name']).upper(), pos=name_pos, field_name=f'{field_name} Procedure Name', len_max=50, len_min=7)
+            self.add_oneline_text(text=str(procedure['name']).upper(), pos=name_pos, field_name=f'{field_name} Procedure Name', len_max=50, len_min=1)
             self.add_oneline_intnumber(number=procedure['quantity'], pos=quant_pos, field_name=f'{field_name} Procedure Quantity', len_max=8, len_min=1, value_min=1, value_max=99999999)
 
             return None
@@ -98,6 +98,7 @@ class PdfApac(ReportLabCanvasUtils):
                 self.add_procedure(procedure=proc, code_pos=(CODE_X_POS, ypos), name_pos=(NAME_X_POS, ypos), quant_pos=(QUANT_X_POS, ypos), field_name=f'({cont}) second procedures')
                 ypos -= REDUCE_Y
 
+            self.set_font('Roboto-Mono', 9)
             return None
 
         except Exception as error:

@@ -55,6 +55,11 @@ type_defs = gql(
             masterKey:String!, 
             user: UserInput): User
         """
+        Atualiza o usuário logado
+        """
+        updateMyUser(
+            user: UserInput): User
+        """
         Atualização de senha por parte do próprio usuário
         """
         updatePassword(password: String!): User
@@ -382,6 +387,9 @@ type_defs = gql(
         id: ID!
         email: String
         name: String
+        cns: String
+        cpf: String
+        rg: String
         birthdate: String
         professionalCategory: String
         professionalDocumentUf: String
@@ -461,6 +469,7 @@ type_defs = gql(
     type Pending{
         id: ID!
         text: String
+        professional: User
         createdAt: String
     }
 
@@ -541,6 +550,8 @@ type_defs = gql(
         nursingActivities: [NamedObject]
         "Timestamp ISO de criação da prescrição"
         createdAt: String
+        "Profissional que criou a prescrição"
+        professional: User
     }
 
     type Cid10 {

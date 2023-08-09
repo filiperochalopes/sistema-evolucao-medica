@@ -26,6 +26,14 @@ def create_user(_, info, master_key: str, user: dict):
             if cpf_validator.validate(user['cpf']) is False:
                 raise Exception('Número de CPF inválido')
 
+        # Administrador não tem registro em Conselho da profissão
+        if user['professional_category'] == 'adm':
+            professional_document_uf = None
+            professional_document_number = None
+        else:
+            professional_document_uf = user['professional_document_uf']
+            professional_document_number = user['professional_document_number']
+
         new_user = User(
             name=user['name'], 
             email=user['email'], 
@@ -35,8 +43,8 @@ def create_user(_, info, master_key: str, user: dict):
             cpf=user['cpf'], 
             cns=user['cns'],
             professional_category=ProfessionalCategoryEnum[user['professional_category']],
-            professional_document_uf=user['professional_document_uf'],
-            professional_document_number=user['professional_document_number']
+            professional_document_uf=professional_document_uf,
+            professional_document_number=professional_document_number
         )
         db.session.add(new_user)
         db.session.commit()

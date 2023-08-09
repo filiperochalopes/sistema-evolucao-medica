@@ -74,7 +74,8 @@ def func_generate_pdf_apac(requesting_establishment:dict, patient:dict, main_pro
             pdf.add_oneline_text(text=patient['address'].get('ibge_city_code'), pos=(370, 582), field_name='Patient Adress City IBGE code', len_max=7, len_min=7, nullable=True)
             pdf.add_oneline_text(text=establishment_exec.get('name'), pos=(36, 30), field_name='Establishment Exec Name', len_max=71, len_min=5, nullable=True)
             pdf.add_UF(uf=patient['address']['uf'], pos=(443, 582), field_name='Patient Adress UF', nullable=True, interval='  ')
-            pdf.add_oneline_text(text=str(procedure_justification_description[0:55]).upper(), pos=(36, 344), field_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
+            if procedure_justification_description is not None:
+                pdf.add_oneline_text(text=str(procedure_justification_description[0:55]).upper(), pos=(36, 344), field_name='Procedure Justification Description', len_max=55, len_min=4, nullable=True)
             pdf.add_oneline_text(text=patient_responsible_name, pos=(36, 630), field_name='Patient Responsible Name', len_max=67, len_min=7, nullable=True)
 
             pdf.add_contact_phonenumbers(phone_numbers=contacts_phonenumbers, pos=(409, 650), interval='  ', y_decrease=24, nullable=True)
@@ -94,7 +95,7 @@ def func_generate_pdf_apac(requesting_establishment:dict, patient:dict, main_pro
             pdf.add_datetime(date=validity_period_start, pos=(402, 66), field_name='Validity Period Start', hours=False, interval='  ', formated=False, nullable=True)
             pdf.add_datetime(date=validity_period_end, pos=(492, 66), field_name='Validity Period End', hours=False, interval='  ', formated=False, nullable=True)
             pdf.add_secondary_procedures(procedures=secondaries_procedures)
-            pdf.add_morelines_text(text=procedure_justification_observations, initial_pos=(36, 318), decrease_ypos= 10, field_name='Procedure justification Observations', len_max=776, char_per_lines=97, len_min=5, nullable=True)
+            pdf.add_morelines_text(text=procedure_justification_observations, initial_pos=(36, 318), decrease_ypos= 10, field_name='Procedure justification Observations', len_max=776, char_per_lines=97, len_min=0, nullable=True)
             pdf.add_document_cns_cpf_rg(document=requesting_professional_document, pos_square_cpf=(103, 180), pos_square_cns=(51,180), pos_cns=(151, 181), pos_cpf=(151, 181),field_name='Professional Solicitor Document', interval='  ',nullable=True)
             pdf.add_document_cns_cpf_rg(document=authorization_professional_document, pos_square_cpf=(103, 104), pos_square_cns=(51,104), pos_cns=(149, 105), pos_cpf=(151, 105),field_name='Professional Authorizator Document', interval='  ',nullable=True)
         except Exception as error:

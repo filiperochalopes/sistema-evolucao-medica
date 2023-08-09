@@ -8,3 +8,4 @@ data
 .DS_Store
 .pytest_cache
 users.json
+package-lock.json

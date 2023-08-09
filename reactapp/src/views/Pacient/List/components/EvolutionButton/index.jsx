@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import CheckRole from "routes/CheckRole";
 import Container, { PopUp } from "./styles";
+import { AiFillCaretDown } from "react-icons/ai";
 
 const EvolutionButton = ({ id }) => {
   const [showPopUp, setShowPopUp] = useState(false);
@@ -14,7 +15,7 @@ const EvolutionButton = ({ id }) => {
         type="button"
         onClick={() => setShowPopUp(!showPopUp)}
       >
-        Evoluir
+        Evoluir <AiFillCaretDown />
       </Button>
       {showPopUp && (
         <PopUp>

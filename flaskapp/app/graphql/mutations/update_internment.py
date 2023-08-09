@@ -14,7 +14,7 @@ from app.services.utils.decorators import token_authorization
 def update_internment(_, info, id: int, finished_at: str, current_user: dict, re_open:bool=False):
     internment = db.session.query(Internment).get(id)
     if finished_at:
-        internment.finished_at = datetime.strptime(finished_at, '%Y-%m-%d %H:%M')
+        internment.finished_at = datetime.fromisoformat(finished_at)
         internment.finished_by = current_user
     if re_open:
         internment.finished_at = False

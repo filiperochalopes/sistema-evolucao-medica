@@ -23,8 +23,9 @@ class DrugKindEnum(enum.Enum):
 
 class ProfessionalCategoryEnum(enum.Enum):
     doc = 'Médico'
-    nur = 'Enfermeira'
-    tec = 'Técnica de Enfermagem'
+    nur = 'Enfermeiro(a)'
+    tec = 'Técnico(a) de Enfermagem'
+    adm = 'Administrador(a)'
 
 
 db = SQLAlchemy()
@@ -44,8 +45,8 @@ class User(BaseModel):
     birthdate = db.Column(db.Date, nullable=False)
     professional_category = db.Column(db.Enum(ProfessionalCategoryEnum), nullable=False)
     phone = db.Column(db.String)
-    professional_document_uf = db.Column(db.String)
-    professional_document_number = db.Column(db.String)
+    professional_document_uf = db.Column(db.String, nullable=True)
+    professional_document_number = db.Column(db.String, nullable=True)
     is_active = db.Column(db.Boolean, default=True)
     
     # timestamps

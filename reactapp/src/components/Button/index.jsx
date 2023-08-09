@@ -3,9 +3,9 @@ import Container, { ContainerLoading } from "./styles";
 
 import React from "react";
 
-function Button({ loading, children, ...rest }) {
+function Button({ loading, children, ...props }) {
   return (
-    <Container {...rest}>
+    <Container {...props}>
       {loading ? (
         <ContainerLoading loading={loading}>
           <AiOutlineLoading3Quarters />

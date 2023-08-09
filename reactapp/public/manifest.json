@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Sistema de Evolução - HMLEM",
+  "name": "Sistema de Evolução Hospitalar de Pequeno Porte",
   "icons": [
     {
       "src": "favicon.ico",

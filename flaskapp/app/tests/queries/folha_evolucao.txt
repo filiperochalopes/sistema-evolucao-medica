@@ -4,6 +4,7 @@ mutation{
     patient: {
       name: "Patient Test Name",
       cns: "928976954930007",
+      birthdate: "2010-01-10",
       weightKg: 123.00,
       sex: "F", 
       phone: "10123456789",
@@ -12,7 +13,7 @@ mutation{
     evolutions:[
       {
         createdAt: "2023-02-12T23:59:24",
-        description: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id. Nulla pretium, massa nec aliquet mattis, erat felis egestas massa, eu lacinia ipsum ligula eu sapien. Maecenas posuere, felis sit amet viverra fini",
+        text: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id. Nulla pretium, massa nec aliquet mattis, erat felis egestas massa, eu lacinia ipsum ligula eu sapien. Maecenas posuere, felis sit amet viverra fini",
         professional:
         {
           name: "Professional Name",
@@ -22,7 +23,7 @@ mutation{
       },
       {
         createdAt: "2023-02-12T23:59:24",
-        description: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id. Nulla pretium, massa nec aliquet mattis, erat felis egestas massa, eu lacinia ipsum ligula eu sapien. Mae",
+        text: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id. Nulla pretium, massa nec aliquet mattis, erat felis egestas massa, eu lacinia ipsum ligula eu sapien. Mae",
         professional:
         {
           name: "Another Professional Name",
@@ -32,7 +33,7 @@ mutation{
       },
       {
         createdAt: "2023-02-12T23:59:24",
-        description: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id.quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id.quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.",
+        text: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id.quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem. Cras tempus malesuada erat, eget lacinia sem ultrices id.quam, at commodo ligula. Suspendisse sed pulvinar arcu, vel fermentum leo. Ut ligula orci, dictum in elit sed, sodales sollicitudin sem.",
         professional:{
           name: "Professional aaaa Name",
           category: "m",
@@ -41,7 +42,7 @@ mutation{
       },
       {
         createdAt: "2023-02-12T23:59:24",
-        description: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, ",
+        text: "quam, at commodo ligula. Suspendisse sed pulvinar arcu, ",
     	  professional:
         {
           name: "Last Professional Name",

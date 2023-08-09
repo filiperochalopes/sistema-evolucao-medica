@@ -9,7 +9,7 @@ export default styled.div`
   flex: 1;
   align-self: stretch;
 
-  .add_new_pacient {
+  .add_new_patient {
     max-width: 10.5rem;
   }
 
@@ -18,16 +18,16 @@ export default styled.div`
     align-self: flex-end;
   }
 
-  .pacients-container {
+  .patients-container {
     margin-top: 2rem;
-    flex: 1;
+    flex: 0.5 1 0%;
 
     h2 {
       font-size: 1.5rem;
       margin-bottom: 2rem;
     }
 
-    .pacients {
+    .patients {
       display: flex;
       flex-direction: column;
       row-gap: 0.5rem;
@@ -35,7 +35,7 @@ export default styled.div`
   }
 `;
 
-export const PacientContent = styled.div`
+export const PatientContent = styled.div`
   width: 100%;
   height: 100%;
   display: flex;

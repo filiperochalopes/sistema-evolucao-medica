@@ -72,6 +72,12 @@ print_pdf_type_defs = gql(
         observations: String
     }
 
+    input PrintEvolucaoCompactaInput{
+        prescriptionId: Int!
+        evolutionId: Int!
+        pendingsId: Int!
+    }
+
     extend type Mutation {
         """
         Gera PDF para impressão, por meio de dados em banco da aplicação, de documento de AIH
@@ -108,9 +114,8 @@ print_pdf_type_defs = gql(
         Gera PDF para impressão, documento de Prescrição Médica
         """
         printPdf_FolhaPrescricao(
-            "Id do internamento do referência"
-            internmentId: Int!
-            extra: PrintFolhaPrescricaoExtraInput
+            "Id da prescrição a ser impressa"
+            prescriptionId: ID!
         ): GeneratedPdf
 
         """
@@ -120,6 +125,14 @@ print_pdf_type_defs = gql(
             "Id do internamento do referência"
             internmentId: Int!
             extra: PrintFolhaEvolucaoExtraInput
+        ): GeneratedPdf
+
+        """
+        Gera PDF para impressão, documento de Evolucao Compacta
+        """
+        printPdf_EvolucaoCompacta(
+            internmentId: Int!
+            extra: PrintEvolucaoCompactaInput
         ): GeneratedPdf
 
         """

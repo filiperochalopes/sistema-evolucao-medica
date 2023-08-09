@@ -29,6 +29,12 @@ export default styled.button`
   padding: 0 0.5rem;
   cursor: pointer;
 
+  &.small {
+    max-width: 6.125rem;
+    margin-top: 5.44rem;
+    align-self: flex-end;
+  }
+
   ${({ customType }) => {
     switch (customType) {
       case "gray":

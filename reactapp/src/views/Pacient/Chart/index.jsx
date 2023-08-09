@@ -301,6 +301,8 @@ const Chart = () => {
       }
       return { fluids: newFluids };
     },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [params.id, printFluids]
   );
 
