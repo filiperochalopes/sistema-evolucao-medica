@@ -1,5 +1,5 @@
 import Container, { ContainerSearchInput, ContainerAddPacient } from "./styles";
-import { createFilter, components } from "react-select";
+import { createFilter } from "react-select";
 
 import Button from "components/Button";
 import Input from "components/Input";
@@ -231,6 +231,7 @@ const Admit = () => {
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patientData, statesData]);
 
   useEffect(() => {

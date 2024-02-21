@@ -17,7 +17,6 @@ def create_comorbidities_and_allergies(input_patient: dict) -> dict:
     # Criação de Alergias
     allergies = []
     for allergy_name in input_patient['allergies']:
-        print(allergy_name, file=sys.stderr)
         if len(db.session.query(Allergy).filter(Allergy.value==allergy_name).all()) <= 0:
             allergy = Allergy(value=allergy_name)
             db.session.add(allergy)

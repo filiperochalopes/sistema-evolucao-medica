@@ -1,7 +1,0 @@
-mutation {
-  printPdf_FolhaPrescricao(
-    internmentId: 1
-  ) {
-    base64Pdf
-  }
-}

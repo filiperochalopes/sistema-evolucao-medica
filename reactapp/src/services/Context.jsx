@@ -1,41 +1,67 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
+import { useLazyQuery } from "@apollo/client";
+import { MY_USER } from "graphql/queries";
 import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 
 const Context = createContext(null);
 
 const ContextProvider = ({ children }) => {
+  const [decodedJWT, setDecodedJWT] = useState();
   const [user, setUser] = useState();
   const navigate = useNavigate();
+  const [getMyUser] = useLazyQuery(MY_USER, {
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "network-only",
+  });
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
+    // Captura o token da local storage
+    const _encodedJWT = localStorage.getItem("token");
+    if (!_encodedJWT) {
       return;
     }
-    const decode = jwt_decode(token);
-    setUser({
-      ...decode,
-      token,
+    // Armazenar dados de token sem codificação
+    const _decodedJWT = jwt_decode(_encodedJWT);
+    setDecodedJWT({
+      ..._decodedJWT,
+      token: _encodedJWT,
     });
   }, []);
 
-  function updateUser(token) {
-    const decode = jwt_decode(token);
-    setUser({
-      ...decode,
+  function updateDecodedJWT(token) {
+    const _decodedJWT = jwt_decode(token);
+    setDecodedJWT({
+      ..._decodedJWT,
       token,
     });
   }
 
+  const updateUser = useCallback(() => {
+    if (decodedJWT?.sub) {
+      getMyUser().then(({ data: { myUser } }) => {
+        // Setando dados de usuário em contexto
+        setUser(myUser);
+      });
+    }
+  }, [decodedJWT, getMyUser]);
+
+  useEffect(() => {
+    // Em caso de alterações do token é preciso rever o usuário
+    updateUser();
+  }, [updateUser]);
+
   function logout() {
     localStorage.removeItem("token");
-    setUser(undefined);
+    setDecodedJWT(undefined);
     navigate("/", { replace: true });
   }
 
   return (
-    <Context.Provider value={{ user, updateUser, logout }}>
+    <Context.Provider
+      value={{ decodedJWT, updateDecodedJWT, user, updateUser, logout }}
+    >
       {children}
     </Context.Provider>
   );

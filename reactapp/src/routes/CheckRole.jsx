@@ -5,15 +5,15 @@ import React, { useState } from "react";
 // const { Navigate, useLocation, useNavigate } = require("react-router-dom");
 
 const CheckRole = ({ children, roles, goBack }) => {
-  const { user } = useContextProvider();
+  const { decodedJWT } = useContextProvider();
   const [permited, setPermited] = useState("waiting");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user?.scope) {
+    if (!decodedJWT?.scope) {
       return;
     }
-    if (roles.includes(user?.scope)) {
+    if (roles.includes(decodedJWT?.scope)) {
       setPermited("checked");
       return;
     }
@@ -21,7 +21,8 @@ const CheckRole = ({ children, roles, goBack }) => {
     if (goBack) {
       navigate(-1);
     }
-  }, [goBack, navigate, roles, user]);
+  }, [goBack, navigate, roles, decodedJWT]);
+
   if (permited === "waiting") {
     return <div />;
   }

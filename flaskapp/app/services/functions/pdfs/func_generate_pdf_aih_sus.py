@@ -50,6 +50,10 @@ def func_generate_pdf_aih_sus(requesting_establishment:dict, patient:dict, main_
         # Writing all data in respective fields
         # not null data
         try:     
+            # Tratando entradas maiores do que o tamanho do campo
+            initial_diagnosis = initial_diagnosis[:43]
+            # TODO Campo expansível, com breakpoints, em caso de maior que X caracteres, reduz fonte para 12, em caso de X+Y, reduz a fonte para 11...
+
             pdf.add_oneline_text(text=requesting_establishment['name'], pos=(25, 750), field_name='Establishment Solicit Name', len_max=82, len_min=8)
             pdf.add_oneline_text(text=requesting_establishment['cnes'], pos=(470, 750), field_name='Establishment Solict CNES', len_max=7, len_min=7,interval='  ')
             pdf.add_oneline_text(text=patient['name'], pos=(25, 683), field_name='Patient Name', len_max=79, len_min=7)

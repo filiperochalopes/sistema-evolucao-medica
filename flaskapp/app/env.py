@@ -23,6 +23,7 @@ TEMPLATE_SOLICIT_MAMOGRAFIA_DIRECTORY   = f"{TEMPLATE_BASE_URL}solicitacao_mamog
 TEMPLATE_FOLHA_EVOLUCAO_DIRECTORY       = f"{TEMPLATE_BASE_URL}folha_evolucao.pdf"
 TEMPLATE_BALANCO_HIDRICO_DIRECTORY      = f"{TEMPLATE_BASE_URL}balanco_hidrico.pdf"
 TEMPLATE_FOLHA_PRESCRICAO_DIRECTORY     = f"{TEMPLATE_BASE_URL}folha_prescricao.pdf"
+TEMPLATE_COMPACTED_DIRECTORY            = f"{TEMPLATE_BASE_URL}evol_presc_sv_compacta.pdf"
 
 TMP_FILES_FOLDER = "/app/app/tests/files/tmp"
 
@@ -38,6 +39,7 @@ WRITE_SOLICIT_MAMOGRAFIA_DIRECTORY  = f"{TMP_FILES_FOLDER}/solicit_mamografia_te
 WRITE_FOLHA_EVOLUCAO_DIRECTORY      = f"{TMP_FILES_FOLDER}/folha_evolucao_teste.pdf"
 WRITE_BALANCO_HIDRICO_DIRECTORY     = f"{TMP_FILES_FOLDER}/balanco_hidrico_teste.pdf"
 WRITE_FOLHA_PRESCRICAO_DIRECTORY    = f"{TMP_FILES_FOLDER}/folha_prescricao_teste.pdf"
+WRITE_COMPACTED_DIRECTORY           = f"{TMP_FILES_FOLDER}/evol_presc_sv_compacta_teste.pdf"
 
 # Write directires that tests will use to decode pdfs from base64 
 WRITE_DECODE_AIH_SUS_DIRECTORY             = f"{TMP_FILES_FOLDER}/aih_sus_decoded_teste.tmp.pdf"
@@ -50,6 +52,7 @@ WRITE_DECODE_LME_DIRECTORY                 = f"{TMP_FILES_FOLDER}/lme_decoded_te
 WRITE_DECODE_PRESCRICAO_MEDICA_DIRECTORY   = f"{TMP_FILES_FOLDER}/prescricao_medica_decoded_teste.tmp.pdf"
 WRITE_DECODE_RELATORIO_ALTA_DIRECTORY      = f"{TMP_FILES_FOLDER}/relatorio_alta_decoded_teste.tmp.pdf"
 WRITE_DECODE_SOLICIT_MAMOGRAFIA_DIRECTORY  = f"{TMP_FILES_FOLDER}/solicit_mamografia_decoded_teste.tmp.pdf"
+WRITE_DECODE_COMPACTED_DIRECTORY     = f"{TMP_FILES_FOLDER}/evol_presc_sv_compacta_decoded_teste.tmp.pdf"
 WRITE_DECODE_FOLHA_EVOLUCAO_DIRECTORY       = f"{TMP_FILES_FOLDER}/folha_evolucao_decoded_teste.tmp.pdf"
 WRITE_DECODE_BALANCO_HIDRICO_DIRECTORY      = f"{TMP_FILES_FOLDER}/balanco_hidrico_decoded_teste.tmp.pdf"
 WRITE_DECODE_FOLHA_PRESCRICAO_DIRECTORY     = f"{TMP_FILES_FOLDER}/folha_prescricao_decoded_teste.tmp.pdf"
@@ -60,6 +63,7 @@ WRITE_DECODE_AIH_SUS_REQUIRED_DATA_DIRECTORY     = f"{TMP_FILES_FOLDER}/aih_sus_
 WRITE_DECODE_LME_REQUIRED_DATA_DIRECTORY     = f"{TMP_FILES_FOLDER}/lme_required_decoded_teste.tmp.pdf"
 WRITE_DECODE_RELATORIO_ALTA_REQUIRED_DATA_DIRECTORY     = f"{TMP_FILES_FOLDER}/relatorio_alta_required_decoded_teste.tmp.pdf"
 WRITE_DECODE_SOLICIT_MAMOGRAFIA_REQUIRED_DATA     = f"{TMP_FILES_FOLDER}/solicit_mamogram_required_decoded_teste.tmp.pdf"
+WRITE_DECODE_COMPACTED_REQUIRED_DATA     = f"{TMP_FILES_FOLDER}/evol_presc_sv_compacta_required_decoded_teste.tmp.pdf"
 
 QUERIES_DIRECTORY = '/app/app/tests/queries'
 

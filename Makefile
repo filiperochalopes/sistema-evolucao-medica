@@ -37,6 +37,19 @@ test_flow:
 	docker exec -it evolucao_hospitalar_app bash -c 'flask db upgrade && flask seed'
 	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k TestInternmentFlow'
 	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k TestPrintPdfs'
+test_pdfs:
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_evol_compact'
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_apac'
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_aih_sus'
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_balanco_hidrico'
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_exam_request'
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_ficha_internamento'
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_folha_evolucao'
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_folha_prescricao'
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_lme'
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_prescricao_medica'
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_relatorio_alta'
+	docker exec -it evolucao_hospitalar_app bash -c 'pytest -s -k test_solicit_mamografia'
 fix-folder-permission:
 	docker exec -it evolucao_hospitalar_app bash -c ' \
 		chmod -R 777 /app/migrations'

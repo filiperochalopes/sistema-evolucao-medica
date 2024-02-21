@@ -16,6 +16,8 @@ def create_pending(_, info, internment_id:int, text:str, current_user: dict):
     # Verifica se está igual à última pendência cadastrada
     last_pending = db.session.query(Pending).filter(Pending.internment_id==internment_id).order_by(Pending.created_at.desc()).first()
     
+    if len(text) < 20:
+        raise Exception("Pendência não pode ser vazia ou menor que 20 caracteres")
     if last_pending and last_pending.text == text:
         raise Exception("A pendência não pode ser cópia idêntica do registro anterior")
     # Cria o registro de pendências, que não está atrelada a uma evolução

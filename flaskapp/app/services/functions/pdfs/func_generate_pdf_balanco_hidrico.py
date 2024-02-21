@@ -19,8 +19,6 @@ def func_generate_pdf_balanco_hidrico(patient:dict, fluid_balance:list,
             pdf.set_font('Roboto-Mono', 16)
             # get last fluid balance  date and add in pdf
             # check range
-            print("========= fluid_balance =========", file=sys.stderr)
-            print(fluid_balance, file=sys.stderr)
             created_at = fluid_balance[-1]['created_at']
             if created_at is None:
                 raise Exception('Data de criação do ultimo balanco hidrico não pode ser vazia')

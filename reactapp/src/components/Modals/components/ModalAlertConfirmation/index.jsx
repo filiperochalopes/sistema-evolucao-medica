@@ -1,11 +1,11 @@
 import Button from "components/Button";
 import Container from "./styles";
 
-const ModalDeletePrescription = ({ confirmButton, goBack }) => (
+const ModalAlertConfirmation = ({ question, confirmCallback, goBack }) => (
   <Container>
-    <p>Tem certeza que deseja remover esse item da prescrição?</p>
+    <p>{question}</p>
     <div>
-      <Button type="button" customType="gray" onClick={confirmButton}>
+      <Button type="button" customType="gray" onClick={confirmCallback}>
         Sim
       </Button>
       <Button type="button" customType="red" onClick={goBack}>
@@ -15,4 +15,4 @@ const ModalDeletePrescription = ({ confirmButton, goBack }) => (
   </Container>
 );
 
-export default ModalDeletePrescription;
+export default ModalAlertConfirmation;

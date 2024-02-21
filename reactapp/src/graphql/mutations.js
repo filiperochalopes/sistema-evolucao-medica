@@ -1,9 +1,11 @@
 import { gql } from "@apollo/client";
 
-export const CREATE_USER = gql`
-  mutation createUser($masterKey: String!, $user: UserInput) {
-    patients(masterKey: $masterKey, user: $use) {
+export const UPDATE_MY_USER = gql`
+  mutation updateMyUser($user: UserInput) {
+    updateMyUser(user: $user) {
       id
+      name
+      email
     }
   }
 `;
@@ -19,6 +21,14 @@ export const SIGNING = gql`
 export const UPDATE_PATIENT = gql`
   mutation updatePatient($id: ID!, $patient: PatientInput!) {
     updatePatient(id: $id, patient: $patient) {
+      id
+    }
+  }
+`;
+
+export const UPDATE_INTERNMENT = gql`
+  mutation updatePatient($id: ID!, $finishedAt: String) {
+    updateInternment(id: $id, finishedAt: $finishedAt) {
       id
     }
   }
@@ -152,23 +162,12 @@ export const GENERATE_PDF_FICHA_INTERNAMENTO = gql`
   }
 `;
 
-export const GENERATE_PDF_FOLHA_EVOLUCAO = gql`
-  mutation printPdf_FolhaEvolucao(
+export const GENERATE_PDF_EVOLUCAO_COMPACTA = gql`
+  mutation printPdf_EvolucaoCompacta(
     $internmentId: Int!
-    $extra: PrintFolhaEvolucaoExtraInput
+    $extra: PrintEvolucaoCompactaInput!
   ) {
-    printPdf_FolhaEvolucao(internmentId: $internmentId, extra: $extra) {
-      base64Pdf
-    }
-  }
-`;
-
-export const GENERATE_PDF_FOLHA_PRESCRICAO = gql`
-  mutation printPdf_FolhaPrescricao(
-    $internmentId: Int!
-    $extra: PrintFolhaPrescricaoExtraInput
-  ) {
-    printPdf_FolhaPrescricao(internmentId: $internmentId, extra: $extra) {
+    printPdf_EvolucaoCompacta(internmentId: $internmentId, extra: $extra) {
       base64Pdf
     }
   }

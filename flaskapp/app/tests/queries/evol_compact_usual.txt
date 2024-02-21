@@ -1,0 +1,68 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_EvolCompact(
+    patient: {
+      name: "Antônio José da Silva Cerqueira Suzarth",
+      cpf: "46402434728",
+      rg: "448342194",
+      cns: "217734315270009",
+      weightKg: 86.603,
+      sex: "male", 
+      phone: "75992540735",
+      motherName: "Joana Maria Cerqueira", 
+      birthdate: "1985-11-10",
+      comorbidities: ["Diabetes Mellitus Tipo II", "Hipertensão Arterial Sistêmica", "Tabagismo", "Etilismo"],
+      allergies: ["Dipirona", "AINES", "Amoxicilina"],
+    },
+    regulationCode: "3381668",
+    documentCreatedAt: "2023-07-03",
+    admissionHistory: {
+      professional:{
+          name: "Filipe Costa Martins",
+          category: "tec",
+          document: "54321/BA"
+      },
+      createdAt: "2023-02-13T01:17:20",
+      text: "História da Admissão do paciente. Donec sollicitudin laoreet lacus, vitae blandit diam elementum eget. Phasellus vestibulum orci in purus pretium aliquet. Donec vitae libero a magna dignissim vehicula vitae at urna. Fusce porttitor eros et ornare egestas. Suspendisse condimentum odio quam, quis mattis est commodo vel."
+    },
+    evolution:{
+        createdAt: "2023-06-29T07:35:24",
+        text: "Evolução do dia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras facilisis augue et ex ullamcorper egestas volutpat nec velit. Nunc eget metus lectus. Proin porta maximus varius. Suspendisse eget posuere purus. Aliquam ultrices auctor ante quis volutpat. ",
+        professional:
+        {
+          name: "Filipe da Cunha Alcântara",
+          category: "tec",
+          document: "37865/BA"
+        }
+    },
+    pendings: {
+      createdAt: "2023-06-29T07:50:24",
+      description: "Pendências para o paciente. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras facilisis augue et ex ullamcorper egestas volutpat nec velit. Nunc eget metus lectus."
+    },
+    prescription: [
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+      {
+        description:"Dipirona 500mg 4 comprimidos 1 comprimido, via oral, de 6/6h por 3 dias"
+      },
+    ],
+    nursingPrescriptions: {
+      resting: "Repouso relativo no leito, manter cabeceira elevada de 45° e perna direita elevada.",
+      diet: "Dieta pastosa, via oral, para diabético e hipertenso",
+      activities: [
+        {description: "Alteração de decúbito de 2/2h, atenção para úlceras por pressão" },
+        {description: "Aferição de sinais vitais de 6/6h" },
+        {description: "Realizar sondagem vesical e quantificação de balanço hídrico" },
+      ]
+    },
+    measures: null
+  )
+{base64Pdf}
+}

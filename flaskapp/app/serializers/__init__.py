@@ -72,6 +72,15 @@ class DrugPrescriptionSchema(CamelCaseSchema):
     drug = sqa_fields.Nested(DrugSchema)
 
 
+class UserSchema(CamelCaseSchema):
+    professional_category = EnumToDictionaryField(
+        attribute=('professional_category'))
+    birthdate = fields.Date(format='%Y-%m-%d')
+
+    class Meta:
+        model = User
+
+
 class PrescriptionSchema(CamelCaseSchema):
     class Meta:
         model = Prescription
@@ -84,6 +93,7 @@ class PrescriptionSchema(CamelCaseSchema):
         sqa_fields.Nested(NursingActivitySchema))
     diet = sqa_fields.Nested(DietSchema)
     resting_activity = sqa_fields.Nested(RestingActivitySchema)
+    professional = sqa_fields.Nested(UserSchema)
 
 
 class DrugGroupPresetSchema(CamelCaseSchema):
@@ -93,15 +103,6 @@ class DrugGroupPresetSchema(CamelCaseSchema):
         include_relationships = True
 
     drugs = sqa_fields.RelatedList(sqa_fields.Nested(DrugSchema))
-
-
-class UserSchema(CamelCaseSchema):
-    professional_category = EnumToDictionaryField(
-        attribute=('professional_category'))
-    birthdate = fields.Date(format='%Y-%m-%d')
-
-    class Meta:
-        model = User
 
 
 class AllergySchema(CamelCaseSchema):
@@ -180,6 +181,8 @@ class MeasureSchema(CamelCaseSchema):
 class PendingSchema(CamelCaseSchema):
     class Meta:
         model = Pending
+    
+    professional = sqa_fields.Nested(UserSchema)
 
 
 class InternmentSchema(CamelCaseSchema):

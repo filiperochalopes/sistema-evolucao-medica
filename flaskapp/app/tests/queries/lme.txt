@@ -9,6 +9,7 @@ mutation{
       name: "Patient Name Name",
       motherName:"Patient Mother Name",
       cns: "928976954930007",
+      birthdate: "2010-01-10",
       sex: "F", 
       phone: "10123456789",
       cpf: null,

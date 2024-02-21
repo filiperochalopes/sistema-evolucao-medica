@@ -71,10 +71,8 @@ const ModalUpdatePacientData = ({ id }) => {
             patient: {
               ...values,
               sex: values.sex?.value,
-              comorbidities: values.comorbidities.map(
-                (commorbiditie) => commorbiditie.value
-              ),
-              allergies: values.allergies.map((allergie) => allergie.value),
+              comorbidities: values.comorbidities.map((c) => c.value),
+              allergies: values.allergies.map((a) => a.value),
               weightKg: parseFloat(values.weightKg),
               address: {
                 ...values.address,
@@ -161,6 +159,8 @@ const ModalUpdatePacientData = ({ id }) => {
       sex: GENERS.find((gener) => gener.value === data.patient.sex),
       weightKg: data.patient.weightKg,
     });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, statesData]);
 
   useEffect(() => {
@@ -195,6 +195,8 @@ const ModalUpdatePacientData = ({ id }) => {
       }
     }
     getCep();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values.address.zipCode]);
 
   return (

@@ -1,0 +1,93 @@
+# Write your query or mutation here
+mutation{
+	generatePdf_FolhaPrescricao(
+    createdAt: "2023-02-12T21:59:24",
+    patient: {
+      name: "Patient Test Name",
+      cns: "928976954930007",
+      birthdate: "2010-01-10",
+      weightKg: 123.00,
+      sex: "F", 
+      phone: "10123456789",
+      motherName: "Patient Mother Name", 
+    },
+    prescriptions: [
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "2023-02-12T21:59:24",
+        endingDate: "2023-02-12T23:59:24"      
+      },
+      {
+        type: "Dieta",
+        description: "Dieta para hidratacao haahahah",
+        route: "Dieta",
+        startDate: "2023-02-12T21:59:24",
+        endingDate: "2023-02-12T23:59:24"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "2023-02-12T21:59:24",
+        endingDate: "2023-02-12T23:59:24"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "2023-02-12T21:59:24",
+        endingDate: "2023-02-12T23:59:24"      
+      },
+      {
+        type: "Dieta",
+        description: "Dieta para hidratacao haahahah",
+        route: "Dieta",
+        startDate: "2023-02-12T21:59:24",
+        endingDate: "2023-02-12T23:59:24"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "2023-02-12T21:59:24",
+        endingDate: "2023-02-12T23:59:24"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "2023-02-12T21:59:24",
+        endingDate: "2023-02-12T23:59:24"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription descriptionPrescription description",
+        route: "Endovenosa",
+        startDate: "2023-02-12T21:59:24",
+        endingDate: "2023-02-12T23:59:24"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "2023-02-12T21:59:24",
+        endingDate: "2023-02-12T23:59:24"      
+      },
+      {
+        type: "Repouso",
+        description: "Prescription description",
+        route: "Endovenosa",
+        startDate: "2023-02-12T21:59:24",
+        endingDate: "2023-02-12T23:59:24"      
+      }
+    ],
+    professional:
+    {
+      name: "Another Professional Name",
+      category: "e",
+      document: "1234534"
+    }
+){base64Pdf}
+}

@@ -5,6 +5,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import ModalContextProvider from "services/ModalContext";
+import EditUser from "views/EditUser";
 import Admit from "views/Pacient/Admit";
 import Chart from "views/Pacient/Chart";
 import Evolution from "views/Pacient/Evolution";
@@ -45,6 +46,16 @@ export const routes = [
           <PrivateRouter>
             <CheckRole goBack roles={["doc"]}>
               <Admit />
+            </CheckRole>
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "/editar-usuario",
+        element: (
+          <PrivateRouter>
+            <CheckRole goBack roles={["doc"]}>
+              <EditUser />
             </CheckRole>
           </PrivateRouter>
         ),
